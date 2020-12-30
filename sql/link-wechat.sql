@@ -6391,3 +6391,35 @@ CREATE TABLE `we_user` (
 -- ----------------------------
 -- Records of we_user
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for we_sensitive
+-- ----------------------------
+DROP TABLE IF EXISTS `we_sensitive`;
+CREATE TABLE `we_sensitive` (
+	id BIGINT auto_increment NOT NULL COMMENT '主键',
+	strategy_name varchar(100) NOT NULL COMMENT '策略名称',
+	pattern_words TEXT NOT NULL COMMENT '匹配词',
+	audit_user_id BIGINT NOT NULL COMMENT '审计人id',
+	audit_user_name varchar(30) NOT NULL COMMENT '审计人',
+	alert_flag TINYINT DEFAULT 1 NOT NULL COMMENT '消息通知,1 开启 0 关闭',
+	del_flag TINYINT DEFAULT 0 NOT NULL COMMENT '删除标识，1 已删除 0 未删除',
+	create_by varchar(64) NULL COMMENT '创建人',
+	create_time DATETIME NULL COMMENT '创建时间',
+	update_by varchar(64) NULL COMMENT '更新人',
+	update_time DATETIME NULL COMMENT '更新时间',
+	CONSTRAINT we_sensitive_pk PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='敏感词设置表';
+
+-- ----------------------------
+-- Table structure for we_sensitive_audit_scope
+-- ----------------------------
+DROP TABLE IF EXISTS `we_sensitive_audit_scope`;
+CREATE TABLE `we_sensitive_audit_scope` (
+	id BIGINT auto_increment NOT NULL COMMENT '主键',
+	sensitive_id BIGINT NOT NULL COMMENT '敏感词表主键',
+	scope_type TINYINT NOT NULL COMMENT '审计范围类型, 1 组织机构 2 成员',
+	audit_scope_id BIGINT NOT NULL COMMENT '审计对象id',
+	audit_scope_name varchar(64) NOT NULL COMMENT '审计对象名称',
+	CONSTRAINT we_sensitive_audit_scope_pk PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='敏感词审计范围';
