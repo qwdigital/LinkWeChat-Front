@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2020-12-30 10:16:02
+Date: 2021-01-04 10:23:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -5762,50 +5762,6 @@ CREATE TABLE `we_customer` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for we_customer_imageMessage
--- ----------------------------
-DROP TABLE IF EXISTS `we_customer_imageMessage`;
-CREATE TABLE `we_customer_imageMessage` (
-  `image_message_id` bigint(64) NOT NULL,
-  `message_id` bigint(64) DEFAULT NULL COMMENT '微信消息表id',
-  `media_id` varchar(100) DEFAULT NULL COMMENT '图片的media_id，可以通过 <a href="https://work.weixin.qq.com/api/doc/90000/90135/90253">素材管理接口</a>获得',
-  `pic_url` varchar(100) DEFAULT NULL COMMENT '图片的链接，仅可使用<a href="https://work.weixin.qq.com/api/doc/90000/90135/90256">上传图片接口</a>得到的链接',
-  `create_by` varchar(64) DEFAULT NULL,
-  `create_time` datetime DEFAULT NULL,
-  `update_by` varchar(255) DEFAULT NULL,
-  `update_time` datetime DEFAULT NULL,
-  `del_flag` int(1) DEFAULT '0',
-  PRIMARY KEY (`image_message_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='群发消息  图片消息';
-
--- ----------------------------
--- Records of we_customer_imageMessage
--- ----------------------------
-
--- ----------------------------
--- Table structure for we_customer_linkMessage
--- ----------------------------
-DROP TABLE IF EXISTS `we_customer_linkMessage`;
-CREATE TABLE `we_customer_linkMessage` (
-  `link_message_id` bigint(64) NOT NULL,
-  `message_id` bigint(64) DEFAULT NULL COMMENT '微信消息表id',
-  `title` varchar(100) DEFAULT NULL COMMENT '图文消息标题',
-  `picurl` varchar(255) DEFAULT NULL COMMENT '图文消息封面的url',
-  `desc` varchar(1000) DEFAULT NULL COMMENT '图文消息的描述，最多512个字节',
-  `url` varchar(1000) DEFAULT NULL COMMENT '图文消息的链接',
-  `create_by` varchar(64) DEFAULT NULL,
-  `create_time` datetime DEFAULT NULL,
-  `update_by` varchar(64) DEFAULT NULL,
-  `update_time` datetime DEFAULT NULL,
-  `del_flag` int(1) DEFAULT '0',
-  PRIMARY KEY (`link_message_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='群发消息  链接消息表';
-
--- ----------------------------
--- Records of we_customer_linkMessage
--- ----------------------------
-
--- ----------------------------
 -- Table structure for we_customer_message
 -- ----------------------------
 DROP TABLE IF EXISTS `we_customer_message`;
@@ -5818,12 +5774,15 @@ CREATE TABLE `we_customer_message` (
   `check_status` varchar(2) DEFAULT NULL COMMENT '消息发送状态 0 未发送  1 已发送',
   `msgid` varchar(100) DEFAULT NULL COMMENT '企业群发消息的id，可用于<a href="https://work.weixin.qq.com/api/doc/90000/90135/92136">获取群发消息发送结果</a>',
   `content` text COMMENT '消息内容',
-  `send_info` varchar(255) DEFAULT NULL COMMENT '发送情况  ps:显示样式  1）定时任务 发送时间:2020-12-25 10:00:00   2) 预计发送3190人，已成功发送0人  3）预计发送2个群，已成功发送0个群  ',
   `create_by` varchar(64) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   `update_by` varchar(64) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `del_flag` int(11) DEFAULT NULL,
+  `setting_time` varchar(255) DEFAULT NULL COMMENT '发送时间',
+  `expect_send` int(11) DEFAULT '0' COMMENT '预计发送消息数（客户对应多少人 客户群对应多个群）',
+  `actual_send` int(11) DEFAULT '0' COMMENT '实际发送消息数（客户对应多少人 客户群对应多个群）',
+  `timed_task` int(1) DEFAULT '0' COMMENT '是否定时任务 0 常规 1 定时发送',
   PRIMARY KEY (`message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='群发消息  微信消息表';
 
@@ -5886,29 +5845,6 @@ CREATE TABLE `we_customer_messgaeResult` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for we_customer_miniprogramMessage
--- ----------------------------
-DROP TABLE IF EXISTS `we_customer_miniprogramMessage`;
-CREATE TABLE `we_customer_miniprogramMessage` (
-  `miniprogram_message_id` bigint(64) NOT NULL,
-  `message_id` bigint(64) DEFAULT NULL COMMENT '微信消息表id',
-  `title` varchar(255) DEFAULT NULL COMMENT '小程序消息标题，最多64个字节',
-  `pic_media_id` varchar(100) DEFAULT NULL COMMENT '小程序消息封面的mediaid，封面图建议尺寸为520*416',
-  `appid` varchar(100) DEFAULT NULL COMMENT '小程序appid，必须是关联到企业的小程序应用',
-  `page` varchar(255) DEFAULT NULL COMMENT '小程序page路径',
-  `create_by` varchar(64) DEFAULT NULL,
-  `create_time` datetime DEFAULT NULL,
-  `update_by` varchar(64) DEFAULT NULL,
-  `update_time` datetime DEFAULT NULL,
-  `del_flag` int(2) DEFAULT '0',
-  PRIMARY KEY (`miniprogram_message_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='群发消息  小程序消息';
-
--- ----------------------------
--- Records of we_customer_miniprogramMessage
--- ----------------------------
-
--- ----------------------------
 -- Table structure for we_customer_seedMessage
 -- ----------------------------
 DROP TABLE IF EXISTS `we_customer_seedMessage`;
@@ -5937,26 +5873,6 @@ CREATE TABLE `we_customer_seedMessage` (
 
 -- ----------------------------
 -- Records of we_customer_seedMessage
--- ----------------------------
-
--- ----------------------------
--- Table structure for we_customer_textMessage
--- ----------------------------
-DROP TABLE IF EXISTS `we_customer_textMessage`;
-CREATE TABLE `we_customer_textMessage` (
-  `text_message_id` bigint(64) NOT NULL,
-  `message_id` bigint(64) DEFAULT NULL COMMENT '微信消息表id',
-  `content` text COMMENT '消息文本内容，最多4000个字节',
-  `create_by` varchar(64) DEFAULT NULL,
-  `create_time` datetime DEFAULT NULL,
-  `update_by` varchar(64) DEFAULT NULL,
-  `update_time` datetime DEFAULT NULL,
-  `del_flag` int(2) DEFAULT '0',
-  PRIMARY KEY (`text_message_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- ----------------------------
--- Records of we_customer_textMessage
 -- ----------------------------
 
 -- ----------------------------
@@ -6316,6 +6232,10 @@ CREATE TABLE `we_poster_subassembly` (
   `vertical_type` tinyint(255) DEFAULT NULL COMMENT '垂直对齐方式',
   `word_space` int(255) DEFAULT NULL COMMENT '字间距',
   `line_space` int(255) DEFAULT NULL COMMENT '行间距',
+  `alpha` int(255) DEFAULT NULL COMMENT '透明度[0,255]',
+  `rotate` int(255) DEFAULT NULL COMMENT '旋转角度（顺时针）',
+  `font_style` tinyint(255) DEFAULT NULL COMMENT '字体类型 0 通常 1 粗体 2 斜体',
+  `order` int(255) DEFAULT NULL COMMENT '排序 顺序',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -6400,7 +6320,7 @@ CREATE TABLE `we_sensitive` (
 	id BIGINT auto_increment NOT NULL COMMENT '主键',
 	strategy_name varchar(100) NOT NULL COMMENT '策略名称',
 	pattern_words TEXT NOT NULL COMMENT '匹配词',
-	audit_user_id BIGINT NOT NULL COMMENT '审计人id',
+	audit_user_id varchar(64) NOT NULL COMMENT '审计人id',
 	audit_user_name varchar(30) NOT NULL COMMENT '审计人',
 	alert_flag TINYINT DEFAULT 1 NOT NULL COMMENT '消息通知,1 开启 0 关闭',
 	del_flag TINYINT DEFAULT 0 NOT NULL COMMENT '删除标识，1 已删除 0 未删除',
@@ -6419,7 +6339,7 @@ CREATE TABLE `we_sensitive_audit_scope` (
 	id BIGINT auto_increment NOT NULL COMMENT '主键',
 	sensitive_id BIGINT NOT NULL COMMENT '敏感词表主键',
 	scope_type TINYINT NOT NULL COMMENT '审计范围类型, 1 组织机构 2 成员',
-	audit_scope_id BIGINT NOT NULL COMMENT '审计对象id',
+	audit_scope_id varchar(64) NOT NULL COMMENT '审计对象id',
 	audit_scope_name varchar(64) NOT NULL COMMENT '审计对象名称',
 	CONSTRAINT we_sensitive_audit_scope_pk PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='敏感词审计范围';
