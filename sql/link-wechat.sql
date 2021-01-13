@@ -6343,3 +6343,38 @@ CREATE TABLE `we_sensitive_audit_scope` (
 	audit_scope_name varchar(64) NOT NULL COMMENT '审计对象名称',
 	CONSTRAINT we_sensitive_audit_scope_pk PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='敏感词审计范围';
+
+-- ----------------------------
+-- Table structure for we_sensitive_act
+-- ----------------------------
+DROP TABLE IF EXISTS `we_sensitive_act`;
+CREATE TABLE `we_sensitive_act` (
+	id BIGINT auto_increment NOT NULL COMMENT '主键',
+	act_name varchar(100) NOT NULL COMMENT '敏感行为名称',
+	order_num INT DEFAULT 0 NOT NULL COMMENT '排序字段，倒序排序',
+	enable_flag TINYINT DEFAULT 1 NOT NULL COMMENT '记录敏感行为,1 开启 0 关闭',
+	del_flag TINYINT DEFAULT 0 NOT NULL COMMENT '删除标识，1 已删除 0 未删除',
+	create_by varchar(64) NULL COMMENT '创建人',
+	create_time DATETIME NULL COMMENT '创建时间',
+	update_by varchar(64) NULL COMMENT '更新人',
+	update_time DATETIME NULL COMMENT '更新时间',
+	CONSTRAINT we_sensitive_act_pk PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='敏感行为表';
+
+-- ----------------------------
+-- Table structure for we_sensitive_act_hit
+-- ----------------------------
+DROP TABLE IF EXISTS `we_sensitive_act_hit`;
+CREATE TABLE `we_sensitive_act_hit` (
+	id BIGINT auto_increment NOT NULL COMMENT '主键',
+	operator_id varchar(64) NOT NULL COMMENT '敏感行为操作人id',
+	operator varchar(64) NOT NULL COMMENT '敏感行为操作人',
+    operate_target_id varchar(64) NOT NULL COMMENT '敏感行为操作对象id',
+    operate_target varchar(64) NOT NULL COMMENT '敏感行为操作对象',
+	sensitive_act_id BIGINT NOT NULL COMMENT '敏感行为id',
+	sensitive_act varchar(100) NOT NULL COMMENT '敏感行为名称',
+	del_flag TINYINT DEFAULT 0 NOT NULL COMMENT '删除标识，1 已删除 0 未删除',
+    create_by varchar(64) NULL COMMENT '创建人',
+    create_time DATETIME NULL COMMENT '创建时间',
+	CONSTRAINT we_sensitive_act_hit_pk PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='敏感行为记录表';
