@@ -5632,8 +5632,11 @@ CREATE TABLE `we_allocate_customer` (
   `external_userid` varchar(32) NOT NULL COMMENT '被分配的客户id',
   `allocate_time` datetime NOT NULL COMMENT '分配时间',
   `handover_userid` varchar(32) DEFAULT NULL COMMENT '原跟进成员的userid',
+  `status` tinyint(4) DEFAULT '2' COMMENT '接替状态， 1-接替完毕 2-等待接替 3-客户拒绝 4-接替成员客户达到上限 5-无接替记录',
+  `takeover_time` datetime DEFAULT NULL COMMENT '接替客户的时间，如果是等待接替状态，则为未来的自动接替时间',
+  `fail_reason` varchar(50) DEFAULT NULL COMMENT '失败原因',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='离职分配的客户列表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='离职分配的客户列表'
 
 -- ----------------------------
 -- Records of we_allocate_customer
