@@ -6010,19 +6010,25 @@ CREATE TABLE `we_group` (
 -- ----------------------------
 -- Table structure for we_group_code
 -- ----------------------------
-DROP TABLE IF EXISTS `we_group_code`;
 CREATE TABLE `we_group_code` (
   `id` bigint(20) NOT NULL,
-  `activity_head_url` varchar(60) DEFAULT NULL COMMENT '活动头像',
-  `activity_name` varchar(60) DEFAULT NULL COMMENT '活动名称',
+  `code_url` varchar(255) NOT NULL COMMENT '二维码链接',
+  `activity_head_url` varchar(255) DEFAULT NULL COMMENT '活码头像链接',
+  `activity_name` varchar(60) DEFAULT NULL COMMENT '活码名称',
+  `activity_desc` varchar(60) DEFAULT NULL COMMENT '活码描述',
   `activity_scene` varchar(60) DEFAULT NULL COMMENT '场景',
   `guide` varchar(60) DEFAULT NULL COMMENT '引导语',
   `join_group_is_tip` tinyint(4) DEFAULT NULL COMMENT '进群是否提示:1:是;0:否;',
   `tip_msg` varchar(100) DEFAULT NULL COMMENT '进群提示语',
   `customer_server_qr_code` varchar(100) DEFAULT NULL COMMENT '客服二维码',
   `del_flag` tinyint(4) DEFAULT NULL COMMENT '0:正常;2:删除;',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='客户群活码';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='客户群活码'
 
 -- ----------------------------
 -- Records of we_group_code
@@ -6039,7 +6045,9 @@ CREATE TABLE `we_group_code_actual` (
   `effect_time` datetime DEFAULT NULL COMMENT '有效期',
   `scan_code_times_limit` int(11) DEFAULT NULL COMMENT '扫码次数限制',
   `group_code_id` bigint(20) DEFAULT NULL COMMENT '群活码id',
-  `scan_code_times` int(11) DEFAULT NULL COMMENT '扫码次数',
+  `chat_id` bigint(20) DEFAULT NULL COMMENT '群聊id',
+  `chat_group_name` bigint(20) DEFAULT NULL COMMENT '群聊名称',
+  `scan_code_times` int(11) DEFAULT 0 COMMENT '扫码次数',
   `del_flag` tinyint(4) DEFAULT NULL COMMENT '0:正常使用;2:删除;',
   `status` tinyint(4) DEFAULT '0' COMMENT '0:使用中',
   PRIMARY KEY (`id`)
