@@ -5632,8 +5632,11 @@ CREATE TABLE `we_allocate_customer` (
   `external_userid` varchar(32) NOT NULL COMMENT '被分配的客户id',
   `allocate_time` datetime NOT NULL COMMENT '分配时间',
   `handover_userid` varchar(32) DEFAULT NULL COMMENT '原跟进成员的userid',
+  `status` tinyint(4) DEFAULT '2' COMMENT '接替状态， 1-接替完毕 2-等待接替 3-客户拒绝 4-接替成员客户达到上限 5-无接替记录',
+  `takeover_time` datetime DEFAULT NULL COMMENT '接替客户的时间，如果是等待接替状态，则为未来的自动接替时间',
+  `fail_reason` varchar(50) DEFAULT NULL COMMENT '失败原因',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='离职分配的客户列表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='离职分配的客户列表'
 
 -- ----------------------------
 -- Records of we_allocate_customer
@@ -6397,3 +6400,82 @@ CREATE TABLE `we_sensitive_act_hit` (
     update_time DATETIME NULL COMMENT '更新时间',
 	CONSTRAINT we_sensitive_act_hit_pk PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='敏感行为记录表';
+
+-- ---
+-- Table 'we_task_fission'
+-- 任务宝
+-- ---
+
+DROP TABLE IF EXISTS `we_task_fission`;
+
+CREATE TABLE `we_task_fission` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `task_name` VARCHAR(100) NOT NULL DEFAULT 'NULL' COMMENT '任务活动名称',
+  `fiss_info` VARCHAR(255) NULL DEFAULT NULL COMMENT '裂变引导语',
+  `fiss_num` INTEGER NOT NULL DEFAULT 1 COMMENT '裂变客户数量',
+  `start_time` DATETIME NOT NULL COMMENT '活动开始时间',
+  `end_time` DATETIME NOT NULL COMMENT '活动结束时间',
+  `customer_tag_id` MEDIUMTEXT NOT NULL COMMENT '客户标签id列表，当为全部时保存为all',
+  `customer_tag` MEDIUMTEXT NULL COMMENT '客户标签名称列表，为all是可为空',
+  `posters_path` VARCHAR(300) NOT NULL DEFAULT 'NULL' COMMENT '裂变海报路径',
+  `fiss_staff_id` VARCHAR(64) NOT NULL DEFAULT 'NULL' COMMENT '任务裂变目标员工',
+  `fiss_staff` VARCHAR(100) NOT NULL DEFAULT 'NULL' COMMENT '任务裂变目标员工姓名',
+  `fiss_staff_qrcode` VARCHAR(500) NOT NULL DEFAULT 'NULL' COMMENT '任务裂变目标员工二维码',
+  `reward_url` VARCHAR(500) NOT NULL DEFAULT 'NULL' COMMENT '兑奖链接',
+  `reward_image_path` VARCHAR(500) NOT NULL DEFAULT 'NULL' COMMENT '兑奖链接图片',
+  `reward_rule` MEDIUMTEXT NULL COMMENT '兑奖规则',
+  `fiss_status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '任务裂变活动状态，1 进行中 2 已结束',
+  `create_by` VARCHAR(100) NULL DEFAULT NULL COMMENT '创建人',
+  `create_time` DATETIME NULL COMMENT '创建时间',
+  `update_by` VARCHAR(100) NULL DEFAULT NULL COMMENT '更新人',
+  `update_time` DATETIME NULL COMMENT '更新时间',
+  CONSTRAINT we_task_fission_pk PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '任务宝主表';
+
+-- ---
+-- Table 'we_task_fission_record'
+-- 裂变任务完成记录
+-- ---
+
+DROP TABLE IF EXISTS `we_task_fission_record`;
+
+CREATE TABLE `we_task_fission_record` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `task_fission_id` BIGINT NOT NULL COMMENT '任务裂变表id',
+  `staff_id` VARCHAR(64) NOT NULL DEFAULT 'NULL' COMMENT '发成员工id',
+  `customer_id` VARCHAR(64) NOT NULL DEFAULT 'NULL' COMMENT '裂变客户id',
+  `customer_name` VARCHAR(100) NULL DEFAULT NULL COMMENT '客户姓名',
+  CONSTRAINT we_task_fission_record_pk PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '裂变任务完成记录';
+
+-- ---
+-- Table 'we_task_fission_staff'
+-- 裂变任务员工列表
+-- ---
+
+DROP TABLE IF EXISTS `we_task_fission_staff`;
+CREATE TABLE `we_task_fission_staff` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `task_fission_id` BIGINT NOT NULL COMMENT '任务裂变表id',
+  `staff_type` TINYINT(1) NOT NULL COMMENT '员工或机构，1 组织机构 2 成员 3 全部',
+  `staff_id` VARCHAR(64) NULL DEFAULT NULL COMMENT '员工或组织机构id,为全部时为空',
+  `staff_name` VARCHAR(100) NULL DEFAULT NULL COMMENT '员工或组织机构姓名，类型为全部时，为空',
+  CONSTRAINT we_task_fission_staff_pk PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '裂变任务员工列表';
+
+-- ---
+-- Table 'we_task_fission_reward'
+-- 任务裂变奖励
+-- ---
+
+DROP TABLE IF EXISTS `we_task_fission_reward`;
+CREATE TABLE `we_task_fission_reward` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '活动奖励主键',
+  `task_fission_id` BIGINT NOT NULL COMMENT '任务裂变id',
+  `reward_code` VARCHAR(100) NOT NULL DEFAULT 'NULL' COMMENT '兑奖码',
+  `reward_code_status` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '兑奖码状态，0 未使用 1 已使用',
+  `reward_user_id` VARCHAR(64) NULL DEFAULT NULL COMMENT '兑奖用户id',
+  `reward_user` VARCHAR(100) NULL DEFAULT NULL COMMENT '兑奖人姓名',
+  `create_time` DATETIME NULL COMMENT '兑奖时间',
+  CONSTRAINT we_task_fission_reward_pk PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '任务裂变奖励';
