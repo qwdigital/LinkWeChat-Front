@@ -4115,7 +4115,7 @@ INSERT INTO `sys_menu` VALUES ('2052', '引流码', '0', '20', 'drainageCode', n
 INSERT INTO `sys_menu` VALUES ('2053', '员工活码', '2052', '10', 'staff', 'drainageCode/staff/list', '1', 'C', '0', '0', 'drainageCode:staff:list', '#', 'admin', '2020-11-08 12:13:21', 'admin', '2020-11-30 12:51:32', '');
 INSERT INTO `sys_menu` VALUES ('2054', '新建员工活码', '2052', '20', 'staffAdd', 'drainageCode/staff/add', '1', 'C', '1', '0', 'drainageCode:staff:add', '#', 'admin', '2020-11-08 12:14:55', '', null, '');
 INSERT INTO `sys_menu` VALUES ('2055', '员工活码详情', '2052', '30', 'staffDetail', 'drainageCode/staff/detail', '1', 'C', '1', '0', 'drainageCode:staff:detail', '#', 'admin', '2020-11-08 12:19:19', 'admin', '2020-11-08 12:20:59', '');
-INSERT INTO `sys_menu` VALUES ('2056', '客户群活码', '2052', '40', 'customerGroup', 'drainageCode/group/list', '1', 'C', '1', '1', 'drainageCode:group:list', '#', 'admin', '2020-11-08 12:26:15', 'admin', '2020-12-08 17:59:29', '');
+INSERT INTO `sys_menu` VALUES ('2056', '客户群活码', '2052', '40', 'customerGroup', 'drainageCode/group/list', '1', 'C', '0', '0', 'drainageCode:group:list', '#', 'admin', '2020-11-08 12:26:15', 'admin', '2020-12-08 17:59:29', '');
 INSERT INTO `sys_menu` VALUES ('2057', '新增客户群活码', '2052', '50', 'groupAdd', 'drainageCode/group/add', '1', 'C', '1', '0', 'drainageCode:group:add', '#', 'admin', '2020-11-08 12:30:00', 'admin', '2020-11-30 12:51:56', '');
 INSERT INTO `sys_menu` VALUES ('2058', '客户群活码信息', '2052', '60', 'customerGroupDetail', 'drainageCode/group/detail', '1', 'C', '1', '0', 'drainageCode:group:detail', '#', 'admin', '2020-11-08 12:31:41', 'admin', '2020-11-11 15:06:00', '');
 INSERT INTO `sys_menu` VALUES ('2059', '客户群信息', '2052', '70', 'groupBaseInfo', 'drainageCode/group/baseInfo', '1', 'C', '1', '0', 'drainageCode:group:baseInfo', '#', 'admin', '2020-11-08 12:38:51', '', null, '');
@@ -6013,17 +6013,18 @@ CREATE TABLE `we_group` (
 -- ----------------------------
 -- Table structure for we_group_code
 -- ----------------------------
+DROP TABLE IF EXISTS `we_group_code`;
 CREATE TABLE `we_group_code` (
   `id` bigint(20) NOT NULL,
-  `code_url` varchar(255) NOT NULL COMMENT '二维码链接',
-  `activity_head_url` varchar(255) DEFAULT NULL COMMENT '活码头像链接',
+  `code_url` varchar(150) NOT NULL COMMENT '二维码链接',
+  `activity_head_url` varchar(150) DEFAULT NULL COMMENT '活码头像链接',
   `activity_name` varchar(60) DEFAULT NULL COMMENT '活码名称',
   `activity_desc` varchar(60) DEFAULT NULL COMMENT '活码描述',
   `activity_scene` varchar(60) DEFAULT NULL COMMENT '场景',
   `guide` varchar(60) DEFAULT NULL COMMENT '引导语',
   `join_group_is_tip` tinyint(4) DEFAULT NULL COMMENT '进群是否提示:1:是;0:否;',
   `tip_msg` varchar(100) DEFAULT NULL COMMENT '进群提示语',
-  `customer_server_qr_code` varchar(100) DEFAULT NULL COMMENT '客服二维码',
+  `customer_server_qr_code` varchar(150) DEFAULT NULL COMMENT '客服二维码',
   `del_flag` tinyint(4) DEFAULT NULL COMMENT '0:正常;2:删除;',
   `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
@@ -6031,7 +6032,7 @@ CREATE TABLE `we_group_code` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='客户群活码'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='客户群活码';
 
 -- ----------------------------
 -- Records of we_group_code
@@ -6043,13 +6044,13 @@ CREATE TABLE `we_group_code` (
 DROP TABLE IF EXISTS `we_group_code_actual`;
 CREATE TABLE `we_group_code_actual` (
   `id` bigint(20) NOT NULL,
-  `actual_group_qr_code` varchar(100) DEFAULT NULL COMMENT '实际群码',
+  `actual_group_qr_code` varchar(150) DEFAULT NULL COMMENT '实际群码',
   `group_name` varchar(100) DEFAULT NULL COMMENT '群名称',
   `effect_time` datetime DEFAULT NULL COMMENT '有效期',
   `scan_code_times_limit` int(11) DEFAULT NULL COMMENT '扫码次数限制',
   `group_code_id` bigint(20) DEFAULT NULL COMMENT '群活码id',
-  `chat_id` bigint(20) DEFAULT NULL COMMENT '群聊id',
-  `chat_group_name` bigint(20) DEFAULT NULL COMMENT '群聊名称',
+  `chat_id` varchar(32) DEFAULT NULL COMMENT '群聊id',
+  `chat_group_name` varchar(20) DEFAULT NULL COMMENT '群聊名称',
   `scan_code_times` int(11) DEFAULT 0 COMMENT '扫码次数',
   `del_flag` tinyint(4) DEFAULT NULL COMMENT '0:正常使用;2:删除;',
   `status` tinyint(4) DEFAULT '0' COMMENT '0:使用中',
