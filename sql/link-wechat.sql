@@ -6437,7 +6437,7 @@ CREATE TABLE `we_task_fission` (
 
 -- ---
 -- Table 'we_task_fission_record'
--- 裂变任务完成记录
+-- 裂变任务记录
 -- ---
 
 DROP TABLE IF EXISTS `we_task_fission_record`;
@@ -6445,10 +6445,26 @@ DROP TABLE IF EXISTS `we_task_fission_record`;
 CREATE TABLE `we_task_fission_record` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
   `task_fission_id` BIGINT NOT NULL COMMENT '任务裂变表id',
-  `staff_id` VARCHAR(64) NOT NULL DEFAULT 'NULL' COMMENT '发成员工id',
-  `customer_id` VARCHAR(64) NOT NULL DEFAULT 'NULL' COMMENT '裂变客户id',
-  `customer_name` VARCHAR(100) NULL DEFAULT NULL COMMENT '客户姓名',
+  `customer_id` VARCHAR(64) NOT NULL DEFAULT 'NULL' COMMENT '裂变任务客户id',
+  `customer_name` VARCHAR(100) NULL DEFAULT NULL COMMENT '裂变任务客户姓名',
+  `fiss_num` INTEGER NOT NULL DEFAULT 0 COMMENT '裂变客户数量',
   CONSTRAINT we_task_fission_record_pk PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '裂变任务记录';
+
+-- ---
+-- Table 'we_task_fission_record'
+-- 裂变任务完成记录
+-- ---
+
+DROP TABLE IF EXISTS `we_task_fission_complete_record`;
+
+CREATE TABLE `we_task_fission_complete_record` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `task_fission_id` BIGINT NOT NULL COMMENT '任务裂变表id',
+  `fission_record_id` BIGINT NOT NULL COMMENT '任务裂变记录表id',
+  `customer_id` VARCHAR(64) NOT NULL DEFAULT 'NULL' COMMENT '裂变客户id',
+  `customer_name` VARCHAR(100) NULL DEFAULT NULL COMMENT '裂变客户姓名',
+  CONSTRAINT we_task_fission_complete_record_pk PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '裂变任务完成记录';
 
 -- ---
