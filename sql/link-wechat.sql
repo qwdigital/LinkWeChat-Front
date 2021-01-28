@@ -6415,17 +6415,19 @@ CREATE TABLE `we_task_fission` (
   `fiss_info` VARCHAR(255) NULL DEFAULT NULL COMMENT '裂变引导语',
   `fiss_num` INTEGER NOT NULL DEFAULT 1 COMMENT '裂变客户数量',
   `start_time` DATETIME NOT NULL COMMENT '活动开始时间',
-  `end_time` DATETIME NOT NULL COMMENT '活动结束时间',
+  `over_time` DATETIME NOT NULL COMMENT '活动结束时间',
   `customer_tag_id` MEDIUMTEXT NOT NULL COMMENT '客户标签id列表，当为全部时保存为all',
   `customer_tag` MEDIUMTEXT NULL COMMENT '客户标签名称列表，为all是可为空',
-  `posters_path` VARCHAR(300) NOT NULL DEFAULT 'NULL' COMMENT '裂变海报路径',
+  `posters_id` BIGINT NULL DEFAULT NULL COMMENT '海报id',
+  `posters_url` VARCHAR(300) NOT NULL DEFAULT 'NULL' COMMENT '裂变海报路径',
   `fiss_staff_id` VARCHAR(64) NOT NULL DEFAULT 'NULL' COMMENT '任务裂变目标员工',
   `fiss_staff` VARCHAR(100) NOT NULL DEFAULT 'NULL' COMMENT '任务裂变目标员工姓名',
   `fiss_staff_qrcode` VARCHAR(500) NOT NULL DEFAULT 'NULL' COMMENT '任务裂变目标员工二维码',
   `reward_url` VARCHAR(500) NOT NULL DEFAULT 'NULL' COMMENT '兑奖链接',
-  `reward_image_path` VARCHAR(500) NOT NULL DEFAULT 'NULL' COMMENT '兑奖链接图片',
+  `reward_image_url` VARCHAR(500) NOT NULL DEFAULT 'NULL' COMMENT '兑奖链接图片',
   `reward_rule` MEDIUMTEXT NULL COMMENT '兑奖规则',
   `fiss_status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '任务裂变活动状态，1 进行中 2 已结束',
+  `welcome_msg` MEDIUMTEXT NULL COMMENT '新客欢迎语',
   `create_by` VARCHAR(100) NULL DEFAULT NULL COMMENT '创建人',
   `create_time` DATETIME NULL COMMENT '创建时间',
   `update_by` VARCHAR(100) NULL DEFAULT NULL COMMENT '更新人',
@@ -6435,7 +6437,7 @@ CREATE TABLE `we_task_fission` (
 
 -- ---
 -- Table 'we_task_fission_record'
--- 裂变任务完成记录
+-- 裂变任务记录
 -- ---
 
 DROP TABLE IF EXISTS `we_task_fission_record`;
@@ -6443,10 +6445,27 @@ DROP TABLE IF EXISTS `we_task_fission_record`;
 CREATE TABLE `we_task_fission_record` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
   `task_fission_id` BIGINT NOT NULL COMMENT '任务裂变表id',
-  `staff_id` VARCHAR(64) NOT NULL DEFAULT 'NULL' COMMENT '发成员工id',
-  `customer_id` VARCHAR(64) NOT NULL DEFAULT 'NULL' COMMENT '裂变客户id',
-  `customer_name` VARCHAR(100) NULL DEFAULT NULL COMMENT '客户姓名',
+  `customer_id` VARCHAR(64) NOT NULL DEFAULT 'NULL' COMMENT '裂变任务客户id',
+  `customer_name` VARCHAR(100) NULL DEFAULT NULL COMMENT '裂变任务客户姓名',
+  `fiss_num` INTEGER NOT NULL DEFAULT 0 COMMENT '裂变客户数量',
+  `config_id` VARCHAR(64) NOT NULL DEFAULT 'NULL' COMMENT '生成二维码配置id',
   CONSTRAINT we_task_fission_record_pk PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '裂变任务记录';
+
+-- ---
+-- Table 'we_task_fission_record'
+-- 裂变任务完成记录
+-- ---
+
+DROP TABLE IF EXISTS `we_task_fission_complete_record`;
+
+CREATE TABLE `we_task_fission_complete_record` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `task_fission_id` BIGINT NOT NULL COMMENT '任务裂变表id',
+  `fission_record_id` BIGINT NOT NULL COMMENT '任务裂变记录表id',
+  `customer_id` VARCHAR(64) NOT NULL DEFAULT 'NULL' COMMENT '裂变客户id',
+  `customer_name` VARCHAR(100) NULL DEFAULT NULL COMMENT '裂变客户姓名',
+  CONSTRAINT we_task_fission_complete_record_pk PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '裂变任务完成记录';
 
 -- ---
