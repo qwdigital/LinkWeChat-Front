@@ -6448,6 +6448,7 @@ CREATE TABLE `we_task_fission_record` (
   `customer_id` VARCHAR(64) NOT NULL DEFAULT 'NULL' COMMENT '裂变任务客户id',
   `customer_name` VARCHAR(100) NULL DEFAULT NULL COMMENT '裂变任务客户姓名',
   `fiss_num` INTEGER NOT NULL DEFAULT 0 COMMENT '裂变客户数量',
+  `config_id` VARCHAR(64) NOT NULL DEFAULT 'NULL' COMMENT '生成二维码配置id',
   CONSTRAINT we_task_fission_record_pk PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '裂变任务记录';
 
