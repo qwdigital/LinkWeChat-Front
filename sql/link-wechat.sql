@@ -6379,8 +6379,7 @@ CREATE TABLE `we_sensitive_act` (
 INSERT INTO we_sensitive_act (act_name,order_num,enable_flag,del_flag,create_by,create_time,update_by,update_time) VALUES
 	 ('发名片',1,1,0,'admin','2021-01-13 11:11:18.0','admin','2021-01-13 11:11:18.0'),
 	 ('发红包',2,1,0,'admin','2021-01-13 11:11:29.0','admin','2021-01-13 11:11:29.0'),
-	 ('删除好友',3,1,0,'admin','2021-01-13 11:10:54.0','admin','2021-01-13 11:10:54.0'),
-	 ('拉黑好友',4,1,0,'admin','2021-01-13 11:11:51.0','admin','2021-01-13 11:11:51.0');
+	 ('删除/拉黑好友',3,1,0,'admin','2021-01-13 11:10:54.0','admin','2021-01-13 11:10:54.0');
 
 -- ----------------------------
 -- Table structure for we_sensitive_act_hit
