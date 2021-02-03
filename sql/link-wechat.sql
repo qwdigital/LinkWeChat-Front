@@ -6422,7 +6422,7 @@ CREATE TABLE `we_task_fission` (
   `posters_url` VARCHAR(300) NOT NULL DEFAULT 'NULL' COMMENT '裂变海报路径',
   `fiss_staff_id` VARCHAR(64) NOT NULL DEFAULT 'NULL' COMMENT '任务裂变目标员工',
   `fiss_staff` VARCHAR(100) NOT NULL DEFAULT 'NULL' COMMENT '任务裂变目标员工姓名',
-  `fiss_staff_qrcode` VARCHAR(500) NOT NULL DEFAULT 'NULL' COMMENT '任务裂变目标员工二维码',
+  `fiss_qrcode` VARCHAR(500) NOT NULL DEFAULT 'NULL' COMMENT '任务裂变目标二维码',
   `reward_url` VARCHAR(500) NOT NULL DEFAULT 'NULL' COMMENT '兑奖链接',
   `reward_image_url` VARCHAR(500) NOT NULL DEFAULT 'NULL' COMMENT '兑奖链接图片',
   `reward_rule` MEDIUMTEXT NULL COMMENT '兑奖规则',
