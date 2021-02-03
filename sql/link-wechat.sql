@@ -6410,6 +6410,7 @@ DROP TABLE IF EXISTS `we_task_fission`;
 
 CREATE TABLE `we_task_fission` (
   `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `fission_type` INTEGER NOT NULL DEFAULT 1 COMMENT '活动类型，1 任务宝 2 群裂变',
   `task_name` VARCHAR(100) NOT NULL DEFAULT 'NULL' COMMENT '任务活动名称',
   `fiss_info` VARCHAR(255) NULL DEFAULT NULL COMMENT '裂变引导语',
   `fiss_num` INTEGER NOT NULL DEFAULT 1 COMMENT '裂变客户数量',
@@ -6432,7 +6433,7 @@ CREATE TABLE `we_task_fission` (
   `update_by` VARCHAR(100) NULL DEFAULT NULL COMMENT '更新人',
   `update_time` DATETIME NULL COMMENT '更新时间',
   CONSTRAINT we_task_fission_pk PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '任务宝主表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT '任务宝表';
 
 -- ---
 -- Table 'we_task_fission_record'
