@@ -11,7 +11,7 @@
  Target Server Version : 50718
  File Encoding         : 65001
 
- Date: 31/10/2021 09:52:22
+ Date: 04/11/2021 18:03:23
 */
 
 SET NAMES utf8mb4;
@@ -557,7 +557,7 @@ CREATE TABLE `sys_job_log` (
   `exception_info` varchar(2000) DEFAULT '' COMMENT '异常信息',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`job_log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=288075 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='定时任务调度日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=291556 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='定时任务调度日志表';
 
 -- ----------------------------
 -- Records of sys_job_log
@@ -580,7 +580,7 @@ CREATE TABLE `sys_logininfor` (
   `msg` varchar(255) DEFAULT '' COMMENT '提示消息',
   `login_time` datetime DEFAULT NULL COMMENT '访问时间',
   PRIMARY KEY (`info_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7411 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统访问记录';
+) ENGINE=InnoDB AUTO_INCREMENT=8272 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统访问记录';
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -611,7 +611,7 @@ CREATE TABLE `sys_menu` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2188 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='菜单权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=2189 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='菜单权限表';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -919,7 +919,7 @@ CREATE TABLE `sys_oper_log` (
   `error_msg` varchar(2000) DEFAULT '' COMMENT '错误消息',
   `oper_time` datetime DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`oper_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=70592 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='操作日志记录';
+) ENGINE=InnoDB AUTO_INCREMENT=78978 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='操作日志记录';
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1827,7 +1827,7 @@ CREATE TABLE `we_chat_contact_msg` (
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   `del_flg` tinyint(4) NOT NULL DEFAULT '0' COMMENT '删除标识 0正常 1 删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=479 DEFAULT CHARSET=utf8 COMMENT='会话消息';
+) ENGINE=InnoDB AUTO_INCREMENT=531 DEFAULT CHARSET=utf8 COMMENT='会话消息';
 
 -- ----------------------------
 -- Records of we_chat_contact_msg
@@ -1853,7 +1853,7 @@ CREATE TABLE `we_chat_contact_sensitive_msg` (
   `from_id` varchar(32) NOT NULL COMMENT '发送人id',
   `msg_time` datetime NOT NULL COMMENT '发送时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of we_chat_contact_sensitive_msg
@@ -2036,7 +2036,7 @@ CREATE TABLE `we_customer` (
   `name` varchar(32) DEFAULT NULL COMMENT '外部联系人名称',
   `avatar` varchar(200) DEFAULT NULL COMMENT '外部联系人头像',
   `type` tinyint(4) DEFAULT NULL COMMENT '外部联系人的类型，1表示该外部联系人是微信用户，2表示该外部联系人是企业微信用户',
-  `gender` tinyint(4) NOT NULL DEFAULT '0' COMMENT '外部联系人性别 0-未知 1-男性 2-女性',
+  `gender` tinyint(4) DEFAULT '0' COMMENT '外部联系人性别 0-未知 1-男性 2-女性',
   `unionid` varchar(32) DEFAULT NULL COMMENT '外部联系人在微信开放平台的唯一身份标识,通过此字段企业可将外部联系人与公众号/小程序用户关联起来。',
   `birthday` datetime DEFAULT NULL COMMENT '生日',
   `corp_name` varchar(100) DEFAULT NULL COMMENT '客户企业简称',
@@ -2050,7 +2050,7 @@ CREATE TABLE `we_customer` (
   `del_flag` tinyint(4) DEFAULT '0' COMMENT '删除标识 0 有效 1 删除',
   `first_user_id` varchar(32) NOT NULL COMMENT '添加人id',
   `first_add_time` datetime DEFAULT NULL COMMENT '添加时间',
-  `track_state` tinyint(1) DEFAULT NULL COMMENT '1:跟踪中;2:待跟进;3:已拒绝;4:已成交;',
+  `track_state` tinyint(1) DEFAULT NULL COMMENT '1:待跟进;2:跟进中;3:已成交;4:无意向;5:已流失',
   `track_content` varchar(900) DEFAULT NULL COMMENT '跟进内容',
   `track_time` datetime DEFAULT NULL COMMENT '跟进时间',
   `phone` varchar(20) DEFAULT NULL COMMENT '手机号',
@@ -2058,6 +2058,8 @@ CREATE TABLE `we_customer` (
   `qq` varchar(50) DEFAULT NULL COMMENT 'QQ号',
   `other_descr` varchar(1000) DEFAULT NULL COMMENT '其他描述',
   `address` varchar(300) DEFAULT NULL COMMENT '地址',
+  `add_method` tinyint(1) DEFAULT NULL,
+  `customer_type` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`external_userid`,`first_user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='企业微信客户表';
 
@@ -2090,7 +2092,7 @@ CREATE TABLE `we_customer_message` (
   `actual_send` int(11) DEFAULT '0' COMMENT '实际发送消息数（客户对应多少人 客户群对应多个群）',
   `timed_task` int(1) DEFAULT '0' COMMENT '是否定时任务 0 常规 1 定时发送',
   PRIMARY KEY (`message_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1454450985408794625 DEFAULT CHARSET=utf8mb4 COMMENT='群发消息  微信消息表';
+) ENGINE=InnoDB AUTO_INCREMENT=1456186544611266561 DEFAULT CHARSET=utf8mb4 COMMENT='群发消息  微信消息表';
 
 -- ----------------------------
 -- Records of we_customer_message
@@ -2144,7 +2146,7 @@ CREATE TABLE `we_customer_messageTimeTask` (
   `exce_msg` varchar(255) DEFAULT NULL COMMENT '群发异常消息',
   `del_flag` int(2) DEFAULT '0' COMMENT '0:正常;1:删除;',
   PRIMARY KEY (`task_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=216 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=231 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of we_customer_messageTimeTask
@@ -2381,7 +2383,7 @@ CREATE TABLE `we_flower_customer_tag_rel` (
   `external_userid` varchar(32) NOT NULL COMMENT '客户id',
   `tag_id` varchar(32) NOT NULL COMMENT '标签id',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `del_flag` tinyint(255) DEFAULT NULL COMMENT '删除标识 0 有效 1 删除',
+  `del_flag` tinyint(4) DEFAULT '0' COMMENT '删除标识 0 有效 1 删除',
   PRIMARY KEY (`user_id`,`external_userid`,`tag_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='客户标签关系表';
 
@@ -2500,7 +2502,7 @@ CREATE TABLE `we_group_member` (
   `del_flag` tinyint(4) NOT NULL DEFAULT '0' COMMENT '删除标识 0 正常 1 删除',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uindex_chatid_userid` (`chat_id`,`user_id`,`del_flag`)
-) ENGINE=InnoDB AUTO_INCREMENT=1430003699749228127 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='企业微信群成员';
+) ENGINE=InnoDB AUTO_INCREMENT=1430003699749229163 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='企业微信群成员';
 
 -- ----------------------------
 -- Records of we_group_member
@@ -2632,7 +2634,7 @@ DROP TABLE IF EXISTS `we_group_message_template`;
 CREATE TABLE `we_group_message_template` (
   `id` bigint(64) NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `chat_type` tinyint(4) NOT NULL DEFAULT '1' COMMENT '群发任务的类，1：表示发送给客户，2：表示发送给客户群',
-  `context` varchar(4000) DEFAULT NULL COMMENT '群发内容',
+  `content` varchar(4000) DEFAULT NULL COMMENT '群发内容',
   `send_time` datetime DEFAULT NULL COMMENT '发送时间',
   `filter_condition` varchar(2000) DEFAULT NULL COMMENT '条件筛选',
   `is_task` tinyint(4) DEFAULT '0' COMMENT '是否定时任务 0 立即发送 1 定时发送',
@@ -2643,7 +2645,7 @@ CREATE TABLE `we_group_message_template` (
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   `del_flag` tinyint(4) NOT NULL DEFAULT '0' COMMENT '删除标识 0 有效 1删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COMMENT='群发消息模板';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COMMENT='群发消息模板';
 
 -- ----------------------------
 -- Records of we_group_message_template
@@ -2890,22 +2892,34 @@ DROP TABLE IF EXISTS `we_msg_tlp`;
 CREATE TABLE `we_msg_tlp` (
   `id` bigint(20) NOT NULL,
   `welcome_msg` varchar(255) DEFAULT NULL COMMENT '欢迎语',
-  `pic_url` text COMMENT '图片url,多个图片url使用逗号隔开',
-  `applet` text COMMENT '小程序',
-  `image_text` text COMMENT '图文',
+  `media_id` bigint(20) DEFAULT NULL COMMENT '素材的id',
   `del_flag` tinyint(4) DEFAULT '0' COMMENT '0:正常;2:删除;',
-  `user_ids` text COMMENT '使用员工名称，用逗号隔开',
-  `user_names` text COMMENT '使用员工名称，逗号隔开',
-  `welcome_msg_tpl_type` tinyint(4) DEFAULT NULL COMMENT '欢迎语模板类型:1:活码欢迎语;2:员工欢迎语;3:入群欢迎语',
-  `create_by` varchar(64) DEFAULT NULL COMMENT '创建人',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) DEFAULT NULL COMMENT '更新人',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `welcome_msg_tpl_type` tinyint(4) DEFAULT NULL COMMENT '欢迎语模板类型:1:员工欢迎语;2:部门员工欢迎语;3:客户群欢迎语',
+  `create_by` varchar(60) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='欢迎语模板表';
 
 -- ----------------------------
 -- Records of we_msg_tlp
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for we_msg_tlp_scope
+-- ----------------------------
+DROP TABLE IF EXISTS `we_msg_tlp_scope`;
+CREATE TABLE `we_msg_tlp_scope` (
+  `id` bigint(20) NOT NULL,
+  `msg_tlp_id` bigint(20) DEFAULT NULL COMMENT '模板id',
+  `use_user_id` bigint(20) DEFAULT NULL COMMENT '使用人id',
+  `del_flag` tinyint(4) DEFAULT '0' COMMENT '0:正常;2:删除;',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='模板使用人员范围';
+
+-- ----------------------------
+-- Records of we_msg_tlp_scope
 -- ----------------------------
 BEGIN;
 COMMIT;
@@ -3095,7 +3109,7 @@ CREATE TABLE `we_sensitive` (
   `update_by` varchar(64) DEFAULT NULL COMMENT '更新人',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='敏感词设置表';
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='敏感词设置表';
 
 -- ----------------------------
 -- Records of we_sensitive
@@ -3163,7 +3177,7 @@ CREATE TABLE `we_sensitive_audit_scope` (
   `audit_scope_id` varchar(64) NOT NULL COMMENT '审计对象id',
   `audit_scope_name` varchar(64) NOT NULL COMMENT '审计对象名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='敏感词审计范围';
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='敏感词审计范围';
 
 -- ----------------------------
 -- Records of we_sensitive_audit_scope
@@ -3229,7 +3243,7 @@ CREATE TABLE `we_task_fission` (
   `fiss_num` int(11) NOT NULL DEFAULT '1' COMMENT '裂变客户数量',
   `start_time` datetime NOT NULL COMMENT '活动开始时间',
   `over_time` datetime NOT NULL COMMENT '活动结束时间',
-  `customer_tag_id` mediumtext NOT NULL COMMENT '客户标签id列表，当为全部时保存为all',
+  `customer_tag_id` mediumtext COMMENT '客户标签id列表，当为全部时保存为all',
   `customer_tag` mediumtext COMMENT '客户标签名称列表，为all是可为空',
   `posters_id` bigint(20) DEFAULT NULL COMMENT '海报id',
   `posters_url` varchar(300) NOT NULL DEFAULT '' COMMENT '裂变海报路径',
@@ -3246,7 +3260,7 @@ CREATE TABLE `we_task_fission` (
   `update_by` varchar(100) DEFAULT NULL COMMENT '更新人',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=147 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='任务宝表';
+) ENGINE=InnoDB AUTO_INCREMENT=175 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='任务宝表';
 
 -- ----------------------------
 -- Records of we_task_fission
@@ -3268,7 +3282,7 @@ CREATE TABLE `we_task_fission_complete_record` (
   `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '状态 0 有效 1无效',
   `customer_avatar` varchar(256) DEFAULT NULL COMMENT '客户头像',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='裂变任务完成记录';
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='裂变任务完成记录';
 
 -- ----------------------------
 -- Records of we_task_fission_complete_record
@@ -3291,7 +3305,7 @@ CREATE TABLE `we_task_fission_record` (
   `complete_time` datetime DEFAULT NULL COMMENT '完成时间',
   `poster` varchar(500) DEFAULT NULL COMMENT '海报链接',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=193 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='裂变任务记录';
+) ENGINE=InnoDB AUTO_INCREMENT=276 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='裂变任务记录';
 
 -- ----------------------------
 -- Records of we_task_fission_record
@@ -3334,7 +3348,7 @@ CREATE TABLE `we_task_fission_staff` (
   `staff_id` varchar(64) DEFAULT NULL COMMENT '员工或组织机构id,为全部时为空',
   `staff_name` varchar(100) DEFAULT NULL COMMENT '员工或组织机构姓名，类型为全部时，为空',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=176 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='裂变任务员工列表';
+) ENGINE=InnoDB AUTO_INCREMENT=212 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='裂变任务员工列表';
 
 -- ----------------------------
 -- Records of we_task_fission_staff
