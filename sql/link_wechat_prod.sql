@@ -2640,6 +2640,7 @@ CREATE TABLE `we_group_message_template` (
   `filter_condition` varchar(2000) DEFAULT NULL COMMENT '条件筛选',
   `is_task` tinyint(4) DEFAULT '0' COMMENT '是否定时任务 0 立即发送 1 定时发送',
   `status` tinyint(4) DEFAULT '0' COMMENT '是否执行 -1：失败  0：未执行 1：完成 2：取消',
+  `refresh_time` datetime DEFAULT NULL COMMENT '同步时间',
   `create_by` varchar(64) NOT NULL DEFAULT '0' COMMENT '创建人',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT '0' COMMENT '修改人',
