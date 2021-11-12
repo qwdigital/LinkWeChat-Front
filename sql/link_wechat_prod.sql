@@ -3035,7 +3035,6 @@ CREATE TABLE `we_pres_tag_group` (
   `cus_begin_time` datetime DEFAULT NULL COMMENT '目标客户被添加起始时间',
   `cus_end_time` datetime DEFAULT NULL COMMENT '目标客户被添加结束时间',
   `welcome_msg` varchar(255) NOT NULL COMMENT '加群引导语',
-  `msgid` varchar(64) DEFAULT NULL COMMENT '企业群发消息的id',
   `del_flag` tinyint(4) DEFAULT '0' COMMENT '逻辑删除字段， 0:未删除 1:已删除',
   PRIMARY KEY (`task_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='老客户标签建群';
@@ -3053,8 +3052,12 @@ DROP TABLE IF EXISTS `we_pres_tag_group_scope`;
 CREATE TABLE `we_pres_tag_group_scope` (
   `task_id` bigint(20) NOT NULL COMMENT '老客户标签建群任务id',
   `we_user_id` varchar(64) NOT NULL COMMENT '员工id',
-  `is_done` smallint(1) NOT NULL DEFAULT '0' COMMENT '是否已处理'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='老客标签建群使用范围表';
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `del_flag` tinyint(4) DEFAULT '0' COMMENT '删除标识 0 有效 1 删除'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='老客标签建群使用范围表'
 
 -- ----------------------------
 -- Records of we_pres_tag_group_scope
@@ -3068,8 +3071,15 @@ COMMIT;
 DROP TABLE IF EXISTS `we_pres_tag_group_stat`;
 CREATE TABLE `we_pres_tag_group_stat` (
   `task_id` bigint(20) NOT NULL COMMENT '老客标签建群任务id',
-  `external_userid` varchar(255) NOT NULL COMMENT '客户id'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='老客标签建群客户统计表';
+  `user_id` varchar(32) DEFAULT NULL COMMENT '跟进者id',
+  `external_userid` varchar(255) NOT NULL COMMENT '客户id',
+  `sent` tinyint(4) DEFAULT '0' COMMENT '是否送达',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `del_flag` tinyint(4) DEFAULT '0' COMMENT '删除标识 0 有效 1 删除'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='老客标签建群客户统计表'
 
 -- ----------------------------
 -- Records of we_pres_tag_group_stat
@@ -3083,8 +3093,13 @@ COMMIT;
 DROP TABLE IF EXISTS `we_pres_tag_group_tag`;
 CREATE TABLE `we_pres_tag_group_tag` (
   `task_id` bigint(20) NOT NULL COMMENT '老客户标签建群任务id',
-  `tag_id` varchar(64) NOT NULL COMMENT '标签id'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='老客标签建群标签关联表';
+  `tag_id` varchar(64) NOT NULL COMMENT '标签id',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `del_flag` tinyint(4) DEFAULT '0' COMMENT '删除标识 0 有效 1 删除'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='老客标签建群标签关联表'
 
 -- ----------------------------
 -- Records of we_pres_tag_group_tag
