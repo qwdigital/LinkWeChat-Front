@@ -3035,6 +3035,7 @@ CREATE TABLE `we_pres_tag_group` (
   `cus_begin_time` datetime DEFAULT NULL COMMENT '目标客户被添加起始时间',
   `cus_end_time` datetime DEFAULT NULL COMMENT '目标客户被添加结束时间',
   `welcome_msg` varchar(255) NOT NULL COMMENT '加群引导语',
+  `message_template_id` bigint(20) DEFAULT NULL COMMENT '群发消息id',
   `del_flag` tinyint(4) DEFAULT '0' COMMENT '逻辑删除字段， 0:未删除 1:已删除',
   PRIMARY KEY (`task_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='老客户标签建群';
