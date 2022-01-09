@@ -44,25 +44,25 @@ export const constantRoutes = [
   },
   {
     path: '/index',
-    component: Layout,
-    redirect: '/index',
-    name: '运营中心',
-    meta: { title: '运营中心' },
-    children: [
-      {
-        path: '/index',
-        component: (resolve) => require(['@/views/index'], resolve),
-        name: '运营中心',
-        hidden: true,
-        meta: {
-          title: '运营中心',
-          icon: 'dashboard',
-          breadcrumb: false,
-          noCache: true,
-          affix: true
-        }
-      }
-    ]
+    redirect: '/operateCenter/index/dataAnalysis',
+    hidden: true
+    // name: '运营中心',
+    // meta: { title: '运营中心' }
+    // children: [
+    //   {
+    //     path: '/index',
+    //     component: (resolve) => require(['@/views/index'], resolve),
+    //     name: '运营中心',
+    //     hidden: true,
+    //     meta: {
+    //       title: '运营中心',
+    //       icon: 'dashboard',
+    //       breadcrumb: false,
+    //       noCache: true,
+    //       affix: true
+    //     }
+    //   }
+    // ]
   },
   {
     path: '/login',
