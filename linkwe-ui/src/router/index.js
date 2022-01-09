@@ -26,6 +26,27 @@ import Layout from '@/layout'
 
 // 公共路由
 export const constantRoutes = [
+  // {
+  //   path: '/index',
+  //   hidden: true,
+  //   name: '运营中心',
+  //   meta: { title: '运营中心' }
+  //   children: [
+  //     {
+  //       path: '/index',
+  //       component: (resolve) => require(['@/views/index'], resolve),
+  //       name: '运营中心',
+  //       hidden: true,
+  //       meta: {
+  //         title: '运营中心',
+  //         icon: 'dashboard',
+  //         breadcrumb: false,
+  //         noCache: true,
+  //         affix: true
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: '/redirect',
     component: Layout,
@@ -41,28 +62,6 @@ export const constantRoutes = [
     path: '',
     redirect: '/index',
     hidden: true
-  },
-  {
-    path: '/index',
-    redirect: '/operateCenter/index/dataAnalysis',
-    hidden: true
-    // name: '运营中心',
-    // meta: { title: '运营中心' }
-    // children: [
-    //   {
-    //     path: '/index',
-    //     component: (resolve) => require(['@/views/index'], resolve),
-    //     name: '运营中心',
-    //     hidden: true,
-    //     meta: {
-    //       title: '运营中心',
-    //       icon: 'dashboard',
-    //       breadcrumb: false,
-    //       noCache: true,
-    //       affix: true
-    //     }
-    //   }
-    // ]
   },
   {
     path: '/login',
