@@ -36,12 +36,6 @@ import {
   handleTree
 } from '@/utils/common'
 
-import Pagination from '@/components/Pagination'
-//自定义表格工具扩展
-import RightToolbar from '@/components/RightToolbar'
-import Upload from '@/components/Upload'
-import ButtonSync from '@/components/ButtonSync'
-
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey
@@ -91,11 +85,19 @@ VueAMap.initAMapApiLoader({
   ],
   v: '1.4.4'
 })
+
 // 全局组件挂载
+import Pagination from '@/components/Pagination'
+//自定义表格工具扩展
+import RightToolbar from '@/components/RightToolbar'
+import Upload from '@/components/Upload'
+import ButtonSync from '@/components/ButtonSync'
+import CardGroupIndex from '@/components/CardGroupIndex'
 Vue.component('Pagination', Pagination)
 Vue.component('RightToolbar', RightToolbar)
 Vue.component('Upload', Upload)
 Vue.component('ButtonSync', ButtonSync)
+Vue.component(CardGroupIndex.name, CardGroupIndex)
 
 Vue.use(directive)
 

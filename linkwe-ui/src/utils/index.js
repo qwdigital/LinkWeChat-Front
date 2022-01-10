@@ -227,7 +227,7 @@ export function getTime(type) {
 export function debounce(func, wait, immediate) {
   let timeout, args, context, timestamp, result
 
-  const later = function() {
+  const later = function () {
     // 据上一次触发时间间隔
     const last = +new Date() - timestamp
 
@@ -244,7 +244,7 @@ export function debounce(func, wait, immediate) {
     }
   }
 
-  return function(...args) {
+  return function (...args) {
     context = this
     timestamp = +new Date()
     const callNow = immediate && !timeout
@@ -430,3 +430,25 @@ export const pickerOptions = {
     }
   ]
 }
+
+// echart图表配色规范
+export const echartColors = [
+  '#0F68FF',
+  '#34D7C3',
+  '#FFBF49',
+  '#FF5954',
+  '#52DDFF',
+  '#34D781',
+  '#FFE85F',
+  '#7F47FF',
+  '#A47D79',
+  '#7796D7',
+  '#89C369',
+  '#B595D4',
+  '#E4CBCB',
+  '#7D889B',
+  '#AAAFB7',
+  '#DCD7B0',
+  '#749E84',
+  '#B0BBDC'
+]
