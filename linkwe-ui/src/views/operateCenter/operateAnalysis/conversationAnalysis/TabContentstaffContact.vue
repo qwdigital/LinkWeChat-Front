@@ -1,11 +1,10 @@
 <script>
 import ChartBar from '@/components/ChartBar'
-import ChartLine from '@/components/ChartLine'
 import SelectUser from '@/components/SelectUser'
 import { getList } from '@/api/drainageCode/staff'
 export default {
   name: '',
-  components: { ChartLine, ChartBar, SelectUser },
+  components: { ChartBar, SelectUser },
   props: {
     type: {
       type: String,
@@ -200,14 +199,17 @@ export default {
     </div>
     <el-row :gutter="10">
       <el-col :span="12">
-        <ChartLine :xData="xData" :legend="legend['customerGroup']" :series="series"></ChartLine>
+        <ChartBar :xData="xData" :legend="legend['customerGroup']" :series="series"></ChartBar>
       </el-col>
       <el-col :span="12">
-        <ChartLine
-          :xData="xData"
+        <ChartBar
           :legend="legend['customerGroupMember']"
           :series="series"
-        ></ChartLine>
+          :option="{
+            xAxis: [{ type: 'value' }],
+            yAxis: [{ type: 'category', data: [1, 2, 3, 4, 5] }]
+          }"
+        ></ChartBar>
       </el-col>
     </el-row>
   </div>

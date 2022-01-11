@@ -169,7 +169,6 @@ export default {
           {
             type: 'category',
             data: this.xData,
-            boundaryGap: false,
             offset: 5,
             axisLine: {
               lineStyle: {
@@ -183,6 +182,7 @@ export default {
             },
             axisTick: {
               // 横坐标刻度
+              alignWithLabel: true,
               show: true
             }
           }

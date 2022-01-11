@@ -4,7 +4,7 @@ import { echartColors } from '@/utils/index'
 import merge from 'lodash.merge'
 export default {
   // 柱状图
-  name: 'CchartBar',
+  name: 'ChartBar',
   components: {},
   props: {
     // X轴坐标数据
@@ -122,7 +122,6 @@ export default {
           {
             type: 'category',
             data: this.xData,
-            boundaryGap: true,
             axisLine: {
               lineStyle: {
                 color: '#ccc'
@@ -135,7 +134,8 @@ export default {
             },
             axisTick: {
               // 横坐标刻度
-              show: false
+              alignWithLabel: true,
+              show: true
             }
           }
         ],
@@ -146,6 +146,11 @@ export default {
               lineStyle: {
                 color: '#ccc'
               }
+            },
+            axisTick: {
+              // 横坐标刻度
+              alignWithLabel: true,
+              show: true
             }
           }
         ],
@@ -164,13 +169,13 @@ export default {
 </script>
 
 <template>
-  <div ref="chart" class="c-chart-bar chart"></div>
+  <div ref="chart" class="chart-bar chart"></div>
 </template>
 
 <style lang="scss" scoped>
 .chart {
   height: 100%;
-  min-width: 200px;
-  min-height: 200px;
+  min-width: 400px;
+  min-height: 400px;
 }
 </style>

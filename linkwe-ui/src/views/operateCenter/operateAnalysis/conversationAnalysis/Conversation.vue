@@ -1,8 +1,9 @@
 <script>
+import ChartPie from '@/components/ChartPie'
 import TabContent from '../components/TabContent'
 export default {
   name: '',
-  components: { TabContent },
+  components: { TabContent, ChartPie },
   data() {
     return {
       cardData: [
@@ -56,6 +57,16 @@ export default {
 
     <div>
       <div>数据占比</div>
+      <el-row :gutter="10">
+        <el-col :span="12">
+          <ChartPie></ChartPie>
+          <div class="ac">会话存档员工开启情况统计</div>
+        </el-col>
+        <el-col :span="12">
+          <ChartPie></ChartPie>
+          <div class="ac">会话存档客户同意情况统计</div>
+        </el-col>
+      </el-row>
     </div>
 
     <div>
@@ -70,4 +81,8 @@ export default {
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.chart-pie {
+  height: 400px;
+}
+</style>
