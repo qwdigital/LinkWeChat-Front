@@ -24,13 +24,20 @@ const service = '/wecom/category'
     }]
 }
  */
-// export function update (data) {
-//   return request({
-//     url: service + '/update',
-//     method: 'put',
-//     data
-//   })
-// }
+export function download (data) {
+  // return request({
+  //   url: service + '/update',
+  //   method: 'put',
+  //   data
+  // })
+}
+export function getUserAddCustomerStat (data) {
+  // return request({
+  //   url: service + '/update',
+  //   method: 'put',
+  //   data
+  // })
+}
 
 
 /**
