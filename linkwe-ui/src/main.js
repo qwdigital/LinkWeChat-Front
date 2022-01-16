@@ -40,12 +40,14 @@ import RightToolbar from '@/components/RightToolbar' //自定义表格工具扩�
 import Upload from '@/components/Upload'
 import ButtonSync from '@/components/ButtonSync'
 import TagEllipsis from '@/components/TagEllipsis'
+import SelectUser from '@/components/SelectUser'
 // 全局组件挂载
 Vue.component('Pagination', Pagination)
 Vue.component('RightToolbar', RightToolbar)
 Vue.component('Upload', Upload)
 Vue.component('ButtonSync', ButtonSync)
 Vue.component(TagEllipsis.name, TagEllipsis)
+Vue.component(SelectUser.name, SelectUser)
 
 import directive from './directive'
 Vue.use(directive)

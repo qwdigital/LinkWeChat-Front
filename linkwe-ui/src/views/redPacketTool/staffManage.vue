@@ -1,10 +1,7 @@
 <template>
   <div>
-    <div class="g-card">
-      <el-button type="primary" @click="addVisible = true" style="margin: 20px"
-        >新建员工限额
-      </el-button>
-      <el-form :inline="true" :form="query" label-width="70px" style="margin: 0 20px">
+    <div class="g-card" style="padding: 20px">
+      <el-form :inline="true" :form="query" label-width="70px">
         <el-form-item label="选择员工">
           <div class="tag-input" @click="selectUser(1)">
             <span class="tag-place" v-if="!queryUser.length">请选择员工</span>
@@ -20,6 +17,8 @@
           <el-button type="info" plain @click="resetQuery">清空</el-button>
         </el-form-item>
       </el-form>
+      <el-button type="primary" @click="addVisible = true">新建员工限额 </el-button>
+      <el-button type="primary" plain size="mini" @click="remove(null)">批量编辑</el-button>
     </div>
     <div class="g-card g-pad20">
       <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
@@ -45,6 +44,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="{ row }">
+            <el-button type="text" @click="remove(row.redId)">编辑</el-button>
             <el-button type="text" @click="remove(row.id)">删除</el-button>
           </template>
         </el-table-column>

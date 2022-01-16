@@ -13,10 +13,20 @@ export default {
         endTime: '' // 创建结束时间
       },
       dateRange: [], // 添加日期
-      total: 0, // 群SOP数据总量
-      list: [], // 群SOP数据
+      total: 0, //
+      list: [], //
       multiSelect: [], // 多选数据
-      loading: false
+      loading: false,
+      queryUser: [], // 搜索框选择的添加人
+      dialogVisibleSelectUser: false, // 选择添加人弹窗显隐
+      dictCustomerType: Object.freeze({
+        1: '全部状态',
+        2: '待领取',
+        2: '已领取',
+        2: '发放失败',
+        2: '退款中',
+        2: '已退款'
+      })
     }
   },
   watch: {
@@ -123,14 +133,19 @@ export default {
 <template>
   <div>
     <div class="top-search">
-      <el-form inline label-position="right" :model="query" label-width="100px" ref="queryForm">
-        <el-form-item label="规则名称" prop="ruleName">
-          <el-input v-model="query.ruleName" placeholder="请输入"></el-input>
+      <el-form inline label-position="right" :model="query" label-width="" ref="queryForm">
+        <el-form-item label="发放员工" prop="ruleName">
+          <div class="tag-input" @click="dialogVisibleSelectUser = true">
+            <span class="tag-place" v-if="!queryUser.length">请选择</span>
+            <template v-else>
+              <el-tag v-for="(unit, unique) in queryUser" :key="unique">{{ unit.name }}</el-tag>
+            </template>
+          </div>
         </el-form-item>
-        <el-form-item label="创建人" prop="createBy">
+        <el-form-item label="领取客户" prop="createBy">
           <el-input v-model="query.createBy" placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="创建时间">
+        <el-form-item label="发放时间">
           <el-date-picker
             v-model="dateRange"
             value-format="yyyy-MM-dd"
@@ -141,6 +156,16 @@ export default {
             end-placeholder="结束日期"
             align="right"
           ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="全部状态" prop="customerType">
+          <el-select v-model="query.customerType" placeholder="请选择">
+            <el-option
+              v-for="(item, key) in dictCustomerType"
+              :key="key"
+              :label="item"
+              :value="key"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label=" ">
           <el-button
@@ -158,68 +183,43 @@ export default {
         </el-form-item>
       </el-form>
     </div>
-
-    <div class="mid-action">
-      <div>
-        <el-button type="primary" @click="goRoute()">新建规则</el-button>
-      </div>
-      <div>
-        <el-button
-          v-hasPermi="['customerManage:customer:export']"
-          :disabled="multiSelect.length === 0"
-          @click="handleBulkRemove"
-          type="cyan"
-          >批量删除</el-button
-        >
-      </div>
+    <div>
+      <el-button v-hasPermi="['customerManage:customer:query']" type="primary" @click="getList(1)"
+        >导出Excel</el-button
+      >
     </div>
-
     <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50" align="center"></el-table-column>
       <el-table-column
-        label="规则名称"
+        label="发放员工"
         align="center"
         prop="ruleName"
         :show-overflow-tooltip="true"
       ></el-table-column>
-      <el-table-column label="执行群聊" align="center" width="120">
-        <template #default="{ row }">
-          <el-popover
-            placement="bottom"
-            width="200"
-            trigger="hover"
-            :content="getDisplayGroups(row)"
-          >
-            <div slot="reference" class="table-desc overflow-ellipsis">
-              {{ getDisplayGroups(row) }}
+      <el-table-column label="领取客户" align="center" width="120">
+        <template slot-scope="{ row }">
+          <div class="cp flex aic" @click="goRoute(row)">
+            <el-image
+              style="width: 50px; height: 50px; flex: none"
+              :src="row.avatar"
+              fit="fit"
+            ></el-image>
+            <div class="ml10">
+              <p>{{ row.customerName }}</p>
+              <i :class="['el-icon-s-custom', { 1: 'man', 2: 'woman' }[row.gender]]"></i>
+              <span :style="{ color: row.customerType === 1 ? '#4bde03' : '#f9a90b' }">
+                {{ { 1: '@微信', 2: '@企业微信' }[row.customerType] }}
+              </span>
             </div>
-          </el-popover>
+          </div>
         </template>
       </el-table-column>
 
-      <el-table-column label="创建人" align="center" prop="createBy"></el-table-column>
+      <el-table-column label="红包金额（元）" align="center" prop="createBy"></el-table-column>
 
-      <el-table-column label="创建人" align="center" prop="createBy"></el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime"></el-table-column>
-
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            v-hasPermi="['enterpriseWechat:view']"
-            size="mini"
-            type="text"
-            @click="handleRemove(scope.row.ruleId)"
-            >删除</el-button
-          >
-          <el-button
-            v-hasPermi="['enterpriseWechat:edit']"
-            size="mini"
-            type="text"
-            @click="goRoute(scope.row.ruleId)"
-            >编辑</el-button
-          >
-        </template>
-      </el-table-column>
+      <el-table-column label="发放时间" align="center" prop="createTime"></el-table-column>
+      <el-table-column label="发放状态" align="center" prop="createBy"></el-table-column>
+      <el-table-column label="交易订单号" align="center" prop="createBy"></el-table-column>
     </el-table>
 
     <pagination
@@ -229,6 +229,13 @@ export default {
       :limit.sync="query.pageSize"
       @pagination="getList()"
     />
+
+    <!-- 选择使用员工弹窗 -->
+    <SelectUser
+      :visible.sync="dialogVisibleSelectUser"
+      title="选择添加人"
+      @success="(list) => (queryUser = list)"
+    ></SelectUser>
   </div>
 </template>
 

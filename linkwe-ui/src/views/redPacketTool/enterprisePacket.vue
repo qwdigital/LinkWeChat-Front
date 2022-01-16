@@ -2,23 +2,30 @@
   <div>
     <div class="top-search">
       <el-form inline label-position="right" :model="query" label-width="100px" ref="queryForm">
-        <el-form-item label="任务名称" prop="taskName">
-          <el-input v-model="query.taskName" placeholder="请输入"></el-input>
-        </el-form-item>
-        <!-- <el-form-item label="发送方式" prop="sendType">
-          <el-select v-model="query.sendType" placeholder="请选择" size="small">
+        <el-form-item label="红包状态" prop="customerType">
+          <el-select v-model="query.customerType" placeholder="请选择">
             <el-option
-              v-for="(sendType, index) in sendTypeOptions"
-              :label="sendType.label"
-              :value="sendType.value"
-              :key="index"
+              v-for="(item, key) in dictCustomerType"
+              :key="key"
+              :label="item"
+              :value="key"
             ></el-option>
           </el-select>
-        </el-form-item> -->
-        <el-form-item label="创建人" prop="createBy">
-          <el-input v-model="query.createBy" placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="创建时间">
+        <el-form-item label="发送场景" prop="sendType">
+          <el-select v-model="query.sendType" placeholder="请选择" size="small">
+            <el-option
+              v-for="(item, key) in dictSendSence"
+              :key="key"
+              :label="item"
+              :value="key"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <!-- <el-form-item label="创建人" prop="createBy">
+          <el-input v-model="query.createBy" placeholder="请输入"></el-input>
+        </el-form-item> -->
+        <!-- <el-form-item label="创建时间">
           <el-date-picker
             v-model="dateRange"
             value-format="yyyy-MM-dd"
@@ -29,7 +36,7 @@
             end-placeholder="结束日期"
             align="right"
           ></el-date-picker>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label=" ">
           <el-button type="primary" @click="getList(1)">查询</el-button>
           <el-button type="success" @click="resetQuery">重置</el-button>
@@ -43,14 +50,19 @@
     <div class="g-card g-pad20">
       <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
+        <el-table-column label="红包" align="center" prop="amount">
+          <div class="red-packet-message">红包名称</div>
+        </el-table-column>
         <el-table-column label="红包金额(元)" align="center" prop="amount" />
         <el-table-column label="发送次数" align="center" prop="sendNum" />
-        <el-table-column label="发送总金额(元)" align="center" prop="sendSum" />
-        <el-table-column label="创建人" align="center" prop="createBy" />
-        <el-table-column label="创建时间" align="center" width="180" prop="createTime">
+        <el-table-column label="发送场景" align="center" prop="sendSum" />
+        <el-table-column label="红包状态" align="center" prop="createBy" />
+        <el-table-column label="最近更新时间" align="center" width="180" prop="createTime">
         </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="{ row }">
+            <el-button type="text" @click="remove(row.redId)">编辑</el-button>
+            <el-button type="text" @click="remove(row.redId)">启用/停用</el-button>
             <el-button type="text" @click="remove(row.redId)">删除</el-button>
           </template>
         </el-table-column>
@@ -74,7 +86,9 @@
         />
       </div>
     </div>
-    <el-dialog title="新建红包" :visible.sync="addDialogVisible" width="40%">
+
+    <!-- 新建红包 -->
+    <el-dialog title="新建红包" :visible.sync="addDialogVisible" :close-on-click-modal="false">
       <el-form
         ref="addForm"
         :model="addForm"
@@ -87,10 +101,32 @@
             type="text"
             placeholder="请输入金额"
             v-model="addForm.amount"
-            :max="5000"
-            :min="0.3"
+            :max="200"
+            :min="0.01"
           ></el-input>
-          <div class="sub-des">精确到小数点后两位，可输入0.30-5000.00</div>
+          <div class="sub-des">精确到小数点后两位，可输入1~200</div>
+        </el-form-item>
+        <el-form-item label="发送场景" required prop="amount">
+          <el-checkbox-group v-model="addForm.amount">
+            <el-checkbox
+              v-for="(item, key) in dictSendSence"
+              :key="key"
+              :label="item"
+              :value="key"
+            ></el-checkbox>
+          </el-checkbox-group>
+          <div class="sub-des">发送客户群时支持选择拼手气红包或普通金额相同红包</div>
+        </el-form-item>
+        <el-form-item label="红包名称" required prop="amount">
+          <el-input
+            type="text"
+            placeholder="请输入金额"
+            v-model="addForm.amount"
+            maxlength="16"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="预览">
+          <div class="red-packet-message">红包名称</div>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -98,7 +134,9 @@
         <el-button type="primary" @click="add">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="限额设置" :visible.sync="limitDialogVisible" width="40%">
+
+    <!-- 限额设置 -->
+    <el-dialog title="限额设置" :visible.sync="limitDialogVisible" :close-on-click-modal="false">
       <el-form
         ref="limitForm"
         :model="limitForm"
@@ -107,16 +145,30 @@
         label-width="180px"
       >
         <el-form-item label="单日付款总额(元)" prop="daySendAmount">
-          <el-input v-model="limitForm.daySendAmount" placeholder="请输入金额"></el-input>
-          <div class="sub-des">精确到小数点后两位，可输入0.30-5000.00</div>
+          <el-input-number
+            v-model="limitForm.daySendAmount"
+            :precision="2"
+            :step="0.1"
+            :min="0"
+            :max="1000000"
+          ></el-input-number>
+          <!-- <el-input v-model="limitForm.daySendAmount" placeholder="请输入金额"></el-input> -->
+          <div class="sub-des">精确到小数点后两位，不超过100万元</div>
         </el-form-item>
-        <el-form-item label="单日客户收红包次数" prop="clientReceiveNum">
+        <el-form-item label="单日每客户收红包次数" prop="clientReceiveNum">
           <el-input v-model="limitForm.clientReceiveNum" placeholder="请输入次数"></el-input>
           <div class="sub-des">输入 1-10 的正整数</div>
         </el-form-item>
-        <el-form-item label="单日客户收红包总数(元)" required prop="clientReceiveSum">
-          <el-input v-model="limitForm.clientReceiveSum" placeholder="请输入金额"></el-input>
-          <div class="sub-des">精确到小数点后两位，可输入0.30-5000.00</div>
+        <el-form-item label="单日每客户收红包总额" prop="clientReceiveSum">
+          <el-input-number
+            v-model="limitForm.clientReceiveSum"
+            :precision="2"
+            :step="0.1"
+            :min="0"
+            :max="1000"
+          ></el-input-number>
+          <!-- <el-input v-model="limitForm.clientReceiveSum" placeholder="请输入金额"></el-input> -->
+          <div class="sub-des">精确到小数点后两位，不超过1000元</div>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -137,6 +189,38 @@ import {
   addLimit,
   updateLimit
 } from '@/api/moneyTool/moneyTool'
+
+function validateAmount(rule, value, callback) {
+  if (value == '') {
+    callback()
+    return
+  }
+
+  value = Number(value)
+  if (
+    Number.isNaN(value) ||
+    value < 0.01 ||
+    value > 1e6 ||
+    ((value = value.toString().split('.')[1]) && value && value.length > 2)
+  ) {
+    callback('请输入0.01-1000000的数字，精确到小数点后两位')
+  } else {
+    callback()
+  }
+}
+function validateClientReceiveNum(rule, value, callback) {
+  if (value == '') {
+    callback()
+    return
+  }
+
+  value = Number(value)
+  if (Number.isNaN(value) || value < 1 || value > 10 || value.toString().indexOf('.') > -1) {
+    callback('请输入 1-10 的正整数')
+  } else {
+    callback()
+  }
+}
 export default {
   name: 'list',
   data() {
@@ -158,25 +242,27 @@ export default {
       limitRules: {
         daySendAmount: [
           // { required: true, message: '请输入金额', trigger: 'blur' },
-          { validator: this.validateAmount, trigger: 'blur' }
+          { validator: validateAmount, trigger: 'blur' }
         ],
         clientReceiveNum: [
           // { required: true, message: '请输入次数', trigger: 'blur' },
-          { validator: this.validateClientReceiveNum, trigger: 'blur' }
+          { validator: validateClientReceiveNum, trigger: 'blur' }
         ],
         clientReceiveSum: [
           { required: true, message: '请输入金额', trigger: 'blur' },
-          { validator: this.validateAmount, trigger: 'blur' }
+          { validator: validateAmount, trigger: 'blur' }
         ]
       },
       addForm: {},
       addRules: {
         amount: [
           { required: true, message: '请输入金额' },
-          { validator: this.validateAmount, trigger: 'blur' }
+          { validator: validateAmount, trigger: 'blur' }
         ]
       },
-      selectedIds: []
+      selectedIds: [],
+      dictCustomerType: Object.freeze({ 1: '微信客户', 2: '企业客户' }),
+      dictSendSence: Object.freeze({ 1: '客户', 2: '客户群' })
     }
   },
   created() {
@@ -197,37 +283,7 @@ export default {
         }
       })
     },
-    validateAmount(rule, value, callback) {
-      if (value == '') {
-        callback()
-        return
-      }
 
-      value = Number(value)
-      if (
-        Number.isNaN(value) ||
-        value < 0.3 ||
-        value > 5000 ||
-        ((value = value.toString().split('.')[1]) && value && value.length > 2)
-      ) {
-        callback('请输入0.30-5000.00的数字，精确到小数点后两位')
-      } else {
-        callback()
-      }
-    },
-    validateClientReceiveNum(rule, value, callback) {
-      if (value == '') {
-        callback()
-        return
-      }
-
-      value = Number(value)
-      if (Number.isNaN(value) || value < 1 || value > 10 || value.toString().indexOf('.') > -1) {
-        callback('请输入 1-10 的正整数')
-      } else {
-        callback()
-      }
-    },
     add() {
       this.$refs.addForm.validate((validate) => {
         if (!validate) return
@@ -308,5 +364,16 @@ export default {
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #999999;
+}
+.red-packet-message {
+  display: inline-block;
+  width: 175px;
+  height: 75px;
+  padding: 12px 0 0 50px;
+  color: #fff;
+  line-height: 1.15;
+  font-size: 18px;
+  font-weight: 500;
+  background: url('../../assets/image/red-packet-1.png') 0 0/100% 100% no-repeat;
 }
 </style>

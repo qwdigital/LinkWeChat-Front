@@ -3,13 +3,12 @@ import * as api from '@/api/customer'
 import { getList as getListTag } from '@/api/customer/tag'
 import { getAllStaff } from '@/api/organization'
 import AddTag from '@/components/AddTag'
-import SelectUser from '@/components/SelectUser'
 import SelectTag from '@/components/SelectTag'
 import { dictAddType, dictTrackState } from '@/utils/dictionary'
 
 export default {
   name: 'Customer',
-  components: { AddTag, SelectUser, SelectTag },
+  components: { AddTag, SelectTag },
   props: {},
   data() {
     return {
