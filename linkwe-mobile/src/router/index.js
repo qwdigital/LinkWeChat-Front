@@ -113,6 +113,15 @@ const routes = [
     meta: {
       title: '公海分配'
     }
+  },
+  // 客户公海
+  {
+    path: '/redPacket',
+    name: 'redPacket',
+    component: () => import('../views/redPacket/index'),
+    meta: {
+      title: '红包'
+    }
   }
 ]
 
