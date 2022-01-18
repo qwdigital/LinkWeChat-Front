@@ -252,6 +252,7 @@ export default {
         <el-form-item label="EncodingAESKey" prop="encodingAesKey">
           <el-input v-model="form.encodingAesKey" placeholder="应用回调消息体加密密钥"></el-input>
         </el-form-item>
+
         <div>应用配置</div>
         <el-form-item label="消息提醒agentId" prop="agentId">
           <el-input v-model="form.agentId"></el-input>

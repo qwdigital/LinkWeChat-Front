@@ -1,8 +1,10 @@
 <script>
 import TabContent from './components/TabContent'
+import CardGroupIndex from '@/components/CardGroupIndex'
+import { getAnalysis } from '@/api/operateCenter/customerAnalysis'
 export default {
   name: '',
-  components: { TabContent },
+  components: { TabContent, CardGroupIndex },
   data() {
     return {
       cardData: [
@@ -49,7 +51,7 @@ export default {
   computed: {},
   watch: {},
   created() {
-    // this.getList()
+    this.getList()
     this.$store.dispatch(
       'app/setBusininessDesc',
       `
@@ -61,7 +63,7 @@ export default {
   methods: {
     getList() {
       this.loading = true
-      getList(this.query)
+      getAnalysis(this.query)
         .then(({ rows, total }) => {
           this.list = rows
           this.total = Number(total)
