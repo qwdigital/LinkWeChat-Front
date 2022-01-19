@@ -12,7 +12,7 @@
     <el-table v-loading="loading" :data="list" style="margin-top:20px;width: 100%">
       <el-table-column label="客服" align="center" prop="" min-width="120">
         <template slot-scope="{ row }">
-          <show-customer-service :url='row.url' :name='row.test'></show-customer-service>
+          <show-customer-service :url='row.url' :name='row.test' showicon></show-customer-service>
         </template>
       </el-table-column>
       <el-table-column label="接待方式" align="center" min-width="100" prop="name" show-overflow-tooltip />
