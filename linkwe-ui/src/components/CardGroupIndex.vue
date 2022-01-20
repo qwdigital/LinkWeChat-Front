@@ -60,14 +60,14 @@ export default {
     <li v-for="(row, index) in data" :key="index" class="card-index-li">
       <div class="mb5 label">
         <span>{{ row[defaultProps.title] }}</span>
-        <div v-if="row[defaultProps.tips]" class="fr">
-          <el-popover trigger="hover" :content="row[defaultProps.tips]" placement="top">
+        <div v-if="row[defaultProps.tips] !== undefined" class="fr">
+          <el-popover trigger="hover" :content="row[defaultProps.tips]" placement="top-start">
             <i slot="reference" class="el-icon-question"></i>
           </el-popover>
         </div>
       </div>
-      <div class="mb15 value">{{ row[defaultProps.value] }}</div>
-      <div v-if="row[defaultProps.title1] || row[defaultProps.value1]">
+      <div class="mb15 value">{{ row[defaultProps.value] || 0 }}</div>
+      <div v-if="row[defaultProps.title1] !== undefined || row[defaultProps.value1] !== undefined">
         {{ row[defaultProps.title1] }}
         <span class="fr" :class="row[defaultProps.noArrow] || getClass(row[defaultProps.value1])">
           {{ row[defaultProps.noArrow] ? '' : getArrow(row[defaultProps.value1]) }}

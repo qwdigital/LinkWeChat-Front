@@ -2,7 +2,9 @@
 import ChartBar from '@/components/ChartBar'
 import ChartLine from '@/components/ChartLine'
 import SelectUser from '@/components/SelectUser'
-import { getList } from '@/api/drainageCode/staff'
+import * as customerApi from '@/api/operateCenter/customerAnalysis'
+import * as groupApi from '@/api/operateCenter/groupAnalysis'
+import * as conversationApi from '@/api/operateCenter/conversationAnalysis'
 export default {
   name: '',
   components: { ChartLine, ChartBar, SelectUser },
@@ -13,7 +15,11 @@ export default {
     },
     legend: {
       type: Array,
-      default: () => ['legend']
+      default: null
+    },
+    request: {
+      type: Function,
+      default: () => {}
     }
   },
   data() {
@@ -59,7 +65,10 @@ export default {
       dateRange: [],
       // 查询参数
       query: {
-        group: '',
+        deptIds: [],
+        userIds: [],
+        chatIds: [],
+        ownerIds: [],
         beginTime: undefined,
         endTime: undefined
       },
@@ -123,25 +132,23 @@ export default {
       this.loading = true
       page && (this.query.pageNum = page)
 
-      if (this.type.includes('Chart')) {
-        this.xData = this.list.map((e) => e.time)
-        this.series = this.list.map((e) => e.num)
-      } else if (this.type === 'realDataChart') {
-        this.xData = this.list.map((e) => e.time)
-        this.legendDict[this.type].forEach((element) => {
-          this.series.push(this.list.map((e) => e.num))
+      this.request(this.query)
+        .then(({ rows, total, data }) => {
+          if (this.type.includes('Chart')) {
+            this.xData = data.map((e) => e.xtime)
+            this.series = data.map((e) => e.totalCnt)
+          } else if (this.type === 'realDataChart') {
+            this.xData = data.map((e) => e.time)
+            this.legendDict[this.type].forEach((element) => {
+              this.series.push(data.map((e) => e.num))
+            })
+          }
+          this.total = Number(total)
+          this.loading = false
         })
-      }
-
-      // getList(this.query)
-      //   .then(({ rows, total }) => {
-      //     this.list = rows
-      //     this.total = Number(total)
-      //     this.loading = false
-      //   })
-      //   .catch(() => {
-      //     this.loading = false
-      //   })
+        .catch(() => {
+          this.loading = false
+        })
     },
     getSelectList(type) {
       getList()

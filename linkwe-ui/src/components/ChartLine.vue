@@ -169,6 +169,7 @@ export default {
           {
             type: 'category',
             data: this.xData,
+            // boundaryGap: false,
             offset: 5,
             axisLine: {
               lineStyle: {
