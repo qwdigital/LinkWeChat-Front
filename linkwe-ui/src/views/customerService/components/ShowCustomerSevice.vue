@@ -1,15 +1,20 @@
 <template>
   <div class="show">
     <div class="show_img">
-      <el-image :src="url" fit="fit" :preview-src-list="[url]" style="width: 40px; height: 40px"></el-image>
+      <img :src="url" style="width: 40px; height: 40px"></img>
     </div>
     <div class="show_name" :style="showicon ? '' : showiconStyle">
       <div>{{name}}</div>
-      <div class="company" v-if="showicon">@合肥xxxxx有限公司</div>
+      <div class="company" v-if="showicon">
+        @{{companyName}}
+      </div>
     </div>
   </div>
 </template>
 <script>
+  import Cookies from 'js-cookie'
+
+  import * as api from '@/api/enterpriseId'
   export default {
     name: 'show-customer-service',
     props: {
@@ -28,9 +33,30 @@
     },
     data () {
       return {
+        companyName: '',
         showiconStyle: {
           'justify-content': 'center'
         }
+      }
+    },
+    methods: {
+      getDetail () {
+        this.loading = true
+        api.getDetail()
+          .then(({ data }) => {
+            this.companyName = data.companyName
+            Cookies.set('companyName', data.companyName)
+          })
+          .catch(() => {
+            this.loading = false
+          })
+      },
+    },
+    created () {
+      if (!Cookies.get('companyName')) {
+        this.getDetail()
+      } else {
+        this.companyName = Cookies.get('companyName')
       }
     }
   }
@@ -42,6 +68,8 @@
     align-items: center;
     .show_img {
       margin-right: 7px;
+      height: 40px;
+      width: 40px;
     }
     .show_name {
       height: 40px;

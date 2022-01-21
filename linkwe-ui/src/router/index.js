@@ -48,6 +48,28 @@ export const constantRoutes = [
   //   ]
   // },
   {
+    path: '/drainageCode/customerService',
+    component: Layout,
+    hidden: true,
+    meta: {
+      title: "客服管理"
+    },
+    children: [
+      {
+        path: 'add',
+        name: 'service-add',
+        component: (resolve) => require(['@/views/customerService/customerServiceManage/add'], resolve),
+        meta: { title: '新建客服', activeMenu: '/drainageCode/customerService/index', breadcrumb: true }
+      },
+      {
+        path: 'detail',
+        name: 'service-add-detail',
+        component: (resolve) => require(['@/views/customerService/customerServiceManage/detail'], resolve),
+        meta: { title: '客服详情', activeMenu: '/drainageCode/customerService/index', breadcrumb: true }
+      },
+    ]
+  },
+  {
     path: '/redirect',
     component: Layout,
     hidden: true,

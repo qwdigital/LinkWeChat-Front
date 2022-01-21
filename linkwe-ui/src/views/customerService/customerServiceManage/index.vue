@@ -12,18 +12,22 @@
     <el-table v-loading="loading" :data="list" style="margin-top:20px;width: 100%">
       <el-table-column label="客服" align="center" prop="" min-width="120">
         <template slot-scope="{ row }">
-          <show-customer-service :url='row.url' :name='row.test' showicon></show-customer-service>
+          <show-customer-service :url='row.avatar' :name='row.name' showicon></show-customer-service>
         </template>
       </el-table-column>
-      <el-table-column label="接待方式" align="center" min-width="100" prop="name" show-overflow-tooltip />
+      <el-table-column label="接待方式" align="center" min-width="100" prop="name" show-overflow-tooltip>
+        <template slot-scope="{ row }">
+          <div>{{row.receptionType === 1 ? '人工客服': receptionType === 2 ?'智能助手':''}}</div>
+        </template>
+      </el-table-column>
       <el-table-column label="接待员工" align="center" min-width="140" prop="list">
         <template slot-scope="{ row }">
-          <template v-if="row.list.length < 2">
-            <el-tag v-for="(data, key) in row.list" :key="key" size="mini">{{data}}</el-tag>
+          <template v-if="row.userList.length < 2">
+            <el-tag v-for="(data, key) in row.userList" :key="key" size="mini">{{data.userName}}</el-tag>
           </template>
           <template v-else>
-            <template v-for="(data, key) in row.list">
-              <el-tag v-if="key < 2 && data" :key="key" size="mini">{{data}}</el-tag>
+            <template v-for="(data, key) in row.userList">
+              <el-tag v-if="key < 2 && data" :key="key" size="mini">{{data.userName}}</el-tag>
             </template>
             <el-tag style="cursor:pointer;" size="mini" @click="moreMemberFn(row)">等{{row.list.length}}人</el-tag>
           </template>
@@ -31,14 +35,14 @@
       </el-table-column>
       <el-table-column label="接待场景" align="center" min-width="140" prop="list2">
         <template slot-scope="{ row }">
-          <template v-if="row.list2.length < 2">
-            <el-tag v-for="(data, key) in row.list2" :key="key" size="mini">{{data}}</el-tag>
+          <template v-if="row.kfScenes.length < 2">
+            <el-tag v-for="(data, key) in row.kfScenes" :key="key" size="mini">{{data.name}}</el-tag>
           </template>
           <template v-else>
-            <template v-for="(data, key) in row.list2">
-              <el-tag v-if="key < 2 && data" :key="key" size="mini">{{data}}</el-tag>
+            <template v-for="(data, key) in row.kfScenes">
+              <el-tag v-if="key < 2 && data" :key="key" size="mini">{{data.name}}</el-tag>
             </template>
-            <el-tag style="cursor:pointer;" size="mini">等{{row.list2.length}}个</el-tag>
+            <el-tag style="cursor:pointer;" size="mini" @click="gotoScene(row)">等{{row.kfScenes.length}}个</el-tag>
           </template>
         </template>
       </el-table-column>
@@ -91,6 +95,7 @@
 <script>
   import ShowCustomerService from "../components/ShowCustomerSevice.vue"
   import pic from '@/assets/drainageCode/service.png'
+  import { getList, remove } from '@/api/drainageCode/customerService.js'
   export default {
     name: 'customer-service-manage',
     components: {
@@ -99,7 +104,7 @@
     data () {
       return {
         loading: false,
-        list: [{ url: '123', test: '测试新建客服', name: 'DDD', list: ['姜鹏凯', '姜鹏凯', '姜鹏凯', '姜鹏凯'], list2: ['场景一', '场景23', '场景3'] }],
+        list: [],
         showDialog: false,
         showMemberDialog: false,
         memberPage: {
@@ -110,6 +115,19 @@
       }
     },
     methods: {
+      getData () {
+        // getList().then(res => {
+        //   this.list = res.data
+        // })
+        this.list[0] = {
+          name: '测试客服',
+          avatar: pic,
+          receptionType: 1,
+          userList: [{ userId: 111, userName: '员工一' }],
+          kfScenes: [{ id: 222, name: '场景一' }, { id: 333, name: '场景er' }, { id: 444, name: '场景san' }],
+          updateTime: '2022-01-20'
+        }
+      },
       moreMemberFn (data) {
         this.showMemberDialog = true
         this.getMemberList()
@@ -117,8 +135,16 @@
       getMemberList () {
 
       },
+      gotoScene (data) {
+        this.$router.push({
+          path: '/drainageCode/customerService/sceneManage',
+          query: {
+            kfid: data.id
+          }
+        })
+      },
       deleteFn (data) {
-        if (data) {
+        if (data.kfScenes.length) {
           this.$confirm('请删除当前客服下所有关联场景后，再删除当前客服。', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -129,26 +155,25 @@
             .then(() => {
             })
             .catch(function () { })
-
-          return false
+        } else {
+          this.$confirm('是否确定删除当前客服？该操作不可恢复，请谨慎操作', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          })
+            .then(() => {
+              return remove(data.id)
+            })
+            .then(() => {
+              this.getData()
+              this.msgSuccess('删除成功')
+            })
+            .catch(function () { })
         }
-
-        this.$confirm('是否确定删除当前客服？该操作不可恢复，请谨慎操作', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        })
-          .then(() => {
-            // return remove(ids)
-          })
-          .then(() => {
-            // this.search()
-            this.msgSuccess('删除成功')
-          })
-          .catch(function () { })
       }
     },
     created () {
+      this.getData()
       this.$store.dispatch(
         'app/setBusininessDesc',
         `
