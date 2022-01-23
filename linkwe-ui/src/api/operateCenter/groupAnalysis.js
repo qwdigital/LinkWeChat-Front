@@ -11,21 +11,6 @@ export function getAnalysis() {
 }
 
 /**
- * 客群数据-客群实时数据
- * @param {*}
-* chatIds	否[]群聊id
-ownerIds	否[]群主id
-beginTime	是 开始时间
-endTime	是 结束时间
- */
-export function getRealCnt(params) {
-  return request({
-    url: service + '/getRealCnt',
-    params
-  })
-}
-
-/**
  * 客群数据-客群总数
  * @param {*} params
 * chatIds	否[]群聊id
@@ -41,16 +26,31 @@ export function getTotalCnt(params) {
 }
 
 /**
- * 客群数据-客群实时数据-导出
+ * 客群数据-客群成员总数
  * @param {*} params
 * chatIds	否[]群聊id
 ownerIds	否[]群主id
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function realDataExport(params) {
+export function getTotalCntMember(params) {
   return request({
-    url: service + '/real/export',
+    url: service + '/member/getTotalCnt',
+    params
+  })
+}
+
+/**
+ * 客群数据-客群实时数据
+ * @param {*}
+* chatIds	否[]群聊id
+ownerIds	否[]群主id
+beginTime	是 开始时间
+endTime	是 结束时间
+ */
+export function getRealCnt(params) {
+  return request({
+    url: service + '/getRealCnt',
     params
   })
 }
@@ -71,16 +71,16 @@ export function getRealCntMember(params) {
 }
 
 /**
- * 客群数据-客群成员总数
+ * 客群数据-客群实时数据-导出
  * @param {*} params
 * chatIds	否[]群聊id
 ownerIds	否[]群主id
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function getTotalCntMember(params) {
+export function realDataExport(params) {
   return request({
-    url: service + '/member/getTotalCnt',
+    url: service + '/real/export',
     params
   })
 }

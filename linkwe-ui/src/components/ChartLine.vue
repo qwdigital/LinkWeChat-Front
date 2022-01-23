@@ -26,9 +26,9 @@ export default {
         '2021-12-06'
       ]
     },
-    // 图例
+    // 图例; 单个图例可传字符串，实际转换成单元素数组[string]
     legend: {
-      type: Array,
+      type: [Array, String],
       default: () => ['新增客户']
     },
     // 展示数据集
@@ -71,11 +71,13 @@ export default {
       this.myChart = echarts.init(this.$refs.chart)
       let option
       let series = []
+      let legend = Array.isArray(this.legend) ? this.legend : [this.legend]
       let seriesData = this.series
       Array.isArray(this.series[0]) || (seriesData = [seriesData])
+
       seriesData.forEach((data, index) => {
         let obj = {
-          name: this.legend[index],
+          name: legend[index],
           type: 'line',
           smooth: true,
           symbol: 'circle', // 数值点类型
@@ -132,7 +134,7 @@ export default {
           }
         },
         legend: {
-          data: this.legend,
+          data: legend,
           // lineStyle: {
           //   width: 0
           // },
@@ -178,7 +180,7 @@ export default {
             },
             axisLabel: {
               // 坐标轴刻度标签的相关设置。
-              interval: 0,
+              // interval: 0,
               color: 'rgba(153, 153, 153, 1)' // 横坐标字体颜色
             },
             axisTick: {

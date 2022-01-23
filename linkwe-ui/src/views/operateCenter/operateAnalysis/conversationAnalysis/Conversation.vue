@@ -1,9 +1,10 @@
 <script>
 import ChartPie from '@/components/ChartPie'
+import CardGroupIndex from '@/components/CardGroupIndex'
 import TabContent from '../components/TabContent'
 export default {
   name: '',
-  components: { TabContent, ChartPie },
+  components: { TabContent, CardGroupIndex, ChartPie },
   data() {
     return {
       cardData: [

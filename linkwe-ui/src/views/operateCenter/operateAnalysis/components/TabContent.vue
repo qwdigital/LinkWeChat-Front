@@ -2,21 +2,24 @@
 import ChartBar from '@/components/ChartBar'
 import ChartLine from '@/components/ChartLine'
 import SelectUser from '@/components/SelectUser'
-import * as customerApi from '@/api/operateCenter/customerAnalysis'
-import * as groupApi from '@/api/operateCenter/groupAnalysis'
-import * as conversationApi from '@/api/operateCenter/conversationAnalysis'
+// import * as customerApi from '@/api/operateCenter/customerAnalysis'
+// import * as groupApi from '@/api/operateCenter/groupAnalysis'
+// import * as conversationApi from '@/api/operateCenter/conversationAnalysis'
 export default {
   name: '',
   components: { ChartLine, ChartBar, SelectUser },
   props: {
+    // 图表类型
     type: {
       type: String,
       default: ''
     },
+    // 图表图例; 单个图例可传字符串，多个图例传数组
     legend: {
-      type: Array,
+      type: [Array, String],
       default: null
     },
+    // 接口请求
     request: {
       type: Function,
       default: () => {}
@@ -29,35 +32,10 @@ export default {
 
       total: 0,
       // 表格数据
-      list: [
-        {
-          time: '2021-12-01',
-          num: 120
-        },
-        {
-          time: '2021-12-01',
-          num: 120
-        },
-        {
-          time: '2021-12-01',
-          num: 120
-        },
-        {
-          time: '2021-12-01',
-          num: 120
-        },
-        {
-          time: '2021-12-01',
-          num: 120
-        }
-      ],
+      list: [],
       xData: [],
       series: [],
       legendDict: {
-        customerTotalChart: ['客户总数'],
-        realDataChart: ['新增客户数', '流失客户数', '净增客户数', '发送申请数'],
-        customerGroupTotalChart: ['客群总数'],
-        customerGroupMemberTotalChart: ['客群成员总数'],
         customerTotalChart: ['客群总数'],
         customerTotalChart: ['客群总数']
       },
@@ -77,40 +55,43 @@ export default {
       // 群聊
       groupChats: [],
       tableProps: {
+        // 客户数据报表
         customerTotalTable: [
-          { prop: '', label: '日期' },
-          { prop: '', label: '客户总数' },
-          { prop: '', label: '新增客户数' },
-          { prop: '', label: '流失客户数' },
-          { prop: '', label: '净增客户数' },
-          { prop: '', label: '昨日发送申请数' }
+          { prop: 'xtime', label: '日期' },
+          { prop: 'totalCnt', label: '客户总数' },
+          { prop: 'addCnt', label: '新增客户数' },
+          { prop: 'lostCnt', label: '流失客户数' },
+          { prop: 'netCnt', label: '净增客户数' },
+          { prop: 'applyCnt', label: '昨日发送申请数' }
         ],
+        // 客群数据报表
         customerGroupTotalTable: [
-          { prop: '', label: '日期' },
-          { prop: '', label: '客群总数' },
-          { prop: '', label: '新增客群数' },
-          { prop: '', label: '解散客群数' }
+          { prop: 'xtime', label: '日期' },
+          { prop: 'totalCnt', label: '客群总数' },
+          { prop: 'addCnt', label: '新增客群数' },
+          { prop: 'dissolveCnt', label: '解散客群数' }
         ],
+        // 客群成员数据报表
         customerGroupMemberTotalTable: [
-          { prop: '', label: '日期' },
-          { prop: '', label: '客群成员总数' },
-          { prop: '', label: '新增客群成员数' },
-          { prop: '', label: '流失客群成员数' }
+          { prop: 'xtime', label: '日期' },
+          { prop: 'totalCnt', label: '客群成员总数' },
+          { prop: 'addCnt', label: '新增客群成员数' },
+          { prop: 'quitCnt', label: '流失客群成员数' }
         ],
         // 客户联系
         customerContactTable: [
-          { prop: '', label: '日期' },
-          { prop: '', label: '单聊总数' },
-          { prop: '', label: '发送消息数' },
-          { prop: '', label: '已回复聊天占比' },
-          { prop: '', label: '平均回复时长(分)' }
+          { prop: 'xtime', label: '日期' },
+          { prop: 'chatCnt', label: '单聊总数' },
+          { prop: 'messageCnt', label: '发送消息数' },
+          { prop: 'replyPercentage', label: '已回复聊天占比' },
+          { prop: 'avgReplyTime', label: '平均回复时长(分)' }
         ],
-        // 客户联系
+        // 客群联系
         customerGroupContactTable: [
-          { prop: '', label: '日期' },
-          { prop: '', label: '群聊总数' },
-          { prop: '', label: '群聊消息数' },
-          { prop: '', label: '发送消息群成员数' }
+          { prop: 'xtime', label: '日期' },
+          { prop: 'chatTotal', label: '群聊总数' },
+          { prop: 'msgTotal', label: '群聊消息数' },
+          { prop: 'memberHasMsg', label: '发送消息群成员数' }
         ]
       },
       userArray: [], // 选择人员
@@ -136,17 +117,45 @@ export default {
         .then(({ rows, total, data }) => {
           if (this.type.includes('Chart')) {
             this.xData = data.map((e) => e.xtime)
+
+            if (
+              'customerTotalChart,customerGroupTotalChart,customerGroupMemberTotalChart'.includes(
+                this.type
+              )
+            ) {
+              // 客户总数
+              this.series = data.map((e) => e.totalCnt)
+            } else if (this.type === 'realDataChart') {
+              // 实时数据
+              this.series.push(data.map((e) => e.addCnt))
+              this.series.push(data.map((e) => e.lostCnt))
+              this.series.push(data.map((e) => e.netCnt))
+              this.series.push(data.map((e) => e.applyCnt))
+            } else {
+              let dict = {
+                singleChatTotalChart: 'chatCnt', // 单聊总数
+                sendMessageNumChart: 'messageCnt', // 发送消息数
+                replySingleChatChart: 'replyPercentage', // 回复单聊占比
+                averageReplyDurationChart: 'avgReplyTime', // 平均首次回复时长
+                groupChatTotalChart: 'chatTotal', // 群聊总数
+                groupChatMessageNumChart: 'msgTotal', // 群聊消息数
+                sendMessageGroupMemberChart: 'memberHasMsg' // 发送消息群成员数
+              }
+              this.series = data.map((e) => e[dict[this.type]])
+            }
+          } else if (this.type === 'staffCustomerBar') {
+            // 员工客户Top10
+            this.xData = data.map((e) => e.userName)
             this.series = data.map((e) => e.totalCnt)
-          } else if (this.type === 'realDataChart') {
-            this.xData = data.map((e) => e.time)
-            this.legendDict[this.type].forEach((element) => {
-              this.series.push(data.map((e) => e.num))
-            })
+          } else if (this.type.includes('Table')) {
+            this.list = data
+            this.total = Number(total)
           }
-          this.total = Number(total)
-          this.loading = false
         })
-        .catch(() => {
+        .catch((e) => {
+          console.log(e)
+        })
+        .finally(() => {
           this.loading = false
         })
     },
@@ -174,6 +183,7 @@ export default {
       }
     },
     getSelectUser(data) {
+      debugger
       this.userArray = data
       this.query.qrUserName = this.userArray
         .map(function (obj, index) {
@@ -211,13 +221,13 @@ export default {
         range-separator="-"
         start-placeholder="开始日期"
         end-placeholder="结束日期"
-        @change="getList"
+        @change="getList(1)"
       ></el-date-picker>
       <el-select
         v-if="type.toLowerCase().includes('group')"
         v-model="query.group"
         placeholder="请选择群主"
-        @change="getList"
+        @change="getList(1)"
       >
         <el-option
           v-for="item in groupOwners"
@@ -231,7 +241,7 @@ export default {
         v-if="['customerGroupMemberTotalChart', 'customerGroupMemberTotalTable'].includes(type)"
         v-model="query.group"
         placeholder="请选择群聊"
-        @change="getList"
+        @change="getList(1)"
       >
         <el-option
           v-for="item in groupChats"
@@ -248,8 +258,9 @@ export default {
         readonly
         @focus="dialogVisible = true"
         placeholder="请选择部门或员工"
+        @change="getList(1)"
       />
-      <el-button v-if="type.includes('Table')" class="fr" type="primary">导出 Exce</el-button>
+      <el-button v-if="type.includes('Table')" class="fr" type="primary">导出 Excel</el-button>
     </div>
     <ChartLine
       v-if="type.includes('Chart')"
@@ -261,13 +272,17 @@ export default {
       <el-table-column
         v-for="(item, index) in tableProps[type]"
         :key="index"
-        :prop="item.label"
+        :prop="item.prop"
         :label="item.label"
         align="center"
       >
       </el-table-column>
     </el-table>
-    <ChartBar v-else-if="'staffCustomerBar'.includes(type)"></ChartBar>
+    <ChartBar
+      v-else-if="'staffCustomerBar'.includes(type)"
+      :xData="xData"
+      :series="series"
+    ></ChartBar>
 
     <SelectUser
       :visible.sync="dialogVisible"
