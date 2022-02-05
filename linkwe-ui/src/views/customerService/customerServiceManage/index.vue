@@ -2,7 +2,7 @@
   <div class="g-card g-pad20">
     <div class="operation">
       <div class="item">
-        <el-button type="primary" size="mini" :disabled="list.length === 10">新建客服</el-button>
+        <el-button type="primary" size="mini" :disabled="list.length === 10" @click="addFn">新建客服</el-button>
         <span class="sub" v-if="list.length < 11">还可以添加{{10 -list.length}}个客服</span>
       </div>
       <div class="item">
@@ -115,6 +115,20 @@
       }
     },
     methods: {
+      addFn (data) {
+        if (data) {
+          this.$router.push({
+            path: '/drainageCode/customerService/add',
+            query: {
+              id: data
+            }
+          })
+        } else {
+          this.$router.push({
+            path: '/drainageCode/customerService/add',
+          })
+        }
+      },
       getData () {
         // getList().then(res => {
         //   this.list = res.data

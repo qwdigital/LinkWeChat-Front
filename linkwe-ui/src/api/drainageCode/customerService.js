@@ -8,6 +8,15 @@ export function getList (params) {
   })
 }
 
+// 新增客服
+export function addService (data) {
+  return request({
+    url: '/wecom/kf/add',
+    method: 'post',
+    data: data
+  })
+}
+
 // 删除客服
 export function remove (id) {
   return request({
