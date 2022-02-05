@@ -130,17 +130,17 @@
         }
       },
       getData () {
-        // getList().then(res => {
-        //   this.list = res.data
-        // })
-        this.list[0] = {
-          name: '测试客服',
-          avatar: pic,
-          receptionType: 1,
-          userList: [{ userId: 111, userName: '员工一' }],
-          kfScenes: [{ id: 222, name: '场景一' }, { id: 333, name: '场景er' }, { id: 444, name: '场景san' }],
-          updateTime: '2022-01-20'
-        }
+        getList().then(res => {
+          this.list = res.data
+        })
+        // this.list[0] = {
+        //   name: '测试客服',
+        //   avatar: pic,
+        //   receptionType: 1,
+        //   userList: [{ userId: 111, userName: '员工一' }],
+        //   kfScenes: [{ id: 222, name: '场景一' }, { id: 333, name: '场景er' }, { id: 444, name: '场景san' }],
+        //   updateTime: '2022-01-20'
+        // }
       },
       moreMemberFn (data) {
         this.showMemberDialog = true

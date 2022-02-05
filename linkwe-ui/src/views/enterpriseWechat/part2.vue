@@ -1,0 +1,87 @@
+<template>
+  <div>
+    <el-form ref="form" label-position="right" :model="form" :rules="rules" size="small" label-width="130px">
+      <div class="g-card g-pad20">
+        <div class="my-title">
+          自建应用
+        </div>
+        <el-form-item label="消息应用ID:" prop="agentId">
+          <el-input v-model="form.agentId" placeholder="请输入消息应用ID"></el-input>
+          <div class="tips">用于接收应用消息，在企微后台->应用工具->自建应用中配置并获取</div>
+        </el-form-item>
+        <el-form-item label="消息应用Secret:" prop="agentSecret">
+          <div>
+            <el-input style="width: 40%;" type="password" v-model="form.agentSecret" placeholder="请输入消息应用Secret"></el-input>
+            <el-button style="margin-left:20px;" plain>取消</el-button>
+            <el-button type="primary" plain>保存</el-button>
+            <!-- <el-button type="primary" plain v-if="form.corpSecret">修改</el-button> -->
+          </div>
+          <div class="tips">用于接收应用消息，在企微后台->应用工具->自建应用中配置并获取</div>
+        </el-form-item>
+      </div>
+      <div class="g-card g-pad20">
+        <div class="my-title">
+          会话存档
+        </div>
+        <el-form-item label="会话存档Secret:" prop="chatSecret">
+          <div>
+            <el-input style="width: 40%;" v-model="form.chatSecret" placeholder="请输入会话存档Secret"></el-input>
+            <el-button style="margin-left:20px;" plain>取消</el-button>
+            <el-button type="primary" plain>保存</el-button>
+            <!-- <el-button type="primary" plain v-if="form.corpSecret">修改</el-button> -->
+          </div>
+          <div class="tips">用于同步企微会话，在企微后台->管理工具->会话存档中获取</div>
+        </el-form-item>
+        <el-form-item label="消息加密公钥:" prop="">
+          <el-input style="width: 40%;" v-model="form.companyName" placeholder="请输入消息加密公钥"></el-input>
+          <div class="tips">用于同步企微会话，在企微后台->管理工具->会话存档中获取</div>
+        </el-form-item>
+      </div>
+      <el-form-item label="" class="ar">
+        <el-button type="primary" @click="submit" v-show="!disabled">保存配置</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+</template>
+<script>
+  export default {
+    name: 'enterprise-wechat-part2',
+    data () {
+      return {
+        form: {
+          agentId: '',
+          agentSecret: '',
+          chatSecret: ''
+
+        },
+        rules: {
+          agentId: [{ required: true, message: '必填项', trigger: 'blur' }],
+          agentSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
+          chatSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
+
+          seasRedirectUrl: [{ required: true, message: '必填项', trigger: 'blur' }],
+          sopTagRedirectUrl: [{ required: true, message: '必填项', trigger: 'blur' }]
+        }
+      }
+    },
+    methods: {
+      submit () {
+
+      }
+    },
+    mounted () {
+
+    },
+    created () {
+
+    }
+  }
+</script>
+<style lang="scss" scoped>
+  .my-title {
+  }
+  .tips {
+    color: #aaa;
+    font-size: 12px;
+  }
+</style>

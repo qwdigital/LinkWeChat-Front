@@ -55,7 +55,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination :total="total" :page.sync="search.pageNum" :limit.sync="search.pageSize" @pagination="getList()" />
+    <pagination :total="total" :page.sync="search.pageNum" :limit.sync="search.pageSize" @pagination="getSceneList()" />
     <el-dialog :title="state + '场景'" :visible.sync="showDialog" width="500px">
       <div>
         <el-form ref="form" :rules="formRules" :model="form" label-position="right" label-width="100px">
@@ -88,7 +88,7 @@
 <script>
   import ClipboardJS from 'clipboard'
   import ShowCustomerService from "../components/ShowCustomerSevice.vue"
-  import { getList, getSceneList, deleteScene, addScene, editScene } from '@/api/drainageCode/customerService.js'
+  import { getSceneList, deleteScene, addScene, editScene } from '@/api/drainageCode/customerService.js'
   export default {
     name: 'scene-manage',
     components: {
@@ -246,7 +246,7 @@
       if (this.$route.query.kfid) {
         this.search.kfId = this.$router.query.kfid
       }
-      getList().then(res => {
+      getSceneList().then(res => {
         this.customerList = res.data
       })
       this.getData()
