@@ -69,7 +69,10 @@ export default {
             }
           ]
         })
-        .catch(() => {
+        .catch((e) => {
+          console.log(e)
+        })
+        .finally(() => {
           this.loading = false
         })
     }
@@ -85,16 +88,24 @@ export default {
       <div>数据趋势</div>
       <el-tabs v-model="active">
         <el-tab-pane label="客户总数">
-          <TabContent type="customerTotalChart" :request="api.getTotalCnt"></TabContent>
+          <TabContent
+            type="customerTotalChart"
+            legend="客户总数"
+            :request="api.getTotalCnt"
+          ></TabContent>
         </el-tab-pane>
         <el-tab-pane label="实时数据">
-          <TabContent type="realDataChart" :request="api.getRealCnt"></TabContent>
+          <TabContent
+            type="realDataChart"
+            :legend="['新增客户数', '流失客户数', '净增客户数', '发送申请数']"
+            :request="api.getRealCnt"
+          ></TabContent>
         </el-tab-pane>
       </el-tabs>
     </div>
 
     <div>
-      <div>员工客户 Top10</div>
+      <div>员工客户Top10</div>
       <TabContent type="staffCustomerBar" :request="api.getRankCnt"></TabContent>
     </div>
 

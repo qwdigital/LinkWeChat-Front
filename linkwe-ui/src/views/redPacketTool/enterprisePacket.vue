@@ -188,7 +188,7 @@ import {
   getLimitList,
   addLimit,
   updateLimit
-} from '@/api/moneyTool/moneyTool'
+} from '@/api/redPacketTool'
 
 function validateAmount(rule, value, callback) {
   if (value == '') {

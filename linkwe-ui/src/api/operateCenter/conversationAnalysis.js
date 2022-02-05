@@ -76,8 +76,7 @@ export function dataExportGroup(params) {
  */
 export function getAnalysisGroup() {
   return request({
-    url: service + '/group/getAnalysis',
-    params
+    url: service + '/group/getAnalysis'
   })
 }
 

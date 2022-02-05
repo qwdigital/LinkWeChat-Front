@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import { getScopList, addScop, updatedScop, removeScop } from '@/api/moneyTool/moneyTool'
+import { getScopList, addScop, updatedScop, removeScop } from '@/api/redPacketTool'
 import { accSub } from '@/utils/common'
 export default {
   name: 'member',

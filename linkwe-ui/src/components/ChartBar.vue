@@ -23,7 +23,7 @@ export default {
     // 图例
     legend: {
       type: Array,
-      default: () => ['已推送']
+      default: () => []
     },
     // 展示数据集
     // 注：二位数组， 其一维数组顺序需要和图例顺序一致，其二维数组顺序需要和X轴数组顺序一致
