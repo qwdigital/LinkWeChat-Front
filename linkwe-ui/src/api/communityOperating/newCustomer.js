@@ -1,12 +1,12 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.wecom + '/communityNewGroup'
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/communityNewGroup'
 
 /**
  * 获取新客自动拉群列表
  * @param {*} params
  *
  */
-export function getList(params) {
+export function getList (params) {
   return request({
     url: service + '/list',
     method: 'get',
@@ -19,7 +19,7 @@ export function getList(params) {
  * @param {*} params
  *
  */
-export function getDetail(id) {
+export function getDetail (id) {
   return request({
     url: service + '/' + id,
     method: 'get',
@@ -38,7 +38,7 @@ export function getDetail(id) {
   "welcomeMsg": "string"
 }
  */
-export function add(data) {
+export function add (data) {
   return request({
     url: service + '/',
     method: 'post',
@@ -58,7 +58,7 @@ export function add(data) {
   "welcomeMsg": "string"
 }
    */
-export function update(id, data) {
+export function update (id, data) {
   return request({
     url: service + '/' + id,
     method: 'put',
@@ -70,7 +70,7 @@ export function update(id, data) {
  * 删除新客自动拉群
  * @param {*} ids
  */
-export function remove(ids) {
+export function remove (ids) {
   return request({
     url: service + '/' + ids,
     method: 'DELETE',
@@ -81,7 +81,7 @@ export function remove(ids) {
  * 批量下载
  * @param {*} 	员工活码ids,多个逗号隔开
  */
-export function downloadBatch(ids) {
+export function downloadBatch (ids) {
   return request({
     url: service + '/downloadBatch',
     params: {
@@ -91,7 +91,7 @@ export function downloadBatch(ids) {
   })
 }
 
-export function download(id) {
+export function download (id) {
   return request({
     url: service + '/download',
     params: {

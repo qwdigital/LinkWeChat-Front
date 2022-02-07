@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.wecom + '/group'
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/group'
 
 // 客户标签
 
@@ -12,7 +12,7 @@ const service = window.CONFIG.services.wecom + '/group'
     "groupTagType": "标签分组类型(1:客户标签;2:群标签)"
 }
  */
-export function getList(params) {
+export function getList (params) {
   return request({
     url: service + '/list',
     params
@@ -29,7 +29,7 @@ export function getList(params) {
     }]
 }
  */
-export function add(data) {
+export function add (data) {
   return request({
     url: service,
     method: 'post',
@@ -51,7 +51,7 @@ export function add(data) {
     }]
 }
  */
-export function update(data) {
+export function update (data) {
   return request({
     url: service,
     method: 'put',
@@ -63,7 +63,7 @@ export function update(data) {
  * 标签批量删除接口
  * @param {*} ids
  */
-export function remove(ids) {
+export function remove (ids) {
   return request({
     url: service + '/' + ids,
     method: 'DELETE'
@@ -73,7 +73,7 @@ export function remove(ids) {
 /**
  * 同步标签
  */
-export function syncTag() {
+export function syncTag () {
   return request({
     url: service + '/synchWeTags'
   })

@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.wecom + '/user'
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/user'
 
 /**
  * 获取离职已分配员工列表
@@ -12,7 +12,7 @@ endTime:
 userName:
 }
  */
-export function getList(params) {
+export function getList (params) {
   return request({
     url: service + '/leaveUserAllocateList',
     params
@@ -30,7 +30,7 @@ endTime:
 userName:
 }
  */
-export function getListNo(params) {
+export function getListNo (params) {
   return request({
     url: service + '/leaveUserNoAllocateList',
     params
@@ -45,7 +45,7 @@ export function getListNo(params) {
     "takeoverUserid": "接替成员的userid"
 }
  */
-export function allocate(data) {
+export function allocate (data) {
   return request({
     url: service + '/allocateLeaveUserAboutData',
     method: 'put',
@@ -64,7 +64,7 @@ export function allocate(data) {
   "handoverUserId": ""
 }
  */
-export function getAllocateCustomers(params) {
+export function getAllocateCustomers (params) {
   return request({
     url: service + '/getAllocateCustomers',
     params
@@ -82,7 +82,7 @@ export function getAllocateCustomers(params) {
   "oldOwner": "" 原群主ID
 }
  */
-export function getAllocateGroups(params) {
+export function getAllocateGroups (params) {
   return request({
     url: service + '/getAllocateGroups',
     params

@@ -1,5 +1,6 @@
 import request from '@/utils/request'
-const service = '/wecom/groupmsg/template'
+const base = window.CONFIG.services.system
+const service = window.CONFIG.services.system + '/wecom/groupmsg/template'
 
 /**
  * 新增群发
@@ -16,7 +17,7 @@ export function add (data) {
 // 根据发送条件查询客户
 export function getCustomerList (params) {
   return request({
-    url: '/wecom/customer/findAllWeCustomerList',
+    url: base + '/wecom/customer/findAllWeCustomerList',
     method: 'get',
     params
   })

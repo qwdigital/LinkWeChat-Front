@@ -1,9 +1,10 @@
 import request from '@/utils/request'
+const service = window.CONFIG.services.system
 
 // 外部联系人 会话列表
 export const getExternalChatList = (fromId) => {
   return request({
-    url: '/chat/msg/selectExternalChatList/' + fromId,
+    url: service + '/chat/msg/selectExternalChatList/' + fromId,
     method: 'get'
   })
 }
@@ -11,7 +12,7 @@ export const getExternalChatList = (fromId) => {
 // 单聊 会话列表
 export const selectAloneChatList = (params) => {
   return request({
-    url: '/chat/msg/selectAloneChatList',
+    url: service + '/chat/msg/selectAloneChatList',
     method: 'get',
     params
   })
@@ -20,14 +21,14 @@ export const selectAloneChatList = (params) => {
 // 内部联系人列表
 export const getInternalChatList = (fromId) => {
   return request({
-    url: '/chat/msg/selectInternalChatList/' + fromId,
+    url: service + '/chat/msg/selectInternalChatList/' + fromId,
     method: 'get'
   })
 }
 
 export const getGroupChatList = (fromId) => {
   return request({
-    url: '/chat/msg/selectGroupChatList/' + fromId,
+    url: service + '/chat/msg/selectGroupChatList/' + fromId,
     method: 'get'
   })
 }
@@ -56,7 +57,7 @@ export const getGroupChatList = (fromId) => {
  */
 export const getChatList = (params) => {
   return request({
-    url: '/chat/msg/selectFullSearchChatList',
+    url: service + '/chat/msg/selectFullSearchChatList',
     method: 'get',
     params
   })
@@ -65,7 +66,7 @@ export const getChatList = (params) => {
 // 全文检索 导出列表
 export const exportList = (params) => {
   return request({
-    url: '/chat/msg/selectFullSearchChatList/export',
+    url: service + '/chat/msg/selectFullSearchChatList/export',
     method: 'get',
     params
     // responseType: 'blob'

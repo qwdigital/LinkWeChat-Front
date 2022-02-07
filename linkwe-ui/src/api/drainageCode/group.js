@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.wecom + '/groupCode'
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/groupCode'
 
 /**
  * 获取群活码列表
@@ -13,7 +13,7 @@ const service = window.CONFIG.services.wecom + '/groupCode'
     "endTime": "结束时间"
 }
  */
-export function getList(params) {
+export function getList (params) {
   return request({
     url: service + '/list',
     params
@@ -33,7 +33,7 @@ export function getList(params) {
   "customerServerQrCode":客服二维码
 }
  */
-export function add(data) {
+export function add (data) {
   return request({
     url: service + '/',
     method: 'post',
@@ -55,7 +55,7 @@ export function add(data) {
   "customerServerQrCode":客服二维码
 }
  */
-export function update(id, data) {
+export function update (id, data) {
   return request({
     url: service + '/' + id,
     method: 'put',
@@ -67,7 +67,7 @@ export function update(id, data) {
  * 根据ID获取群活码数据
  * @param {*} params 
  */
-export function getDetail(id) {
+export function getDetail (id) {
   return request({
     url: service + '/' + id,
   })
@@ -78,7 +78,7 @@ export function getDetail(id) {
  * @param {*}
  * "ids": 群活码ID,多个ID以逗号分隔
  */
-export function remove(ids) {
+export function remove (ids) {
   return request({
     url: service + '/' + ids,
     method: 'delete',
@@ -90,7 +90,7 @@ export function remove(ids) {
  * @param {*}
  * "ids": 群活码ID,多个ID以逗号分隔
  */
-export function downloadBatch(ids) {
+export function downloadBatch (ids) {
   return request({
     url: service + '/downloadBatch',
     params: {
@@ -105,7 +105,7 @@ export function downloadBatch(ids) {
  * @param {*}
  * "id": 群活码ID,多个ID以逗号分隔
  */
-export function download(id) {
+export function download (id) {
   return request({
     url: service + '/download',
     params: {

@@ -1,12 +1,12 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.wecom + '/communityKeywordGroup'
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/communityKeywordGroup'
 
 /**
  * 获取关键词拉群列表
  * @param {*} params
  *
  */
-export function getList(params) {
+export function getList (params) {
   return request({
     url: service + '/list',
     method: 'get',
@@ -19,7 +19,7 @@ export function getList(params) {
  * @param {*} params
  *
  */
-export function getDetail(id) {
+export function getDetail (id) {
   return request({
     url: service + '/' + id,
     method: 'get',
@@ -36,7 +36,7 @@ export function getDetail(id) {
   "keywords": "string",
 }
  */
-export function add(data) {
+export function add (data) {
   return request({
     url: service + '/',
     method: 'post',
@@ -54,7 +54,7 @@ export function add(data) {
   "keywords": "string",
 }
    */
-export function update(id, data) {
+export function update (id, data) {
   return request({
     url: service + '/' + id,
     method: 'put',
@@ -66,7 +66,7 @@ export function update(id, data) {
  * 删除关键词拉群 
  * @param {*} ids
  */
-export function remove(ids) {
+export function remove (ids) {
   return request({
     url: service + '/' + ids,
     method: 'DELETE',

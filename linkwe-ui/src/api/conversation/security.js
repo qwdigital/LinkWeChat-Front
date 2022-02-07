@@ -4,14 +4,14 @@
  * @Date: 2021-05-25 11:19:34
  */
 import request from '@/utils/request'
-const service = window.CONFIG.services.wecom + '/sensitive'
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/sensitive'
 
 /**
  * 获取敏感词触发列表
  * @param {*} params
  *
  */
-export function getSecurityList(params) {
+export function getSecurityList (params) {
   return request({
     url: service + '/hit/list',
     method: 'get',
@@ -24,7 +24,7 @@ export function getSecurityList(params) {
  * @param {*} params
  *
  */
-export function getSettingSensitiveList(params) {
+export function getSettingSensitiveList (params) {
   return request({
     url: service + '/list',
     method: 'get',
@@ -36,7 +36,7 @@ export function getSettingSensitiveList(params) {
  * @param {*} params
  *
  */
-export function addSettingSensitive(data) {
+export function addSettingSensitive (data) {
   return request({
     url: service,
     method: 'post',
@@ -48,7 +48,7 @@ export function addSettingSensitive(data) {
  * @param {*} params
  *
  */
-export function modifySettingSensitive(data) {
+export function modifySettingSensitive (data) {
   return request({
     url: service,
     method: 'put',
@@ -60,7 +60,7 @@ export function modifySettingSensitive(data) {
  * @param {*} params
  *
  */
-export function getSensitiveDetails(tableId) {
+export function getSensitiveDetails (tableId) {
   return request({
     url: service + '/' + tableId,
     method: 'get'
@@ -71,7 +71,7 @@ export function getSensitiveDetails(tableId) {
  * @param {*} params
  *
  */
-export function deleteSensitive(tableId) {
+export function deleteSensitive (tableId) {
   return request({
     url: service + '/' + tableId,
     method: 'delete'
@@ -82,7 +82,7 @@ export function deleteSensitive(tableId) {
  * @param {*} params
  *
  */
-export function getSensitiveRecord(params) {
+export function getSensitiveRecord (params) {
   return request({
     url: service + '/list',
     method: 'get',
@@ -94,7 +94,7 @@ export function getSensitiveRecord(params) {
  * @param {*} params
  *
  */
-export function getSensitiveManagement(params) {
+export function getSensitiveManagement (params) {
   return request({
     url: service + '/act/list',
     method: 'get',

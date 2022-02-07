@@ -1,5 +1,6 @@
 import request from '@/utils/request'
-const service = '/wecom/category'
+const base = window.CONFIG.services.system
+const service = window.CONFIG.services.system + '/wecom/category'
 
 /**
  * 编辑员工活码
@@ -113,7 +114,7 @@ export function removeCodeCategory (ids) {
 // 活码列表
 export function getList (params) {
   return request({
-    url: '/wecom/qr/list',
+    url: base + '/wecom/qr/list',
     params
   })
 }
@@ -121,7 +122,7 @@ export function getList (params) {
 // 活码下载
 export function downloadBatch (ids) {
   return request({
-    url: "/wecom/qr/batch/download",
+    url: base + "/wecom/qr/batch/download",
     params: {
       ids: ids
     },
@@ -131,7 +132,7 @@ export function downloadBatch (ids) {
 // 活码删除
 export function remove (id) {
   return request({
-    url: '/wecom/qr/del/' + id,
+    url: base + '/wecom/qr/del/' + id,
     method: 'delete'
   })
 }
@@ -139,7 +140,7 @@ export function remove (id) {
 // 活码新增
 export function add (data) {
   return request({
-    url: "/wecom/qr/add",
+    url: base + "/wecom/qr/add",
     method: 'post',
     data
   })
@@ -147,7 +148,7 @@ export function add (data) {
 
 export function update (data) {
   return request({
-    url: '/wecom/qr/update',
+    url: base + '/wecom/qr/update',
     method: 'put',
     data
   })
@@ -156,14 +157,14 @@ export function update (data) {
 // 活码详情
 export function getDetail (id) {
   return request({
-    url: '/wecom/qr/get/' + id
+    url: base + '/wecom/qr/get/' + id
   })
 }
 
 // 活码统计
 export function getTotal (data) {
   return request({
-    url: '/wecom/qr/scan/count',
+    url: base + '/wecom/qr/scan/count',
     params: data
   })
 }

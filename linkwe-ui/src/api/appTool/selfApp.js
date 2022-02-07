@@ -1,11 +1,11 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.wecom + '/weapp'
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/weapp'
 
 /**
  * 列表
  * @param {*} params
  */
-export function getList() {
+export function getList () {
   return request({
     url: service + '/list'
   })
@@ -26,7 +26,7 @@ home_url	number	非必须应用主页url。url必须以http或者https开头
 id	string	必须主键id
  * }
  */
-export function update(data) {
+export function update (data) {
   return request({
     url: service + '/updateWeApp',
     method: 'put',
@@ -35,7 +35,7 @@ export function update(data) {
 }
 
 // 添加
-export function add(data) {
+export function add (data) {
   return request({
     url: service + '/addWeApp',
     method: 'post',

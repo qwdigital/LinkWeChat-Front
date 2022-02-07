@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 import { dataURLtoFile } from '@/utils/common'
 
-const service = window.CONFIG.services.common
+const service = window.CONFIG.services.system + window.CONFIG.services.common
 
-export function upload(data) {
+export function upload (data) {
   return request({
     url: service + '/uploadFile2Cos',
     method: 'POST',
@@ -19,9 +19,9 @@ export function upload(data) {
   name=文件名称，带后缀
 }
  */
-export function download(url, name) {
+export function download (url, name) {
   return (
-    process.env.VUE_APP_BASE_API +
+    process.env.VUE_APP_BASE_API + window.CONFIG.services.system +
     `/common/download/url?url=${url}&name=${name}`
   )
 }
@@ -33,14 +33,14 @@ export function download(url, name) {
   "dataURL": 本地文件(base64)
 }
  */
-export function uploadDataURL(dataURL) {
+export function uploadDataURL (dataURL) {
   const data = new window.FormData()
   const f = dataURLtoFile(dataURL)
   data.append('file', f)
 
   return request({
-    url: process.env.VUE_APP_BASE_API +
-    '/common/uploadFile2Cos',
+    url: process.env.VUE_APP_BASE_API + window.CONFIG.services.system +
+      '/common/uploadFile2Cos',
     method: 'post',
     processData: false,
     data,

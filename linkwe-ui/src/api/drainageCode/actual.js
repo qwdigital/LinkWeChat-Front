@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.wecom + '/actual'
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/actual'
 
 /**
  * 获取实际群码
@@ -11,7 +11,7 @@ const service = window.CONFIG.services.wecom + '/actual'
       "state": "状态",
   }
  */
-export function getList(params) {
+export function getList (params) {
   return request({
     url: service + '/list',
     params
@@ -30,7 +30,7 @@ export function getList(params) {
   "chatGroupName": 客户群名称
 }
  */
-export function add(data) {
+export function add (data) {
   return request({
     url: service + '/',
     method: 'post',
@@ -51,7 +51,7 @@ export function add(data) {
   "chatGroupName": 客户群名称
 }
  */
-export function update(data) {
+export function update (data) {
   return request({
     url: service + '/',
     method: 'put',
@@ -64,7 +64,7 @@ export function update(data) {
  * @param {*}
  * "ids": 实际群活ID,多个ID以逗号分隔
  */
-export function remove(ids) {
+export function remove (ids) {
   return request({
     url: service + '/' + ids,
     method: 'delete',

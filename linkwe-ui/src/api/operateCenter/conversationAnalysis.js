@@ -1,11 +1,11 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.wecom + '/operation/session'
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/operation/session'
 
 /**
  * 会话分析-客户联系总数
  * @param {*} params
  */
-export function getAnalysisCustomer() {
+export function getAnalysisCustomer () {
   return request({
     url: service + '/customer/getAnalysis'
   })
@@ -19,7 +19,7 @@ userIds	否[]员工
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function getTotalCntCustomer(params) {
+export function getTotalCntCustomer (params) {
   return request({
     url: service + '/customer/getTotalCnt',
     params
@@ -34,7 +34,7 @@ userIds	否[]员工
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function getUserAvgReplyTimeRank(params) {
+export function getUserAvgReplyTimeRank (params) {
   return request({
     url: service + '/customer/getUserAvgReplyTimeRank',
     params
@@ -49,7 +49,7 @@ userIds	否[]员工
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function getUserChatRank(params) {
+export function getUserChatRank (params) {
   return request({
     url: service + '/customer/getUserChatRank',
     params
@@ -64,7 +64,7 @@ userIds	否[]员工
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function dataExportGroup(params) {
+export function dataExportGroup (params) {
   return request({
     url: service + '/customer/total/export',
     params
@@ -74,7 +74,7 @@ export function dataExportGroup(params) {
 /**
  * 会话分析-客群联系总数
  */
-export function getAnalysisGroup() {
+export function getAnalysisGroup () {
   return request({
     url: service + '/group/getAnalysis'
   })
@@ -88,7 +88,7 @@ userIds	否[]员工
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function getTotalCntGroup(params) {
+export function getTotalCntGroup (params) {
   return request({
     url: service + '/group/getTotalCnt',
     params
@@ -103,7 +103,7 @@ userIds	否[]员工
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function realDataExportGroup(params) {
+export function realDataExportGroup (params) {
   return request({
     url: service + '/group/real/export',
     params

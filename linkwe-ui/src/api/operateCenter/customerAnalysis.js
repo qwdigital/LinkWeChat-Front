@@ -1,10 +1,10 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.wecom + '/operation/customer'
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/operation/customer'
 
 /**
  * 客户数据分析
  */
-export function getAnalysis() {
+export function getAnalysis () {
   return request({
     url: service + '/getAnalysis'
   })
@@ -18,7 +18,7 @@ userIds	否[]员工
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function getTotalCnt(params) {
+export function getTotalCnt (params) {
   return request({
     url: service + '/getTotalCnt',
     params
@@ -33,7 +33,7 @@ userIds	否[]员工
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function getRealCnt(params) {
+export function getRealCnt (params) {
   return request({
     url: service + '/getRealCnt',
     params
@@ -48,7 +48,7 @@ userIds	否[]员工
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function getRankCnt(params) {
+export function getRankCnt (params) {
   return request({
     url: service + '/getRankCnt',
     params
@@ -63,7 +63,7 @@ userIds	否[]员工
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function realDataExport(params) {
+export function realDataExport (params) {
   return request({
     url: service + '/real/export',
     params

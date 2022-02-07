@@ -1,7 +1,8 @@
 import request from '@/utils/request';
+const service = window.CONFIG.services.system
 
 // 登录方法
-export function login(username, password, code, uuid) {
+export function login (username, password, code, uuid) {
   const data = {
     username,
     password,
@@ -9,32 +10,32 @@ export function login(username, password, code, uuid) {
     uuid,
   };
   return request({
-    url: '/login',
+    url: service + '/login',
     method: 'post',
     data: data,
   });
 }
 
 // 获取用户详细信息
-export function getInfo() {
+export function getInfo () {
   return request({
-    url: '/getInfo',
+    url: service + '/getInfo',
     method: 'get',
   });
 }
 
 // 退出方法
-export function logout() {
+export function logout () {
   return request({
-    url: '/logout',
+    url: service + '/logout',
     method: 'post',
   });
 }
 
 // 获取验证码
-export function getCodeImg() {
+export function getCodeImg () {
   return request({
-    url: '/captchaImage',
+    url: service + '/captchaImage',
     method: 'get',
   });
 }
@@ -43,9 +44,9 @@ export function getCodeImg() {
  * 企业微信扫码回调接口
  * @param {*} auth_code
  */
-export function wxQrLogin(auth_code) {
+export function wxQrLogin (auth_code) {
   return request({
-    url: '/wxQrLogin',
+    url: service + '/wxQrLogin',
     method: 'get',
     params: {
       auth_code,
@@ -56,9 +57,9 @@ export function wxQrLogin(auth_code) {
 /**
  * 获取扫码登陆相关参数
  */
-export function findWxQrLoginInfo() {
+export function findWxQrLoginInfo () {
   return request({
-    url: '/findWxQrLoginInfo',
+    url: service + '/findWxQrLoginInfo',
     method: 'get',
   });
 }

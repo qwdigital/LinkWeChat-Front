@@ -1,12 +1,12 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.wecom + '/material'
-const serviceCategory = window.CONFIG.services.wecom + '/poster'
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/material'
+const serviceCategory = window.CONFIG.services.system + window.CONFIG.services.wecom + '/poster'
 
 /**
  * 查询海报列表
  * @param {*} params
  */
-export function getList(params) {
+export function getList (params) {
   return request({ url: service + '/list', params })
 }
 
@@ -14,7 +14,7 @@ export function getList(params) {
  * 更新海报
  * @param {*} params
  */
-export function updatePoster(data) {
+export function updatePoster (data) {
   console.log('poster change:', JSON.stringify(data))
   return request({ url: serviceCategory + '/update', method: 'put', data })
 }
@@ -23,7 +23,7 @@ export function updatePoster(data) {
  * 添加海报
  * @param {*} data
  */
-export function addPoster(data) {
+export function addPoster (data) {
   return request({ url: serviceCategory + '/insert', method: 'post', data })
 }
 
@@ -31,7 +31,7 @@ export function addPoster(data) {
  * 查询海报详情
  * @param {*} data
  */
-export function getPosterInfo(id) {
+export function getPosterInfo (id) {
   return request({ url: serviceCategory + '/entity/' + id })
 }
 
@@ -39,7 +39,7 @@ export function getPosterInfo(id) {
  * 删除海报
  * @param {*} data
  */
-export function removePoster(ids) {
+export function removePoster (ids) {
   return request({
     url: serviceCategory + '/delete/' + ids,
     method: 'DELETE'

@@ -1,9 +1,9 @@
 import request from '@/utils/request'
-
+const service = window.CONFIG.services.kf
 // 客服列表
 export function getList (params) {
   return request({
-    url: '/wecom/kf/list',
+    url: service + '/wecom/kf/list',
     params
   })
 }
@@ -11,7 +11,7 @@ export function getList (params) {
 // 新增客服
 export function addService (data) {
   return request({
-    url: '/wecom/kf/add',
+    url: service + '/wecom/kf/add',
     method: 'post',
     data: data
   })
@@ -20,7 +20,7 @@ export function addService (data) {
 // 删除客服
 export function remove (id) {
   return request({
-    url: '/wecom/kf/delete/' + id,
+    url: service + '/wecom/kf/delete/' + id,
     params
   })
 }
@@ -28,7 +28,7 @@ export function remove (id) {
 // 场景列表
 export function getSceneList (params) {
   return request({
-    url: '/wecom/kf/scenes/list',
+    url: service + '/wecom/kf/scenes/list',
     params
   })
 }
@@ -36,7 +36,7 @@ export function getSceneList (params) {
 // 新增场景
 export function addScene (data) {
   return request({
-    url: '/wecom/kf/scenes/add',
+    url: service + '/wecom/kf/scenes/add',
     data: data,
     method: 'post'
   })
@@ -45,7 +45,7 @@ export function addScene (data) {
 // 编辑场景
 export function editScene (data) {
   return request({
-    url: '/wecom/kf/scenes/edit',
+    url: service + '/wecom/kf/scenes/edit',
     data: data,
     method: 'put'
   })
@@ -54,6 +54,6 @@ export function editScene (data) {
 // 删除场景
 export function deleteScene (ids) {
   return request({
-    url: '/wecom/kf/scenes/delete/' + ids
+    url: service + '/wecom/kf/scenes/delete/' + ids
   })
 }

@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.wecom + '/tlp'
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/tlp'
 
 /**
  * 获取欢迎语列表
@@ -7,7 +7,7 @@ const service = window.CONFIG.services.wecom + '/tlp'
  */
 export function getList (params) {
   return request({
-    url: '/wecom/tlp/list',
+    url: service + '/list',
     params
   })
 }
@@ -45,7 +45,7 @@ export function getScop (id) {
  */
 export function addOrUpdate (data) {
   return request({
-    url: '/wecom/tlp/addorUpdate',
+    url: service + '/addorUpdate',
     method: 'POST',
     data
   })
@@ -77,7 +77,7 @@ export function addOrUpdate (data) {
  */
 export function remove (ids) {
   return request({
-    url: '/wecom/tlp/remove/' + ids,
+    url: service + '/remove/' + ids,
     method: 'DELETE'
   })
 }
@@ -85,7 +85,7 @@ export function remove (ids) {
 // 预览数据
 export function getPreview (id) {
   return request({
-    url: '/wecom/tlp/preview',
+    url: service + '/preview',
     params: {
       id
     }

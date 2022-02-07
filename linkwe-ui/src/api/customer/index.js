@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-let getway = window.CONFIG.services.wecom
+let getway = window.CONFIG.services.system + window.CONFIG.services.wecom
 const service = getway + '/customer'
 
 /**
@@ -20,7 +20,7 @@ const service = getway + '/customer'
     gender://0-未知 1-男性 2-女性
 }
  */
-export function getListNew(params) {
+export function getListNew (params) {
   return request({
     url: service + '/findWeCustomerList',
     method: 'get',
@@ -42,7 +42,7 @@ export function getListNew(params) {
     status: 0 客户状态 0正常 1删除
 }
  */
-export function getList(params) {
+export function getList (params) {
   return request({
     url: service + '/list',
     method: 'get',
@@ -53,7 +53,7 @@ export function getList(params) {
 /**
  * 客户同步接口
  */
-export function sync() {
+export function sync () {
   return request({
     url: service + '/synchWeCustomer'
   })
@@ -71,7 +71,7 @@ export function sync() {
     }]
 }
  */
-export function makeLabel(data) {
+export function makeLabel (data) {
   return request({
     url: service + '/makeLabel',
     method: 'post',
@@ -91,7 +91,7 @@ export function makeLabel(data) {
     }]
 }
  */
-export function removeLabel(data) {
+export function removeLabel (data) {
   return request({
     url: service + '/removeLabel',
     method: 'DELETE',
@@ -107,7 +107,7 @@ export function removeLabel(data) {
   "birthday": ""
 }
  */
-export function updateBirthday(data) {
+export function updateBirthday (data) {
   return request({
     url: service,
     method: 'PUT',
@@ -116,7 +116,7 @@ export function updateBirthday(data) {
 }
 
 // 导出用户
-export function exportCustomer(query) {
+export function exportCustomer (query) {
   return request({
     url: service + '/export',
     method: 'get',
@@ -128,16 +128,16 @@ export function exportCustomer(query) {
  * 客户流失通知开关
  * @param {*} status [string]	是	客户流失通知开关 0:关闭 1:开启
  */
-export function lossRemind(status) {
+export function lossRemind (status) {
   return request({
-    url: window.CONFIG.services.wecom + '/corp/startCustomerChurnNoticeSwitch/' + status,
+    url: getway + '/corp/startCustomerChurnNoticeSwitch/' + status,
     method: 'PUT'
   })
 }
 
-export function getLossRemindStatus(status) {
+export function getLossRemindStatus (status) {
   return request({
-    url: window.CONFIG.services.wecom + '/corp/getCustomerChurnNoticeSwitch/'
+    url: getway + '/corp/getCustomerChurnNoticeSwitch/'
   })
 }
 /**
@@ -150,7 +150,7 @@ export function getLossRemindStatus(status) {
       }
  * @returns
  */
-export function jobExtends(data) {
+export function jobExtends (data) {
   return request({
     url: service + '/jobExtends',
     method: 'POST',
@@ -165,7 +165,7 @@ export function jobExtends(data) {
  * userId	是	当前跟进人id
  * delFlag: 1 用户是否流失 0 未流失，1流失
  */
-export function getDetail(params) {
+export function getDetail (params) {
   return request({
     url: service + '/findWeCustomerBaseInfo',
     params
@@ -178,7 +178,7 @@ export function getDetail(params) {
  * externalUserid	是	当前客户id
  * delFlag: 1 用户是否流失 0 未流失，1流失
  */
-export function getSummary({ externalUserid, delFlag }) {
+export function getSummary ({ externalUserid, delFlag }) {
   return request({
     url: service + '/findWeCustomerInfoSummary',
     params: {
@@ -195,7 +195,7 @@ export function getSummary({ externalUserid, delFlag }) {
  * delFlag: 1 用户是否流失 0 未流失，1流失
  * @returns
  */
-export function getCustomerInfoByUserId({ externalUserid, userId, delFlag }) {
+export function getCustomerInfoByUserId ({ externalUserid, userId, delFlag }) {
   return request({
     url: service + '/findWeCustomerInfoByUserId',
     params: {
@@ -216,7 +216,7 @@ export function getCustomerInfoByUserId({ externalUserid, userId, delFlag }) {
    pageSize: 10,
    trajectoryType		1:信息动态;2:社交动态;3:跟进动态;4:待办动态
  */
-export function getFollowUpRecord(params) {
+export function getFollowUpRecord (params) {
   return request({
     url: service + '/followUpRecord',
     params
@@ -228,7 +228,7 @@ export function getFollowUpRecord(params) {
  * @param {*} userIds 指定员工id,多个用逗号隔开
  * @returns
  */
-export function syncTrack(userIds) {
+export function syncTrack (userIds) {
   return request({
     url: getway + `/moments/synchMomentsInteracte/${userIds}`
   })

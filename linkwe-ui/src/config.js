@@ -31,6 +31,8 @@ window.CONFIG = {
 
   services: {
     wecom: '/wecom',
+    kf: '/dev-kf',
+    system: '/dev-api',
     common: '/common',
   },
 
@@ -41,14 +43,14 @@ window.CONFIG = {
    */
   groupCodeH5Link: 'http://linkwechat.cn/mobile/#/groupCode',
 
-  get headers() {
+  get headers () {
     return { Authorization: 'Bearer ' + getToken() }
   },
 }
 // 统一为img的src不是绝对地址的拼接接口地址
 document.addEventListener(
   'error',
-  function(e) {
+  function (e) {
     let target = e.target
     let src = target.attributes.getNamedItem('src').value
     if (

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.wecom + '/department'
-const serviceUser = window.CONFIG.services.wecom + '/user'
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/department'
+const serviceUser = window.CONFIG.services.system + window.CONFIG.services.wecom + '/user'
 
 /**
  * 获取所有部门
@@ -11,7 +11,7 @@ const serviceUser = window.CONFIG.services.wecom + '/user'
   "parentId": "父节点id "
 }
  */
-export function getTree(params) {
+export function getTree (params) {
   return request({
     url: service + '/list',
     params
@@ -27,7 +27,7 @@ export function getTree(params) {
   "parentId": "父节点id "
 }
 */
-export function updateDepart(data) {
+export function updateDepart (data) {
   return request({
     url: service,
     method: 'put',
@@ -43,7 +43,7 @@ export function updateDepart(data) {
   "parentId": "父节点id "
 }
  */
-export function addDepart(data) {
+export function addDepart (data) {
   return request({
     url: service,
     method: 'post',
@@ -51,7 +51,7 @@ export function addDepart(data) {
   })
 }
 
-export function removeDepart(ids) {
+export function removeDepart (ids) {
   return request({
     url: service + '/' + ids,
     method: 'DELETE'
@@ -73,7 +73,7 @@ export function removeDepart(ids) {
     "department": "根据组织id获取,获取通讯录人员"
 }
  */
-export function getList(params) {
+export function getList (params) {
   return request({
     url: serviceUser + '/list',
     params
@@ -88,7 +88,7 @@ export function getList(params) {
 }
  * @returns
  */
-export function getAllStaff(params) {
+export function getAllStaff (params) {
   return request({
     url: serviceUser + '/findAllWeUser',
     params: {
@@ -102,7 +102,7 @@ export function getAllStaff(params) {
  * 根据ID获取通讯录人员详情
  * @param {String} id
  */
-export function getUserDetail(id) {
+export function getUserDetail (id) {
   return request({
     url: serviceUser + '/' + id
   })
@@ -112,7 +112,7 @@ export function getUserDetail(id) {
  * 新增用户
  * @param {Object} data
  */
-export function addUser(data) {
+export function addUser (data) {
   return request({
     url: serviceUser,
     method: 'post',
@@ -146,7 +146,7 @@ export function addUser(data) {
     "id": "主键"
 }
  */
-export function updateUser(data) {
+export function updateUser (data) {
   return request({
     url: serviceUser,
     method: 'put',
@@ -162,7 +162,7 @@ export function updateUser(data) {
     "enable": "启用禁用用户 true：启用 false：禁用"
 }
  */
-export function startOrStop(data) {
+export function startOrStop (data) {
   return request({
     url: serviceUser + '/startOrStop',
     method: 'put',
@@ -174,7 +174,7 @@ export function startOrStop(data) {
  * 用户删除接口
  * @param {*} userId
  */
-export function remove(userId) {
+export function remove (userId) {
   return request({
     url: serviceUser + '/' + userId,
     method: 'DELETE'
@@ -184,7 +184,7 @@ export function remove(userId) {
 /**
  * 同步成员
  */
-export function syncUser() {
+export function syncUser () {
   return request({
     url: serviceUser + '/synchWeUser'
   })
