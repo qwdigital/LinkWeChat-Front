@@ -55,13 +55,22 @@ export default {
     return {}
   },
   computed: {},
-  watch: {},
+  watch: {
+    series() {
+      this.$nextTick(() => {
+        this.drawChart()
+      })
+    }
+  },
   created() {},
   mounted() {
     this.drawChart()
   },
   methods: {
     drawChart() {
+      if (!(this.series && this.series.length)) {
+        return
+      }
       // eslint-disable-next-line
       this.myChart = echarts.init(this.$refs.chart)
       let option
@@ -160,16 +169,17 @@ export default {
       this.option && merge(option, this.option)
       option && this.myChart.setOption(option)
 
-      new ResizeObserver((entries) => {
-        this.myChart.resize()
-      }).observe(this.$refs.chart)
+      // new ResizeObserver((entries) => {
+      //   this.myChart.resize()
+      // }).observe(this.$refs.chart)
     }
   }
 }
 </script>
 
 <template>
-  <div ref="chart" class="chart-bar chart"></div>
+  <div v-if="series && series.length" ref="chart" class="chart-bar chart"></div>
+  <div v-else>暂无数据</div>
 </template>
 
 <style lang="scss" scoped>

@@ -110,6 +110,18 @@ export default {
     getList(page) {
       this.query.beginTime = this.dateRange && this.dateRange[0]
       this.query.endTime = this.dateRange && this.dateRange[1]
+      if (Array.isArray(this.userArray)) {
+        this.query.deptIds = this.userArray
+          .filter((e) => e.isParty)
+          .map((e) => e.id)
+          .join(',')
+        this.query.userIds = this.userArray
+          .filter((e) => !e.isParty)
+          .map((e) => e.userId)
+          .join(',')
+      } else {
+        this.query.deptIds = this.query.userIds = ''
+      }
       this.loading = true
       page && (this.query.pageNum = page)
 
@@ -183,13 +195,9 @@ export default {
       }
     },
     getSelectUser(data) {
-      debugger
       this.userArray = data
-      this.query.qrUserName = this.userArray
-        .map(function (obj, index) {
-          return obj.name
-        })
-        .join(',')
+      this.query.qrUserName = data.map((e) => e.name).join(',')
+      this.getList()
     }
   }
 }
@@ -218,25 +226,21 @@ export default {
         value-format="yyyy-MM-dd"
         type="daterange"
         :clearable="false"
+        :picker-options="pickerOptions"
         range-separator="-"
         start-placeholder="开始日期"
         end-placeholder="结束日期"
         @change="getList(1)"
       ></el-date-picker>
-      <el-select
+      <el-input
         v-if="type.toLowerCase().includes('group')"
         v-model="query.group"
+        readonly
+        @focus="dialogVisible = true"
         placeholder="请选择群主"
         @change="getList(1)"
       >
-        <el-option
-          v-for="item in groupOwners"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
+      </el-input>
       <el-select
         v-if="['customerGroupMemberTotalChart', 'customerGroupMemberTotalTable'].includes(type)"
         v-model="query.group"
@@ -252,7 +256,14 @@ export default {
         </el-option>
       </el-select>
       <el-input
-        v-if="['customerTotalChart', 'realDataChart', 'customerContactTable'].includes(type)"
+        v-if="
+          [
+            'customerTotalChart',
+            'customerTotalTable',
+            'realDataChart',
+            'customerContactTable'
+          ].includes(type)
+        "
         style="width: 180px"
         :value="query.qrUserName"
         readonly
@@ -289,6 +300,7 @@ export default {
       title="组织架构"
       :selected="userArray"
       @success="getSelectUser"
+      :isOnlyLeaf="false"
     ></SelectUser>
   </div>
 </template>

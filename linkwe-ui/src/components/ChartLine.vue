@@ -58,7 +58,9 @@ export default {
   computed: {},
   watch: {
     series() {
-      this.drawChart()
+      this.$nextTick(() => {
+        this.drawChart()
+      })
     }
   },
   created() {},
@@ -67,6 +69,9 @@ export default {
   },
   methods: {
     drawChart() {
+      if (!(this.series && this.series.length)) {
+        return
+      }
       // eslint-disable-next-line
       this.myChart = echarts.init(this.$refs.chart)
       let option
@@ -215,7 +220,8 @@ export default {
 </script>
 
 <template>
-  <div ref="chart" class="chart-line chart"></div>
+  <div v-if="series && series.length" ref="chart" class="chart-line chart"></div>
+  <div v-else>暂无数据</div>
 </template>
 
 <style lang="scss" scoped>
