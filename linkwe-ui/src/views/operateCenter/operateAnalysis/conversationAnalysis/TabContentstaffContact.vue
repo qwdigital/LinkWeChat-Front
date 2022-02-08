@@ -1,10 +1,9 @@
 <script>
 import ChartBar from '@/components/ChartBar'
-import SelectUser from '@/components/SelectUser'
-import { getList } from '@/api/drainageCode/staff'
+import { getUserChatRank, getUserAvgReplyTimeRank } from '@/api/operateCenter/conversationAnalysis'
 export default {
   name: '',
-  components: { ChartBar, SelectUser },
+  components: { ChartBar },
   props: {
     type: {
       type: String,
@@ -15,87 +14,59 @@ export default {
     return {
       loading: false,
       timeRange: 7,
-
-      total: 0,
-      // 表格数据
-      list: [
-        {
-          time: '2021-12-01',
-          num: 120
-        },
-        {
-          time: '2021-12-01',
-          num: 120
-        },
-        {
-          time: '2021-12-01',
-          num: 120
-        },
-        {
-          time: '2021-12-01',
-          num: 120
-        },
-        {
-          time: '2021-12-01',
-          num: 120
-        }
-      ],
-      xData: [],
-      series: [],
       legend: {
-        customerGroup: ['员工单聊数'],
-        customerGroupMember: ['平均首次回复时长']
+        num: ['员工单聊数'],
+        time: ['平均首次回复时长']
       },
       // 日期范围
       dateRange: [],
       // 查询参数
       query: {
-        group: '',
         beginTime: undefined,
         endTime: undefined
       },
-      // 群主
-      groupOwners: [],
-      // 群聊
-      groupChats: []
+      num: {
+        xData: [],
+        series: []
+      },
+      time: {
+        xData: [],
+        series: []
+      }
     }
   },
   computed: {},
   watch: {},
   created() {
-    // this.getSelectList('groupOwners')
-    // this.getSelectList('groupChats')
     this.setTime(7)
   },
   mounted() {},
   methods: {
-    getList(page) {
+    getList() {
       this.query.beginTime = this.dateRange && this.dateRange[0]
       this.query.endTime = this.dateRange && this.dateRange[1]
       this.loading = true
-      page && (this.query.pageNum = page)
 
-      this.xData = this.list.map((e) => e.time)
-      this.legend['customerGroup'].forEach((element) => {
-        this.series.push(this.list.map((e) => e.num))
-      })
-
-      // getList(this.query)
-      //   .then(({ rows, total }) => {
-      //     this.list = rows
-      //     this.total = Number(total)
-      //     this.loading = false
-      //   })
-      //   .catch(() => {
-      //     this.loading = false
-      //   })
-    },
-    getSelectList(type) {
-      getList()
+      getUserChatRank(this.query)
         .then(({ rows }) => {
-          this[type] = rows
+          this.num.series = rows.map((e) => e.chatCnt)
+          this.num.xData = rows.map((e) => e.userName)
         })
-        .catch(() => {})
+        .catch((e) => {
+          console.error(e)
+        })
+      getUserAvgReplyTimeRank(this.query)
+        .then(({ rows }) => {
+          this.time.series = rows.map((e) => e.avgReplyTime)
+          this.time.xData = rows.map((e) => e.userName)
+          this.loading = false
+        })
+        .catch((e) => {
+          console.error(e)
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     getTime(datePar) {
       const d = datePar ? new Date(datePar) : new Date()
@@ -112,14 +83,6 @@ export default {
       } else {
         this.dateRange = null
       }
-    },
-    getSelectUser(data) {
-      this.userArray = data
-      this.query.qrUserName = this.userArray
-        .map(function (obj, index) {
-          return obj.name
-        })
-        .join(',')
     }
   }
 }
@@ -129,20 +92,13 @@ export default {
   <div>
     <div class="operation">
       <el-button-group>
-        <el-button size="small" type="primary" :plain="timeRange != 7" @click="setTime(7)"
-          >近一周</el-button
-        >
-        <el-button size="small" type="primary" :plain="timeRange != 30" @click="setTime(30)"
-          >近一月
-        </el-button>
-        <el-button size="small" type="primary" :plain="!!timeRange" @click="setTime()"
-          >自定义
-        </el-button>
+        <el-button type="primary" :plain="timeRange != 7" @click="setTime(7)">近一周</el-button>
+        <el-button type="primary" :plain="timeRange != 30" @click="setTime(30)">近一月 </el-button>
+        <el-button type="primary" :plain="!!timeRange" @click="setTime()">自定义 </el-button>
       </el-button-group>
       <el-date-picker
         v-if="!timeRange"
         v-model="dateRange"
-        size="small"
         class="ml20"
         style="width: 260px"
         value-format="yyyy-MM-dd"
@@ -153,61 +109,18 @@ export default {
         end-placeholder="结束日期"
         @change="getList"
       ></el-date-picker>
-      <el-select
-        v-if="
-          [
-            'customerGroupTotalChart',
-            'customerGroupMemberTotalChart',
-            'customerGroupTotalTable',
-            'customerGroupMemberTotalTable'
-          ].includes(type)
-        "
-        v-model="query.group"
-        placeholder="请选择群主"
-        @change="getList"
-      >
-        <el-option
-          v-for="item in groupOwners"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
-      <el-select
-        v-if="['customerGroupMemberTotalChart', 'customerGroupMemberTotalTable'].includes(type)"
-        v-model="query.group"
-        placeholder="请选择群聊"
-        @change="getList"
-      >
-        <el-option
-          v-for="item in groupChats"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
-      <el-input
-        v-if="['customerTotalChart', 'realDataChart'].includes(type)"
-        style="width: 180px"
-        :value="query.qrUserName"
-        readonly
-        @focus="dialogVisible = true"
-        placeholder="请选择员工"
-      />
     </div>
     <el-row :gutter="10">
       <el-col :span="12">
-        <ChartBar :xData="xData" :legend="legend['customerGroup']" :series="series"></ChartBar>
+        <ChartBar :xData="num.xData" :legend="legend.num" :series="num.series"></ChartBar>
       </el-col>
       <el-col :span="12">
         <ChartBar
-          :legend="legend['customerGroupMember']"
-          :series="series"
+          :legend="legend.time"
+          :series="time.series"
           :option="{
             xAxis: [{ type: 'value' }],
-            yAxis: [{ type: 'category', data: [1, 2, 3, 4, 5] }]
+            yAxis: [{ type: 'category', data: time.xData }]
           }"
         ></ChartBar>
       </el-col>

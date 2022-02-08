@@ -117,12 +117,17 @@ export default {
       <div>数据报表</div>
       <el-tabs v-model="activeSheet">
         <el-tab-pane label="客群总数">
-          <TabContent type="customerGroupTotalTable" :request="api.getRealCnt"></TabContent>
+          <TabContent
+            type="customerGroupTotalTable"
+            :request="api.getRealCnt"
+            :requestExport="api.realDataExport"
+          ></TabContent>
         </el-tab-pane>
         <el-tab-pane label="客群成员总数">
           <TabContent
             type="customerGroupMemberTotalTable"
             :request="api.getRealCntMember"
+            :requestExport="api.realDataExportMember"
           ></TabContent>
         </el-tab-pane>
       </el-tabs>

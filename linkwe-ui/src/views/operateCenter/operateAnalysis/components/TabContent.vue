@@ -2,6 +2,7 @@
 // import * as customerApi from '@/api/operateCenter/customerAnalysis'
 // import * as groupApi from '@/api/operateCenter/groupAnalysis'
 // import * as conversationApi from '@/api/operateCenter/conversationAnalysis'
+import { getList as getGroupList } from '@/api/customer/group'
 export default {
   name: '',
   components: {
@@ -58,8 +59,6 @@ export default {
         beginTime: undefined,
         endTime: undefined
       },
-      // 群主
-      groupOwners: [],
       // 群聊
       groupChats: [],
       tableProps: {
@@ -110,8 +109,7 @@ export default {
   computed: {},
   watch: {},
   created() {
-    // this.getSelectList('groupOwners')
-    // this.getSelectList('groupChats')
+    this.getGroupList()
     this.setTime(7)
   },
   mounted() {},
@@ -151,8 +149,11 @@ export default {
 
       this.request(this.query)
         .then(({ rows, total, data }) => {
+          this.series = []
           data = data || rows
+
           if (this.type.includes('Chart')) {
+            // （条形图）
             this.xData = data.map((e) => e.xtime)
 
             if (
@@ -160,7 +161,7 @@ export default {
                 this.type
               )
             ) {
-              // 客户总数
+              // 客户总数 / 客群总数 / 客群成员总数 （条形图）
               this.series = data.map((e) => e.totalCnt)
             } else if (this.type === 'realDataChart') {
               // 实时数据
@@ -181,10 +182,12 @@ export default {
               this.series = data.map((e) => e[dict[this.type]])
             }
           } else if (this.type === 'staffCustomerBar') {
+            // 柱状图
             // 员工客户Top10
             this.xData = data.map((e) => e.userName)
             this.series = data.map((e) => e.totalCnt)
           } else if (this.type.includes('Table')) {
+            // 表格
             this.list = data
             this.total = Number(total)
           }
@@ -196,10 +199,10 @@ export default {
           this.loading = false
         })
     },
-    getSelectList(type) {
-      getList()
+    getGroupList() {
+      getGroupList()
         .then(({ rows }) => {
-          this[type] = rows
+          this.groupChats = rows
         })
         .catch(() => {})
     },
@@ -235,6 +238,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
+          this.loading = true
           let query = Object.assign({}, this.query, { pageNum: undefined, pageSize: undefined })
           return this.requestExport(query)
         })
@@ -243,6 +247,9 @@ export default {
         })
         .catch((error) => {
           console.error(error)
+        })
+        .finally(() => {
+          this.loading = false
         })
     }
   }
@@ -253,20 +260,13 @@ export default {
   <div>
     <div class="operation">
       <el-button-group>
-        <el-button size="small" type="primary" :plain="timeRange != 7" @click="setTime(7)"
-          >近一周</el-button
-        >
-        <el-button size="small" type="primary" :plain="timeRange != 30" @click="setTime(30)"
-          >近一月
-        </el-button>
-        <el-button size="small" type="primary" :plain="!!timeRange" @click="setTime()"
-          >自定义
-        </el-button>
+        <el-button type="primary" :plain="timeRange != 7" @click="setTime(7)">近一周</el-button>
+        <el-button type="primary" :plain="timeRange != 30" @click="setTime(30)">近一月 </el-button>
+        <el-button type="primary" :plain="!!timeRange" @click="setTime()">自定义 </el-button>
       </el-button-group>
       <el-date-picker
         v-if="!timeRange"
         v-model="dateRange"
-        size="small"
         class="ml20"
         style="width: 260px"
         value-format="yyyy-MM-dd"
@@ -285,20 +285,19 @@ export default {
         readonly
         @focus="showDialog('_groupOwners')"
         placeholder="请选择群主"
-        @change="getList(1)"
       >
       </el-input>
       <el-select
         v-if="['customerGroupMemberTotalChart', 'customerGroupMemberTotalTable'].includes(type)"
-        v-model="query.group"
+        v-model="query.chatIds"
         placeholder="请选择群聊"
         @change="getList(1)"
       >
         <el-option
           v-for="item in groupChats"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+          :key="item.chatId"
+          :label="item.groupName"
+          :value="item.chatId"
         >
         </el-option>
       </el-select>
@@ -316,7 +315,6 @@ export default {
         readonly
         @focus="showDialog('_users')"
         placeholder="请选择部门或员工"
-        @change="getList(1)"
       />
       <el-button v-if="type.includes('Table')" class="fr" type="primary" @click="exprotTable"
         >导出 Excel</el-button

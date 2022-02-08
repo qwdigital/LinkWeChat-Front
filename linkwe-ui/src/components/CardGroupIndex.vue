@@ -121,11 +121,11 @@ export default {
   }
 
   .descend {
-    color: #ff0000;
+    color: green;
   }
 
   .ascend {
-    color: green;
+    color: red;
   }
 }
 </style>

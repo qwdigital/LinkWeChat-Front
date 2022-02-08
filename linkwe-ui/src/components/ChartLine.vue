@@ -151,11 +151,11 @@ export default {
           // }
           x: 'center',
           y: 'bottom',
-          selectedMode: false,
+          // selectedMode: false,
           type: 'scroll', // 分页类型
-          icon: 'circle',
-          itemWidth: 8,
-          itemHeight: 8,
+          icon: 'line',
+          itemWidth: 16,
+          // itemHeight: 8,
           tooltip: {
             show: true
           },

@@ -50,8 +50,7 @@ export default {
               tips: '企业员工发送过消息的单聊数量',
               value: data.ydChatCnt,
               title1: '较前日',
-              value1: data.bydChatCnt,
-              noArrow: true
+              value1: data.bydChatCnt
             },
             {
               title: '昨日发送消息数',
@@ -114,7 +113,7 @@ export default {
       <TabContent
         type="customerContactTable"
         :request="api.getTotalCntCustomer"
-        :requestExport="api.realDataExport"
+        :requestExport="api.dataExportGroup"
       ></TabContent>
     </div>
   </div>

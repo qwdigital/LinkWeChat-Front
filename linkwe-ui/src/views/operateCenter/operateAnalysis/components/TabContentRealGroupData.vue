@@ -2,7 +2,8 @@
 import ChartBar from '@/components/ChartBar'
 import ChartLine from '@/components/ChartLine'
 import SelectUser from '@/components/SelectUser'
-import { getList } from '@/api/drainageCode/staff'
+import { getRealCnt, getRealCntMember } from '@/api/operateCenter/groupAnalysis'
+import { getList as getGroupList } from '@/api/customer/group'
 export default {
   name: '',
   components: { ChartLine, ChartBar, SelectUser },
@@ -16,87 +17,82 @@ export default {
     return {
       loading: false,
       timeRange: 7,
-
-      total: 0,
-      // 表格数据
-      list: [
-        {
-          time: '2021-12-01',
-          num: 120
-        },
-        {
-          time: '2021-12-01',
-          num: 120
-        },
-        {
-          time: '2021-12-01',
-          num: 120
-        },
-        {
-          time: '2021-12-01',
-          num: 120
-        },
-        {
-          time: '2021-12-01',
-          num: 120
-        }
-      ],
-      xData: [],
-      series: [],
+      // 日期范围
+      dateRange: [],
+      dialogVisible: false,
+      dialogType: '_users',
+      // 群聊
+      groupChats: [],
+      // 查询参数
+      query: {
+        chatIds: '',
+        ownerIds: '',
+        beginTime: undefined,
+        endTime: undefined
+      },
       legend: {
         customerGroup: ['新增客群数', '解散客群数'],
         customerGroupMember: ['新增客群成员数', '流失客群成员数']
       },
-      // 日期范围
-      dateRange: [],
-      // 查询参数
-      query: {
-        group: '',
-        beginTime: undefined,
-        endTime: undefined
+      // 选择人员
+      selectUsers: {
+        customerGroup: [],
+        customerGroupMember: []
       },
-      // 群主
-      groupOwners: [],
-      // 群聊
-      groupChats: []
+      customerGroup: {
+        xData: [],
+        series: []
+      },
+      customerGroupMember: {
+        xData: [],
+        series: []
+      }
     }
   },
   computed: {},
   watch: {},
   created() {
-    // this.getSelectList('groupOwners')
-    // this.getSelectList('groupChats')
+    this.getGroupList()
     this.setTime(7)
   },
   mounted() {},
   methods: {
-    getList(page) {
+    getList(type) {
       this.query.beginTime = this.dateRange && this.dateRange[0]
       this.query.endTime = this.dateRange && this.dateRange[1]
+      let selectUsers = this.selectUsers[type]
+      if (Array.isArray(selectUsers)) {
+        this.query.ownerIds = selectUsers.map((e) => e.userId).join(',')
+      } else {
+        this.query.ownerIds = ''
+      }
+
       this.loading = true
-      page && (this.query.pageNum = page)
-
-      this.xData = this.list.map((e) => e.time)
-      this.legend['customerGroup'].forEach((element) => {
-        this.series.push(this.list.map((e) => e.num))
-      })
-
-      // getList(this.query)
-      //   .then(({ rows, total }) => {
-      //     this.list = rows
-      //     this.total = Number(total)
-      //     this.loading = false
-      //   })
-      //   .catch(() => {
-      //     this.loading = false
-      //   })
-    },
-    getSelectList(type) {
-      getList()
+      let api = { customerGroup: getRealCnt, customerGroupMember: getRealCntMember }
+      api[type](this.query)
         .then(({ rows }) => {
-          this[type] = rows
+          this[type].series = []
+
+          this[type].xData = rows.map((e) => e.xtime)
+          this[type].series.push(rows.map((e) => e.addCnt))
+          type === 'customerGroup' && this[type].series.push(rows.map((e) => e.dissolveCnt))
+          type === 'customerGroupMember' && this[type].series.push(rows.map((e) => e.quitCnt))
         })
-        .catch(() => {})
+        .catch((error) => {
+          console.error(error)
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    getGroupList() {
+      getGroupList()
+        .then(({ rows }) => {
+          this.groupChats = rows
+        })
+        .catch((e) => {
+          console.error(e)
+        })
     },
     getTime(datePar) {
       const d = datePar ? new Date(datePar) : new Date()
@@ -109,18 +105,20 @@ export default {
         let date = new Date()
         date.setDate(date.getDate() - days)
         this.dateRange = [this.getTime(date), this.getTime()]
-        this.getList()
+        this.getList('customerGroup')
+        this.getList('customerGroupMember')
       } else {
         this.dateRange = null
       }
     },
+    showDialog(type) {
+      this.dialogType = type
+      this.dialogVisible = true
+    },
     getSelectUser(data) {
-      this.userArray = data
-      this.query.qrUserName = this.userArray
-        .map(function (obj, index) {
-          return obj.name
-        })
-        .join(',')
+      this.selectUsers[this.dialogType] = data
+      this.query[this.dialogType] = data.map((e) => e.name).join(',')
+      this.getList(this.dialogType)
     }
   }
 }
@@ -152,64 +150,68 @@ export default {
         range-separator="-"
         start-placeholder="开始日期"
         end-placeholder="结束日期"
-        @change="getList"
-      ></el-date-picker>
-      <el-select
-        v-if="
-          [
-            'customerGroupTotalChart',
-            'customerGroupMemberTotalChart',
-            'customerGroupTotalTable',
-            'customerGroupMemberTotalTable'
-          ].includes(type)
+        @change="
+          getList('customerGroup')
+          getList('customerGroupMember')
         "
-        v-model="query.group"
-        placeholder="请选择群主"
-        @change="getList"
-      >
-        <el-option
-          v-for="item in groupOwners"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
-      <el-select
-        v-if="['customerGroupMemberTotalChart', 'customerGroupMemberTotalTable'].includes(type)"
-        v-model="query.group"
-        placeholder="请选择群聊"
-        @change="getList"
-      >
-        <el-option
-          v-for="item in groupChats"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
-      <el-input
-        v-if="['customerTotalChart', 'realDataChart'].includes(type)"
-        style="width: 180px"
-        :value="query.qrUserName"
-        readonly
-        @focus="dialogVisible = true"
-        placeholder="请选择员工"
-      />
+      ></el-date-picker>
     </div>
     <el-row :gutter="10">
       <el-col :span="12">
-        <ChartLine :xData="xData" :legend="legend['customerGroup']" :series="series"></ChartLine>
+        <div>
+          <el-input
+            style="width: 180px"
+            v-model="query.customerGroup"
+            readonly
+            @focus="showDialog('customerGroup')"
+            placeholder="请选择群主"
+            @change="getList(1)"
+          />
+        </div>
+        <ChartLine
+          :xData="customerGroup.xData"
+          :legend="legend['customerGroup']"
+          :series="customerGroup.series"
+        ></ChartLine>
       </el-col>
       <el-col :span="12">
+        <div>
+          <el-input
+            style="width: 180px"
+            v-model="query.customerGroupMember"
+            readonly
+            @focus="showDialog('customerGroupMember')"
+            placeholder="请选择群主"
+          />
+          <el-select
+            v-model="query.chatIds"
+            placeholder="请选择群聊"
+            @change="getList('customerGroupMember')"
+          >
+            <el-option
+              v-for="item in groupChats"
+              :key="item.chatId"
+              :label="item.groupName"
+              :value="item.chatId"
+            >
+            </el-option>
+          </el-select>
+        </div>
         <ChartLine
-          :xData="xData"
+          :xData="customerGroupMember.xData"
           :legend="legend['customerGroupMember']"
-          :series="series"
+          :series="customerGroupMember.series"
         ></ChartLine>
       </el-col>
     </el-row>
+
+    <SelectUser
+      :visible.sync="dialogVisible"
+      title="组织架构"
+      :defaultValues="selectUsers[dialogType]"
+      @success="getSelectUser"
+      :isOnlyLeaf="true"
+    ></SelectUser>
   </div>
 </template>
 

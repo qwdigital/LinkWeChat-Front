@@ -4,7 +4,7 @@ const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '
 /**
  * 客群数据分析
  */
-export function getAnalysis () {
+export function getAnalysis() {
   return request({
     url: service + '/getAnalysis'
   })
@@ -18,7 +18,7 @@ ownerIds	否[]群主id
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function getTotalCnt (params) {
+export function getTotalCnt(params) {
   return request({
     url: service + '/getTotalCnt',
     params
@@ -33,7 +33,7 @@ ownerIds	否[]群主id
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function getTotalCntMember (params) {
+export function getTotalCntMember(params) {
   return request({
     url: service + '/member/getTotalCnt',
     params
@@ -48,9 +48,9 @@ ownerIds	否[]群主id
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function getRealCnt (params) {
+export function getRealCnt(params) {
   return request({
-    url: service + '/getRealCnt',
+    url: service + '/getGroupRealPageCnt',
     params
   })
 }
@@ -63,9 +63,9 @@ ownerIds	否[]群主id
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function getRealCntMember (params) {
+export function getRealCntMember(params) {
   return request({
-    url: service + '/member/getRealCnt',
+    url: service + '/member/getGroupMemberRealPageCnt',
     params
   })
 }
@@ -78,7 +78,7 @@ ownerIds	否[]群主id
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function realDataExport (params) {
+export function realDataExport(params) {
   return request({
     url: service + '/real/export',
     params
@@ -93,7 +93,7 @@ ownerIds	否[]群主id
 beginTime	是 开始时间
 endTime	是 结束时间
  */
-export function realDataExportMember (params) {
+export function realDataExportMember(params) {
   return request({
     url: service + '/member/real/export',
     params
