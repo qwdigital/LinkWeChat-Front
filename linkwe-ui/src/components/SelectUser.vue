@@ -24,6 +24,7 @@ export default {
       type: Boolean,
       default: false
     },
+    // 默认选中的节点
     defaultValues: {
       type: Array,
       default: () => []
@@ -31,11 +32,42 @@ export default {
     destroyOnClose: Boolean
   },
   data() {
-    let isOnlyLeaf = this.isOnlyLeaf
     return {
       treeData: [],
-      userList: [],
-      defaultProps: {
+      userList: []
+    }
+  },
+  watch: {
+    defaultValues(value) {
+      const checkedUserList = []
+      if (!Array.isArray(value) || value.length == 0) {
+        this.userList = []
+      } else {
+        value.forEach((i) => {
+          const id = this.isOnlyLeaf ? i.userId : i.userId || i.id
+          if (id) {
+            checkedUserList.push(i)
+          }
+        })
+        this.userList = checkedUserList
+      }
+    },
+    Pvisible(val) {
+      val && this.$refs.tree && this.$refs.tree.setCheckedNodes(this.defaultValues)
+    }
+  },
+  computed: {
+    Pvisible: {
+      get() {
+        return this.visible
+      },
+      set(val) {
+        this.$emit('update:visible', val)
+      }
+    },
+    defaultProps() {
+      let isOnlyLeaf = this.isOnlyLeaf
+      return {
         label: 'name',
         children: 'children',
         disabled(data, node) {
@@ -45,39 +77,6 @@ export default {
           return !data.id
         }
       }
-    }
-  },
-  watch: {
-    defaultValues(value) {
-      if (this.$refs.tree) this.$refs.tree.setCheckedKeys([])
-    }
-  },
-  computed: {
-    Pvisible: {
-      get() {
-        // this.getTree();
-        return this.visible
-      },
-      set(val) {
-        this.$emit('update:visible', val)
-      }
-    },
-    defaultCheckedKeys() {
-      const checkedList = []
-      const checkedUserList = []
-      if (!Array.isArray(this.defaultValues) || this.defaultValues.length == 0) {
-        this.userList = []
-      } else {
-        this.defaultValues.forEach((i) => {
-          const id = this.isOnlyLeaf ? i.userId : i.userId || i.id
-          if (id) {
-            checkedList.push(id)
-            checkedUserList.push(i)
-          }
-        })
-        this.userList = checkedUserList
-      }
-      return checkedList
     }
   },
   created() {},
@@ -189,7 +188,12 @@ export default {
 }
 </script>
 <template>
-  <el-dialog :title="title" :visible.sync="Pvisible" :destroy-on-close="destroyOnClose">
+  <el-dialog
+    :title="title"
+    :visible.sync="Pvisible"
+    :close-on-click-modal="false"
+    :destroy-on-close="destroyOnClose"
+  >
     <el-row :gutter="20">
       <el-col :span="12" :xs="24">
         <div class="head-container">
@@ -201,7 +205,9 @@ export default {
             show-checkbox
             :check-on-click-node="false"
             :expand-on-click-node="true"
-            :default-checked-keys="defaultCheckedKeys"
+            :default-checked-keys="
+              defaultValues.map((e) => (isOnlyLeaf ? e.userId : e.userId || e.id))
+            "
             :load="loadNode"
             :props="defaultProps"
             :check-strictly="isOnlyLeaf"

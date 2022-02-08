@@ -111,7 +111,11 @@ export default {
 
     <div>
       <div>数据报表</div>
-      <TabContent type="customerContactTable" :request="api.getTotalCntCustomer"></TabContent>
+      <TabContent
+        type="customerContactTable"
+        :request="api.getTotalCntCustomer"
+        :requestExport="api.realDataExport"
+      ></TabContent>
     </div>
   </div>
 </template>

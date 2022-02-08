@@ -47,18 +47,20 @@ service.interceptors.response.use(
           location.href = process.env.VUE_APP_BASE_URL
         })
       })
-    } else if (code === 500) {
-      Message({
-        message: msg,
-        type: 'error'
-      })
-      // return Promise.reject(new Error(msg))
-      return Promise.reject()
-    } else {
+    }
+    //  else if (code === 500) {
+    //   Message({
+    //     message: msg,
+    //     type: 'error'
+    //   })
+    //   // return Promise.reject(new Error(msg))
+    //   return Promise.reject()
+    // }
+    else {
       // let errMsg = response.data.msg || response.data.errMsg || data.msg || data.errMsg
       if (process.env.NODE_ENV === 'development') {
         Message({
-          message: `后端错误：接口：${response.config.url}，${code}错误：${msg}`,
+          message: `后端错误：接口：${res.config.url}，${code}错误：${msg}`,
           type: 'error'
         })
       } else {

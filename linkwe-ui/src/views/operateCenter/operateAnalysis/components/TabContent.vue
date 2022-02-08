@@ -1,13 +1,14 @@
 <script>
-import ChartBar from '@/components/ChartBar'
-import ChartLine from '@/components/ChartLine'
-import SelectUser from '@/components/SelectUser'
 // import * as customerApi from '@/api/operateCenter/customerAnalysis'
 // import * as groupApi from '@/api/operateCenter/groupAnalysis'
 // import * as conversationApi from '@/api/operateCenter/conversationAnalysis'
 export default {
   name: '',
-  components: { ChartLine, ChartBar, SelectUser },
+  components: {
+    ChartLine: () => import('@/components/ChartLine'),
+    ChartBar: () => import('@/components/ChartBar'),
+    SelectUser: () => import('@/components/SelectUser')
+  },
   props: {
     // 图表类型
     type: {
@@ -21,6 +22,11 @@ export default {
     },
     // 接口请求
     request: {
+      type: Function,
+      default: () => {}
+    },
+    // 导出接口请求
+    requestExport: {
       type: Function,
       default: () => {}
     }
@@ -43,6 +49,8 @@ export default {
       dateRange: [],
       // 查询参数
       query: {
+        pageNum: undefined,
+        pageSize: undefined,
         deptIds: [],
         userIds: [],
         chatIds: [],
@@ -95,7 +103,8 @@ export default {
         ]
       },
       userArray: [], // 选择人员
-      dialogVisible: false
+      dialogVisible: false,
+      dialogType: '_users'
     }
   },
   computed: {},
@@ -108,25 +117,41 @@ export default {
   mounted() {},
   methods: {
     getList(page) {
+      if (this.type.includes('Table')) {
+        this.query.pageSize || (this.query.pageSize = 10)
+      }
+
       this.query.beginTime = this.dateRange && this.dateRange[0]
       this.query.endTime = this.dateRange && this.dateRange[1]
-      if (Array.isArray(this.userArray)) {
-        this.query.deptIds = this.userArray
-          .filter((e) => e.isParty)
-          .map((e) => e.id)
-          .join(',')
-        this.query.userIds = this.userArray
-          .filter((e) => !e.isParty)
-          .map((e) => e.userId)
-          .join(',')
-      } else {
-        this.query.deptIds = this.query.userIds = ''
+      if (this.dialogType === '_users') {
+        if (Array.isArray(this.userArray)) {
+          this.query.deptIds = this.userArray
+            .filter((e) => e.isParty)
+            .map((e) => e.id)
+            .join(',')
+          this.query.userIds = this.userArray
+            .filter((e) => !e.isParty)
+            .map((e) => e.userId)
+            .join(',')
+        } else {
+          this.query.deptIds = this.query.userIds = ''
+        }
+      } else if (this.dialogType === '_groupOwners') {
+        if (Array.isArray(this.userArray)) {
+          this.query.ownerIds = this.userArray
+            .filter((e) => !e.isParty)
+            .map((e) => e.userId)
+            .join(',')
+        } else {
+          this.query.ownerIds = ''
+        }
       }
       this.loading = true
       page && (this.query.pageNum = page)
 
       this.request(this.query)
         .then(({ rows, total, data }) => {
+          data = data || rows
           if (this.type.includes('Chart')) {
             this.xData = data.map((e) => e.xtime)
 
@@ -165,7 +190,7 @@ export default {
           }
         })
         .catch((e) => {
-          console.log(e)
+          console.error(e)
         })
         .finally(() => {
           this.loading = false
@@ -194,10 +219,31 @@ export default {
         this.dateRange = null
       }
     },
+    showDialog(type) {
+      this.dialogType = type
+      this.dialogVisible = true
+    },
     getSelectUser(data) {
       this.userArray = data
-      this.query.qrUserName = data.map((e) => e.name).join(',')
+      this.query[this.dialogType] = data.map((e) => e.name).join(',')
       this.getList()
+    },
+    exprotTable() {
+      this.$confirm('是否确认导出吗?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          let query = Object.assign({}, this.query, { pageNum: undefined, pageSize: undefined })
+          return this.requestExport(query)
+        })
+        .then((res) => {
+          this.download(res.msg)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     }
   }
 }
@@ -234,9 +280,10 @@ export default {
       ></el-date-picker>
       <el-input
         v-if="type.toLowerCase().includes('group')"
-        v-model="query.group"
+        style="width: 180px"
+        v-model="query._groupOwners"
         readonly
-        @focus="dialogVisible = true"
+        @focus="showDialog('_groupOwners')"
         placeholder="请选择群主"
         @change="getList(1)"
       >
@@ -265,42 +312,57 @@ export default {
           ].includes(type)
         "
         style="width: 180px"
-        :value="query.qrUserName"
+        :value="query._users"
         readonly
-        @focus="dialogVisible = true"
+        @focus="showDialog('_users')"
         placeholder="请选择部门或员工"
         @change="getList(1)"
       />
-      <el-button v-if="type.includes('Table')" class="fr" type="primary">导出 Excel</el-button>
-    </div>
-    <ChartLine
-      v-if="type.includes('Chart')"
-      :xData="xData"
-      :legend="legend || legendDict[type]"
-      :series="series"
-    ></ChartLine>
-    <el-table v-else-if="type.includes('Table')" :data="list" style="width: 100%">
-      <el-table-column
-        v-for="(item, index) in tableProps[type]"
-        :key="index"
-        :prop="item.prop"
-        :label="item.label"
-        align="center"
+      <el-button v-if="type.includes('Table')" class="fr" type="primary" @click="exprotTable"
+        >导出 Excel</el-button
       >
-      </el-table-column>
-    </el-table>
-    <ChartBar
-      v-else-if="'staffCustomerBar'.includes(type)"
-      :xData="xData"
-      :series="series"
-    ></ChartBar>
+    </div>
+
+    <div v-loading="loading">
+      <ChartLine
+        v-if="type.includes('Chart')"
+        :xData="xData"
+        :legend="legend || legendDict[type]"
+        :series="series"
+      ></ChartLine>
+
+      <template v-else-if="type.includes('Table')">
+        <el-table :data="list" style="width: 100%">
+          <el-table-column
+            v-for="(item, index) in tableProps[type]"
+            :key="index"
+            :prop="item.prop"
+            :label="item.label"
+            align="center"
+          >
+          </el-table-column>
+        </el-table>
+        <pagination
+          :total="total"
+          :page.sync="query.pageNum"
+          :limit.sync="query.pageSize"
+          @pagination="getList()"
+        />
+      </template>
+
+      <ChartBar
+        v-else-if="'staffCustomerBar'.includes(type)"
+        :xData="xData"
+        :series="series"
+      ></ChartBar>
+    </div>
 
     <SelectUser
       :visible.sync="dialogVisible"
       title="组织架构"
-      :selected="userArray"
+      :defaultValues="userArray"
       @success="getSelectUser"
-      :isOnlyLeaf="false"
+      :isOnlyLeaf="dialogType === '_groupOwners'"
     ></SelectUser>
   </div>
 </template>

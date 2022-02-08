@@ -97,6 +97,7 @@ export function selectDictLabels(datas, value, separator) {
 export function download(fileName) {
   window.location.href =
     baseURL +
+    window.CONFIG.services.system +
     '/common/download?fileName=' +
     encodeURI(fileName) +
     '&delete=' +
@@ -108,7 +109,7 @@ export function sprintf(str) {
   var args = arguments,
     flag = true,
     i = 1
-  str = str.replace(/%s/g, function() {
+  str = str.replace(/%s/g, function () {
     var arg = args[i++]
     if (typeof arg === 'undefined') {
       flag = false
