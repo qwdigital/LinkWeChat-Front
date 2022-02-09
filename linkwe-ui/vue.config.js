@@ -31,7 +31,7 @@ module.exports = {
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       ['/api']: {
-        target: process.env.VUE_APP_BASE_API,
+        target: process.env.VUE_APP_DOMAIN,
         changeOrigin: true,
         pathRewrite: {
           ['^/api']: ''
@@ -60,10 +60,7 @@ module.exports = {
     // 修复HMR
     config.resolve.symlinks(true)
     // set svg-sprite-loader
-    config.module
-      .rule('svg')
-      .exclude.add(resolve('src/assets/icons'))
-      .end()
+    config.module.rule('svg').exclude.add(resolve('src/assets/icons')).end()
     config.module
       .rule('icons')
       .test(/\.svg$/)

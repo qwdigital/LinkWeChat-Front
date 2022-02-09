@@ -32,8 +32,8 @@ window.CONFIG = {
   services: {
     wecom: '/wecom',
     kf: '/dev-kf',
-    system: '/dev-api',
-    common: '/common',
+    system: process.env.VUE_APP_SYSTEM_API,
+    common: '/common'
   },
 
   /**
@@ -43,9 +43,9 @@ window.CONFIG = {
    */
   groupCodeH5Link: 'http://linkwechat.cn/mobile/#/groupCode',
 
-  get headers () {
+  get headers() {
     return { Authorization: 'Bearer ' + getToken() }
-  },
+  }
 }
 // 统一为img的src不是绝对地址的拼接接口地址
 document.addEventListener(
@@ -53,11 +53,7 @@ document.addEventListener(
   function (e) {
     let target = e.target
     let src = target.attributes.getNamedItem('src').value
-    if (
-      target.tagName.toUpperCase() === 'IMG' &&
-      src &&
-      !src.includes('http')
-    ) {
+    if (target.tagName.toUpperCase() === 'IMG' && src && !src.includes('http')) {
       target.src = process.env.VUE_APP_BASE_API + src
     }
   },
