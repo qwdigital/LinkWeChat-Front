@@ -220,14 +220,15 @@ export default {
 </script>
 
 <template>
-  <div v-if="series && series.length" ref="chart" class="chart-line chart"></div>
-  <div v-else>暂无数据</div>
+  <div v-if="series && series.length" ref="chart" class="chart-line chart" key="1"></div>
+  <div v-else class="chart-line chart" key="2"><div class="cc">暂无数据</div></div>
 </template>
 
 <style lang="scss" scoped>
 .chart {
+  position: relative;
   height: 100%;
-  min-width: 200px;
-  min-height: 200px;
+  min-width: 400px;
+  min-height: 400px;
 }
 </style>
