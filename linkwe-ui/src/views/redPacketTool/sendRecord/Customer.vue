@@ -7,8 +7,9 @@ export default {
       query: {
         pageNum: 1,
         pageSize: 10,
-        ruleName: '', // 规则名称
-        createBy: '', // 创建人
+        userId: '', // 员工id
+        customerName: '', // 客户姓名
+        sendState: '', // 发送状态:1:待领取;2:已领取;3:发放失败;4:退款中;5:已退款
         beginTime: '', // 创建开始时间
         endTime: '' // 创建结束时间
       },
@@ -19,13 +20,13 @@ export default {
       loading: false,
       queryUser: [], // 搜索框选择的添加人
       dialogVisibleSelectUser: false, // 选择添加人弹窗显隐
-      dictCustomerType: Object.freeze({
-        1: '全部状态',
-        2: '待领取',
+      dictStatusType: Object.freeze({
+        0: '全部状态',
+        1: '待领取',
         2: '已领取',
-        2: '发放失败',
-        2: '退款中',
-        2: '已退款'
+        3: '发放失败',
+        4: '退款中',
+        5: '已退款'
       })
     }
   },
@@ -160,7 +161,7 @@ export default {
         <el-form-item label="全部状态" prop="customerType">
           <el-select v-model="query.customerType" placeholder="请选择">
             <el-option
-              v-for="(item, key) in dictCustomerType"
+              v-for="(item, key) in dictStatusType"
               :key="key"
               :label="item"
               :value="key"
@@ -193,7 +194,7 @@ export default {
       <el-table-column
         label="发放员工"
         align="center"
-        prop="ruleName"
+        prop="userName"
         :show-overflow-tooltip="true"
       ></el-table-column>
       <el-table-column label="领取客户" align="center" width="120">
@@ -215,10 +216,13 @@ export default {
         </template>
       </el-table-column>
 
-      <el-table-column label="红包金额（元）" align="center" prop="createBy"></el-table-column>
-
+      <el-table-column
+        label="红包金额（元）"
+        align="center"
+        prop="redEnvelopeMoney"
+      ></el-table-column>
       <el-table-column label="发放时间" align="center" prop="createTime"></el-table-column>
-      <el-table-column label="发放状态" align="center" prop="createBy"></el-table-column>
+      <el-table-column label="发放状态" align="center" prop="sendState"></el-table-column>
       <el-table-column label="交易订单号" align="center" prop="createBy"></el-table-column>
     </el-table>
 

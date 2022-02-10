@@ -177,12 +177,12 @@ export default {
     <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50" align="center"></el-table-column>
       <el-table-column
-        label="规则名称"
+        label="群主"
         align="center"
-        prop="ruleName"
+        prop="userName"
         :show-overflow-tooltip="true"
       ></el-table-column>
-      <el-table-column label="执行群聊" align="center" width="120">
+      <el-table-column label="群名" align="center" prop="groupName" width="120">
         <template #default="{ row }">
           <el-popover
             placement="bottom"
@@ -197,10 +197,15 @@ export default {
         </template>
       </el-table-column>
 
-      <el-table-column label="创建人" align="center" prop="createBy"></el-table-column>
+      <el-table-column label="红包类型" align="center" prop="redEnvelopeType"></el-table-column>
 
-      <el-table-column label="创建人" align="center" prop="createBy"></el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime"></el-table-column>
+      <el-table-column label="红包个数" align="center" prop="redEnvelopeNum"></el-table-column>
+      <el-table-column
+        label="红包金额（元）"
+        align="center"
+        prop="redEnvelopeMoney"
+      ></el-table-column>
+      <el-table-column label="发放时间" align="center" prop="createTime"></el-table-column>
 
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
