@@ -34,7 +34,8 @@ export default {
   data() {
     return {
       treeData: [],
-      userList: []
+      userList: [],
+      defaultKeys: []
     }
   },
   watch: {
@@ -79,7 +80,9 @@ export default {
       }
     }
   },
-  created() {},
+  created() {
+    this.defaultKeys = this.defaultValues.map((e) => (isOnlyLeaf ? e.userId : e.userId || e.id))
+  },
   mounted() {},
   methods: {
     treeFormat(list) {
@@ -138,6 +141,7 @@ export default {
     },
     // 选择变化
     handleCheckChange(data, checked, indeterminate) {
+      debugger
       // console.log(arguments)
       if (checked) {
         if (this.isSigleSelect) {
@@ -205,9 +209,7 @@ export default {
             show-checkbox
             :check-on-click-node="false"
             :expand-on-click-node="true"
-            :default-checked-keys="
-              defaultValues.map((e) => (isOnlyLeaf ? e.userId : e.userId || e.id))
-            "
+            :default-checked-keys="defaultKeys"
             :load="loadNode"
             :props="defaultProps"
             :check-strictly="isOnlyLeaf"

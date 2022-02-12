@@ -64,7 +64,7 @@
 import * as echarts from 'echarts'
 import { parseTime } from '@/utils/common'
 import CardGroupIndex from '@/components/CardGroupIndex'
-import TabContent from './components/TabContent'
+// import TabContent from './components/TabContent'
 import { getAnalysis, countLineChart, exportGroup } from '@/api/redPacketTool/sendRecord'
 
 function generateMockData() {
@@ -95,7 +95,7 @@ function generateMockData() {
 
 export default {
   name: 'total-data',
-  components: { CardGroupIndex, TabContent },
+  components: { CardGroupIndex },
   data() {
     return {
       timeRange: 7,
