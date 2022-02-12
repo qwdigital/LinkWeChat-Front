@@ -1,5 +1,5 @@
 <script>
-import { getList, remove } from '@/api/communityOperating/groupSOP'
+import { getList, exportCustomer } from '@/api/redPacketTool/sendRecord'
 
 export default {
   data() {
@@ -52,7 +52,6 @@ export default {
     )
   },
   methods: {
-    // 获取群SOP数据
     getList(page) {
       page && (this.query.pageNum = page)
       this.loading = true
@@ -67,54 +66,31 @@ export default {
           this.loading = false
         })
     },
-    // 新增/编辑群SOP
-    goRoute(id) {
-      this.$router.push({
-        path: 'groupSOPAev',
-        query: { id: id }
-      })
-    },
     // 重置查询参数
     resetQuery() {
       this.dateRange = []
       this.$refs['queryForm'].resetFields()
-      this.getList(1)
+      // this.getList(1)
     },
-    // 批量删除
-    handleBulkRemove() {
-      this.$confirm('确认删除当前数据?删除操作无法撤销，请谨慎操作。', '提示', {
+    exportData() {
+      this.$confirm('确认导出吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
-          const ids = this.multiSelect.map((r) => r.ruleId)
-
-          remove(ids + '').then((res) => {
-            if (res.code === 200) {
-              this.getList()
-            } else {
-            }
-          })
+          this.loading = true
+          return exportCustomer(this.query)
         })
-        .catch(() => {})
-    },
-    // 删除
-    handleRemove(id) {
-      this.$confirm('确认删除当前数据?删除操作无法撤销，请谨慎操作。', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          remove(id + '').then((res) => {
-            if (res.code === 200) {
-              this.getList()
-            } else {
-            }
-          })
+        .then((res) => {
+          this.download(res.msg)
         })
-        .catch(() => {})
+        .catch((error) => {
+          console.error(error)
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     // 处理多选
     handleSelectionChange(val) {
@@ -135,7 +111,7 @@ export default {
   <div>
     <div class="top-search">
       <el-form inline label-position="right" :model="query" label-width="" ref="queryForm">
-        <el-form-item label="发放员工" prop="ruleName">
+        <el-form-item label="发放员工" prop="userId">
           <div class="tag-input" @click="dialogVisibleSelectUser = true">
             <span class="tag-place" v-if="!queryUser.length">请选择</span>
             <template v-else>
@@ -143,8 +119,8 @@ export default {
             </template>
           </div>
         </el-form-item>
-        <el-form-item label="领取客户" prop="createBy">
-          <el-input v-model="query.createBy" placeholder="请输入"></el-input>
+        <el-form-item label="领取客户" prop="customerName">
+          <el-input v-model="query.customerName" placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item label="发放时间">
           <el-date-picker
@@ -158,8 +134,8 @@ export default {
             align="right"
           ></el-date-picker>
         </el-form-item>
-        <el-form-item label="全部状态" prop="customerType">
-          <el-select v-model="query.customerType" placeholder="请选择">
+        <el-form-item label="全部状态" prop="sendState">
+          <el-select v-model="query.sendState" placeholder="请选择">
             <el-option
               v-for="(item, key) in dictStatusType"
               :key="key"
@@ -185,12 +161,12 @@ export default {
       </el-form>
     </div>
     <div>
-      <el-button v-hasPermi="['customerManage:customer:query']" type="primary" @click="getList(1)"
+      <el-button v-hasPermi="['customerManage:customer:query']" type="primary" @click="exportData()"
         >导出Excel</el-button
       >
     </div>
     <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="50" align="center"></el-table-column>
+      <!-- <el-table-column type="selection" width="50" align="center"></el-table-column> -->
       <el-table-column
         label="发放员工"
         align="center"
@@ -223,7 +199,7 @@ export default {
       ></el-table-column>
       <el-table-column label="发放时间" align="center" prop="createTime"></el-table-column>
       <el-table-column label="发放状态" align="center" prop="sendState"></el-table-column>
-      <el-table-column label="交易订单号" align="center" prop="createBy"></el-table-column>
+      <el-table-column label="交易订单号" align="center" prop="orderNo"></el-table-column>
     </el-table>
 
     <pagination

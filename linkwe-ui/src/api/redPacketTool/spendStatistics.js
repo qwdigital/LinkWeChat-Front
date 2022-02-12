@@ -2,28 +2,27 @@ import request from '@/utils/request'
 const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/RedEnvelopes'
 
 /**
- * 设置红包限额
- * params {
-    "id":12321312,//有就传没有就传null
-    "singleDayPay": 60, //单日付款总额
-    "singleCustomerReceiveNum": 17, //单日客户收红包次数
-    "singleCustomerReceiveMoney": 69 //单日每客户收红包总额
-}
+ * 支出统计-头部
  */
-export function limitRedEnvelopes (params) {
+export function getAnalysis(params) {
   return request({
-    url: service + '/limitRedEnvelopes',
+    url: service + '/countTab',
     method: 'post',
     data: params
   })
 }
 
 /**
- * 红包限额获取
+ * 支出统计-支出趋势
+ * params  * {
+        beginTime: '', // 创建开始时间
+        endTime: '' // 创建结束时间
+}
  */
-export function findLimitRedEnvelopes (params) {
+export function getChartList(params) {
   return request({
-    url: service + '/findLimitRedEnvelopes'
+    url: service + '/countLineChart',
+    params
   })
 }
 
@@ -35,7 +34,7 @@ export function findLimitRedEnvelopes (params) {
     "name": "华东界派" //红包名称
 }
  */
-export function addorUpdateRedEnvelopes (params) {
+export function addorUpdateRedEnvelopes(params) {
   return request({
     url: service + '/addorUpdateRedEnvelopes',
     method: 'post',
@@ -53,7 +52,7 @@ status	是 0:启用;1:停用
 sceneType	是 1:客户;2:客群;3:客户与客群
 }
  */
-export function redEnvelopes (params) {
+export function redEnvelopes(params) {
   return request({
     url: service + '/redEnvelopes',
     params
@@ -68,7 +67,7 @@ export function redEnvelopes (params) {
     "status": 1 //0:启用;1:停用
 }
  */
-export function startOrStopRedEnvelope (params) {
+export function startOrStopRedEnvelope(params) {
   return request({
     url: service + '/startOrStopRedEnvelope',
     method: 'put',
@@ -80,7 +79,7 @@ export function startOrStopRedEnvelope (params) {
  * 删除红包
 ids	红包主键，多个用逗号隔开
  */
-export function deleteRedEnvelop (ids) {
+export function deleteRedEnvelop(ids) {
   return request({
     url: service + `deleteRedEnvelop/${ids}`,
     method: 'delete'
@@ -97,7 +96,7 @@ export function deleteRedEnvelop (ids) {
     "singleCustomerReceiveMoney": 23.94 //单日每员工发红包总额
 }
  */
-export function addOrUpdateUserRedEnvelopsLimit (params) {
+export function addOrUpdateUserRedEnvelopsLimit(params) {
   return request({
     url: service + '/addOrUpdateUserRedEnvelopsLimit',
     method: 'post',
@@ -114,7 +113,7 @@ export function addOrUpdateUserRedEnvelopsLimit (params) {
     "singleCustomerReceiveMoney": 90 //单日每员工发红包总额
 }
  */
-export function batchUpdateUserRedEnvelopsLimit (params) {
+export function batchUpdateUserRedEnvelopsLimit(params) {
   return request({
     url: service + '/batchUpdateUserRedEnvelopsLimit',
     method: 'post',
@@ -131,7 +130,7 @@ pageSize	是 每页显示条数
 userId	是 检索条件，传员工id
 }
  */
-export function findLimitUserRedEnvelops (params) {
+export function findLimitUserRedEnvelops(params) {
   return request({
     url: service + '/findLimitUserRedEnvelops',
     params

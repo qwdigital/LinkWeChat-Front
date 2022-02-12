@@ -1,22 +1,43 @@
 <script>
-import { getList, remove } from '@/api/communityOperating/groupSOP'
+import CardGroupIndex from '@/components/CardGroupIndex'
+import { getListGroup, getListGroupUser, exportGroup } from '@/api/redPacketTool/sendRecord'
 
 export default {
+  components: { CardGroupIndex },
   data() {
     return {
       query: {
         pageNum: 1,
         pageSize: 10,
-        ruleName: '', // 规则名称
-        createBy: '', // 创建人
+        userId: '', // 员工id
+        groupName: '', // 客户群名
+        redEnvelopeType: '', // 1: 普通红包2:拼手气红包
         beginTime: '', // 创建开始时间
         endTime: '' // 创建结束时间
       },
       dateRange: [], // 添加日期
-      total: 0, // 群SOP数据总量
-      list: [], // 群SOP数据
+      total: 0, //
+      list: [], //
       multiSelect: [], // 多选数据
-      loading: false
+      loading: false,
+      dictStatusType: Object.freeze({
+        0: '全部状态',
+        1: '普通红包',
+        2: '拼手气红包'
+      }),
+
+      dialogVisible: false,
+      cardData: [],
+      dialog: {
+        query: {
+          pageNum: 1,
+          pageSize: 10,
+          chatId: '' // 群id
+        },
+        loading: false,
+        total: 0, //
+        list: [] //
+      }
     }
   },
   watch: {
@@ -41,12 +62,10 @@ export default {
     )
   },
   methods: {
-    // 获取群SOP数据
     getList(page) {
       page && (this.query.pageNum = page)
       this.loading = true
-
-      getList(this.query)
+      getListGroup(this.query)
         .then(({ rows, total }) => {
           this.list = rows
           this.total = +total
@@ -56,65 +75,72 @@ export default {
           this.loading = false
         })
     },
-    // 新增/编辑群SOP
-    goRoute(id) {
-      this.$router.push({
-        path: 'groupSOPAev',
-        query: { id: id }
-      })
-    },
     // 重置查询参数
     resetQuery() {
       this.dateRange = []
       this.$refs['queryForm'].resetFields()
-      this.getList(1)
+      // this.getList(1)
     },
-    // 批量删除
-    handleBulkRemove() {
-      this.$confirm('确认删除当前数据?删除操作无法撤销，请谨慎操作。', '提示', {
+    exportData() {
+      this.$confirm('确认导出吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
-          const ids = this.multiSelect.map((r) => r.ruleId)
-
-          remove(ids + '').then((res) => {
-            if (res.code === 200) {
-              this.getList()
-            } else {
-            }
-          })
+          this.loading = true
+          return exportGroup(this.query)
         })
-        .catch(() => {})
-    },
-    // 删除
-    handleRemove(id) {
-      this.$confirm('确认删除当前数据?删除操作无法撤销，请谨慎操作。', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          remove(id + '').then((res) => {
-            if (res.code === 200) {
-              this.getList()
-            } else {
-            }
-          })
+        .then((res) => {
+          this.download(res.msg)
         })
-        .catch(() => {})
+        .catch((error) => {
+          console.error(error)
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     // 处理多选
     handleSelectionChange(val) {
       this.multiSelect = val
     },
-    // 获取显示用实际群聊
-    getDisplayGroups(row) {
-      if (row.groupList) {
-        const groups = row.groupList.map((g) => g.groupName)
-        return groups.join('，')
-      }
+    view(row) {
+      let cardData = [
+        {
+          title: '群主',
+          value: row.totalCnt,
+          noArrow: true
+        },
+        {
+          title: '领取人数',
+          value: row.totalCnt,
+          noArrow: true
+        },
+        {
+          title: '剩余红包个数',
+          value: row.totalCnt,
+          noArrow: true
+        }
+      ]
+      this.cardData = cardData
+      this.dialogVisible = true
+      this.dialog.query.chatId = rows.chatId
+      this.getListGroupUser(1)
+    },
+    // 获取领取详情
+    getListGroupUser(page) {
+      page && (this.dialog.query.pageNum = page)
+      this.dialog.loading = true
+      getListGroupUser(this.query)
+        .then(({ rows, total }) => {
+          this.dialog.list = rows
+          this.dialog.total = +total
+          this.dialog.loading = false
+        })
+        .catch(() => {
+          this.dialog.loading = false
+        })
     }
   }
 }
@@ -124,13 +150,23 @@ export default {
   <div>
     <div class="top-search">
       <el-form inline label-position="right" :model="query" label-width="100px" ref="queryForm">
-        <el-form-item label="规则名称" prop="ruleName">
-          <el-input v-model="query.ruleName" placeholder="请输入"></el-input>
+        <el-form-item label="发放员工" prop="userId">
+          <el-input v-model="query.userId" placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="创建人" prop="createBy">
-          <el-input v-model="query.createBy" placeholder="请输入"></el-input>
+        <el-form-item label="领取客户群" prop="groupName">
+          <el-input v-model="query.groupName" placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="创建时间">
+        <el-form-item label="全部状态" prop="redEnvelopeType">
+          <el-select v-model="query.redEnvelopeType" placeholder="请选择">
+            <el-option
+              v-for="(item, key) in dictStatusType"
+              :key="key"
+              :label="item"
+              :value="key"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="发放时间">
           <el-date-picker
             v-model="dateRange"
             value-format="yyyy-MM-dd"
@@ -149,55 +185,41 @@ export default {
             @click="getList(1)"
             >查询</el-button
           >
-          <el-button
-            v-hasPermi="['customerManage:customer:query']"
-            type="success"
-            @click="resetQuery()"
-            >重置</el-button
-          >
         </el-form-item>
       </el-form>
     </div>
 
     <div class="mid-action">
       <div>
-        <el-button type="primary" @click="goRoute()">新建规则</el-button>
+        <el-button type="primary" @click="exportData()">导出Excel</el-button>
       </div>
       <div>
-        <el-button
+        <!-- <el-button
           v-hasPermi="['customerManage:customer:export']"
           :disabled="multiSelect.length === 0"
           @click="handleBulkRemove"
           type="cyan"
           >批量删除</el-button
-        >
+        > -->
       </div>
     </div>
 
     <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="50" align="center"></el-table-column>
+      <!-- <el-table-column type="selection" width="50" align="center"></el-table-column> -->
       <el-table-column
-        label="群主"
+        label="发放员工"
         align="center"
         prop="userName"
         :show-overflow-tooltip="true"
       ></el-table-column>
-      <el-table-column label="群名" align="center" prop="groupName" width="120">
-        <template #default="{ row }">
-          <el-popover
-            placement="bottom"
-            width="200"
-            trigger="hover"
-            :content="getDisplayGroups(row)"
-          >
-            <div slot="reference" class="table-desc overflow-ellipsis">
-              {{ getDisplayGroups(row) }}
-            </div>
-          </el-popover>
-        </template>
+      <el-table-column label="领取客户群" align="center" prop="groupName" width="120">
       </el-table-column>
 
-      <el-table-column label="红包类型" align="center" prop="redEnvelopeType"></el-table-column>
+      <el-table-column label="红包类型" align="center" prop="redEnvelopeType">
+        <template slot-scope="{ row }">
+          <div>{{ dictStatusType[row.redEnvelopeType] }}</div>
+        </template>
+      </el-table-column>
 
       <el-table-column label="红包个数" align="center" prop="redEnvelopeNum"></el-table-column>
       <el-table-column
@@ -207,21 +229,14 @@ export default {
       ></el-table-column>
       <el-table-column label="发放时间" align="center" prop="createTime"></el-table-column>
 
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="领取详情" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             v-hasPermi="['enterpriseWechat:view']"
             size="mini"
             type="text"
-            @click="handleRemove(scope.row.ruleId)"
-            >删除</el-button
-          >
-          <el-button
-            v-hasPermi="['enterpriseWechat:edit']"
-            size="mini"
-            type="text"
-            @click="goRoute(scope.row.ruleId)"
-            >编辑</el-button
+            @click="view(scope.row)"
+            >领取详情</el-button
           >
         </template>
       </el-table-column>
@@ -234,6 +249,35 @@ export default {
       :limit.sync="query.pageSize"
       @pagination="getList()"
     />
+
+    <el-dialog title="领取详情" :visible.sync="dialogVisible" width="width">
+      <div>
+        <CardGroupIndex :data="cardData"></CardGroupIndex>
+
+        <el-table v-loading="dialog.loading" :data="dialog.list">
+          <el-table-column label="领取客户" align="center" width="120" prop="customerName">
+          </el-table-column>
+          <el-table-column
+            label="领取金额（元）"
+            align="center"
+            prop="redEnvelopeMoney"
+          ></el-table-column>
+          <el-table-column label="领取时间" align="center" prop="createTime"></el-table-column>
+          <el-table-column label="交易订单号" align="center" prop="orderNo"></el-table-column>
+        </el-table>
+
+        <pagination
+          v-show="dialog.total > 0"
+          :total="dialog.total"
+          :page.sync="dialog.query.pageNum"
+          :limit.sync="dialog.query.pageSize"
+          @pagination="getListGroupUser()"
+        />
+      </div>
+      <div slot="footer">
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 

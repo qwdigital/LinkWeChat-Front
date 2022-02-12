@@ -51,52 +51,42 @@ export function exportCustomer(params) {
         endTime: '' // 创建结束时间
 }
  */
-export function getListgroupName(params) {
+export function getListGroup(params) {
   return request({
-    url: service + '/findRedEnveForUser',
+    url: service + '/findRedEnveForGroup',
     params
   })
 }
 
 /**
- * 新建或编辑红包
- * params {
-    "money": 45, //金额
-    "sceneType": 37,//场景 1:客户;2:客群;3:客户与客群
-    "name": "华东界派" //红包名称
+ * 发放记录-发放客户群-获取群成员领取红包列表
+ * @param {*} params
+ * {
+        pageNum: 1,
+        pageSize: 10,
+          chatId: '' // 群id
 }
  */
-export function addOrUpdate(params) {
+export function getListGroupUser(chatId) {
   return request({
-    url: service + '/addorUpdateRedEnvelopes',
-    method: 'post',
-    data: params
+    url: service + '/findRedEnveForGroupUser/' + chatId,
+    params
   })
 }
 
 /**
- * 启用或者停用红包
- * @param {*}
-{
-    "id": 1483268831952322561, //主键
-    "status": 1 //0:启用;1:停用
+ * 发放记录-发放客户群导出
+ * params  * {
+        userId: '', // 员工id
+        groupName: '', // 客户群名
+        redEnvelopeType: '', // 1: 普通红包2:拼手气红包
+        beginTime: '', // 创建开始时间
+        endTime: '' // 创建结束时间
 }
  */
-export function startOrStop(params) {
+export function exportGroup(params) {
   return request({
-    url: service + '/startOrStopRedEnvelope',
-    method: 'put',
-    data: params
-  })
-}
-
-/**
- * 删除红包
-ids	红包主键，多个用逗号隔开
- */
-export function remove(ids) {
-  return request({
-    url: service + `deleteRedEnvelop/${ids}`,
-    method: 'delete'
+    url: service + '/exportRedEnveForGroup',
+    params
   })
 }
