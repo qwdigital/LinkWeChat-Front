@@ -141,7 +141,6 @@ export default {
     },
     // 选择变化
     handleCheckChange(data, checked, indeterminate) {
-      debugger
       // console.log(arguments)
       if (checked) {
         if (this.isSigleSelect) {
