@@ -102,3 +102,11 @@ export function exportResult (params) {
     params: params
   })
 }
+
+// 咨询记录详情
+export function getResultDetail (params) {
+  return request({
+    url: service + '/wecom/kf/record/detail',
+    params: params
+  })
+}

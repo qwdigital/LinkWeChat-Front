@@ -50,7 +50,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" fixed="right" width="180" class-name="small-padding fixed-width">
         <template slot-scope="{ row }">
-          <el-button type="text">详情</el-button>
+          <el-button type="text" @click="gotoDetail(row.id)">详情</el-button>
           <el-divider direction="vertical"></el-divider>
           <el-button type="text" @click="addFn(row.id)">编辑</el-button>
           <el-divider direction="vertical"></el-divider>
@@ -115,6 +115,14 @@
       }
     },
     methods: {
+      gotoDetail (data) {
+        this.$router.push({
+          path: '/drainageCode/customerService/detail',
+          query: {
+            id: data
+          }
+        })
+      },
       addFn (data) {
         if (data) {
           this.$router.push({
@@ -133,14 +141,6 @@
         getList().then(res => {
           this.list = res.rows
         })
-        // this.list[0] = {
-        //   name: '测试客服',
-        //   avatar: pic,
-        //   receptionType: 1,
-        //   userList: [{ userId: 111, userName: '员工一' }],
-        //   kfScenes: [{ id: 222, name: '场景一' }, { id: 333, name: '场景er' }, { id: 444, name: '场景san' }],
-        //   updateTime: '2022-01-20'
-        // }
       },
       moreMemberFn (data) {
         this.showMemberDialog = true

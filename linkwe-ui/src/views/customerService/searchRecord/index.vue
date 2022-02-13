@@ -87,7 +87,7 @@
 <script>
   import SelectUser from '@/components/SelectUser'
   import ShowCustomerService from "../components/ShowCustomerSevice.vue"
-  import { getResultList, getList, getSceneList, exportResult } from '@/api/drainageCode/customerService.js'
+  import { getResultList, getList, getSceneList, exportResult, getResultDetail } from '@/api/drainageCode/customerService.js'
   import { download } from '@/utils/common'
 
   export default {
@@ -116,12 +116,16 @@
         userArray: [],
         customerList: [],
         sceneList: [],
-        showPreviewDialog: false
+        showPreviewDialog: false,
+        detail: {}
       }
     },
     methods: {
       showResultList (data) {
-        this.showPreviewDialog = true
+        getResultDetail({ openKfId: 'wkiGuBCgAAv62MAnG1RbHJMUqG1wqGlg', externalUserId: data.externalUserId }).then(res => {
+          this.showPreviewDialog = true
+          this.detail = res.rows
+        })
       },
       exportFn () {
         this.$confirm('确认导出吗？', '提示', {
