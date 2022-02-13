@@ -54,7 +54,11 @@ export default {
       }
     },
     Pvisible(val) {
-      val && this.$refs.tree && this.$refs.tree.setCheckedNodes(this.defaultValues)
+      val &&
+        this.$refs.tree &&
+        this.$refs.tree.setCheckedKeys(
+          this.defaultValues.map((e) => (this.isOnlyLeaf ? e.userId : e.userId || e.id))
+        )
     }
   },
   computed: {
@@ -80,9 +84,7 @@ export default {
       }
     }
   },
-  created() {
-    this.defaultKeys = this.defaultValues.map((e) => (isOnlyLeaf ? e.userId : e.userId || e.id))
-  },
+  created() {},
   mounted() {},
   methods: {
     treeFormat(list) {
@@ -208,12 +210,14 @@ export default {
             show-checkbox
             :check-on-click-node="false"
             :expand-on-click-node="true"
-            :default-checked-keys="defaultKeys"
             :load="loadNode"
             :props="defaultProps"
             :check-strictly="isOnlyLeaf"
             @check-change="handleCheckChange"
           ></el-tree>
+          <!-- :default-checked-keys="
+              defaultValues.map((e) => (isOnlyLeaf ? e.userId : e.userId || e.id))
+            " -->
         </div>
       </el-col>
       <el-col :span="12" :xs="24" class="user-list">
