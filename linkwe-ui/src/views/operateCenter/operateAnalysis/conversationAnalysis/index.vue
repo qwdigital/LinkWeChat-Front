@@ -1,10 +1,10 @@
 <script>
 import CustomerContact from './CustomerContact'
 import CustomerGroupContact from './CustomerGroupContact'
-import Conversation from './Conversation'
+import Archive from './Archive'
 export default {
   name: '',
-  components: { CustomerContact, CustomerGroupContact, Conversation },
+  components: { CustomerContact, CustomerGroupContact, Archive },
   data() {
     return {
       active: 0
@@ -35,7 +35,7 @@ export default {
       <CustomerGroupContact></CustomerGroupContact>
     </el-tab-pane>
     <el-tab-pane label="会话存档">
-      <Conversation></Conversation>
+      <Archive></Archive>
     </el-tab-pane>
   </el-tabs>
 </template>

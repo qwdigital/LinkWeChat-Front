@@ -109,3 +109,28 @@ export function realDataExportGroup(params) {
     params
   })
 }
+
+/**
+ * 会话存档同意明细
+ * @param {*} params
+ * deptIds	否[]部门
+userIds	否[]员工
+beginTime	是 开始时间
+endTime	是 结束时间
+ */
+export function getArchiveList(params) {
+  return request({
+    url: service + '/archive/details',
+    params
+  })
+}
+
+/**
+ * 会话存档数据分析
+ * @param {*} params
+ */
+export function getAnalysisArchive() {
+  return request({
+    url: service + '/archive/getAnalysis'
+  })
+}

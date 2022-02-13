@@ -14,13 +14,6 @@ export default {
       default: () => ['新增客户']
     },
     // 展示数据集
-    // [
-    // { value: 1048, name: 'Search Engine' },
-    //           { value: 735, name: 'Direct' },
-    //           { value: 580, name: 'Email' },
-    //           { value: 484, name: 'Union Ads' },
-    //           { value: 300, name: 'Video Ads' }
-    //   ]
     series: {
       type: Array,
       default: () => [
@@ -80,7 +73,7 @@ export default {
         legend: {
           x: 'center',
           y: '88%',
-          selectedMode: false,
+          // selectedMode: false,
           type: 'scroll', // 分页类型
           icon: 'circle',
           itemWidth: 8,
@@ -101,20 +94,18 @@ export default {
           top: '30px',
           containLabel: true
         },
-        series: [
-          {
-            type: 'pie',
-            radius: '50%',
-            data: this.series,
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-              }
+        series: {
+          type: 'pie',
+          radius: '50%',
+          data: this.series,
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
             }
           }
-        ]
+        }
       }
       this.option && merge(option, this.option)
       option && this.myChart.setOption(option)
