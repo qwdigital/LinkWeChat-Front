@@ -4,7 +4,6 @@
     <div class="g-card g-pad20" style="margin-top: 0">
       <CardGroupIndex :data="cardData"></CardGroupIndex>
     </div>
-    <!-- <div class="divider-content"></div> -->
     <div class="g-card g-pad20">
       <div class="table-header">支出统计</div>
       <div class="chart-header">
@@ -31,7 +30,7 @@
           @change="getList"
         ></el-date-picker>
       </div>
-      <div>
+      <div v-loading="loadingChart">
         <div id="chart" class="chart" ref="chart" style="width: 90%; height: 400px"></div>
       </div>
     </div>
@@ -65,7 +64,7 @@ import * as echarts from 'echarts'
 import { parseTime } from '@/utils/common'
 import CardGroupIndex from '@/components/CardGroupIndex'
 // import TabContent from './components/TabContent'
-import { getAnalysis, countLineChart, exportGroup } from '@/api/redPacketTool/sendRecord'
+import { getAnalysis, getChartList, getRecordList } from '@/api/redPacketTool/spendStatistics'
 
 function generateMockData() {
   // 7天和30天的假数据
@@ -101,14 +100,15 @@ export default {
       timeRange: 7,
       dateRange: [],
       loading: false,
-      list: [],
-      total: 0,
+      loadingChart: false,
       query: {
         pageNum: 1,
         pageSize: 0
       },
-      cardData: [],
-      mockData: null
+      list: [],
+      total: 0,
+      cardData: []
+      // mockData: null
     }
   },
   mounted() {
@@ -118,8 +118,10 @@ export default {
         <div>统计分析企业支出金额及笔数情况</div>
       `
     )
-    this.mockData = generateMockData()
+
+    // this.mockData = generateMockData()
     this.setTime(7)
+    this.getRecordList(7)
   },
   methods: {
     getList() {
@@ -157,9 +159,36 @@ export default {
         })
     },
     getChartList() {
+      this.loadingChart = true
+      if (this.dateRange) {
+        this.query.beginTime = this.dateRange[0]
+        this.query.endTime = this.dateRange[1]
+      } else {
+        this.query.beginTime = ''
+        this.query.endTime = ''
+      }
+      getChartList(this.query)
+        .then(({ data }) => {
+          let seriesData = [] // this.mockData[this.timeRange]
+          seriesData[0] = data.map((e) => e.totalMoney)
+          seriesData[1] = data.map((e) => e.totalNum)
+          xAxisData = data.map((e) => e.createTime)
+          this.setEchart(xAxisData, seriesData)
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+        .finally(() => {
+          this.loadingChart = false
+        })
+    },
+    getRecordList() {
       this.loading = true
-      getChartList()
-        .then(({ data }) => {})
+      getRecordList(this.query)
+        .then(({ data, total }) => {
+          this.list = data
+          this.total = +total
+        })
         .catch((e) => {
           console.log(e)
         })
@@ -174,7 +203,6 @@ export default {
       date.setDate(date.getDate() - days)
       this.dateRange = [this.getTime(date), this.getTime()]
       this.getChartList()
-      this.setEchart()
     },
     getTime(datePar) {
       const d = datePar ? new Date(datePar) : new Date()
@@ -186,80 +214,89 @@ export default {
     getHandledValue(num) {
       return num < 10 ? '0' + num : num
     },
-    setEchart() {
+    setEchart(seriesData) {
       setTimeout(() => {
-        this.drawLine(
-          'chart',
-          ['累计支出金额(元)', '今日支出笔数'],
-          this.mockData[this.timeRange],
-          ['#5AD2D2', '#637BC0']
-        )
+        this.drawLine('chart', ['支出金额', '支出笔数'], seriesData, ['#5AD2D2', '#637BC0'])
       }, 1000)
     },
-    drawLine(id, arrData, data, color) {
-      const obj = document.getElementById(id)
+    drawLine(id, legend, xAxisData, seriesData, color) {
+      const dom = document.getElementById(id)
       let width = obj.parentNode.offsetWidth || window.innerWidth - 100
-      obj.style.width = width + 'px'
-      obj.style.height = '400px'
-      const charts = echarts.init(obj)
+      dom.style.width = width + 'px'
+      dom.style.height = '400px'
+      const charts = echarts.init(dom)
 
-      const chartOption = {
+      let series = []
+      let yAxis = []
+      seriesData.forEach((iData, index) => {
+        let max = iData.slice().sort((a, b) => b - a)[0]
+        // 最大值上取整最近的10的正数倍
+        max = Math.ceil(max / 10) * 10
+        yAxis.push({
+          name: legend[index],
+          type: 'value',
+          min: 0,
+          max,
+          interval: max / 5,
+          axisLine: {
+            // show: false,
+            lineStyle: {
+              color: '#ccc'
+            }
+          }
+        })
+        series.push({
+          name: legend[index],
+          type: index === 0 ? 'line' : 'bar',
+          yAxisIndex: index,
+          smooth: true,
+          data: iData,
+          itemStyle: {
+            normal: {
+              lineStyle: {
+                color: color[index]
+              }
+            }
+          },
+          textStyle: {
+            color: '#fff' // 主标题文字的颜色。
+          }
+        })
+      })
+
+      let chartOption = {
         color: color,
         tooltip: {
           trigger: 'axis'
         },
         legend: {
-          data: arrData
+          data: legend,
+          bottom: '0%'
         },
         grid: {
           left: '3%',
           right: '4%',
-          bottom: '3%',
+          bottom: '40px',
           containLabel: true
         },
         xAxis: {
           type: 'category',
-          boundaryGap: false,
-          data: data.xAxis,
+          // boundaryGap: false,
+          data: xAxisData,
           axisLine: {
             lineStyle: {
               color: '#ccc'
             }
           }
         },
-        yAxis: {
-          type: 'value',
-          axisLine: {
-            lineStyle: {
-              color: '#ccc'
-            }
-          }
-        },
-        series: []
+        yAxis,
+        series
       }
 
-      chartOption.series = data.data.map((i, index) => ({
-        name: arrData[index],
-        type: 'line',
-        stack: arrData[index],
-        smooth: true,
-        data: i,
-        itemStyle: {
-          normal: {
-            lineStyle: {
-              color: color[index]
-            }
-          }
-        },
-        textStyle: {
-          color: '#fff' // 主标题文字的颜色。
-        }
-      }))
-
       charts.setOption(chartOption)
-      this.$nextTick(() => {
+      new ResizeObserver((entries) => {
         charts.resize()
-      })
+      }).observe(dom)
 
       // if (process.client) {
       // window.addEventListener('resize', function() {

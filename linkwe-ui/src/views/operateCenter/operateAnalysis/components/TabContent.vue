@@ -119,8 +119,13 @@ export default {
         this.query.pageSize || (this.query.pageSize = 10)
       }
 
-      this.query.beginTime = this.dateRange && this.dateRange[0]
-      this.query.endTime = this.dateRange && this.dateRange[1]
+      if (this.dateRange) {
+        this.query.beginTime = this.dateRange[0]
+        this.query.endTime = this.dateRange[1]
+      } else {
+        this.query.beginTime = ''
+        this.query.endTime = ''
+      }
       if (this.dialogType === '_users') {
         if (Array.isArray(this.userArray)) {
           this.query.deptIds = this.userArray
