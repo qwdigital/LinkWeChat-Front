@@ -20,11 +20,11 @@
     props: {
       url: {
         type: String,
-        default: '测试'
+        default: ''
       },
       name: {
         type: String,
-        default: '测试'
+        default: ''
       },
       showicon: {
         type: Boolean,

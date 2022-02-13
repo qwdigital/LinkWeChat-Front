@@ -2,7 +2,7 @@
   <div class="g-card g-pad20">
     <div class="operation">
       <div class="item">
-        <el-button type="primary" size="mini" :disabled="list.length === 10" @click="addFn">新建客服</el-button>
+        <el-button type="primary" size="mini" :disabled="list.length === 10" @click="addFn()">新建客服</el-button>
         <span class="sub" v-if="list.length < 11">还可以添加{{10 -list.length}}个客服</span>
       </div>
       <div class="item">
@@ -17,32 +17,32 @@
       </el-table-column>
       <el-table-column label="接待方式" align="center" min-width="100" prop="name" show-overflow-tooltip>
         <template slot-scope="{ row }">
-          <div>{{row.receptionType === 1 ? '人工客服': receptionType === 2 ?'智能助手':''}}</div>
+          <div>{{row.receptionType === 1 ? '人工客服': row.receptionType === 2 ?'智能助手':''}}</div>
         </template>
       </el-table-column>
-      <el-table-column label="接待员工" align="center" min-width="140" prop="list">
-        <template slot-scope="{ row }">
-          <template v-if="row.userList.length < 2">
-            <el-tag v-for="(data, key) in row.userList" :key="key" size="mini">{{data.userName}}</el-tag>
+      <el-table-column label="接待员工" align="center" min-width="140" prop="userIdList">
+        <template slot-scope="{ row }" v-if="row.userIdList">
+          <template v-if="row.userIdList.length < 2">
+            <el-tag v-for="(data, key) in row.userIdList" :key="key" size="mini">{{data.userName}}</el-tag>
           </template>
           <template v-else>
-            <template v-for="(data, key) in row.userList">
+            <template v-for="(data, key) in row.userIdList">
               <el-tag v-if="key < 2 && data" :key="key" size="mini">{{data.userName}}</el-tag>
             </template>
-            <el-tag style="cursor:pointer;" size="mini" @click="moreMemberFn(row)">等{{row.list.length}}人</el-tag>
+            <el-tag style="cursor:pointer;" size="mini" @click="moreMemberFn(row)">等{{row.userIdList.length}}人</el-tag>
           </template>
         </template>
       </el-table-column>
       <el-table-column label="接待场景" align="center" min-width="140" prop="list2">
-        <template slot-scope="{ row }">
-          <template v-if="row.kfScenes.length < 2">
-            <el-tag v-for="(data, key) in row.kfScenes" :key="key" size="mini">{{data.name}}</el-tag>
+        <template slot-scope="{ row }" v-if="row.scenesList">
+          <template v-if="row.scenesList.length < 2">
+            <el-tag v-for="(data, key) in row.scenesList" :key="key" size="mini">{{data.scenesName}}</el-tag>
           </template>
           <template v-else>
-            <template v-for="(data, key) in row.kfScenes">
-              <el-tag v-if="key < 2 && data" :key="key" size="mini">{{data.name}}</el-tag>
+            <template v-for="(data, key) in row.scenesList">
+              <el-tag v-if="key < 2 && data" :key="key" size="mini">{{data.scenesName}}</el-tag>
             </template>
-            <el-tag style="cursor:pointer;" size="mini" @click="gotoScene(row)">等{{row.kfScenes.length}}个</el-tag>
+            <el-tag style="cursor:pointer;" size="mini" @click="gotoScene(row)">等{{row.scenesList.length}}个</el-tag>
           </template>
         </template>
       </el-table-column>
@@ -52,7 +52,7 @@
         <template slot-scope="{ row }">
           <el-button type="text">详情</el-button>
           <el-divider direction="vertical"></el-divider>
-          <el-button type="text">编辑</el-button>
+          <el-button type="text" @click="addFn(row.id)">编辑</el-button>
           <el-divider direction="vertical"></el-divider>
           <el-button type="text" @click="deleteFn(row)">删除</el-button>
         </template>
@@ -131,7 +131,7 @@
       },
       getData () {
         getList().then(res => {
-          this.list = res.data
+          this.list = res.rows
         })
         // this.list[0] = {
         //   name: '测试客服',
@@ -158,7 +158,7 @@
         })
       },
       deleteFn (data) {
-        if (data.kfScenes.length) {
+        if (data.scenesList && data.scenesList.length) {
           this.$confirm('请删除当前客服下所有关联场景后，再删除当前客服。', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -174,15 +174,16 @@
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
+          }).then(() => {
+            return remove(data.id)
+          }).then(() => {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            this.getData()
+          }).catch((res) => {
           })
-            .then(() => {
-              return remove(data.id)
-            })
-            .then(() => {
-              this.getData()
-              this.msgSuccess('删除成功')
-            })
-            .catch(function () { })
         }
       }
     },

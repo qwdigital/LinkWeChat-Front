@@ -17,11 +17,38 @@ export function addService (data) {
   })
 }
 
+// 客服编辑
+export function editService (data) {
+  return request({
+    url: service + '/wecom/kf/edit/account',
+    method: 'post',
+    data: data
+  })
+}
+
 // 删除客服
 export function remove (id) {
   return request({
     url: service + '/wecom/kf/delete/' + id,
-    params
+    method: 'delete'
+  })
+}
+
+// 客服详情
+export function getDetail (id) {
+  return request({
+    url: service + '/wecom/kf/get/' + id
+  })
+}
+
+// 批量下载场景二维码
+export function downloadBatch (ids) {
+  return request({
+    url: service + "/wecom/kf/scenes/batch/download",
+    params: {
+      ids: ids
+    },
+    responseType: 'blob'
   })
 }
 
@@ -53,7 +80,25 @@ export function editScene (data) {
 
 // 删除场景
 export function deleteScene (ids) {
+  console.log(33333)
   return request({
-    url: service + '/wecom/kf/scenes/delete/' + ids
+    url: service + '/wecom/kf/scenes/delete/' + ids,
+    method: 'delete'
+  })
+}
+
+// 咨询记录列表
+export function getResultList (params) {
+  return request({
+    url: service + '/wecom/kf/record/list',
+    params
+  })
+}
+
+// 咨询记录导出
+export function exportResult (params) {
+  return request({
+    url: service + '/wecom/kf/record/export',
+    params: params
   })
 }

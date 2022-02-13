@@ -22,20 +22,25 @@
       </el-col>
       <el-col :span="14">
         <div class="g-card g-pad20" style="height: 100%">
-          yulan
+          形象预览
+          <div class="show-content">
+            <show-in-phone name="客服消息" def="info" :avator="base.avatar" :call="base.name"></show-in-phone>
+            <show-in-phone name="客服详情" def="detail" :avator="base.avatar" :call="base.name"></show-in-phone>
+          </div>
         </div>
       </el-col>
     </el-row>
   </div>
 </template>
 <script>
+  import ShowInPhone from '../components/ShowInPhonePre.vue'
   export default {
     name: 'customer-service-part1',
     data () {
       return {
         base: {
           name: '',
-          avatar: '2222'
+          avatar: ''
         },
         baseRules: {
           name: [{ required: true, message: '请输入客服名称！', trigger: 'blur' }],
@@ -43,9 +48,12 @@
         }
       }
     },
+    components: {
+      ShowInPhone
+    },
     props: {
-      isEdit:{
-        type:Boolean,
+      isEdit: {
+        type: Boolean,
         default: false
       },
       editData: {
@@ -58,6 +66,9 @@
         }
       }
     },
+    watch: {
+      isEdit: 'setEdit',
+    },
     methods: {
       cancelFn () {
         this.$router.go(-1)
@@ -68,19 +79,27 @@
             this.$emit('next', this.base)
           }
         })
+      },
+      setEdit () {
+        if (this.isEdit) {
+          console.log(this.editData)
+          this.base.name = this.editData.name
+          this.base.avatar = this.editData.avatar
+        }
       }
     },
     mounted () {
-      if (this.isEdit) {
-        this.base.name = this.editData.name
-        this.base.avatar = this.editData.avatar
-      }
+      console.log(this.isEdit)
     },
     created () {
     }
   }
 </script>
 <style lang="scss" scoped>
+  .show-content {
+    margin-top: 20px;
+    display: flex;
+  }
   .sub-des {
     font-size: 12px;
     font-family: PingFangSC-Regular, PingFang SC;

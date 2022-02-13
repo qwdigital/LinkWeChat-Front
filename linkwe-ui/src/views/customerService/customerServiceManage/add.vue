@@ -6,13 +6,13 @@
       <el-step title="接待规则"></el-step>
     </el-steps>
     <div v-show="currentActive === 1">
-      <part1 @next="getBase"></part1>
+      <part1 :isEdit="isEdit" :editData="form" @next="getBase"></part1>
     </div>
     <div v-show="currentActive === 2">
-      <part2 @update="getWecome"></part2>
+      <part2 :isEdit="isEdit" :name='form.name' :avatar="form.avatar" :editData="form" @update="getWecome"></part2>
     </div>
     <div v-show="currentActive === 3">
-      <part3></part3>
+      <part3 :isEdit="isEdit" :editData="form" :name='form.name' :avatar="form.avatar" @submit="setSubmit"></part3>
     </div>
   </div>
 </template>
@@ -20,12 +20,15 @@
   import Part1 from './part1.vue'
   import Part2 from './part2.vue'
   import Part3 from './part3.vue'
-  import { addService } from '@/api/drainageCode/customerService.js'
+  import { addService, getDetail, editService } from '@/api/drainageCode/customerService.js'
   export default {
     name: 'customer-service-manage-add',
     data () {
       return {
-        currentActive: 1
+        currentActive: 1,
+        form: {},
+        isEdit: false,
+        id: ''
       }
     },
     components: {
@@ -35,19 +38,67 @@
     },
     methods: {
       getBase (data) {
-        console.log(data)
+        this.form.name = data.name
+        this.form.avatar = data.avatar
         this.currentActive = 2
       },
       getWecome (type, data) {
-        console.log(data)
+        if (type === 3) {
+          this.form.receptionType = data.receptionType
+          this.form.splitTime = data.splitTime
+          this.form.welcome = data.welcome
+        }
         this.currentActive = type
+      },
+      getDetailFn () {
+        getDetail(this.id).then(res => {
+          this.form = res.data
+          this.isEdit = true
+        })
+      },
+      setSubmit (type, data) {
+        if (type === 2) {
+          this.currentActive = type
+        } else {
+          this.form.userIdList = data.userIdList
+          this.form.allocationWay = data.allocationWay
+          this.form.isPriority = data.isPriority
+          this.form.receiveLimit = data.receiveLimit
+          this.form.queueNotice = data.queueNotice
+          this.form.queueNoticeContent = data.queueNoticeContent
+          this.form.timeOutNotice = data.timeOutNotice
+          this.form.timeOut = data.timeOut
+          this.form.timeOutType = data.timeOutType
+          this.form.timeOutContent = data.timeOutContent
+          this.form.endNotice = data.endNotice
+          this.form.endNoticeTime = data.endNoticeTime
+          this.form.endTimeType = data.endTimeType
+          this.form.endContent = data.endContent
+          this.form.welcome.forEach(dd => {
+            dd.workCycle = dd.workCycle.join(',')
+          })
+          if (this.form.id) {
+            editService(this.form).then(res => {
+              this.$message.success('操作成功！')
+              this.$router.go(-1)
+            })
+          } else {
+            addService(this.form).then(res => {
+              this.$message.success('操作成功！')
+              this.$router.go(-1)
+            })
+          }
+        }
       }
     },
     mounted () {
 
     },
     created () {
-
+      this.id = this.$route.query.id
+      if (this.id) {
+        this.getDetailFn()
+      }
     }
   }
 </script>

@@ -26,16 +26,16 @@
             </el-form-item>
             <div v-if="form.receptionType === 1">
               <el-form-item label="分时段:">
-                <el-switch v-model="form.splitTime" :active-value=2 :inactive-value=1></el-switch>
+                <el-switch v-model="form.splitTime" @change="setChange" :active-value=2 :inactive-value=1></el-switch>
                 <div class="sub-des">
                   开启后，根据咨询时间发送当前时段欢迎语
                 </div>
               </el-form-item>
               <el-form-item v-if="form.splitTime == 1" required label="欢迎语:" style="width: 50%; margin-bottom: 0;">
-                <el-input type="textarea" v-model="form.wecome[0].content" maxlength="200" show-word-limit placeholder="请输入" :autosize="{ minRows: 5, maxRows: 20 }" clearable />
+                <el-input type="textarea" v-model="form.welcome[0].content" maxlength="200" show-word-limit placeholder="请输入" :autosize="{ minRows: 5, maxRows: 20 }" clearable />
               </el-form-item>
               <el-form-item required v-if="form.splitTime == 2" label="欢迎语:">
-                <template v-for="(item, index) in form.wecome">
+                <template v-for="(item, index) in form.welcome">
                   <el-card class="box-card roster-card" :key="index">
                     <el-form-item label="工作周期">
                       <el-checkbox-group v-model="item.workCycle" @change="checkStartEnd($event, index)">
@@ -68,7 +68,7 @@
                     </el-form-item>
                   </el-card>
                   <div class="delete_btn">
-                  <el-button  v-if="index !== 0" type="text" icon="el-icon-delete" @click="onRemoveRoster(index)">删除</el-button>
+                    <el-button v-if="index !== 0" type="text" icon="el-icon-delete" @click="onRemoveRoster(index)">删除</el-button>
                   </div>
                 </template>
                 <div class="mt20">
@@ -78,10 +78,10 @@
             </div>
             <div v-if="form.receptionType === 2">
               <el-form-item required label="引导语:" style="width: 50%; margin-bottom: 0;">
-                <el-input type="textarea" v-model="form.wecome[0].content" maxlength="200" show-word-limit placeholder="请输入" :autosize="{ minRows: 5, maxRows: 20 }" clearable />
+                <el-input type="textarea" v-model="form.welcome[0].content" maxlength="200" show-word-limit placeholder="请输入" :autosize="{ minRows: 5, maxRows: 20 }" clearable />
               </el-form-item>
-               <el-form-item label="导航菜单:">
-                <template v-for="(item, index) in form.wecome[0].menuList">
+              <el-form-item label="导航菜单:">
+                <template v-for="(item, index) in form.welcome[0].menuList">
                   <el-card class="box-card roster-card" :key="index">
                     <el-form ref="subform" label-position="right" label-width="100px">
                       <el-form-item required label="菜单名称:">
@@ -89,31 +89,31 @@
                       </el-form-item>
                       <el-form-item required label="菜单类型:">
                         <el-radio-group v-model="item.type">
-                          <el-radio label="1">文本回复</el-radio>
+                          <el-radio label="click">文本回复</el-radio>
                           <el-radio label="view">跳转链接</el-radio>
                           <el-radio label="miniprogram">跳转小程序</el-radio>
-                          <el-radio label="2">转接人工</el-radio>
+                          <el-radio label="manual">转接人工</el-radio>
                         </el-radio-group>
                       </el-form-item>
-                      <el-form-item required label="内容:">
+                      <el-form-item v-if="item.type === 'click'" required label="内容:">
                         <el-input type="textarea" v-model="item.content" maxlength="200" show-word-limit placeholder="请输入欢迎语" :autosize="{ minRows: 5, maxRows: 20 }" clearable />
                       </el-form-item>
-                      <el-form-item  required label="跳转链接:">
-                        <el-input type="text" v-model="item.url"  placeholder="请输入跳转链接"/>
+                      <el-form-item v-if="item.type === 'view'" required label="跳转链接:">
+                        <el-input type="text" v-model="item.url" placeholder="请输入跳转链接" />
                       </el-form-item>
-                      <el-form-item required label="小程序ID:" >
-                        <el-input type="text" v-model="item.url"  placeholder="请输入小程序ID:"/>
+                      <el-form-item v-if="item.type === 'miniprogram'" required label="小程序ID:">
+                        <el-input type="text" v-model="item.appId" placeholder="请输入小程序ID:" />
                       </el-form-item>
-                      <el-form-item required label="小程序页面:">
-                        <el-input type="text" v-model="item.url"  placeholder="请输入小程序页面路径"/>
+                      <el-form-item v-if="item.type === 'miniprogram'" required label="小程序页面:">
+                        <el-input type="text" v-model="item.url" placeholder="请输入小程序页面路径" />
                       </el-form-item>
                     </el-form>
                   </el-card>
                   <div class="delete_btn">
-                    <el-button  v-if="index !== 0" type="text" icon="el-icon-delete" @click="onRemoveMenu(index)">删除</el-button>
+                    <el-button type="text" icon="el-icon-delete" @click="onRemoveMenu(index)">删除</el-button>
                   </div>
                 </template>
-                <div class="mt20" v-if="form.wecome[0].menuList.length < 9">
+                <div v-if="form.welcome[0].menuList.length < 9">
                   <el-button size="mini" type="primary" plain @click="onAddMenu">+添加菜单</el-button>
                   <div class="sub-des">
                     客户点击菜单，客服自动回复
@@ -121,22 +121,23 @@
                 </div>
               </el-form-item>
             </div>
-          <el-form-item>
-            <el-button plain @click="nextStep(1)">上一步</el-button>
-            <el-button type="primary" @click="nextStep(3)">下一步</el-button>
-          </el-form-item>
+            <el-form-item>
+              <el-button plain @click="nextStep(1)">上一步</el-button>
+              <el-button type="primary" @click="nextStep(3)">下一步</el-button>
+            </el-form-item>
           </el-form>
         </div>
       </el-col>
       <el-col style="width: 350px">
         <div class="g-card g-pad20" style="height: 100%">
-          预览
+          <show-in-phone :name="name" :avatar="avatar" :data="form" :show="show"></show-in-phone>
         </div>
       </el-col>
     </el-row>
   </div>
 </template>
 <script>
+  import ShowInPhone from '../components/WelcomeInPhonePre.vue'
   export default {
     name: 'customer-service-part2',
     data () {
@@ -144,19 +145,32 @@
         form: {
           receptionType: 1,
           splitTime: 1,
-          wecome: [{
-            startTime: '',
+          welcome: [{
+            beginTime: '',
             endTime: '',
             workCycle: [],
+            menuList: [],
             type: 1,
             content: '您好，很高兴为您服务，请问有什么可以帮您？'
-          }]
+          }],
         },
+        show: false
       }
     },
+    components: {
+      ShowInPhone
+    },
     props: {
-      isEdit:{
-        type:Boolean,
+      name: {
+        type: String,
+        default: ''
+      },
+      avatar: {
+        type: String,
+        default: ''
+      },
+      isEdit: {
+        type: Boolean,
         default: false
       },
       editData: {
@@ -166,7 +180,29 @@
         }
       }
     },
+    watch: {
+      isEdit: 'setEdit',
+    },
     methods: {
+      setChange (e) {
+        this.form.welcome = [{
+          beginTime: '',
+          endTime: '',
+          workCycle: [],
+          type: 1,
+          content: '您好，很高兴为您服务，请问有什么可以帮您？',
+          menuList: []
+        }]
+      },
+      setEdit () {
+        if (this.idEdit) {
+          this.form = {
+            receptionType: this.editData.receptionType,
+            splitTime: this.editData.splitTime,
+            welcome: this.editData.welcome
+          }
+        }
+      },
       nextStep (type) {
         this.$emit('update', type, this.form)
       },
@@ -177,8 +213,8 @@
           this.form = {
             receptionType: 1,
             splitTime: 1,
-            wecome: [{
-              startTime: '',
+            welcome: [{
+              beginTime: '',
               endTime: '',
               workCycle: [],
               type: 1,
@@ -187,11 +223,11 @@
             }]
           }
         } else {
-            this.form = {
+          this.form = {
             receptionType: 2,
             splitTime: 1,
-            wecome: [{
-              startTime: '',
+            welcome: [{
+              beginTime: '',
               endTime: '',
               workCycle: [],
               type: 1,
@@ -202,8 +238,8 @@
         }
       },
       onAddRoster () {
-        this.form.wecome.push({
-          startTime: '',
+        this.form.welcome.push({
+          beginTime: '',
           endTime: '',
           workCycle: [],
           type: 1,
@@ -211,19 +247,20 @@
         })
       },
       onRemoveRoster (index) {
-        this.form.wecome.splice(index, 1)
+        this.form.welcome.splice(index, 1)
       },
       onAddMenu () {
-        this.form.wecome[0].menuList.push({
+        this.form.welcome[0].menuList.push({
           name: '',
-          type: '',
+          type: 'click',
           content: '',
           url: '',
           appId: ''
         })
       },
       onRemoveMenu (index) {
-        this.form.wecome[0].menuList.splice(index, 1)
+        this.form.welcome[0].menuList.splice(index, 1)
+        this.show = !this.show
       }
     },
     mounted () {
@@ -245,7 +282,7 @@
     display: flex;
     align-items: center;
   }
-  
+
   .roster-btn-delete {
     margin-top: 10px;
     margin-bottom: 10px;
