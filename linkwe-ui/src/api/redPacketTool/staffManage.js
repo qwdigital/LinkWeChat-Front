@@ -51,3 +51,11 @@ export function batchUpdate(params) {
     data: params
   })
 }
+
+export function remove(params) {
+  return request({
+    url: service + '/batchUpdateUserRedEnvelopsLimit',
+    method: 'post',
+    data: params
+  })
+}

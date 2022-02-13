@@ -227,7 +227,7 @@
 </template>
 <script>
 import * as api from '@/api/index'
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 import CountTo from 'vue-count-to'
 export default {
   name: 'Index',

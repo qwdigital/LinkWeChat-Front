@@ -1,6 +1,6 @@
 <script>
 import * as api from '@/api/task'
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 export default {
   name: 'taskDetail',
   data() {
@@ -10,13 +10,13 @@ export default {
         pageSize: 10,
         name: '', // "客户名称",
         beginTime: '', // "开始时间",
-        endTime: '', // "结束时间"
+        endTime: '' // "结束时间"
       },
       dateRange: [],
       tableData: [],
       dateSelect: 7,
       taskDetail: {},
-      statData: [],
+      statData: []
     }
   },
   created() {
@@ -41,12 +41,12 @@ export default {
         let option = {
           tooltip: {
             //设置tip提示
-            trigger: 'axis',
+            trigger: 'axis'
           },
 
           legend: {
             //设置区分（哪条线属于什么）
-            data: ['日新增客户数', '活动参与客户数', '完成任务的客户数'],
+            data: ['日新增客户数', '活动参与客户数', '完成任务的客户数']
           },
           color: ['#8AE09F', '#FA6F53', '#1890ff'], //设置区分（每条线是什么颜色，和 legend 一一对应）
           xAxis: {
@@ -57,9 +57,9 @@ export default {
             // name: '日期',           //X轴 name
             nameTextStyle: {
               //坐标轴名称的文字样式
-              fontSize: 16,
+              fontSize: 16
               // padding: [0, 0, 0, 20]
-            },
+            }
             // axisLine: {             //坐标轴轴线相关设置。
             //     lineStyle: {
             //         color: '#FA6F53',
@@ -70,14 +70,14 @@ export default {
             nameTextStyle: {
               color: '#FA6F53',
               fontSize: 16,
-              padding: [0, 0, 10, 0],
+              padding: [0, 0, 10, 0]
             },
             // axisLine: {
             //     lineStyle: {
             //         color: '#FA6F53',
             //     }
             // },
-            type: 'value',
+            type: 'value'
           },
           series: [
             {
@@ -87,9 +87,9 @@ export default {
               lineStyle: {
                 // 线条样式 => 必须使用normal属性
                 normal: {
-                  color: '#8AE09F',
-                },
-              },
+                  color: '#8AE09F'
+                }
+              }
             },
             {
               name: '活动参与客户数',
@@ -97,9 +97,9 @@ export default {
               type: 'line',
               lineStyle: {
                 normal: {
-                  color: '#FA6F53',
-                },
-              },
+                  color: '#FA6F53'
+                }
+              }
             },
             {
               name: '完成任务的客户数',
@@ -107,15 +107,15 @@ export default {
               type: 'line',
               lineStyle: {
                 normal: {
-                  color: '#FA6F53',
-                },
-              },
-            },
-          ],
+                  color: '#FA6F53'
+                }
+              }
+            }
+          ]
         }
         this.initChart(option)
-      },
-    },
+      }
+    }
   },
   methods: {
     getList(id) {
@@ -127,7 +127,7 @@ export default {
       let params = {
         beginTime: this.dateRange[0],
         endTime: this.dateRange[1],
-        taskFissionId: this.$route.query.id,
+        taskFissionId: this.$route.query.id
       }
       api.getStat(params).then((res) => {
         this.statData = res.data ? res.data.data : []
@@ -160,8 +160,8 @@ export default {
       date.setDate(date.getDate() - days)
       this.dateRange = [this.getTime(date), this.getTime()]
       this.getChartsData()
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -170,7 +170,7 @@ export default {
     <div class="task-detail-model task-detail-left">
       <h4 class="title">任务活动信息</h4>
       <div class="task-row">
-        <div class="task-label" style="margin-bottom:30px">创建人:</div>
+        <div class="task-label" style="margin-bottom: 30px">创建人:</div>
         <div class="task-value">{{ taskDetail.createBy }}</div>
       </div>
       <div class="task-row">
@@ -185,11 +185,9 @@ export default {
         <div class="task-label">裂变客户数量:</div>
         <div class="task-value">{{ taskDetail.fissNum }}人</div>
       </div>
-      <div class="task-row" style="margin-bottom:30px">
+      <div class="task-row" style="margin-bottom: 30px">
         <div class="task-label">活动时间:</div>
-        <div class="task-value">
-          {{ taskDetail.startTime }}至{{ taskDetail.overTime }}
-        </div>
+        <div class="task-value">{{ taskDetail.startTime }}至{{ taskDetail.overTime }}</div>
       </div>
       <!-- <div class="task-row">
         <div class="task-label">活动发起成员:</div>
@@ -201,9 +199,9 @@ export default {
       </div> -->
       <div class="task-row">
         <div class="task-label">裂变海报:</div>
-        <img style="width:30px" :src="taskDetail.postersUrl" />
+        <img style="width: 30px" :src="taskDetail.postersUrl" />
       </div>
-      <div class="task-row" style="margin-bottom:30px">
+      <div class="task-row" style="margin-bottom: 30px">
         <div class="task-label">群活码:</div>
         <img style="width: 50px" :src="taskDetail.fissionTarget" />
       </div>
@@ -212,9 +210,13 @@ export default {
         <div class="task-label">兑奖链接:</div>
         <div class="task-value">{{ taskDetail.rewardUrl }}</div>
       </div>
-      <div class="task-row" style="margin-bottom:30px">
+      <div class="task-row" style="margin-bottom: 30px">
         <div class="task-label">兑奖图片:</div>
-        <img style="width:30px" v-if="taskDetail.rewardImageUrl" :src="taskDetail.rewardImageUrl" />
+        <img
+          style="width: 30px"
+          v-if="taskDetail.rewardImageUrl"
+          :src="taskDetail.rewardImageUrl"
+        />
       </div>
       <div class="task-row">
         <div class="task-label">新客欢迎语:</div>
@@ -240,7 +242,7 @@ export default {
           @change="getChartsData"
         ></el-date-picker>
       </div>
-      <div id="chartLineBox" style="width: 100%;height: 354px;"></div>
+      <div id="chartLineBox" style="width: 100%; height: 354px"></div>
     </div>
   </div>
 </template>

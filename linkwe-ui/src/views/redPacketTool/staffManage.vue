@@ -41,14 +41,12 @@
         </el-table-column>
         <el-table-column label="今日已发放金额/剩余金额" align="center">
           <template slot-scope="{ row }">
-            {{ row.todayIssuedAmount }}/{{
-              accSub(row.singleCustomerReceiveMoney, row.todayIssuedAmount)
-            }}
+            {{ row.todayIssuedAmount }}/{{ row.todayIssuedAmount - row.singleCustomerReceiveMoney }}
           </template>
         </el-table-column>
         <el-table-column label="今日已发放次数/剩余次数" align="center">
           <template slot-scope="{ row }">
-            {{ row.todayIssuedNum }}/{{ accSub(row.singleCustomerReceiveNum, row.todayIssuedNum) }}
+            {{ row.todayIssuedNum }}/{{ row.todayIssuedNum - row.singleCustomerReceiveNum }}
           </template>
         </el-table-column>
         <el-table-column label="累计已发放次数/金额" align="center" width="180">
@@ -132,7 +130,6 @@
 
 <script>
 import { getList, addOrUpdate, remove } from '@/api/redPacketTool/staffManage'
-import { accSub } from '@/utils/common'
 export default {
   name: 'member',
   data() {
@@ -187,7 +184,6 @@ export default {
     this.getList()
   },
   methods: {
-    accSub,
     getList() {
       this.loading = true
       getList(this.query)
