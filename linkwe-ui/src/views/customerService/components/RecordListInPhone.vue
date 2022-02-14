@@ -40,7 +40,7 @@
                   </div>
                 </div>
               </div>
-              <div class="right-msg" v-else-if="miniprogram">
+              <div class="right-msg" v-else-if="unit.msgType === 'miniprogram'">
                 <div class="miniprogram">
                   <div class="mini-header">
                     <img src="../../../assets/drainageCode/miniprogram-icon.png" alt="">
