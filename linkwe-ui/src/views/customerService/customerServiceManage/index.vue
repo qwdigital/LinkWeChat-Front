@@ -9,7 +9,7 @@
         <el-button type="primary" plain size="mini" @click="showDialog = true">升级服务</el-button>
       </div>
     </div>
-    <el-table v-loading="loading" :data="list" style="margin-top:20px;width: 100%">
+    <el-table v-loading="tableLoading" :data="list" style="margin-top:20px;width: 100%">
       <el-table-column label="客服" align="center" prop="" min-width="120">
         <template slot-scope="{ row }">
           <show-customer-service :url='row.avatar' :name='row.name' showicon></show-customer-service>
@@ -104,6 +104,7 @@
     data () {
       return {
         loading: false,
+        tableLoading: false,
         list: [],
         showDialog: false,
         showMemberDialog: false,
@@ -138,8 +139,10 @@
         }
       },
       getData () {
+        this.tableLoading = true
         getList().then(res => {
           this.list = res.rows
+          this.tableLoading = false
         })
       },
       moreMemberFn (data) {

@@ -76,7 +76,7 @@
     <SelectUser :visible.sync="dialogVisible" title="组织架构" :defaultValues="userArray" @success="getSelectUser"></SelectUser>
     <el-dialog title="咨询记录" :visible.sync="showPreviewDialog" width="50%">
       <div>
-        <!-- <preview-client :list="previewData"></preview-client> -->
+        <record-list-in-phone :data="detail"></record-list-in-phone>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="showPreviewDialog = false">关闭</el-button>
@@ -87,6 +87,7 @@
 <script>
   import SelectUser from '@/components/SelectUser'
   import ShowCustomerService from "../components/ShowCustomerSevice.vue"
+  import RecordListInPhone from "../components/RecordListInPhone.vue"
   import { getResultList, getList, getSceneList, exportResult, getResultDetail } from '@/api/drainageCode/customerService.js'
   import { download } from '@/utils/common'
 
@@ -94,7 +95,8 @@
     name: 'search-record',
     components: {
       ShowCustomerService,
-      SelectUser
+      SelectUser,
+      RecordListInPhone
     },
     data () {
       return {
@@ -117,15 +119,38 @@
         customerList: [],
         sceneList: [],
         showPreviewDialog: false,
-        detail: {}
+        detail: []
       }
     },
     methods: {
       showResultList (data) {
-        getResultDetail({ openKfId: 'wkiGuBCgAAv62MAnG1RbHJMUqG1wqGlg', externalUserId: data.externalUserId }).then(res => {
+        // getResultDetail({ openKfId: data.openKfId, externalUserId: data.externalUserId }).then(res => {
           this.showPreviewDialog = true
-          this.detail = res.rows
-        })
+          this.detail = [{
+    "content": "string",
+    "customerAvatar": "string",
+    "customerName": "string",
+    "externalUserId": "string",
+    "kfAvatar": "string",
+    "kfName": "string",
+    "msgId": "string",
+    "msgType": "string",
+    "openKfId": "string",
+    "origin": 3,
+    "sendTime": "2022-02-14T15:40:11.085Z"
+  }, {"content": "string",
+    "customerAvatar": "string",
+    "customerName": "string",
+    "externalUserId": "string",
+    "kfAvatar": "string",
+    "kfName": "string",
+    "msgId": "string",
+    "msgType": "string",
+    "openKfId": "string",
+    "origin": 5,
+    "sendTime": "2022-02-14T15:40:11.085Z"
+  },]
+        // })
       },
       exportFn () {
         this.$confirm('确认导出吗？', '提示', {
@@ -175,10 +200,11 @@
         this.getList()
       },
       getList () {
-        console.log(this.search)
+        this.loading = true
         getResultList(this.search).then(res => {
           this.list = res.rows
           this.total = Number(res.total)
+          this.loading = false
         })
       },
       deleteFn (data) {

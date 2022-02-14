@@ -42,9 +42,7 @@
                       </el-checkbox-group>
                     </el-form-item>
                     <el-form-item label="时间段">
-                      {{item.beginTime}}
-                      ——
-                      {{item.endTime}}
+                      {{item.beginTime}} —— {{item.endTime}}
                       </el-time-select>
                     </el-form-item>
                     <el-form-item label="欢迎语" style="width: 50%; margin-bottom: 0;">
@@ -87,6 +85,55 @@
             </div>
           </el-form>
         </div>
+        <div class="g-card g-pad20">
+          <div class="title">
+            接待规则
+          </div>
+          <el-form label-position="right" label-width="120px">
+            <el-form-item label="接待员工:">
+              <div>
+                <el-tag size="medium" v-for="(item, index) in detail.userIdList" :key="index">{{ item.userName }}</el-tag>
+              </div>
+            </el-form-item>
+            <el-form-item label="分配方式:">
+              {{detail.allocationWay === 1 ? '轮流分配':'空闲分配'}}
+            </el-form-item>
+            <el-form-item label="优先分配:">
+              <el-switch v-model="detail.isPriority" disabled :active-value=2 :inactive-value=1></el-switch>
+            </el-form-item>
+            <el-form-item label="接待上限:">
+              一个接待员工最多同时接待{{detail.receiveLimit}}人
+            </el-form-item>
+            <el-form-item label="排队提醒:">
+              <el-switch v-model="detail.queueNotice" disabled :active-value=1 :inactive-value=2></el-switch>
+              <el-input v-if="detail.queueNotice === 1" type="textarea" disabled v-model="detail.queueNoticeContent" maxlength="200" :autosize="{ minRows: 3, maxRows: 20 }"/>
+            </el-form-item>
+            <el-form-item label="超时未回复提醒:">
+              <el-switch v-model="detail.timeOutNotice" disabled :active-value=1 :inactive-value=2></el-switch>
+              <div v-if="detail.timeOutNotice === 1">
+                超过
+                <el-input disabled style=" width:60px;" v-model="detail.timeOut"></el-input>
+                <el-select disabled style="width:80px;" v-model="detail.timeOutType">
+                  <el-option label="分钟" :value="1"></el-option>
+                  <el-option label="小时" :value="2"></el-option>
+                </el-select> 客户未回复时，自动发送提示语
+                <el-input disabled style="margin-top: 10px;" type="textarea" v-model="detail.timeOutContent" maxlength="200" :autosize="{ minRows: 3, maxRows: 20 }" />
+              </div>
+            </el-form-item>
+            <el-form-item label="自动结束提醒:">
+              <el-switch disabled v-model="detail.endNotice" :active-value=1 :inactive-value=2></el-switch>
+              <div v-if="detail.endNotice === 1">
+                超过
+                <el-input disabled style=" width:60px;" v-model="detail.endNoticeTime"></el-input>
+                <el-select disabled style="width:80px;" v-model="detail.endTimeType">
+                  <el-option label="分钟" :value="1"></el-option>
+                  <el-option label="小时" :value="2"></el-option>
+                </el-select> 客户未回复时，自动发送结束语
+                <el-input disabled style="margin-top: 10px;" type="textarea" v-model="detail.endContent" maxlength="200" :autosize="{ minRows: 3, maxRows: 20 }" />
+              </div>
+            </el-form-item>
+          </el-form> 
+        </div>
       </el-col>
       <el-col style="width: 350px">
         <div class="g-card g-pad20" style="height: 100%">
@@ -94,7 +141,7 @@
         </div>
       </el-col>
     </el-row>
-  </div>
+    </div>
 </template>
 <script>
   import ShowInPhone from '../components/WelcomeInPhonePre.vue'
