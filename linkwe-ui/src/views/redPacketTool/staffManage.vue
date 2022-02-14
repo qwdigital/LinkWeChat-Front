@@ -14,7 +14,7 @@
         </el-form-item>
         <el-form-item label-width="0">
           <el-button type="primary" @click="getList(1)">查询</el-button>
-          <el-button type="info" plain @click="resetQuery">清空</el-button>
+          <el-button type="success" @click="resetQuery">重置</el-button>
         </el-form-item>
       </el-form>
       <el-button type="primary" @click="edit()">新建员工限额 </el-button>
@@ -63,7 +63,7 @@
       </el-table>
       <div class="bottom">
         <div style="align-self: flex-end">
-          <el-button type="primary" plain size="mini" @click="remove(null)">批量删除</el-button>
+          <!-- <el-button type="primary" plain size="mini" @click="remove(null)">批量删除</el-button> -->
         </div>
         <pagination
           :total="total"
@@ -87,7 +87,7 @@
         position="right"
         label-width="180px"
       >
-        <el-form-item v-if="batchUpdate" label="选择员工" prop="staff">
+        <el-form-item v-if="!batchUpdate" label="选择员工" prop="staff">
           <el-tag v-for="item in addMemberForm.users" :key="item.userId">{{
             item.userName
           }}</el-tag>
@@ -129,7 +129,7 @@
 </template>
 
 <script>
-import { getList, addOrUpdate, remove } from '@/api/redPacketTool/staffManage'
+import { getList, addOrUpdate, batchUpdate, remove } from '@/api/redPacketTool/staffManage'
 export default {
   name: 'member',
   data() {
@@ -141,32 +141,32 @@ export default {
       query: {
         pageNum: 1,
         pageSize: 10,
-        userId: ''
+        userId: '',
       },
       queryUser: [],
       addMemberForm: {
         users: [],
         singleCustomerReceiveNum: '',
-        singleCustomerReceiveMoney: ''
+        singleCustomerReceiveMoney: '',
       },
       addRules: {
         staff: [{ validator: this.validateStaff, trigger: 'blur' }],
         singleCustomerReceiveNum: [
           { required: true, message: '必填项', trigger: 'blur' },
-          { validator: this.validateDaySendNum, trigger: 'blur' }
+          { validator: this.validateDaySendNum, trigger: 'blur' },
         ],
         singleCustomerReceiveMoney: [
           { required: true, message: '必填项', trigger: 'blur' },
-          { validator: this.validateDaySendSum, trigger: 'blur' }
-        ]
+          { validator: this.validateDaySendSum, trigger: 'blur' },
+        ],
       },
       dialogVisibleSelectUser: false,
       selectedIds: [],
       selectUserData: {
         isSigleSelect: false,
-        type: ''
+        type: '',
       },
-      batchUpdate: false
+      batchUpdate: false,
     }
   },
   watch: {
@@ -178,7 +178,7 @@ export default {
         this.addMemberForm.singleCustomerReceiveMoney = ''
         this.$refs.addMemberForm.clearValidate()
       }
-    }
+    },
   },
   created() {
     this.getList()
@@ -197,8 +197,8 @@ export default {
     },
     resetQuery() {
       this.queryUser = []
-      this.query.pageNum = 1
       this.query.userId = ''
+      this.getList(1)
     },
     edit(row) {
       this.addMemberForm = Object.assign({}, row || {})
@@ -216,10 +216,11 @@ export default {
       if (this.selectUserData.type == 1) {
         this.queryUser = data
         this.query.userId = data[0].userId
+        this.getList(1)
       } else {
         this.addMemberForm.users = data.map((i) => ({
           userId: i.userId,
-          userName: i.name
+          userName: i.name,
         }))
         this.$refs.addMemberForm.clearValidate('staff')
       }
@@ -265,7 +266,7 @@ export default {
     },
     remove(id) {
       this.$confirm('是否确认删除吗?', '警告', {
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
         id = id || this.selectedIds.join(',')
         remove(id).then((res) => {
@@ -273,8 +274,8 @@ export default {
           this.msgSuccess('删除成功')
         })
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

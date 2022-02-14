@@ -7,8 +7,6 @@ const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '
 export function getAnalysis(params) {
   return request({
     url: service + '/countTab',
-    method: 'post',
-    data: params
   })
 }
 
@@ -22,7 +20,7 @@ export function getAnalysis(params) {
 export function getChartList(params) {
   return request({
     url: service + '/countLineChart',
-    params
+    params,
   })
 }
 
@@ -39,6 +37,6 @@ sceneType	是 1:客户;2:客群;3:客户与客群
 export function getRecordList(params) {
   return request({
     url: service + '/findRecordGroupByUserId',
-    params
+    params,
   })
 }

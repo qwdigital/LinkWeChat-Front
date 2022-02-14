@@ -14,7 +14,7 @@ sceneType	是 1:客户;2:客群;3:客户与客群
 export function getList(params) {
   return request({
     url: service + '/redEnvelopes',
-    params
+    params,
   })
 }
 
@@ -31,7 +31,7 @@ export function setLimit(params) {
   return request({
     url: service + '/limitRedEnvelopes',
     method: 'post',
-    data: params
+    data: params,
   })
 }
 
@@ -40,7 +40,7 @@ export function setLimit(params) {
  */
 export function getLimit(params) {
   return request({
-    url: service + '/findLimitRedEnvelopes'
+    url: service + '/findLimitRedEnvelopes',
   })
 }
 
@@ -56,7 +56,7 @@ export function addOrUpdate(params) {
   return request({
     url: service + '/addorUpdateRedEnvelopes',
     method: 'post',
-    data: params
+    data: params,
   })
 }
 
@@ -72,7 +72,7 @@ export function startOrStop(params) {
   return request({
     url: service + '/startOrStopRedEnvelope',
     method: 'put',
-    data: params
+    data: params,
   })
 }
 
@@ -82,7 +82,7 @@ ids	红包主键，多个用逗号隔开
  */
 export function remove(ids) {
   return request({
-    url: service + `deleteRedEnvelop/${ids}`,
-    method: 'delete'
+    url: service + `/deleteRedEnvelop/${ids}`,
+    method: 'delete',
   })
 }

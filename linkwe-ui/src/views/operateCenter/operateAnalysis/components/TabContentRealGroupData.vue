@@ -10,17 +10,17 @@ export default {
   props: {
     type: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   data() {
     return {
-      loading: false,
+      loading: { customerGroup: false, customerGroupMember: false },
       timeRange: 7,
       // 日期范围
       dateRange: [],
       dialogVisible: false,
-      dialogType: '_users',
+      dialogType: 'customerGroup',
       // 群聊
       groupChats: [],
       // 查询参数
@@ -28,25 +28,25 @@ export default {
         chatIds: '',
         ownerIds: '',
         beginTime: undefined,
-        endTime: undefined
+        endTime: undefined,
       },
       legend: {
         customerGroup: ['新增客群数', '解散客群数'],
-        customerGroupMember: ['新增客群成员数', '流失客群成员数']
+        customerGroupMember: ['新增客群成员数', '流失客群成员数'],
       },
       // 选择人员
       selectUsers: {
         customerGroup: [],
-        customerGroupMember: []
+        customerGroupMember: [],
       },
       customerGroup: {
         xData: [],
-        series: []
+        series: [],
       },
       customerGroupMember: {
         xData: [],
-        series: []
-      }
+        series: [],
+      },
     }
   },
   computed: {},
@@ -67,7 +67,7 @@ export default {
         this.query.ownerIds = ''
       }
 
-      this.loading = true
+      this.loading[type] = true
       let api = { customerGroup: getRealCnt, customerGroupMember: getRealCntMember }
       api[type](this.query)
         .then(({ rows }) => {
@@ -82,7 +82,7 @@ export default {
           console.error(error)
         })
         .finally(() => {
-          this.loading = false
+          this.loading[type] = false
         })
     },
     getGroupList() {
@@ -119,8 +119,8 @@ export default {
       this.selectUsers[this.dialogType] = data
       this.query[this.dialogType] = data.map((e) => e.name).join(',')
       this.getList(this.dialogType)
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -169,6 +169,7 @@ export default {
           />
         </div>
         <ChartLine
+          v-loading="loading.customerGroup"
           :xData="customerGroup.xData"
           :legend="legend['customerGroup']"
           :series="customerGroup.series"
@@ -198,6 +199,7 @@ export default {
           </el-select>
         </div>
         <ChartLine
+          v-loading="loading.customerGroupMember"
           :xData="customerGroupMember.xData"
           :legend="legend['customerGroupMember']"
           :series="customerGroupMember.series"

@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div class="divider-content"></div>
-    <div class="g-card g-pad20" style="margin-top: 0">
-      <CardGroupIndex :data="cardData"></CardGroupIndex>
-    </div>
+    <CardGroupIndex :data="cardData"></CardGroupIndex>
     <div class="g-card g-pad20">
       <div class="table-header">支出统计</div>
       <div class="chart-header">
@@ -31,10 +28,9 @@
         ></el-date-picker>
       </div>
       <div v-loading="loadingChart">
-        <div id="chart" class="chart" ref="chart" style="width: 90%; height: 400px"></div>
+        <div id="chart" ref="chart" style="width: 90%; height: 400px"></div>
       </div>
     </div>
-    <div class="divider-content"></div>
     <div class="g-card g-pad20">
       <div class="table-header">支出记录</div>
       <el-table
@@ -43,10 +39,14 @@
         @selection-change="handleSelectionChange"
         max-height="600"
       >
-        <el-table-column label="员工名称" align="center" prop="mobile" show-overflow-tooltip />
-        <el-table-column label="发送类型" align="center" prop="useUserName" show-overflow-tooltip />
-        <el-table-column label="发送时间" align="center" prop="createBy"></el-table-column>
-        <el-table-column label="发送金额(元)" align="center" prop="createTime" width="180">
+        <el-table-column label="员工名称" align="center" prop="userName" show-overflow-tooltip />
+        <el-table-column label="发送类型" align="center" prop="receiveType">
+          <template slot-scope="{ row }">
+            {{ { 1: '好友客户', 2: '群成员' }[row.receiveType] }}
+          </template>
+        </el-table-column>
+        <el-table-column label="发送时间" align="center" prop="createTime"></el-table-column>
+        <el-table-column label="发送金额(元)" align="center" prop="totalMoney" width="180">
         </el-table-column>
       </el-table>
       <pagination
@@ -83,12 +83,12 @@ function generateMockData() {
   return {
     7: {
       data: [payNums.slice(0, 8), amount.slice(0, 8)],
-      xAxis: xAxis.slice(0, 8)
+      xAxis: xAxis.slice(0, 8),
     },
     30: {
       data: [payNums, amount],
-      xAxis
-    }
+      xAxis,
+    },
   }
 }
 
@@ -103,11 +103,11 @@ export default {
       loadingChart: false,
       query: {
         pageNum: 1,
-        pageSize: 0
+        pageSize: 0,
       },
       list: [],
       total: 0,
-      cardData: []
+      cardData: [],
       // mockData: null
     }
   },
@@ -120,8 +120,9 @@ export default {
     )
 
     // this.mockData = generateMockData()
+    this.getList()
     this.setTime(7)
-    this.getRecordList(7)
+    this.getRecordList()
   },
   methods: {
     getList() {
@@ -132,23 +133,23 @@ export default {
             {
               title: '累计支出金额（元）',
               value: data.totalMoney,
-              noArrow: true
+              noArrow: true,
             },
             {
               title: '累计支出笔数',
               value: data.totalNum,
-              noArrow: true
+              noArrow: true,
             },
             {
               title: '今日支出金额（元）',
               value: data.currentMoney,
-              noArrow: true
+              noArrow: true,
             },
             {
               title: '今日支出笔数',
               value: data.currentNum,
-              noArrow: true
-            }
+              noArrow: true,
+            },
           ]
         })
         .catch((e) => {
@@ -172,7 +173,7 @@ export default {
           let seriesData = [] // this.mockData[this.timeRange]
           seriesData[0] = data.map((e) => e.totalMoney)
           seriesData[1] = data.map((e) => e.totalNum)
-          xAxisData = data.map((e) => e.createTime)
+          let xAxisData = data.map((e) => e.createTime)
           this.setEchart(xAxisData, seriesData)
         })
         .catch((e) => {
@@ -214,14 +215,17 @@ export default {
     getHandledValue(num) {
       return num < 10 ? '0' + num : num
     },
-    setEchart(seriesData) {
+    setEchart(xAxisData, seriesData) {
       setTimeout(() => {
-        this.drawLine('chart', ['支出金额', '支出笔数'], seriesData, ['#5AD2D2', '#637BC0'])
-      }, 1000)
+        this.drawLine('chart', ['支出金额', '支出笔数'], xAxisData, seriesData, [
+          '#5AD2D2',
+          '#637BC0',
+        ])
+      }, 0)
     },
     drawLine(id, legend, xAxisData, seriesData, color) {
       const dom = document.getElementById(id)
-      let width = obj.parentNode.offsetWidth || window.innerWidth - 100
+      let width = dom.parentNode.offsetWidth || window.innerWidth - 100
       dom.style.width = width + 'px'
       dom.style.height = '400px'
       const charts = echarts.init(dom)
@@ -241,9 +245,9 @@ export default {
           axisLine: {
             // show: false,
             lineStyle: {
-              color: '#ccc'
-            }
-          }
+              color: '#ccc',
+            },
+          },
         })
         series.push({
           name: legend[index],
@@ -254,30 +258,30 @@ export default {
           itemStyle: {
             normal: {
               lineStyle: {
-                color: color[index]
-              }
-            }
+                color: color[index],
+              },
+            },
           },
           textStyle: {
-            color: '#fff' // 主标题文字的颜色。
-          }
+            color: '#fff', // 主标题文字的颜色。
+          },
         })
       })
 
       let chartOption = {
         color: color,
         tooltip: {
-          trigger: 'axis'
+          trigger: 'axis',
         },
         legend: {
           data: legend,
-          bottom: '0%'
+          bottom: '0%',
         },
         grid: {
           left: '3%',
           right: '4%',
           bottom: '40px',
-          containLabel: true
+          containLabel: true,
         },
         xAxis: {
           type: 'category',
@@ -285,26 +289,20 @@ export default {
           data: xAxisData,
           axisLine: {
             lineStyle: {
-              color: '#ccc'
-            }
-          }
+              color: '#ccc',
+            },
+          },
         },
         yAxis,
-        series
+        series,
       }
 
       charts.setOption(chartOption)
       new ResizeObserver((entries) => {
         charts.resize()
       }).observe(dom)
-
-      // if (process.client) {
-      // window.addEventListener('resize', function() {
-      // charts.resize()
-      // })
-      // }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -340,7 +338,6 @@ export default {
 }
 .chart-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 </style>

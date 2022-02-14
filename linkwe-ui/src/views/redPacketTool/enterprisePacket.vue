@@ -37,7 +37,7 @@
             align="right"
           ></el-date-picker>
         </el-form-item> -->
-        <el-form-item label=" ">
+        <el-form-item label="">
           <el-button type="primary" @click="getList(1)">查询</el-button>
           <el-button type="success" @click="resetQuery">重置</el-button>
         </el-form-item>
@@ -50,7 +50,7 @@
     <div class="g-card g-pad20">
       <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="红包" align="center" prop="name">
+        <el-table-column fixed width="200" label="红包" align="center" prop="name">
           <div class="red-packet-message" slot-scope="{ row }">{{ row.name }}</div>
         </el-table-column>
         <el-table-column label="红包金额(元)" align="center" prop="money" />
@@ -67,11 +67,17 @@
         </el-table-column>
         <el-table-column label="最近更新时间" align="center" width="180" prop="createTime">
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column
+          fixed="right"
+          label="操作"
+          align="center"
+          width="180"
+          class-name="small-padding fixed-width"
+        >
           <template slot-scope="{ row }">
             <el-button type="text" @click="edit(row)">编辑</el-button>
             <el-button type="text" @click="startOrStop(row)">
-              {{ { 0: '启用', 1: '启用' }[row.status] }}
+              {{ { 0: '停用', 1: '启用' }[row.status] }}
             </el-button>
             <el-button type="text" @click="remove(row.id)">删除</el-button>
           </template>
@@ -106,7 +112,7 @@
         label-position="right"
         label-width="120px"
       >
-        <el-form-item label="红包金额(元)" required prop="money">
+        <el-form-item label="红包金额(元)" prop="money">
           <el-input
             type="text"
             placeholder="请输入金额"
@@ -116,18 +122,15 @@
           ></el-input>
           <div class="sub-des">精确到小数点后两位，可输入1~200</div>
         </el-form-item>
-        <el-form-item label="发送场景" required prop="sceneType">
-          <el-checkbox-group v-model="addForm.sceneType">
-            <el-checkbox
-              v-for="(item, key) in dictSendSence"
-              :key="key"
-              :label="item"
-              :value="key"
-            ></el-checkbox>
-          </el-checkbox-group>
+        <el-form-item label="发送场景" prop="sceneType">
+          <el-radio-group v-model="addForm.sceneType">
+            <el-radio v-for="(item, key) in dictSendSence" :key="key" :label="key">
+              {{ item }}
+            </el-radio>
+          </el-radio-group>
           <div class="sub-des">发送客户群时支持选择拼手气红包或普通金额相同红包</div>
         </el-form-item>
-        <el-form-item label="红包名称" required prop="name">
+        <el-form-item label="红包名称" prop="name">
           <el-input
             type="text"
             placeholder="请输入红包名称"
@@ -196,11 +199,10 @@
 import {
   getList,
   startOrStop,
-  limitRedEnvelopes,
   addOrUpdate,
   remove,
   getLimit,
-  setLimit
+  setLimit,
 } from '@/api/redPacketTool/enterprisePacket'
 
 function validateAmount(rule, value, callback) {
@@ -245,37 +247,40 @@ export default {
       total: 0,
       query: {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
       },
       limitForm: {
         singleDayPay: '',
         singleCustomerReceiveNum: '',
-        singleCustomerReceiveMoney: ''
+        singleCustomerReceiveMoney: '',
       },
       limitRules: {
         singleDayPay: [
           // { required: true, message: '请输入金额', trigger: 'blur' },
-          { validator: validateAmount, trigger: 'blur' }
+          { validator: validateAmount, trigger: 'blur' },
         ],
         singleCustomerReceiveNum: [
           // { required: true, message: '请输入次数', trigger: 'blur' },
-          { validator: validateClientReceiveNum, trigger: 'blur' }
+          { validator: validateClientReceiveNum, trigger: 'blur' },
         ],
         singleCustomerReceiveMoney: [
           { required: true, message: '请输入金额', trigger: 'blur' },
-          { validator: validateAmount, trigger: 'blur' }
-        ]
+          { validator: validateAmount, trigger: 'blur' },
+        ],
       },
-      addForm: {},
+      addForm: {
+        sceneType: [],
+        name: '',
+        money: '',
+      },
       addRules: {
-        money: [
-          { required: true, message: '请输入金额' },
-          { validator: validateAmount, trigger: 'blur' }
-        ]
+        name: [{ required: true, message: '必填项' }],
+        money: [{ validator: validateAmount, trigger: 'blur' }],
+        sceneType: [{ required: true, message: '必填项', trigger: 'change' }],
       },
       selectedIds: [],
       dictStatusType: Object.freeze({ 0: '启用', 1: '停用' }),
-      dictSendSence: Object.freeze({ 1: '客户', 2: '客群', 3: '客户与客群' })
+      dictSendSence: { 1: '客户', 2: '客群', 3: '客户与客群' },
     }
   },
   created() {
@@ -296,9 +301,14 @@ export default {
         }
       })
     },
+    resetQuery() {
+      this.$refs['queryForm'].resetFields()
+      this.getList(1)
+    },
     edit(row) {
-      this.addForm = Object.assign({}, row || {})
+      this.addForm = Object.assign({ sceneType: [] }, row || {})
       this.addDialogVisible = true
+      this.$nextTick(() => this.$refs.addForm.clearValidate())
     },
     addOrUpdate() {
       this.$refs.addForm.validate((validate) => {
@@ -343,9 +353,12 @@ export default {
     },
     startOrStop({ id, status }) {
       this.$confirm(`确认${{ 0: '停用', 1: '启用' }[status]}吗?`, '警告', {
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
-        startOrStop(id).then((res) => {
+        startOrStop({
+          id, //主键
+          status: { 0: '1', 1: '0' }[status], //0:启用;1:停用
+        }).then((res) => {
           this.msgSuccess('删除成功')
           this.getList()
         })
@@ -353,7 +366,7 @@ export default {
     },
     remove(id) {
       this.$confirm('是否确认删除吗?', '警告', {
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
         id = id || this.selectedIds.join(',')
         remove(id).then((res) => {
@@ -361,8 +374,8 @@ export default {
           this.getList()
         })
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -381,6 +394,7 @@ export default {
 }
 .red-packet-message {
   display: inline-block;
+  text-align: left;
   width: 175px;
   height: 75px;
   padding: 12px 0 0 50px;
