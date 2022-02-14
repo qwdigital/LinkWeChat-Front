@@ -17,7 +17,7 @@ const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '
 export function getList(params) {
   return request({
     url: service + '/findRedEnveForUser',
-    params
+    params,
   })
 }
 
@@ -34,7 +34,7 @@ export function getList(params) {
 export function exportCustomer(params) {
   return request({
     url: service + '/exportRedEnveForUser',
-    params
+    params,
   })
 }
 
@@ -54,7 +54,7 @@ export function exportCustomer(params) {
 export function getListGroup(params) {
   return request({
     url: service + '/findRedEnveForGroup',
-    params
+    params,
   })
 }
 
@@ -67,10 +67,10 @@ export function getListGroup(params) {
           chatId: '' // 群id
 }
  */
-export function getListGroupUser(chatId) {
+export function getListGroupUser(params) {
   return request({
-    url: service + '/findRedEnveForGroupUser/' + chatId,
-    params
+    url: service + '/findRedEnveForGroupUser/' + params.chatId,
+    params,
   })
 }
 
@@ -87,6 +87,6 @@ export function getListGroupUser(chatId) {
 export function exportGroup(params) {
   return request({
     url: service + '/exportRedEnveForGroup',
-    params
+    params,
   })
 }

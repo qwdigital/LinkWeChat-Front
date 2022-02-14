@@ -13,7 +13,7 @@ export default {
         groupName: '', // 客户群名
         redEnvelopeType: '', // 1: 普通红包2:拼手气红包
         beginTime: '', // 创建开始时间
-        endTime: '' // 创建结束时间
+        endTime: '', // 创建结束时间
       },
       dateRange: [], // 添加日期
       total: 0, //
@@ -23,7 +23,7 @@ export default {
       dictStatusType: Object.freeze({
         0: '全部状态',
         1: '普通红包',
-        2: '拼手气红包'
+        2: '拼手气红包',
       }),
 
       dialogVisible: false,
@@ -32,12 +32,12 @@ export default {
         query: {
           pageNum: 1,
           pageSize: 10,
-          chatId: '' // 群id
+          chatId: '', // 群id
         },
         loading: false,
         total: 0, //
-        list: [] //
-      }
+        list: [], //
+      },
     }
   },
   watch: {
@@ -49,7 +49,7 @@ export default {
       } else {
         ;[this.query.beginTime, this.query.endTime] = dateRange
       }
-    }
+    },
   },
   created() {
     this.getList()
@@ -85,7 +85,7 @@ export default {
       this.$confirm('确认导出吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       })
         .then(() => {
           this.loading = true
@@ -110,29 +110,29 @@ export default {
         {
           title: '群主',
           value: row.totalCnt,
-          noArrow: true
+          noArrow: true,
         },
         {
           title: '领取人数',
           value: row.totalCnt,
-          noArrow: true
+          noArrow: true,
         },
         {
           title: '剩余红包个数',
           value: row.totalCnt,
-          noArrow: true
-        }
+          noArrow: true,
+        },
       ]
       this.cardData = cardData
       this.dialogVisible = true
-      this.dialog.query.chatId = rows.chatId
+      this.dialog.query.chatId = row.chatId
       this.getListGroupUser(1)
     },
     // 获取领取详情
     getListGroupUser(page) {
       page && (this.dialog.query.pageNum = page)
       this.dialog.loading = true
-      getListGroupUser(this.query)
+      getListGroupUser(this.dialog.query)
         .then(({ rows, total }) => {
           this.dialog.list = rows
           this.dialog.total = +total
@@ -141,8 +141,8 @@ export default {
         .catch(() => {
           this.dialog.loading = false
         })
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -267,7 +267,6 @@ export default {
         </el-table>
 
         <pagination
-          v-show="dialog.total > 0"
           :total="dialog.total"
           :page.sync="dialog.query.pageNum"
           :limit.sync="dialog.query.pageSize"
