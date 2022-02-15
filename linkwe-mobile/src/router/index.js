@@ -10,8 +10,8 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: {
-      title: '首页'
-    }
+      title: '首页',
+    },
   },
   // 聊天素材
   {
@@ -19,8 +19,8 @@ const routes = [
     name: 'chat',
     component: () => import('../views/chat'),
     meta: {
-      title: 'chat'
-    }
+      title: 'chat',
+    },
   },
   // 用户画像
   {
@@ -28,8 +28,8 @@ const routes = [
     name: 'portrait',
     component: () => import('../views/portrait/index'),
     meta: {
-      title: 'portrait'
-    }
+      title: 'portrait',
+    },
   },
   //  用户画像详情
   {
@@ -39,8 +39,8 @@ const routes = [
     hidden: true,
     meta: {
       title: '',
-      noAuth: true
-    }
+      noAuth: true,
+    },
   },
   // 社群关系
   {
@@ -49,8 +49,8 @@ const routes = [
     component: () => import('../views/portrait/community.vue'),
     hidden: true,
     meta: {
-      title: ''
-    }
+      title: '',
+    },
   },
   // 群活码扫描跳转页面
   {
@@ -60,8 +60,8 @@ const routes = [
     hidden: true,
     meta: {
       title: '',
-      noAuth: true
-    }
+      noAuth: true,
+    },
   },
   // 标签建群+群sop
   {
@@ -74,9 +74,9 @@ const routes = [
         component: () => import('../views/communityOperating/task/list'),
         hidden: true,
         meta: {
-          title: ''
+          title: '',
           // noAuth: true
-        }
+        },
       },
       {
         path: 'state',
@@ -85,15 +85,15 @@ const routes = [
         hidden: true,
         meta: {
           title: '',
-          noAuth: true
-        }
-      }
+          noAuth: true,
+        },
+      },
     ],
     hidden: true,
     meta: {
       title: '',
-      noAuth: true
-    }
+      noAuth: true,
+    },
   },
   // 关键词群
   {
@@ -102,8 +102,8 @@ const routes = [
     component: () => import('../views/communityOperating/keywords/index'),
     hidden: true,
     meta: {
-      title: ''
-    }
+      title: '',
+    },
   },
   // 客户公海
   {
@@ -111,22 +111,22 @@ const routes = [
     name: 'highSeas',
     component: () => import('../views/highSeas/index'),
     meta: {
-      title: '公海分配'
-    }
+      title: '公海分配',
+    },
   },
-  // 客户公海
+  // 红包
   {
     path: '/redPacket',
     name: 'redPacket',
     component: () => import('../views/redPacket/index'),
     meta: {
-      title: '红包'
-    }
-  }
+      title: '红包',
+    },
+  },
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
 })
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title */

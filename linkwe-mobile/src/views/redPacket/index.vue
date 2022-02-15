@@ -8,7 +8,7 @@ export default {
       loading: false,
       visible: false,
       finished: false,
-      type: 'personal'
+      type: 'personal',
     }
   },
   computed: {},
@@ -32,15 +32,21 @@ export default {
           this.finished = true
         }
       }, 1000)
-    }
-  }
+    },
+    showDialog(type) {
+      this.type = type
+      this.visible = true
+    },
+  },
 }
 </script>
 
 <template>
   <div class="red-packet">
     <div class="personal">
-      <van-button type="info" size="mini">+ 发送个人红包</van-button>
+      <van-button type="info" size="mini" @click="showDialog('personal')"
+        >+ 发送个人红包</van-button
+      >
     </div>
     <div>
       <div class="title">企业红包</div>
@@ -49,7 +55,7 @@ export default {
           <div class="red-packet-message">红包名称</div>
           <div class="ar red-packet-list--right">
             <div class="money">￥50.00</div>
-            <van-button type="info" size="small">发送</van-button>
+            <van-button type="info" size="small" @click="showDialog('enterprise')">发送</van-button>
           </div>
         </div>
       </van-list>
