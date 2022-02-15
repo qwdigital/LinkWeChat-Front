@@ -13,7 +13,7 @@ userId	是 检索条件，传员工id
 export function getList(params) {
   return request({
     url: service + '/findLimitUserRedEnvelops',
-    params
+    params,
   })
 }
 
@@ -31,7 +31,7 @@ export function addOrUpdate(params) {
   return request({
     url: service + '/addOrUpdateUserRedEnvelopsLimit',
     method: 'post',
-    data: params
+    data: params,
   })
 }
 
@@ -48,14 +48,18 @@ export function batchUpdate(params) {
   return request({
     url: service + '/batchUpdateUserRedEnvelopsLimit',
     method: 'post',
-    data: params
+    data: params,
   })
 }
 
-export function remove(params) {
+/**
+ * 员工管理删除
+ * @param {*} ids 多个id，使用逗号隔开
+ * @returns
+ */
+export function remove(ids) {
   return request({
-    url: service + '/batchUpdateUserRedEnvelopsLimit',
-    method: 'post',
-    data: params
+    url: service + '/deleteLimitUserRedEnvelops/' + ids,
+    method: 'DELETE',
   })
 }

@@ -186,8 +186,8 @@ export default {
     getRecordList() {
       this.loading = true
       getRecordList(this.query)
-        .then(({ data, total }) => {
-          this.list = data
+        .then(({ rows, total }) => {
+          this.list = rows
           this.total = +total
         })
         .catch((e) => {

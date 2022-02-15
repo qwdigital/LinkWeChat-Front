@@ -109,17 +109,17 @@ export default {
       let cardData = [
         {
           title: '群主',
-          value: row.totalCnt,
+          value: row.groupLeaderName,
           noArrow: true,
         },
         {
           title: '领取人数',
-          value: row.totalCnt,
+          value: row.receiveNum,
           noArrow: true,
         },
         {
           title: '剩余红包个数',
-          value: row.totalCnt,
+          value: row.surplusNum,
           noArrow: true,
         },
       ]
