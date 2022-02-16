@@ -11,8 +11,8 @@
             <div class="text send-time">
               {{unit.sendTime}}
             </div>
-            <div class="item" >
-              <div class="avatar"><img class="img-st" :src="unit.customerAvatar"></div>
+            <div class="item">
+              <div class="avatar-current"><img class="img-st" :src="unit.customerAvatar"></div>
               <div class="msg">
                 <div class="word">
                   {{unit.content}}
@@ -27,7 +27,7 @@
             <div class="send-time text-right">
               {{unit.sendTime}}
             </div>
-            <div  class="item right">
+            <div class="item right">
               <div class="right-msg" v-if="unit.msgType === 'link'">
                 <div class="word-and-image">
                   <div class="sub-content">
@@ -56,7 +56,7 @@
                   {{unit.content}}
                 </div>
               </div>
-              <div class="avatar"><img class="img-st" :src="unit.kfAvatar"></div>
+              <div class="avatar-current"><img class="img-st" :src="unit.kfAvatar"></div>
             </div>
           </div>
         </template>
@@ -72,7 +72,7 @@
     props: {
       data: {
         type: Array,
-        default: () => {return []}
+        default: () => { return [] }
       }
     },
     watch: {
@@ -85,7 +85,7 @@
     },
     created () { },
     mounted () { },
-    methods: { }
+    methods: {}
   }
 </script>
 
@@ -96,6 +96,7 @@
   }
   .text {
     padding: 3px 0;
+    font-size: 12px;
   }
   .text-right {
     text-align: right;
@@ -165,13 +166,14 @@
         font-weight: 400;
         color: #666666;
         display: flex;
-        margin-top: 20px;
+        margin-bottom: 20px;
+        // margin-top: 20px;
       }
       .right {
         display: flex;
         justify-content: flex-end;
       }
-      .avatar {
+      .avatar-current {
         margin-right: 5px;
       }
       .msg {
