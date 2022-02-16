@@ -8,19 +8,21 @@
       </el-button-group>
     </div>
     <div class="item" v-if="active === 3">
-      <el-date-picker style="width: 250px;" size="mini" v-model="value" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+      <el-date-picker style="width: 250px;" @change="setTime" size="mini" clearable v-model="value" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
       </el-date-picker>
     </div>
     <div class="item" v-if="showScene">
-      <el-select size="mini" v-model="value2" placeholder="请选择场景">
-        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-        </el-option>
+      <!-- <el-select size="mini" v-model="data." placeholder="请选择场景" clearable>
+        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+      </el-select> -->
+      <el-select size="mini" @change="submit()" v-model="data.scenes" clearable placeholder="请选择场景">
+        <el-option value="" label="全部场景"></el-option>
+        <el-option v-for="(data, index) in sceneList" :key="index" :value="data.id" :label="data.name"></el-option>
       </el-select>
     </div>
     <div class="item" v-if="showMember">
       <el-select size="mini" v-model="value2" placeholder="请选择客服">
-        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-        </el-option>
+        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
     </div>
     <div class="item" v-if="showMember">
@@ -32,16 +34,18 @@
   </div>
 </template>
 <script>
+  import moment from 'moment'
+  import { getSceneList } from '@/api/drainageCode/customerService.js'
   export default {
     name: 'search-title',
     props: {
-      showScene:{
+      showScene: {
         type: Boolean,
         default: false
       },
       showMember: {
         type: Boolean,
-        default:false
+        default: false
       }
     },
     data () {
@@ -49,13 +53,51 @@
         active: 1,
         value: [],
         options: [{ value: 10, label: '1123' }],
-        value2: ''
+        value2: '',
+        data: {
+          scenes: '',
+          userIds: '',
+          beginTime: '',
+          endTime: ''
+        },
+        sceneList: []
       }
     },
     methods: {
+      submit () {
+        console.log(this.data)
+        this.$emit('search', this.data)
+      },
+      setTime (e) {
+        if (e) {
+          this.data.beginTime = moment(e[0]).format('YYYY-MM-DD')
+          this.data.endTime = moment(e[1]).format('YYYY-MM-DD')
+        } else {
+          this.data.beginTime = ''
+          this.data.endTime = ''
+        }
+        this.submit()
+      },
       setType (type) {
         this.active = type
-      }
+        if (type === 1) {
+          const weekStart = moment().subtract(6, 'days').format('YYYY-MM-DD')
+          const weekEnd = moment().format('YYYY-MM-DD')
+          this.data.beginTime = weekStart
+          this.data.endTime = weekEnd
+          this.submit()
+        } else if (type === 2) {
+          this.data.endTime = moment().format("YYYY-MM-DD")
+          this.data.beginTime = moment().subtract(29, 'days').format("YYYY-MM-DD")
+          this.submit()
+        }
+      },
+    },
+    created () {
+      getSceneList({ pageSize: 1000 }).then(dd => {
+        this.sceneList = dd.rows
+      })
+      this.setType(1)
     }
   }
 </script>

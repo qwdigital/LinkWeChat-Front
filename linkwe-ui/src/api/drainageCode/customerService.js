@@ -110,3 +110,42 @@ export function getResultDetail (params) {
     params: params
   })
 }
+
+// 场景分析 抬头数据
+export function getSceneTotal () {
+  return request({
+    url: service + '/wecom/kf/statistic/scene/getAnalysis'
+  })
+}
+
+// 场景分析 数据趋势 客户总数/实时数据
+export function getLineChartTotal (params) {
+  return request({
+    url: service + '/wecom/kf/statistic/scene/getRealCnt',
+    params
+  })
+}
+
+// 场景分析 访问场景 top5
+export function getBarTop5Total (params) {
+  return request({
+    url: service + '/wecom/kf/statistic/scene/getRankCnt',
+    params
+  })
+}
+
+// 场景分析 数据报表
+export function getTableTotal (params) {
+  return request({
+    url: service + '/wecom/kf/statistic/scene/getRealPageCnt',
+    params
+  })
+}
+
+// 场景分析 数据报表 导出
+export function getTableExport (params) {
+  return request({
+    url: service + '/wecom/kf/statistic/scene/real/export',
+    params
+  })
+}

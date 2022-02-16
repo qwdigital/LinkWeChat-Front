@@ -60,7 +60,7 @@
       </el-table-column>
       <el-table-column label="接待员工" align="center" min-width="100" prop="userName">
         <template slot-scope="{ row }">
-          {{row.receptionType === 1 ? userName: '-'}}
+          {{row.receptionType === 1 ? row.userName: '-'}}
         </template>
       </el-table-column>
       <el-table-column label="咨询开始时间" align="center" prop="sessionStartTime" width="180"></el-table-column>
@@ -124,33 +124,13 @@
     },
     methods: {
       showResultList (data) {
-        // getResultDetail({ openKfId: data.openKfId, externalUserId: data.externalUserId }).then(res => {
+        getResultDetail({ openKfId: data.openKfId, externalUserId: data.externalUserId }).then(res => {
           this.showPreviewDialog = true
-          this.detail = [{
-    "content": "string",
-    "customerAvatar": "string",
-    "customerName": "string",
-    "externalUserId": "string",
-    "kfAvatar": "string",
-    "kfName": "string",
-    "msgId": "string",
-    "msgType": "string",
-    "openKfId": "string",
-    "origin": 3,
-    "sendTime": "2022-02-14T15:40:11.085Z"
-  }, {"content": "string",
-    "customerAvatar": "string",
-    "customerName": "string",
-    "externalUserId": "string",
-    "kfAvatar": "string",
-    "kfName": "string",
-    "msgId": "string",
-    "msgType": "string",
-    "openKfId": "string",
-    "origin": 5,
-    "sendTime": "2022-02-14T15:40:11.085Z"
-  },]
-        // })
+          this.detail = res.rows
+          this.detail.forEach(dd => {
+            dd.content = JSON.parse(dd.content).content
+          })
+        })
       },
       exportFn () {
         this.$confirm('确认导出吗？', '提示', {
