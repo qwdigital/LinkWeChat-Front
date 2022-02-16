@@ -2,10 +2,10 @@
   <div>
     <el-tabs v-model="activeName">
       <el-tab-pane label="场景分析" name="first">
-        <Scene />
+        <Scene v-if="activeName === 'first'" />
       </el-tab-pane>
       <el-tab-pane label="咨询分析" name="second">
-        <Search />
+        <Search v-if="activeName === 'second'" />
       </el-tab-pane>
     </el-tabs>
   </div>

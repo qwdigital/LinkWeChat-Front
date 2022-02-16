@@ -21,13 +21,15 @@
       </el-select>
     </div>
     <div class="item" v-if="showMember">
-      <el-select size="mini" v-model="value2" placeholder="请选择客服">
-        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+      <el-select size="mini" v-model="data.openKfIds" @change="setMemeber" clearable placeholder="请选择客服">
+        <el-option value="" label="全部客服"></el-option>
+        <el-option v-for="(data, index) in customerList" :key="index" :value="data.openKfId" :label="data.name"></el-option>
       </el-select>
     </div>
     <div class="item" v-if="showMember">
-      <el-select size="mini" v-model="value2" placeholder="请选择接待员工">
-        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+      <el-select size="mini" v-model="data.userIds" @change="selectMember" clearable placeholder="请选择接待员工">
+        <el-option value="" label="全部员工"></el-option>
+        <el-option v-for="item in manList" :key="item.value" :label="item.userName" :value="item.userId">
         </el-option>
       </el-select>
     </div>
@@ -35,7 +37,7 @@
 </template>
 <script>
   import moment from 'moment'
-  import { getSceneList } from '@/api/drainageCode/customerService.js'
+  import { getSceneList, getList } from '@/api/drainageCode/customerService.js'
   export default {
     name: 'search-title',
     props: {
@@ -53,17 +55,31 @@
         active: 1,
         value: [],
         options: [{ value: 10, label: '1123' }],
-        value2: '',
+        value2: [],
         data: {
+          openKfIds: '',
           scenes: '',
           userIds: '',
           beginTime: '',
           endTime: ''
         },
-        sceneList: []
+        sceneList: [],
+        customerList: [],
+        manList: []
       }
     },
     methods: {
+      setMemeber (e) {
+        this.customerList.forEach(dd => {
+          if (dd.openKfId === e) {
+            this.manList = dd.userIdList
+          }
+        })
+        this.submit()
+      },
+      selectMember (e) {
+        this.submit()
+      },
       submit () {
         console.log(this.data)
         this.$emit('search', this.data)
@@ -94,9 +110,17 @@
       },
     },
     created () {
-      getSceneList({ pageSize: 1000 }).then(dd => {
-        this.sceneList = dd.rows
-      })
+      if (this.showScene) {
+        getSceneList({ pageSize: 1000 }).then(dd => {
+          this.sceneList = dd.rows
+        })
+      }
+      if (this.showMember) {
+        getList().then(res => {
+          this.customerList = res.rows
+        })
+      }
+
       this.setType(1)
     }
   }

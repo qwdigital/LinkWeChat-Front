@@ -149,3 +149,43 @@ export function getTableExport (params) {
     params
   })
 }
+
+
+// 咨询分析 抬头数据
+export function getConsultTotal () {
+  return request({
+    url: service + '/wecom/kf/statistic/consult/getAnalysis'
+  })
+}
+
+// 咨询分析 数据趋势 客户总数/实时数据
+export function getConsultLineChartTotal (params) {
+  return request({
+    url: service + '/wecom/kf/statistic/consult/getRealCnt',
+    params
+  })
+}
+
+// 咨询分析 访问场景 top5
+export function getConsultBarTop5Total (params) {
+  return request({
+    url: service + '/wecom/kf/statistic/consult/getRankCnt',
+    params
+  })
+}
+
+// 咨询分析 数据报表
+export function getConsultTableTotal (params) {
+  return request({
+    url: service + '/wecom/kf/statistic/consult/getRealPageCnt',
+    params
+  })
+}
+
+// 咨询分析 数据报表 导出
+export function getConsultTableExport (params) {
+  return request({
+    url: service + '/wecom/kf/statistic/consult/real/export',
+    params
+  })
+}
