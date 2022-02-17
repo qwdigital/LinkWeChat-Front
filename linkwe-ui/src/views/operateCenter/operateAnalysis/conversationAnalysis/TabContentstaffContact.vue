@@ -7,8 +7,8 @@ export default {
   props: {
     type: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   data() {
     return {
@@ -16,23 +16,23 @@ export default {
       timeRange: 7,
       legend: {
         num: ['员工单聊数'],
-        time: ['平均首次回复时长']
+        time: ['平均首次回复时长'],
       },
       // 日期范围
       dateRange: [],
       // 查询参数
       query: {
         beginTime: undefined,
-        endTime: undefined
+        endTime: undefined,
       },
       num: {
         xData: [],
-        series: []
+        series: [],
       },
       time: {
         xData: [],
-        series: []
-      }
+        series: [],
+      },
     }
   },
   computed: {},
@@ -48,17 +48,17 @@ export default {
       this.loading = true
 
       getUserChatRank(this.query)
-        .then(({ rows }) => {
-          this.num.series = rows.map((e) => e.chatCnt)
-          this.num.xData = rows.map((e) => e.userName)
+        .then(({ data }) => {
+          this.num.series = data.map((e) => e.chatCnt)
+          this.num.xData = data.map((e) => e.userName)
         })
         .catch((e) => {
           console.error(e)
         })
       getUserAvgReplyTimeRank(this.query)
-        .then(({ rows }) => {
-          this.time.series = rows.map((e) => e.avgReplyTime)
-          this.time.xData = rows.map((e) => e.userName)
+        .then(({ data }) => {
+          this.time.series = data.map((e) => e.avgReplyTime)
+          this.time.xData = data.map((e) => e.userName)
           this.loading = false
         })
         .catch((e) => {
@@ -83,8 +83,8 @@ export default {
       } else {
         this.dateRange = null
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -120,7 +120,7 @@ export default {
           :series="time.series"
           :option="{
             xAxis: [{ type: 'value' }],
-            yAxis: [{ type: 'category', data: time.xData }]
+            yAxis: [{ type: 'category', data: time.xData }],
           }"
         ></ChartBar>
       </el-col>

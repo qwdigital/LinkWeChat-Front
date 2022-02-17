@@ -20,6 +20,26 @@ export function param2Obj(url) {
   )
 }
 
+/**
+ * 获取query请求参数中name对应的值
+ * @param string name
+ */
+export function getQueryValue(name) {
+  let url = window.location.href
+  let search = decodeURIComponent(url).split('?')[1]
+  search = search && search.split('#')[0]
+  if (!search) {
+    return ''
+  }
+
+  let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+  let r = search.match(reg)
+  if (r != null) {
+    return r[2]
+  }
+  return ''
+}
+
 // 日期时间格式化
 export function dateFormat(dateString, fmt = 'yyyy-MM-dd hh:mm:ss') {
   if (!dateString) {
@@ -34,7 +54,7 @@ export function dateFormat(dateString, fmt = 'yyyy-MM-dd hh:mm:ss') {
     's+': date.getSeconds(), //秒
     'q+': Math.floor((date.getMonth() + 3) / 3), //季度
     'S+': date.getMilliseconds(), //毫秒
-    'w+': '星期' + '日一二三四五六'.charAt(date.getDay()) //星期
+    'w+': '星期' + '日一二三四五六'.charAt(date.getDay()), //星期
   }
 
   if (/(y+)/.test(fmt)) {
@@ -43,7 +63,10 @@ export function dateFormat(dateString, fmt = 'yyyy-MM-dd hh:mm:ss') {
 
   for (var k in o) {
     if (new RegExp('(' + k + ')').test(fmt)) {
-      fmt = fmt.replace(RegExp.$1, RegExp.$1.length == 1 || String(o[k]).length > 1 ? o[k] : '0' + o[k])
+      fmt = fmt.replace(
+        RegExp.$1,
+        RegExp.$1.length == 1 || String(o[k]).length > 1 ? o[k] : '0' + o[k]
+      )
     }
   }
 

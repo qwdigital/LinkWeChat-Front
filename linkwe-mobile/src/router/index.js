@@ -67,6 +67,11 @@ const routes = [
   {
     path: '/task',
     // name: 'task',
+    hidden: true,
+    meta: {
+      title: '',
+      noAuth: true,
+    },
     component: () => import('../views/communityOperating/task/index'),
     children: [
       {
@@ -89,11 +94,6 @@ const routes = [
         },
       },
     ],
-    hidden: true,
-    meta: {
-      title: '',
-      noAuth: true,
-    },
   },
   // 关键词群
   {
@@ -121,6 +121,16 @@ const routes = [
     component: () => import('../views/redPacket/index'),
     meta: {
       title: '红包',
+    },
+  },
+  // 红包
+  {
+    path: '/authCallback',
+    name: 'authCallback',
+    component: () => import('../views/authCallback'),
+    meta: {
+      title: '微信授权回调',
+      noAuth: true,
     },
   },
 ]

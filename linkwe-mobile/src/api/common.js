@@ -31,7 +31,8 @@ export function getAppTicket(url) {
 
 /**
  * 获取登录用户id
- * @param {*} url 页面url
+ * @param {*} code 授权码
+ * @param {*} agentId 应用agentId
  */
 export function getUserInfo(code, agentId) {
   return request({
@@ -41,4 +42,12 @@ export function getUserInfo(code, agentId) {
       agentId,
     },
   })
+}
+
+/**
+ * 获取微信授权用户信息
+ * @param {*} code 授权码
+ */
+export function getWechatUserInfo(code) {
+  return request({ url: `http://demo.linkwechat.cn:8090/weixin/auth/getToken?code=${code}` })
 }
