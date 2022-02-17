@@ -331,7 +331,7 @@
     }
   }
 </script>
-<style lang="scss" >
+<style lang="scss" scoped>
   .operation {
     margin-top: 10px;
     display: flex;
