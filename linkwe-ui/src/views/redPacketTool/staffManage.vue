@@ -130,6 +130,14 @@
       :isOnlyLeaf="true"
       :isSigleSelect="selectUserData.isSigleSelect"
       :defaultValues="selectUserData.type == 1 ? queryUser : addMemberForm.users"
+      :disabledValues="
+        selectUserData.type == 1
+          ? queryUser
+          : list
+              .map((e) => e.userId)
+              .join()
+              .split(',')
+      "
       destroyOnClose
       @success="submitSelectUser"
     ></SelectUser>

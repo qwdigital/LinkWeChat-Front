@@ -33,6 +33,11 @@ export default {
         return val.every((e) => e.userId && e.name)
       },
     },
+    // 禁止选中的节点
+    disabledValues: {
+      type: Array,
+      default: () => [],
+    },
     destroyOnClose: Boolean,
   },
   data() {
@@ -49,7 +54,7 @@ export default {
         this.userList = []
       } else {
         value.forEach((i) => {
-          const id = this.isOnlyLeaf ? i.userId : i.userId || i.id
+          const id = i.userId || i.id
           if (id) {
             checkedUserList.push(i)
           }
@@ -60,9 +65,7 @@ export default {
     Pvisible(val) {
       val &&
         this.$refs.tree &&
-        this.$refs.tree.setCheckedKeys(
-          this.defaultValues.map((e) => (this.isOnlyLeaf ? e.userId : e.userId || e.id))
-        )
+        this.$refs.tree.setCheckedKeys(this.defaultValues.map((e) => e.userId || e.id))
     },
   },
   computed: {
@@ -75,12 +78,15 @@ export default {
       },
     },
     defaultProps() {
-      let isOnlyLeaf = this.isOnlyLeaf
+      let that = this
       return {
         label: 'name',
         children: 'children',
         disabled(data, node) {
-          return isOnlyLeaf && data.isParty
+          return (
+            (that.isOnlyLeaf && data.isParty) ||
+            that.disabledValues.some((e) => e == (data.userId || data.id))
+          )
         },
         isLeaf(data, node) {
           return !data.id
