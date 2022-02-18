@@ -28,6 +28,7 @@
       <el-button
         type="primary"
         plain
+        :disabled="!selectedIds.length"
         @click="
           batchUpdate = true
           edit()
@@ -84,7 +85,7 @@
       :title="(addMemberForm.id ? '编辑' : '新建') + '员工限额'"
       :visible.sync="addVisible"
       width="40%"
-      destroy-on-close
+      :close-on-click-modal="false"
     >
       <el-form
         ref="addMemberForm"
@@ -93,11 +94,12 @@
         position="right"
         label-width="180px"
       >
-        <el-form-item v-if="!batchUpdate" label="选择员工" prop="staff">
-          <el-tag v-for="item in addMemberForm.users" :key="item.userId">{{
-            item.userName
-          }}</el-tag>
+        <el-form-item v-if="!batchUpdate" label="选择员工" prop="userId">
+          <el-tag v-for="item in addMemberForm.users" :key="item.userId">
+            {{ item.name }}
+          </el-tag>
           <el-button type="primary" size="mini" plain @click="selectUser(2)">选择员工</el-button>
+
           <div class="sub-des">支持多选</div>
         </el-form-item>
         <el-form-item label="单日员工发红包次数" prop="singleCustomerReceiveNum">
@@ -136,9 +138,32 @@
 
 <script>
 import { getList, addOrUpdate, batchUpdate, remove } from '@/api/redPacketTool/staffManage'
+let defaultForm = {
+  userId: '',
+  users: [],
+  singleCustomerReceiveNum: '',
+  singleCustomerReceiveMoney: '',
+}
 export default {
   name: 'member',
   data() {
+    function validateDaySendNum(rule, value, callback) {
+      value = Number(value)
+      if (Number.isNaN(value) || value < 1 || value > 999999) {
+        callback('请输入 1-999999 的正整数')
+      } else {
+        callback()
+      }
+    }
+    function validateDaySendSum(rule, value, callback) {
+      value = Number(value)
+      if (Number.isNaN(value) || value < 0.3 || value > 5000) {
+        callback('请输入0.30-5000.00的数字')
+      } else {
+        callback()
+      }
+    }
+
     return {
       addVisible: false,
       loading: false,
@@ -150,20 +175,16 @@ export default {
         userId: '',
       },
       queryUser: [],
-      addMemberForm: {
-        users: [],
-        singleCustomerReceiveNum: '',
-        singleCustomerReceiveMoney: '',
-      },
+      addMemberForm: defaultForm,
       addRules: {
-        staff: [{ validator: this.validateStaff, trigger: 'blur' }],
+        userId: [{ required: true, message: '必填项', trigger: 'change' }],
         singleCustomerReceiveNum: [
           { required: true, message: '必填项', trigger: 'blur' },
-          { validator: this.validateDaySendNum, trigger: 'blur' },
+          { validator: validateDaySendNum, trigger: 'blur' },
         ],
         singleCustomerReceiveMoney: [
           { required: true, message: '必填项', trigger: 'blur' },
-          { validator: this.validateDaySendSum, trigger: 'blur' },
+          { validator: validateDaySendSum, trigger: 'blur' },
         ],
       },
       dialogVisibleSelectUser: false,
@@ -175,17 +196,7 @@ export default {
       batchUpdate: false,
     }
   },
-  watch: {
-    addVisible(val) {
-      if (!val) {
-        // 清空
-        this.addMemberForm.users = []
-        this.addMemberForm.singleCustomerReceiveNum = ''
-        this.addMemberForm.singleCustomerReceiveMoney = ''
-        this.$refs.addMemberForm.clearValidate()
-      }
-    },
-  },
+  watch: {},
   created() {
     this.getList()
   },
@@ -207,8 +218,9 @@ export default {
       this.getList(1)
     },
     edit(row) {
-      this.addMemberForm = Object.assign({}, row || {})
+      this.addMemberForm = Object.assign({}, row || defaultForm)
       this.addVisible = true
+      this.$nextTick(() => this.$refs.addMemberForm.clearValidate())
     },
     handleSelectionChange(val) {
       this.selectedIds = val.map((i) => i.id)
@@ -226,43 +238,19 @@ export default {
       } else {
         this.addMemberForm.users = data.map((i) => ({
           userId: i.userId,
-          userName: i.name,
+          name: i.name,
         }))
-        this.$refs.addMemberForm.clearValidate('staff')
-      }
-    },
-    validateDaySendNum(rule, value, callback) {
-      value = Number(value)
-      if (Number.isNaN(value) || value < 1 || value > 999999) {
-        callback('请输入 1-999999 的正整数')
-      } else {
-        callback()
-      }
-    },
-    validateDaySendSum(rule, value, callback) {
-      value = Number(value)
-      if (Number.isNaN(value) || value < 0.3 || value > 5000) {
-        callback('请输入0.30-5000.00的数字')
-      } else {
-        callback()
+        this.addMemberForm.userId = data.map((e) => e.userId) + ''
+        this.$refs.addMemberForm.validateField('userId')
       }
     },
 
-    validateStaff(rule, value, callback) {
-      if (this.addMemberForm.users.length == 0) {
-        callback('请选择员工')
-      } else {
-        callback()
-      }
-    },
     addOrUpdate() {
+      if (this.batchUpdate) {
+        this.addMemberForm.ids = this.selectedIds + ''
+      }
       this.$refs.addMemberForm.validate((validate) => {
         if (!validate) return
-        if (this.batchUpdate) {
-          this.addMemberForm.ids = this.selectedIds + ''
-        } else {
-          this.addMemberForm.userId = this.addMemberForm.users.map((e) => e.userId) + ''
-        }
         ;(this.batchUpdate ? batchUpdate : addOrUpdate)(this.addMemberForm).then((res) => {
           this.getList()
           this.addVisible = false

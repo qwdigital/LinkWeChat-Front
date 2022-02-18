@@ -8,34 +8,38 @@ export default {
     // 添加标签显隐
     visible: {
       type: Boolean,
-      default: false
+      default: false,
     },
     title: {
       type: String,
-      default: '组织架构'
+      default: '组织架构',
     },
     // 是否 只选择叶子节点（人员节点）/禁止选择父节点（部门节点）
     isOnlyLeaf: {
       type: Boolean,
-      default: true
+      default: true,
     },
     // 是否单选
     isSigleSelect: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 默认选中的节点
     defaultValues: {
       type: Array,
-      default: () => []
+      default: () => [],
+      // 必须含有userId和name属性
+      validator(val) {
+        return val.every((e) => e.userId && e.name)
+      },
     },
-    destroyOnClose: Boolean
+    destroyOnClose: Boolean,
   },
   data() {
     return {
       treeData: [],
       userList: [],
-      defaultKeys: []
+      defaultKeys: [],
     }
   },
   watch: {
@@ -59,7 +63,7 @@ export default {
         this.$refs.tree.setCheckedKeys(
           this.defaultValues.map((e) => (this.isOnlyLeaf ? e.userId : e.userId || e.id))
         )
-    }
+    },
   },
   computed: {
     Pvisible: {
@@ -68,7 +72,7 @@ export default {
       },
       set(val) {
         this.$emit('update:visible', val)
-      }
+      },
     },
     defaultProps() {
       let isOnlyLeaf = this.isOnlyLeaf
@@ -80,9 +84,9 @@ export default {
         },
         isLeaf(data, node) {
           return !data.id
-        }
+        },
       }
-    }
+    },
   },
   created() {},
   mounted() {},
@@ -188,8 +192,8 @@ export default {
       index > -1 && this.userList.splice(index, 1)
       let order = this.defaultValues.findIndex((i) => i.userId === key)
       order > -1 && this.defaultValues.splice(order, 1)
-    }
-  }
+    },
+  },
 }
 </script>
 <template>

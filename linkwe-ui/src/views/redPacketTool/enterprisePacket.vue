@@ -275,7 +275,10 @@ export default {
       },
       addRules: {
         name: [{ required: true, message: '必填项' }],
-        money: [{ required: true, validator: validateAmount, trigger: 'blur' }],
+        money: [
+          { required: true, message: '必填项', trigger: 'blur' },
+          { validator: validateAmount, trigger: 'blur' },
+        ],
         sceneType: [{ required: true, message: '必填项', trigger: 'change' }],
       },
       selectedIds: [],
