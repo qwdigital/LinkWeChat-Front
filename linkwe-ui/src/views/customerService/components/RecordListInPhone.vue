@@ -154,7 +154,7 @@
       transform: translateX(-50%);
       border-bottom-left-radius: 20px;
       border-bottom-right-radius: 20px;
-      padding: 20px;
+      padding: 10px;
       .time {
         width: 100%;
         text-align: center;

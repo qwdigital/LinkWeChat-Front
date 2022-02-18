@@ -17,7 +17,7 @@
       </el-select> -->
       <el-select size="mini" @change="submit()" v-model="data.scenes" clearable placeholder="请选择场景">
         <el-option value="" label="全部场景"></el-option>
-        <el-option v-for="(data, index) in sceneList" :key="index" :value="data.id" :label="data.name"></el-option>
+        <el-option v-for="(data, index) in sceneList" :key="index" :value="data.scenes" :label="data.name"></el-option>
       </el-select>
     </div>
     <div class="item" v-if="showMember">
