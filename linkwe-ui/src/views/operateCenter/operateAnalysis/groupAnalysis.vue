@@ -11,7 +11,7 @@ export default {
       cardData: [],
       activeTrend: 0,
       activeSheet: 0,
-      api
+      api,
     }
   },
   computed: {},
@@ -36,43 +36,43 @@ export default {
             {
               title: '客群总数',
               tips: '企业员工全部客户群数量',
-              value: data.totalCnt
+              value: data.totalCnt,
             },
             {
               title: '今日新增客群',
               tips: '今日新创建的客群数',
               value: data.tdGroupAddCnt,
               title1: '较昨日',
-              value1: data.ydGroupAddCnt
+              value1: data.ydGroupAddCnt,
             },
             {
               title: '今日解散客群',
               tips: '今日解散的客户群数',
               value: data.tdGroupDissolveCnt,
               title1: '较昨日',
-              value1: data.ydGroupDissolveCnt
+              value1: data.ydGroupDissolveCnt,
             },
             {
               title: '客群成员总数',
               tips: '全部客群成员的总数，包括企业员工',
               value: data.memberTotalCnt,
               title1: '含员工',
-              value1: data.memberUserCnt
+              value1: data.memberUserCnt,
             },
             {
               title: '今日新增客群成员',
               tips: '今日进入群聊的成员数量，包括企业员工',
               value: data.tdMemberAddCnt,
               title1: '较昨日',
-              value1: data.ydMemberAddCnt
+              value1: data.ydMemberAddCnt,
             },
             {
-              title: '今日新增客群成员',
+              title: '今日退出客群成员',
               tips: '今日退出群聊的成员数量，包括企业员工',
               value: data.tdMemberQuitCnt,
               title1: '较前日',
-              value1: data.ydMemberQuitCnt
-            }
+              value1: data.ydMemberQuitCnt,
+            },
           ]
         })
         .catch((e) => {
@@ -81,8 +81,8 @@ export default {
         .finally(() => {
           this.loading = false
         })
-    }
-  }
+    },
+  },
 }
 </script>
 

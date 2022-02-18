@@ -17,11 +17,17 @@
           <el-button type="success" @click="resetQuery">重置</el-button>
         </el-form-item>
       </el-form>
-      <el-button type="primary" @click="edit()">新建员工限额 </el-button>
+      <el-button
+        type="primary"
+        @click="
+          batchUpdate = false
+          edit()
+        "
+        >新建员工限额
+      </el-button>
       <el-button
         type="primary"
         plain
-        size="mini"
         @click="
           batchUpdate = true
           edit()

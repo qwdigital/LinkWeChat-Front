@@ -52,7 +52,6 @@ export default {
   computed: {},
   watch: {},
   created() {
-    this.getGroupList()
     this.setTime(7)
   },
   mounted() {},
@@ -85,8 +84,8 @@ export default {
           this.loading[type] = false
         })
     },
-    getGroupList() {
-      getGroupList()
+    getGroupList(params) {
+      getGroupList(params)
         .then(({ rows }) => {
           this.groupChats = rows
         })
@@ -118,7 +117,14 @@ export default {
     getSelectUser(data) {
       this.selectUsers[this.dialogType] = data
       this.query[this.dialogType] = data.map((e) => e.name).join(',')
-      this.getList(this.dialogType)
+      if (this.dialogType === 'customerGroup') {
+        this.getList(this.dialogType)
+      } else {
+        this.query.chatIds = ''
+        this.getGroupList({
+          groupLeaderName: this.query[this.dialogType],
+        })
+      }
     },
   },
 }
@@ -165,7 +171,6 @@ export default {
             readonly
             @focus="showDialog('customerGroup')"
             placeholder="请选择群主"
-            @change="getList(1)"
           />
         </div>
         <ChartLine
@@ -187,6 +192,7 @@ export default {
           <el-select
             v-model="query.chatIds"
             placeholder="请选择群聊"
+            clearable
             @change="getList('customerGroupMember')"
           >
             <el-option

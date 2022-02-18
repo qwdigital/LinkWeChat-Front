@@ -8,29 +8,29 @@ export default {
   components: {
     ChartLine: () => import('@/components/ChartLine'),
     ChartBar: () => import('@/components/ChartBar'),
-    SelectUser: () => import('@/components/SelectUser')
+    SelectUser: () => import('@/components/SelectUser'),
   },
   props: {
     // 图表类型
     type: {
       type: String,
-      default: ''
+      default: '',
     },
     // 图表图例; 单个图例可传字符串，多个图例传数组
     legend: {
       type: [Array, String],
-      default: null
+      default: null,
     },
     // 接口请求
     request: {
       type: Function,
-      default: () => {}
+      default: () => {},
     },
     // 导出接口请求
     requestExport: {
       type: Function,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -44,7 +44,7 @@ export default {
       series: [],
       legendDict: {
         customerTotalChart: ['客群总数'],
-        customerTotalChart: ['客群总数']
+        customerTotalChart: ['客群总数'],
       },
       // 日期范围
       dateRange: [],
@@ -57,7 +57,7 @@ export default {
         chatIds: [],
         ownerIds: [],
         beginTime: undefined,
-        endTime: undefined
+        endTime: undefined,
       },
       // 群聊
       groupChats: [],
@@ -69,21 +69,21 @@ export default {
           { prop: 'addCnt', label: '新增客户数' },
           { prop: 'lostCnt', label: '流失客户数' },
           { prop: 'netCnt', label: '净增客户数' },
-          { prop: 'applyCnt', label: '昨日发送申请数' }
+          { prop: 'applyCnt', label: '昨日发送申请数' },
         ],
         // 客群数据报表
         customerGroupTotalTable: [
           { prop: 'xtime', label: '日期' },
           { prop: 'totalCnt', label: '客群总数' },
           { prop: 'addCnt', label: '新增客群数' },
-          { prop: 'dissolveCnt', label: '解散客群数' }
+          { prop: 'dissolveCnt', label: '解散客群数' },
         ],
         // 客群成员数据报表
         customerGroupMemberTotalTable: [
           { prop: 'xtime', label: '日期' },
           { prop: 'totalCnt', label: '客群成员总数' },
           { prop: 'addCnt', label: '新增客群成员数' },
-          { prop: 'quitCnt', label: '流失客群成员数' }
+          { prop: 'quitCnt', label: '流失客群成员数' },
         ],
         // 客户联系
         customerContactTable: [
@@ -91,25 +91,24 @@ export default {
           { prop: 'chatCnt', label: '单聊总数' },
           { prop: 'messageCnt', label: '发送消息数' },
           { prop: 'replyPercentage', label: '已回复聊天占比' },
-          { prop: 'avgReplyTime', label: '平均回复时长(分)' }
+          { prop: 'avgReplyTime', label: '平均回复时长(分)' },
         ],
         // 客群联系
         customerGroupContactTable: [
           { prop: 'xtime', label: '日期' },
           { prop: 'chatTotal', label: '群聊总数' },
           { prop: 'msgTotal', label: '群聊消息数' },
-          { prop: 'memberHasMsg', label: '发送消息群成员数' }
-        ]
+          { prop: 'memberHasMsg', label: '发送消息群成员数' },
+        ],
       },
       userArray: [], // 选择人员
       dialogVisible: false,
-      dialogType: '_users'
+      dialogType: '_users',
     }
   },
   computed: {},
   watch: {},
   created() {
-    this.getGroupList()
     this.setTime(7)
   },
   mounted() {},
@@ -182,7 +181,7 @@ export default {
                 averageReplyDurationChart: 'avgReplyTime', // 平均首次回复时长
                 groupChatTotalChart: 'chatTotal', // 群聊总数
                 groupChatMessageNumChart: 'msgTotal', // 群聊消息数
-                sendMessageGroupMemberChart: 'memberHasMsg' // 发送消息群成员数
+                sendMessageGroupMemberChart: 'memberHasMsg', // 发送消息群成员数
               }
               this.series = data.map((e) => e[dict[this.type]])
             }
@@ -204,8 +203,8 @@ export default {
           this.loading = false
         })
     },
-    getGroupList() {
-      getGroupList()
+    getGroupList(params) {
+      getGroupList(params)
         .then(({ rows }) => {
           this.groupChats = rows
         })
@@ -234,13 +233,20 @@ export default {
     getSelectUser(data) {
       this.userArray = data
       this.query[this.dialogType] = data.map((e) => e.name).join(',')
-      this.getList()
+      if (['customerGroupMemberTotalChart', 'customerGroupMemberTotalTable'].includes(this.type)) {
+        this.query.chatIds = ''
+        this.getGroupList({
+          groupLeaderName: this.query[this.dialogType],
+        })
+      } else {
+        this.getList()
+      }
     },
     exprotTable() {
       this.$confirm('是否确认导出吗?', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       })
         .then(() => {
           this.loading = true
@@ -256,8 +262,8 @@ export default {
         .finally(() => {
           this.loading = false
         })
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -296,7 +302,8 @@ export default {
         v-if="['customerGroupMemberTotalChart', 'customerGroupMemberTotalTable'].includes(type)"
         v-model="query.chatIds"
         placeholder="请选择群聊"
-        @change="getList(1)"
+        clearable
+        @change="getList()"
       >
         <el-option
           v-for="item in groupChats"
@@ -312,7 +319,7 @@ export default {
             'customerTotalChart',
             'customerTotalTable',
             'realDataChart',
-            'customerContactTable'
+            'customerContactTable',
           ].includes(type)
         "
         style="width: 180px"

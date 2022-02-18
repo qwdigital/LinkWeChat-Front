@@ -139,7 +139,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="预览">
-          <div class="red-packet-message">红包名称</div>
+          <div class="red-packet-message">{{ addForm.name || '红包名称' }}</div>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -256,16 +256,16 @@ export default {
       },
       limitRules: {
         singleDayPay: [
-          // { required: true, message: '请输入金额', trigger: 'blur' },
-          { validator: validateAmount, trigger: 'blur' },
+          { required: true, message: '请输入金额', trigger: 'change' },
+          { validator: validateAmount, trigger: 'change' },
         ],
         singleCustomerReceiveNum: [
-          // { required: true, message: '请输入次数', trigger: 'blur' },
+          { required: true, message: '请输入次数', trigger: 'blur' },
           { validator: validateClientReceiveNum, trigger: 'blur' },
         ],
         singleCustomerReceiveMoney: [
-          { required: true, message: '请输入金额', trigger: 'blur' },
-          { validator: validateAmount, trigger: 'blur' },
+          { required: true, message: '请输入金额', trigger: 'change' },
+          { validator: validateAmount, trigger: 'change' },
         ],
       },
       addForm: {
@@ -275,7 +275,7 @@ export default {
       },
       addRules: {
         name: [{ required: true, message: '必填项' }],
-        money: [{ validator: validateAmount, trigger: 'blur' }],
+        money: [{ required: true, validator: validateAmount, trigger: 'blur' }],
         sceneType: [{ required: true, message: '必填项', trigger: 'change' }],
       },
       selectedIds: [],
@@ -325,22 +325,12 @@ export default {
     handleSelectionChange(val) {
       this.selectedIds = val.map((i) => i.id)
     },
-    getLimit() {
-      return getLimit({ pageSize: 10, pageNum: 1 }).then((res) => {
-        if (res.code == 200 && Array.isArray(res.rows)) {
-          return res.rows[0]
-        }
-      })
-    },
-    async initLimitData() {
-      const limitConfig = await this.getLimit()
-      if (limitConfig) {
-        this.$set(this.limitForm, 'id', limitConfig.id)
-      }
-    },
     async showLimitConfig() {
-      await this.initLimitData()
+      const { data } = await getLimit()
+      let { id, singleDayPay, singleCustomerReceiveNum, singleCustomerReceiveMoney } = data
+      this.limitForm = { id, singleDayPay, singleCustomerReceiveNum, singleCustomerReceiveMoney }
       this.limitDialogVisible = true
+      this.$nextTick(() => this.$refs.limitForm.clearValidate())
     },
     setLimit() {
       this.$refs.limitForm.validate((validate) => {
@@ -359,7 +349,7 @@ export default {
           id, //主键
           status: { 0: '1', 1: '0' }[status], //0:启用;1:停用
         }).then((res) => {
-          this.msgSuccess('删除成功')
+          this.msgSuccess('操作成功')
           this.getList()
         })
       })
