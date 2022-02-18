@@ -10,7 +10,7 @@
       <el-form-item label="咨询场景">
         <el-select v-model="search.scene">
           <el-option value="" label="全部场景"></el-option>
-          <el-option v-for="(data, index) in sceneList" :key="index" :value="data.id" :label="data.name"></el-option>
+          <el-option v-for="(data, index) in sceneList" :key="index" :value="data.scenes" :label="data.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="是否企业客户" label-width="100px">
@@ -109,7 +109,9 @@
           isQyCustomer: '', //0-是 1-否,
           openKfId: '',
           scene: '',
-          userId: ''
+          userId: '',
+          orderByColumn: 'record.session_start_time',
+          isAsc: 'desc'
         },
         total: 0,
         form: {},
@@ -175,7 +177,9 @@
           isQyCustomer: '', //0-是 1-否,
           openKfId: '',
           scene: '',
-          userId: ''
+          userId: '',
+          orderByColumn: 'record.session_start_time',
+          isAsc: 'desc'
         }
         this.getList()
       },

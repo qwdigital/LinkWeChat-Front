@@ -6,6 +6,8 @@
         <span class="sub" v-if="list.length < 11">还可以添加{{10 -list.length}}个客服</span>
       </div>
       <div class="item">
+
+        <el-button type="primary" size="mini" v-loading="asyncLoading" @click="setAsyncFn">同步客服</el-button>
         <el-button type="primary" plain size="mini" @click="showDialog = true">升级服务</el-button>
       </div>
     </div>
@@ -36,11 +38,11 @@
       <el-table-column label="接待场景" align="center" min-width="140" prop="list2">
         <template slot-scope="{ row }" v-if="row.scenesList">
           <template v-if="row.scenesList.length < 2">
-            <el-tag v-for="(data, key) in row.scenesList" :key="key" size="mini">{{data.scenesName}}</el-tag>
+            <el-tag style="cursor:pointer;" v-for="(data, key) in row.scenesList" @click="gotoScene(row)" :key="key" size="mini">{{data.scenesName}}</el-tag>
           </template>
           <template v-else>
             <template v-for="(data, key) in row.scenesList">
-              <el-tag v-if="key < 2 && data" :key="key" size="mini">{{data.scenesName}}</el-tag>
+              <el-tag style="cursor:pointer;" v-if="key < 2 && data" :key="key" size="mini" @click="gotoScene(row)">{{data.scenesName}}</el-tag>
             </template>
             <el-tag style="cursor:pointer;" size="mini" @click="gotoScene(row)">等{{row.scenesList.length}}个</el-tag>
           </template>
@@ -68,23 +70,27 @@
       </div>
     </el-dialog>
     <el-dialog title="接待员工" :visible.sync="showMemberDialog" width="600px">
-      <div>
-        <el-form label-position="right" label-width="100px">
-          <el-form-item label="接待状态">
-            <el-select>
-              <el-option value="" label="全部状态"></el-option>
-              <el-option value="0" label="接待中"></el-option>
-              <el-option value="0" label="停止接待"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-form>
-        <el-table v-loading="loading" :data="list" style="margin-top:20px;width: 100%">
-          <el-table-column label="员工" align="center" prop="name" show-overflow-tooltip />
-          <el-table-column label="所属部门" align="center" prop="name" show-overflow-tooltip />
-          <el-table-column label="接待状态" align="center" prop="name" width="120px;"></el-table-column>
+      <el-form label-position="right" label-width="100px">
+        <el-form-item label="接待状态">
+          <el-select v-model="memberPage.status" @change="changeList()">
+            <el-option value="" label="全部状态"></el-option>
+            <el-option :value="0" label="接待中"></el-option>
+            <el-option :value="1" label="停止接待"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div style="max-height: 400px;overflow-y:auto;">
+        <el-table v-loading="loading" :data="memberList" style="margin-top:20px;width: 100%">
+          <el-table-column label="员工" align="center" prop="userName" show-overflow-tooltip />
+          <el-table-column label="所属部门" align="center" prop="deptName" show-overflow-tooltip />
+          <el-table-column label="接待状态" align="center" prop="status" width="120px;">
+            <template slot-scope="{ row }">
+              {{row.status === 0 ? '接待中': '停止接待'}}
+            </template>
+          </el-table-column>
         </el-table>
-        <pagination :total="memberPage.total" :page.sync="memberPage.pageNum" :limit.sync="memberPage.pageSize" @pagination="getMemberList()" />
       </div>
+      <pagination :total="memberPage.total" :page.sync="memberPage.pageNum" :limit.sync="memberPage.pageSize" @pagination="getMemberList()" />
       <div slot="footer" class="dialog-footer">
         <el-button @click="showMemberDialog = false">取 消</el-button>
         <el-button type="primary" @click="showMemberDialog = false">确定</el-button>
@@ -95,7 +101,7 @@
 <script>
   import ShowCustomerService from "../components/ShowCustomerSevice.vue"
   import pic from '@/assets/drainageCode/service.png'
-  import { getList, remove } from '@/api/drainageCode/customerService.js'
+  import { getList, remove, setAsync, getMemeberInCustomer } from '@/api/drainageCode/customerService.js'
   export default {
     name: 'customer-service-manage',
     components: {
@@ -103,19 +109,31 @@
     },
     data () {
       return {
+        asyncLoading: false,
         loading: false,
         tableLoading: false,
         list: [],
+        memberList: [],
         showDialog: false,
         showMemberDialog: false,
         memberPage: {
           pageSize: 10,
           pageNum: 1,
-          total: 0
+          total: 0,
+          status: '',
+          openKfId: '',
+          kfId: ''
         }
       }
     },
     methods: {
+      setAsyncFn () {
+        this.asyncLoading = true
+        setAsync().then(res => {
+          this.asyncLoading = false
+          this.getData()
+        })
+      },
       gotoDetail (data) {
         this.$router.push({
           path: '/drainageCode/customerService/detail',
@@ -140,23 +158,38 @@
       },
       getData () {
         this.tableLoading = true
-        getList().then(res => {
-          this.list = res.rows
-          this.tableLoading = false
-        })
+        getList(
+          {
+            orderByColumn: 'wki.update_time',
+            isAsc: 'desc'
+          }).then(res => {
+            this.list = res.rows
+            this.tableLoading = false
+          })
+      },
+      changeList () {
+        this.memberPage.pageNum = 1
+        this.getMemberList()
       },
       moreMemberFn (data) {
+        this.memberPage.openKfId = data.openKfId
+        this.memberPage.kfId = data.kfId
         this.showMemberDialog = true
         this.getMemberList()
       },
       getMemberList () {
-
+        this.loading = true
+        getMemeberInCustomer(this.memberPage).then(res => {
+          this.loading = false
+          this.memberList = res.rows
+          this.memberPage.total = Number(res.total)
+        })
       },
       gotoScene (data) {
         this.$router.push({
           path: '/drainageCode/customerService/sceneManage',
           query: {
-            kfid: data.id
+            openKfId: data.openKfId
           }
         })
       },

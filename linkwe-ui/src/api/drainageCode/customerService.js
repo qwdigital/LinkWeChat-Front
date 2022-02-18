@@ -1,5 +1,21 @@
 import request from '@/utils/request'
 const service = window.CONFIG.services.kf
+
+// 同步客服
+export function setAsync () {
+  return request({
+    url: service + '/wecom/kf/list/async'
+  })
+}
+
+// 客服接待人员列表
+export function getMemeberInCustomer (data) {
+  return request({
+    url: service + '/wecom/kf/servicer/list',
+    params: data
+  })
+}
+
 // 客服列表
 export function getList (params) {
   return request({

@@ -109,7 +109,7 @@
           name: '',
           type: '',
           openKfId: '',
-          orderByColumn: 'update_time',
+          orderByColumn: 'wks.update_time',
           isAsc: 'desc'
         },
         total: 0,
@@ -252,8 +252,8 @@
           pageNum: 1,
           name: '',
           type: '',
-          kfId: '',
-          orderByColumn: 'update_time',
+          openKfId: '',
+          orderByColumn: 'wks.update_time',
           isAsc: 'desc'
         }
         this.getData()
@@ -315,8 +315,8 @@
       })
     },
     created () {
-      if (this.$route.query.kfid) {
-        this.search.kfId = this.$router.query.kfid
+      if (this.$route.query.openKfId) {
+        this.search.openKfId = this.$route.query.openKfId
       }
       getList().then(res => {
         this.customerList = res.rows
