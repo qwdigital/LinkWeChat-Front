@@ -8,7 +8,7 @@
 						<img :src="avator" style="width: 40px; height: 40px"></img>
 					</div>
 					<div class="show_name">
-						<div class="length-limit">{{call}} &nbsp;&nbsp; @{{companyName}}</div>
+						<div class="length-limit">{{call}} &nbsp;&nbsp;<span style="color: #ffcf0e;">@{{companyName}}</span></div>
 						<div class="sub">
 							{{call}}为你服务
 						</div>

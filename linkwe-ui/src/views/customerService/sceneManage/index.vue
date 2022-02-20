@@ -49,7 +49,7 @@
       <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180"></el-table-column>
       <el-table-column label="操作" align="center" fixed="right" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{ row }">
-          <el-button type="text" class="copy_btn" :id="'btn' + row.id" :data-clipboard-text="row.url" :data-clipboard-target="'#' + 'btn' + row.id">复制链接</el-button>
+          <el-button type="text" class="copy_btn" :id="'btn' + row.id" :data-clipboard-text="row.url" :data-clipboard-target="'#' + 'btn' + row.id" @click="copy(row.id)">复制链接</el-button>
           <el-divider direction="vertical"></el-divider>
           <el-button type="text" @click="downloadSingleFn(row)">下载二维码</el-button>
           <el-divider direction="vertical"></el-divider>
@@ -100,6 +100,7 @@
     },
     data () {
       return {
+        clipboard:null,
         loading: false,
         list: [],
         showDialog: false,
@@ -240,7 +241,6 @@
           this.total = Number(res.total)
           this.loading = false
         })
-        // this.list = [{ id: '11111', "typeName": "nisi eiusmod ea Excepteur dolore", "name": "in aliqua adipisicing sed ut", "type": 71152170.26921538, "kfName": "ad quis dolore", "kfAvatar": "ullamco ex quis", "kfUrl": "labore laboris veniam", "accessCnt": 84703618.49096513, "consultCnt": 89256939.32291824, "receptionCnt": 81229066.2598409, "createTime": "Ut incididunt", "updateTime": "aliqua fugiat deserunt", "createBy": "mollit", "updateBy": "ad officia nisi sunt commodo" }, { "typeName": "do", "name": "irure", "type": 40085324.48885304, "kfName": "Duis sed", "kfAvatar": "sed Lorem velit", "kfUrl": "commodo ut dolor ipsum", "accessCnt": -89463968.4334356, "consultCnt": 63888465.387045145, "receptionCnt": -41534624.394609265, "createTime": "amet velit laboris fugiat", "updateTime": "in sit eiusmod", "createBy": "Ut dolor ea", "updateBy": "incididunt reprehenderit" }, { "typeName": "in sunt et dolore tempor", "name": "quis laboris", "type": -7995649.530553937, "kfName": "amet velit eu", "kfAvatar": "aute dolore anim amet", "kfUrl": "minim", "accessCnt": 99871395.3190921, "consultCnt": 73324612.44769356, "receptionCnt": 64278887.23853704, "createTime": "culpa dolor ut do", "updateTime": "in eu ex", "createBy": "magna tempor dolore dolore amet", "updateBy": "occaecat id Ut qui adipisicing" }]
       },
       searchFn () {
         this.search.pageNum = 1
@@ -260,7 +260,6 @@
       },
       handleSelectionChange (e) {
         this.selectList = e
-        console.log(e)
       },
       addFn (data) {
         this.form = {
@@ -289,7 +288,6 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            console.log(ids)
             return deleteScene(data ? ids : ids.join(','))
           }).then(() => {
             this.getData()
@@ -299,20 +297,35 @@
         } else {
           this.$message.info('请选择操作项！')
         }
+      },
+      copy(id) {
+        this.clipboard = new ClipboardJS('#btn' + id);
+        this.clipboard.on('success', (e) => {
+          this.$notify({
+            title: '成功',
+            message: '链接已复制到剪切板，可粘贴。',
+            type: 'success'
+          })
+          e.clearSelection()
+          this.clipboard.destroy()
+        })
+        this.clipboard.on('error', (e) => {
+          this.$message.error('链接复制失败')
+        })
       }
     },
     mounted () {
-      var clipboard = new ClipboardJS('.copy_btn')
-      clipboard.on('success', (e) => {
-        this.$notify({
-          title: '成功',
-          message: '链接已复制到剪切板，可粘贴。',
-          type: 'success'
-        })
-      })
-      clipboard.on('error', (e) => {
-        this.$message.error('链接复制失败')
-      })
+      // var clipboard = new ClipboardJS('.copy_btn')
+      // clipboard.on('success', (e) => {
+      //   this.$notify({
+      //     title: '成功',
+      //     message: '链接已复制到剪切板，可粘贴。',
+      //     type: 'success'
+      //   })
+      // })
+      // clipboard.on('error', (e) => {
+      //   this.$message.error('链接复制失败')
+      // })
     },
     created () {
       if (this.$route.query.openKfId) {

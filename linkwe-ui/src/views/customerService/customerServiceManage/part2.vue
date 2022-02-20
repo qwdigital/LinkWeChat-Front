@@ -39,13 +39,13 @@
                   <el-card class="box-card roster-card" :key="index">
                     <el-form-item label="工作周期">
                       <el-checkbox-group v-model="item.workCycle" @change="checkStartEnd($event, index)">
-                        <el-checkbox :label="1">周一</el-checkbox>
-                        <el-checkbox :label="2">周二</el-checkbox>
-                        <el-checkbox :label="3">周三</el-checkbox>
-                        <el-checkbox :label="4">周四</el-checkbox>
-                        <el-checkbox :label="5">周五</el-checkbox>
-                        <el-checkbox :label="6">周六</el-checkbox>
-                        <el-checkbox :label="7">周日</el-checkbox>
+                        <el-checkbox label="1">周一</el-checkbox>
+                        <el-checkbox label="2">周二</el-checkbox>
+                        <el-checkbox label="3">周三</el-checkbox>
+                        <el-checkbox label="4">周四</el-checkbox>
+                        <el-checkbox label="5">周五</el-checkbox>
+                        <el-checkbox label="6">周六</el-checkbox>
+                        <el-checkbox label="7">周日</el-checkbox>
                       </el-checkbox-group>
                     </el-form-item>
                     <el-form-item label="时间段">
@@ -113,7 +113,7 @@
                     <el-button type="text" icon="el-icon-delete" @click="onRemoveMenu(index)">删除</el-button>
                   </div>
                 </template>
-                <div v-if="form.welcome[0].menuList.length < 9">
+                <div v-if="form.welcome[0].menuList.length < 8">
                   <el-button size="mini" type="primary" plain @click="onAddMenu">+添加菜单</el-button>
                   <div class="sub-des">
                     客户点击菜单，客服自动回复
@@ -130,7 +130,7 @@
       </el-col>
       <el-col style="width: 350px">
         <div class="g-card g-pad20" style="height: 100%">
-          <show-in-phone :name="name" :avatar="avatar" :data="form" :show="show"></show-in-phone>
+          <show-in-phone :name="name" :avatar="avatar" def="welcome" :data="form" :show="show"></show-in-phone>
         </div>
       </el-col>
     </el-row>
@@ -195,7 +195,8 @@
         }]
       },
       setEdit () {
-        if (this.idEdit) {
+        if (this.isEdit) {
+          console.log('编辑了')
           this.form = {
             receptionType: this.editData.receptionType,
             splitTime: this.editData.splitTime,
@@ -204,11 +205,15 @@
         }
       },
       nextStep (type) {
+        if (this.form.receptionType === 2) {
+          this.form.welcome[0].type = 2
+        }
         this.$emit('update', type, this.form)
       },
       checkStartEnd () {
       },
       setInit (type) {
+        console.log('初始化了')
         if (type === 1) {
           this.form = {
             receptionType: 1,

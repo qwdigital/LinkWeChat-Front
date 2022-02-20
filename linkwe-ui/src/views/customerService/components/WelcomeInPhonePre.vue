@@ -2,7 +2,7 @@
   <div class="preview">
     <div class="title">{{name}}</div>
     <div class="content">
-      <div class="none" v-if="def === 'welcome'">
+      <div class="none" v-if="def === 'welcome' ||  def === 'detail'">
         <div class="none" v-if="data.receptionType === 1">
           <div class="time">
             {{time}}
@@ -89,7 +89,7 @@
           </div>
         </div>
       </div>
-      <div v-else>
+      <div v-if="def === 'detail' || def==='rules'">
         <div class="time">
           {{time}}
         </div>
@@ -232,6 +232,7 @@
       border-bottom-right-radius: 20px;
       padding: 10px;
       .time {
+        margin-top:10px;
         width: 100%;
         text-align: center;
         // margin-bottom: 10px;

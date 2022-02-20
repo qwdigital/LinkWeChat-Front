@@ -137,7 +137,7 @@
       </el-col>
       <el-col style="width: 350px">
         <div class="g-card g-pad20" style="height: 100%">
-          <show-in-phone v-if="show" :name="detail.name" :avatar="detail.avatar" :data="detail"></show-in-phone>
+          <show-in-phone v-if="show" :name="detail.name" def="detail" :avatar="detail.avatar" :data="detail"></show-in-phone>
         </div>
       </el-col>
     </el-row>
@@ -178,7 +178,9 @@
         getDetail(this.id).then(res => {
           this.detail = res.data
           this.detail.welcome.forEach(dd => {
-            dd.workCycle = dd.workCycle.split(',')
+            if (dd.workCycle) {
+              dd.workCycle = dd.workCycle.split(',')
+            }
             console.log(dd.workCycle)
           })
           this.show = true

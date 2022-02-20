@@ -70,11 +70,18 @@
     },
     methods: {
       setMemeber (e) {
-        this.customerList.forEach(dd => {
-          if (dd.openKfId === e) {
-            this.manList = dd.userIdList
-          }
-        })
+        console.log(e)
+        if (e) {
+          this.customerList.forEach(dd => {
+            if (dd.openKfId === e) {
+              this.manList = dd.userIdList
+            }
+          })
+        }
+        else {
+          this.manList = []
+          this.data.userIds = ''
+        }
         this.submit()
       },
       selectMember (e) {

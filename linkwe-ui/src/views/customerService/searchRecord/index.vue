@@ -150,7 +150,6 @@
             })
           })
           .then((res) => {
-            console.log(res)
             download(res.msg)
           })
           .catch((error) => {

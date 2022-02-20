@@ -12,7 +12,7 @@
       <part2 :isEdit="isEdit" :name='form.name' :avatar="form.avatar" :editData="form" @update="getWecome"></part2>
     </div>
     <div v-show="currentActive === 3">
-      <part3 :isEdit="isEdit" :editData="form" :name='form.name' :avatar="form.avatar" @submit="setSubmit"></part3>
+      <part3 :isEdit="isEdit" :editData="form" :name='form.name' :avatar="form.avatar" :submitLoading="loading" @submit="setSubmit"></part3>
     </div>
   </div>
 </template>
@@ -28,7 +28,8 @@
         currentActive: 1,
         form: {},
         isEdit: false,
-        id: ''
+        id: '',
+        loading: false
       }
     },
     components: {
@@ -53,10 +54,16 @@
       getDetailFn () {
         getDetail(this.id).then(res => {
           this.form = res.data
+           this.form.welcome.forEach(dd => {
+            if (dd.workCycle) {
+              dd.workCycle = dd.workCycle.split(',')
+            }
+          })
           this.isEdit = true
         })
       },
       setSubmit (type, data) {
+        console.log(typeof(data))
         if (type === 2) {
           this.currentActive = type
         } else {
@@ -74,17 +81,26 @@
           this.form.endNoticeTime = data.endNoticeTime
           this.form.endTimeType = data.endTimeType
           this.form.endContent = data.endContent
-          this.form.welcome.forEach(dd => {
-            dd.workCycle = dd.workCycle.join(',')
+          let tempData = JSON.parse(JSON.stringify(this.form))
+          tempData.welcome.forEach(dd => {
+            if (dd.workCycle) {
+              dd.workCycle = dd.workCycle.join(',')
+            }
           })
+          this.loading = true
+          setTimeout(() =>  {
+            this.loading = false
+            }, 3000)
           if (this.form.id) {
-            editService(this.form).then(res => {
+            editService(tempData).then(res => {
               this.$message.success('操作成功！')
+              this.loading = false
               this.$router.go(-1)
             })
           } else {
             addService(this.form).then(res => {
               this.$message.success('操作成功！')
+              this.loading = false
               this.$router.go(-1)
             })
           }

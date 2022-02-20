@@ -75,14 +75,14 @@
             </el-form-item>
             <el-form-item>
               <el-button plain @click="nextStep(2)">上一步</el-button>
-              <el-button type="primary" @click="nextStep">确定</el-button>
+              <el-button type="primary" v-loading="submitLoading" @click="nextStep">确定</el-button>
             </el-form-item>
           </el-form>
         </div>
       </el-col>
       <el-col style="width: 350px">
         <div class="g-card g-pad20" style="height: 100%">
-          <show-in-phone :name="name" :avatar="avatar" :data="form" def="rule"></show-in-phone>
+          <show-in-phone :name="name" :avatar="avatar" :data="form" def="rules"></show-in-phone>
         </div>
       </el-col>
     </el-row>
@@ -139,6 +139,10 @@
         default: () => {
           return {}
         }
+      },
+      submitLoading: {
+        type: Boolean,
+        default: false
       }
     },
     watch: {
@@ -158,7 +162,10 @@
         }
       },
       nextStep (type) {
-        console.log(type)
+        if (!this.userList.length) {
+          this.$message.error('请选择接待员工！')
+          return
+        }
         let arr = []
         this.userList.forEach(dd => {
           arr.push({ userId: dd.userId })

@@ -158,11 +158,7 @@
       },
       getData () {
         this.tableLoading = true
-        getList(
-          {
-            orderByColumn: 'wki.update_time',
-            isAsc: 'desc'
-          }).then(res => {
+        getList().then(res => {
             this.list = res.rows
             this.tableLoading = false
           })

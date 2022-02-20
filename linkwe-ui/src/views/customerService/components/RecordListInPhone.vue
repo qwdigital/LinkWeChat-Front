@@ -22,7 +22,7 @@
           </div>
           <div v-else-if="unit.origin === 5">
             <div class="text text-right">
-              {{unit.customerName}}
+              {{unit.kfName}}
             </div>
             <div class="send-time text-right">
               {{unit.sendTime}}
