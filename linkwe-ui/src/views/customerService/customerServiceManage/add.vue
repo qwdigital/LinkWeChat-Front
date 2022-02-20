@@ -63,7 +63,6 @@
         })
       },
       setSubmit (type, data) {
-        console.log(typeof(data))
         if (type === 2) {
           this.currentActive = type
         } else {
@@ -83,8 +82,10 @@
           this.form.endContent = data.endContent
           let tempData = JSON.parse(JSON.stringify(this.form))
           tempData.welcome.forEach(dd => {
-            if (dd.workCycle) {
+            if (dd.workCycle && dd.workCycle.length) {
               dd.workCycle = dd.workCycle.join(',')
+            } else {
+              dd.workCycle = ''
             }
           })
           this.loading = true

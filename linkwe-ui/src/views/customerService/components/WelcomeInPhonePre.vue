@@ -8,7 +8,7 @@
             {{time}}
           </div>
           <div class="item" v-if="data.splitTime === 1">
-            <div class="avatar"><img class="img-st" :src="avatar"></div>
+            <div class="avatar-current"><img class="img-st" :src="avatar"></div>
             <div class="msg">
               <div class="word">
                 {{data.welcome[0].content}}
@@ -17,7 +17,7 @@
           </div>
           <div class="none" v-else>
             <div class="item" v-for="(unit, key) in data.welcome">
-              <div class="avatar"><img class="img-st" :src="avatar"></div>
+              <div class="avatar-current"><img class="img-st" :src="avatar"></div>
               <div class="msg">
                 <div class="word">
                   {{unit.content}}
@@ -31,7 +31,7 @@
             {{time}}
           </div>
           <div class="item">
-            <div class="avatar"><img class="img-st" :src="avatar"></div>
+            <div class="avatar-current"><img class="img-st" :src="avatar"></div>
             <div class="msg">
               <div class="word">
                 {{data.welcome[0].content}}
@@ -51,11 +51,11 @@
                     {{unit.name}}
                   </div>
                 </div>
-                <div class="avatar"><img class="img-st" src="../../../assets/drainageCode/header.png"></div>
+                <div class="avatar-current"><img class="img-st" src="../../../assets/drainageCode/header.png"></div>
               </div>
               <div v-if="key === 0" class="text-sub">已接入智能助手</div>
               <div class="item">
-                <div class="avatar"><img class="img-st" :src="avatar"></div>
+                <div class="avatar-current"><img class="img-st" :src="avatar"></div>
                 <div class="msg" v-if="unit.type === 'click'">
                   <div class="word">
                     {{unit.content}}
@@ -94,7 +94,7 @@
           {{time}}
         </div>
         <div class="item">
-          <div class="avatar"><img class="img-st" :src="avatar"></div>
+          <div class="avatar-current"><img class="img-st" :src="avatar"></div>
           <div class="msg">
             <div class="word">
               {{data.queueNoticeContent}}
@@ -105,7 +105,7 @@
           {{time}}
         </div>
         <div class="item">
-          <div class="avatar"><img class="img-st" :src="avatar"></div>
+          <div class="avatar-current"><img class="img-st" :src="avatar"></div>
           <div class="msg">
             <div class="word">
               {{data.timeOutContent}}
@@ -116,7 +116,7 @@
           {{time}}
         </div>
         <div class="item">
-          <div class="avatar"><img class="img-st" :src="avatar"></div>
+          <div class="avatar-current"><img class="img-st" :src="avatar"></div>
           <div class="msg">
             <div class="word">
               {{data.endContent}}
@@ -249,7 +249,7 @@
         display: flex;
         justify-content: flex-end;
       }
-      .avatar {
+      .avatar-current {
         margin-right: 5px;
       }
       .msg {

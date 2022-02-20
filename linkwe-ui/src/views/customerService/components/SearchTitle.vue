@@ -70,8 +70,8 @@
     },
     methods: {
       setMemeber (e) {
-        console.log(e)
         if (e) {
+          this.data.userIds = ''
           this.customerList.forEach(dd => {
             if (dd.openKfId === e) {
               this.manList = dd.userIdList
