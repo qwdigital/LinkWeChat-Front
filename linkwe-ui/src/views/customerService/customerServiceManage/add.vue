@@ -99,7 +99,7 @@
               this.$router.go(-1)
             })
           } else {
-            addService(this.form).then(res => {
+            addService(tempData).then(res => {
               this.$message.success('操作成功！')
               this.loading = false
               this.$router.go(-1)
