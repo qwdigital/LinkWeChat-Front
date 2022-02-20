@@ -197,7 +197,7 @@ export default {
       let index = this.userList.findIndex((i) => i.userId === key)
       index > -1 && this.userList.splice(index, 1)
       let order = this.defaultValues.findIndex((i) => i.userId === key)
-      order > -1 && this.defaultValues.splice(order, 1)
+      order > -1 && this.defaultValues.slice().splice(order, 1)
     },
   },
 }

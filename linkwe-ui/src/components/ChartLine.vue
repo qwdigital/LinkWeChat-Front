@@ -11,7 +11,7 @@ export default {
     // 折线背景渐变色
     bgLinearGradient: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // X轴坐标数据
     xData: {
@@ -23,13 +23,13 @@ export default {
         '2021-12-03',
         '2021-12-04',
         '2021-12-05',
-        '2021-12-06'
-      ]
+        '2021-12-06',
+      ],
     },
     // 图例; 单个图例可传字符串，实际转换成单元素数组[string]
     legend: {
       type: [Array, String],
-      default: () => ['新增客户']
+      default: () => ['新增客户'],
     },
     // 展示数据集
     // 注：二位数组， 其一维数组顺序需要和图例顺序一致，其二维数组顺序需要和X轴数组顺序一致
@@ -43,14 +43,14 @@ export default {
     //   ]
     series: {
       type: Array,
-      default: () => [120, 132, 101, 134, 90, 230, 210]
+      default: () => [120, 132, 101, 134, 90, 230, 210],
     },
     // 自定义图表配置项，使用loadsh.merge(origin, option)和原有的配置进行覆盖合并
     // loadsh.merge: https://www.html.cn/doc/lodash/#_mergeobject-sources
     option: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {}
@@ -61,7 +61,7 @@ export default {
       this.$nextTick(() => {
         this.drawChart()
       })
-    }
+    },
   },
   created() {},
   mounted() {
@@ -88,9 +88,9 @@ export default {
           symbol: 'circle', // 数值点类型
           symbolSize: 6, // 数值点大小
           emphasis: {
-            focus: 'series'
+            focus: 'series',
           },
-          data
+          data,
         }
         this.bgLinearGradient &&
           Object.assign(obj, {
@@ -104,16 +104,16 @@ export default {
                 colorStops: [
                   {
                     offset: 0,
-                    color: echartColors[index] // 0% 处的颜色
+                    color: echartColors[index], // 0% 处的颜色
                   },
                   {
                     offset: 0.8,
-                    color: 'white' // 100% 处的颜色
-                  }
+                    color: 'white', // 100% 处的颜色
+                  },
                 ],
-                global: false // 缺省为 false
-              }
-            }
+                global: false, // 缺省为 false
+              },
+            },
           })
         series.push(obj)
       })
@@ -126,7 +126,7 @@ export default {
         tooltip: {
           textStyle: {
             color: '#FFF', // 设置文字颜色
-            fontSize: 12
+            fontSize: 12,
           },
           trigger: 'axis',
           backgroundColor: '#505050',
@@ -134,9 +134,9 @@ export default {
           axisPointer: {
             type: 'cross',
             label: {
-              backgroundColor: '#6a7985'
-            }
-          }
+              backgroundColor: '#6a7985',
+            },
+          },
         },
         legend: {
           data: legend,
@@ -157,20 +157,20 @@ export default {
           itemWidth: 16,
           // itemHeight: 8,
           tooltip: {
-            show: true
+            show: true,
           },
           textStyle: {
             color: '#36363A',
             fontSize: 12,
-            lineHeight: 14
-          }
+            lineHeight: 14,
+          },
         },
         grid: {
           left: '3%',
           right: '3%',
           bottom: '40px',
           top: '30px',
-          containLabel: true
+          containLabel: true,
         },
         xAxis: [
           {
@@ -180,33 +180,38 @@ export default {
             offset: 5,
             axisLine: {
               lineStyle: {
-                color: '#ccc'
-              }
+                color: '#ccc',
+              },
             },
             axisLabel: {
               // 坐标轴刻度标签的相关设置。
               // interval: 0,
-              color: 'rgba(153, 153, 153, 1)' // 横坐标字体颜色
+              color: 'rgba(153, 153, 153, 1)', // 坐标字体颜色
             },
             axisTick: {
               // 横坐标刻度
               alignWithLabel: true,
-              show: true
-            }
-          }
+              show: true,
+            },
+          },
         ],
         yAxis: [
           {
             type: 'value',
             axisLine: {
               lineStyle: {
-                color: '#ccc'
+                color: '#ccc',
               },
-              show: false
-            }
-          }
+              show: false,
+            },
+            axisLabel: {
+              // 坐标轴刻度标签的相关设置。
+              // interval: 0,
+              color: 'rgba(153, 153, 153, 1)', // 坐标字体颜色
+            },
+          },
         ],
-        series
+        series,
       }
       this.option && merge(option, this.option)
       option && this.myChart.setOption(option)
@@ -214,8 +219,8 @@ export default {
       new ResizeObserver((entries) => {
         this.myChart.resize()
       }).observe(this.$refs.chart)
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -232,15 +232,14 @@ export default {
     },
     getSelectUser(data) {
       this.userArray = data
-      this.query[this.dialogType] = data.map((e) => e.name).join(',')
+      this.query[this.dialogType] = data.map((e) => e.userId).join(',')
       if (['customerGroupMemberTotalChart', 'customerGroupMemberTotalTable'].includes(this.type)) {
         this.query.chatIds = ''
         this.getGroupList({
-          groupLeaderName: this.query[this.dialogType],
+          userIds: this.query[this.dialogType],
         })
-      } else {
-        this.getList()
       }
+      this.getList()
     },
     exprotTable() {
       this.$confirm('是否确认导出吗?', '警告', {
@@ -292,7 +291,7 @@ export default {
       <el-input
         v-if="type.toLowerCase().includes('group')"
         style="width: 180px"
-        v-model="query._groupOwners"
+        :value="userArray.map((e) => e.name) + ''"
         readonly
         @focus="showDialog('_groupOwners')"
         placeholder="请选择群主"
@@ -323,7 +322,7 @@ export default {
           ].includes(type)
         "
         style="width: 180px"
-        :value="query._users"
+        :value="userArray.map((e) => e.name) + ''"
         readonly
         @focus="showDialog('_users')"
         placeholder="请选择部门或员工"

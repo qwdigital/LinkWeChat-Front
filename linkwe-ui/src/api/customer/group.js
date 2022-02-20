@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/group'
 
-export function getDetail (chatId) {
+export function getDetail(chatId) {
   return request({
     url: service + `/chat/chatDetail/${chatId}`,
-    method: 'get'
+    method: 'get',
   })
 }
 
@@ -15,17 +15,18 @@ export function getDetail (chatId) {
 pageNum	是	当前页
 pageSize	是	每页显示条数
 groupName	是	群名
-groupLeaderName	是	群主,多个使用逗号隔开
+groupLeaderName	是	群主姓名,多个使用逗号隔开
+userIds	是	群主userId,多个使用逗号隔开
 tagIds	是	标签id,多个使用逗号隔开
 beginTime:
 endTime:
 }
  */
-export function getList (params) {
+export function getList(params) {
   return request({
     url: service + '/chat/list',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -39,19 +40,19 @@ export function getList (params) {
   "pageSize": ""
 }
  */
-export function getMembers (params) {
+export function getMembers(params) {
   return request({
     url: service + '/chat/members',
-    params
+    params,
   })
 }
 
 /**
  * 客户群同步接口
  */
-export function sync () {
+export function sync() {
   return request({
-    url: service + '/chat/synchWeGroup'
+    url: service + '/chat/synchWeGroup',
   })
 }
 
@@ -70,10 +71,10 @@ export function sync () {
  * @param {*} data
  * @returns
  */
-export function makeGroupTag (data) {
+export function makeGroupTag(data) {
   return request({
     url: service + '/chat/makeGroupTag',
     method: 'post',
-    data
+    data,
   })
 }

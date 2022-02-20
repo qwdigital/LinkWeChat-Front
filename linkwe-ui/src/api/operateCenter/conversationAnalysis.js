@@ -7,7 +7,7 @@ const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '
  */
 export function getAnalysisCustomer() {
   return request({
-    url: service + '/customer/getAnalysis'
+    url: service + '/customer/getAnalysis',
   })
 }
 
@@ -22,7 +22,7 @@ endTime	是 结束时间
 export function getTotalCntCustomer(params) {
   return request({
     url: service + '/customer/getTotalPageCnt',
-    params
+    params,
   })
 }
 
@@ -37,7 +37,7 @@ endTime	是 结束时间
 export function getUserAvgReplyTimeRank(params) {
   return request({
     url: service + '/customer/getUserAvgReplyTimeRank',
-    params
+    params,
   })
 }
 
@@ -52,7 +52,7 @@ endTime	是 结束时间
 export function getUserChatRank(params) {
   return request({
     url: service + '/customer/getUserChatRank',
-    params
+    params,
   })
 }
 
@@ -67,7 +67,7 @@ endTime	是 结束时间
 export function dataExportGroup(params) {
   return request({
     url: service + '/customer/total/export',
-    params
+    params,
   })
 }
 
@@ -76,7 +76,7 @@ export function dataExportGroup(params) {
  */
 export function getAnalysisGroup() {
   return request({
-    url: service + '/group/getAnalysis'
+    url: service + '/group/getAnalysis',
   })
 }
 
@@ -91,7 +91,7 @@ endTime	是 结束时间
 export function getTotalCntGroup(params) {
   return request({
     url: service + '/group/getTotalPageCnt',
-    params
+    params,
   })
 }
 
@@ -105,8 +105,8 @@ endTime	是 结束时间
  */
 export function realDataExportGroup(params) {
   return request({
-    url: service + '/group/real/export',
-    params
+    url: service + '/group/total/export',
+    params,
   })
 }
 
@@ -121,7 +121,7 @@ endTime	是 结束时间
 export function getArchiveList(params) {
   return request({
     url: service + '/archive/details',
-    params
+    params,
   })
 }
 
@@ -131,6 +131,6 @@ export function getArchiveList(params) {
  */
 export function getAnalysisArchive() {
   return request({
-    url: service + '/archive/getAnalysis'
+    url: service + '/archive/getAnalysis',
   })
 }

@@ -113,13 +113,14 @@
         label-width="120px"
       >
         <el-form-item label="红包金额(元)" prop="money">
-          <el-input
-            type="text"
-            placeholder="请输入金额"
+          <el-input-number
+            placeholder="请输入"
             v-model="addForm.money"
+            :precision="2"
+            :step="0.1"
             :max="200"
-            :min="0.01"
-          ></el-input>
+            :min="1"
+          ></el-input-number>
           <div class="sub-des">精确到小数点后两位，可输入1~200</div>
         </el-form-item>
         <el-form-item label="发送场景" prop="sceneType">
@@ -271,12 +272,12 @@ export default {
       addForm: {
         sceneType: [],
         name: '',
-        money: '',
+        money: 1,
       },
       addRules: {
         name: [{ required: true, message: '必填项' }],
         money: [
-          { required: true, message: '必填项', trigger: 'blur' },
+          { required: true, message: '必填项', trigger: 'change' },
           { validator: validateAmount, trigger: 'blur' },
         ],
         sceneType: [{ required: true, message: '必填项', trigger: 'change' }],
@@ -297,11 +298,13 @@ export default {
   },
   methods: {
     getList() {
-      getList(this.query).then((res) => {
-        if (res.code == 200) {
-          this.list = res.rows
-          this.total = +res.total
-        }
+      getList(this.query).then(({ rows, total }) => {
+        rows.forEach((e) => {
+          // 单位换算 分转元
+          e.money = (e.money / 100).toFixed(2)
+        })
+        this.list = rows
+        this.total = +total
       })
     },
     resetQuery() {
@@ -309,15 +312,17 @@ export default {
       this.getList(1)
     },
     edit(row) {
-      this.addForm = Object.assign({ sceneType: [] }, row || {})
+      this.addForm = Object.assign({}, row || {})
       this.addDialogVisible = true
       this.$nextTick(() => this.$refs.addForm.clearValidate())
     },
     addOrUpdate() {
       this.$refs.addForm.validate((validate) => {
         if (!validate) return
-        this.addForm.money = Number(this.addForm.money)
-        addOrUpdate(this.addForm).then((res) => {
+        let form = Object.assign({}, this.addForm)
+        // 单位换算 元转分
+        form.money *= 100
+        addOrUpdate(form).then((res) => {
           this.msgSuccess('操作成功')
           this.getList()
           this.addDialogVisible = false
@@ -331,6 +336,9 @@ export default {
     async showLimitConfig() {
       const { data } = await getLimit()
       let { id, singleDayPay, singleCustomerReceiveNum, singleCustomerReceiveMoney } = data
+      // 单位换算 分转元
+      singleDayPay /= 100
+      singleCustomerReceiveMoney /= 100
       this.limitForm = { id, singleDayPay, singleCustomerReceiveNum, singleCustomerReceiveMoney }
       this.limitDialogVisible = true
       this.$nextTick(() => this.$refs.limitForm.clearValidate())
@@ -338,7 +346,11 @@ export default {
     setLimit() {
       this.$refs.limitForm.validate((validate) => {
         if (!validate) return
-        setLimit(this.limitForm).then((res) => {
+        let form = Object.assign({}, this.limitForm)
+        // 单位换算 元转分
+        form.singleDayPay *= 100
+        form.singleCustomerReceiveMoney *= 100
+        setLimit(form).then((res) => {
           this.limitDialogVisible = false
           this.msgSuccess('操作成功')
         })

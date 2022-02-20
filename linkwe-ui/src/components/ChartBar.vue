@@ -17,13 +17,13 @@ export default {
         '达摩盘',
         '数据银行',
         '微信广告',
-        '企业微信'
-      ]
+        '企业微信',
+      ],
     },
     // 图例
     legend: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     // 展示数据集
     // 注：二位数组， 其一维数组顺序需要和图例顺序一致，其二维数组顺序需要和X轴数组顺序一致
@@ -37,19 +37,19 @@ export default {
     //   ]
     series: {
       type: Array,
-      default: () => [[120, 132, 101, 134, 90, 230, 210]]
+      default: () => [[120, 132, 101, 134, 90, 230, 210]],
     },
     // 是否为堆叠柱状图
     stack: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 自定义图表配置项，使用loadsh.merge(origin, option)和原有的配置进行覆盖合并
     // loadsh.merge: https://www.html.cn/doc/lodash/#_mergeobject-sources
     option: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {}
@@ -60,7 +60,7 @@ export default {
       this.$nextTick(() => {
         this.drawChart()
       })
-    }
+    },
   },
   created() {},
   mounted() {
@@ -85,9 +85,9 @@ export default {
           stack: this.stack,
           barWidth: this.stack ? 40 : 20, // 柱图宽度
           emphasis: {
-            focus: 'series'
+            focus: 'series',
           },
-          data
+          data,
         }
         series.push(obj)
       })
@@ -102,15 +102,15 @@ export default {
           backgroundColor: '#505050',
           borderWidth: 0,
           textStyle: {
-            color: '#fff'
+            color: '#fff',
           },
           trigger: 'axis',
           axisPointer: {
             type: 'cross',
             label: {
-              backgroundColor: '#6a7985'
-            }
-          }
+              backgroundColor: '#6a7985',
+            },
+          },
         },
         legend: {
           data: this.legend,
@@ -118,14 +118,14 @@ export default {
           y: 'bottom',
           icon: 'circle',
           itemWidth: 8,
-          itemHeight: 8
+          itemHeight: 8,
         },
         grid: {
           left: '20px',
           right: '20px',
           bottom: '40px',
           top: '20px',
-          containLabel: true
+          containLabel: true,
         },
         xAxis: [
           {
@@ -133,37 +133,42 @@ export default {
             data: this.xData,
             axisLine: {
               lineStyle: {
-                color: '#ccc'
-              }
+                color: '#ccc',
+              },
             },
             axisLabel: {
               // 坐标轴刻度标签的相关设置。
               interval: 0,
-              color: 'rgba(153, 153, 153, 1)' // 横坐标字体颜色
+              color: 'rgba(153, 153, 153, 1)', // 横坐标字体颜色
             },
             axisTick: {
               // 横坐标刻度
               alignWithLabel: true,
-              show: true
-            }
-          }
+              show: true,
+            },
+          },
         ],
         yAxis: [
           {
             type: 'value',
             axisLine: {
               lineStyle: {
-                color: '#ccc'
-              }
+                color: '#ccc',
+              },
             },
             axisTick: {
               // 横坐标刻度
               alignWithLabel: true,
-              show: true
-            }
-          }
+              show: true,
+            },
+            axisLabel: {
+              // 坐标轴刻度标签的相关设置。
+              // interval: 0,
+              color: 'rgba(153, 153, 153, 1)', // 坐标字体颜色
+            },
+          },
         ],
-        series
+        series,
       }
 
       this.option && merge(option, this.option)
@@ -172,8 +177,8 @@ export default {
       // new ResizeObserver((entries) => {
       //   this.myChart.resize()
       // }).observe(this.$refs.chart)
-    }
-  }
+    },
+  },
 }
 </script>
 

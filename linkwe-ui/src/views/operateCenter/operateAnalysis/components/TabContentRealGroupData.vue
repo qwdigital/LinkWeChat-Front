@@ -116,15 +116,14 @@ export default {
     },
     getSelectUser(data) {
       this.selectUsers[this.dialogType] = data
-      this.query[this.dialogType] = data.map((e) => e.name).join(',')
-      if (this.dialogType === 'customerGroup') {
-        this.getList(this.dialogType)
-      } else {
+      this.query[this.dialogType] = data.map((e) => e.userId).join(',')
+      if (this.dialogType === 'customerGroupMember') {
         this.query.chatIds = ''
         this.getGroupList({
-          groupLeaderName: this.query[this.dialogType],
+          userIds: this.query[this.dialogType],
         })
       }
+      this.getList(this.dialogType)
     },
   },
 }
@@ -167,7 +166,7 @@ export default {
         <div>
           <el-input
             style="width: 180px"
-            v-model="query.customerGroup"
+            :value="selectUsers['customerGroup'].map((e) => e.name) + ''"
             readonly
             @focus="showDialog('customerGroup')"
             placeholder="请选择群主"
@@ -184,7 +183,7 @@ export default {
         <div>
           <el-input
             style="width: 180px"
-            v-model="query.customerGroupMember"
+            :value="selectUsers['customerGroupMember'].map((e) => e.name) + ''"
             readonly
             @focus="showDialog('customerGroupMember')"
             placeholder="请选择群主"
