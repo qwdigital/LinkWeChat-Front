@@ -104,11 +104,11 @@
           queueNotice: 1,
           queueNoticeContent: '抱歉，当前所有客服都在接待中，请耐心等待，谢谢。',
           timeOutNotice: 1,
-          timeOut: null,
+          timeOut: 5,
           timeOutType: 1,
           timeOutContent: '客服当前仍在等待您的回复哦~',
           endNotice: 1,
-          endNoticeTime: null,
+          endNoticeTime: 10,
           endTimeType: 1,
           endContent: '感谢您的支持与信任，若您有任何疑问，欢迎随时联系，谢谢。'
         },
@@ -166,6 +166,20 @@
           this.$message.error('请选择接待员工！')
           return
         }
+        if (this.form.timeOutNotice === 1 && !this.form.timeOut) {
+          this.$message.error('超时未回复提醒开启时超时时间不能为空！')
+          return
+        }
+        if (this.form.endNotice === 1 && !this.form.endNoticeTime) {
+          this.$message.error('自动结束提醒开启时超时时间不能为空！')
+          return
+        }
+        if (this.form.timeOutNotice === 1 && this.form.endNotice === 1) {
+          if (this.form.timeOut >= this.form.endNoticeTime) {
+            this.$message.error('超时未回复提醒时间需小于自动结束提醒时间！')
+            return
+          }
+        }
         let arr = []
         this.userList.forEach(dd => {
           arr.push({ userId: dd.userId })
@@ -177,7 +191,6 @@
         this.dialogVisibleSelectUser = true
       },
       selectedUser (users) {
-        console.log(users)
         this.userList = users
         this.dialogVisibleSelectUser = false
       }
