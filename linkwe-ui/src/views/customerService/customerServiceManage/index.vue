@@ -191,16 +191,7 @@
       },
       deleteFn (data) {
         if (data.scenesList && data.scenesList.length) {
-          this.$confirm('请删除当前客服下所有关联场景后，再删除当前客服。', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          })
-            .then(() => {
-            })
-            .then(() => {
-            })
-            .catch(function () { })
+          this.$message.error('请删除当前客服下所有关联场景后，再删除当前客服!')
         } else {
           this.$confirm('是否确定删除当前客服？该操作不可恢复，请谨慎操作', '提示', {
             confirmButtonText: '确定',

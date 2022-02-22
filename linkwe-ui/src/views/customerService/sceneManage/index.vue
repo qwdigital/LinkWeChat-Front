@@ -84,7 +84,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="showDialog = false">取 消</el-button>
-        <el-button type="primary" @click="submitFn">确定</el-button>
+        <el-button type="primary" v-loading="loading" @click="submitFn">确定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -100,6 +100,7 @@
     },
     data () {
       return {
+        loading: false,
         clipboard:null,
         loading: false,
         list: [],
@@ -218,16 +219,19 @@
       submitFn () {
         this.$refs['form'].validate(validate => {
           if (validate) {
+            this.loading = true
             if (this.state === '新建') {
               addScene(this.form).then(res => {
                 this.$message.success('新建成功！')
                 this.showDialog = false
+                this.loading = false
                 this.getData()
               })
             } else {
               editScene(this.form).then(res => {
                 this.$message.success('编辑成功！')
                 this.showDialog = false
+                this.loading = false
                 this.getData()
               })
             }
