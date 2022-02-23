@@ -123,7 +123,17 @@ const routes = [
       title: '红包',
     },
   },
-  // 红包
+  // 领取红包
+  {
+    path: '/redPacketReceive',
+    name: 'redPacketReceive',
+    component: () => import('../views/redPacket/receive'),
+    meta: {
+      title: '领取红包',
+      noAuth: true,
+    },
+  },
+  // 微信授权回调
   {
     path: '/authCallback',
     name: 'authCallback',
@@ -131,6 +141,7 @@ const routes = [
     meta: {
       title: '微信授权回调',
       noAuth: true,
+      noGetUser: true,
     },
   },
 ]

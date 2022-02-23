@@ -45,9 +45,24 @@ export function getUserInfo(code, agentId) {
 }
 
 /**
- * 获取微信授权用户信息
- * @param {*} code 授权码
+ * 获取授权用户openid
+ * @param {*} code
+ * @returns
  */
-export function getWechatUserInfo(code) {
+export function getUserOpenid(code) {
   return request({ url: `http://demo.linkwechat.cn:8090/weixin/auth/getToken?code=${code}` })
+}
+
+/**
+ * 获取微信授权用户信息
+ * @param {*} openId
+ */
+export function getWechatUserInfo(openId) {
+  return request({
+    url: `http://demo.linkwechat.cn:8090/weixin/auth/getUserInfo`,
+    params: {
+      openId,
+      lang: 'zh_CN',
+    },
+  })
 }

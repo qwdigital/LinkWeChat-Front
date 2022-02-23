@@ -6,14 +6,14 @@ export default {
   name: 'App',
   provide() {
     return {
-      reload: this.reload
+      reload: this.reload,
     }
   },
   data() {
     return {
       corpId: '',
       agentId: '',
-      isRouterAlive: true
+      isRouterAlive: true,
     }
   },
   async created() {
@@ -30,20 +30,22 @@ export default {
     this.agentId = query.agentId
     // this.$toast('agentId:' + this.agentId)
 
-    this.$router.onReady(() => {
+    this.$router.onReady(async () => {
       const noAuth = this.$router.app.$route.meta ? this.$router.app.$route.meta.noAuth : false
 
       if (!code && !noAuth) {
         this.$toast('未获得授权')
       }
+
+      const noGetUser = this.$router.app.$route.meta ? this.$router.app.$route.meta.noAuth : false
+      if (!code || noGetUser) {
+        // this.$toast('未获得授权')
+        return
+      }
+      let { data } = await getUserInfo(code, this.agentId)
+      this.$store.state.userId = data.userId
     })
 
-    if (!code) {
-      // this.$toast('未获得授权')
-      return
-    }
-    let { data } = await getUserInfo(code, this.agentId)
-    this.$store.state.userId = data.userId
     // this.$toast('userId:' + this.$store.state.userId)
   },
   watch: {
@@ -53,7 +55,7 @@ export default {
       // this.wxConfig()
       const noAuth = route.meta ? route.meta.noAuth : false
       !noAuth && this.wxConfig()
-    }
+    },
   },
   methods: {
     reload() {
@@ -82,7 +84,7 @@ export default {
             'openEnterpriseChat',
             'shareToExternalContact',
             'shareToExternalChat',
-            'navigateToAddCustomer'
+            'navigateToAddCustomer',
           ], //必填
           success: (res) => {
             // 回调
@@ -95,10 +97,10 @@ export default {
             if (res.errMsg.indexOf('function not exist') > -1) {
               alert('版本过低请升级')
             }
-          }
+          },
         })
       } catch (error) {}
-    }
+    },
     // 丢弃
     // _wxConfig() {
     //   // 获取企业的jsapi_ticket
@@ -142,7 +144,7 @@ export default {
     //     })
     //   })
     // },
-  }
+  },
 }
 </script>
 <template>
