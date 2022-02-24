@@ -161,6 +161,7 @@
         <el-form-item label="单日付款总额(元)" prop="singleDayPay">
           <el-input-number
             v-model="limitForm.singleDayPay"
+            placeholder="请输入"
             :precision="2"
             :step="0.1"
             :min="0"
@@ -217,7 +218,7 @@ function validateAmount(rule, value, callback) {
     Number.isNaN(value) ||
     value < 0.01 ||
     value > 1e6 ||
-    ((value = value.toString().split('.')[1]) && value && value.length > 2)
+    !Number.isInteger(value * 100)
   ) {
     callback('请输入0.01-1000000的数字，精确到小数点后两位')
   } else {

@@ -43,17 +43,17 @@
         <el-table-column prop="userName" label="员工姓名" align="center" />
         <el-table-column prop="singleCustomerReceiveNum" label="限额总笔数/总金额" align="center">
           <template slot-scope="{ row }">
-            {{ row.singleCustomerReceiveNum }}/{{ row.singleCustomerReceiveMoney || 0 }}
+            {{ row.singleCustomerReceiveNum }}/{{ row.singleCustomerReceiveMoney }}
           </template>
         </el-table-column>
         <el-table-column label="今日已发放金额/剩余金额" align="center">
           <template slot-scope="{ row }">
-            {{ row.todayIssuedAmount }}/{{ row.todayIssuedAmount - row.todayNoIssuedAmount }}
+            {{ row.todayIssuedAmount }}/{{ row.todayNoIssuedAmount }}
           </template>
         </el-table-column>
         <el-table-column label="今日已发放次数/剩余次数" align="center">
           <template slot-scope="{ row }">
-            {{ row.todayIssuedNum }}/{{ row.todayIssuedNum - row.todayNoIssuedNum }}
+            {{ row.todayIssuedNum }}/{{ row.todayNoIssuedNum }}
           </template>
         </el-table-column>
         <el-table-column label="累计已发放次数/金额" align="center" width="180">
@@ -110,10 +110,14 @@
           <div class="sub-des">输入 1-999999 的正整数</div>
         </el-form-item>
         <el-form-item label="单日员工发红包总数(元)" prop="singleCustomerReceiveMoney">
-          <el-input
-            v-model="addMemberForm.singleCustomerReceiveMoney"
-            placeholder="请输入金额"
-          ></el-input>
+          <el-input-number
+            v-model="limitForm.singleCustomerReceiveMoney"
+            placeholder="请输入"
+            :precision="2"
+            :step="0."
+            :min="0.3"
+            :max="5000"
+          ></el-input-number>
           <div class="sub-des">精确到小数点后两位，可输入0.30-5000.00</div>
         </el-form-item>
       </el-form>
@@ -157,7 +161,7 @@ export default {
   data() {
     function validateDaySendNum(rule, value, callback) {
       value = Number(value)
-      if (Number.isNaN(value) || value < 1 || value > 999999) {
+      if (Number.isNaN(value) || value < 1 || value > 999999 || !Number.isInteger(value)) {
         callback('请输入 1-999999 的正整数')
       } else {
         callback()
@@ -165,7 +169,7 @@ export default {
     }
     function validateDaySendSum(rule, value, callback) {
       value = Number(value)
-      if (Number.isNaN(value) || value < 0.3 || value > 5000) {
+      if (Number.isNaN(value) || value < 0.3 || value > 5000 || !Number.isInteger(value * 100)) {
         callback('请输入0.30-5000.00的数字')
       } else {
         callback()
@@ -191,8 +195,8 @@ export default {
           { validator: validateDaySendNum, trigger: 'blur' },
         ],
         singleCustomerReceiveMoney: [
-          { required: true, message: '必填项', trigger: 'blur' },
-          { validator: validateDaySendSum, trigger: 'blur' },
+          { required: true, message: '必填项', trigger: 'change' },
+          { validator: validateDaySendSum, trigger: 'change' },
         ],
       },
       dialogVisibleSelectUser: false,
@@ -225,7 +229,7 @@ export default {
       this.query.userId = ''
       this.getList(1)
     },
-    edit(row=defaultForm) {
+    edit(row = defaultForm) {
       this.addMemberForm = Object.assign({}, row)
       this.addMemberForm.singleCustomerReceiveMoney /= 100
       this.addVisible = true
@@ -260,9 +264,8 @@ export default {
       }
       this.$refs.addMemberForm.validate((validate) => {
         if (!validate) return
-      let form = Object.assign({}, this.addMemberForm)
-      form.singleCustomerReceiveMoney /= 100
-
+        let form = Object.assign({}, this.addMemberForm)
+        form.singleCustomerReceiveMoney *= 100
         ;(this.batchUpdate ? batchUpdate : addOrUpdate)(form).then((res) => {
           this.getList()
           this.addVisible = false
