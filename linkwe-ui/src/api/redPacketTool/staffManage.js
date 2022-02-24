@@ -8,6 +8,21 @@ const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '
 pageNum	是 当前页
 pageSize	是 每页显示条数
 userId	是 检索条件，传员工id
+return  [
+        {
+            "id": 1483367396696686593,//主键
+            "userId": "haon",//员工id
+            "singleCustomerReceiveNum": 90,//限额总笔数
+            "singleCustomerReceiveMoney": 90,//限额总金额
+            "todayIssuedAmount": 0,//今日已发放金额
+            "todayNoIssuedAmount": 90,//今日未发放金额
+            "todayIssuedNum": 0,//今日已发放次数
+            "todayNoIssuedNum": 90,//今日未发放次数
+            "totalIssuedNum": 0,//累计发放次数
+            "totalIssuedAmount": 0,//累计方法金额
+            "userName": null //员工姓名
+        }
+    ]
 }
  */
 export function getList(params) {

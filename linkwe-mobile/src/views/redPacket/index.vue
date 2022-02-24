@@ -1,5 +1,11 @@
 <script>
-import { getList } from '@/api/redPacket.js'
+import {
+  getList,
+  sendCustomerPersonalRedPacket,
+  sendCustomerEnterpriseRedPacket,
+  sendCustomerGroupPersonalRedPacket,
+  sendCustomerGroupEnterpriseRedPacket,
+} from '@/api/redPacket.js'
 import { obj2query, param2Obj } from '@/utils/index.js'
 export default {
   name: '',
@@ -125,28 +131,54 @@ export default {
         })
     },
     showDialog(type, row = {}) {
-      this.form = { redEnvelopeAmount: row.money, redenvelopesId: row.id }
+      this.form = { redEnvelopeAmount: row.money, redenvelopesId: row.id,externalUserid:this.form.externalUserid }
       this.redPacketType = type
       this.visible = true
     },
     // transMoney(value) {
     //   this.form.redEnvelopeAmount = +(+value).toFixed(2)
     // },
-    async send() {
+    sendRedPacket() {
+      this.$toast.loading({
+        duration: 0,
+        forbidClick: true,
+      })
+      let request = ''
+      if (this.form.sceneType == 1) {
+        request = {
+          personal: sendCustomerPersonalRedPacket,
+          enterprise: sendCustomerEnterpriseRedPacket,
+        }[this.redPacketType]
+      } else {
+        request = {
+          personal: sendCustomerGroupPersonalRedPacket,
+          enterprise: sendCustomerGroupEnterpriseRedPacket,
+        }[this.redPacketType]
+      }
+      let form = Object.assign({}, this.form)
+      // 单位换算 元转分
+      form.redEnvelopeAmount *= 100
+      request(form).then(({ data, msg }) => {
+        this.$toast.clear()
+        this.send(form, data || msg)
+      })
+    },
+    async send(form, orderId) {
       let that = this
       let mes = {}
       try {
-        let form = Object.assign({}, this.form)
-        // 单位换算 元转分
-        form.redEnvelopeAmount *= 100
         let query = param2Obj(window.location.search)
         let hash = param2Obj(window.location.hash)
         Object.assign(
           form,
-          { sendUserId: this.userId, sceneType: this.sceneType, redPacketType: this.redPacketType },
+          {
+            orderId,
+            sendUserId: this.userId,
+          },
           query,
           hash
         )
+        delete form.code
         let formQueryString = obj2query(form)
         let baseUrl = location.protocol + '//' + location.host + process.env.VUE_APP_BASE_URL
         let redPacketUrl = `${baseUrl}?${formQueryString}#/redPacketReceive`
@@ -212,7 +244,7 @@ export default {
       v-model="visible"
       :description="(redPacketType.includes('personal') ? '个人' : '企业') + '红包'"
     >
-      <van-form colon @submit="send">
+      <van-form colon @submit="sendRedPacket">
         <!-- 企业红包相关字段 -->
         <van-field
           v-if="redPacketType.includes('enterprise')"

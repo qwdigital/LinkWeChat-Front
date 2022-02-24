@@ -48,12 +48,12 @@
         </el-table-column>
         <el-table-column label="今日已发放金额/剩余金额" align="center">
           <template slot-scope="{ row }">
-            {{ row.todayIssuedAmount }}/{{ row.todayIssuedAmount - row.singleCustomerReceiveMoney }}
+            {{ row.todayIssuedAmount }}/{{ row.todayIssuedAmount - row.todayNoIssuedAmount }}
           </template>
         </el-table-column>
         <el-table-column label="今日已发放次数/剩余次数" align="center">
           <template slot-scope="{ row }">
-            {{ row.todayIssuedNum }}/{{ row.todayIssuedNum - row.singleCustomerReceiveNum }}
+            {{ row.todayIssuedNum }}/{{ row.todayIssuedNum - row.todayNoIssuedNum }}
           </template>
         </el-table-column>
         <el-table-column label="累计已发放次数/金额" align="center" width="180">
@@ -225,8 +225,9 @@ export default {
       this.query.userId = ''
       this.getList(1)
     },
-    edit(row) {
-      this.addMemberForm = Object.assign({}, row || defaultForm)
+    edit(row=defaultForm) {
+      this.addMemberForm = Object.assign({}, row)
+      this.addMemberForm.singleCustomerReceiveMoney /= 100
       this.addVisible = true
       this.$nextTick(() => this.$refs.addMemberForm.clearValidate())
     },
@@ -259,7 +260,10 @@ export default {
       }
       this.$refs.addMemberForm.validate((validate) => {
         if (!validate) return
-        ;(this.batchUpdate ? batchUpdate : addOrUpdate)(this.addMemberForm).then((res) => {
+      let form = Object.assign({}, this.addMemberForm)
+      form.singleCustomerReceiveMoney /= 100
+
+        ;(this.batchUpdate ? batchUpdate : addOrUpdate)(form).then((res) => {
           this.getList()
           this.addVisible = false
           this.msgSuccess('操作成功')

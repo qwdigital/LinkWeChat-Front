@@ -50,7 +50,7 @@ export function getUserInfo(code, agentId) {
  * @returns
  */
 export function getUserOpenid(code) {
-  return request({ url: `http://demo.linkwechat.cn:8090/weixin/auth/getToken?code=${code}` })
+  return request({ url: `http://demo.linkwechat.cn:8070/weixin/auth/getToken?code=${code}` })
 }
 
 /**
@@ -59,7 +59,7 @@ export function getUserOpenid(code) {
  */
 export function getWechatUserInfo(openId) {
   return request({
-    url: `http://demo.linkwechat.cn:8090/weixin/auth/getUserInfo`,
+    url: `http://demo.linkwechat.cn:8070/weixin/auth/getUserInfo`,
     params: {
       openId,
       lang: 'zh_CN',

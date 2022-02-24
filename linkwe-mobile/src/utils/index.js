@@ -59,17 +59,17 @@ export function getQueryValue(name) {
 export async function getWxCode() {
   let userinfo = localStorage.getItem('userinfo')
   //取缓存中的用户信息
-  if (userinfo) {
-    try {
-      userinfo = JSON.parse(userinfo)
-    } catch (error) {
-      alert(error)
-    }
-    return
-  }
+  // if (userinfo) {
+  //   try {
+  //     userinfo = JSON.parse(userinfo)
+  //   } catch (error) {
+  //     alert(error)
+  //   }
+  //   return userinfo.openId
+  // }
 
   //缓存中没有用户信息，进入授权流程
-  let appid = 'wx863c031a74f589a0' // 公众号appid
+  let appid = window.CONFIG.appId // 公众号appid
   // let appid = 'wx8bfe6bc2ca5c45ae' // 公众号appid
   let code = getQueryValue('code') //是否存在code
   let local = window.location.origin.includes('localhost')
@@ -78,15 +78,22 @@ export async function getWxCode() {
   // let local = 'http://h5.x*****o.com/'
   if (!code) {
     //不存在就打开上面的地址进行授权
-    window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(
+    let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(
       local
     )}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
 
-    return false
+    window.location.href = url
+    return
     // window.location.href =
     //     `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`;
   }
-  let { data } = getUserOpenid(code)
+  let data = ''
+  try {
+    data = await getUserOpenid(code)
+  } catch (error) {
+    alert(error)
+  }
+  data = data.data
   if (data && data.openId) {
     localStorage.setItem('userinfo', JSON.stringify(data))
     return data.openId
