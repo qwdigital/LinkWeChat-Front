@@ -1,11 +1,5 @@
 <script>
-import {
-  getList,
-  sendCustomerPersonalRedPacket,
-  sendCustomerEnterpriseRedPacket,
-  sendCustomerGroupPersonalRedPacket,
-  sendCustomerGroupEnterpriseRedPacket,
-} from '@/api/redPacket.js'
+import { getList } from '@/api/redPacket.js'
 import { obj2query, param2Obj } from '@/utils/index.js'
 export default {
   name: '',
@@ -85,6 +79,7 @@ export default {
               wx.invoke('getCurExternalContact', {}, (res) => {
                 if (res.err_msg == 'getCurExternalContact:ok') {
                   that.form.externalUserid = res.userId //返回当前外部联系人userId
+                  that.form.chatId = res.chatId //返回当前客户群的群聊ID
                 } else {
                   //错误处理
                   that.$dialog({ message: '进入失败：' + JSON.stringify(res) })
@@ -129,8 +124,8 @@ export default {
           this.loadFail = true
         })
     },
-    showDialog(type, row) {
-      this.form = Object.assign({ redEnvelopeAmount: row.money }, row || {})
+    showDialog(type, row = {}) {
+      this.form = { redEnvelopeAmount: row.money, redenvelopesId: row.id }
       this.redPacketType = type
       this.visible = true
     },
@@ -142,14 +137,13 @@ export default {
       let mes = {}
       try {
         let form = Object.assign({}, this.form)
-        form.sendUserId = this.userId
         // 单位换算 元转分
         form.redEnvelopeAmount *= 100
         let query = param2Obj(window.location.search)
         let hash = param2Obj(window.location.hash)
         Object.assign(
           form,
-          { sceneType: this.sceneType, redPacketType: this.redPacketType },
+          { sendUserId: this.userId, sceneType: this.sceneType, redPacketType: this.redPacketType },
           query,
           hash
         )

@@ -56,7 +56,7 @@ export function getQueryValue(name) {
   return ''
 }
 
-export function getWxCode() {
+export async function getWxCode() {
   let userinfo = localStorage.getItem('userinfo')
   //取缓存中的用户信息
   if (userinfo) {
@@ -86,13 +86,12 @@ export function getWxCode() {
     // window.location.href =
     //     `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`;
   }
-  // getUserOpenid(code)
-  //   .then(({ data }) => {
-  //     if (data && data.openId) {
-  //       localStorage.setItem('userinfo', JSON.stringify(data))
-  //       return getWechatUserInfo(data.openId)
-  //     }
-  //   })
+  let { data } = getUserOpenid(code)
+  if (data && data.openId) {
+    localStorage.setItem('userinfo', JSON.stringify(data))
+    return data.openId
+    // return getWechatUserInfo(data.openId)
+  }
   //   .then(({ data }) => {
   //     let unionId = data.unionId
   //   })

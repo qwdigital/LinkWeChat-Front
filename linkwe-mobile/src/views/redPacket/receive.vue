@@ -16,6 +16,12 @@ export default {
       list: [],
       opened: false,
       redPacket: {},
+      form: {
+        orderNo: '', // 订单id
+        openId: '', // 客户公众号id
+        appId: window.CONFIG.appId, // 微信公众号id
+        externalUserid: '', // 客户企微id
+      },
     }
   },
   computed: {},
@@ -27,31 +33,31 @@ export default {
   mounted() {},
   methods: {
     init() {
-      getWxCode()
+      getWxCode().then((openId) => (this.form.openId = openId))
     },
     sendRedPacket() {
       this.$toast.loading({
         duration: 0,
         forbidClick: true,
       })
-      let form = {}
       let query = param2Obj(window.location.search)
       let hash = param2Obj(window.location.hash)
-      Object.assign(form, query, hash)
-      this.redPacket = form
+      Object.assign(query, hash)
+      this.redPacket = query
+      this.form.externalUserid = query.externalUserid
       let request = ''
-      if (form.sceneType == 1) {
+      if (query.sceneType == 1) {
         request = {
           personal: sendCustomerPersonalRedPacket,
           enterprise: sendCustomerEnterpriseRedPacket,
-        }[form.redPacketType]
+        }[query.redPacketType]
       } else {
         request = {
           personal: sendCustomerGroupPersonalRedPacket,
           enterprise: sendCustomerGroupEnterpriseRedPacket,
-        }[form.redPacketType]
+        }[query.redPacketType]
       }
-      request(form).then((res) => {
+      request(query).then((res) => {
         this.$toast.clear()
       })
     },
