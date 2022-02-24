@@ -111,10 +111,10 @@
         </el-form-item>
         <el-form-item label="单日员工发红包总数(元)" prop="singleCustomerReceiveMoney">
           <el-input-number
-            v-model="limitForm.singleCustomerReceiveMoney"
+            v-model="addMemberForm.singleCustomerReceiveMoney"
             placeholder="请输入"
             :precision="2"
-            :step="0."
+            :step="0.1"
             :min="0.3"
             :max="5000"
           ></el-input-number>
@@ -217,10 +217,15 @@ export default {
       this.loading = true
       getList(this.query)
         .then((res) => {
-          if (res.code == 200) {
-            this.list = res.rows
-            this.total = +res.total
-          }
+          rows.forEach((e) => {
+        // 单位换算 分转元
+        e.singleCustomerReceiveMoney = (e.singleCustomerReceiveMoney / 100).toFixed(2)
+        e.todayIssuedAmount = (e.todayIssuedAmount / 100).toFixed(2)
+        e.todayNoIssuedAmount = (e.todayNoIssuedAmount / 100).toFixed(2)
+        e.totalIssuedAmount = (e.totalIssuedAmount / 100).toFixed(2)
+      })
+          this.list = res.rows
+          this.total = +res.total
         })
         .finally(() => (this.loading = false))
     },
@@ -231,7 +236,6 @@ export default {
     },
     edit(row = defaultForm) {
       this.addMemberForm = Object.assign({}, row)
-      this.addMemberForm.singleCustomerReceiveMoney /= 100
       this.addVisible = true
       this.$nextTick(() => this.$refs.addMemberForm.clearValidate())
     },
