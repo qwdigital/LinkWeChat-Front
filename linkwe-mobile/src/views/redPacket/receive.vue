@@ -48,18 +48,22 @@ export default {
       getWxCode().then((openId) => {
         if (openId) {
           this.openId = openId
+          this.getRedPacketInfo()
         } else {
-          this.$toast.clear()
+          this.$toast('授权异常，请刷新重试')
         }
       })
     },
     getRedPacketInfo() {
-      getRedPacketInfo(form).then(({ data }) => {
-        Object.assign(this.redPacket, data)
+      getRedPacketInfo().then(({ data }) => {
+        this.redPacket = data
         this.$toast.clear()
       })
     },
     receive() {
+      if (!this.openId) {
+        return
+      }
       this.$toast.loading({
         duration: 0,
         forbidClick: true,
@@ -67,7 +71,7 @@ export default {
       let query = param2Obj(window.location.search)
       let hash = param2Obj(window.location.hash)
       Object.assign(query, hash)
-      this.redPacket = query
+      Object.assign(this.redPacket, query)
       let form = {
         orderNo: query.orderId, // 订单id
         openId: this.openId, // 客户公众号id
