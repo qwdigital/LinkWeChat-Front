@@ -10,24 +10,24 @@ export default {
       opened: false,
       openId: 0,
       redPacket: {
-        logo:
-          'http://wx.qlogo.cn/mmhead/JiavaWZxX4YuaWQrmvO6Gia7DyUGibLWU6diaI3szAgfv6NHsmC5bb8F5Q/0',
-        corpName: '合肥仟微网络科技',
-        redEnvelopeName: '合肥仟微网络科技',
-        redEnvelopesType: 1,
-        sceneType: 2,
-        currentAcceptMoney: 0,
-        totalMoney: 0,
-        accpectMoney: 1000,
-        accpestCustomerList: [
-          {
-            avatar:
-              'http://wx.qlogo.cn/mmhead/JiavaWZxX4YuaWQrmvO6Gia7DyUGibLWU6diaI3szAgfv6NHsmC5bb8F5Q/0',
-            accpectTime: '2022-02-18T11:38:06.000+08:00',
-            accpectMoney: 1000,
-            customerName: 's是否',
-          },
-        ],
+        // logo:
+        //   'http://wx.qlogo.cn/mmhead/JiavaWZxX4YuaWQrmvO6Gia7DyUGibLWU6diaI3szAgfv6NHsmC5bb8F5Q/0',
+        // corpName: '合肥仟微网络科技',
+        // redEnvelopeName: '合肥仟微网络科技',
+        // redEnvelopesType: 1,
+        // sceneType: 2,
+        // currentAcceptMoney: 0,
+        // totalMoney: 0,
+        // accpectMoney: 1000,
+        // accpestCustomerList: [
+        //   {
+        //     avatar:
+        //       'http://wx.qlogo.cn/mmhead/JiavaWZxX4YuaWQrmvO6Gia7DyUGibLWU6diaI3szAgfv6NHsmC5bb8F5Q/0',
+        //     accpectTime: '2022-02-18T11:38:06.000+08:00',
+        //     accpectMoney: 1000,
+        //     customerName: 's是否',
+        //   },
+        // ],
       },
       errorMsg: '',
       animate: false,
@@ -36,7 +36,7 @@ export default {
   computed: {},
   watch: {},
   created() {
-    // this.init()
+    this.init()
   },
   mounted() {},
   methods: {
