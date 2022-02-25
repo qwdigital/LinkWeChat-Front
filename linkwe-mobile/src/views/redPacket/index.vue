@@ -24,7 +24,7 @@ export default {
         redEnvelopeName: '', // 红包名
         redEnvelopeNum: 1, // 红包数量
         sendUserId: '', // 发送人id
-        redEnvelopesType: 1, // 2, 红包类型 1: 普通红包 2:拼手气红包
+        redEnvelopesType: 1, // 红包类型 1: 普通红包 2:拼手气红包
         chatId: '', // 群id
         externalUserid:
           process.env.NODE_ENV !== 'development' ? '' : 'wmbhUTLgAA6ByLnY45U-uiC4ccoMvwng',
@@ -131,7 +131,11 @@ export default {
         })
     },
     showDialog(type, row = {}) {
-      this.form = { redEnvelopeAmount: row.money, redenvelopesId: row.id,externalUserid:this.form.externalUserid }
+      this.form = {
+        redEnvelopeAmount: row.money,
+        redenvelopesId: row.id,
+        externalUserid: this.form.externalUserid,
+      }
       this.redPacketType = type
       this.visible = true
     },
@@ -174,6 +178,7 @@ export default {
           {
             orderId,
             sendUserId: this.userId,
+            sceneType: this.sceneType,
           },
           query,
           hash
@@ -188,7 +193,7 @@ export default {
           msgtype: 'news',
           news: {
             link: redPacketUrl, //H5消息页面url 必填
-            title: '红包', //H5消息标题
+            title: form.redEnvelopeName, //H5消息标题
             desc: '点我领取红包', //H5消息摘要
             imgUrl: baseUrl + 'static/redPacketThumb.png', //H5消息封面图片URL
           },

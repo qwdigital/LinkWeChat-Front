@@ -3,7 +3,7 @@ const wecom = window.CONFIG.services.wecom
 const service = wecom + '/RedEnvelopes'
 
 /**
- * 获取企业红包模版
+ * 获取企业红包模版列表
  * @param {*} sceneType 1:客户 2:客群
  * @returns
  */
@@ -91,6 +91,16 @@ export function sendCustomerGroupEnterpriseRedPacket(data) {
     url: service + '/sendCompanyEnvelopesToGroup',
     method: 'post',
     data: data,
+  })
+}
+
+/**
+ * 获取红包封面信息 （公司名，logo）
+ * @returns
+ */
+export function getRedPacketInfo() {
+  return request({
+    url: service + '/findRedEnvelopesInfo',
   })
 }
 

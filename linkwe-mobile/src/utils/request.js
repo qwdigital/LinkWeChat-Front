@@ -35,11 +35,13 @@ function createAxios(baseURL) {
       } else {
         addErrorLog(res)
       }
-      if (process.env.NODE_ENV === 'development') {
-        return Promise.reject(res) // 这样控制台会显示报错日志
-      } else {
-        return new Promise(() => {}) // 中断promise
-      }
+      return Promise.reject(data)
+
+      // if (process.env.NODE_ENV === 'development') {
+      //   return Promise.reject(res) // 这样控制台会显示报错日志
+      // } else {
+      //   return new Promise(() => {}) // 中断promise
+      // }
     },
     (error) => {
       if (error.response) {
