@@ -7,7 +7,7 @@ export default {
   data() {
     return {
       list: [],
-      opened: true,
+      opened: false,
       openId: 0,
       redPacket: {
         logo:
@@ -30,6 +30,7 @@ export default {
         ],
       },
       errorMsg: '',
+      animate: false,
     }
   },
   computed: {},
@@ -54,17 +55,15 @@ export default {
     },
     getRedPacketInfo() {
       getRedPacketInfo(form).then(({ data }) => {
-        data.currentAcceptMoney /= 100
-        data.totalMoney /= 100
-        data.accpectMoney /= 100
-        data.accpestCustomerList.forEach((element) => {
-          element.accpectMoney /= 100
-        })
         Object.assign(this.redPacket, data)
         this.$toast.clear()
       })
     },
     receive() {
+      this.$toast.loading({
+        duration: 0,
+        forbidClick: true,
+      })
       let query = param2Obj(window.location.search)
       let hash = param2Obj(window.location.hash)
       Object.assign(query, hash)
@@ -84,9 +83,19 @@ export default {
           return getReceiveList()
         })
         .then(({ data }) => {
-          this.opened = true
-          Object.assign(this.redPacket, data)
+          data.currentAcceptMoney /= 100
+          data.totalMoney /= 100
+          data.accpectMoney /= 100
+          data.accpestCustomerList.forEach((element) => {
+            element.accpectMoney /= 100
+          })
           this.$toast.clear()
+          this.$refs.audio.play()
+          this.animate = true
+          setTimeout(() => {
+            this.opened = true
+            Object.assign(this.redPacket, data)
+          }, 1000)
         })
     },
 
@@ -106,6 +115,13 @@ export default {
         <div class="red-packet-name">{{ redPacket.redEnvelopeName }}</div>
         <div class="red-packet-error" v-if="errorMsg">{{ errorMsg }}</div>
       </div>
+      <van-image
+        :class="['open-btn', animate && 'tarns']"
+        width="30"
+        height="30"
+        radius="4"
+        :src="require('@/assets/open.png')"
+      />
       <img src="@/assets/redPacketThumb.png" class="red-packet-thumb" @click="receive" />
     </div>
     <div v-else class="red-packet-received">
@@ -120,7 +136,10 @@ export default {
           }}</span>
         </div>
         <div class="red-packet-name">{{ redPacket.redEnvelopeName }}</div>
-        <div class="received-num-wrap"><span class="red-packet-received-num">{{ redPacket.totalMoney }}</span>元</div>
+        <div class="received-num-wrap">
+          <span class="red-packet-received-num">{{ redPacket.totalMoney }}</span
+          >元
+        </div>
         <div class="red-packet-text">已存入零钱，可直接使用</div>
       </div>
       <van-cell-group
@@ -135,22 +154,21 @@ export default {
             <van-image width="60" height="60" :src="item.avatar" />
             <div class="bfc-d user">
               <div class="user-name">{{ item.customerName }}</div>
-              <div>{{ dateFormat(item.accpectTime) }}</div>
+              <div class="red-packet-text">{{ dateFormat(item.accpectTime) }}</div>
             </div>
           </template>
-          <div class="money">
-            {{ item.accpectMoney }}元
-          </div>
+          <div class="money">{{ item.accpectMoney }}元</div>
         </van-cell>
       </van-cell-group>
     </div>
+    <audio ref="audio" src="@/assets/redPacket.mp3"></audio>
   </div>
 </template>
 
 <style lang="less" scoped>
 .red-packet-info {
   position: absolute;
-  top: 200px;
+  top: 50vw;
   width: 100%;
   text-align: center;
   .corp-name {
@@ -204,14 +222,13 @@ export default {
     color: #bba385;
     margin: 15px 0;
   }
-  .received-num-wrap{
+  .received-num-wrap {
     color: #bba385;
     .red-packet-received-num {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 800;
       margin-right: 5px;
     }
-
   }
   .red-packet-text {
     color: #aaa;
@@ -224,7 +241,7 @@ export default {
   }
   .money {
     color: #333;
-      font-weight: 800;
+    font-weight: 800;
   }
 }
 /deep/.van-cell__title {
@@ -233,5 +250,21 @@ export default {
 }
 /deep/.van-cell__value {
   flex: none !important;
+}
+
+.open-btn {
+  position: absolute;
+  z-index: 9;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  visibility: hidden;
+  top: 109vw;
+  transition: all 1s;
+}
+.tarns {
+  visibility: visible;
+  transform: translate(-50%, -30vw) scale(3) rotateX(360deg);
+  opacity: 0.8;
 }
 </style>
