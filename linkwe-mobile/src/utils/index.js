@@ -59,14 +59,14 @@ export function getQueryValue(name) {
 export async function getWxCode() {
   let userinfo = localStorage.getItem('userinfo')
   //取缓存中的用户信息
-  // if (userinfo) {
-  //   try {
-  //     userinfo = JSON.parse(userinfo)
-  //   } catch (error) {
-  //     alert(error)
-  //   }
-  //   return userinfo.openId
-  // }
+  if (userinfo) {
+    try {
+      userinfo = JSON.parse(userinfo)
+    } catch (error) {
+      alert(error)
+    }
+    return userinfo.openId
+  }
 
   //缓存中没有用户信息，进入授权流程
   let appid = window.CONFIG.appId // 公众号appid

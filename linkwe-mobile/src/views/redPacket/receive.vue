@@ -45,14 +45,18 @@ export default {
         duration: 0,
         forbidClick: true,
       })
-      getWxCode().then((openId) => {
-        if (openId) {
-          this.openId = openId
-          this.getRedPacketInfo()
-        } else {
+      getWxCode()
+        .then((openId) => {
+          if (openId) {
+            this.openId = openId
+            this.getRedPacketInfo()
+          } else {
+            this.$toast.clear()
+          }
+        })
+        .catch(() => {
           this.$toast('授权异常，请刷新重试')
-        }
-      })
+        })
     },
     getRedPacketInfo() {
       getRedPacketInfo().then(({ data }) => {
