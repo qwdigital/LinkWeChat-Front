@@ -216,7 +216,7 @@ export default {
     getList() {
       this.loading = true
       getList(this.query)
-        .then((res) => {
+        .then(({rows,total}) => {
           rows.forEach((e) => {
         // 单位换算 分转元
         e.singleCustomerReceiveMoney = (e.singleCustomerReceiveMoney / 100).toFixed(2)
@@ -224,8 +224,8 @@ export default {
         e.todayNoIssuedAmount = (e.todayNoIssuedAmount / 100).toFixed(2)
         e.totalIssuedAmount = (e.totalIssuedAmount / 100).toFixed(2)
       })
-          this.list = res.rows
-          this.total = +res.total
+          this.list = rows
+          this.total = +total
         })
         .finally(() => (this.loading = false))
     },
