@@ -30,7 +30,7 @@
                 <span
                   :style="{
                     color: form.customerType === 1 ? '#4bde03' : '#f9a90b',
-                    'font-size': '12px'
+                    'font-size': '12px',
                   }"
                 >
                   {{ { 1: '@微信', 2: '@企业微信' }[form.customerType] }}
@@ -320,14 +320,14 @@ import {
   findTrajectory,
   addOrEditWaitHandle,
   addOrUpdatePersonTags,
-  sync
+  sync,
 } from '@/api/portrait'
 // import { getUserInfo } from "@/api/common";
 import StepList from '@/components/StepList.vue'
 import { param2Obj } from '@/utils/index'
 export default {
   components: {
-    StepList
+    StepList,
   },
   data() {
     return {
@@ -374,7 +374,7 @@ export default {
         remarkCorpName: '', // 公司
         description: '', // 其他描述
         tags: [], // 企业标签合集
-        personTags: [] // 个人标签合集
+        personTags: [], // 个人标签合集
       },
       alllabel: [], // 标签组
       // 点击测试组标签获取的变量
@@ -394,7 +394,7 @@ export default {
       //   客户轨迹
       query: {
         page: 1,
-        trajectoryType: null
+        trajectoryType: null,
       },
 
       loading: false,
@@ -407,22 +407,22 @@ export default {
         2: { name: '跟进中', color: 'info' },
         3: { name: '已成交', color: 'primary' },
         4: { name: '无意向', color: 'warning' },
-        5: { name: '已流失', color: 'danger' }
+        5: { name: '已流失', color: 'danger' },
       }),
       editLabelType: '', // 编辑标签类型
       showAddTag: false,
-      newPersonTag: ''
+      newPersonTag: '',
     }
   },
   watch: {
     '$store.state.agentConfigStatus'(val) {
       val && this.init()
-    }
+    },
   },
   computed: {
     userId() {
       return process.env.NODE_ENV !== 'development' ? this.$store.state.userId : 'XuXueJun'
-    }
+    },
     //   activeLabel : () => {
     //       this.addTag.forEach((value) => {
     //           value.name == this.name
@@ -439,7 +439,7 @@ export default {
       this.$toast.loading({
         message: 'loading...',
         duration: 0,
-        forbidClick: true
+        forbidClick: true,
       })
       // 获取agentId
       let query = param2Obj(window.location.search)
@@ -461,7 +461,7 @@ export default {
       wx.invoke('getContext', {}, function(res) {
         if (res.err_msg == 'getContext:ok') {
           let entry = res.entry //返回进入H5页面的入口类型，目前有normal、contact_profile、single_chat_tools、group_chat_tools
-          if (!['single_chat_tools', 'group_chat_tools', 'contact_profile'].includes(entry)) {
+          if (!['single_chat_tools', 'contact_profile'].includes(entry)) {
             // _this.$toast.clear()
             _this.$toast('入口错误：' + entry)
             return
@@ -491,7 +491,7 @@ export default {
       // this.$toast('userId:' + this.userId)
       getCustomerInfo({
         externalUserid: this.externalUserid,
-        userId: this.userId
+        userId: this.userId,
       })
         .then(({ data }) => {
           if (data.tagIds && data.tagNames) {
@@ -499,7 +499,7 @@ export default {
             data.tagNames = data.tagNames.split(',')
             data.tags = data.tagIds.map((unit, index) => ({
               tagId: unit,
-              name: data.tagNames[index]
+              name: data.tagNames[index],
             }))
           }
 
@@ -508,7 +508,7 @@ export default {
             data.personTagNames = data.personTagNames.split(',')
             data.personTags = data.personTagIds.map((unit, index) => ({
               tagId: unit,
-              name: data.personTagNames[index]
+              name: data.personTagNames[index],
             }))
           }
           this.form = data
@@ -522,15 +522,15 @@ export default {
       this.$toast.loading({
         message: 'loading...',
         duration: 0,
-        forbidClick: true
+        forbidClick: true,
       })
       let params = {
-        groupTagType: 1
+        groupTagType: 1,
       }
       if (type === 'person') {
         params = {
           groupTagType: 3,
-          userId: this.userId
+          userId: this.userId,
         }
       }
       return getAllTags(params)
@@ -558,7 +558,7 @@ export default {
         pageNum: page,
         pageSize: 10,
         userId: this.userId,
-        externalUserid: this.externalUserid
+        externalUserid: this.externalUserid,
       }
       Object.assign(query, this.query)
       query.trajectoryType == 0 && (query.trajectoryType = null)
@@ -584,7 +584,7 @@ export default {
         userId: this.userId,
         externalUserid: this.externalUserid,
         content: this.conagency,
-        trackState: this.trackState //1:待跟进;2:跟进中;3:已成交;4:无意向;5:已流失
+        trackState: this.trackState, //1:待跟进;2:跟进中;3:已成交;4:无意向;5:已流失
       }
       addOrEditWaitHandle(form)
         .then((data) => {
@@ -647,9 +647,9 @@ export default {
       this.$router.push({
         path,
         query: {
-          customerId: this.externalUserid
+          customerId: this.externalUserid,
           //   type
-        }
+        },
       })
     },
     // 点击编辑按钮
@@ -698,7 +698,7 @@ export default {
         this.addTag.push({
           groupId: item.groupId,
           name: item.name,
-          tagId: item.tagId
+          tagId: item.tagId,
         })
       } else {
         // 数组里存在该对象,则删除
@@ -711,7 +711,7 @@ export default {
         externalUserid: this.externalUserid,
         userId: this.userId,
         isCompanyTag: this.editLabelType !== 'person', //是否是企业标签true是;false:不是
-        addTag: this.addTag.map((e) => ({ tagId: e.tagId }))
+        addTag: this.addTag.map((e) => ({ tagId: e.tagId })),
       })
         .then((res) => {
           //   console.log(res);
@@ -743,7 +743,7 @@ export default {
       // this.$toast('userId:' + this.userId)
       findAddGroupNum({
         externalUserid: this.externalUserid,
-        userId: this.userId
+        userId: this.userId,
       })
         .then(({ data }) => {
           //   console.log(data);
@@ -762,7 +762,7 @@ export default {
     // 添加个人标签
     submitNewPersonTag() {
       let params = {
-        weTags: [{ name: this.newPersonTag, owner: this.userId }]
+        weTags: [{ name: this.newPersonTag, owner: this.userId }],
       }
       addOrUpdatePersonTags(params)
         .then((res) => {
@@ -778,15 +778,15 @@ export default {
       this.$toast.loading({
         message: 'loading...',
         duration: 0,
-        forbidClick: true
+        forbidClick: true,
       })
       sync(this.userId).then((res) => {
         this.$toast.success('同步成功')
         this.findTrajectory()
         this.$toast.clear()
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -60,7 +60,12 @@ export default {
     },
     getRedPacketInfo() {
       getRedPacketInfo().then(({ data }) => {
-        this.redPacket = data
+        let query = param2Obj(window.location.search)
+        let hash = param2Obj(window.location.hash)
+        Object.assign(query, hash)
+        this.redPacket = query
+        Object.assign(this.redPacket, data)
+
         this.$toast.clear()
       })
     },
@@ -72,15 +77,12 @@ export default {
         duration: 0,
         forbidClick: true,
       })
-      let query = param2Obj(window.location.search)
-      let hash = param2Obj(window.location.hash)
-      Object.assign(query, hash)
-      Object.assign(this.redPacket, query)
+
       let form = {
-        orderNo: query.orderId, // 订单id
+        orderNo: this.redPacket.orderId, // 订单id
         openId: this.openId, // 客户公众号id
         appId: window.CONFIG.appId, // 微信公众号id
-        externalUserid: query.externalUserid, // 客户企微id
+        externalUserid: this.redPacket.externalUserid, // 客户企微id
       }
       receiveRedPacket(form)
         .catch(({ data }) => {
@@ -97,13 +99,13 @@ export default {
           data.accpestCustomerList.forEach((element) => {
             element.accpectMoney /= 100
           })
-          this.$toast.clear()
           this.$refs.audio.play()
+          this.$toast.clear()
           this.animate = true
           setTimeout(() => {
             this.opened = true
             Object.assign(this.redPacket, data)
-          }, 1000)
+          }, 1500)
         })
     },
 
@@ -268,11 +270,12 @@ export default {
   opacity: 0;
   visibility: hidden;
   top: 109vw;
-  transition: all 1s;
+  transition: all 1.5s;
 }
 .tarns {
   visibility: visible;
-  transform: translate(-50%, -30vw) scale(3) rotateX(360deg);
+  transform: translate(-50%, -30vw) scale(2) rotateX(360deg);
+  -webkit-transform: translate(-50%, -30vw) scale(2) rotateX(360deg);
   opacity: 0.8;
 }
 </style>

@@ -81,6 +81,7 @@ export default {
             'sendChatMessage',
             'getContext',
             'getCurExternalContact',
+            'getCurExternalChat',
             'openEnterpriseChat',
             'shareToExternalContact',
             'shareToExternalChat',

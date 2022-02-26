@@ -73,28 +73,30 @@ export default {
       wx.invoke('getContext', {}, async function(res) {
         if (res.err_msg == 'getContext:ok') {
           entry = res.entry //返回进入H5页面的入口类型，目前 contact_profile、single_chat_tools、group_chat_tools
+          if (!['single_chat_tools', 'group_chat_tools'].includes(entry)) {
+            // _this.$toast.clear()
+            that.$toast('入口错误：' + entry)
+            return
+          }
           try {
-            if (['single_chat_tools', 'group_chat_tools'].includes(entry)) {
-              // that.$toast.clear()
-              if (entry === 'single_chat_tools') {
-                that.sceneType = 1
-              } else if (entry === 'group_chat_tools') {
-                that.sceneType = 2
-              }
-
-              wx.invoke('getCurExternalContact', {}, (res) => {
-                if (res.err_msg == 'getCurExternalContact:ok') {
-                  that.form.externalUserid = res.userId //返回当前外部联系人userId
-                  that.form.chatId = res.chatId //返回当前客户群的群聊ID
-                } else {
-                  //错误处理
-                  that.$dialog({ message: '进入失败：' + JSON.stringify(res) })
-                }
-                that.$toast.clear()
-              })
-            } else {
-              that.$toast('入口错误：' + entry)
+            let invokeApi = 'getCurExternalContact'
+            if (entry === 'single_chat_tools') {
+              that.sceneType = 1
+            } else if (entry === 'group_chat_tools') {
+              that.sceneType = 2
+              invokeApi = 'getCurExternalChat'
             }
+
+            wx.invoke(invokeApi, {}, (res) => {
+              if (res.err_msg == invokeApi + ':ok') {
+                that.form.externalUserid = res.userId //返回当前外部联系人userId
+                that.form.chatId = res.chatId //返回当前客户群的群聊ID
+              } else {
+                //错误处理
+                that.$dialog({ message: '进入失败：' + JSON.stringify(res) })
+              }
+              that.$toast.clear()
+            })
           } catch (err) {
             that.$dialog({ message: 'err' + JSON.stringify(err.message) })
           }
@@ -131,12 +133,13 @@ export default {
         })
     },
     showDialog(type, row = {}) {
-      this.form = {
+      Object.assign(this.form, {
         redEnvelopeAmount: row.money,
         redenvelopesId: row.id,
-        externalUserid: this.form.externalUserid,
-      }
+        redEnvelopeName: row.name,
+      })
       this.redPacketType = type
+      this.$refs.form.resetValidation()
       this.visible = true
     },
     // transMoney(value) {
@@ -183,6 +186,11 @@ export default {
           query,
           hash
         )
+        for (const key in form) {
+          if (form.hasOwnProperty.call(form, key)) {
+            !form[key] && delete form[key]
+          }
+        }
         delete form.code
         let formQueryString = obj2query(form)
         let baseUrl = location.protocol + '//' + location.host + process.env.VUE_APP_BASE_URL
@@ -249,7 +257,7 @@ export default {
       v-model="visible"
       :description="(redPacketType.includes('personal') ? '个人' : '企业') + '红包'"
     >
-      <van-form colon @submit="sendRedPacket">
+      <van-form ref="form" colon @submit="sendRedPacket">
         <!-- 企业红包相关字段 -->
         <van-field
           v-if="redPacketType.includes('enterprise')"
@@ -262,8 +270,8 @@ export default {
         <van-field v-if="sceneType == 2" name="radio" label="红包类型" required>
           <template #input>
             <van-radio-group v-model="form.redEnvelopesType" direction="horizontal">
-              <van-radio name="1">拼手气红包</van-radio>
-              <van-radio name="2">普通红包</van-radio>
+              <van-radio :name="1">拼手气红包</van-radio>
+              <van-radio :name="2">普通红包</van-radio>
             </van-radio-group>
           </template>
         </van-field>
