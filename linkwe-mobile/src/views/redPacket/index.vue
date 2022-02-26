@@ -139,8 +139,10 @@ export default {
         redEnvelopeName: row.name,
       })
       this.redPacketType = type
-      this.$refs.form.resetValidation()
       this.visible = true
+      this.$nextTick(() => {
+        this.$refs.form.resetValidation()
+      })
     },
     // transMoney(value) {
     //   this.form.redEnvelopeAmount = +(+value).toFixed(2)
@@ -323,7 +325,7 @@ export default {
         />
 
         <div style="width: 90%;margin: 20px auto 40px">
-          <van-button round block size="small" type="info" native-type="submit"
+          <van-button round block size="normal" type="info" native-type="submit"
             >确认发送</van-button
           >
         </div>
