@@ -2,7 +2,7 @@
   <div>
     <el-tabs v-model="currentActive" align-center>
       <el-tab-pane label="基础配置" name="1">
-        <part1></part1>
+        <part1 @submit="savePart1" :data="form"></part1>
       </el-tab-pane>
       <el-tab-pane label="应用配置" name="2">
         <part2></part2>
@@ -57,6 +57,16 @@
     mounted () {
     },
     methods: {
+      savePart1 (data) {
+        api.addOrUpdate(data).then(() => {
+          this.msgSuccess('操作成功')
+          // this.dialogVisible = false
+          this.getDetail()
+        })
+          .catch(() => {
+            // this.dialogVisible = false
+          })
+      },
       getDetail () {
         this.loading = true
         api.getDetail()
