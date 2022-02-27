@@ -86,7 +86,7 @@ export default {
               that.sceneType = 2
               invokeApi = 'getCurExternalChat'
             }
-
+            that.getList()
             wx.invoke(invokeApi, {}, (res) => {
               if (res.err_msg == invokeApi + ':ok') {
                 that.form.externalUserid = res.userId //返回当前外部联系人userId
@@ -153,7 +153,7 @@ export default {
         forbidClick: true,
       })
       let request = ''
-      if (this.form.sceneType == 1) {
+      if (this.sceneType == 1) {
         request = {
           personal: sendCustomerPersonalRedPacket,
           enterprise: sendCustomerEnterpriseRedPacket,
@@ -241,7 +241,6 @@ export default {
         finished-text="没有更多了"
         :error.sync="loadFail"
         error-text="请求失败，点击重新加载"
-        @load="getList"
       >
         <div v-for="(item, index) in list" :key="index" class="fxbw red-packet-list">
           <div class="red-packet-message">{{ item.name }}</div>
