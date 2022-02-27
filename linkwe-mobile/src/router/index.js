@@ -11,6 +11,7 @@ const routes = [
     component: Home,
     meta: {
       title: '首页',
+      noAuth: true,
     },
   },
   // 聊天素材

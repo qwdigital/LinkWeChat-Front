@@ -33,9 +33,9 @@ td {
   padding: 0;
 }
 body,input, select, textarea /* for ie */ {
-  font: 14px Microsoft YaHei, '宋体', arial, -apple-system, 'PingFang SC',
-    'Helvetica Neue', Helvetica, 'DejaVu Sans', 'Lucida Grande', Tahoma,
-    'Hiragino Sans GB', STHeiti, SimSun, sans-serif;
+  font: 14px Microsoft YaHei, '宋体', arial, -apple-system, 'PingFang SC', 'Helvetica Neue',
+    Helvetica, 'DejaVu Sans', 'Lucida Grande', Tahoma, 'Hiragino Sans GB', STHeiti, SimSun,
+    sans-serif;
   line-height: 1.15;
   color: #333; /*touch-action: none*/
 } /** 设置默认字体 **/
@@ -232,6 +232,9 @@ ais {
 .hide {
   display: none;
 }
+.blod {
+  font-weight: bold;
+}
 /*top-fixed and bottom-fixed*/
 .tf,
 .bf {
@@ -264,7 +267,6 @@ ais {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  overflow: auto;
 }
 /*t-o-h-e*/
 .toe {

@@ -10,7 +10,7 @@
         >{{ item.meta.title }}</router-link
       >
     </template>
-    <div v-else class="cc">
+    <div v-else class="cc blod">
       {{ tips }}
     </div>
   </div>
@@ -29,7 +29,7 @@ export default {
     }
   },
   created() {
-    if (location.hash.indexOf('redPacketReceive') && !navigator.userAgent.indexOf('Mobile')) {
+    if (location.href.includes('redPacketReceive') && !navigator.userAgent.includes('Mobile')) {
       this.tips = '请在手机端微信打开'
     } else {
     }
