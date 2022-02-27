@@ -1,13 +1,18 @@
 <template>
   <div class="home">
     <div class="logo ac">linkWeChat</div>
-    <router-link
-      class="router-link"
-      v-for="(item, index) in $router.options.routes"
-      :to="item.path"
-      :key="index"
-      >{{ item.meta.title }}</router-link
-    >
+    <template v-if="isShow">
+      <router-link
+        class="router-link"
+        v-for="(item, index) in $router.options.routes"
+        :to="item.path"
+        :key="index"
+        >{{ item.meta.title }}</router-link
+      >
+    </template>
+    <div v-else class="cc">
+      {{ tips }}
+    </div>
   </div>
 </template>
 
@@ -17,6 +22,18 @@
 export default {
   name: 'Home',
   components: {},
+  data() {
+    return {
+      isShow: process.env.NODE_ENV === 'development',
+      tips: '',
+    }
+  },
+  created() {
+    if (location.hash.indexOf('redPacketReceive') && !navigator.userAgent.indexOf('Mobile')) {
+      this.tips = '请在手机端微信打开'
+    } else {
+    }
+  },
 }
 </script>
 

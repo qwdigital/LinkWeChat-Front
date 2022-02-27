@@ -15,7 +15,7 @@ export default {
       loading: false,
       finished: false,
       loadFail: false,
-      sceneType: 1, // 1:客户 2:客群
+      sceneType: undefined, // 1:客户 2:客群
       list: [],
       visible: false,
       redPacketType: 'personal', // personal,enterprise
@@ -167,6 +167,7 @@ export default {
       let form = Object.assign({}, this.form)
       // 单位换算 元转分
       form.redEnvelopeAmount *= 100
+      form.sendUserId = this.userId
       request(form).then(({ data, msg }) => {
         this.$toast.clear()
         this.send(form, data || msg)
@@ -182,8 +183,7 @@ export default {
           form,
           {
             orderId,
-            sendUserId: this.userId,
-            sceneType: this.sceneType,
+            sceneType: that.sceneType,
           },
           query,
           hash
@@ -277,24 +277,12 @@ export default {
           </template>
         </van-field>
 
-        <!-- 客户群个人红包相关字段 -->
+        <!-- 个人红包相关字段 -->
         <template v-if="redPacketType.includes('personal') && sceneType == 2">
           <van-field
             v-model="form.redEnvelopeAmount"
             type="text"
-            :label="{ 1: '单个红包金额(元)', 2: '红包总额(元)' }[form.redEnvelopesType]"
-            placeholder="请输入金额"
-            required
-            :rules="rules.redEnvelopeAmount"
-          />
-          <div class="sub-des">精确到小数点后两位，可输入1~200</div>
-        </template>
-        <!-- 客户个人红包相关 -->
-        <template v-else-if="redPacketType.includes('personal') && sceneType == 1">
-          <van-field
-            v-model="form.redEnvelopeAmount"
-            type="text"
-            label="红包金额"
+            :label="{ 1: '红包金额(元)', 2: '红包总额(元)' }[sceneType]"
             placeholder="请输入金额"
             required
             :rules="rules.redEnvelopeAmount"

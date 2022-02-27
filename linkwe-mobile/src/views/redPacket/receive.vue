@@ -82,15 +82,18 @@ export default {
         orderNo: this.redPacket.orderId, // 订单id
         openId: this.openId, // 客户公众号id
         appId: window.CONFIG.appId, // 微信公众号id
+        chatId: this.redPacket.chatId, // 客户企微id
         externalUserid: this.redPacket.externalUserid, // 客户企微id
       }
       receiveRedPacket(form)
-        .catch(({ data }) => {
-          this.errorMsg = data.msg
-          return Promise.reject()
-        })
-        .then(() => {
-          return getReceiveList()
+        .then((data) => {
+          if (data.code === 200) {
+            return getReceiveList(form)
+          } else {
+            this.errorMsg = data.msg
+            this.$toast.clear()
+            return Promise.reject()
+          }
         })
         .then(({ data }) => {
           data.currentAcceptMoney /= 100
@@ -147,7 +150,7 @@ export default {
         </div>
         <div class="red-packet-name">{{ redPacket.redEnvelopeName }}</div>
         <div class="received-num-wrap">
-          <span class="red-packet-received-num">{{ redPacket.totalMoney }}</span
+          <span class="red-packet-received-num">{{ redPacket.currentAcceptMoney }}</span
           >元
         </div>
         <div class="red-packet-text">已存入零钱，可直接使用</div>

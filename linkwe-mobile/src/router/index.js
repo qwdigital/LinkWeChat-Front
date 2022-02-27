@@ -133,17 +133,6 @@ const routes = [
       noAuth: true,
     },
   },
-  // 微信授权回调
-  {
-    path: '/authCallback',
-    name: 'authCallback',
-    component: () => import('../views/authCallback'),
-    meta: {
-      title: '微信授权回调',
-      noAuth: true,
-      noGetUser: true,
-    },
-  },
 ]
 
 const router = new VueRouter({
