@@ -21,7 +21,7 @@ export default {
       multiSelect: [], // 多选数据
       loading: false,
       dictStatusType: Object.freeze({
-        0: '全部状态',
+        0: '全部类型',
         1: '普通红包',
         2: '拼手气红包',
       }),
@@ -165,7 +165,7 @@ export default {
         <el-form-item label="领取客户群" prop="groupName">
           <el-input v-model="query.groupName" placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="全部状态" prop="redEnvelopeType">
+        <el-form-item label="全部类型" prop="redEnvelopeType">
           <el-select v-model="query.redEnvelopeType" placeholder="请选择">
             <el-option
               v-for="(item, key) in dictStatusType"

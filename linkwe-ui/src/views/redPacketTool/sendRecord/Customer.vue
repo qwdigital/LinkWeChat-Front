@@ -135,7 +135,7 @@ export default {
             align="right"
           ></el-date-picker>
         </el-form-item>
-        <el-form-item label="全部状态" prop="sendState">
+        <el-form-item label="全部类型" prop="sendState">
           <el-select v-model="query.sendState" placeholder="请选择">
             <el-option
               v-for="(item, key) in dictStatusType"

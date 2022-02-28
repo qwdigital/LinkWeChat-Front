@@ -2,7 +2,7 @@
   <div>
     <CardGroupIndex :data="cardData"></CardGroupIndex>
     <div class="g-card g-pad20">
-      <div class="table-header">支出统计</div>
+      <div class="table-header">支出趋势</div>
       <div class="chart-header">
         <el-button-group>
           <el-button size="small" type="primary" :plain="timeRange != 7" @click="setTime(7)"
