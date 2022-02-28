@@ -31,9 +31,9 @@ window.CONFIG = {
 
   services: {
     wecom: '/wecom',
-    kf: '/dev-kf',
+    kf: process.env.VUE_APP_KF_API,
     system: process.env.VUE_APP_SYSTEM_API,
-    common: '/common'
+    common: '/common',
   },
 
   /**
@@ -45,7 +45,7 @@ window.CONFIG = {
 
   get headers() {
     return { Authorization: 'Bearer ' + getToken() }
-  }
+  },
 }
 // 统一为img的src不是绝对地址的拼接接口地址
 document.addEventListener(
