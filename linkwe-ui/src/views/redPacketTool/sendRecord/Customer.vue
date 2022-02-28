@@ -30,17 +30,7 @@ export default {
       }),
     }
   },
-  watch: {
-    // 日期选择器数据同步至查询参数
-    dateRange(dateRange) {
-      if (!dateRange || dateRange.length !== 2) {
-        this.query.beginTime = ''
-        this.query.endTime = ''
-      } else {
-        ;[this.query.beginTime, this.query.endTime] = dateRange
-      }
-    },
-  },
+  watch: {},
   created() {
     this.getList()
 
@@ -53,6 +43,12 @@ export default {
   },
   methods: {
     getList(page) {
+      if (this.dateRange) {
+        ;[this.query.beginTime, this.query.endTime] = this.dateRange
+      } else {
+        this.query.beginTime = ''
+        this.query.endTime = ''
+      }
       page && (this.query.pageNum = page)
       this.loading = true
 
