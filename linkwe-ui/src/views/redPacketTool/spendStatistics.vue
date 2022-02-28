@@ -173,7 +173,7 @@ export default {
           let seriesData = [] // this.mockData[this.timeRange]
           seriesData[0] = data.map((e) => e.totalMoney)
           seriesData[1] = data.map((e) => e.totalNum)
-          let xAxisData = data.map((e) => e.createTime)
+          let xAxisData = data.map((e) => e.createTime.slice(0, 10))
           this.setEchart(xAxisData, seriesData)
         })
         .catch((e) => {

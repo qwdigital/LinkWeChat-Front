@@ -125,7 +125,7 @@
         </el-form-item>
         <el-form-item label="发送场景" prop="sceneType">
           <el-radio-group v-model="addForm.sceneType">
-            <el-radio v-for="(item, key) in dictSendSence" :key="key" :label="key">
+            <el-radio v-for="(item, key) in dictSendSence" :key="key" :label="+key">
               {{ item }}
             </el-radio>
           </el-radio-group>
@@ -214,12 +214,7 @@ function validateAmount(rule, value, callback) {
   }
 
   value = Number(value)
-  if (
-    Number.isNaN(value) ||
-    value < 0.01 ||
-    value > 1e6 ||
-    !Number.isInteger(value * 100)
-  ) {
+  if (Number.isNaN(value) || value < 0.01 || value > 1e6 || !Number.isInteger(value * 100)) {
     callback('请输入0.01-1000000的数字，精确到小数点后两位')
   } else {
     callback()

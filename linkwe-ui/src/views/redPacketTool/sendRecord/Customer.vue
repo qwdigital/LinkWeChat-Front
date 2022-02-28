@@ -11,7 +11,7 @@ export default {
         customerName: '', // 客户姓名
         sendState: '', // 发送状态:1:待领取;2:已领取;3:发放失败;4:退款中;5:已退款
         beginTime: '', // 创建开始时间
-        endTime: '' // 创建结束时间
+        endTime: '', // 创建结束时间
       },
       dateRange: [], // 添加日期
       total: 0, //
@@ -21,13 +21,13 @@ export default {
       queryUser: [], // 搜索框选择的添加人
       dialogVisibleSelectUser: false, // 选择添加人弹窗显隐
       dictStatusType: Object.freeze({
-        0: '全部状态',
+        0: '全部类型',
         1: '待领取',
         2: '已领取',
         3: '发放失败',
         4: '退款中',
-        5: '已退款'
-      })
+        5: '已退款',
+      }),
     }
   },
   watch: {
@@ -39,7 +39,7 @@ export default {
       } else {
         ;[this.query.beginTime, this.query.endTime] = dateRange
       }
-    }
+    },
   },
   created() {
     this.getList()
@@ -69,14 +69,15 @@ export default {
     // 重置查询参数
     resetQuery() {
       this.dateRange = []
+      this.queryUser = []
       this.$refs['queryForm'].resetFields()
-      // this.getList(1)
+      this.getList(1)
     },
     exportData() {
       this.$confirm('确认导出吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       })
         .then(() => {
           this.loading = true
@@ -102,8 +103,8 @@ export default {
         const groups = row.groupList.map((g) => g.groupName)
         return groups.join('，')
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -173,7 +174,7 @@ export default {
         prop="userName"
         :show-overflow-tooltip="true"
       ></el-table-column>
-      <el-table-column label="领取客户" align="center" width="120">
+      <el-table-column label="领取客户" align="center" width="150">
         <template slot-scope="{ row }">
           <div class="cp flex aic" @click="goRoute(row)">
             <el-image
@@ -192,13 +193,14 @@ export default {
         </template>
       </el-table-column>
 
-      <el-table-column
-        label="红包金额（元）"
-        align="center"
-        prop="redEnvelopeMoney"
-      ></el-table-column>
+      <el-table-column label="红包金额（元）" align="center" prop="redEnvelopeMoney">
+      </el-table-column>
       <el-table-column label="发放时间" align="center" prop="createTime"></el-table-column>
-      <el-table-column label="发放状态" align="center" prop="sendState"></el-table-column>
+      <el-table-column label="发放状态" align="center" prop="sendState">
+        <template slot-scope="{ row }">
+          {{ dictStatusType[row.sendState] }}
+        </template>
+      </el-table-column>
       <el-table-column label="交易订单号" align="center" prop="orderNo"></el-table-column>
     </el-table>
 
@@ -214,7 +216,13 @@ export default {
     <SelectUser
       :visible.sync="dialogVisibleSelectUser"
       title="选择添加人"
-      @success="(list) => (queryUser = list)"
+      :defaultValues="queryUser"
+      @success="
+        (list) => {
+          queryUser = list
+          query.userId = list.map((i) => i.userId).join()
+        }
+      "
     ></SelectUser>
   </div>
 </template>

@@ -1,14 +1,12 @@
 <template>
   <div>
     <div class="g-card" style="padding: 20px">
-      <el-form :inline="true" :form="query" label-width="70px">
-        <el-form-item label="选择员工">
+      <el-form ref="queryForm" :inline="true" :form="query" label-width="70px">
+        <el-form-item label="选择员工" prop="userId">
           <div class="tag-input" @click="selectUser(1)">
             <span class="tag-place" v-if="!queryUser.length">请选择员工</span>
             <template v-else>
-              <el-tag type="info" v-for="(unit, unique) in queryUser" :key="unique">{{
-                unit.name
-              }}</el-tag>
+              <el-tag v-for="(unit, unique) in queryUser" :key="unique">{{ unit.name }}</el-tag>
             </template>
           </div>
         </el-form-item>
@@ -63,7 +61,14 @@
         </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="{ row }">
-            <el-button type="text" @click="edit(row)">编辑</el-button>
+            <el-button
+              type="text"
+              @click="
+                batchUpdate = false
+                edit(row)
+              "
+              >编辑</el-button
+            >
             <el-button type="text" @click="remove(row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -95,12 +100,13 @@
         label-width="180px"
       >
         <el-form-item v-if="!batchUpdate" label="选择员工" prop="userId">
-          <el-tag v-for="item in addMemberForm.users" :key="item.userId">
-            {{ item.name }}
+          <el-tag v-for="(item, index) in addMemberForm.users" :key="index">
+            {{ item.name || item }}
           </el-tag>
-          <el-button type="primary" size="mini" plain @click="selectUser(2)">选择员工</el-button>
-
-          <div class="sub-des">支持多选</div>
+          <template v-if="!addMemberForm.id">
+            <el-button type="primary" size="mini" plain @click="selectUser(2)">选择员工</el-button>
+            <div class="sub-des">支持多选</div>
+          </template>
         </el-form-item>
         <el-form-item label="单日员工发红包次数" prop="singleCustomerReceiveNum">
           <el-input
@@ -109,7 +115,7 @@
           ></el-input>
           <div class="sub-des">输入 1-999999 的正整数</div>
         </el-form-item>
-        <el-form-item label="单日员工发红包总数(元)" prop="singleCustomerReceiveMoney">
+        <el-form-item label="单日员工发红包总额(元)" prop="singleCustomerReceiveMoney">
           <el-input-number
             v-model="addMemberForm.singleCustomerReceiveMoney"
             placeholder="请输入"
@@ -216,14 +222,14 @@ export default {
     getList() {
       this.loading = true
       getList(this.query)
-        .then(({rows,total}) => {
+        .then(({ rows, total }) => {
           rows.forEach((e) => {
-        // 单位换算 分转元
-        e.singleCustomerReceiveMoney = (e.singleCustomerReceiveMoney / 100).toFixed(2)
-        e.todayIssuedAmount = (e.todayIssuedAmount / 100).toFixed(2)
-        e.todayNoIssuedAmount = (e.todayNoIssuedAmount / 100).toFixed(2)
-        e.totalIssuedAmount = (e.totalIssuedAmount / 100).toFixed(2)
-      })
+            // 单位换算 分转元
+            e.singleCustomerReceiveMoney = (e.singleCustomerReceiveMoney / 100).toFixed(2)
+            e.todayIssuedAmount = (e.todayIssuedAmount / 100).toFixed(2)
+            e.todayNoIssuedAmount = (e.todayNoIssuedAmount / 100).toFixed(2)
+            e.totalIssuedAmount = (e.totalIssuedAmount / 100).toFixed(2)
+          })
           this.list = rows
           this.total = +total
         })
@@ -232,10 +238,12 @@ export default {
     resetQuery() {
       this.queryUser = []
       this.query.userId = ''
+      this.$refs['queryForm'].resetFields()
       this.getList(1)
     },
     edit(row = defaultForm) {
       this.addMemberForm = Object.assign({}, row)
+      row.userName && (this.addMemberForm.users = row.userName.split(','))
       this.addVisible = true
       this.$nextTick(() => this.$refs.addMemberForm.clearValidate())
     },
@@ -250,7 +258,8 @@ export default {
     submitSelectUser(data) {
       if (this.selectUserData.type == 1) {
         this.queryUser = data
-        this.query.userId = data[0].userId
+        // this.query.userId = data[0].userId
+        this.query.userId = data.map((i) => i.userId).join()
         this.getList(1)
       } else {
         this.addMemberForm.users = data.map((i) => ({

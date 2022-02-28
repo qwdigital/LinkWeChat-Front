@@ -38,6 +38,9 @@ export default {
         total: 0, //
         list: [], //
       },
+
+      dialogVisibleSelectUser: false, // 选择添加人弹窗显隐
+      queryUser: [], // 搜索框选择的添加人
     }
   },
   watch: {
@@ -78,8 +81,9 @@ export default {
     // 重置查询参数
     resetQuery() {
       this.dateRange = []
+      this.queryUser = []
       this.$refs['queryForm'].resetFields()
-      // this.getList(1)
+      this.getList(1)
     },
     exportData() {
       this.$confirm('确认导出吗？', '提示', {
@@ -149,9 +153,14 @@ export default {
 <template>
   <div>
     <div class="top-search">
-      <el-form inline label-position="right" :model="query" label-width="100px" ref="queryForm">
+      <el-form inline label-position="right" :model="query" label-width="" ref="queryForm">
         <el-form-item label="发放员工" prop="userId">
-          <el-input v-model="query.userId" placeholder="请输入"></el-input>
+          <div class="tag-input" @click="dialogVisibleSelectUser = true">
+            <span class="tag-place" v-if="!queryUser.length">请选择</span>
+            <template v-else>
+              <el-tag v-for="(unit, unique) in queryUser" :key="unique">{{ unit.name }}</el-tag>
+            </template>
+          </div>
         </el-form-item>
         <el-form-item label="领取客户群" prop="groupName">
           <el-input v-model="query.groupName" placeholder="请输入"></el-input>
@@ -184,6 +193,12 @@ export default {
             type="primary"
             @click="getList(1)"
             >查询</el-button
+          >
+          <el-button
+            v-hasPermi="['customerManage:customer:query']"
+            type="success"
+            @click="resetQuery()"
+            >重置</el-button
           >
         </el-form-item>
       </el-form>
@@ -249,6 +264,19 @@ export default {
       :limit.sync="query.pageSize"
       @pagination="getList()"
     />
+
+    <!-- 选择使用员工弹窗 -->
+    <SelectUser
+      :visible.sync="dialogVisibleSelectUser"
+      title="选择添加人"
+      :defaultValues="queryUser"
+      @success="
+        (list) => {
+          queryUser = list
+          query.userId = list.map((i) => i.userId).join()
+        }
+      "
+    ></SelectUser>
 
     <el-dialog title="领取详情" :visible.sync="dialogVisible" width="width">
       <div>
