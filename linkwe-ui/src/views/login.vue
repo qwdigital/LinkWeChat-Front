@@ -167,7 +167,7 @@ export default {
     this.getCookie()
     process.env.NODE_ENV !== 'development' &&
       this.$alert(
-        'LinkWeChat V2.0 正式发布公测，遇到使用上的问题欢迎提交 Issue，我们将光速修复。',
+        'LinkWeChat V2.5 正式发布公测，遇到使用上的问题欢迎提交 Issue，我们将光速修复。',
         '提示',
         {
           confirmButtonText: '确定',
