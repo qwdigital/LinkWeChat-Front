@@ -278,7 +278,7 @@ export default {
         </van-field>
 
         <!-- 个人红包相关字段 -->
-        <template v-if="redPacketType.includes('personal') && sceneType == 2">
+        <template v-if="redPacketType.includes('personal')">
           <van-field
             v-model="form.redEnvelopeAmount"
             type="text"
