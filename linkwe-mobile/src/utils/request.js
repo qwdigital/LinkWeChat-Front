@@ -5,9 +5,9 @@ function createAxios(baseURL) {
   const instance = axios.create({
     baseURL,
     headers: {
-      Auth_token: ''
+      Auth_token: '',
     },
-    timeout: 10000
+    timeout: 10000,
   })
   // 请求拦截
   instance.interceptors.request.use(
@@ -27,11 +27,9 @@ function createAxios(baseURL) {
       // code 0:成功，-1/其它:错误
       if (status === 200 && data.code === 200) {
         return data
-      } else if (data.code === 201) {
-        // Message.error({
-        //   content: `产品已存在`,
-        //   duration: 3
-        // })
+      } else if (data.code == 501) {
+        // 红包相关错误
+        return data
       } else {
         addErrorLog(res)
       }
@@ -59,7 +57,7 @@ function createAxios(baseURL) {
       data,
       statusText,
       status,
-      request: { responseText, responseURL }
+      request: { responseText, responseURL },
     } = errorInfo
     // let info = {
     //   type: 'ajax',
@@ -79,4 +77,6 @@ function createAxios(baseURL) {
 
 // const httpRequest = createAxios()
 
-export default createAxios(process.env.NODE_ENV === 'development' ? '/api' : process.env.VUE_APP_BASE_API)
+export default createAxios(
+  process.env.NODE_ENV === 'development' ? '/api' : process.env.VUE_APP_BASE_API
+)
