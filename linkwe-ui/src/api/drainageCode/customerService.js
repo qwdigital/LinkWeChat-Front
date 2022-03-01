@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.kf
+const service = process.env.VUE_APP_KF_API
 
 // 同步客服
 export function setAsync () {
@@ -18,6 +18,7 @@ export function getMemeberInCustomer (data) {
 
 // 客服列表
 export function getList (params) {
+  console.log(service)
   return request({
     url: service + '/wecom/kf/list',
     params
