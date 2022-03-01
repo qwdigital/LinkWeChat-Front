@@ -5,13 +5,13 @@
         <part1 @submit="savePart1" :data="form"></part1>
       </el-tab-pane>
       <el-tab-pane label="应用配置" name="2">
-        <part2></part2>
+        <part2 @submit="savePart1" :data="form"></part2>
       </el-tab-pane>
       <el-tab-pane label="客服配置" name="3">
-        <part3></part3>
+        <part3 @submit="savePart1" :data="form"></part3>
       </el-tab-pane>
       <el-tab-pane label="支付配置" name="4">
-        <part4></part4>
+        <part4 @submit="savePart1" :data="form"></part4>
       </el-tab-pane>
     </el-tabs>
   </div>

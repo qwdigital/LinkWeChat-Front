@@ -24,19 +24,14 @@
         </div>
         <el-form-item label="通讯录Secret:" prop="corpSecret">
           <div>
-            <el-input style="width: 40%;" type="password" v-model="form.corpSecret" placeholder="请输入通讯录Secret"></el-input>
-            <!-- <el-button style="margin-left:20px;" plain>取消</el-button>
-            <el-button type="primary" plain>保存</el-button> -->
-            <!-- <el-button type="primary" plain v-if="form.corpSecret">修改</el-button> -->
+            <el-input :disabled="!corpSecretEditState" style="width: 40%;" :type="corpSecretEditState ? 'text':'password'" v-model="form.corpSecret" placeholder="请输入通讯录Secret"></el-input>
+            <el-button style="margin-left:20px;" plain v-if="corpSecretEditState" @click="cancelEditCorpSecret">取消</el-button>
+            <el-button type="primary" plain v-if="corpSecretEditState" @click="submitEditCorpSecret">保存</el-button>
+            <el-button type="primary" style="margin-left:20px;" plain v-if="!corpSecretEditState && form.corpSecret" @click="editCorpSecret">修改</el-button>
           </div>
           <div class="tips">用于同步企微通讯录，在企微后台->管理工具->通讯录同步中获取</div>
         </el-form-item>
-        <el-form-item label="Token:" required prop="">
-          <el-input style="width: 40%;" placeholder="请输入Token"></el-input>
-        </el-form-item>
-        <el-form-item label="EncodingAESKey:" required prop="">
-          <el-input style="width: 40%;" placeholder="请输入EncodingAESKey"></el-input>
-        </el-form-item>
+
       </div>
       <div class="g-card g-pad20">
         <div class="my-title">
@@ -44,18 +39,23 @@
         </div>
         <el-form-item label="客户联系Secret:" prop="contactSecret">
           <div>
-            <el-input style="width: 40%;" v-model="form.contactSecret" placeholder="请输入客户联系Secret"></el-input>
-            <el-button style="margin-left:20px;" plain>取消</el-button>
-            <el-button type="primary" plain>保存</el-button>
-            <!-- <el-button type="primary" plain v-if="form.corpSecret">修改</el-button> -->
+            <el-input style="width: 40%;" :type="contactSecretEditState ? 'text':'password'" v-model="form.contactSecret" placeholder="请输入客户联系Secret"></el-input>
+            <el-button style="margin-left:20px;" plain v-if="contactSecretEditState" @click="cancelEditContactSecret">取消</el-button>
+            <el-button type="primary" plain v-if="contactSecretEditState" @click="submitEditContactSecret">保存</el-button>
+            <el-button type="primary" style="margin-left:20px;" plain v-if="!contactSecretEditState && form.contactSecret" @click="editContactSecret">修改</el-button>
           </div>
           <div class="tips">用于管理客户和联系客户，在企微后台->客户联系->客户 API中获取</div>
         </el-form-item>
-        <el-form-item label="Token:" prop="">
-          <el-input style="width: 40%;" v-model="form.companyName" placeholder="请输入Token"></el-input>
+      </div>
+      <div class="g-card g-pad20">
+        <div class="my-title">
+          回调配置
+        </div>
+        <el-form-item label="Token:" prop="token">
+          <el-input style="width: 40%;" v-model="form.token" placeholder="请输入Token"></el-input>
         </el-form-item>
-        <el-form-item label="EncodingAESKey:" prop="">
-          <el-input style="width: 40%;" v-model="form.companyName" placeholder="请输入EncodingAESKey"></el-input>
+        <el-form-item label="EncodingAESKey:" prop="encodingAesKey">
+          <el-input style="width: 40%;" v-model="form.encodingAesKey" placeholder="请输入EncodingAESKey"></el-input>
         </el-form-item>
       </div>
       <el-form-item label="" class="ar">
@@ -70,16 +70,20 @@
     name: 'enterprise-wechat-part1',
     data () {
       return {
+        corpSecretCopy: '',
+        corpSecretEditState: false,
+        contactSecretCopey: '',
+        contactSecretEditState: false,
         form: {
         },
         rules: {
           corpId: [{ required: true, message: '必填项', trigger: 'blur' }],
           corpSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
-          agentId: [{ required: true, message: '必填项', trigger: 'blur' }],
-          agentSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
+          companyName: [{ required: true, message: '必填项', trigger: 'blur' }],
           contactSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
-          seasRedirectUrl: [{ required: true, message: '必填项', trigger: 'blur' }],
-          sopTagRedirectUrl: [{ required: true, message: '必填项', trigger: 'blur' }]
+          logoUrl: [{ required: true, message: '必填项', trigger: 'blur' }],
+          token: [{ required: true, message: '必填项', trigger: 'blur' }],
+          encodingAesKey: [{ required: true, message: '必填项', trigger: 'blur' }],
         }
       }
     },
@@ -93,13 +97,48 @@
       }
     },
     methods: {
+
+      editContactSecret () {
+        this.contactSecretEditState = true
+        this.contactSecretCopy = JSON.parse(JSON.stringify(this.form.contactSecret))
+        this.form.contactSecret = ''
+      },
+      cancelEditContactSecret () {
+        this.contactSecretEditState = false
+        this.form.contactSecret = JSON.parse(JSON.stringify(this.contactSecretCopy))
+      },
+      submitEditContactSecret () {
+        if (this.form.contactSecret) {
+          this.$emit('submit', this.form)
+          this.contactSecretEditState = false
+        }
+      },
+
+      editCorpSecret () {
+        this.corpSecretEditState = true
+        this.corpSecretCopy = JSON.parse(JSON.stringify(this.form.corpSecret))
+        this.form.corpSecret = ''
+      },
+      cancelEditCorpSecret () {
+        this.corpSecretEditState = false
+        this.form.corpSecret = JSON.parse(JSON.stringify(this.corpSecretCopy))
+      },
+      submitEditCorpSecret () {
+        if (this.form.corpSecret) {
+          this.$emit('submit', this.form)
+          this.corpSecretEditState = false
+        }
+      },
       submit () {
-        this.$emit('submit', this.form)
+        this.$refs['form'].validate(validate => {
+          if (validate) {
+            this.$emit('submit', this.form)
+          }
+        })
       },
       setData () {
         if (Object.keys(this.data).length) {
           this.form = this.data
-          // this.$forceUpdate();
         }
       }
     },
