@@ -33,6 +33,11 @@
     <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange" style="margin-top:20px;width: 100%">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="场景名称" align="center" prop="name" min-width="100"></el-table-column>
+      <el-table-column label="场景码" align="center" prop="qrCode" min-width="100">
+         <template slot-scope="{ row }">
+            <el-image :src="row.qrCode" fit="fit" :preview-src-list="[row.qrCode]" style="width: 70px; height: 70px"></el-image>
+          </template>
+      </el-table-column>
       <el-table-column label="场景分类" align="center" min-width="100" prop="type" show-overflow-tooltip>
         <template slot-scope="{ row }">
           {{setType(row.type)}}
