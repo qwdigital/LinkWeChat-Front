@@ -11,6 +11,7 @@ export default {
   name: '',
   components: {},
   data() {
+    let that = this
     return {
       loading: false,
       finished: false,
@@ -33,16 +34,42 @@ export default {
         redEnvelopeAmount: [
           {
             required: true,
+          },
+          {
             // formatter: (value) => +(+value).toFixed(2),
-            pattern: /(^[1-9]\d{0,2}(\.\d{1,2})?$|^200$)/,
+            pattern: /(^([1-9]\d{0,1}|1\d{2})(\.\d{1,2})?$|^200$)/,
             message: '输入错误',
           },
         ],
         redEnvelopeNum: [
           {
             required: true,
-            // formatter: (value) => Math.round(value.replace(/\D/g, '')),
-            pattern: /(^[1-9]{1}\d*$)/,
+          },
+          // {
+          //   // formatter: (value) => Math.round(value.replace(/\D/g, '')),
+          //   pattern: /(^[1-9]{1}\d*$)/,
+          //   message: '输入错误',
+          // },
+          {
+            validator(val) {
+              if (that.form.redEnvelopesType == 1) {
+                if (!/(^([1-9]\d{0,1}|[1-5]\d{2})$|^600$)/.test(val)) {
+                  return false
+                }
+                if (that.form.redEnvelopeAmount) {
+                  let max = that.form.redEnvelopeAmount * 3
+                  let boolean = max >= val
+                  if (!boolean) {
+                    that.$notify({ type: 'danger', message: `当前红包金额最多可发${max}个红包` })
+                  }
+                  return boolean
+                } else {
+                  return true
+                }
+              } else {
+                return /(^([1-9]\d{0,1}|1\d{2})(\.\d{1,2})?$|^200$)/.test(val)
+              }
+            },
             message: '输入错误',
           },
         ],
@@ -132,11 +159,12 @@ export default {
           this.loadFail = true
         })
     },
-    showDialog(type, row = {}) {
+    showDialog(type, row = { redEnvelopeNum: 1, money: 1 }) {
       Object.assign(this.form, {
         redEnvelopeAmount: row.money,
         redenvelopesId: row.id,
         redEnvelopeName: row.name,
+        redEnvelopeNum: row.redEnvelopeNum,
       })
       this.redPacketType = type
       this.visible = true

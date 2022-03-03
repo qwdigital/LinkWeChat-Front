@@ -51,9 +51,11 @@ export default {
         forbidClick: true,
       })
       getWxCode()
-        .then((openId) => {
+        .then(({ openId, nickName, headImgUrl }) => {
           if (openId) {
             this.openId = openId
+            this.receiveName = nickName
+            this.avalar = headImgUrl
             this.getRedPacketInfo()
             this.getReceiveStatus()
           } else {
@@ -79,7 +81,7 @@ export default {
         openId: this.openId, // 客户公众号id
       }
       getReceiveStatus(form).then(({ data }) => {
-        data && this.getReceiveList(true)
+        data ? this.getReceiveList(true) : this.$toast.clear()
       })
     },
     receive() {
@@ -113,8 +115,10 @@ export default {
         orderNo: this.redPacket.orderId, // 订单id
         openId: this.openId, // 客户公众号id
         appId: window.CONFIG.appId, // 微信公众号id
+        receiveName: this.receiveName,
+        avalar: this.avalar,
         chatId: this.redPacket.chatId, // 客户群企微id
-        externalUserid: this.redPacket.externalUserid, // 客户企微id
+        // externalUserid: this.redPacket.externalUserid, // 客户企微id
       }
       getReceiveList(form).then(({ data }) => {
         data.currentAcceptMoney /= 100
@@ -134,7 +138,7 @@ export default {
           setTimeout(() => {
             this.opened = true
             Object.assign(this.redPacket, data)
-          }, 1500)
+          }, 1000)
         }
       })
     },

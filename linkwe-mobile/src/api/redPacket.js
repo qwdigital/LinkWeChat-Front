@@ -143,8 +143,11 @@ export function getReceiveStatus(params) {
  * @param {*}
 {
   "orderNo": "1494182309006471169", // 订单id
+  "openId": "76", // 客户公众号id
+  "appld": 17, // 微信公众号id
+  receiveName: 领取人姓名
+  avalar: 领取人头像
   "chatId": 17, // 群id
-  "externalUserid": "76", // 客户id
 }
  * @returns
  */

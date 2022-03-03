@@ -65,7 +65,7 @@ export async function getWxCode() {
     } catch (error) {
       alert(error)
     }
-    return userinfo.openId
+    return userinfo
   }
 
   //缓存中没有用户信息，进入授权流程
@@ -87,21 +87,15 @@ export async function getWxCode() {
     // window.location.href =
     //     `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`;
   }
-  let data = ''
   try {
-    data = await getUserOpenid(code)
+    let { data } = await getUserOpenid(code)
+    let { data: dataUser } = await getWechatUserInfo(data.openId)
+    localStorage.setItem('userinfo', JSON.stringify(dataUser))
+    return dataUser
   } catch (error) {
     alert(error)
   }
-  data = data.data
-  if (data && data.openId) {
-    localStorage.setItem('userinfo', JSON.stringify(data))
-    return data.openId
-    // return getWechatUserInfo(data.openId)
-  }
-  //   .then(({ data }) => {
-  //     let unionId = data.unionId
-  //   })
+  return {}
 }
 
 // 日期时间格式化
