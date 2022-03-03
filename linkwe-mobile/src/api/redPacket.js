@@ -123,6 +123,22 @@ export function receiveRedPacket(params) {
 }
 
 /**
+ * 校验客户是否已领取过红包
+ * @param {*}
+{
+  "orderNo": "1494182309006471169", // 订单id
+  "openId": "76", // 客户公众号id
+}
+ * @returns 返回true的时候客户已领取过红包，false客户未领取红包
+ */
+export function getReceiveStatus(params) {
+  return request({
+    url: service + '/checkRecevieRedEnvelopes',
+    params,
+  })
+}
+
+/**
  * 红包领取列表
  * @param {*}
 {

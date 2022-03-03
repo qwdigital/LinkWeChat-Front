@@ -1,5 +1,10 @@
 <script>
-import { receiveRedPacket, getReceiveList, getRedPacketInfo } from '@/api/redPacket.js'
+import {
+  receiveRedPacket,
+  getReceiveList,
+  getRedPacketInfo,
+  getReceiveStatus,
+} from '@/api/redPacket.js'
 import { param2Obj, getWxCode } from '@/utils/index.js'
 export default {
   name: '',
@@ -50,6 +55,7 @@ export default {
           if (openId) {
             this.openId = openId
             this.getRedPacketInfo()
+            this.getReceiveStatus()
           } else {
             this.$toast.clear()
           }
@@ -65,8 +71,15 @@ export default {
         Object.assign(query, hash)
         this.redPacket = query
         Object.assign(this.redPacket, data)
-
-        this.$toast.clear()
+      })
+    },
+    getReceiveStatus() {
+      let form = {
+        orderNo: this.redPacket.orderId, // 订单id
+        openId: this.openId, // 客户公众号id
+      }
+      getReceiveStatus(form).then(({ data }) => {
+        data && this.getReceiveList(true)
       })
     },
     receive() {
@@ -85,33 +98,46 @@ export default {
         chatId: this.redPacket.chatId, // 客户企微id
         externalUserid: this.redPacket.externalUserid, // 客户企微id
       }
-      receiveRedPacket(form)
-        .then((data) => {
-          if (data.code === 200) {
-            return getReceiveList(form)
-          } else {
-            this.errorMsg = data.msg
-            this.$toast.clear()
-            return Promise.reject()
-          }
-        })
-        .then(({ data }) => {
-          data.currentAcceptMoney /= 100
-          data.totalMoney /= 100
-          data.accpectMoney /= 100
-          data.accpestCustomerList.forEach((element) => {
-            element.accpectMoney /= 100
-          })
-          this.$refs.audio.play()
+      receiveRedPacket(form).then((data) => {
+        if (data.code === 200) {
+          return this.getReceiveList()
+        } else {
+          this.errorMsg = data.msg
           this.$toast.clear()
+          // return Promise.reject()
+        }
+      })
+    },
+    getReceiveList(isOpened) {
+      let form = {
+        orderNo: this.redPacket.orderId, // 订单id
+        openId: this.openId, // 客户公众号id
+        appId: window.CONFIG.appId, // 微信公众号id
+        chatId: this.redPacket.chatId, // 客户群企微id
+        externalUserid: this.redPacket.externalUserid, // 客户企微id
+      }
+      getReceiveList(form).then(({ data }) => {
+        data.currentAcceptMoney /= 100
+        data.totalMoney /= 100
+        data.accpectMoney /= 100
+        data.accpestCustomerList.forEach((element) => {
+          element.accpectMoney /= 100
+        })
+        this.$toast.clear()
+
+        if (isOpened) {
+          this.opened = true
+          Object.assign(this.redPacket, data)
+        } else {
+          this.$refs.audio.play()
           this.animate = true
           setTimeout(() => {
             this.opened = true
             Object.assign(this.redPacket, data)
           }, 1500)
-        })
+        }
+      })
     },
-
     dateFormat(value) {
       return value.substring(0, 19).replace(/[T]/g, ' ')
     },
