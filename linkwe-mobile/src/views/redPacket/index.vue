@@ -299,8 +299,8 @@ export default {
         <van-field v-if="sceneType == 2" name="radio" label="红包类型" required>
           <template #input>
             <van-radio-group v-model="form.redEnvelopesType" direction="horizontal">
-              <van-radio :name="1">拼手气红包</van-radio>
-              <van-radio :name="2">普通红包</van-radio>
+              <van-radio :name="1">普通红包</van-radio>
+              <van-radio :name="2">拼手气红包</van-radio>
             </van-radio-group>
           </template>
         </van-field>

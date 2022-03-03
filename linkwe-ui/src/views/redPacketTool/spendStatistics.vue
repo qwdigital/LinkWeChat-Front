@@ -53,7 +53,7 @@
         :total="total"
         :page.sync="query.pageNum"
         :limit.sync="query.pageSize"
-        @pagination="getList()"
+        @pagination="getRecordList()"
       />
     </div>
   </div>
@@ -103,7 +103,7 @@ export default {
       loadingChart: false,
       query: {
         pageNum: 1,
-        pageSize: 0,
+        pageSize: 10,
       },
       list: [],
       total: 0,
@@ -171,7 +171,7 @@ export default {
       getChartList(this.query)
         .then(({ data }) => {
           let seriesData = [] // this.mockData[this.timeRange]
-          seriesData[0] = data.map((e) => e.totalMoney)
+          seriesData[0] = data.map((e) => e.totalMoney / 100)
           seriesData[1] = data.map((e) => e.totalNum)
           let xAxisData = data.map((e) => e.createTime.slice(0, 10))
           this.setEchart(xAxisData, seriesData)
@@ -183,7 +183,8 @@ export default {
           this.loadingChart = false
         })
     },
-    getRecordList() {
+    getRecordList(page) {
+      page && (this.query.pageNum = page)
       this.loading = true
       getRecordList(this.query)
         .then(({ rows, total }) => {

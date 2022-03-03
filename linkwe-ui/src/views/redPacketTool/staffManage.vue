@@ -23,7 +23,7 @@
         "
         >新建员工限额
       </el-button>
-      <el-button
+      <!-- <el-button
         type="primary"
         plain
         :disabled="!selectedIds.length"
@@ -32,7 +32,7 @@
           edit()
         "
         >批量编辑</el-button
-      >
+      > -->
     </div>
 
     <div class="g-card g-pad20">
@@ -113,7 +113,9 @@
             v-model="addMemberForm.singleCustomerReceiveNum"
             placeholder="请输入次数"
           ></el-input>
-          <div class="sub-des">输入 1-999999 的正整数</div>
+          <div class="sub-des">
+            输入 {{ addMemberForm.singleCustomerReceiveNumMin }}-999999 的正整数
+          </div>
         </el-form-item>
         <el-form-item label="单日员工发红包总额(元)" prop="singleCustomerReceiveMoney">
           <el-input-number
@@ -159,16 +161,18 @@ import { getList, addOrUpdate, batchUpdate, remove } from '@/api/redPacketTool/s
 let defaultForm = {
   userId: '',
   users: [],
-  singleCustomerReceiveNum: '',
-  singleCustomerReceiveMoney: '',
+  singleCustomerReceiveNum: 1,
+  singleCustomerReceiveMoney: 1,
 }
 export default {
   name: 'member',
   data() {
+    let that = this
     function validateDaySendNum(rule, value, callback) {
+      let min = that.addMemberForm.singleCustomerReceiveNumMin
       value = Number(value)
-      if (Number.isNaN(value) || value < 1 || value > 999999 || !Number.isInteger(value)) {
-        callback('请输入 1-999999 的正整数')
+      if (Number.isNaN(value) || value < min || value > 999999 || !Number.isInteger(value)) {
+        callback(`请输入 ${min}-999999 的正整数`)
       } else {
         callback()
       }
@@ -244,6 +248,7 @@ export default {
     edit(row = defaultForm) {
       this.addMemberForm = Object.assign({}, row)
       row.userName && (this.addMemberForm.users = row.userName.split(','))
+      this.addMemberForm.singleCustomerReceiveNumMin = +this.addMemberForm.todayIssuedNum || 1
       this.addVisible = true
       this.$nextTick(() => this.$refs.addMemberForm.clearValidate())
     },

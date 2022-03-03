@@ -211,7 +211,7 @@ export default {
   name: 'CodeStaff',
   components: {
     SelectUser,
-    SelectTag
+    SelectTag,
   },
   data() {
     return {
@@ -226,7 +226,7 @@ export default {
         customerName: undefined,
         phone: undefined,
         addUserName: undefined,
-        addState: undefined
+        addState: undefined,
       },
       // 日期范围
       dateRange: [],
@@ -242,12 +242,12 @@ export default {
       // 表单参数
       form: {
         customerSeasTags: [],
-        weCustomerStaffs: []
+        weCustomerStaffs: [],
       },
       formRules: {},
       selectedUserList: [],
       actionUrl: '...',
-      selectedTagList: []
+      selectedTagList: [],
     }
   },
   created() {
@@ -255,7 +255,7 @@ export default {
     this.$store.dispatch(
       'app/setBusininessDesc',
       `
-			     <div>支持单人、批量单人及多人方式新建员工活码，客户可以通过扫描员工活码添加员工为好友，并支持自动给客户打标签和发送欢迎语。</div>
+			     <div>管理员在后台将客户导入后，系统根据分配规则自动分配给员工，员工可以一键复制客户手机号，快速添加客户，并支持添加效果统计。</div>
 			   `
     )
   },
@@ -295,7 +295,7 @@ export default {
                 return dd.tagName
               })
               .join(',')
-          : ''
+          : '',
       }
       upload(this.toFormData(obj))
         .then((res) => {
@@ -304,7 +304,7 @@ export default {
             this.form = {
               file: {},
               customerSeasTags: [],
-              weCustomerStaffs: []
+              weCustomerStaffs: [],
             }
             this.selectedUserList = []
             this.selectedTagList = []
@@ -353,14 +353,14 @@ export default {
     submitSelectTagFn(data) {
       this.form.customerSeasTags = data.map((d) => ({
         tagId: d.tagId,
-        tagName: d.name
+        tagName: d.name,
       }))
     },
     selectedFn() {
       if (this.form.customerSeasTags) {
         this.selectedTagList = this.form.customerSeasTags.map((dd) => ({
           tagId: dd.tagId,
-          name: dd.tagName
+          name: dd.tagName,
         }))
       }
       this.dialogVisibleSelectTag = true
@@ -371,7 +371,7 @@ export default {
       arr = this.form.weCustomerStaffs.map((dd) => {
         return {
           userId: dd.staffId,
-          name: dd.staffName
+          name: dd.staffName,
         }
       })
       this.selectedUserList = arr
@@ -381,7 +381,7 @@ export default {
       const selectedUserList = users.map((d) => {
         return {
           staffId: d.id || d.userId,
-          staffName: d.name
+          staffName: d.name,
         }
       })
       this.form.weCustomerStaffs = selectedUserList
@@ -426,8 +426,8 @@ export default {
       this.$router.push({
         path: path,
         query: {
-          id
-        }
+          id,
+        },
       })
     },
     // 多选框选中数据
@@ -439,7 +439,7 @@ export default {
       this.$confirm('是否确认删除?', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }).then(
         () => {
           remove(id).then((res) => {
@@ -459,7 +459,7 @@ export default {
         this.$confirm('是否确认删除?', '警告', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
         }).then(
           () => {
             remove(this.ids.join(',')).then((res) => {
@@ -481,7 +481,7 @@ export default {
       this.$confirm('是否确定发送员工跟进客户提醒？确定后提醒将发送至对应员工', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }).then(
         () => {
           alertFn(id).then((res) => {
@@ -500,7 +500,7 @@ export default {
         this.$confirm('是否确定发送员工跟进客户提醒？确定后提醒将发送至对应员工', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
         }).then(
           () => {
             alertFn(this.ids.join(',')).then((res) => {
@@ -518,8 +518,8 @@ export default {
       } else {
         this.msgInfo('请先勾选要操作项！')
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

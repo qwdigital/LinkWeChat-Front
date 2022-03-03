@@ -65,6 +65,7 @@ export function getListGroup(params) {
         pageNum: 1,
         pageSize: 10,
           chatId: '' // 群id
+          orderNo: '' //订单id
 }
  */
 export function getListGroupUser(params) {

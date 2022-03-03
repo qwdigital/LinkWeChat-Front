@@ -126,6 +126,7 @@ export default {
       this.cardData = cardData
       this.dialogVisible = true
       this.dialog.query.chatId = row.chatId
+      this.dialog.query.orderNo = row.orderNo
       this.getListGroupUser(1)
     },
     // 获取领取详情
