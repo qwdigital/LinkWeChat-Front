@@ -53,6 +53,11 @@ export default {
       getWxCode()
         .then(({ openId, nickName, headImgUrl }) => {
           if (openId) {
+            let query = param2Obj(window.location.search)
+            let hash = param2Obj(window.location.hash)
+            Object.assign(query, hash)
+            this.redPacket = query
+
             this.openId = openId
             this.receiveName = nickName
             this.avalar = headImgUrl
@@ -68,10 +73,10 @@ export default {
     },
     getRedPacketInfo() {
       getRedPacketInfo().then(({ data }) => {
-        let query = param2Obj(window.location.search)
-        let hash = param2Obj(window.location.hash)
-        Object.assign(query, hash)
-        this.redPacket = query
+        // let query = param2Obj(window.location.search)
+        // let hash = param2Obj(window.location.hash)
+        // Object.assign(query, hash)
+        // this.redPacket = query
         Object.assign(this.redPacket, data)
       })
     },
