@@ -12,7 +12,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         isActivate: '',
-        department: ''
+        department: '',
       },
       dateRange: [],
       treeData: [],
@@ -20,19 +20,19 @@ export default {
       status: {
         0: '启用',
         1: '禁用',
-        6: '离职'
+        6: '离职',
       },
       statusActivate: {
         1: '已激活',
         2: '已禁用',
         4: '未激活',
         5: '退出企业',
-        6: '删除'
+        6: '删除',
       },
       total: 0,
       defaultProps: {
         label: 'name',
-        children: 'children'
+        children: 'children',
       },
       form: {},
       dialogVisible: false,
@@ -44,7 +44,7 @@ export default {
       dialogVisibleAvatar: false,
       queryImg: {
         pageNum: 1,
-        pageSize: 20
+        pageSize: 20,
       },
       totalImg: 0,
       // 表单校验
@@ -59,18 +59,18 @@ export default {
           {
             type: 'email',
             message: "'请输入正确的邮箱地址",
-            trigger: ['blur', 'change']
-          }
+            trigger: ['blur', 'change'],
+          },
         ],
         mobile: [
           { required: true, message: '必填项', trigger: 'blur' },
           {
             pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
             message: '请输入正确的手机号码',
-            trigger: 'blur'
-          }
-        ]
-      })
+            trigger: 'blur',
+          },
+        ],
+      }),
     }
   },
   watch: {},
@@ -140,7 +140,7 @@ export default {
       // 0: 启用，1：禁用
       let params = {
         userId: data.userId,
-        enable: data.enable == 1 ? 0 : 1
+        enable: data.enable == 1 ? 0 : 1,
       }
       api.startOrStop(params).then(() => {
         this.msgSuccess('操作成功')
@@ -151,7 +151,7 @@ export default {
     remove(id) {
       // const operIds = id || this.ids + "";
       this.$confirm('是否确认删除吗?', '警告', {
-        type: 'warning'
+        type: 'warning',
       })
         .then(function () {
           return api.remove(id)
@@ -185,7 +185,7 @@ export default {
     },
     departRemove(id) {
       this.$confirm('是否确认删除吗?', '警告', {
-        type: 'warning'
+        type: 'warning',
       })
         .then(function () {
           return api.removeDepart(id)
@@ -213,8 +213,8 @@ export default {
     submitSelectMaterial(image) {
       this.form.headImageUrl = image.materialUrl
       // this.form.imageMessage._materialName = image.materialName
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -331,31 +331,31 @@ export default {
             width="180"
             class-name="small-padding fixed-width"
           >
-            <template slot-scope="scope">
+            <template slot-scope="{ row }">
               <el-button
                 v-hasPermi="['contacts:organization:view']"
                 type="text"
-                @click="edit(scope.row, 0)"
+                @click="edit(row, 0)"
                 >查看</el-button
               >
               <el-button
+                v-if="row.userId !== 1 && row.enable < 2 && row.isActivate != 5"
                 v-hasPermi="['contacts:organization:setStatus']"
-                v-if="scope.row.userId !== 1 && scope.row.enable < 2"
                 type="text"
-                @click="startOrStop(scope.row)"
-                >{{ status[scope.row.enable] }}</el-button
+                @click="startOrStop(row)"
+                >{{ status[row.enable] }}</el-button
               >
               <el-button
-                v-if="scope.row.enable < 2"
+                v-if="row.enable < 2 && row.isActivate != 5"
                 v-hasPermi="['contacts:organization:edit']"
                 type="text"
-                @click="edit(scope.row, 1)"
+                @click="edit(row, 1)"
                 >编辑</el-button
               >
               <el-button
-                v-if="scope.row.enable < 2"
+                v-if="row.enable < 2 && row.isActivate != 5"
                 v-hasPermi="['contacts:organization:remove']"
-                @click="remove(scope.row.userId)"
+                @click="remove(row.userId)"
                 type="text"
                 >删除</el-button
               >
@@ -440,7 +440,7 @@ export default {
                   checkStrictly: true,
                   /** multiple: true,*/ emitPath: false,
                   value: 'id',
-                  label: 'name'
+                  label: 'name',
                 }"
               ></el-cascader>
             </el-form-item>
