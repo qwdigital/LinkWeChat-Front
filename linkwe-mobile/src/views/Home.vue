@@ -30,7 +30,7 @@ export default {
   },
   created() {
     if (location.href.includes('redPacketReceive') && !navigator.userAgent.includes('Mobile')) {
-      this.tips = '请在手机端微信打开'
+      this.tips = '该业务仅支持手机微信用户，请在手机微信端打开'
     } else {
     }
   },

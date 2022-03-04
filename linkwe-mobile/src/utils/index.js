@@ -83,7 +83,7 @@ export async function getWxCode() {
     )}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
 
     window.location.href = url
-    return
+    return {}
     // window.location.href =
     //     `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`;
   }

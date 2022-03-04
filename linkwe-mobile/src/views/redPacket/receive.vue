@@ -60,7 +60,7 @@ export default {
 
             this.openId = openId
             this.receiveName = nickName
-            this.avalar = headImgUrl
+            this.avatar = headImgUrl
             this.getRedPacketInfo()
             this.getReceiveStatus()
           } else {
@@ -104,6 +104,8 @@ export default {
         appId: window.CONFIG.appId, // 微信公众号id
         chatId: this.redPacket.chatId, // 客户企微id
         externalUserid: this.redPacket.externalUserid, // 客户企微id
+        receiveName: this.receiveName,
+        avatar: this.avatar,
       }
       receiveRedPacket(form).then((data) => {
         if (data.code === 200) {
@@ -120,8 +122,6 @@ export default {
         orderNo: this.redPacket.orderId, // 订单id
         openId: this.openId, // 客户公众号id
         appId: window.CONFIG.appId, // 微信公众号id
-        receiveName: this.receiveName,
-        avalar: this.avalar,
         chatId: this.redPacket.chatId, // 客户群企微id
         // externalUserid: this.redPacket.externalUserid, // 客户企微id
       }
