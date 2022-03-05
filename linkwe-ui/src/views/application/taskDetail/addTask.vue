@@ -43,7 +43,7 @@ export default {
         fissionTargetId: [{ required: true, message: '请选择员工', trigger: 'blur' }],
         fissNum: [
           { required: true, message: '请输入数量', trigger: 'blur' },
-          { pattern: /^[1-9]+$/, message: '请输入数字', trigger: 'blur' }
+          { pattern: /^[1-9]\d*$/, message: '请输入数字', trigger: 'blur' }
         ],
         dateRange: [{ required: true, message: '时间不可为空', trigger: 'blur' }]
       },
