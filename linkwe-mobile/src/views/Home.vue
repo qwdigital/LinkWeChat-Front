@@ -10,7 +10,7 @@
         >{{ item.meta.title }}</router-link
       >
     </template>
-    <div v-else class="cc blod">
+    <div v-else class="cc tips blod">
       {{ tips }}
     </div>
   </div>
@@ -50,5 +50,10 @@ export default {
   display: block;
   text-align: center;
   line-height: 40px;
+}
+.tips {
+  width: 90%;
+  text-align: center;
+  line-height: 1.5;
 }
 </style>
