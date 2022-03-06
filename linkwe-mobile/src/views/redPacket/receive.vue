@@ -77,7 +77,9 @@ export default {
         // let hash = param2Obj(window.location.hash)
         // Object.assign(query, hash)
         // this.redPacket = query
-        Object.assign(this.redPacket, data)
+        this.redPacket = Object.assign({}, this.redPacket, data)
+        // this.$set(this.redPacket, 'logo', data.logo)
+        // this.$set(this.redPacket, 'corpName', data.corpName)
       })
     },
     getReceiveStatus() {
