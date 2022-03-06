@@ -172,7 +172,7 @@ export default {
       let min = that.addMemberForm.singleCustomerReceiveNumMin
       value = Number(value)
       if (Number.isNaN(value) || value < min || value > 999999 || !Number.isInteger(value)) {
-        callback(`请输入 ${min}-999999 的正整数`)
+        callback(`请输入 ${min}-999999 的正整数，修改次数不得小于已发送次数`)
       } else {
         callback()
       }

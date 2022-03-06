@@ -188,6 +188,9 @@ export default {
       this.loading = true
       getRecordList(this.query)
         .then(({ rows, total }) => {
+          rows.forEach((element) => {
+            element.totalMoney /= 100
+          })
           this.list = rows
           this.total = +total
         })

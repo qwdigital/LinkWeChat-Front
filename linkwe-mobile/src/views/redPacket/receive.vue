@@ -140,9 +140,6 @@ export default {
         // externalUserid: this.redPacket.externalUserid, // 客户企微id
       }
       getReceiveList(form).then(({ data }) => {
-        if (data.currentAcceptMoney == 0) {
-          this.over = true
-        }
         data.currentAcceptMoney /= 100
         data.totalMoney /= 100
         data.accpectMoney /= 100

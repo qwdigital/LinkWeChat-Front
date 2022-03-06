@@ -70,7 +70,7 @@ export function getListGroup(params) {
  */
 export function getListGroupUser(params) {
   return request({
-    url: service + '/findRedEnveForGroupUser/' + params.chatId,
+    url: service + '/findRedEnveForGroupUser',
     params,
   })
 }
