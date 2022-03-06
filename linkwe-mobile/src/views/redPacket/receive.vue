@@ -36,9 +36,21 @@ export default {
       },
       errorMsg: '',
       animate: false,
+      over: false, // 红包是否抢光
     }
   },
-  computed: {},
+  computed: {
+    title() {
+      let redPacket = this.redPacket
+      let total = redPacket.totalMoney
+      let num = redPacket.redEnvelopeNum
+      return redPacket.currentAcceptMoney != 0
+        ? `己领取${(redPacket.accpestCustomerList || []).length}/${num}个红包，共${
+            redPacket.accpectMoney
+          }/${total}元`
+        : `${num}个红包共${total}元，已被抢光`
+    },
+  },
   watch: {},
   created() {
     this.init()
@@ -128,6 +140,9 @@ export default {
         // externalUserid: this.redPacket.externalUserid, // 客户企微id
       }
       getReceiveList(form).then(({ data }) => {
+        if (data.currentAcceptMoney == 0) {
+          this.over = true
+        }
         data.currentAcceptMoney /= 100
         data.totalMoney /= 100
         data.accpectMoney /= 100
@@ -179,26 +194,22 @@ export default {
       <div class="red-packet-received-info ac">
         <van-image width="60" height="60" radius="4" :src="redPacket.logo" />
         <div class="corp-name">
-          {{ redPacket.corpName }}
+          {{ redPacket.corpName }}发出的红包
           <!-- sceneType 1:客户 2:客群 -->
           <span v-if="redPacket.sceneType == 2" class="red-icon">{{
             { 1: '普', 2: '拼' }[redPacket.redEnvelopesType]
           }}</span>
         </div>
         <div class="red-packet-name">{{ redPacket.redEnvelopeName }}</div>
-        <div class="received-num-wrap">
-          <span class="red-packet-received-num">{{ redPacket.currentAcceptMoney }}</span
-          >元
-        </div>
-        <div class="red-packet-text">已存入零钱，可直接使用</div>
+        <template v-if="redPacket.currentAcceptMoney != 0">
+          <div class="received-num-wrap">
+            <span class="red-packet-received-num">{{ redPacket.currentAcceptMoney }}</span
+            >元
+          </div>
+          <div class="red-packet-text">已存入零钱，可直接使用</div>
+        </template>
       </div>
-      <van-cell-group
-        :title="
-          `己领取${(redPacket.accpestCustomerList || []).length}/${
-            redPacket.redEnvelopeNum
-          }个红包，共${redPacket.accpectMoney}/${redPacket.totalMoney}元`
-        "
-      >
+      <van-cell-group :title="title">
         <van-cell center v-for="(item, index) in redPacket.accpestCustomerList" :key="index">
           <template #title>
             <van-image width="60" height="60" :src="item.avatar" />
