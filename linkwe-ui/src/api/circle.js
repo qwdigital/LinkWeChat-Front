@@ -20,7 +20,7 @@ export function syncHMoments (data) {
 // 朋友圈 企业 详情
 export function getDetail (id) {
   return request({
-    url: service + 'wecom/moments/findMomentsDetail/' + id
+    url: service + '/wecom/moments/findMomentsDetail/' + id
   })
 }
 
