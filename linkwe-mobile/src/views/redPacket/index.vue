@@ -159,17 +159,17 @@ export default {
           this.loadFail = true
         })
     },
-    showDialog(type, row = { redEnvelopeNum: 1, money: 1 }) {
+    showDialog(type, row = {}) {
       Object.assign(this.form, {
-        redEnvelopeAmount: row.money,
+        redEnvelopeAmount: row.money || 1,
         redenvelopesId: row.id,
-        redEnvelopeName: row.name,
-        redEnvelopeNum: row.redEnvelopeNum,
+        redEnvelopeName: row.name || '恭喜发财，大吉大利',
+        redEnvelopeNum: row.redEnvelopeNum || 1,
       })
       this.redPacketType = type
       this.visible = true
       this.$nextTick(() => {
-        this.$refs.form.resetValidation()
+        // this.$refs.form.resetValidation()
       })
     },
     // transMoney(value) {
@@ -236,7 +236,7 @@ export default {
             imgUrl: baseUrl + 'static/redPacketThumb.png', //H5消息封面图片URL
           },
         }
-        // that.$dialog({ message: 'mes：' + JSON.stringify(mes) })
+        // that.$dialog({ message: 'mes：' + JSON.stringify(redPacketUrl) })
       } catch (err) {
         that.$dialog({ message: 'err:' + JSON.stringify(err.message) })
       }

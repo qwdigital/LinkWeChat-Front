@@ -43,7 +43,7 @@ export default {
     title() {
       let redPacket = this.redPacket
       let total = redPacket.totalMoney
-      let num = redPacket.redEnvelopeNum
+      let num = redPacket.redEnvelopeNum // 从发红包页面通过查询参数带过来的
       return redPacket.currentAcceptMoney != 0
         ? `己领取${(redPacket.accpestCustomerList || []).length}/${num}个红包，共${
             redPacket.accpectMoney

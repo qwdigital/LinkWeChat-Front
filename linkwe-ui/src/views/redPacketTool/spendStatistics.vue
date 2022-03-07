@@ -132,7 +132,7 @@ export default {
           this.cardData = [
             {
               title: '累计支出金额（元）',
-              value: data.totalMoney,
+              value: data.totalMoney / 100,
               noArrow: true,
             },
             {
@@ -142,7 +142,7 @@ export default {
             },
             {
               title: '今日支出金额（元）',
-              value: data.currentMoney,
+              value: data.currentMoney / 100,
               noArrow: true,
             },
             {
