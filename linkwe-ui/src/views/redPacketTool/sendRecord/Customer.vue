@@ -25,7 +25,6 @@ export default {
         1: '待领取',
         2: '已领取',
         3: '发放失败',
-        4: '退款中',
         5: '已退款',
       }),
     }
@@ -181,7 +180,7 @@ export default {
             <div class="ml10">
               <p>{{ row.customerName }}</p>
               <i :class="['el-icon-s-custom', { 1: 'man', 2: 'woman' }[row.gender]]"></i>
-              <span :style="{ color: row.customerType === 1 ? '#4bde03' : '#f9a90b' }">
+              <span :style="{ color: row.customerType == 1 ? '#4bde03' : '#f9a90b' }">
                 {{ { 1: '@微信', 2: '@企业微信' }[row.customerType] }}
               </span>
             </div>

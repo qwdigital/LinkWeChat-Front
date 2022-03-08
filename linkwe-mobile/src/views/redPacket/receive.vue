@@ -122,7 +122,7 @@ export default {
         avatar: this.avatar,
       }
       receiveRedPacket(form).then((data) => {
-        if (data.code === 200) {
+        if (data.code == 200) {
           return this.getReceiveList()
         } else {
           this.errorMsg = data.msg

@@ -24,11 +24,11 @@ function createAxios(baseURL) {
     (res) => {
       // console.log('res: ' + res)
       const { data, status } = res
-      // code 0:成功，-1/其它:错误
+      // code 200:成功，-1/其它:错误
       if (status === 200 && data.code === 200) {
         return data
       } else if (data.code == 501) {
-        // 红包相关错误
+        // 红包领取相关错误
         return data
       } else {
         addErrorLog(res)
