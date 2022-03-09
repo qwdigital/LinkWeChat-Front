@@ -10,7 +10,7 @@
             <el-input style="width: 40%;" :disabled="!kfSecretEditState" :type="kfSecretEditState ? 'text':'password'" v-model="form.kfSecret" placeholder="请输入微信客服Secret"></el-input>
             <el-button style="margin-left:20px;" plain v-if="kfSecretEditState" @click="cancelEditKfSecret">取消</el-button>
             <el-button type="primary" plain v-if="kfSecretEditState" @click="submitEditKfSecret">保存</el-button>
-            <el-button type="primary" style="margin-left:20px;" plain v-if="!kfSecretEditState && form.kfSecret" @click="editKfSecret">修改</el-button>
+            <el-button type="primary" style="margin-left:20px;" plain v-if="!kfSecretEditState" @click="editKfSecret">修改</el-button>
           </div>
           <div class="tips">用于通过API管理客服，在企微后台->应用管理->微信客服中获取</div>
         </el-form-item>

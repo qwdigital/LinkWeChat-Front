@@ -14,7 +14,7 @@
             <el-input style="width: 40%;" :disabled="!agentSecretEditState" :type="agentSecretEditState ? 'text':'password'" v-model="form.agentSecret" placeholder="请输入消息应用Secret"></el-input>
             <el-button style="margin-left:20px;" plain v-if="agentSecretEditState" @click="cancelEditAgentSecret">取消</el-button>
             <el-button type="primary" plain v-if="agentSecretEditState" @click="submitEditAgentSecret">保存</el-button>
-            <el-button type="primary" style="margin-left:20px;" plain v-if="!agentSecretEditState && form.agentSecret" @click="editAgentSecret">修改</el-button>
+            <el-button type="primary" style="margin-left:20px;" plain v-if="!agentSecretEditState" @click="editAgentSecret">修改</el-button>
 
           </div>
           <div class="tips">用于接收应用消息，在企微后台->应用工具->自建应用中配置并获取</div>
@@ -29,7 +29,7 @@
             <el-input style="width: 40%;" :disabled="!chatSecretEditState" :type="chatSecretEditState ? 'text':'password'" v-model="form.chatSecret" placeholder="请输入会话存档Secret"></el-input>
             <el-button style="margin-left:20px;" plain v-if="chatSecretEditState" @click="cancelEditChatSecret">取消</el-button>
             <el-button type="primary" plain v-if="chatSecretEditState" @click="submitEditChatSecret">保存</el-button>
-            <el-button type="primary" style="margin-left:20px;" plain v-if="!chatSecretEditState && form.chatSecret" @click="editChatSecret">修改</el-button>
+            <el-button type="primary" style="margin-left:20px;" plain v-if="!chatSecretEditState" @click="editChatSecret">修改</el-button>
 
           </div>
           <div class="tips">用于同步企微会话，在企微后台->管理工具->会话存档中获取</div>

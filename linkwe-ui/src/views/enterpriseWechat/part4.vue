@@ -13,7 +13,7 @@
           <el-input :disabled="!merChantSecretEditState" style="width: 40%;" :type="merChantSecretEditState ? 'text':'password'" v-model="form.merChantSecret" placeholder="请输入商户支付Secret"></el-input>
           <el-button style="margin-left:20px;" plain v-if="merChantSecretEditState" @click="cancelEditMerChantSecret">取消</el-button>
           <el-button type="primary" plain v-if="merChantSecretEditState" @click="submitEditMerChantSecret">保存</el-button>
-          <el-button type="primary" style="margin-left:20px;" plain v-if="!merChantSecretEditState && form.merChantSecret" @click="editMerChantSecret">修改</el-button>
+          <el-button type="primary" style="margin-left:20px;" plain v-if="!merChantSecretEditState" @click="editMerChantSecret">修改</el-button>
           <div class="tips">用于通过API进行支付，在微信支付后台->账号中心->API安全中获取</div>
         </el-form-item>
         <el-form-item label="API证书文件" prop="certP12Url">

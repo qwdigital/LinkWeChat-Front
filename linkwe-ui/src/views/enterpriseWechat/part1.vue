@@ -61,6 +61,7 @@
         <el-form-item label="客户联系Secret:" prop="contactSecret">
           <div>
             <el-input
+              :disabled="!contactSecretEditState"
               style="width: 40%"
               :type="contactSecretEditState ? 'text' : 'password'"
               v-model="form.contactSecret"
@@ -84,7 +85,7 @@
               type="primary"
               style="margin-left: 20px"
               plain
-              v-if="!contactSecretEditState && form.contactSecret"
+              v-if="!contactSecretEditState"
               @click="editContactSecret"
               >修改</el-button
             >
