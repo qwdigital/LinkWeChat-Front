@@ -28,7 +28,6 @@
         <el-form-item label="通讯录Secret:" prop="corpSecret">
           <div>
             <el-input
-              :disabled="!corpSecretEditState && form.corpSecret"
               style="width: 40%"
               :type="corpSecretEditState ? 'text' : 'password'"
               v-model="form.corpSecret"
