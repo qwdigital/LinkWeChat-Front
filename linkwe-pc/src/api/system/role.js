@@ -2,75 +2,75 @@ import request from '@/utils/request'
 const service = window.CONFIG.services.system
 
 // 查询角色列表
-export function listRole (query) {
+export function listRole(query) {
   return request({
     url: service + '/system/role/list',
     method: 'get',
-    params: query
+    params: query,
   })
 }
 
 // 查询角色详细
-export function getRole (roleId) {
+export function getRole(roleId) {
   return request({
     url: service + '/system/role/' + roleId,
-    method: 'get'
+    method: 'get',
   })
 }
 
 // 新增角色
-export function addRole (data) {
+export function addRole(data) {
   return request({
     url: service + '/system/role',
     method: 'post',
-    data: data
+    data: data,
   })
 }
 
 // 修改角色
-export function updateRole (data) {
+export function updateRole(data) {
   return request({
     url: service + '/system/role',
     method: 'put',
-    data: data
+    data: data,
   })
 }
 
 // 角色数据权限
-export function dataScope (data) {
+export function dataScope(data) {
   return request({
     url: service + '/system/role/dataScope',
     method: 'put',
-    data: data
+    data: data,
   })
 }
 
 // 角色状态修改
-export function changeRoleStatus (roleId, status) {
+export function changeRoleStatus(roleId, status) {
   const data = {
     roleId,
-    status
+    status,
   }
   return request({
     url: service + '/system/role/changeStatus',
     method: 'put',
-    data: data
+    data: data,
   })
 }
 
 // 删除角色
-export function delRole (roleId) {
+export function delRole(roleId) {
   return request({
-    url: '/system/role/' + roleId,
-    method: 'delete'
+    url: service + '/system/role/' + roleId,
+    method: 'delete',
   })
 }
 
 // 导出角色
-export function exportRole (query) {
+export function exportRole(query) {
   return request({
-    url: '/system/role/export',
+    url: service + '/system/role/export',
     method: 'get',
-    params: query
+    params: query,
   })
 }
