@@ -249,11 +249,11 @@ export default {
 
 .login-form {
   border-radius: 6px;
-  background: #ffffff;
   width: 400px;
   padding: 25px 25px 5px 25px;
-  position: relative;
+  position: absolute;
   top: 120px;
+  z-index: 10;
   .el-input {
     height: 38px;
     input {
