@@ -57,7 +57,7 @@ export function getQueryValue(name) {
 }
 
 export async function getWxCode() {
-  let userinfo = localStorage.getItem('userinfo')
+  let userinfo = sessionStorage.getItem('userinfo')
   //取缓存中的用户信息
   if (userinfo) {
     try {
@@ -90,7 +90,7 @@ export async function getWxCode() {
   try {
     let { data } = await getUserOpenid(code)
     let { data: dataUser } = await getWechatUserInfo(data.openId)
-    localStorage.setItem('userinfo', JSON.stringify(dataUser))
+    sessionStorage.setItem('userinfo', JSON.stringify(dataUser))
     return dataUser
   } catch (error) {
     alert(error)
