@@ -34,7 +34,7 @@ export default {
       const noAuth = this.$router.app.$route.meta ? this.$router.app.$route.meta.noAuth : false
 
       if (!code && !noAuth) {
-        this.$toast('未获得授权')
+        this.$dialog({ message: '未获得授权' })
       }
 
       const noGetUser = this.$router.app.$route.meta ? this.$router.app.$route.meta.noAuth : false
@@ -42,8 +42,17 @@ export default {
         // this.$toast('未获得授权')
         return
       }
-      let { data } = await getUserInfo(code, this.agentId)
-      this.$store.state.userId = data.userId
+      let userId = sessionStorage.getItem('userId')
+      //取缓存中的用户信息
+      if (userId) {
+        userId = JSON.parse(userId)
+      } else {
+        let { data } = await getUserInfo(code, this.agentId)
+        // 存入sessionStorage，解决刷新重复code获取用户问题
+        sessionStorage.setItem('userId', JSON.stringify(data.userId))
+        userId = data.userId
+      }
+      this.$store.state.userId = userId
     })
 
     // this.$toast('userId:' + this.$store.state.userId)
