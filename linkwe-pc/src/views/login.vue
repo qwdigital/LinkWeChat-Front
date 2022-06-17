@@ -6,7 +6,7 @@
       <img class="login-bg3" src="@/assets/image/login_bg3.png" alt="" />
       <div class="login-form-wrap">
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-          <h3 class="title">LinkWeChat</h3>
+          <h3 class="title">{{ lwConfig.SYSTEM_NAME }}</h3>
           <el-form-item prop="username">
             <el-input
               v-model="loginForm.username"
@@ -80,7 +80,7 @@
 
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2018-2021 LinkWeChat All Rights Reserved.</span>
+      <span>{{ lwConfig.COPYRIGHT }}</span>
     </div>
 
     <!-- <el-dialog

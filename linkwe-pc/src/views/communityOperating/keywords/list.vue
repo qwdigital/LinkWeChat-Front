@@ -16,7 +16,7 @@ export default {
         createBy: '', // 创建人
         keywords: '', // 关键词
         beginTime: '', // 创建开始时间
-        endTime: '' // 创建结束时间
+        endTime: '', // 创建结束时间
       },
       queryCreateByName: '',
       dateRange: [], // 添加日期
@@ -27,7 +27,7 @@ export default {
       dialogHowToConfig: false,
       disabled: false,
       loading: false,
-      clipboard: null
+      clipboard: null,
     }
   },
   watch: {
@@ -39,7 +39,7 @@ export default {
       } else {
         ;[this.query.beginTime, this.query.endTime] = dateRange
       }
-    }
+    },
   },
   created() {
     this.getList(1)
@@ -57,7 +57,7 @@ export default {
       this.$notify({
         title: '成功',
         message: '链接已复制到剪切板，可粘贴。',
-        type: 'success'
+        type: 'success',
       })
     })
 
@@ -88,7 +88,7 @@ export default {
     goRoute(id) {
       this.$router.push({
         path: 'keywordsAev',
-        query: { id: id }
+        query: { id: id },
       })
     },
     // 重置查询参数
@@ -105,7 +105,7 @@ export default {
       this.$confirm('确认删除当前数据?删除操作无法撤销，请谨慎操作。', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       })
         .then(() => {
           const ids = this.multiSelect.map((t) => t.taskId)
@@ -124,7 +124,7 @@ export default {
       this.$confirm('确认删除当前数据?删除操作无法撤销，请谨慎操作。', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       })
         .then(() => {
           remove(id + '').then((res) => {
@@ -154,8 +154,8 @@ export default {
     // 处理多选
     handleSelectionChange(val) {
       this.multiSelect = val
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -311,13 +311,14 @@ export default {
       title="配置方法"
       :visible.sync="dialogHowToConfig"
       width="500px"
-      style="margin-bottom: 7vh;"
+      style="margin-bottom: 7vh"
       :close-on-click-modal="false"
     >
       <div class="help">
         <div class="step">
           <p>
-            1、登录企业微信官方后台，进入应用管理，点击 LinkWeChat，再点击【配置到聊天工具栏】。
+            1、登录企业微信官方后台，进入应用管理，点击
+            {{ lwConfig.SYSTEM_NAME }}，再点击【配置到聊天工具栏】。
           </p>
           <el-image :src="require('@/assets/example/keywordHelp1.png')"></el-image>
         </div>
@@ -326,16 +327,12 @@ export default {
           <el-image :src="require('@/assets/example/keywordHelp2.png')"></el-image>
         </div>
         <div class="step">
-          <p>
-            3、点击【配置页面】后，在弹窗中，输入页面名称及链接，并确定即可。进入配置页面。
-          </p>
+          <p>3、点击【配置页面】后，在弹窗中，输入页面名称及链接，并确定即可。进入配置页面。</p>
           <el-image :src="require('@/assets/example/keywordHelp3.png')"></el-image>
         </div>
       </div>
       <div slot="footer">
-        <el-button type="primary" @click="dialogHowToConfig = false">
-          我知道了
-        </el-button>
+        <el-button type="primary" @click="dialogHowToConfig = false"> 我知道了 </el-button>
       </div>
     </el-dialog>
   </div>

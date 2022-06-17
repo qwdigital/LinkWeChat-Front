@@ -1,6 +1,4 @@
 import { getToken } from '@/utils/auth'
-import env from '../env'
-window.lwConfig = Object.assign(env, window.lwConfig || {})
 window.CONFIG = {
   /**
    * 是否系统布局配置

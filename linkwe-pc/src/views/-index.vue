@@ -159,7 +159,7 @@
         <div class="inedx_r_top_t">
           <p class="p1">{{ $store.state.user.companyName }}，欢迎登陆本系统</p>
           <p class="p2">登录时间：{{ parseTime(new Date()) }}</p>
-          <p class="p1 p3 margint20">LinkWechat 企业微信SCRM</p>
+          <p class="p1 p3 margint20">{{ lwConfig.SYSTEM_NAME_ALL }}</p>
           <p class="p2 p4">
             版本信息：开源
             <span class="fr">可用期限：永久</span>
@@ -243,56 +243,56 @@ export default {
         {
           name: '企业客户',
           url: '/customerManage/customer',
-          img: require('@/assets/index/kehgl.png')
+          img: require('@/assets/index/kehgl.png'),
         },
         {
           name: '员工活码',
           url: '/drainageCode/staff',
-          img: require('@/assets/index/neircd.png')
+          img: require('@/assets/index/neircd.png'),
         },
         {
           name: '新增群发',
           url: '/customerMaintain/groupMessage/add',
-          img: require('@/assets/index/renwb.png')
+          img: require('@/assets/index/renwb.png'),
         },
         {
           name: '任务宝',
           url: '/application/taskGroup',
-          img: require('@/assets/index/xiaoxqf.png')
+          img: require('@/assets/index/xiaoxqf.png'),
         },
         {
           name: '新客拉群',
           url: '/communityOperating/newCustomer',
-          img: require('@/assets/index/yuanghm.png')
+          img: require('@/assets/index/yuanghm.png'),
         },
         {
           name: '素材中心',
           url: '/customerMaintain/material',
-          img: require('@/assets/index/zidgl.png')
+          img: require('@/assets/index/zidgl.png'),
         },
         {
           name: '关键词群',
           url: '/communityOperating/keywords',
-          img: require('@/assets/index/yuanghm.png')
+          img: require('@/assets/index/yuanghm.png'),
         },
         {
           name: '会话存档',
           url: '/riskControl/conversation/content',
-          img: require('@/assets/index/zidgl.png')
-        }
+          img: require('@/assets/index/zidgl.png'),
+        },
       ],
       table: {
         userCount: 0,
         customerCount: 0,
         groupCount: 0,
-        groupMemberCount: 0
+        groupMemberCount: 0,
       },
       erchatsTable: {},
       allData: {},
       time: '昨天',
       uptime: '',
       timeType: 'today',
-      durationCount: 2600
+      durationCount: 2600,
     }
   },
   mounted() {
@@ -308,7 +308,7 @@ export default {
           let json = {
             today: '昨天',
             week: '上周',
-            month: '上月'
+            month: '上月',
           }
           this.time = json[type]
           this.erchatsTable = this.allData[type]
@@ -341,7 +341,7 @@ export default {
         arr1: [],
         arr2: [],
         arr3: [],
-        xData: []
+        xData: [],
       }
       let series = []
       this.erchatsTable.dataList.forEach((a) => {
@@ -367,8 +367,8 @@ export default {
           //   }
           // },
           textStyle: {
-            color: '#fff' // 主标题文字的颜色。
-          }
+            color: '#fff', // 主标题文字的颜色。
+          },
         })
       }
       this.drawLine(data.xData, series)
@@ -386,16 +386,16 @@ export default {
       charts.setOption({
         color: ['#088AEE', '#E74E59', '#14BF48', '#FA7216'],
         tooltip: {
-          trigger: 'axis'
+          trigger: 'axis',
         },
         legend: {
-          data: ['新增客户数', '新增客群数', '群新增人数', '流失客户数']
+          data: ['新增客户数', '新增客群数', '群新增人数', '流失客户数'],
         },
         grid: {
           left: '3%',
           right: '4%',
           bottom: '3%',
-          containLabel: true
+          containLabel: true,
         },
         xAxis: {
           type: 'category',
@@ -403,19 +403,19 @@ export default {
           data: xData,
           axisLine: {
             lineStyle: {
-              color: '#ccc'
-            }
-          }
+              color: '#ccc',
+            },
+          },
         },
         yAxis: {
           type: 'value',
           axisLine: {
             lineStyle: {
-              color: '#ccc'
-            }
-          }
+              color: '#ccc',
+            },
+          },
         },
-        series
+        series,
       })
     },
     refresh() {
@@ -440,8 +440,8 @@ export default {
       } else {
         return '-'
       }
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="scss" scoped>
