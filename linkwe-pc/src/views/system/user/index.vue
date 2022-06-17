@@ -83,16 +83,10 @@
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button
-              type="cyan"
-              icon="el-icon-search"
-              size="mini"
-              @click="handleQuery"
+            <el-button type="cyan" icon="el-icon-search" size="mini" @click="handleQuery"
               >搜索</el-button
             >
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-              >重置</el-button
-            >
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
           </el-form-item>
         </el-form>
 
@@ -149,17 +143,10 @@
               >导出</el-button
             >
           </el-col>
-          <right-toolbar
-            :showSearch.sync="showSearch"
-            @queryTable="getList"
-          ></right-toolbar>
+          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
 
-        <el-table
-          v-loading="loading"
-          :data="userList"
-          @selection-change="handleSelectionChange"
-        >
+        <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column label="用户编号" align="center" prop="userId" />
           <el-table-column
@@ -180,12 +167,7 @@
             prop="dept.deptName"
             :show-overflow-tooltip="true"
           />
-          <el-table-column
-            label="手机号码"
-            align="center"
-            prop="phonenumber"
-            width="120"
-          />
+          <el-table-column label="手机号码" align="center" prop="phonenumber" width="120" />
           <el-table-column label="状态" align="center">
             <template slot-scope="scope">
               <el-switch
@@ -196,12 +178,7 @@
               ></el-switch>
             </template>
           </el-table-column>
-          <el-table-column
-            label="创建时间"
-            align="center"
-            prop="createTime"
-            width="160"
-          >
+          <el-table-column label="创建时间" align="center" prop="createTime" width="160">
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
@@ -276,44 +253,24 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="手机号码" prop="phonenumber">
-              <el-input
-                v-model="form.phonenumber"
-                placeholder="请输入手机号码"
-                maxlength="11"
-              />
+              <el-input v-model="form.phonenumber" placeholder="请输入手机号码" maxlength="11" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="邮箱" prop="email">
-              <el-input
-                v-model="form.email"
-                placeholder="请输入邮箱"
-                maxlength="50"
-              />
+              <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item
-              v-if="form.userId == undefined"
-              label="用户名称"
-              prop="userName"
-            >
+            <el-form-item v-if="form.userId == undefined" label="用户名称" prop="userName">
               <el-input v-model="form.userName" placeholder="请输入用户名称" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-              v-if="form.userId == undefined"
-              label="用户密码"
-              prop="password"
-            >
-              <el-input
-                v-model="form.password"
-                placeholder="请输入用户密码"
-                type="password"
-              />
+            <el-form-item v-if="form.userId == undefined" label="用户密码" prop="password">
+              <el-input v-model="form.password" placeholder="请输入用户密码" type="password" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -374,11 +331,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="备注">
-              <el-input
-                v-model="form.remark"
-                type="textarea"
-                placeholder="请输入内容"
-              ></el-input>
+              <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -390,12 +343,7 @@
     </el-dialog>
 
     <!-- 用户导入对话框 -->
-    <el-dialog
-      :title="upload.title"
-      :visible.sync="upload.open"
-      width="400px"
-      append-to-body
-    >
+    <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body>
       <el-upload
         ref="upload"
         :limit="1"
@@ -414,14 +362,10 @@
           <em>点击上传</em>
         </div>
         <div class="el-upload__tip" slot="tip">
-          <el-checkbox
-            v-model="upload.updateSupport"
-          />是否更新已经存在的用户数据
-          <el-link type="info" style="font-size:12px" @click="importTemplate"
-            >下载模板</el-link
-          >
+          <el-checkbox v-model="upload.updateSupport" />是否更新已经存在的用户数据
+          <el-link type="info" style="font-size: 12px" @click="importTemplate">下载模板</el-link>
         </div>
-        <div class="el-upload__tip" style="color:red" slot="tip">
+        <div class="el-upload__tip" style="color: red" slot="tip">
           提示：仅允许导入“xls”或“xlsx”格式文件！
         </div>
       </el-upload>
@@ -443,7 +387,7 @@ import {
   exportUser,
   resetUserPwd,
   changeUserStatus,
-  importTemplate
+  importTemplate,
 } from '@/api/system/user'
 import { getToken } from '@/utils/auth'
 import { treeselect } from '@/api/system/dept'
@@ -493,7 +437,7 @@ export default {
       form: {},
       defaultProps: {
         children: 'children',
-        label: 'label'
+        label: 'label',
       },
       // 用户导入参数
       upload: {
@@ -508,7 +452,7 @@ export default {
         // 设置上传的请求头部
         headers: { Authorization: 'Bearer ' + getToken() },
         // 上传的地址
-        url: process.env.VUE_APP_BASE_API + '/system/user/importData'
+        url: window.lwConfig.BASE_API + '/system/user/importData',
       },
       // 查询参数
       queryParams: {
@@ -517,46 +461,38 @@ export default {
         userName: undefined,
         phonenumber: undefined,
         status: undefined,
-        deptId: undefined
+        deptId: undefined,
       },
       // 表单校验
       rules: {
-        userName: [
-          { required: true, message: '用户名称不能为空', trigger: 'blur' }
-        ],
-        nickName: [
-          { required: true, message: '用户昵称不能为空', trigger: 'blur' }
-        ],
-        deptId: [
-          { required: true, message: '归属部门不能为空', trigger: 'blur' }
-        ],
-        password: [
-          { required: true, message: '用户密码不能为空', trigger: 'blur' }
-        ],
+        userName: [{ required: true, message: '用户名称不能为空', trigger: 'blur' }],
+        nickName: [{ required: true, message: '用户昵称不能为空', trigger: 'blur' }],
+        deptId: [{ required: true, message: '归属部门不能为空', trigger: 'blur' }],
+        password: [{ required: true, message: '用户密码不能为空', trigger: 'blur' }],
         email: [
           { required: true, message: '邮箱地址不能为空', trigger: 'blur' },
           {
             type: 'email',
             message: "'请输入正确的邮箱地址",
-            trigger: ['blur', 'change']
-          }
+            trigger: ['blur', 'change'],
+          },
         ],
         phonenumber: [
           { required: true, message: '手机号码不能为空', trigger: 'blur' },
           {
             pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
             message: '请输入正确的手机号码',
-            trigger: 'blur'
-          }
-        ]
-      }
+            trigger: 'blur',
+          },
+        ],
+      },
     }
   },
   watch: {
     // 根据名称筛选部门树
     deptName(val) {
       this.$refs.tree.filter(val)
-    }
+    },
   },
   created() {
     this.getList()
@@ -575,13 +511,11 @@ export default {
     /** 查询用户列表 */
     getList() {
       this.loading = true
-      listUser(this.addDateRange(this.queryParams, this.dateRange)).then(
-        (response) => {
-          this.userList = response.rows
-          this.total = response.total
-          this.loading = false
-        }
-      )
+      listUser(this.addDateRange(this.queryParams, this.dateRange)).then((response) => {
+        this.userList = response.rows
+        this.total = response.total
+        this.loading = false
+      })
     },
     /** 查询部门下拉树结构 */
     getTreeselect() {
@@ -602,22 +536,18 @@ export default {
     // 用户状态修改
     handleStatusChange(row) {
       let text = row.status === '0' ? '启用' : '停用'
-      this.$confirm(
-        '确认要"' + text + '""' + row.userName + '"用户吗?',
-        '警告',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      )
-        .then(function() {
+      this.$confirm('确认要"' + text + '""' + row.userName + '"用户吗?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(function () {
           return changeUserStatus(row.userId, row.status)
         })
         .then(() => {
           this.msgSuccess(text + '成功')
         })
-        .catch(function() {
+        .catch(function () {
           row.status = row.status === '0' ? '1' : '0'
         })
     },
@@ -640,7 +570,7 @@ export default {
         status: '0',
         remark: undefined,
         postIds: [],
-        roleIds: []
+        roleIds: [],
       }
       this.resetForm('form')
     },
@@ -693,7 +623,7 @@ export default {
     handleResetPwd(row) {
       this.$prompt('请输入"' + row.userName + '"的新密码', '提示', {
         confirmButtonText: '确定',
-        cancelButtonText: '取消'
+        cancelButtonText: '取消',
       })
         .then(({ value }) => {
           resetUserPwd(row.userId, value).then((response) => {
@@ -705,7 +635,7 @@ export default {
         .catch(() => {})
     },
     /** 提交按钮 */
-    submitForm: function() {
+    submitForm: function () {
       this.$refs['form'].validate((valid) => {
         if (valid) {
           if (this.form.userId != undefined) {
@@ -731,23 +661,19 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const userIds = row.userId || this.ids
-      this.$confirm(
-        '是否确认删除用户编号为"' + userIds + '"的数据项?',
-        '警告',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      )
-        .then(function() {
+      this.$confirm('是否确认删除用户编号为"' + userIds + '"的数据项?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(function () {
           return delUser(userIds)
         })
         .then(() => {
           this.getList()
           this.msgSuccess('删除成功')
         })
-        .catch(function() {})
+        .catch(function () {})
     },
     /** 导出按钮操作 */
     handleExport() {
@@ -755,15 +681,15 @@ export default {
       this.$confirm('是否确认导出所有用户数据项?', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       })
-        .then(function() {
+        .then(function () {
           return exportUser(queryParams)
         })
         .then((response) => {
           this.download(response.msg)
         })
-        .catch(function() {})
+        .catch(function () {})
     },
     /** 导入按钮操作 */
     handleImport() {
@@ -791,7 +717,7 @@ export default {
     // 提交上传文件
     submitFileForm() {
       this.$refs.upload.submit()
-    }
-  }
+    },
+  },
 }
 </script>

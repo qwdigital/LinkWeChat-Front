@@ -2,7 +2,7 @@
  * 通用js方法封装处理
  */
 
-const baseURL = process.env.VUE_APP_BASE_API
+const baseURL = window.lwConfig.BASE_API
 
 // 日期格式化
 export function parseTime(time, pattern) {
@@ -31,7 +31,7 @@ export function parseTime(time, pattern) {
     h: date.getHours(),
     i: date.getMinutes(),
     s: date.getSeconds(),
-    a: date.getDay()
+    a: date.getDay(),
   }
   const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
     let value = formatObj[key]

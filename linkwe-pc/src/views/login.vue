@@ -212,7 +212,7 @@ export default {
           this.$store
             .dispatch('Login', this.loginForm)
             .then(() => {
-              this.$router.push({ path: this.redirect || process.env.VUE_APP_BASE_URL })
+              this.$router.push({ path: this.redirect || window.lwConfig.BASE_URL })
             })
             .catch(() => {
               this.loading = false

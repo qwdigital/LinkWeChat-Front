@@ -100,7 +100,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$store.dispatch('LogOut').then(() => {
-          location.href = process.env.VUE_APP_BASE_URL
+          location.href = window.lwConfig.BASE_URL
         })
       })
     },

@@ -8,7 +8,7 @@ const user = {
     companyName: '',
     avatar: '',
     roles: [],
-    permissions: []
+    permissions: [],
   },
 
   mutations: {
@@ -26,7 +26,7 @@ const user = {
     },
     SET_PERMISSIONS: (state, permissions) => {
       state.permissions = permissions
-    }
+    },
   },
 
   actions: {
@@ -58,7 +58,7 @@ const user = {
             const avatar =
               user.avatar == ''
                 ? require('@/assets/image/profile.jpg')
-                : process.env.VUE_APP_BASE_API + user.avatar
+                : window.lwConfig.BASE_API + user.avatar
             if (res.roles && res.roles.length > 0) {
               // 验证返回的roles是否是一个非空数组
               commit('SET_ROLES', res.roles)
@@ -101,8 +101,8 @@ const user = {
         removeToken()
         resolve()
       })
-    }
-  }
+    },
+  },
 }
 
 export default user
