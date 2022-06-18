@@ -174,7 +174,7 @@ export default {
   },
   data() {
     return {
-      logo: this.lwConfig.LOGO_TEXT_LIGHT_URL || logo,
+      logo: this.lwConfig.LOGO_LIGHT_URL || logo,
       idGlobal: 100,
       formConf,
       inputComponents,
