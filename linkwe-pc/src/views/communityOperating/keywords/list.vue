@@ -318,7 +318,7 @@ export default {
         <div class="step">
           <p>
             1、登录企业微信官方后台，进入应用管理，点击
-            {{ lwConfig.SYSTEM_NAME }}，再点击【配置到聊天工具栏】。
+            {{ lwConfig.SYSTEM_NAME || 'LinkWeChat' }}，再点击【配置到聊天工具栏】。
           </p>
           <el-image :src="require('@/assets/example/keywordHelp1.png')"></el-image>
         </div>

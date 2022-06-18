@@ -14,7 +14,7 @@
         <div class="main-container">
           <div v-show="$route.name !== '首页'">
             <hamburger id="hamburger-container" class="hamburger-container" />
-            <span class="slogan">{{ lwConfig.COMPANY_NAME }} |</span>
+            <span class="slogan">{{ lwConfig.COMPANY_NAME || '仟微科技' }} |</span>
             <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
           </div>
 

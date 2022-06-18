@@ -159,7 +159,7 @@
         <div class="inedx_r_top_t">
           <p class="p1">{{ $store.state.user.companyName }}，欢迎登陆本系统</p>
           <p class="p2">登录时间：{{ parseTime(new Date()) }}</p>
-          <p class="p1 p3 margint20">{{ lwConfig.SYSTEM_NAME_ALL }}</p>
+          <p class="p1 p3 margint20">{{ lwConfig.SYSTEM_NAME_ALL || 'LinkWechat 企业微信SCRM' }}</p>
           <p class="p2 p4">
             版本信息：开源
             <span class="fr">可用期限：永久</span>

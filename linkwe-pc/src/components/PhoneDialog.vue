@@ -33,7 +33,7 @@ export default {
 <template>
   <div class="preview ac">
     <div class="top">小微</div>
-    <div class="small">{{ lwConfig.COMPANY_NAME }}-企微</div>
+    <div class="small">{{ lwConfig.COMPANY_NAME || '仟微科技' }}-企微</div>
     <div class="time">凌晨2:20</div>
     <ul class="msg-ul">
       <li class="flex msg-li">

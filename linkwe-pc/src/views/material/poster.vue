@@ -277,7 +277,7 @@ export default {
         case 'image':
         case 'qrcode':
           new fabric.Image.fromURL(
-            type == 'image' ? obj : 'http://scrm.xxzhtc.cn/lib/qrCode.png',
+            type == 'image' ? obj : 'http://scrm.xxzhtc.cn/public/qrCode.png',
             (img) => {
               img.set(options)
               // img.scale(this.canvas.width / img.width / 2)
