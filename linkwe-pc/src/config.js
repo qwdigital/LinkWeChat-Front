@@ -1,5 +1,5 @@
 import { getToken } from '@/utils/auth'
-import logLOGO_TEXT_LIGHT_URLo from '@/assets/logo/logo.png'
+import LOGO_TEXT_LIGHT_URL from '@/assets/logo/logo.png'
 import env from '../env'
 // 系统常量
 const common = {
