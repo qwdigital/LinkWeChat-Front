@@ -156,7 +156,6 @@ import { makeUpHtml, vueTemplate, vueScript, cssStyle } from '@/utils/generator/
 import { makeUpJs } from '@/utils/generator/js'
 import { makeUpCss } from '@/utils/generator/css'
 import drawingDefalut from '@/utils/generator/drawingDefalut'
-import logo from '@/assets/logo/logo.png'
 import CodeTypeDialog from './CodeTypeDialog'
 import DraggableItem from './DraggableItem'
 
@@ -174,7 +173,7 @@ export default {
   },
   data() {
     return {
-      logo: this.lwConfig.LOGO_LIGHT_URL || logo,
+      logo: this.lwConfig.LOGO_TEXT_LIGHT_URL,
       idGlobal: 100,
       formConf,
       inputComponents,

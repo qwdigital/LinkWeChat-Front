@@ -14,8 +14,6 @@
 </template>
 
 <script>
-import logoImg from '@/assets/logo/logo.png'
-
 export default {
   name: 'SidebarLogo',
   props: {
@@ -27,7 +25,7 @@ export default {
   data() {
     return {
       title: process.env.VUE_APP_TITLE,
-      logo: this.lwConfig.LOGO_TEXT_LIGHT_URL || logoImg,
+      logo: this.lwConfig.LOGO_TEXT_LIGHT_URL,
     }
   },
 }

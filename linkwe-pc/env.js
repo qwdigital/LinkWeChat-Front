@@ -1,3 +1,4 @@
+// 环境变量
 const envs = {
   development: {
     DOMAIN: 'http://demo.linkwechat.cn',
@@ -23,9 +24,4 @@ const envs = {
 }
 const env = envs[process.env.VUE_APP_ENV || process.env.NODE_ENV]
 
-try {
-  window.lwConfig = Object.assign(env, window.lwConfig || {})
-} catch (error) {
-  console.log(error)
-}
 module.exports = env

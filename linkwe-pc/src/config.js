@@ -1,4 +1,22 @@
 import { getToken } from '@/utils/auth'
+import logLOGO_TEXT_LIGHT_URLo from '@/assets/logo/logo.png'
+import env from '../env'
+// 系统常量
+const common = {
+  SYSTEM_NAME: 'LinkWeChat',
+  SYSTEM_NAME_ALL: 'LinkWechat 企业微信SCRM',
+  COMPANY_NAME: '仟微科技',
+  COMPANY_NAME_ALL: '仟微科技',
+  // LOGO_DARK_URL: 'http://demo.linkwechat.cn/public/LOGO_DARK_URL.png',
+  // LOGO_LIGHT_URL: 'http://demo.linkwechat.cn/public/LOGO_LIGHT_URL.png',
+  // LOGO_TEXT_DARK_URL: 'http://demo.linkwechat.cn/public/LOGO_TEXT_DARK_URL.png',
+  LOGO_TEXT_LIGHT_URL,
+  COPYRIGHT: 'Copyright © 2018-2022 LinkWeChat All Rights Reserved.',
+  IS_PUBLISH_DIALOG: true, // 是否显示发布弹窗
+}
+
+window.lwConfig = Object.assign(env, common, window.lwConfig || {})
+
 window.CONFIG = {
   /**
    * 是否系统布局配置
