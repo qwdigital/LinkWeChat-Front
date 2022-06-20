@@ -167,7 +167,7 @@ export default {
 
     this.getCode()
     this.getCookie()
-    process.env.NODE_ENV !== 'development' &&
+    window.lwConfig.IS_PUBLISH_DIALOG &&
       this.$alert(
         'LinkWeChat V2.5 已正式发布，遇到使用上的问题欢迎提交 Issue，我们将光速修复。',
         '提示',

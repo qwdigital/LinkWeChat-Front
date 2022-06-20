@@ -51,15 +51,15 @@ export default {
   props: {
     task: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       showCopy: false, // 展示复制按钮
       touchDelay: 750, // 触发显示按钮的长按时常
       copyEvent: null,
-      touch: false
+      touch: false,
     }
   },
   methods: {
@@ -68,29 +68,24 @@ export default {
       this.$toast.loading({
         message: '正在发送...',
         duration: 0,
-        forbidClick: true
+        forbidClick: true,
       })
       try {
         let news = {
           link: this.groupCodeUrl,
           title: this.task.taskName,
           desc: this.task.welcomeMsg,
-          imgUrl: this.imgUrl
+          imgUrl: this.imgUrl,
         }
         wx.invoke(
           'sendChatMessage',
           {
             msgtype: 'news',
-            news
+            news,
           },
           function(res) {
-            if (res.err_msg == 'sendChatMessage:ok') {
-            } else {
-              if (res.err_code == 1) {
-                // 用户取消发送
-              } else {
-                _this.$dialog({ message: 'sendChatMessage失败：' + JSON.stringify(res) })
-              }
+            if ('sendChatMessage:cancel,sendChatMessage:ok'.indexOf(res.err_msg) < 0) {
+              _this.$dialog({ message: 'sendChatMessage失败：' + JSON.stringify(res) })
             }
             _this.$toast.clear()
           }
@@ -111,7 +106,7 @@ export default {
       clearTimeout(this.copyEvent)
       if (this.touch) this.showCopy = true
       this.touch = false
-    }
+    },
   },
   computed: {
     keywords() {
@@ -123,16 +118,24 @@ export default {
       let groupCodeInfo = this.task.groupCodeInfo
       if (window.location.hash[0] === '#') {
         return (
-          window.location.origin + window.location.pathname + '#/groupCode?id=' + (groupCodeInfo && groupCodeInfo.id)
+          window.location.origin +
+          window.location.pathname +
+          '#/groupCode?id=' +
+          (groupCodeInfo && groupCodeInfo.id)
         )
       }
 
-      return window.location.origin + window.location.pathname + '#/groupCode?id=' + (groupCodeInfo && groupCodeInfo.id)
+      return (
+        window.location.origin +
+        window.location.pathname +
+        '#/groupCode?id=' +
+        (groupCodeInfo && groupCodeInfo.id)
+      )
     },
     imgUrl() {
       let groupCodeInfo = this.task.groupCodeInfo
       return groupCodeInfo && groupCodeInfo.codeUrl ? groupCodeInfo.codeUrl : ''
-    }
+    },
   },
   mounted() {
     this.clipboard = new ClipboardJS('.copy-btn_' + this.task.taskId)
@@ -144,7 +147,7 @@ export default {
     this.clipboard.on('error', (e) => {
       this.showCopy = false
     })
-  }
+  },
 }
 </script>
 
