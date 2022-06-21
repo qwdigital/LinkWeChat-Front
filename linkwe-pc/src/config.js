@@ -16,6 +16,7 @@ const common = {
 }
 
 window.lwConfig = Object.assign(env, common, window.lwConfig || {})
+document.title = window.lwConfig.SYSTEM_NAME_ALL
 
 window.CONFIG = {
   /**

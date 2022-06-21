@@ -6,7 +6,7 @@
       <img class="login-bg3" src="@/assets/image/login_bg3.png" alt="" />
       <div class="login-form-wrap">
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-          <h3 class="title">{{ lwConfig.SYSTEM_NAME || 'LinkWeChat' }}</h3>
+          <h3 class="title">{{ lwConfig.SYSTEM_NAME }}</h3>
           <el-form-item prop="username">
             <el-input
               v-model="loginForm.username"
