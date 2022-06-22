@@ -1,6 +1,6 @@
 const baseUrl = window.location.origin.includes('localhost')
   ? window.location.origin
-  : 'http://demo.linkwechat.cn:8090'
+  : 'http://demo.linkwechat.cn/prod-api'
 // 'http://106.13.201.219'
 // const baseUrl = window.location.origin+'/mock/11'
 // const baseUrl = 'http://47.112.117.15:40001/mock/11'
@@ -25,7 +25,7 @@ const request = (url, params, method = 'get') => {
         // console.log(err.status)
         alert(url + '，错误码：' + err.status)
         reject(err)
-      }
+      },
     })
   })
 }

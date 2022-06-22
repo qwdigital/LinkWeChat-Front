@@ -8,9 +8,9 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // 创建axios实例
 const service = axios.create({
   // axios中请求配置有baseURL选项，表示请求URL公共部分
-  baseURL: process.env.NODE_ENV === 'development' ? 'api' : process.env.VUE_APP_DOMAIN,
+  baseURL: process.env.NODE_ENV === 'development' ? 'api' : window.lwConfig.DOMAIN,
   // 超时
-  timeout: 10000
+  timeout: 10000,
 })
 // request拦截器
 service.interceptors.request.use(
@@ -41,10 +41,10 @@ service.interceptors.response.use(
       MessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
         confirmButtonText: '重新登录',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
         store.dispatch('LogOut').then(() => {
-          location.href = process.env.VUE_APP_BASE_URL
+          location.href = window.lwConfig.BASE_URL
         })
       })
     }
@@ -61,11 +61,11 @@ service.interceptors.response.use(
       if (process.env.NODE_ENV === 'development') {
         Message({
           message: `后端错误：接口：${res.config.url}，${code}错误：${msg}`,
-          type: 'error'
+          type: 'error',
         })
       } else {
         Notification.error({
-          title: msg
+          title: msg,
         })
       }
       return Promise.reject()
@@ -85,7 +85,7 @@ service.interceptors.response.use(
     Message({
       message: `${msg}:${config.url}`,
       type: 'error',
-      duration: 5 * 1000
+      duration: 5 * 1000,
     })
     return Promise.reject()
   }

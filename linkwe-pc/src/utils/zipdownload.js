@@ -3,18 +3,18 @@ import { getToken } from '@/utils/auth'
 
 const mimeMap = {
   xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  zip: 'application/zip'
+  zip: 'application/zip',
 }
 
-const baseUrl = process.env.VUE_APP_BASE_API
+const baseUrl = window.lwConfig.BASE_API
 export function downLoadZip(str, filename) {
   var url = baseUrl + str
   axios({
     method: 'get',
     url: url,
     responseType: 'blob',
-    headers: { 'Authorization': 'Bearer ' + getToken() }
-  }).then(res => {
+    headers: { Authorization: 'Bearer ' + getToken() },
+  }).then((res) => {
     resolveBlob(res, mimeMap.zip)
   })
 }

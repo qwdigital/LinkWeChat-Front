@@ -1,12 +1,7 @@
 <template>
   <div class="logo-container" :class="{ collapse: collapse }">
     <transition name="sidebarLogoFade">
-      <router-link
-        v-if="collapse"
-        key="collapse"
-        class="sidebar-logo-link"
-        to="/"
-      >
+      <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo" />
         <!-- <h1 v-else class="sidebar-title">{{ title }}</h1> -->
       </router-link>
@@ -19,8 +14,6 @@
 </template>
 
 <script>
-import logoImg from '@/assets/logo/logo.png'
-
 export default {
   name: 'SidebarLogo',
   props: {
@@ -32,7 +25,7 @@ export default {
   data() {
     return {
       title: process.env.VUE_APP_TITLE,
-      logo: logoImg,
+      logo: this.lwConfig.LOGO_TEXT_LIGHT_URL,
     }
   },
 }
@@ -59,7 +52,8 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      // height: 32px;
+      max-height: 35px;
+      max-width: 170px;
       vertical-align: middle;
       margin-right: 12px;
     }

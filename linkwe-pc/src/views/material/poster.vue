@@ -8,7 +8,7 @@ export default {
   name: 'Poster',
   components: {
     MaPage,
-    SelectMaterial
+    SelectMaterial,
   },
   data() {
     return {
@@ -17,7 +17,7 @@ export default {
       dialogVisibleSelectMaterial: false,
       dialog: {
         preview: false, // 预览弹出显示隐藏
-        edit: false // 编辑弹出显示隐藏
+        edit: false, // 编辑弹出显示隐藏
       },
       rangeErrorMsg: '',
       form: {},
@@ -25,32 +25,32 @@ export default {
         title: {
           required: true,
           message: '请输入海报名称',
-          trigger: 'blur'
+          trigger: 'blur',
         },
         categoryId: {
           required: true,
-          message: '请选择分类'
+          message: '请选择分类',
         },
         type: {
           required: true,
-          message: '请选择海报类型'
+          message: '请选择海报类型',
         },
         status: {
           required: true,
-          message: '请选择是否启用'
-        }
+          message: '请选择是否启用',
+        },
       },
       srcList: [],
       ids: [], // 选中数组
       previewImg: '', // 预览图片地址
       activeObject: {},
-      fontColor: ''
+      fontColor: '',
     }
   },
   watch: {
     fontColor(hex) {
       this.setAttr('fill', hex)
-    }
+    },
   },
   created() {},
   mounted() {},
@@ -76,7 +76,7 @@ export default {
             type: data.type,
             status: data.status,
             backgroundImgPath: data.backgroundImgPath,
-            posterJSON: JSON.parse(data.otherField)
+            posterJSON: JSON.parse(data.otherField),
           }
           this.posterSubassemblyList = data.posterSubassemblyList || []
         } else {
@@ -87,7 +87,7 @@ export default {
             type: '1', // 海报类型
             status: 0, // 是否启用  0 启用 1 不启用
             backgroundImgPath: '', // 图片url
-            mediaId: '' // 图片id
+            mediaId: '', // 图片id
           }
           this.posterSubassemblyList = []
         }
@@ -121,16 +121,16 @@ export default {
           deleteBtn.style.display = 'block'
         }
 
-        canvas.on('selection:created', function(e) {
+        canvas.on('selection:created', function (e) {
           addDeleteBtn(e.target.lineCoords.tr.x, e.target.lineCoords.tr.y)
         })
-        canvas.on('selection:updated', function(e) {
+        canvas.on('selection:updated', function (e) {
           addDeleteBtn(e.target.lineCoords.tr.x, e.target.lineCoords.tr.y)
         })
 
         //通用事件另外写法
         canvas.on({
-          'mouse:down': function(e) {
+          'mouse:down': function (e) {
             if (e.target != undefined) {
               var ob = canvas.getActiveObject()
               if (ob) {
@@ -150,11 +150,11 @@ export default {
                   borderDashArray: [3, 3],
                   snapAngle: 45, //在45度时自动保持到45的倍数
                   snapThreshold: 5,
-                  centeredRotation: true
+                  centeredRotation: true,
                 })
               }
             }
-          }
+          },
         })
 
         //是否拖动
@@ -186,19 +186,19 @@ export default {
         //   }
         // })
 
-        canvas.on('object:modified', function(e) {
+        canvas.on('object:modified', function (e) {
           addDeleteBtn(e.target.lineCoords.tr.x, e.target.lineCoords.tr.y)
         })
-        canvas.on('object:scaling', function(e) {
+        canvas.on('object:scaling', function (e) {
           deleteBtn.style.display = 'none'
         })
-        canvas.on('object:moving', function(e) {
+        canvas.on('object:moving', function (e) {
           deleteBtn.style.display = 'none'
         })
-        canvas.on('object:rotating', function(e) {
+        canvas.on('object:rotating', function (e) {
           deleteBtn.style.display = 'none'
         })
-        canvas.on('mouse:wheel', function(e) {
+        canvas.on('mouse:wheel', function (e) {
           deleteBtn.style.display = 'none'
         })
 
@@ -220,7 +220,7 @@ export default {
           let activeObject = canvas.getActiveObject()
           if (activeObject) {
             this.$confirm('是否确认删除吗?', '警告', {
-              type: 'warning'
+              type: 'warning',
             }).then(() => {
               canvas.remove(activeObject)
               this.activeObject = null
@@ -262,7 +262,7 @@ export default {
         left: 100,
         top: 100,
         borderDashArray: [3, 3],
-        customType: { text: 1, image: 2, qrcode: 3 }[type] // 自定义类型 1 固定文本 2 固定图片 3 二维码图片
+        customType: { text: 1, image: 2, qrcode: 3 }[type], // 自定义类型 1 固定文本 2 固定图片 3 二维码图片
       }
       switch (type) {
         case 'text':
@@ -277,7 +277,7 @@ export default {
         case 'image':
         case 'qrcode':
           new fabric.Image.fromURL(
-            type == 'image' ? obj : 'http://demo.linkwechat.cn/lib/qrCode.png',
+            type == 'image' ? obj : 'http://scrm.xxzhtc.cn/public/qrCode.png',
             (img) => {
               img.set(options)
               // img.scale(this.canvas.width / img.width / 2)
@@ -300,9 +300,9 @@ export default {
     },
     remove(id) {
       this.$confirm('是否确认删除吗?', '警告', {
-        type: 'warning'
+        type: 'warning',
       })
-        .then(function() {
+        .then(function () {
           return removePoster(id)
         })
         .then(() => {
@@ -370,7 +370,7 @@ export default {
               rotate: vo.angle,
               order: i, // 层级
               // categoryId: 0,                       // 分类ID (不需要传了)
-              verticalType: 2 // 居中方式后端让写死2
+              verticalType: 2, // 居中方式后端让写死2
             }
             posterSubList.push(posData)
             i++
@@ -379,7 +379,7 @@ export default {
           ;(form.id ? updatePoster : addPoster)(
             Object.assign(
               {
-                posterSubassemblyList: posterSubList
+                posterSubassemblyList: posterSubList,
               },
               form
             )
@@ -397,8 +397,8 @@ export default {
             })
         }
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -461,7 +461,7 @@ export default {
         :close-on-click-modal="false"
       >
         <div class="poster-edit-dialog fxbw">
-          <div style="width: 30%;">
+          <div style="width: 30%">
             <el-form ref="form" :rules="rules" :model="form" label-width="120px">
               <el-form-item label="海报名称" prop="title">
                 <el-input v-model="form.title" maxlength="10" show-word-limit></el-input>
@@ -472,7 +472,7 @@ export default {
                   v-model="form.categoryId"
                   :options="$refs.page.treeData[0].children"
                   :props="$refs.page.groupProps"
-                  style="width: 100%;"
+                  style="width: 100%"
                 ></el-cascader>
                 <!-- <el-select
                 v-model="form.categoryId"
@@ -527,7 +527,7 @@ export default {
               <el-form-item label="背景图片" :required="true" :error="rangeErrorMsg">
                 <div v-if="form.backgroundImgPath">
                   <el-image
-                    style="width: 100px; height: 100px; cursor: pointer;border-radius: 6px;"
+                    style="width: 100px; height: 100px; cursor: pointer; border-radius: 6px"
                     :src="form.backgroundImgPath"
                     fit="fit"
                   >
@@ -549,8 +549,7 @@ export default {
           <div style="">
             <div id="canvas-wrap">
               <i class="el-icon-error" id="deleteBtn"></i>
-              <canvas id="canvas" width="300" height="500" style="border: 1px solid #ddd;">
-              </canvas>
+              <canvas id="canvas" width="300" height="500" style="border: 1px solid #ddd"> </canvas>
             </div>
             <div id="tbody-containerui-image-editor-controls">
               <ul class="menu">

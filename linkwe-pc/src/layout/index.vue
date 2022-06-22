@@ -14,7 +14,7 @@
         <div class="main-container">
           <div v-show="$route.name !== '首页'">
             <hamburger id="hamburger-container" class="hamburger-container" />
-            <span class="slogan">仟微科技 |</span>
+            <span class="slogan">{{ lwConfig.COMPANY_NAME || '仟微科技' }} |</span>
             <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
           </div>
 
@@ -51,7 +51,7 @@ export default {
     RightPanel,
     Settings,
     Sidebar,
-    TagsView
+    TagsView,
   },
   mixins: [ResizeMixin],
   computed: {
@@ -59,7 +59,7 @@ export default {
     ...mapState({
       sidebar: (state) => state.app.sidebar,
       device: (state) => state.app.device,
-      showSettings: (state) => state.settings.showSettings
+      showSettings: (state) => state.settings.showSettings,
       // needTagsView: (state) => state.settings.tagsView,
       // fixedHeader: (state) => state.settings.fixedHeader,
     }),
@@ -68,15 +68,15 @@ export default {
         hideSidebar: !this.sidebar.opened || this.$route.path == '/index',
         openSidebar: this.sidebar.opened && this.$route.path !== '/index',
         withoutAnimation: this.sidebar.withoutAnimation,
-        mobile: this.device === 'mobile'
+        mobile: this.device === 'mobile',
       }
-    }
+    },
   },
   methods: {
     handleClickOutside() {
       this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
-    }
-  }
+    },
+  },
 }
 </script>
 

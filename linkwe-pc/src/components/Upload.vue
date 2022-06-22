@@ -8,32 +8,32 @@ export default {
   props: {
     fileUrl: {
       type: String,
-      default: ''
+      default: '',
     },
     fileName: {
       type: String,
-      default: ''
+      default: '',
     },
     // 0 图片（image）、1 语音（voice）、2 视频（video），3 普通文件(file)
     type: {
       type: String,
-      default: '0'
+      default: '0',
     },
     // 上传文件大小不能超过 maxSize MB
     maxSize: {
       type: Number,
-      default: 2
+      default: 2,
     },
     // 图片的宽高像素限制 [width(number), height(number)],默认null不限制
     maxImgPx: {
       type: Array,
-      default: null // () => [100, 100]
+      default: null, // () => [100, 100]
     },
     // 限制允许上传的文件格式 eg:["bmp", "jpg", "png", "jpeg", "gif"]
     format: {
       type: Array,
-      default: null
-    }
+      default: null,
+    },
     // beforeUpload: {
     //   type: Function,
     //   default: function() {
@@ -44,19 +44,19 @@ export default {
   data() {
     return {
       loading: false,
-      action: process.env.VUE_APP_BASE_API + '/common/uploadFile2Cos',
+      action: window.lwConfig.BASE_API + '/common/uploadFile2Cos',
       // (this.type == 0
       //   ? '/wecom/material/uploadimg'
       //   : '/common/uploadFile2Cos'),
       headers: window.CONFIG.headers,
-      domain: process.env.VUE_APP_BASE_API
+      domain: window.lwConfig.BASE_API,
     }
   },
   watch: {},
   computed: {
     accept() {
       return ['image/*', 'amr/*', 'video/*', '*'][this.type]
-    }
+    },
   },
   created() {},
   mounted() {},
@@ -195,8 +195,8 @@ export default {
     onError(err, file, fileList) {
       this.loading = false
       this.$message.error('上传文件失败')
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 // require('promise.prototype.finally').shim()
+import '../env'
 
 import Cookies from 'js-cookie'
 
@@ -9,14 +10,14 @@ import Element from 'element-ui'
 import './styles/element-variables.scss'
 
 Vue.use(Element, {
-  size: Cookies.get('size') || 'small' // set element-ui default size
+  size: Cookies.get('size') || 'small', // set element-ui default size
 })
 
 import '@/styles/common.scss' // common css
 import '@/styles/index.scss' // global css
 import 'video.js/dist/video-js.css'
 
-import config from '@/config'
+import '@/config'
 import App from './App'
 import store from './store'
 import router from './router'
@@ -32,7 +33,7 @@ import {
   selectDictLabel,
   selectDictLabels,
   download,
-  handleTree
+  handleTree,
 } from '@/utils/common'
 
 import Pagination from '@/components/Pagination'
@@ -62,6 +63,7 @@ Vue.prototype.selectDictLabel = selectDictLabel
 Vue.prototype.selectDictLabels = selectDictLabels
 Vue.prototype.download = download
 Vue.prototype.handleTree = handleTree
+Vue.prototype.lwConfig = window.lwConfig
 
 Vue.prototype.msgSuccess = function (msg) {
   this.$message({ showClose: true, message: msg, type: 'success' })
@@ -97,9 +99,9 @@ VueAMap.initAMapApiLoader({
     'AMap.ToolBar',
     'AMap.MapType',
     'AMap.PolyEditor',
-    'AMap.CircleEditor'
+    'AMap.CircleEditor',
   ],
-  v: '1.4.4'
+  v: '1.4.4',
 })
 
 /**
@@ -117,5 +119,5 @@ new Vue({
   el: '#app',
   router,
   store,
-  render: (h) => h(App)
+  render: (h) => h(App),
 })

@@ -12,7 +12,7 @@ export default {
     SelectTag,
     SelectPoster,
     TargetSelectUser: SelectUser,
-    SelectQrCode
+    SelectQrCode,
   },
   data() {
     return {
@@ -20,7 +20,7 @@ export default {
         taskName: '',
         fissInfo: '',
         fissNum: '',
-        dateRange: ''
+        dateRange: '',
       },
       groupForm: {
         taskFissionStaffs: [],
@@ -35,10 +35,10 @@ export default {
         welcomeMsg: '',
         rewardUrl: '',
         rewardImageUrl: '',
-        rewardRule: ''
+        rewardRule: '',
       },
       // rewardImageUrlTemp: '',
-      action: process.env.VUE_APP_BASE_API + window.CONFIG.services.wecom + '/fission/upload',
+      action: window.lwConfig.BASE_API + window.CONFIG.services.wecom + '/fission/upload',
       headers: window.CONFIG.headers,
       ruleForm: {
         taskName: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
@@ -47,9 +47,9 @@ export default {
         fissNum: [
           { required: true, message: '请输入数量', trigger: 'blur' },
           // { pattern: /^[1-9]+$/, message: '请输入数字', trigger: 'blur' },
-          { pattern: /^[1-9]\d*$/, message: '请输入数字', trigger: 'blur' }
+          { pattern: /^[1-9]\d*$/, message: '请输入数字', trigger: 'blur' },
         ],
-        dateRange: [{ required: true, message: '时间不可为空', trigger: 'blur' }]
+        dateRange: [{ required: true, message: '时间不可为空', trigger: 'blur' }],
       },
       dialogVisibleSelectUser: false,
       dialogVisibleSelectTag: false,
@@ -57,7 +57,7 @@ export default {
       dialogVisibleSelectGroupCode: false,
       selectTagType: '',
       pageType: 'add',
-      taskDetail: {}
+      taskDetail: {},
     }
   },
   created() {
@@ -84,7 +84,7 @@ export default {
           console.log('验证通过,提交表单')
           let params = {
             ...this.query,
-            ...this.groupForm
+            ...this.groupForm,
           }
           params.startTime = params.dateRange[0]
           params.overTime = params.dateRange[1]
@@ -95,8 +95,8 @@ export default {
               {
                 staffId: '',
                 staffName: '',
-                staffType: 3
-              }
+                staffType: 3,
+              },
             ]
           }
           delete params.sendType
@@ -124,11 +124,11 @@ export default {
         if (res.code == 200) {
           this.$message({
             message: '新增成功',
-            type: 'success'
+            type: 'success',
           })
           // taskApi.sendFission(JSON.parse(res.msg).id)
           this.$router.push({
-            path: '/application/groupFission'
+            path: '/application/groupFission',
           })
         }
         //
@@ -139,10 +139,10 @@ export default {
         if (res.code == 200) {
           this.$message({
             message: '修改成功',
-            type: 'success'
+            type: 'success',
           })
           this.$router.push({
-            path: '/application/groupFission'
+            path: '/application/groupFission',
           })
           // taskApi.sendFission(JSON.parse(res.msg).id)
         }
@@ -161,7 +161,7 @@ export default {
           taskName: res.data.taskName,
           fissInfo: res.data.fissInfo,
           fissNum: res.data.fissNum,
-          dateRange: [res.data.startTime + ' 00:00:00', res.data.overTime + ' 00:00:00']
+          dateRange: [res.data.startTime + ' 00:00:00', res.data.overTime + ' 00:00:00'],
         }
         this.query = query
         this.groupForm = {
@@ -179,7 +179,7 @@ export default {
           welcomeMsg: res.data.welcomeMsg,
           rewardUrl: res.data.rewardUrl,
           rewardImageUrl: res.data.rewardImageUrl,
-          rewardRule: res.data.rewardRule
+          rewardRule: res.data.rewardRule,
         }
       })
     },
@@ -191,13 +191,13 @@ export default {
           selectParam = {
             staffId: item.userId,
             staffName: item.name,
-            staffType: 2
+            staffType: 2,
           }
         } else {
           selectParam = {
             staffId: item.id,
             staffName: item.name,
-            staffType: 1
+            staffType: 1,
           }
         }
         return selectParam
@@ -238,13 +238,13 @@ export default {
       }
 
       return isJPG || isPNG
-    }
+    },
   },
   computed: {
     arrayTarget() {
       return [].concat({ id: this.groupForm.fissionTargetId })
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -415,7 +415,7 @@ export default {
         <el-form-item label="兑奖规则" prop="rewardRule">
           <el-input
             type="textarea"
-            style="border:none;resize:none;width:364px"
+            style="border: none; resize: none; width: 364px"
             v-model="groupForm.rewardRule"
             maxlength="100"
           >

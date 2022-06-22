@@ -41,8 +41,7 @@
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          仟微
-          <!-- <img :src="avatar" class="user-avatar"> -->
+          <img :src="avatar" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -100,7 +99,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$store.dispatch('LogOut').then(() => {
-          location.href = process.env.VUE_APP_BASE_URL
+          location.href = window.lwConfig.BASE_URL
         })
       })
     },
