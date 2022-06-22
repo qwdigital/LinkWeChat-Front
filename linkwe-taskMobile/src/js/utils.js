@@ -8,8 +8,8 @@ export function getUrlParam(name) {
   return null
 }
 export function getWxCode() {
-  // let appid = 'wx863c031a74f589a0' // 公众号appid
-  let appid = 'wxa57479bcd3f15461' // 公众号appid
+  let appid = 'wx863c031a74f589a0' // 公众号appid
+  // let appid = 'wxa57479bcd3f15461' // 公众号appid
   let code = getUrlParam('code') //是否存在code
   let local = window.location.origin.includes('localhost')
     ? 'http://h5.linkwechat.cn/test.html'
