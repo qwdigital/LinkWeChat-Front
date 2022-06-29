@@ -12,7 +12,6 @@ for (const iterator of argvs) {
 }
 process.env.VUE_APP_ENV = process.env.VUE_APP_ENV || process.env.NODE_ENV
 const env = require('./env')
-
 // 项目部署基础
 // 默认情况下，我们假设你的应用将被部署在域的根目录下,
 // 例如：https://www.my-app.com/
