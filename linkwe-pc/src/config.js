@@ -1,5 +1,4 @@
 import { getToken } from '@/utils/auth'
-import LOGO_TEXT_LIGHT_URL from '@/assets/logo/logo.png'
 import env from '../env'
 // 系统常量
 const common = {
@@ -7,10 +6,12 @@ const common = {
   SYSTEM_NAME_ALL: 'LinkWechat 企业微信SCRM',
   COMPANY_NAME: '仟微科技',
   COMPANY_NAME_ALL: '仟微科技',
-  // LOGO_DARK_URL: 'http://demo.linkwechat.cn/public/LOGO_DARK_URL.png',
-  // LOGO_LIGHT_URL: 'http://demo.linkwechat.cn/public/LOGO_LIGHT_URL.png',
-  // LOGO_TEXT_DARK_URL: 'http://demo.linkwechat.cn/public/LOGO_TEXT_DARK_URL.png',
-  LOGO_TEXT_LIGHT_URL,
+  // LOGO_DARK: env.BASE_URL + 'static/LOGO_DARK.png',
+  // LOGO_LIGHT: env.BASE_URL + 'static/LOGO_LIGHT.png',
+  // LOGO_TEXT_DARK: env.BASE_URL + 'static/LOGO_TEXT_DARK.png',
+  LOGO_TEXT_LIGHT: env.BASE_URL + 'static/LOGO_TEXT_LIGHT.png',
+  // QRCODE_CONTACT_US: env.BASE_URL + 'static/QRCODE_CONTACT_US.png',
+  // QRCODE_CUSTOMER_SERVICE: env.BASE_URL + 'static/QRCODE_CUSTOMER_SERVICE.png',
   COPYRIGHT: 'Copyright © 2018-2022 LinkWeChat All Rights Reserved.',
   IS_PUBLISH_DIALOG: true, // 是否显示发布弹窗
 }

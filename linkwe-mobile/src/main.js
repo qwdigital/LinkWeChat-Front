@@ -1,8 +1,6 @@
 import Vue from 'vue'
-import config from '@/config'
+import './config'
 import '@/assets/icon/iconfont.css'
-
-window.CONFIG = config
 
 import 'normalize.css/normalize.css'
 
@@ -18,12 +16,12 @@ import router from './router'
 import store from './store'
 
 import VConsole from 'vconsole'
-process.env.NODE_ENV === 'production' && new VConsole()
+window.lwConfig.IS_VCONSOLE && new VConsole()
 
 Vue.config.productionTip = false
 
 new Vue({
   router,
   store,
-  render: (h) => h(App)
+  render: (h) => h(App),
 }).$mount('#app')
