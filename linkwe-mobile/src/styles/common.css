@@ -33,11 +33,12 @@ td {
   padding: 0;
 }
 body,input, select, textarea /* for ie */ {
-  font: 14px Microsoft YaHei, '宋体', arial, -apple-system, 'PingFang SC', 'Helvetica Neue',
-    Helvetica, 'DejaVu Sans', 'Lucida Grande', Tahoma, 'Hiragino Sans GB', STHeiti, SimSun,
-    sans-serif;
+  font: 14px "PingFang SC", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Source Han Sans", "Noto Sans CJK Sc", "Microsoft YaHei", "Microsoft Jhenghei", sans-serif;
   line-height: 1.15;
   color: #333; /*touch-action: none*/
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 } /** 设置默认字体 **/
 header,
 section,
