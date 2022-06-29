@@ -27,7 +27,7 @@ export default {
   methods: {
     getWxCode() {
       try {
-        let appid = window.CONFIG.appId // 公众号appid
+        let appid = window.lwConfig.APPID // 公众号appid
         // let appid = 'wx8bfe6bc2ca5c45ae' // 公众号appid
         alert(2)
         let code = getQueryValue('code') //是否存在code
