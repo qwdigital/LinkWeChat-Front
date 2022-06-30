@@ -48,9 +48,9 @@
           <router-link to="/user/profile">
             <el-dropdown-item>个人中心</el-dropdown-item>
           </router-link>
-          <el-dropdown-item @click.native="setting = true">
+          <!-- <el-dropdown-item @click.native="setting = true">
             <span>布局设置</span>
-          </el-dropdown-item>
+          </el-dropdown-item> -->
           <el-dropdown-item divided @click.native="logout">
             <span>退出登录</span>
           </el-dropdown-item>
