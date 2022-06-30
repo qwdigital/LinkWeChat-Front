@@ -166,24 +166,21 @@ export default {
     }
 
     .avatar-container {
-      margin-right: 30px;
+      margin-right: 10px;
 
       .avatar-wrapper {
         position: relative;
         color: #fff;
         .user-avatar {
-          cursor: pointer;
-          width: 40px;
-          height: 40px;
+          width: 35px;
+          height: 35px;
           border-radius: 10px;
+          vertical-align: middle;
         }
 
         .el-icon-caret-bottom {
-          cursor: pointer;
-          position: absolute;
-          right: -20px;
-          top: 5px;
-          font-size: 12px;
+          font-size: 14px;
+          margin-left: 5px;
         }
       }
     }
