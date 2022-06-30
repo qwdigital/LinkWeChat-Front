@@ -4,24 +4,24 @@ import {
   getCollectionList,
   addCollection,
   cancleCollection,
-  getMaterialMediaId
+  getMaterialMediaId,
 } from '@/api/chat'
 export default {
   components: {},
   props: {
     sideId: {
       type: String,
-      default: ''
+      default: '',
     },
     // mediaType 0 图片（image）、1 语音（voice）、2 视频（video），3 普通文件(file) 4 文本 5 海报
     mediaType: {
       type: String,
-      default: '0'
+      default: '0',
     },
     keyword: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   data() {
     return {
@@ -39,19 +39,19 @@ export default {
         '2': '视频',
         '3': '普通文件',
         '4': '文本',
-        '5': '海报'
-      }
+        '5': '海报',
+      },
     }
   },
   watch: {
     userId() {
       this.getList(1)
-    }
+    },
   },
   computed: {
     userId() {
       return this.$store.state.userId
-    }
+    },
   },
   created() {
     this.getList()
@@ -76,7 +76,7 @@ export default {
             mediaType: this.mediaType,
             pageSize,
             pageNum,
-            keyword
+            keyword,
           })
         : getCollectionList({ userId: this.userId, pageSize, pageNum, keyword })
       )
@@ -116,7 +116,7 @@ export default {
       this.$toast.loading({
         message: '正在发送...',
         duration: 0,
-        forbidClick: true
+        forbidClick: true,
       })
       let entry = undefined
       let _this = this
@@ -139,13 +139,13 @@ export default {
               2: 'video',
               3: 'file',
               4: 'text',
-              5: 'image'
+              5: 'image',
             }
             switch (data.mediaType) {
               case '4':
               default:
                 mes.text = {
-                  content: data.content //文本内容
+                  content: data.content, //文本内容
                 }
                 break
               case '0':
@@ -155,7 +155,7 @@ export default {
                 let dataMediaId = {
                   url: data.materialUrl,
                   type: msgtype[data.mediaType],
-                  name: data.materialName
+                  name: data.materialName,
                 }
                 let resMaterialId = await getMaterialMediaId(dataMediaId)
                 if (!resMaterialId.data) {
@@ -163,7 +163,7 @@ export default {
                   return
                 }
                 mes[msgtype[data.mediaType]] = {
-                  mediaid: resMaterialId.data.media_id //
+                  mediaid: resMaterialId.data.media_id, //
                 }
                 break
               // case '5':
@@ -190,12 +190,13 @@ export default {
             _this.$dialog({ message: 'err' + JSON.stringify(err) })
           }
           wx.invoke('sendChatMessage', mes, function(resSend) {
-            if (resSend.err_msg == 'sendChatMessage:ok') {
-              //发送成功 sdk会自动弹出成功提示，无需再加
-              // _this.$toast('发送成功')
-            } else {
+            // if (resSend.err_msg == 'sendChatMessage:ok') {
+            //   //发送成功 sdk会自动弹出成功提示，无需再加
+            //   // _this.$toast('发送成功')
+            // } else
+            if ('sendChatMessage:cancel,sendChatMessage:ok'.indexOf(resSend.err_msg) < 0) {
               //错误处理
-              // _this.$dialog({ message: '发送失败：' + JSON.stringify(resSend) })
+              _this.$dialog({ message: '发送失败：' + JSON.stringify(resSend) })
             }
           })
           _this.$toast.clear()
@@ -210,12 +211,12 @@ export default {
       this.$toast.loading({
         message: 'loading...',
         duration: 0,
-        forbidClick: true
+        forbidClick: true,
       })
       // collection 是否收藏 0未收藏 1 已收藏
       ;(data.collection == 1 ? cancleCollection : addCollection)({
         userId: this.userId,
-        materialId: data.materialId
+        materialId: data.materialId,
       })
         .then(() => {
           data.collection = [1, 0][data.collection]
@@ -226,8 +227,8 @@ export default {
           this.$toast('操作失败')
           console.log(err)
         })
-    }
-  }
+    },
+  },
 }
 </script>
 
