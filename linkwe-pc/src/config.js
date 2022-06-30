@@ -10,6 +10,7 @@ const common = {
   // LOGO_LIGHT: env.BASE_URL + 'static/LOGO_LIGHT.png',
   // LOGO_TEXT_DARK: env.BASE_URL + 'static/LOGO_TEXT_DARK.png',
   LOGO_TEXT_LIGHT: env.BASE_URL + 'static/LOGO_TEXT_LIGHT.png',
+  POST_QRCODE: env.BASE_URL + 'static/POST_QRCODE.png',
   // QRCODE_CONTACT_US: env.BASE_URL + 'static/QRCODE_CONTACT_US.png',
   // QRCODE_CUSTOMER_SERVICE: env.BASE_URL + 'static/QRCODE_CUSTOMER_SERVICE.png',
   COPYRIGHT: 'Copyright © 2018-2022 LinkWeChat All Rights Reserved.',

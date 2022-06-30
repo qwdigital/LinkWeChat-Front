@@ -276,15 +276,12 @@ export default {
 
         case 'image':
         case 'qrcode':
-          new fabric.Image.fromURL(
-            type == 'image' ? obj : window.lwConfig.DOMAIN + '/public/qrCode.png',
-            (img) => {
-              img.set(options)
-              // img.scale(this.canvas.width / img.width / 2)
-              img.scaleToWidth(200)
-              this.canvas.add(img).setActiveObject(img)
-            }
-          )
+          new fabric.Image.fromURL(type == 'image' ? obj : window.lwConfig.POST_QRCODE, (img) => {
+            img.set(options)
+            // img.scale(this.canvas.width / img.width / 2)
+            img.scaleToWidth(200)
+            this.canvas.add(img).setActiveObject(img)
+          })
           break
 
         default:
