@@ -19,6 +19,7 @@
             ref="cropper"
             :img="options.img"
             :info="true"
+            :outputType="options.outputType"
             :autoCrop="options.autoCrop"
             :autoCropWidth="options.autoCropWidth"
             :autoCropHeight="options.autoCropHeight"
@@ -89,6 +90,7 @@ export default {
       // 弹出层标题
       title: '修改头像',
       options: {
+        outputType: 'png', // 裁剪生成图片的格式 jpeg, png, webp
         img: store.getters.avatar, //裁剪图片的地址
         autoCrop: true, // 是否默认生成截图框
         autoCropWidth: 200, // 默认生成截图框宽度
@@ -157,3 +159,26 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.img-circle {
+  border-radius: 50%;
+}
+
+.img-lg {
+  width: 120px;
+  height: 120px;
+  border: 1px solid #ddd;
+}
+
+.avatar-upload-preview {
+  position: absolute;
+  top: 50%;
+  transform: translate(50%, -50%);
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  box-shadow: 0 0 4px #ccc;
+  overflow: hidden;
+}
+</style>

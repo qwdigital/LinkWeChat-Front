@@ -176,6 +176,7 @@ export default {
           height: 35px;
           border-radius: 10px;
           vertical-align: middle;
+          border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .el-icon-caret-bottom {
