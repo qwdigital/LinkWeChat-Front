@@ -54,7 +54,8 @@
               icon="el-icon-plus"
               size="mini"
               @click="handleAdd"
-            >添加分类</el-button>
+              >添加分类</el-button
+            >
           </el-popover>
         </div>
         <div class="head-container">
@@ -75,8 +76,11 @@
           :indeterminate="isIndeterminate"
           v-model="checkAll"
           @change="handleCheckAllChange"
-        >全选</el-checkbox>
-        <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd">添加网页</el-button>
+          >全选</el-checkbox
+        >
+        <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd"
+          >添加网页</el-button
+        >
         <el-popover placement="top" width="160" v-model="visible">
           <div>选择分组</div>
           <el-select v-model="model" size="small" placeholder>
@@ -93,13 +97,18 @@
           </div>
           <el-button slot="reference">移动分组</el-button>
         </el-popover>
-        <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd">删除</el-button>
+        <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd"
+          >删除</el-button
+        >
 
         <el-row :gutter="20">
-          <el-col :span="6" style="margin-top: 24px;" v-for="(item, index) in 10" :key="index">
+          <el-col :span="6" style="margin-top: 24px" v-for="(item, index) in 10" :key="index">
             <el-card shadow="hover" body-style="padding: 0px;">
               <div class="img-wrap">
-                <el-image :src="require('@/assets/image/profile.jpg')" :preview-src-list="srcList"></el-image>
+                <el-image
+                  :src="require('@/assets/image/profile.jpg')"
+                  :preview-src-list="srcList"
+                ></el-image>
                 <div class="el-upload-list__item-actions">
                   <span class="el-upload-list__item-preview" @click="edit(file)">
                     <i class="el-icon-edit"></i>
@@ -109,7 +118,7 @@
                   </span>
                 </div>
               </div>
-              <div style="padding: 14px;">
+              <div style="padding: 14px">
                 <el-checkbox v-model="kl">sdghwery阿瑟他五色土</el-checkbox>
                 <div>sdghwery阿瑟他五色土</div>
               </div>
@@ -118,7 +127,7 @@
         </el-row>
 
         <pagination
-          v-show="total>0"
+          v-show="total > 0"
           :total="total"
           :page.sync="queryParams.pageNum"
           :limit.sync="queryParams.pageSize"
@@ -145,7 +154,8 @@
               v-for="item in options"
               :key="item.value"
               :label="item.label"
-              :value="item.value">
+              :value="item.value"
+            >
             </el-option>
           </el-select>
         </el-form-item>
@@ -157,10 +167,14 @@
           <div>建议尺寸：1068*455</div>
         </el-form-item>
         <el-form-item label="摘要">
-          <el-input v-model="form.remark" type="textarea" placeholder="非必填,限120字,如不填会自动抓取正文前54个字"></el-input>
+          <el-input
+            v-model="form.remark"
+            type="textarea"
+            placeholder="非必填,限120字,如不填会自动抓取正文前54个字"
+          ></el-input>
         </el-form-item>
         <el-form-item label="正文">
-          <editor v-model="form.noticeContent" :min-height="192"/>
+          <editor v-model="form.noticeContent" :min-height="192" />
         </el-form-item>
         <el-form-item label="外链">
           <el-input v-model="sd" placeholder="请填写带http或https协议头的合法URL"></el-input>
@@ -175,18 +189,18 @@
 </template>
 
 <script>
-import Editor from '@/components/Editor';
+import Editor from '@/components/Editor'
 
 export default {
   components: {
-    Editor
+    Editor,
   },
   data() {
     return {
       model: 0,
       srcList: [
-        "https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg",
-        "https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg",
+        'https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg',
+        'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg',
       ],
       // 遮罩层
       loading: true,
@@ -203,7 +217,7 @@ export default {
       // 用户表格数据
       userList: null,
       // 弹出层标题
-      title: "",
+      title: '',
       // 部门树选项
       deptOptions: undefined,
       // 是否显示弹出层
@@ -225,23 +239,23 @@ export default {
       // 表单参数
       form: {},
       defaultProps: {
-        children: "children",
-        label: "label",
+        children: 'children',
+        label: 'label',
       },
       // 用户导入参数
       upload: {
         // 是否显示弹出层（用户导入）
         open: false,
         // 弹出层标题（用户导入）
-        title: "",
+        title: '',
         // 是否禁用上传
         isUploading: false,
         // 是否更新已经存在的用户数据
         updateSupport: 0,
         // 设置上传的请求头部
-        headers: { Authorization: "Bearer " + getToken() },
+        headers: { Authorization: 'Bearer ' + getToken() },
         // 上传的地址
-        url: process.env.VUE_APP_BASE_API + "/system/user/importData",
+        url: window.lwConfig.BASE_API + '/system/user/importData',
       },
       // 查询参数
       queryParams: {
@@ -254,110 +268,96 @@ export default {
       },
       // 表单校验
       rules: {
-        userName: [
-          { required: true, message: "用户名称不能为空", trigger: "blur" },
-        ],
-        nickName: [
-          { required: true, message: "用户昵称不能为空", trigger: "blur" },
-        ],
-        deptId: [
-          { required: true, message: "归属部门不能为空", trigger: "blur" },
-        ],
-        password: [
-          { required: true, message: "用户密码不能为空", trigger: "blur" },
-        ],
+        userName: [{ required: true, message: '用户名称不能为空', trigger: 'blur' }],
+        nickName: [{ required: true, message: '用户昵称不能为空', trigger: 'blur' }],
+        deptId: [{ required: true, message: '归属部门不能为空', trigger: 'blur' }],
+        password: [{ required: true, message: '用户密码不能为空', trigger: 'blur' }],
         email: [
-          { required: true, message: "邮箱地址不能为空", trigger: "blur" },
+          { required: true, message: '邮箱地址不能为空', trigger: 'blur' },
           {
-            type: "email",
+            type: 'email',
             message: "'请输入正确的邮箱地址",
-            trigger: ["blur", "change"],
+            trigger: ['blur', 'change'],
           },
         ],
         phonenumber: [
-          { required: true, message: "手机号码不能为空", trigger: "blur" },
+          { required: true, message: '手机号码不能为空', trigger: 'blur' },
           {
             pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
-            message: "请输入正确的手机号码",
-            trigger: "blur",
+            message: '请输入正确的手机号码',
+            trigger: 'blur',
           },
         ],
       },
-    };
+    }
   },
   watch: {
     // 根据名称筛选部门树
     deptName(val) {
-      this.$refs.tree.filter(val);
+      this.$refs.tree.filter(val)
     },
   },
   created() {
-    this.getList();
-    this.getTreeselect();
-    this.getDicts("sys_normal_disable").then((response) => {
-      this.statusOptions = response.data;
-    });
-    this.getDicts("sys_user_sex").then((response) => {
-      this.sexOptions = response.data;
-    });
-    this.getConfigKey("sys.user.initPassword").then((response) => {
-      this.initPassword = response.msg;
-    });
+    this.getList()
+    this.getTreeselect()
+    this.getDicts('sys_normal_disable').then((response) => {
+      this.statusOptions = response.data
+    })
+    this.getDicts('sys_user_sex').then((response) => {
+      this.sexOptions = response.data
+    })
+    this.getConfigKey('sys.user.initPassword').then((response) => {
+      this.initPassword = response.msg
+    })
   },
   methods: {
     /** 查询用户列表 */
     getList() {
-      this.loading = true;
-      listUser(this.addDateRange(this.queryParams, this.dateRange)).then(
-        (response) => {
-          this.userList = response.rows;
-          this.total = response.total;
-          this.loading = false;
-        }
-      );
+      this.loading = true
+      listUser(this.addDateRange(this.queryParams, this.dateRange)).then((response) => {
+        this.userList = response.rows
+        this.total = response.total
+        this.loading = false
+      })
     },
     /** 查询部门下拉树结构 */
     getTreeselect() {
       treeselect().then((response) => {
-        this.deptOptions = response.data;
-      });
+        this.deptOptions = response.data
+      })
     },
     // 筛选节点
     filterNode(value, data) {
-      if (!value) return true;
-      return data.label.indexOf(value) !== -1;
+      if (!value) return true
+      return data.label.indexOf(value) !== -1
     },
     // 节点单击事件
     handleNodeClick(data) {
-      this.queryParams.deptId = data.id;
-      this.getList();
+      this.queryParams.deptId = data.id
+      this.getList()
     },
     // 用户状态修改
     handleStatusChange(row) {
-      let text = row.status === "0" ? "启用" : "停用";
-      this.$confirm(
-        '确认要"' + text + '""' + row.userName + '"用户吗?',
-        "警告",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        }
-      )
+      let text = row.status === '0' ? '启用' : '停用'
+      this.$confirm('确认要"' + text + '""' + row.userName + '"用户吗?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
         .then(function () {
-          return changeUserStatus(row.userId, row.status);
+          return changeUserStatus(row.userId, row.status)
         })
         .then(() => {
-          this.msgSuccess(text + "成功");
+          this.msgSuccess(text + '成功')
         })
         .catch(function () {
-          row.status = row.status === "0" ? "1" : "0";
-        });
+          row.status = row.status === '0' ? '1' : '0'
+        })
     },
     // 取消按钮
     cancel() {
-      this.open = false;
-      this.reset();
+      this.open = false
+      this.reset()
     },
     // 表单重置
     reset() {
@@ -370,164 +370,160 @@ export default {
         phonenumber: undefined,
         email: undefined,
         sex: undefined,
-        status: "0",
+        status: '0',
         remark: undefined,
         postIds: [],
         roleIds: [],
-      };
-      this.resetForm("form");
+      }
+      this.resetForm('form')
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.page = 1;
-      this.getList();
+      this.queryParams.page = 1
+      this.getList()
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.dateRange = [];
-      this.resetForm("queryForm");
-      this.handleQuery();
+      this.dateRange = []
+      this.resetForm('queryForm')
+      this.handleQuery()
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.userId);
-      this.single = selection.length != 1;
-      this.multiple = !selection.length;
+      this.ids = selection.map((item) => item.userId)
+      this.single = selection.length != 1
+      this.multiple = !selection.length
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.reset();
-      this.getTreeselect();
+      this.reset()
+      this.getTreeselect()
       getUser().then((response) => {
-        this.postOptions = response.posts;
-        this.roleOptions = response.roles;
-        this.open = true;
-        this.title = "添加用户";
-        this.form.password = this.initPassword;
-      });
+        this.postOptions = response.posts
+        this.roleOptions = response.roles
+        this.open = true
+        this.title = '添加用户'
+        this.form.password = this.initPassword
+      })
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.reset();
-      this.getTreeselect();
-      const userId = row.userId || this.ids;
+      this.reset()
+      this.getTreeselect()
+      const userId = row.userId || this.ids
       getUser(userId).then((response) => {
-        this.form = response.data;
-        this.postOptions = response.posts;
-        this.roleOptions = response.roles;
-        this.form.postIds = response.postIds;
-        this.form.roleIds = response.roleIds;
-        this.open = true;
-        this.title = "修改用户";
-        this.form.password = "";
-      });
+        this.form = response.data
+        this.postOptions = response.posts
+        this.roleOptions = response.roles
+        this.form.postIds = response.postIds
+        this.form.roleIds = response.roleIds
+        this.open = true
+        this.title = '修改用户'
+        this.form.password = ''
+      })
     },
     /** 重置密码按钮操作 */
     handleResetPwd(row) {
-      this.$prompt('请输入"' + row.userName + '"的新密码', "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$prompt('请输入"' + row.userName + '"的新密码', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
       })
         .then(({ value }) => {
           resetUserPwd(row.userId, value).then((response) => {
             if (response.code === 200) {
-              this.msgSuccess("修改成功，新密码是：" + value);
+              this.msgSuccess('修改成功，新密码是：' + value)
             }
-          });
+          })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     /** 提交按钮 */
     submitForm: function () {
-      this.$refs["form"].validate((valid) => {
+      this.$refs['form'].validate((valid) => {
         if (valid) {
           if (this.form.userId != undefined) {
             updateUser(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess("修改成功");
-                this.open = false;
-                this.getList();
+                this.msgSuccess('修改成功')
+                this.open = false
+                this.getList()
               }
-            });
+            })
           } else {
             addUser(this.form).then((response) => {
               if (response.code === 200) {
-                this.msgSuccess("新增成功");
-                this.open = false;
-                this.getList();
+                this.msgSuccess('新增成功')
+                this.open = false
+                this.getList()
               }
-            });
+            })
           }
         }
-      });
+      })
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const userIds = row.userId || this.ids;
-      this.$confirm(
-        '是否确认删除用户编号为"' + userIds + '"的数据项?',
-        "警告",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        }
-      )
+      const userIds = row.userId || this.ids
+      this.$confirm('是否确认删除用户编号为"' + userIds + '"的数据项?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
         .then(function () {
-          return delUser(userIds);
+          return delUser(userIds)
         })
         .then(() => {
-          this.getList();
-          this.msgSuccess("删除成功");
+          this.getList()
+          this.msgSuccess('删除成功')
         })
-        .catch(function () {});
+        .catch(function () {})
     },
     /** 导出按钮操作 */
     handleExport() {
-      const queryParams = this.queryParams;
-      this.$confirm("是否确认导出所有用户数据项?", "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
+      const queryParams = this.queryParams
+      this.$confirm('是否确认导出所有用户数据项?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
       })
         .then(function () {
-          return exportUser(queryParams);
+          return exportUser(queryParams)
         })
         .then((response) => {
-          this.download(response.msg);
+          this.download(response.msg)
         })
-        .catch(function () {});
+        .catch(function () {})
     },
     /** 导入按钮操作 */
     handleImport() {
-      this.upload.title = "用户导入";
-      this.upload.open = true;
+      this.upload.title = '用户导入'
+      this.upload.open = true
     },
     /** 下载模板操作 */
     importTemplate() {
       importTemplate().then((response) => {
-        this.download(response.msg);
-      });
+        this.download(response.msg)
+      })
     },
     // 文件上传中处理
     handleFileUploadProgress(event, file, fileList) {
-      this.upload.isUploading = true;
+      this.upload.isUploading = true
     },
     // 文件上传成功处理
     handleFileSuccess(response, file, fileList) {
-      this.upload.open = false;
-      this.upload.isUploading = false;
-      this.$refs.upload.clearFiles();
-      this.$alert(response.msg, "导入结果", { dangerouslyUseHTMLString: true });
-      this.getList();
+      this.upload.open = false
+      this.upload.isUploading = false
+      this.$refs.upload.clearFiles()
+      this.$alert(response.msg, '导入结果', { dangerouslyUseHTMLString: true })
+      this.getList()
     },
     // 提交上传文件
     submitFileForm() {
-      this.$refs.upload.submit();
+      this.$refs.upload.submit()
     },
     edit() {
-      this.open = true;
+      this.open = true
     },
   },
-};
+}
 </script>

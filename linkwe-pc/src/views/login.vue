@@ -6,7 +6,7 @@
       <img class="login-bg3" src="@/assets/image/login_bg3.png" alt="" />
       <div class="login-form-wrap">
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-          <h3 class="title">LinkWeChat</h3>
+          <h3 class="title">{{ lwConfig.SYSTEM_NAME }}</h3>
           <el-form-item prop="username">
             <el-input
               v-model="loginForm.username"
@@ -80,7 +80,9 @@
 
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2018-2021 LinkWeChat All Rights Reserved.</span>
+      <span>{{
+        lwConfig.COPYRIGHT || 'Copyright © 2018-2022 LinkWeChat All Rights Reserved.'
+      }}</span>
     </div>
 
     <!-- <el-dialog
@@ -165,9 +167,9 @@ export default {
 
     this.getCode()
     this.getCookie()
-    process.env.NODE_ENV !== 'development' &&
+    window.lwConfig.IS_PUBLISH_DIALOG &&
       this.$alert(
-        'LinkWeChat V2.5 正式发布公测，遇到使用上的问题欢迎提交 Issue，我们将光速修复。',
+        'LinkWeChat V2.5 已正式发布，遇到使用上的问题欢迎提交 Issue，我们将光速修复。',
         '提示',
         {
           confirmButtonText: '确定',
@@ -212,7 +214,7 @@ export default {
           this.$store
             .dispatch('Login', this.loginForm)
             .then(() => {
-              this.$router.push({ path: this.redirect || process.env.VUE_APP_BASE_URL })
+              this.$router.push({ path: this.redirect || window.lwConfig.BASE_URL })
             })
             .catch(() => {
               this.loading = false

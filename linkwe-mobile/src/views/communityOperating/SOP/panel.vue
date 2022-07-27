@@ -77,19 +77,19 @@ export default {
   props: {
     task: {
       type: Object,
-      required: true
+      required: true,
     },
 
     // true: 已处理  false: 未处理
     state: {
       type: Boolean,
-      required: true
+      required: true,
     },
 
     isAdmin: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
 
   data() {
@@ -110,8 +110,8 @@ export default {
         query: {
           taskId: this.task.ruleId,
           active: active === 1 ? 1 : 0,
-          taskType: 2
-        }
+          taskType: 2,
+        },
       })
     },
 
@@ -123,7 +123,7 @@ export default {
         this.$toast.loading({
           message: '正在发送...',
           duration: 0,
-          forbidClick: true
+          forbidClick: true,
         })
 
         // mes.link || delete mes.link
@@ -142,7 +142,7 @@ export default {
               (this.task.materialList &&
                 this.task.materialList[0] &&
                 this.task.materialList[0].materialUrl) ||
-              ' ' // 封面
+              ' ', // 封面
           },
           async function(res) {
             if (res.err_msg == 'shareToExternalChat:ok') {
@@ -158,13 +158,9 @@ export default {
               //   this.$emit('refresh')
               // })
               _this.$toast.clear()
-              this.$emit('refresh')
-            } else {
-              if (res.err_code == 1) {
-                // 用户取消发送
-              } else {
-                _this.$dialog({ message: 'shareToExternalChat失败：' + JSON.stringify(res) })
-              }
+              _this.$emit('refresh')
+            } else if ('shareToExternalChat:cancel'.indexOf(res.err_msg) < 0) {
+              _this.$dialog({ message: '发送失败：' + JSON.stringify(res) })
             }
             _this.$toast.clear()
           }
@@ -172,7 +168,7 @@ export default {
       } catch (error) {
         this.$dialog({ message: '代码错误：' + JSON.stringify(error.message) })
       }
-    }
+    },
 
     // touchStart() {
     //   clearTimeout(this.copyEvent)
@@ -236,7 +232,7 @@ export default {
 
       if (this.doneMembers.length <= 2) return names.join('、')
       return names[0] + '、' + names[1] + '等' + this.doneMembers.length + '人'
-    }
+    },
   },
 
   mounted() {
@@ -249,7 +245,7 @@ export default {
     this.clipboard.on('error', (e) => {
       this.showCopy = false
     })
-  }
+  },
 }
 </script>
 

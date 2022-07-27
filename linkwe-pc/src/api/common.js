@@ -7,7 +7,7 @@ export function upload(data) {
   return request({
     url: service + '/uploadFile2Cos',
     method: 'POST',
-    data
+    data,
   })
 }
 
@@ -21,7 +21,7 @@ export function upload(data) {
  */
 export function download(url, name) {
   return (
-    process.env.VUE_APP_DOMAIN +
+    window.lwConfig.DOMAIN +
     window.CONFIG.services.system +
     `/common/download/url?url=${url}&name=${name}`
   )
@@ -43,6 +43,6 @@ export function uploadDataURL(dataURL) {
     url: window.CONFIG.services.system + '/common/uploadFile2Cos',
     method: 'post',
     processData: false,
-    data
+    data,
   })
 }

@@ -53,19 +53,19 @@ export default {
   props: {
     task: {
       type: Object,
-      required: true
+      required: true,
     },
 
     // true: 已处理  false: 未处理
     state: {
       type: Boolean,
-      required: true
+      required: true,
     },
 
     isAdmin: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
 
   data() {
@@ -73,7 +73,7 @@ export default {
       showCopy: false, // 展示复制按钮
       touchDelay: 750, // 触发显示按钮的长按时常
       copyEvent: null,
-      touch: false
+      touch: false,
     }
   },
 
@@ -86,8 +86,8 @@ export default {
         query: {
           taskId: this.task.taskId,
           active: active === 1 ? 1 : 0,
-          taskType: 1
-        }
+          taskType: 1,
+        },
       })
     },
 
@@ -100,7 +100,7 @@ export default {
           title: this.task.taskName,
           desc: this.task.welcomeMsg,
           link: this.groupCodeUrl,
-          imgUrl: this.task.groupCodeInfo && this.task.groupCodeInfo.codeUrl
+          imgUrl: this.task.groupCodeInfo && this.task.groupCodeInfo.codeUrl,
         },
         function(res) {
           if (res.err_msg == 'shareToExternalContact:ok') {
@@ -111,7 +111,8 @@ export default {
               .catch(() => {
                 this.$emit('refresh')
               })
-          } else {
+          } else if ('shareToExternalContact:cancel'.indexOf(res.err_msg) < 0) {
+            _this.$dialog({ message: '发送失败：' + JSON.stringify(res) })
           }
         }
       )
@@ -129,7 +130,7 @@ export default {
       clearTimeout(this.copyEvent)
       if (this.touch) this.showCopy = true
       this.touch = false
-    }
+    },
   },
 
   computed: {
@@ -202,7 +203,7 @@ export default {
         'groupCode?id=' +
         (groupCodeInfo && groupCodeInfo.id)
       )
-    }
+    },
   },
 
   mounted() {
@@ -215,7 +216,7 @@ export default {
     this.clipboard.on('error', (e) => {
       this.showCopy = false
     })
-  }
+  },
 }
 </script>
 

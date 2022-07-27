@@ -33,7 +33,7 @@ export default {
 <template>
   <div class="preview ac">
     <div class="top">小微</div>
-    <div class="small">仟微科技-企微</div>
+    <div class="small">{{ lwConfig.COMPANY_NAME || '仟微科技' }}-企微</div>
     <div class="time">凌晨2:20</div>
     <ul class="msg-ul">
       <li class="flex msg-li">
@@ -50,7 +50,7 @@ export default {
           size="small"
           :src="require('@/assets/image/profile.jpg')"
         ></el-avatar>
-        <div class="msg" style="line-height: 0; padding: 5px;">
+        <div class="msg" style="line-height: 0; padding: 5px">
           <slot></slot>
         </div>
       </li>
@@ -70,7 +70,7 @@ export default {
           size="small"
           :src="require('@/assets/image/profile.jpg')"
         ></el-avatar>
-        <div class="msg" style="line-height: 0; padding: 5px;">
+        <div class="msg" style="line-height: 0; padding: 5px">
           <slot name="image" v-bind:image="image"></slot>
         </div>
       </li>

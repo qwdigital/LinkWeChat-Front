@@ -1,4 +1,24 @@
 import { getToken } from '@/utils/auth'
+import env from '../env'
+// 系统常量
+const common = {
+  SYSTEM_NAME: 'LinkWeChat',
+  SYSTEM_NAME_ALL: 'LinkWechat 企业微信SCRM',
+  COMPANY_NAME: '仟微科技',
+  COMPANY_NAME_ALL: '仟微科技',
+  // LOGO_DARK: env.BASE_URL + 'static/LOGO_DARK.png',
+  // LOGO_LIGHT: env.BASE_URL + 'static/LOGO_LIGHT.png',
+  // LOGO_TEXT_DARK: env.BASE_URL + 'static/LOGO_TEXT_DARK.png',
+  LOGO_TEXT_LIGHT: env.BASE_URL + 'static/LOGO_TEXT_LIGHT.png',
+  POST_QRCODE: env.BASE_URL + 'static/POST_QRCODE.png',
+  // QRCODE_CONTACT_US: env.BASE_URL + 'static/QRCODE_CONTACT_US.png',
+  // QRCODE_CUSTOMER_SERVICE: env.BASE_URL + 'static/QRCODE_CUSTOMER_SERVICE.png',
+  COPYRIGHT: 'Copyright © 2018-2022 LinkWeChat All Rights Reserved.',
+  IS_PUBLISH_DIALOG: true, // 是否显示发布弹窗
+}
+
+window.lwConfig = Object.assign(env, common, window.lwConfig || {})
+document.title = window.lwConfig.SYSTEM_NAME_ALL
 
 window.CONFIG = {
   /**
@@ -31,8 +51,8 @@ window.CONFIG = {
 
   services: {
     wecom: '/wecom',
-    kf: process.env.VUE_APP_KF_API,
-    system: process.env.VUE_APP_SYSTEM_API,
+    kf: window.lwConfig.KF_API,
+    system: window.lwConfig.SYSTEM_API,
     common: '/common',
   },
 
@@ -54,7 +74,7 @@ document.addEventListener(
     let target = e.target
     let src = target.attributes.getNamedItem('src').value
     if (target.tagName.toUpperCase() === 'IMG' && src && !src.includes('http')) {
-      target.src = process.env.VUE_APP_BASE_API + src
+      target.src = window.lwConfig.BASE_API + src
     }
   },
   true
