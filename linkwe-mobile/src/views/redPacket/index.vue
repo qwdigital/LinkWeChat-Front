@@ -223,7 +223,7 @@ export default {
         }
         delete form.code
         let formQueryString = obj2query(form)
-        let baseUrl = location.protocol + '//' + location.host + process.env.VUE_APP_BASE_URL
+        let baseUrl = location.protocol + '//' + location.host + window.lwConfig.BASE_URL
         let redPacketUrl = `${baseUrl}?${formQueryString}#/redPacketReceive`
 
         // msgtype 文本(“text”)，图片(“image”)，视频(“video”)，文件(“file”)，H5(“news”）和小程序(“miniprogram”)

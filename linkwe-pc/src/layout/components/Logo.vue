@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       title: process.env.VUE_APP_TITLE,
-      logo: this.lwConfig.LOGO_TEXT_LIGHT_URL,
+      logo: this.lwConfig.LOGO_TEXT_LIGHT,
     }
   },
 }

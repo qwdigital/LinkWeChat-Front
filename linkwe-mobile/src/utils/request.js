@@ -78,5 +78,5 @@ function createAxios(baseURL) {
 // const httpRequest = createAxios()
 
 export default createAxios(
-  process.env.NODE_ENV === 'development' ? '/api' : process.env.VUE_APP_BASE_API
+  process.env.NODE_ENV === 'development' ? '/api' : window.lwConfig.BASE_API
 )

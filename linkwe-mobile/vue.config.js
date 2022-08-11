@@ -4,8 +4,14 @@ const resolve = (dir) => {
   return path.join(__dirname, dir)
 }
 
-process.env.VUE_APP_TITLE = require('./package.json').description
-
+//读取npm指令 process.argv 获取⾃定义参数
+let argvs = process.argv.filter((e) => e.includes('='))
+for (const iterator of argvs) {
+  let diyArg = iterator.split('=')
+  process.env['VUE_APP_' + diyArg[0].slice(2)] = diyArg[1]
+}
+process.env.VUE_APP_ENV = process.env.VUE_APP_ENV || process.env.NODE_ENV
+const env = require('./env')
 // 项目部署基础
 // 默认情况下，我们假设你的应用将被部署在域的根目录下,
 // 例如：https://www.my-app.com/
@@ -15,7 +21,7 @@ process.env.VUE_APP_TITLE = require('./package.json').description
 // 需要将它改为'/my-app/'
 
 module.exports = {
-  publicPath: process.env.VUE_APP_BASE_URL || '/',
+  publicPath: env.BASE_URL || '/',
   outputDir: 'dist', // 打包名称
   // 打包时不生成.map文件
   productionSourceMap: false,
@@ -30,27 +36,27 @@ module.exports = {
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       ['/api']: {
-        target: process.env.VUE_APP_BASE_API,
+        target: env.BASE_API,
         changeOrigin: true,
         pathRewrite: {
-          ['^/api']: ''
-        }
-      }
+          ['^/api']: '',
+        },
+      },
     },
-    disableHostCheck: true
+    disableHostCheck: true,
   },
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'less',
-      patterns: [path.resolve(__dirname, './src/styles/varibles.less')]
-    }
+      patterns: [path.resolve(__dirname, './src/styles/varibles.less')],
+    },
   },
   configureWebpack: {
     resolve: {
       alias: {
-        '@': resolve('src')
-      }
-    }
+        '@': resolve('src'),
+      },
+    },
   },
   chainWebpack(config) {
     config.plugin('preload').tap(() => [
@@ -58,8 +64,8 @@ module.exports = {
         rel: 'preload',
         // to ignore runtime.js
         fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
-        include: 'initial'
-      }
+        include: 'initial',
+      },
     ])
 
     config.when(process.env.NODE_ENV !== 'development', (config) => {
@@ -69,8 +75,8 @@ module.exports = {
         .use('script-ext-html-webpack-plugin', [
           {
             // `runtime` must same as runtimeChunk name. default is `runtime`
-            inline: /runtime\..*\.js$/
-          }
+            inline: /runtime\..*\.js$/,
+          },
         ])
         .end()
 
@@ -87,24 +93,24 @@ module.exports = {
             name: 'chunk-libs',
             test: /[\\/]node_modules[\\/]/,
             priority: 10,
-            chunks: 'initial' // only package third parties that are initially dependent
+            chunks: 'initial', // only package third parties that are initially dependent
           },
           elementUI: {
             name: 'chunk-vant', // split vant into a single package
             priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
-            test: /[\\/]node_modules[\\/]_?vant(.*)/ // in order to adapt to cnpm
+            test: /[\\/]node_modules[\\/]_?vant(.*)/, // in order to adapt to cnpm
           },
           commons: {
             name: 'chunk-commons',
             test: resolve('src/components'), // can customize your rules
             minChunks: 3, //  minimum common number
             priority: 5,
-            reuseExistingChunk: true
-          }
-        }
+            reuseExistingChunk: true,
+          },
+        },
       })
 
       config.optimization.runtimeChunk('single')
     })
-  }
+  },
 }

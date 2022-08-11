@@ -115,7 +115,7 @@ export default {
       let form = {
         orderNo: this.redPacket.orderId, // 订单id
         openId: this.openId, // 客户公众号id
-        appId: window.CONFIG.appId, // 微信公众号id
+        appId: window.lwConfig.APPID, // 微信公众号id
         chatId: this.redPacket.chatId, // 客户企微id
         externalUserid: this.redPacket.externalUserid, // 客户企微id
         receiveName: this.receiveName,
@@ -135,7 +135,7 @@ export default {
       let form = {
         orderNo: this.redPacket.orderId, // 订单id
         openId: this.openId, // 客户公众号id
-        appId: window.CONFIG.appId, // 微信公众号id
+        appId: window.lwConfig.APPID, // 微信公众号id
         chatId: this.redPacket.chatId, // 客户群企微id
         // externalUserid: this.redPacket.externalUserid, // 客户企微id
       }

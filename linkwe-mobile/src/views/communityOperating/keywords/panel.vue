@@ -85,7 +85,7 @@ export default {
           },
           function(res) {
             if ('sendChatMessage:cancel,sendChatMessage:ok'.indexOf(res.err_msg) < 0) {
-              _this.$dialog({ message: 'sendChatMessage失败：' + JSON.stringify(res) })
+              _this.$dialog({ message: '发送失败：' + JSON.stringify(res) })
             }
             _this.$toast.clear()
           }
