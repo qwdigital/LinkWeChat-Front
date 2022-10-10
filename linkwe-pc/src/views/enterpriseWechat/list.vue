@@ -13,6 +13,9 @@
       <el-tab-pane label="支付配置" name="4">
         <part4 @submit="savePart1" :data="form"></part4>
       </el-tab-pane>
+      <el-tab-pane label="公众号配置" name="5">
+        <part5 @submit="savePart1" :data="form"></part5>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -21,6 +24,7 @@
   import Part2 from './part2.vue'
   import Part3 from './part3.vue'
   import Part4 from './part4.vue'
+  import Part5 from './part5.vue'
   import * as api from '@/api/enterpriseId'
   // import clipboard from "clipboard";
   export default {
@@ -28,12 +32,13 @@
       Part1,
       Part2,
       Part3,
-      Part4
+      Part4,
+      Part5
     },
     props: {},
-    data () {
+    data() {
       return {
-        currentActive: "1",
+        currentActive: '1',
         form: {},
         disabled: false,
         loading: false,
@@ -51,25 +56,27 @@
     },
     watch: {},
     computed: {},
-    created () {
+    created() {
       this.getDetail()
     },
-    mounted () {
-    },
+    mounted() {},
     methods: {
-      savePart1 (data) {
-        api.addOrUpdate(data).then(() => {
-          this.msgSuccess('操作成功')
-          // this.dialogVisible = false
-          this.getDetail()
-        })
+      savePart1(data) {
+        api
+          .addOrUpdate(data)
+          .then(() => {
+            this.msgSuccess('操作成功')
+            // this.dialogVisible = false
+            this.getDetail()
+          })
           .catch(() => {
             // this.dialogVisible = false
           })
       },
-      getDetail () {
+      getDetail() {
         this.loading = true
-        api.getDetail()
+        api
+          .getDetail()
           .then(({ data }) => {
             this.form = data
             this.loading = false
@@ -78,7 +85,7 @@
             this.loading = false
           })
       },
-      submit () {
+      submit() {
         this.$refs['form'].validate((valid) => {
           if (valid) {
             api
@@ -94,7 +101,7 @@
           }
         })
       },
-      start (corpId) {
+      start(corpId) {
         api.start(corpId).then(({ rows, total }) => {
           this.msgSuccess('操作成功')
           this.getList()

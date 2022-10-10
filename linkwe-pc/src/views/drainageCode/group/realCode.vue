@@ -26,6 +26,7 @@
       }
 
       return {
+        acceptType:['jpg', 'png'],
         // 搜索数据
         query: {
           // 当前选择状态
@@ -295,7 +296,7 @@
           <el-input v-model="form.groupName" placeholder="请输入群名称"></el-input>
         </el-form-item>
         <el-form-item label="实际群码" prop="actualGroupQrCode">
-          <upload :fileUrl.sync="form.actualGroupQrCode" class="image-uploader">
+          <upload :fileUrl.sync="form.actualGroupQrCode" :format="acceptType" class="image-uploader">
             <div slot="tip">注: 只支持2M以内的jpg/png格式图片</div>
           </upload>
           <div>
@@ -332,9 +333,9 @@
         </div>
       </el-dialog>
 
-      <el-dialog :visible.sync="exampleDialog" append-to-body width="250px">
+      <el-dialog title="如图所示为标准的微信群二维码" :visible.sync="exampleDialog" append-to-body width="400px">
         <div class="example-code-box">
-          <div class="example-text">如图所示为标准的微信群二维码:</div>
+          <!-- <div class="example-text"></div> -->
           <div class="code-box-title">
             <svg-icon icon-class="user" class="code-user"></svg-icon>
             实际群名称
@@ -388,13 +389,13 @@
   .example-code-box {
     margin: 0 5px;
     background-color: white;
-    padding: 10px;
+    padding: 0 10px;
     font-weight: bold;
     color: #666666;
 
     .example-text {
       font-size: 12px;
-      padding: 10px 0;
+      padding: 0 0 10px 0;
     }
     .code-user {
       font-size: 30px;

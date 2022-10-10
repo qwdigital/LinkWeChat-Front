@@ -1,3 +1,4 @@
+
 <script>
 import MaPage from '@/views/material/components/MaPage'
 import Video from 'video.js'
@@ -13,8 +14,13 @@ export default {
     }
   },
   watch: {},
-  created() {},
-  methods: {}
+  created() {
+  },
+  methods: {
+    handleSelectionChange(selection) {
+      this.ids = selection.map((item) => item.id)
+    }
+  }
 }
 </script>
 
@@ -25,6 +31,7 @@ export default {
       <el-table-column label="视频" align="center" prop="materialUrl" width="200">
         <template slot-scope="{ row }">
           <video
+            width="200"
             id="video"
             class="video-js vjs-default-skin vjs-big-play-centered"
             controls
@@ -50,15 +57,17 @@ export default {
           <el-button
             type="text"
             @click="$refs.page.edit(scope.row)"
-            v-hasPermi="['wechat:material:edit']"
             >修改</el-button
           >
+            <!-- v-hasPermi="['wechat:material:edit']" -->
+
           <el-button
             type="text"
             @click="$refs.page.remove(scope.row.id)"
-            v-hasPermi="['wechat:material:remove']"
             >删除</el-button
           >
+            <!-- v-hasPermi="['wechat:material:remove']" -->
+
         </template>
       </el-table-column>
     </el-table>
@@ -111,8 +120,8 @@ export default {
     </el-row> -->
   </MaPage>
 </template>
-
 <style lang="scss" scoped>
+
 // .img-wrap {
 //   position: relative;
 //   height: 200px;

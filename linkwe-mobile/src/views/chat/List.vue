@@ -18,16 +18,18 @@ export default {
       type: String,
       default: '0',
     },
-    keyword: {
-      type: String,
-      default: '',
-    },
+    // keyword: {
+    //   type: String,
+    //   default: '',
+    // },
   },
   data() {
     return {
       refreshing: false,
       loading: false,
       finished: false,
+      finishedText: '暂无数据',
+      keyword: undefined,
       error: false,
       pageNum: 1,
       pageSize: 10,
@@ -45,7 +47,7 @@ export default {
   },
   watch: {
     userId() {
-      this.getList(1)
+      this.sideId || this.getList(1)
     },
   },
   computed: {
@@ -71,14 +73,19 @@ export default {
       }
       ;(this.sideId
         ? getMaterialList({
-            userId: this.userId,
+            // userId: this.userId,
             sideId: this.sideId,
             mediaType: this.mediaType,
             pageSize,
             pageNum,
             keyword,
           })
-        : getCollectionList({ userId: this.userId, pageSize, pageNum, keyword })
+        : getCollectionList({
+            userId: this.userId,
+            pageSize,
+            pageNum,
+            keyword,
+          })
       )
         .then(({ rows, total }) => {
           // 判断我的列表
@@ -94,12 +101,15 @@ export default {
           this.refreshing = false
           // 数据全部加载完成
           if (this.list.length >= +total) {
+            if (this.list.length == 0) {
+              this.pageNum = 1
+              this.finishedText = '暂无数据'
+            } else {
+              this.finishedText = '没有更多了'
+            }
             this.finished = true
           } else {
             this.pageNum++
-          }
-          if (this.list.length == 0) {
-            this.pageNum = 1
           }
         })
         .catch(() => {
@@ -112,6 +122,10 @@ export default {
     //     this.collectList = rows.map((d) => d.materialId)
     //   })
     // },
+    search(pageNum, keyword) {
+      this.keyword = keyword
+      this.getList(pageNum)
+    },
     send(data) {
       this.$toast.loading({
         message: '正在发送...',
@@ -157,14 +171,19 @@ export default {
                   type: msgtype[data.mediaType],
                   name: data.materialName,
                 }
-                let resMaterialId = await getMaterialMediaId(dataMediaId)
-                if (!resMaterialId.data) {
-                  _this.$toast('获取素材id失败')
+                try {
+                  let resMaterialId = await getMaterialMediaId(dataMediaId)
+                  if (!resMaterialId.data) {
+                    _this.$toast('获取素材id失败')
+                    return
+                  }
+                  mes[msgtype[data.mediaType]] = {
+                    mediaid: resMaterialId.data.mediaId, //
+                  }
+                } catch (error) {
                   return
                 }
-                mes[msgtype[data.mediaType]] = {
-                  mediaid: resMaterialId.data.media_id, //
-                }
+
                 break
               // case '5':
               //   mes.news = {
@@ -193,7 +212,7 @@ export default {
             // if (resSend.err_msg == 'sendChatMessage:ok') {
             //   //发送成功 sdk会自动弹出成功提示，无需再加
             //   // _this.$toast('发送成功')
-            // } else
+            // }
             if ('sendChatMessage:cancel,sendChatMessage:ok'.indexOf(resSend.err_msg) < 0) {
               //错误处理
               _this.$dialog({ message: '发送失败：' + JSON.stringify(resSend) })
@@ -238,7 +257,7 @@ export default {
       <van-list
         v-model="loading"
         :finished="finished"
-        finished-text="没有更多了"
+        :finished-text="finishedText"
         :error.sync="error"
         error-text="请求失败，点击重新加载"
         @load="getList()"

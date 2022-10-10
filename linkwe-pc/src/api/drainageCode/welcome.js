@@ -43,10 +43,18 @@ export function getScop (id) {
 "userIds":"ShengXiYong,SunXiWang" //员工欢迎语使用范围，员工id用逗号隔开
 }
  */
-export function addOrUpdate (data) {
+export function add (data) {
   return request({
-    url: service + '/addorUpdate',
+    url: service + '/add',
     method: 'POST',
+    data
+  })
+}
+
+export function update (data) {
+  return request({
+    url: service + '/update',
+    method: 'PUT',
     data
   })
 }
@@ -77,7 +85,7 @@ export function addOrUpdate (data) {
  */
 export function remove (ids) {
   return request({
-    url: service + '/remove/' + ids,
+    url: service + '/del/' + ids,
     method: 'DELETE'
   })
 }
@@ -85,9 +93,6 @@ export function remove (ids) {
 // 预览数据
 export function getPreview (id) {
   return request({
-    url: service + '/preview',
-    params: {
-      id
-    }
+    url: service + '/get/' + id,
   })
 }

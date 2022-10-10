@@ -1,16 +1,17 @@
 import request from '@/utils/request'
+const service = window.lwConfig.services.wecom + '/seas'
 
-export function getTypeList (data) {
+export function getTypeList(data) {
   return request({
-    url: "/wecom/seas/findEmployeeCustomer",
-    params: data
+    url: service + '/findEmployeeCustomer',
+    params: data,
   })
 }
 
-export function setState (data) {
+export function setState(data) {
   return request({
-    url: "/wecom/seas/setState",
-    method: "post",
-    data: data
+    url: service + '/setState',
+    method: 'post',
+    data: data,
   })
 }

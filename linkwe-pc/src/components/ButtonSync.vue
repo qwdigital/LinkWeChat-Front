@@ -17,7 +17,8 @@ export default {
   },
   computed: {
     disabled() {
-      return this.lastSyncTime ? (+new Date() - +new Date(this.lastSyncTime)) / 3600000 < 2 : false
+      // return this.lastSyncTime ? (+new Date() - +new Date(this.lastSyncTime)) / 3600000 < 2 : false
+      return false
     }
   },
   watch: {},

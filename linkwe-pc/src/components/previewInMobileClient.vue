@@ -3,7 +3,7 @@
 		<div class="title">{{name}}</div>
 		<div class="content">
 			<div class="item">
-				<div class="avatar"><img src="../assets/drainageCode/header.png"></div>
+				<div class="avatar222"><img src="../assets/drainageCode/header.png"></div>
 				<div class="msg">
 					<div class="word">
 						{{list.welcomeMsg}}
@@ -11,7 +11,7 @@
 				</div>
 			</div>
 			<div class="item" v-for="(data, key) in list.materialMsgList" :key="key">
-				<div class="avatar"><img src="../assets/drainageCode/header.png"></div>
+				<div class="avatar222"><img src="../assets/drainageCode/header.png"></div>
 				<div class="msg" v-if="data.msgType === '4'">
 					<div class="word">
 						{{data.content}}
@@ -50,7 +50,7 @@
 				</div>
 			</div>
 			<!-- <div class="item">
-				<div class="avatar"><img src="../assets/drainageCode/header.png"></div>
+				<div class="avatar222"><img src="../assets/drainageCode/header.png"></div>
 				<div class="msg">
 					<div class="image">
 						<img  src="../assets/drainageCode/demo-img.png" />
@@ -163,7 +163,7 @@
 	        margin-top: 0;
 	      }
 
-	      .avatar {
+	      .avatar222 {
 	        // align-self: center;
 	        margin-right: 5px;
 	      }

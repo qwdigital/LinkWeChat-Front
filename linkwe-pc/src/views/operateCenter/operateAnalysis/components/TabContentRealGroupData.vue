@@ -1,12 +1,11 @@
 <script>
 import ChartBar from '@/components/ChartBar'
 import ChartLine from '@/components/ChartLine'
-import SelectUser from '@/components/SelectUser'
 import { getRealCnt, getRealCntMember } from '@/api/operateCenter/groupAnalysis'
 import { getList as getGroupList } from '@/api/customer/group'
 export default {
   name: '',
-  components: { ChartLine, ChartBar, SelectUser },
+  components: { ChartLine, ChartBar },
   props: {
     type: {
       type: String,
@@ -182,13 +181,14 @@ export default {
       <el-col :span="12">
         <div>
           <el-input
-            style="width: 180px"
+            style="width: 180px;"
             :value="selectUsers['customerGroupMember'].map((e) => e.name) + ''"
             readonly
             @focus="showDialog('customerGroupMember')"
             placeholder="请选择群主"
           />
           <el-select
+            style="margin-left:20px;"
             v-model="query.chatIds"
             placeholder="请选择群聊"
             clearable
@@ -212,13 +212,13 @@ export default {
       </el-col>
     </el-row>
 
-    <SelectUser
+    <SelectWeUser
       :visible.sync="dialogVisible"
       title="组织架构"
       :defaultValues="selectUsers[dialogType]"
       @success="getSelectUser"
       :isOnlyLeaf="true"
-    ></SelectUser>
+    ></SelectWeUser>
   </div>
 </template>
 

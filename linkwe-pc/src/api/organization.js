@@ -1,6 +1,106 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/department'
-const serviceUser = window.CONFIG.services.system + window.CONFIG.services.wecom + '/user'
+const service = window.CONFIG.services.system
+const serviceUser = window.CONFIG.services.system + '/user'
+const base = window.CONFIG.services.system + '/auth'
+
+/* 组织管理 */
+
+// 同步组织架构
+export function setOragnize () {
+  return request({
+    url: service + '/system/user/sync',
+    method: 'post'
+  })
+}
+
+// 获取组织部门
+export function getDeptTree () {
+  return request({
+    url: service + '/system/dept/list'
+  })
+}
+
+// 获取组织部门下员工
+export function getDeptUser (params) {
+  return request({
+    url: service + '/system/user/list',
+    params
+  })
+}
+export function getDeptUserAll (params) {
+  return request({
+    url: service + '/system/user/listAll',
+    params
+  })
+}
+
+// 修改员工角色
+export function editUserRoles (params) {
+  return request({
+    url: service + '/system/user/editUserRole',
+    data: params,
+    method: 'put'
+  })
+}
+
+/* 角色管理 */
+
+// 角色列表
+export function getRolesList (params) {
+  return request({
+    url: service + '/system/role/list'
+  })
+}
+
+export function getRoleDetail (roleId) {
+  return request({
+    url: service + "/system/role/" + roleId
+  })
+}
+
+// 选择角色下拉
+export function getRoleOption () {
+  return request({
+    url: service + '/system/role/optionselect'
+  })
+}
+
+// 查询菜单下拉树结构
+export function treeselect () {
+  return request({
+    url: service + '/system/menu/allTreeselect',
+    method: 'get'
+  })
+}
+
+// 角色新增
+export function addRole (params) {
+  return request({
+    url: service + '/system/role',
+    method: 'post',
+    data: params
+  })
+}
+
+// 角色编辑
+export function editRole (params) {
+  return request({
+    url: service + '/system/role',
+    method: 'put',
+    data: params
+  })
+}
+
+// 角色删除
+export function deleteRole (id) {
+  return request({
+    url: service + '/system/role/' + id,
+    method: 'delete'
+  })
+}
+
+
+
 
 /**
  * 获取所有部门

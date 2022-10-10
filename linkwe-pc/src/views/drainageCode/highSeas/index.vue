@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="g-card g-pad20">
     <div>
       <el-form
         :model="query"
@@ -49,9 +49,7 @@
       </el-form>
     </div>
     <div style="margin-top: 20px; display: flex; justify-content: space-between">
-      <el-button type="primary" style="margin-bottom: 20px" @click="importDialogVisible = true"
-        >导入客户</el-button
-      >
+      <el-button type="primary" style="margin-bottom: 20px" @click="importDialogVisible = true">导入客户</el-button>
       <div>
         <el-button type="primary" plain size="mini" @click="removeMult()">批量删除 </el-button>
         <el-button type="primary" size="mini" plain @click="tipMulFn">批量提醒</el-button>
@@ -63,7 +61,7 @@
         v-loading="loading"
         :data="list"
         @selection-change="handleSelectionChange"
-        max-height="600"
+        
       >
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column
@@ -120,13 +118,15 @@
         ></el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="{ row }">
-            <el-button type="text" @click="tipFn(row.id)">提醒</el-button>
-            <el-divider direction="vertical"></el-divider>
+            <span v-if="row.addState !== 1">
+              <el-button type="text" @click="tipFn(row.id)">提醒</el-button>
+              <el-divider direction="vertical"></el-divider>
+            </span>
             <el-button type="text" @click="removeFn(row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <div class="bottom">
+      <div>
         <pagination
           v-show="total > 0"
           :total="total"
@@ -137,15 +137,15 @@
       </div>
     </div>
 
-    <div v-if="dialogVisible">
+    <!-- <div v-if="dialogVisible"> -->
       <!-- 批量新建弹窗 -->
-      <SelectUser
+      <SelectWeUser
         :defaultValues="selectedUserList"
         :visible.sync="dialogVisible"
         title="选择员工"
         @success="selectedUserFn"
-      ></SelectUser>
-    </div>
+      ></SelectWeUser>
+    <!-- </div> -->
     <div v-if="dialogVisibleSelectTag">
       <SelectTag
         :visible.sync="dialogVisibleSelectTag"
@@ -194,7 +194,7 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="importDialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="submitImport">确 定</el-button>
+          <el-button type="primary" @click="submitImport" v-loading="submitLoading">确 定</el-button>
         </span>
       </el-dialog>
     </div>
@@ -205,16 +205,17 @@
 import { getList, downloadTemplate, remove, upload, detail, alertFn } from '@/api/drainageCode/seas'
 import { download } from '@/utils/common'
 
-import SelectUser from '@/components/SelectUser'
+import SelectWeUser from '@/components/SelectWeUser'
 import SelectTag from '@/components/SelectTag'
 export default {
   name: 'CodeStaff',
   components: {
-    SelectUser,
+    SelectWeUser,
     SelectTag,
   },
   data() {
     return {
+      submitLoading:false,
       headers: global.CONFIG.headers,
       currentActive: 'sea',
       importDialogVisible: false,
@@ -297,10 +298,11 @@ export default {
               .join(',')
           : '',
       }
+      this.submitLoading = true
       upload(this.toFormData(obj))
         .then((res) => {
           if (res.code === 200) {
-            this.msgSuccess(res.msg)
+            // this.msgSuccess(res.msg)
             this.form = {
               file: {},
               customerSeasTags: [],
@@ -309,10 +311,12 @@ export default {
             this.selectedUserList = []
             this.selectedTagList = []
             this.getList()
+            this.msgSuccess(res.data)
             this.importDialogVisible = false
           } else {
             this.msgError(res.msg)
           }
+          this.submitLoading = false
         })
         .catch(() => {})
     },
@@ -375,10 +379,11 @@ export default {
         }
       })
       this.selectedUserList = arr
+      console.log(this.selectedUserList)
       this.dialogVisible = true
     },
     selectedUserFn(users) {
-      const selectedUserList = users.map((d) => {
+        const selectedUserList = users.map((d) => {
         return {
           staffId: d.id || d.userId,
           staffName: d.name,
@@ -398,7 +403,7 @@ export default {
     downloadFn() {
       downloadTemplate().then((res) => {
         if (res != null) {
-          download(res.msg)
+          download(res.data)
         }
       })
     },

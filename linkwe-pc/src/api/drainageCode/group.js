@@ -55,9 +55,9 @@ export function add (data) {
   "customerServerQrCode":客服二维码
 }
  */
-export function update (id, data) {
+export function update (data) {
   return request({
-    url: service + '/' + id,
+    url: service,
     method: 'put',
     data,
   })
@@ -112,5 +112,24 @@ export function download (id) {
       id,
     },
     responseType: 'blob'
+  })
+}
+
+export function getLineChartTotal (data) {
+  return request({
+    url: service + '/findWeGroupCodeCountTrend',
+    params: data
+  })
+}
+
+export function getTableTotal (id) {
+  return request({
+    url: service + '/findWeGroupChatInfos/' + id
+  })
+}
+
+export function getGroupDetail (id) {
+  return request({
+    url: service + '/findWeGroupCodeById/' + id
   })
 }

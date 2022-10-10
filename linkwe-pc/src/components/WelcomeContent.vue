@@ -1,12 +1,11 @@
 <template>
   <div>
-    <el-row :gutter="10" type="flex" style="margin-top: 10px">
+    <el-row :gutter="10" type="flex" style="margin-top: 10px;">
       <el-col>
         <el-form label-width="110px" label-position="right">
           <div class="g-card g-pad20">
-            <el-form-item label="使用员工" required v-if="showMember">
-              <el-tag sizi="mini" v-for="(unit, key) in form.users" :key="key">{{ unit.userName }}
-              </el-tag>
+            <el-form-item label="使用员工" required :error="userError" v-if="showMember">
+              <el-tag sizi="mini" v-for="(unit, key) in users" :key="key">{{ unit.name }} </el-tag>
               <div>
                 <el-button type="primary" size="mini" plain @click="onSelectUser">选择员工</el-button>
               </div>
@@ -17,16 +16,30 @@
             <!-- 欢迎语 -->
             <div class="my-cord">
               <div v-if="showTemplate" class="operation" @click="getWelList(), (dialogVisibleSelectWel = true)">
-                <img style="margin-right: 3px" :src="require('@/assets/drainageCode/code-add.png')" alt="" />从模板库中选择
+                <i class="el-icon-menu mr5"></i>从模板库中选择
               </div>
               <div v-if="!showTemplate" class="operation" @click="onChooseMaterialWel()">
-                <img style="margin-right: 3px" :src="require('@/assets/drainageCode/code-add.png')" alt="" />从素材中选择
+                <i class="el-icon-menu mr5"></i>从素材中选择
               </div>
-              <el-form-item :label="isgroup ? '消息内容' : '欢迎语'" required style="width: 50%; margin-bottom: 0" :error="welcomeMsgError">
-                <el-input ref="msgTextarea" type="textarea" v-model="form.welcomeMsg" maxlength="2000" show-word-limit placeholder="请输入" :autosize="{ minRows: 5, maxRows: 20 }" clearable />
+              <el-form-item
+                :label="isgroup ? '消息内容' : '欢迎语'"
+                required
+                style="margin-right: 200px !important;"
+                :error="welcomeMsgError"
+              >
+                <el-input
+                  ref="msgTextarea"
+                  type="textarea"
+                  v-model="form.welcomeMsg"
+                  maxlength="2000"
+                  show-word-limit
+                  placeholder="请输入"
+                  :autosize="{ minRows: 5, maxRows: 20 }"
+                  clearable
+                />
               </el-form-item>
-              <el-form-item style="margin-bottom: 0" v-if="!isgroup">
-                <el-checkbox @change="onInsert">插入客户昵称</el-checkbox>
+              <el-form-item style="" v-if="!isgroup">
+                <el-checkbox v-model="isChecked" @change="onInsert">插入客户昵称</el-checkbox>
               </el-form-item>
             </div>
           </div>
@@ -37,13 +50,11 @@
             <div class="my-cord" v-if="item.msgType == '4'">
               <div class="operation">
                 <div v-if="showMorMaterial" class="algin" @click="onChooseMaterial(item.msgType, index)">
-                  <img style="margin-right: 3px" :src="require('@/assets/drainageCode/code-add.png')" alt="" />从素材中选择
+                  <i class="el-icon-menu mr5"></i> 从素材中选择
                 </div>
-                <div class="algin" @click="onRemoveMaterial(index)">
-                  <img style="margin-right: 3px; height: 12px; width: 12px" :src="require('@/assets/drainageCode/delete.png')" alt="" />删除
-                </div>
+                <div class="algin" @click="onRemoveMaterial(index)"><i class="el-icon-delete mr5"></i>删除</div>
               </div>
-              <el-form-item label="文本" required style="width: 50%; margin-bottom: 0" :error="item.contentError">
+              <el-form-item label="文本" required style="margin-right: 200px !important;" :error="item.contentError">
                 <el-input type="text" v-model="item.content" maxlength="200" placeholder="请输入" />
               </el-form-item>
             </div>
@@ -51,11 +62,9 @@
             <div class="my-cord" v-else-if="item.msgType == '0'">
               <div class="operation">
                 <div v-if="showMorMaterial" class="algin" @click="onChooseMaterial(item.msgType, index)">
-                  <img style="margin-right: 3px" :src="require('@/assets/drainageCode/code-add.png')" alt="" />从素材中选择
+                  <i class="el-icon-menu mr5"></i> 从素材中选择
                 </div>
-                <div class="algin" @click="onRemoveMaterial(index)">
-                  <img style="margin-right: 3px; height: 12px; width: 12px" :src="require('@/assets/drainageCode/delete.png')" alt="" />删除
-                </div>
+                <div class="algin" @click="onRemoveMaterial(index)"><i class="el-icon-delete mr5"></i>删除</div>
               </div>
               <el-form-item label="图片上传" required :error="item.materialUrlError">
                 <upload class="image-uploader" :fileUrl.sync="item.materialUrl" type="0"></upload>
@@ -65,16 +74,32 @@
             <div class="my-cord" v-else-if="item.msgType == '8'">
               <div class="operation">
                 <div v-if="showMorMaterial" class="algin" @click="onChooseMaterial(item.msgType, index)">
-                  <img style="margin-right: 3px" :src="require('@/assets/drainageCode/code-add.png')" alt="" />从素材中选择
+                  <i class="el-icon-menu mr5"></i> 从素材中选择
                 </div>
-                <div class="algin" @click="onRemoveMaterial(index)">
-                  <img style="margin-right: 3px; height: 12px; width: 12px" :src="require('@/assets/drainageCode/delete.png')" alt="" />删除
-                </div>
+                <div class="algin" @click="onRemoveMaterial(index)"><i class="el-icon-delete mr5"></i>删除</div>
               </div>
-              <el-form-item label="图文标题" style="width: 50%" required :error="item.materialNameError">
-                <el-input v-model="item.materialName" placeholder="请输入图文标题" maxlength="64" show-word-limit clearable></el-input>
+              <el-form-item
+                label="图文标题"
+                style="margin-right: 200px !important;"
+                required
+                :error="item.materialNameError"
+              >
+                <el-input
+                  type="textarea"
+                  :autosize="{ minRows: 5 }"
+                  v-model="item.materialName"
+                  placeholder="请输入图文标题"
+                  maxlength="64"
+                  show-word-limit
+                  clearable
+                ></el-input>
               </el-form-item>
-              <el-form-item label="图文链接" style="width: 50%" required :error="item.materialUrlError">
+              <el-form-item
+                label="图文链接"
+                style="margin-right: 200px !important;"
+                required
+                :error="item.materialUrlError"
+              >
                 <el-input v-model="item.materialUrl" placeholder="请输入图文链接"></el-input>
                 <div class="sub-des">仅支持公众号图文链接，且必须以 http://或 https://开头</div>
               </el-form-item>
@@ -83,20 +108,41 @@
             <div class="my-cord" v-else-if="item.msgType == '9'">
               <div class="operation">
                 <div v-if="showMorMaterial" class="algin" @click="onChooseMaterial(item.msgType, index)">
-                  <img style="margin-right: 3px" :src="require('@/assets/drainageCode/code-add.png')" alt="" />从素材中选择
+                  <i class="el-icon-menu mr5"></i> 从素材中选择
                 </div>
-                <div class="algin" @click="onRemoveMaterial(index)">
-                  <img style="margin-right: 3px; height: 12px; width: 12px" :src="require('@/assets/drainageCode/delete.png')" alt="" />删除
-                </div>
+                <div class="algin" @click="onRemoveMaterial(index)"><i class="el-icon-delete mr5"></i>删除</div>
               </div>
-              <el-form-item label="小程序标题" style="width: 50%" required :error="item.materialNameError">
-                <el-input v-model="item.materialName" placeholder="请输入小程序标题" maxlength="64" show-word-limit clearable></el-input>
+              <el-form-item
+                label="小程序标题"
+                style="margin-right: 200px !important;"
+                required
+                :error="item.materialNameError"
+              >
+                <el-input
+                  type="textarea"
+                  :autosize="{ minRows: 5, maxRows: 20 }"
+                  v-model="item.materialName"
+                  placeholder="请输入小程序标题"
+                  maxlength="64"
+                  show-word-limit
+                  clearable
+                ></el-input>
               </el-form-item>
-              <el-form-item label="小程序AppID" style="width: 50%" required :error="item.digestError">
+              <el-form-item
+                label="小程序AppID"
+                style="margin-right: 200px !important;"
+                required
+                :error="item.digestError"
+              >
                 <el-input v-model="item.digest" placeholder="请输入小程序AppID"></el-input>
                 <div class="sub-des">必须是审核通过，正常发布，且关联到企业的小程序应用</div>
               </el-form-item>
-              <el-form-item label="小程序路径" style="width: 50%" required :error="item.materialUrlError">
+              <el-form-item
+                label="小程序路径"
+                style="margin-right: 200px !important;"
+                required
+                :error="item.materialUrlError"
+              >
                 <el-input v-model="item.materialUrl" placeholder="请输入小程序路径"></el-input>
                 <div class="sub-des">必须以 html 作为后缀</div>
               </el-form-item>
@@ -108,9 +154,13 @@
 
           <!-- 添加附件 -->
           <div class="g-card g-pad20 add-continue" v-show="form.materialMsgList.length <= 8 && showMore()">
-            <el-dropdown style="margin-left: 10px" @command="onInsertMaterial">
-              <div style="display: flex; align-items: center">
-                <img style="margin-right: 5px" :src="require('@/assets/drainageCode/plus-circle.png')" alt="" />继续添加附件
+            <el-dropdown style="margin-left: 10px;" @command="onInsertMaterial">
+              <div style="display: flex; align-items: center;">
+                <img
+                  style="margin-right: 5px;"
+                  :src="require('@/assets/drainageCode/plus-circle.png')"
+                  alt=""
+                />继续添加附件
               </div>
               <el-dropdown-menu slot="dropdown" trigger="click">
                 <!-- <el-dropdown-item :command="4">
@@ -128,31 +178,55 @@
               </el-dropdown-menu>
             </el-dropdown>
           </div>
-          <el-form-item label-width="0" style="margin-top: 20px; margin-bottom: 0">
+          <el-form-item v-if="showStepBtn" label-width="0" style="margin-top: 20px;">
             <el-button @click="onBackStep" v-if="showBack">上一步</el-button>
             <el-button type="primary" @click="submit">保存</el-button>
           </el-form-item>
         </el-form>
       </el-col>
-      <el-col style="width: 350px">
-        <div class="g-card g-pad20" style="height: 100%">
+      <el-col style="width: 350px;">
+        <div class="g-card g-pad20" style="height: 100%;">
           <preview-client :list="form"></preview-client>
         </div>
       </el-col>
     </el-row>
-    <SelectMaterial :visible.sync="dialogVisibleSelectMaterial" :type="materialType" @success="submitSelectMaterial"></SelectMaterial>
-    <SelectMaterial :visible.sync="dialogVisibleSelectMaterialWel" type="4" @success="submitSelectMaterialWel"></SelectMaterial>
+    <SelectMaterial
+      :visible.sync="dialogVisibleSelectMaterial"
+      :type="materialType"
+      @success="submitSelectMaterial"
+    ></SelectMaterial>
+    <SelectMaterial
+      :visible.sync="dialogVisibleSelectMaterialWel"
+      type="4"
+      @success="submitSelectMaterialWel"
+    ></SelectMaterial>
 
     <el-dialog key="a" title="选择欢迎语" :visible.sync="dialogVisibleSelectWel" width="500">
       <div>
         <el-input class="welcome-input" placeholder="请输入关键字" v-model="welQuery.welcomeMsg">
           <el-button slot="append" @click="getWelList">查询</el-button>
         </el-input>
-        <el-table ref="table" v-loading="welLoading" :data="welList" :max-height="300" :show-header="false" highlight-current-row @current-change="(val) => (welSelected = val)">
-          <el-table-column property="welcomeMsg" show-overflow-tooltip></el-table-column>
+        <el-table
+          ref="table"
+          v-loading="welLoading"
+          :data="welList"
+          :max-height="300"
+          :show-header="false"
+          highlight-current-row
+          @current-change="(val) => (welSelected = val)"
+        >
+          <el-table-column property="welcomeMsg" show-overflow-tooltip>
+            <template slot-scope="{ row }">
+              {{ row.attachments[0].content }}
+            </template>
+          </el-table-column>
           <el-table-column width="60">
             <template slot-scope="{ row }">
-              <i v-if="welSelected.id === row.id" class="el-icon-check" style="color: rgb(65, 133, 244); font-size: 25px"></i>
+              <i
+                v-if="welSelected.id === row.id"
+                class="el-icon-check"
+                style="color: rgb(65, 133, 244); font-size: 25px;"
+              ></i>
             </template>
           </el-table-column>
         </el-table>
@@ -162,16 +236,19 @@
         <el-button type="primary" @click="selectWelcome">确 定</el-button>
       </div>
     </el-dialog>
-    <SelectUser :defaultValues="selectedUserList" :visible.sync="dialogVisibleSelectUser" title="选择使用员工" @success="selectedUser"></SelectUser>
+    <SelectWeUser
+      :defaultValues="selectedUserList"
+      :visible.sync="dialogVisibleSelectUser"
+      title="选择使用员工"
+      @success="selectedUser"
+    ></SelectWeUser>
   </div>
 </template>
 
 <script>
   import SelectMaterial from '@/components/SelectMaterial'
-  import SelectUser from '@/components/SelectUser'
   import { getList } from '@/api/drainageCode/welcome'
   import PreviewClient from '@/components/previewInMobileClient.vue'
-  import upload from '@/components/Upload'
   const materialField = {
     audioTime: '', // 音频时长
     content: '', // 内容 小程序路径
@@ -188,9 +265,7 @@
     name: 'welcome-detail',
     components: {
       SelectMaterial,
-      PreviewClient,
-      upload,
-      SelectUser
+      PreviewClient
     },
     props: {
       baseData: {
@@ -222,6 +297,10 @@
         type: Boolean,
         default: false
       },
+      showStepBtn: {
+        type: Boolean,
+        default: true
+      },
       currentActive: {
         type: Number
       },
@@ -235,19 +314,28 @@
       }
     },
     watch: {
-      baseData (val) {
+      baseData(val) {
         if (val.welcomeMsg) {
-          this.form = val
+          this.form.welcomeMsg = val.welcomeMsg
+          this.form.materialMsgList = val.materialMsgList
+          this.form.userIds = val.userIds
+          this.form.userNames = val.userNames
+          this.setData()
+          this.$forceUpdate()
         }
       }
     },
-    data () {
+    data() {
       return {
+        userError: '',
+        isChecked: false,
         form: {
           welcomeMsg: '',
           materialMsgList: [],
-          users: []
+          userIds: '',
+          userNames: ''
         },
+        users: [],
         welcomeMsgError: '',
         dialogVisibleSelectMaterial: false,
         materialType: '',
@@ -260,20 +348,39 @@
         },
         welLoading: false,
         welList: [],
-        welSelected: {},
+        welSelected: {
+          id: ''
+        },
         selectedUserList: [],
         dialogVisibleSelectUser: false,
         strTemplate1: '%NICKNAME%',
         strTemplate2: '#客户昵称#'
       }
     },
-    mounted () {
+    mounted() {
       if (this.baseData.welcomeMsg) {
-        this.form = this.baseData
+        this.form.welcomeMsg = this.baseData.welcomeMsg
+        this.form.materialMsgList = this.baseData.materialMsgList
+        this.form.userIds = this.baseData.userIds
+        this.form.userNames = this.baseData.userNames
+        this.setData()
       }
     },
     methods: {
-      showType (type) {
+      setData() {
+        this.selectedUserList = []
+        let arr = []
+        if (this.form.userIds) {
+          arr = this.form.userIds.split(',').map((dd, index) => {
+            return {
+              userId: dd,
+              name: this.form.userNames.split(',')[index]
+            }
+          })
+        }
+        this.users = arr
+      },
+      showType(type) {
         let exit = true
         if (this.isSingle) {
           this.form.materialMsgList.forEach((dd) => {
@@ -284,7 +391,7 @@
         }
         return exit
       },
-      showMore () {
+      showMore() {
         let exit = true
         if (this.isSingle) {
           if (this.form.materialMsgList.length === 1) {
@@ -293,7 +400,8 @@
         }
         return exit
       },
-      onSelectUser () {
+      onSelectUser() {
+        this.userError = ''
         this.selectedUserList = []
         let arr = []
         if (this.form.userIds) {
@@ -307,17 +415,24 @@
         this.selectedUserList = arr
         this.dialogVisibleSelectUser = true
       },
-      selectedUser (users) {
+      selectedUser(users) {
+        let ids = []
+        let names = []
         const selectedUserList = users.map((d) => {
+          ids.push(d.userId)
+          names.push(d.name)
           return {
-            userId: d.id || d.userId,
-            userName: d.name
+            userId: d.userId,
+            name: d.name
           }
         })
-        this.form.users = selectedUserList
+        this.users = selectedUserList
+        this.form.userIds = ids.join(',')
+        this.form.userNames = names.join(',')
       },
       // 插入客户昵称
-      onInsert (val) {
+      onInsert(val) {
+        this.isChecked = val
         const $textarea = this.$refs.msgTextarea.$el.children[0]
         const msg = this.form.welcomeMsg
         if (val) {
@@ -329,43 +444,42 @@
             this.form.welcomeMsg = msg.slice(0, textIndex) + str + msg.slice(textIndex)
           }
         } else {
-          this.form.welcomeMsg = this.strType
-            ? msg.replace(/\%NICKNAME\%/, '')
-            : msg.replace(/\#客户昵称\#/, '')
+          this.form.welcomeMsg = this.strType ? msg.replace(/\%NICKNAME\%/, '') : msg.replace(/\#客户昵称\#/, '')
         }
       },
-      onChooseMaterial (materialType, rowIndex) {
+      onChooseMaterial(materialType, rowIndex) {
         this.materialType = materialType
         this.rowIndex = rowIndex
         this.dialogVisibleSelectMaterial = true
       },
-      submitSelectMaterial (data) {
+      submitSelectMaterial(data) {
         this.form.materialMsgList.splice(
           this.rowIndex,
           1,
           Object.assign({}, this.form.materialMsgList[this.rowIndex], data)
         )
       },
-      onChooseMaterialWel () {
+      onChooseMaterialWel() {
         this.dialogVisibleSelectMaterialWel = true
       },
-      submitSelectMaterialWel (data) {
+      submitSelectMaterialWel(data) {
+        this.isChecked = false
         this.form.welcomeMsg = data.content
       },
-      onInsertMaterial (e) {
+      onInsertMaterial(e) {
         this.form.materialMsgList.push({
           msgType: e,
           ...materialField
         })
       },
-      onRemoveMaterial (index) {
+      onRemoveMaterial(index) {
         this.form.materialMsgList.splice(index, 1)
       },
       // 上一步
-      onBackStep () {
+      onBackStep() {
         this.$emit('update')
       },
-      validateMaterial () {
+      validateMaterial() {
         let materialList = this.form.materialMsgList
 
         const validateFields = {
@@ -434,7 +548,7 @@
         })
       },
       /** 获取欢迎语列表 */
-      getWelList () {
+      getWelList() {
         this.welLoading = true
         getList(this.welQuery).then(({ rows }) => {
           this.welList = rows
@@ -444,55 +558,114 @@
       },
 
       // 欢迎语确认按钮
-      selectWelcome () {
-        console.log(this.welSelected)
-        this.form.welcomeMsg = this.welSelected.welcomeMsg
-        this.getData()
+      selectWelcome() {
+        this.form.welcomeMsg = this.welSelected.attachments ? this.welSelected.attachments[0].content : ''
+        this.form.materialMsgList = this.welSelected.attachments ? this.getData(this.welSelected.attachments) : []
+        this.welSelected = {
+          id: ''
+        }
+        this.$forceUpdate()
         this.dialogVisibleSelectWel = false
       },
-      getData () {
-        this.form.materialMsgList = []
-        let img = []
-        let imgText = []
-        let applet = []
-        if (this.welSelected.picUrl) {
-          this.welSelected.picUrl.split(',').forEach(dd => {
-            let obj = {
-              materialUrl: dd,
-              msgType: '0',
+      getData(list) {
+        let arr = []
+        if (list && list.length) {
+          list.forEach((dd) => {
+            if (dd.msgType === 'image') {
+              let obj = {
+                msgType: '0',
+                materialUrl: dd.picUrl
+              }
+              arr.push(obj)
+            } else if (dd.msgType === 'link') {
+              let ob = {
+                msgType: '8',
+                materialName: dd.title,
+                materialUrl: dd.linkUrl
+              }
+              arr.push(ob)
+            } else if (dd.msgType === 'miniprogram') {
+              let ff = {
+                msgType: '9',
+                digest: dd.appId,
+                materialName: dd.title,
+                coverUrl: dd.picUrl,
+                materialUrl: dd.linkUrl
+              }
+              arr.push(ff)
             }
-            img.push(obj)
           })
         }
-        if (this.welSelected.imageText && this.welSelected.imageText.length) {
-          this.welSelected.imageText.forEach(dd => {
-            let obj = {
-              materialName: dd.imageTextTile,
-              materialUrl: dd.imageTextUrl,
-              msgType: '8'
-            }
-            imgText.push(obj)
-          })
-        }
-        if (this.welSelected.applet && this.welSelected.applet.length) {
-          this.welSelected.applet.forEach(cc => {
-            let obj = {
-              materialName: cc.appTile,
-              digest: cc.appId,
-              materialUrl: cc.appPath,
-              coverUrl: cc.appPic,
-              msgType: '9'
-            }
-            applet.push(obj)
-          })
-        }
-        this.form.materialMsgList.push(...img)
-        this.form.materialMsgList.push(...imgText)
-        this.form.materialMsgList.push(...applet)
-        this.$forceUpdate()
+        return arr
         // })
       },
-      submit () {
+      resetData(list) {
+        let arr = []
+        if (list && list.length) {
+          list.forEach((dd) => {
+            if (dd.msgType === '0') {
+              let obj = {
+                msgType: 'image',
+                picUrl: dd.materialUrl
+              }
+              arr.push(obj)
+            } else if (dd.msgType === '8') {
+              let ob = {
+                msgType: 'link',
+                title: dd.materialName,
+                linkUrl: dd.materialUrl
+              }
+              arr.push(ob)
+            } else if (dd.msgType === '9') {
+              let ff = {
+                msgType: 'miniprogram',
+                appId: dd.digest,
+                title: dd.materialName,
+                picUrl: dd.coverUrl,
+                linkUrl: dd.materialUrl
+              }
+              arr.push(ff)
+            }
+          })
+        }
+        return arr
+      },
+      setEditList(list) {
+        let arr = []
+        if (list && list.length) {
+          list.forEach((dd) => {
+            if (dd.msgType === 'image') {
+              let obj = {
+                msgType: '0',
+                materialUrl: dd.picUrl
+              }
+              arr.push(obj)
+            } else if (dd.msgType === 'link') {
+              let ob = {
+                msgType: '8',
+                materialName: dd.title,
+                materialUrl: dd.linkUrl
+              }
+              arr.push(ob)
+            } else if (dd.msgType === 'miniprogram') {
+              let ff = {
+                msgType: '9',
+                digest: dd.appId,
+                materialName: dd.title,
+                coverUrl: dd.picUrl,
+                materialUrl: dd.linkUrl
+              }
+              arr.push(ff)
+            }
+          })
+        }
+        return arr
+      },
+      submit() {
+        if (this.showMember && !this.form.userIds) {
+          this.userError = '请选择员工！'
+          return
+        }
         if (!this.form.welcomeMsg) {
           this.welcomeMsgError = '请输入欢迎语'
           return
@@ -520,8 +693,16 @@
           })
           this.$forceUpdate()
           if (goto) {
+            if (this.form.userIds) {
+              this.form.userIds = this.form.userIds.split(',')
+              this.form.userNames = this.form.userNames.split(',')
+              delete this.form.users
+            }
             // this.msgInfo('校验通过')
             this.$emit('submit', this.form)
+            return true
+          } else {
+            return false
           }
         }
       }

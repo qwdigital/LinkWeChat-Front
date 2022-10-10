@@ -62,7 +62,7 @@ export default {
       })
     },
   },
-  created() {},
+  created() { },
   mounted() {
     this.drawChart()
   },
@@ -83,7 +83,8 @@ export default {
           name: this.legend[index],
           type: 'bar',
           stack: this.stack,
-          barWidth: this.stack ? 40 : 20, // 柱图宽度
+          // barWidth: this.stack ? 55 : 20, // 柱图宽度
+          barMaxWidth: 50,
           emphasis: {
             focus: 'series',
           },
@@ -138,7 +139,7 @@ export default {
             },
             axisLabel: {
               // 坐标轴刻度标签的相关设置。
-              interval: 0,
+              // interval: 0,
               color: 'rgba(153, 153, 153, 1)', // 横坐标字体颜色
             },
             axisTick: {
@@ -174,9 +175,9 @@ export default {
       this.option && merge(option, this.option)
       option && this.myChart.setOption(option)
 
-      // new ResizeObserver((entries) => {
-      //   this.myChart.resize()
-      // }).observe(this.$refs.chart)
+      new ResizeObserver((entries) => {
+        this.myChart.resize()
+      }).observe(this.$refs.chart)
     },
   },
 }
@@ -184,7 +185,9 @@ export default {
 
 <template>
   <div v-if="series && series.length" ref="chart" class="chart-bar chart" key="1"></div>
-  <div v-else class="chart-bar chart" key="2"><div class="cc">暂无数据</div></div>
+  <div v-else class="chart-bar chart" key="2">
+    <div class="cc">暂无数据</div>
+  </div>
 </template>
 
 <style lang="scss" scoped>

@@ -1,3 +1,4 @@
+
 import request from '@/utils/request'
 const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/actual'
 

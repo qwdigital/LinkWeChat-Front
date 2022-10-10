@@ -7,10 +7,20 @@
         </div>
         <el-form-item label="微信客服Secret:" prop="kfSecret">
           <div>
-            <el-input style="width: 40%;" :disabled="!kfSecretEditState" :type="kfSecretEditState ? 'text':'password'" v-model="form.kfSecret" placeholder="请输入微信客服Secret"></el-input>
-            <el-button style="margin-left:20px;" plain v-if="kfSecretEditState" @click="cancelEditKfSecret">取消</el-button>
+            <el-input
+              style="width: 40%;"
+              :disabled="!kfSecretEditState"
+              :type="kfSecretEditState ? 'text' : 'password'"
+              v-model="form.kfSecret"
+              placeholder="请输入微信客服Secret"
+            ></el-input>
+            <el-button style="margin-left: 20px;" plain v-if="kfSecretEditState" @click="cancelEditKfSecret"
+              >取消</el-button
+            >
             <el-button type="primary" plain v-if="kfSecretEditState" @click="submitEditKfSecret">保存</el-button>
-            <el-button type="primary" style="margin-left:20px;" plain v-if="!kfSecretEditState" @click="editKfSecret">修改</el-button>
+            <el-button type="primary" style="margin-left: 20px;" plain v-if="!kfSecretEditState" @click="editKfSecret"
+              >修改</el-button
+            >
           </div>
           <div class="tips">用于通过API管理客服，在企微后台->应用管理->微信客服中获取</div>
         </el-form-item>
@@ -28,25 +38,23 @@
         <el-button type="primary" @click="submit">保存配置</el-button>
       </el-form-item>
     </el-form>
-
   </div>
 </template>
 <script>
   export default {
     name: 'enterprise-wechat-part3',
-    data () {
+    data() {
       return {
         kfSecretCopy: '',
         kfSecretEditState: false,
-        form: {
-        },
+        form: {},
         rules: {
-          kfSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
+          kfSecret: [{ required: true, message: '必填项', trigger: 'blur' }]
         }
       }
     },
     watch: {
-      data: 'setData',
+      data: 'setData'
     },
     props: {
       data: {
@@ -55,41 +63,37 @@
       }
     },
     methods: {
-      editKfSecret () {
+      editKfSecret() {
         this.kfSecretEditState = true
         this.kfSecretCopy = JSON.parse(JSON.stringify(this.form.kfSecret))
         this.form.kfSecret = ''
       },
-      cancelEditKfSecret () {
+      cancelEditKfSecret() {
         this.kfSecretEditState = false
         this.form.kfSecret = JSON.parse(JSON.stringify(this.kfSecretCopy))
       },
-      submitEditKfSecret () {
+      submitEditKfSecret() {
         if (this.form.kfSecret) {
           this.$emit('submit', this.form)
           this.kfSecretEditState = false
         }
       },
-      submit () {
-        this.$refs['form'].validate(validate => {
+      submit() {
+        this.$refs['form'].validate((validate) => {
           if (validate) {
             this.$emit('submit', this.form)
           }
         })
       },
-      setData () {
+      setData() {
         console.log(this.data)
         if (Object.keys(this.data).length) {
           this.form = this.data
         }
       }
     },
-    mounted () {
-
-    },
-    created () {
-
-    }
+    mounted() {},
+    created() {}
   }
 </script>
 <style lang="scss" scoped>

@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom
 
 // 外部联系人 会话列表
 export const getExternalChatList = (fromId) => {
@@ -32,7 +32,12 @@ export const getGroupChatList = (fromId) => {
     method: 'get'
   })
 }
-
+export const getGroupChatListNew = (fromId) => {
+  return request({
+    url: service + '/groupchat/getGroupListByMemberId/' + fromId,
+    method: 'get'
+  })
+}
 // export const chatList = (params) => {
 //   return request({
 //     url: '/chat/msg/list',

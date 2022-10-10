@@ -7,7 +7,7 @@
         v-for="(item, index) in $router.options.routes"
         :to="item.path"
         :key="index"
-        >{{ item.meta.title }}</router-link
+        >{{ item.meta && item.meta.title }}</router-link
       >
     </template>
     <div v-else class="cc tips blod">

@@ -7,7 +7,7 @@ export default {
     // 数据列表
     data: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     // isArrow: {
     //   type: Boolean,
@@ -21,9 +21,9 @@ export default {
         value: 'value',
         title1: 'title1',
         value1: 'value1',
-        noArrow: 'noArrow'
-      })
-    }
+        noArrow: 'noArrow',
+      }),
+    },
   },
   data() {
     return {}
@@ -48,10 +48,10 @@ export default {
       } else if (val < 0) {
         return '↓'
       } else {
-        return '-'
+        return ''
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -71,7 +71,7 @@ export default {
         {{ row[defaultProps.title1] }}
         <span class="fr" :class="row[defaultProps.noArrow] || getClass(row[defaultProps.value1])">
           {{ row[defaultProps.noArrow] ? '' : getArrow(row[defaultProps.value1]) }}
-          {{ Math.abs(row[defaultProps.value1]) }}
+          {{ Math.abs(row[defaultProps.value1]) || 0 }}
         </span>
       </div>
     </li>
@@ -107,6 +107,9 @@ export default {
   .value2 {
     font-size: $font-size-keydata;
     line-height: 1.15;
+  }
+  .el-icon-question {
+    color: #999;
   }
   .icon-arrow {
     position: absolute;

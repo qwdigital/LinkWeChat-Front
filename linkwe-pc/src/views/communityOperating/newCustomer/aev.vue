@@ -9,6 +9,7 @@ export default {
   components: { PhoneDialog, SelectTag, SelectUser, SelectQrCode },
   data() {
     return {
+      selectedUserList:[],
       newGroupId: '',
       dialogVisibleSelectUser: false, // 选择员工会话
       dialogVisibleSelectTag: false, // 选择客户标签会话
@@ -86,6 +87,20 @@ export default {
         }
       })
     },
+    onSelectUser () {
+        this.selectedUserList = []
+        let arr = []
+        if (this.users && this.users.length) {
+          arr = this.users.map((dd, index) => {
+            return {
+              userId: dd.businessId,
+              name: dd.businessName
+            }
+          })
+        }
+        this.selectedUserList = arr
+        this.dialogVisibleSelectUser = true
+      },
     // 客户标签选择
     submitSelectTag(tags) {
       this.tags = tags.map((t) => {
@@ -156,7 +171,7 @@ export default {
           :class="users.length > 0 ? 'ml10' : ''"
           icon="el-icon-plus"
           size="mini"
-          @click="dialogVisibleSelectUser = true"
+          @click="onSelectUser"
           >{{ users.length ? '修改' : '添加' }}</el-button
         >
       </el-form-item>
@@ -173,6 +188,7 @@ export default {
       </el-form-item>
       <el-form-item label="选择群活码" prop="groupCodeId">
         <el-image
+          style="width: 160px;height: 160px;"
           v-if="groupQrCode && groupQrCode.codeUrl"
           :src="groupQrCode.codeUrl"
           class="code-image mr10"
@@ -227,8 +243,10 @@ export default {
     <!-- 选择使用员工弹窗 -->
     <SelectUser
       :key="form.codeType"
+      :isWechat="false"
       :visible.sync="dialogVisibleSelectUser"
       title="选择使用员工"
+      :defaultValues="selectedUserList"
       :isOnlyLeaf="form.codeType !== 2"
       :isSigleSelect="form.codeType == 1"
       @success="submitSelectUser"

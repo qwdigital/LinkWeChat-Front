@@ -4,7 +4,7 @@ const service = window.CONFIG.services.system
 // 获取路由
 export const getRouters = () => {
   return request({
-    url: service + '/getRouters',
-    method: 'get'
+    url: service + '/system/user/getRouters',
+    method: 'get',
   })
 }

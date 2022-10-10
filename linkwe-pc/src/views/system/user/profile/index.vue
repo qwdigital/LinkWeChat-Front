@@ -25,7 +25,9 @@
               </li>
               <li class="list-group-item">
                 <svg-icon icon-class="tree" />所属部门
-                <div class="pull-right" v-if="user.dept">{{ user.dept.deptName }} / {{ postGroup }}</div>
+                <div class="pull-right" v-if="user.dept">
+                  {{ user.dept.deptName }} / {{ postGroup }}
+                </div>
               </li>
               <li class="list-group-item">
                 <svg-icon icon-class="peoples" />所属角色
@@ -39,7 +41,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="18" :xs="24">
+      <!-- <el-col :span="18" :xs="24">
         <el-card>
           <div slot="header" class="clearfix">
             <span>基本资料</span>
@@ -53,39 +55,44 @@
             </el-tab-pane>
           </el-tabs>
         </el-card>
-      </el-col>
+      </el-col> -->
     </el-row>
   </div>
 </template>
 
 <script>
-import userAvatar from "./userAvatar";
-import userInfo from "./userInfo";
-import resetPwd from "./resetPwd";
-import { getUserProfile } from "@/api/system/user";
+  import userAvatar from './userAvatar'
+  import userInfo from './userInfo'
+  import resetPwd from './resetPwd'
+  import { getUserProfile } from '@/api/system/user'
 
-export default {
-  name: "Profile",
-  components: { userAvatar, userInfo, resetPwd },
-  data() {
-    return {
-      user: {},
-      roleGroup: {},
-      postGroup: {},
-      activeTab: "userinfo"
-    };
-  },
-  created() {
-    this.getUser();
-  },
-  methods: {
-    getUser() {
-      getUserProfile().then(response => {
-        this.user = response.data;
-        this.roleGroup = response.roleGroup;
-        this.postGroup = response.postGroup;
-      });
-    }
+  export default {
+    name: 'Profile',
+    components: { userAvatar, userInfo, resetPwd },
+    data () {
+      return {
+        user: {},
+        roleGroup: {},
+        postGroup: {},
+        activeTab: 'userinfo',
+      }
+    },
+    created () {
+      this.getUser()
+    },
+    methods: {
+      getUser () {
+        getUserProfile().then((response) => {
+          this.user = response.data
+          this.roleGroup = response.roleGroup
+          this.postGroup = response.postGroup
+        })
+      },
+    },
   }
-};
 </script>
+<style lang="scss" scoped>
+  ::v-deep .svg-icon {
+    margin-right: 5px;
+  }
+</style>

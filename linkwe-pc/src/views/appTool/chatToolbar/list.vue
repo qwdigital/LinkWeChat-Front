@@ -54,7 +54,7 @@ export default {
     },
     openDialog(data) {
       this.dialogVisible = true
-      this.metarialParams.sideId = data.sideId
+      this.metarialParams.sideId = data.id
       this.metarialParams.mediaType = data.mediaType
     },
     // 抓取素材
@@ -83,6 +83,10 @@ export default {
     },
     update(data) {
       // this.loading = true
+      if (!data.sideName) {
+        this.msgError('请填入聊天工具栏名称！')
+        return 
+      }
       update(data)
         .then(() => {
           this.msgSuccess('操作成功')
@@ -111,16 +115,18 @@ export default {
           {{ mediaType[scope.row.mediaType] }}
         </template>
       </el-table-column>
-      <el-table-column label="聊天工具栏名称" align="center" prop="sideName">
+      <el-table-column label="聊天工具栏名称" align="center" width="350" prop="sideName">
         <template slot-scope="{ row }">
           <el-input
             class="bfc-d"
-            style="width: 100px;"
+            style="width: 200px;"
             v-if="row.isEdit"
             v-model="row.sideName"
             placeholder="请输入"
+            maxlength="20"
+            show-word-limit
           ></el-input>
-          <span v-else>
+          <span v-else :title="row.sideName">
             {{ row.sideName }}
           </span>
 

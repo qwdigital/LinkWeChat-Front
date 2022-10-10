@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div v-if="!code || !code.actualQRCode">
+  <div v-loading="loading">
+    <div v-if="!code || !code.codeUrl">
       <van-empty :description="message" />
     </div>
     <div v-else class="code-wrapper">
@@ -17,7 +17,7 @@
       </div>
 
       <div class="code-image">
-        <van-image width="300" :src="code.actualQRCode"></van-image>
+        <van-image width="300" :src="code.codeUrl"></van-image>
       </div>
 
       <div class="service" v-if="code.isOpenTip === '1'">
@@ -54,18 +54,19 @@ import { getDetail } from '@/api/groupCode'
 export default {
   data() {
     return {
+      loading: false,
       groupCodeUUID: '', // 群活码ID
       code: {
         activityName: '', // 活码名称
         guide: '', // 加群引导语
-        actualQRCode: '', // 实际群码
+        codeUrl: '', // 实际群码
         isOpenTip: '', // 是否显示无法加群提示
         tipMsg: '', // 无法加群提示语
         serviceQrCode: '', // 客服二维码
-        groupName: '' // 实际群名称
+        groupName: '', // 实际群名称
       },
       dialog: false,
-      message: '抱歉，暂无可用实际群码'
+      message: '抱歉，暂无可用实际群码',
     }
   },
 
@@ -73,23 +74,23 @@ export default {
     // 获取群活码详情
     getDetail() {
       if (!this.groupCodeUUID) return
-
+      this.loading = true
       getDetail(this.groupCodeUUID)
         .then(({ data, msg }) => {
           this.code = Object.assign(this.code, data)
           document.title = data.activityName
-
+          this.loading = false
           if (msg) this.message = msg
         })
         .catch(() => {})
-    }
+    },
   },
 
   created() {
     this.groupCodeUUID = this.$route.query.id
 
     this.getDetail()
-  }
+  },
 }
 </script>
 

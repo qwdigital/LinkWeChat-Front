@@ -2,31 +2,22 @@
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item key="1">
-        <svg-icon
-          @click="handleLink({ path: '/index' })"
-          iconClass="home"
-          class="cp home"
-        ></svg-icon>
+        <svg-icon @click="handleLink({ path: '/' })" iconClass="home" class="cp home"></svg-icon>
       </el-breadcrumb-item>
       <el-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
         <span
           v-if="
             item.redirect === 'noRedirect' ||
-              index == levelList.length - 1 ||
-              !/^\//gi.test(item.redirect)
+            index == levelList.length - 1 ||
+            !/^\//gi.test(item.redirect)
           "
           class="no-redirect"
-          >{{ item.meta.title }}</span
+          >{{ transformTitle(item.meta.title) }}</span
         >
         <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
       </el-breadcrumb-item>
     </transition-group>
-    <el-popover
-      v-if="busininessDesc"
-      placement="top-start"
-      title="引导语"
-      trigger="hover"
-    >
+    <el-popover v-if="busininessDesc" placement="top-start" title="引导语" trigger="hover">
       <div v-html="busininessDesc"></div>
       <i class="el-icon-question" slot="reference"></i>
     </el-popover>
@@ -39,7 +30,7 @@ import pathToRegexp from 'path-to-regexp'
 export default {
   data() {
     return {
-      levelList: null
+      levelList: null,
     }
   },
   watch: {
@@ -50,12 +41,12 @@ export default {
       }
       this.$store.state.app.busininessDesc = ''
       this.getBreadcrumb()
-    }
+    },
   },
   computed: {
     busininessDesc() {
       return this.$store.state.app.busininessDesc
-    }
+    },
   },
   created() {
     this.getBreadcrumb()
@@ -63,9 +54,7 @@ export default {
   methods: {
     getBreadcrumb() {
       // only show routes with meta.title
-      let matched = this.$route.matched.filter(
-        (item) => item.meta && item.meta.title
-      )
+      let matched = this.$route.matched.filter((item) => item.meta && item.meta.title)
       const first = matched[0]
 
       // if (!this.isDashboard(first)) {
@@ -95,8 +84,24 @@ export default {
         return
       }
       this.$router.push(this.pathCompile(path))
-    }
-  }
+    },
+    transformTitle(title) {
+      // 对于详情和添加为同一个路由的面包屑处理
+      // 匹配菜单标题中带有 {*} 的公用路由
+      let reg = /^\{(.*)\}$/gi
+      if (reg.test(title)) {
+        let query = this.$route.query
+        if (query && query.id) {
+          // 带路由查询id参数的替换 {*} 为详情 eg:活码{添加} 替换为 活码详情
+          title = title.replace(reg, '详情')
+        } else {
+          // 默认情况下都替换为 新建
+          title = title.replace(reg, '新建')
+        }
+      }
+      return title
+    },
+  },
 }
 </script>
 

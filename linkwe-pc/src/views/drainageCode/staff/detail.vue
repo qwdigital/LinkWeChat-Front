@@ -189,12 +189,12 @@ import * as echarts from 'echarts'
 import PreviewClient from '@/components/previewInMobileClient.vue'
 import { getDetail, getTotal, downloadBatch } from '@/api/drainageCode/staff'
 
-import ClipboardJS from 'clipboard'
+//
 
 export default {
   name: 'CodeDetail',
   components: {
-    PreviewClient
+    PreviewClient,
   },
   data() {
     return {
@@ -217,14 +217,14 @@ export default {
       query: {
         qrId: '',
         beginTime: undefined,
-        endTime: undefined
+        endTime: undefined,
       },
       type: {
         1: '单人',
         2: '多人',
-        3: '批量单人'
+        3: '批量单人',
       },
-      timeRange: 7
+      timeRange: 7,
     }
   },
   created() {
@@ -234,25 +234,15 @@ export default {
     // this.getList()
   },
   mounted() {
-    var clipboard = new ClipboardJS('.copy-btn')
-    clipboard.on('success', (e) => {
-      this.$notify({
-        title: '成功',
-        message: '链接已复制到剪切板，可粘贴。',
-        type: 'success'
-      })
-    })
-    clipboard.on('error', (e) => {
-      this.$message.error('链接复制失败')
-    })
+    // var clipboard = new this.ClipboardJS('.copy-btn')
   },
   methods: {
     editFn() {
       this.$router.push({
-        path: '/drainageCode/' + 'staffAdd',
+        path: '/drainageCode/qrCode/' + 'staffAdd',
         query: {
-          id: this.form.id
-        }
+          id: this.form.id,
+        },
       })
     },
     /** 获取详情 */
@@ -282,14 +272,14 @@ export default {
           if (dd.msgType === 'image') {
             let obj = {
               msgType: '0',
-              materialUrl: dd.picUrl
+              materialUrl: dd.picUrl,
             }
             arr.push(obj)
           } else if (dd.msgType === 'link') {
             let ob = {
               msgType: '8',
               materialName: dd.title,
-              materialUrl: dd.linkUrl
+              materialUrl: dd.linkUrl,
             }
             arr.push(ob)
           } else if (dd.msgType === 'miniprogram') {
@@ -298,7 +288,7 @@ export default {
               digest: dd.appId,
               materialName: dd.title,
               coverUrl: dd.picUrl,
-              materialUrl: dd.linkUrl
+              materialUrl: dd.linkUrl,
             }
             arr.push(ff)
           }
@@ -315,17 +305,17 @@ export default {
         let option = {
           xAxis: {
             type: 'category',
-            data: data.xaxis
+            data: data.xaxis,
           },
           yAxis: {
-            type: 'value'
+            type: 'value',
           },
           series: [
             {
               data: data.yaxis,
-              type: 'line'
-            }
-          ]
+              type: 'line',
+            },
+          ],
         }
         var myChart = echarts.init(document.getElementById('mychart'))
         myChart.setOption(option)
@@ -379,8 +369,8 @@ export default {
     download() {
       let name = this.form.name + '.png'
       this.downloadByBlob(this.form.qrCode, name)
-    }
-  }
+    },
+  },
 }
 </script>
 

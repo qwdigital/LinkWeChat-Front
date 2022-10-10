@@ -1,120 +1,119 @@
 import Vue from 'vue'
-// require('promise.prototype.finally').shim()
-import '../env'
-
 import Cookies from 'js-cookie'
 
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
+import 'video.js/dist/video-js.css'
+
+// 该插件局部引入有bug
+import SuperFlow from 'vue-super-flow'
+import 'vue-super-flow/lib/index.css'
+Vue.use(SuperFlow)
 
 import Element from 'element-ui'
 import './styles/element-variables.scss'
-
 Vue.use(Element, {
   size: Cookies.get('size') || 'small', // set element-ui default size
 })
 
-import '@/styles/common.scss' // common css
 import '@/styles/index.scss' // global css
-import 'video.js/dist/video-js.css'
-
-import '@/config'
+import './config'
 import App from './App'
 import store from './store'
 import router from './router'
-
 import './assets/icons' // icon
 import './permission' // permission control
-import { getDicts } from '@/api/system/dict/data'
-import { getConfigKey } from '@/api/system/config'
-import {
-  parseTime,
-  resetForm,
-  addDateRange,
-  selectDictLabel,
-  selectDictLabels,
-  download,
-  handleTree,
-} from '@/utils/common'
 
-import Pagination from '@/components/Pagination'
-import RightToolbar from '@/components/RightToolbar' //自定义表格工具扩展
-import Upload from '@/components/Upload'
-import ButtonSync from '@/components/ButtonSync'
-import TagEllipsis from '@/components/TagEllipsis'
-import SelectUser from '@/components/SelectUser'
 // 全局组件挂载
-Vue.component('Pagination', Pagination)
-Vue.component('RightToolbar', RightToolbar)
-Vue.component('Upload', Upload)
-Vue.component('ButtonSync', ButtonSync)
-Vue.component(TagEllipsis.name, TagEllipsis)
-Vue.component(SelectUser.name, SelectUser)
-
-import directive from './directive'
-Vue.use(directive)
-
+Vue.component('Pagination', () => import('@/components/Pagination'))
+Vue.component('RightToolbar', () => import('@/components/RightToolbar'))
+Vue.component('Upload', () => import('@/components/Upload'))
+Vue.component('ButtonSync', () => import('@/components/ButtonSync'))
+Vue.component('TagEllipsis', () => import('@/components/TagEllipsis'))
+Vue.component('SelectUser', () => import('@/components/SelectUser'))
+Vue.component('SelectWeUser', () => import('@/components/SelectWeUser'))
+Vue.component('SelectStaffForm', () => import('@/components/SelectStaffForm'))
+Vue.component('CoRemoteSelect', () => import('@/components/CoRemoteSelect'))
 // 全局方法挂载
-Vue.prototype.getDicts = getDicts
-Vue.prototype.getConfigKey = getConfigKey
-Vue.prototype.parseTime = parseTime
-Vue.prototype.resetForm = resetForm
-Vue.prototype.addDateRange = addDateRange
-Vue.prototype.selectDictLabel = selectDictLabel
-Vue.prototype.selectDictLabels = selectDictLabels
-Vue.prototype.download = download
-Vue.prototype.handleTree = handleTree
-Vue.prototype.lwConfig = window.lwConfig
-
-Vue.prototype.msgSuccess = function (msg) {
-  this.$message({ showClose: true, message: msg, type: 'success' })
+import ClipboardJS from 'clipboard'
+// class ClipboardJS extends clipboard {
+//   constructor(trigger, options) {
+//     super(trigger, options)
+//   }
+// }
+ClipboardJS.prototype.e = {
+  success: [
+    {
+      fn() {
+        Element.Notification.success({
+          title: '成功',
+          message: '链接已复制到剪切板，可粘贴。',
+        })
+      },
+    },
+  ],
+  error: [
+    {
+      fn() {
+        Element.Notification.error({
+          title: '成功',
+          message: '链接复制失败',
+        })
+      },
+    },
+  ],
 }
-
-Vue.prototype.msgError = function (msg) {
-  this.$message({ showClose: true, message: msg, type: 'error' })
-}
-
-Vue.prototype.msgInfo = function (msg) {
-  this.$message.info(msg)
-}
-
+import * as methods from '@/utils/common'
 import { pickerOptions } from '@/utils/index'
-Vue.prototype.pickerOptions = pickerOptions
-import VideoPlayer from 'vue-video-player'
-Vue.use(VideoPlayer)
+Object.assign(Vue.prototype, methods, {
+  // 动态配置
+  lwConfig: window.lwConfig,
+  // 日期时间控件快捷配置
+  pickerOptions,
+  ClipboardJS,
+  msgSuccess(msg) {
+    this.$message({
+      showClose: true,
+      message: msg,
+      type: 'success',
+    })
+  },
+  msgError(msg) {
+    this.$message({ showClose: true, message: msg, type: 'error' })
+  },
+  msgInfo(msg) {
+    this.$message.info(msg)
+  },
+})
+
+// import VideoPlayer from 'vue-video-player'
+// Vue.use(VideoPlayer)
 // import AudioPlayer from '@liripeng/vue-audio-player'
 // import '@liripeng/vue-audio-player/lib/vue-audio-player.css'
 
 // Vue.use(AudioPlayer)
-import VueAMap from 'vue-amap'
 
-Vue.use(VueAMap)
-
-VueAMap.initAMapApiLoader({
-  key: '32396af00cd726deed804cf5b63ed2d8',
-  plugin: [
-    'AMap.Autocomplete',
-    'AMap.PlaceSearch',
-    'AMap.Scale',
-    'AMap.OverView',
-    'AMap.ToolBar',
-    'AMap.MapType',
-    'AMap.PolyEditor',
-    'AMap.CircleEditor',
-  ],
-  v: '1.4.4',
+import Driver from 'driver.js'
+import 'driver.js/dist/driver.min.css'
+Vue.prototype.$driver = new Driver({
+  className: 'scoped-class',
+  allowClose: false, //禁止点击外部关闭
+  doneBtnText: '完成', // 完成按钮标题
+  closeBtnText: '关闭', // 关闭按钮标题
+  stageBackground: '#fff', // 引导对话的背景色
+  nextBtnText: '下一步', // 下一步按钮标题
+  prevBtnText: '上一步', // 上一步按钮标题
+  keyboardControl: false, // 禁止键盘控制
+  // showButtons:false
 })
 
-/**
- * If you don't want to use mock-server
- * you want to use MockJs for mock api
- * you can execute: mockXHR()
- *
- * Currently MockJs will be used in the production environment,
- * please remove it before going online! ! !
- */
+import directive from './directive'
+Vue.use(directive)
 
 Vue.config.productionTip = false
 
+// import('@/utils/auth').then(async ({authRedirect}) => {
+//  let isAuth = await authRedirect()
+// })
 new Vue({
   el: '#app',
   router,

@@ -1,9 +1,9 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/group'
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom
 
-export function getDetail(chatId) {
+export function getDetail (chatId) {
   return request({
-    url: service + `/chat/chatDetail/${chatId}`,
+    url: service + `/groupchat/get/${chatId}`,
     method: 'get',
   })
 }
@@ -22,9 +22,9 @@ beginTime:
 endTime:
 }
  */
-export function getList(params) {
+export function getList (params) {
   return request({
-    url: service + '/chat/list',
+    url: service + '/groupchat/page/list',
     method: 'get',
     params,
   })
@@ -40,9 +40,9 @@ export function getList(params) {
   "pageSize": ""
 }
  */
-export function getMembers(params) {
+export function getMembers (params) {
   return request({
-    url: service + '/chat/members',
+    url: service + '/groupchat/member/page/list',
     params,
   })
 }
@@ -50,9 +50,9 @@ export function getMembers(params) {
 /**
  * 客户群同步接口
  */
-export function sync() {
+export function sync () {
   return request({
-    url: service + '/chat/synchWeGroup',
+    url: service + '/groupchat/synch',
   })
 }
 
@@ -71,9 +71,9 @@ export function sync() {
  * @param {*} data
  * @returns
  */
-export function makeGroupTag(data) {
+export function makeGroupTag (data) {
   return request({
-    url: service + '/chat/makeGroupTag',
+    url: service + '/groupchat/makeGroupTag',
     method: 'post',
     data,
   })

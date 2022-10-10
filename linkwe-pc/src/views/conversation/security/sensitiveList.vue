@@ -55,7 +55,7 @@
         </template>
         <ChatContent :message="row"></ChatContent>
       </el-table-column>
-      <el-table-column prop="fromId" label="触发者"> </el-table-column>
+      <el-table-column prop="fromName" label="触发者"> </el-table-column>
       <el-table-column prop="status" label="消息状态">
         <!-- <template slot="header">
           {{ floorRange }}

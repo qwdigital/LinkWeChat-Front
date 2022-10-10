@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const wecom = window.CONFIG.services.wecom
+const wecom = window.lwConfig.services.wecom
 const service = wecom + '/RedEnvelopes'
 
 /**

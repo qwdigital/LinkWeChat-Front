@@ -1,211 +1,255 @@
+<template>
+  <div>
+    <el-row>
+      <el-col :sm="24" :md="16" :lg="14">
+        <el-form :model="form" :rules="rules" ref="form" label-width="140px">
+          <el-row>
+            <el-col :sm="24" :md="18">
+              <el-form-item label="活码名称:" prop="activityName">
+                <el-input
+                  v-model="form.activityName"
+                  placeholder="请输入名称"
+                  show-word-limit
+                  maxlength="15"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="活码客群:" prop="chatIdList">
+                <template v-for="(item, index) in groupList">
+                  <el-tag v-if="item.groupName" size="medium" :key="index">{{
+                    item.groupName
+                  }}</el-tag>
+                </template>
+                <div>
+                  <el-button size="mini" type="primary" icon="el-icon-plus" @click="selectGroupFn"
+                    >{{ '添加' }}客群</el-button
+                  >
+                </div>
+                <div class="sub-des">最多选择五个客群</div>
+              </el-form-item>
+              <el-form-item label="客群标签:" prop="tagIds">
+                <template v-for="(item, index) in tagList">
+                  <el-tag v-if="item.name" size="medium" :key="index">{{ item.name }}</el-tag>
+                </template>
+                <div>
+                  <el-button
+                    size="mini"
+                    type="primary"
+                    icon="el-icon-plus"
+                    @click="showSelectTag = true"
+                    >{{ tagList.length ? '编辑' : '添加' }}标签</el-button
+                  >
+                </div>
+                <div class="sub-des">设置群活码的标签</div>
+              </el-form-item>
+              <el-form-item label="群满是否自动建群:">
+                <el-switch
+                  v-model="form.autoCreateRoom"
+                  :active-value="1"
+                  :inactive-value="0"
+                ></el-switch>
+                <div class="sub-des">默认以第一个群的群主作为新建群的群主</div>
+              </el-form-item>
+              <el-form-item v-if="form.autoCreateRoom" label="">
+                <el-card>
+                  <el-form-item label="群名前缀:" prop="roomBaseName">
+                    <el-input
+                      show-word-limit
+                      maxlength="20"
+                      v-model="form.roomBaseName"
+                      placeholder="请输入群名前缀"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="群起始序号:" prop="roomBaseId">
+                    <el-input-number
+                      v-model="form.roomBaseId"
+                      controls-position="right"
+                      :min="1"
+                    ></el-input-number>
+                  </el-form-item>
+                </el-card>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </el-col>
+    </el-row>
+    <select-group
+      :visible.sync="showSelectModal"
+      :defaults="groupList"
+      @submit="setSelectData"
+    ></select-group>
+    <select-tag
+      :visible.sync="showSelectTag"
+      type="2"
+      :defaultValues="tagList"
+      @success="getSelectTag"
+    ></select-tag>
+  </div>
+</template>
+
 <script>
 import { add, update, getDetail } from '@/api/drainageCode/group'
-
+import SelectTag from '@/components/SelectTag.vue'
+import SelectGroup from '../components/SelectGroup.vue'
 export default {
   props: {
     // 实际群活码
     groupCodeId: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
+  },
+  components: {
+    SelectGroup,
+    SelectTag,
   },
   data() {
     return {
+      showSelectTag: false,
       form: {
         activityName: '',
-        activityDesc: '',
-        avatarUrl: '',
-        guide: '',
-        showTip: 0,
-        tipMsg: '',
-        customerServerQrCode: ''
+        autoCreateRoom: 0,
+        chatIdList: '',
+        roomBaseId: 1,
+        tagIds: '',
+        roomBaseName: '',
       },
       // 活码头像数据
       headImage: null,
       rules: {
         activityName: [{ required: true, message: '请输入活码名称', trigger: 'blur' }],
-        activityDesc: [{ required: true, message: '请输入活码描述', trigger: 'blur' }]
-      }
+        chatIdList: [{ required: true, message: '请添加活码客群', trigger: 'blur' }],
+        tagIds: [{ required: true, message: '请添加客群标签', trigger: 'blur' }],
+        roomBaseName: [{ required: true, message: '请输入群名前缀', trigger: 'blur' }],
+        roomBaseId: [{ required: true, message: '请输入群起始序号', trigger: 'blur' }],
+      },
+      showSelectModal: false,
+      groupList: [],
+      tagList: [],
+      loading: false,
     }
   },
   created() {
-    if (this.groupCodeId) this.getGroupDetail()
+    if (this.groupCodeId) this.form = JSON.parse(decodeURIComponent(this.$route.query.obj))
+    this.getGroupDetail()
   },
   methods: {
+    selectGroupFn() {
+      this.showSelectModal = true
+    },
+    setSelectData(data) {
+      if (data && data.length) {
+        this.groupList = data
+        this.form.chatIdList = this.groupList
+          .map((dd) => {
+            return dd.chatId
+          })
+          .join(',')
+      }
+    },
+    handleValidateFn () {
+        let status = null
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            status = true
+          } else {
+            status = false
+          }
+        });
+        return status
+      },
+    getSelectTag(list) {
+      this.tagList = list
+      this.form.tagIds = this.tagList
+        .map((dd) => {
+          return dd.tagId
+        })
+        .join(',')
+      this.form.tags = this.tagList
+        .map((dd) => {
+          return dd.name
+        })
+        .join(',')
+    },
     // 新增群活码
     add() {
       this.$refs.form.validate((valid) => {
         if (!valid) return
-
         // 新增群活码数据至数据库
         add(this.form).then((res) => {
-          this.$emit('next', res.id)
+          if (res.code === 200) {
+            this.$emit('next', res.data.id, res.data)
+          } else if (res.code === 433) {
+            this.$refs['form'].fields[0].validateMessage = res.msg
+            this.$refs['form'].fields[0].validateState = 'error'
+            this.$emit('next')
+          } else {
+            this.$emit('next')
+          }
         })
       })
-    },
-    // 获取上传的头像数据
-    handleUploadedHeadImage(file) {
-      const reader = new FileReader()
-      reader.readAsDataURL(file.raw)
-
-      reader.onload = () => {
-        this.headImage = reader.result
-      }
     },
     // 更新群活码
     update() {
       this.$refs.form.validate((valid) => {
         if (!valid) return
-
-        update(this.groupCodeId, this.form).then((res) => {
-          this.$emit('next', this.groupCodeId)
+        update(this.form).then((res) => {
+          if (res.code === 200) {
+            this.$emit('next', this.groupCodeId, res.data)
+          } else if (res.code === 433) {
+            this.$refs['form'].fields[0].validateMessage = res.msg
+            this.$refs['form'].fields[0].validateState = 'error'
+            this.$emit('next')
+          } else {
+            this.$emit('next')
+          }
         })
       })
     },
     // 获取群活码信息
     getGroupDetail() {
       if (!this.groupCodeId) return
-
-      getDetail(this.groupCodeId).then((res) => {
-        if (res.code === 200) {
-          this.form = {
-            activityName: res.data.activityName,
-            activityDesc: res.data.activityDesc,
-            avatarUrl: res.data.avatarUrl,
-            guide: res.data.guide,
-            showTip: parseInt(res.data.showTip),
-            tipMsg: res.data.tipMsg,
-            customerServerQrCode: res.data.customerServerQrCode,
-            uuid: res.data.uuid,
-            codeUrl: res.data.codeUrl
-          }
-        } else {
+      // 编辑回显
+      let arr = []
+      let names = this.form.tags ? this.form.tags.split(',') : []
+      let ids = this.form.tagIds ? this.form.tagIds.split(',') : []
+      ids.forEach((dd, index) => {
+        let obj = {
+          name: names[index],
+          tagId: dd,
         }
+        arr.push(obj)
       })
+      this.tagList = arr
+      let arr2 = []
+      let groupNames = this.form.groupNames ? this.form.groupNames.split(',') : []
+      let groupIds = this.form.chatIdList ? this.form.chatIdList.split(',') : []
+      groupIds.forEach((dd, index) => {
+        let obj = {
+          groupName: groupNames[index],
+          chatId: dd,
+        }
+        arr2.push(obj)
+      })
+      this.groupList = arr2
+      this.$forceUpdate()
     },
     // 提交
     submit() {
       if (!this.groupCodeId) return this.add()
-
       this.update()
-      this.$emit('next')
-    }
-  }
+    },
+  },
 }
 </script>
 
-<template>
-  <div>
-    <el-row>
-      <el-col :sm="24" :md="16" :lg="14">
-        <el-form :model="form" :rules="rules" ref="form" label-width="100px">
-          <el-row>
-            <el-col :sm="24" :md="12">
-              <el-form-item label="活码名称" prop="activityName">
-                <el-input v-model="form.activityName" placeholder="请输入名称"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :sm="24" :md="12">
-              <el-form-item label="活码描述" prop="activityDesc">
-                <el-input
-                  v-model="form.activityDesc"
-                  type="textarea"
-                  placeholder="请输入描述"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :sm="24" :md="12">
-              <el-form-item label="活码头像">
-                <upload
-                  :fileUrl.sync="form.avatarUrl"
-                  class="image-uploader"
-                  @update:file="handleUploadedHeadImage"
-                >
-                  <div slot="tip">注: 只支持2M以内的jpg/png格式图片</div>
-                </upload>
-              </el-form-item>
-            </el-col>
-            <el-col :sm="24" :md="12">
-              <el-form-item label="加群引导语">
-                <el-input
-                  v-model="form.guide"
-                  type="textarea"
-                  placeholder="请输入加群引导语"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-            <!-- <el-col :span="24">
-              <el-divider></el-divider>
-              <el-form-item label="无法加群提示">
-                <el-switch v-model="form.showTip" :active-value="1" :inactive-value="0"></el-switch>
-                <div class="el-upload__tip">
-                  开启后, 页面底部显示无法进群按钮, 点击可查看提示内容
-                </div>
-              </el-form-item>
-            </el-col> -->
-            <transition name="el-fade-in-linear">
-              <el-col v-show="form.showTip === 1" :sm="24" :md="12">
-                <el-form-item label="提示语">
-                  <el-input v-model="form.tipMsg" placeholder="请输入提示语"></el-input>
-                </el-form-item>
-              </el-col>
-            </transition>
-            <transition name="el-fade-in-linear">
-              <el-col v-show="form.showTip === 1" :sm="24" :md="12">
-                <el-form-item label="客服二维码">
-                  <upload :fileUrl.sync="form.customerServerQrCode" class="image-uploader">
-                    <div slot="tip">注: 只支持2M以内的jpg/png格式图片</div>
-                  </upload>
-                </el-form-item>
-              </el-col>
-            </transition>
-          </el-row>
-        </el-form>
-      </el-col>
-
-      <el-col :sm="24" :md="8" :lg="10">
-        <div class="preview">
-          <div class="preview-content">
-            <div class="preview-header">
-              <i class="el-icon-close"></i>
-              <div>群活码</div>
-              <i class="el-icon-more"></i>
-            </div>
-            <el-divider></el-divider>
-            <div class="preview-name">
-              <template v-if="form.activityName">
-                {{ form.activityName }}
-              </template>
-              <template v-else> 活码名称 </template>
-            </div>
-            <div class="preview-guide">
-              <template v-if="form.guide">
-                {{ form.guide }}
-              </template>
-              <template v-else> 这是加群引导语 </template>
-            </div>
-            <div class="preview-code-box">
-              <div class="code-box-title">
-                <svg-icon icon-class="user" class="code-user"></svg-icon>
-                实际群名称
-              </div>
-              <div class="code-content">
-                <svg-icon icon-class="qrcode" class="code-svg"></svg-icon>
-              </div>
-            </div>
-            <transition name="el-fade-in-linear">
-              <div v-show="form.showTip" class="preview-customer-service">
-                <el-button type="danger"> 无法加群? </el-button>
-              </div>
-            </transition>
-          </div>
-        </div>
-      </el-col>
-    </el-row>
-  </div>
-</template>
-
 <style scoped lang="scss">
+.sub-des {
+  font-size: 12px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+}
 ::v-deep .image-uploader {
   .uploader-icon {
     width: 80px;
@@ -219,70 +263,19 @@ export default {
   }
 }
 
-.el-form-item {
-  margin-bottom: 30px;
+::v-deep .image-uploader2 {
+  .uploader-icon {
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
+  }
+  .upload-img {
+    width: 120px;
+    height: 120px;
+  }
 }
 
-.preview {
-  .preview-content {
-    width: 250px;
-    height: 480px;
-    background-color: #e9e9e9;
-    margin-left: 50px;
-    border-radius: 6px;
-
-    .preview-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 4px;
-    }
-
-    .el-divider {
-      margin: 3px 0;
-    }
-
-    .preview-name {
-      padding: 20px 6px;
-      text-align: center;
-      // line-height: 50px;
-      word-wrap: break-word;
-      word-break: normal;
-      line-height: 20px;
-    }
-
-    .preview-guide {
-      padding: 6px;
-      color: #888888;
-      margin: 0 15px 10px;
-    }
-
-    .preview-code-box {
-      height: 200px;
-      margin: 0 20px;
-      background-color: white;
-      padding: 10px;
-      font-weight: bold;
-      color: #666666;
-
-      .code-user {
-        font-size: 30px;
-        color: #4185f4;
-      }
-
-      .code-content {
-        text-align: center;
-
-        .code-svg {
-          font-size: 150px;
-        }
-      }
-    }
-
-    .preview-customer-service {
-      text-align: center;
-      padding: 20px 10px;
-    }
-  }
+.el-form-item {
+  margin-bottom: 30px;
 }
 </style>

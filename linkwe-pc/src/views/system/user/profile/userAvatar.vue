@@ -144,7 +144,7 @@ export default {
         uploadAvatar(formData).then((response) => {
           if (response.code === 200) {
             this.open = false
-            this.options.img = window.lwConfig.BASE_API + response.imgUrl
+            this.options.img = response.imgUrl
             store.commit('SET_AVATAR', this.options.img)
             this.msgSuccess('修改成功')
           }
@@ -159,7 +159,6 @@ export default {
   },
 }
 </script>
-
 <style lang="scss" scoped>
 .img-circle {
   border-radius: 50%;

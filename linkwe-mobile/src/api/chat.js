@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const wecom = window.CONFIG.services.wecom
+const wecom = window.lwConfig.services.wecom
 const service = wecom + '/chat'
 const serviceMaterial = wecom + '/material'
 
@@ -73,8 +73,8 @@ export function cancleCollection(data) {
 /**
  * 获取企业微信素材media_id
  * @param {*} params
- * url [string] 是	素材路径		
-type [string] 是	素材类型		
+ * url [string] 是	素材路径
+type [string] 是	素材类型
 name [string] 是	文件名称
  */
 export function getMaterialMediaId(params) {
