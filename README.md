@@ -7,11 +7,13 @@
 
 [![star](https://gitee.com/LinkWeChat/link-wechat/badge/star.svg?theme=gvp)](https://gitee.com/LinkWeChat/link-wechat/stargazers)
 [![fork](https://gitee.com/LinkWeChat/link-wechat/badge/fork.svg?theme=gvp)](https://gitee.com/LinkWeChat/link-wechat/members)
-[![LinkWeChat](https://img.shields.io/badge/LinkWeChat-V1.5-brightgreen)](https://www.yuque.com/linkwechat/help/ci1n9p)
+[![LinkWeChat](https://img.shields.io/badge/LinkWeChat-V3.0-brightgreen)](https://www.yuque.com/linkwechat/help/ci1n9p)
 [![license](http://img.shields.io/badge/license-GPL%203.0-orange)](https://gitee.com/LinkWeChat/link-wechat/blob/master/LICENSE)
 [![木兰社区](https://img.shields.io/badge/Mulan-incubating-blue)](https://portal.mulanos.cn//)
 
-[官方网站](https://www.linkwechat.cn/#/d) | [演示系统](http://demo.linkwechat.cn/) | [帮助手册](https://www.yuque.com/linkwechat/help) | [用户手册(V1.5 待开放)](https://docs.qq.com/pdf/DZUNma3lVWW5Wb0po)
+[官方网站](https://www.pardigital.cn/) | [在线演示](http://demo.linkwechat.net/) | [V3.0功能清单](https://docs.qq.com/sheet/DZW9HSHpHdWlOYWh2?tab=BB08J3)  | [最新动态](https://www.yuque.com/linkwechat/help/ozzxus)
+
+[项目手册](https://www.yuque.com/linkwechat/help) | [用户手册](https://docs.qq.com/pdf/DZXR0ZUJub29wTldS?) | [常见问题](https://www.yuque.com/linkwechat/help/qk5gl6) | [需求收集表](https://docs.qq.com/sheet/DZWxGU0JGVFRVdWZV)
 
 
 </div>
@@ -22,25 +24,29 @@
 <p></p>
 
 ---
+**<p align="center">【📣最近更新】LinkWeChat V3.0 正式发布啦，架构升级，全面焕新，欢迎大家提前体验！<a href="http://demo.linkwechat.net/" target="_blank">点击立即体验~</a></p>**
 
- **<p align="center">LinkWeChat 正在参与开源中国2021年度评选，请小伙伴[点击此处](https://www.oschina.net/project/top_cn_2021/)搜索 LinkWeChat 进行投票，谢谢！</p>** 
+**<p align="center">【📣最近更新】LinkWeChat V3.0 采用前后端分离架构，后端项目请点击<a href="https://gitee.com/LinkWeChat/link-wechat" target="_blank">LinkWeChat</a></p>**
 
+**<p align="center">LinkWeChat SAAS版 正式公测啦，如有问题欢迎提交 Issue，项目组将光速修复，<a href="https://saas.pardigital.cn/#/probation" target="_blank">点击立即体验~</a></p>**
 
- **<p align="center">如果您觉得我们的开源项目很有帮助，请点击 :star: Star 支持 LinkWeChat 开源团队:heart:</p>** 
+**<p align="center">还有什么想要的产品功能/技术支持/说明文档/友好的建议或意见，<a href="https://docs.qq.com/sheet/DZWxGU0JGVFRVdWZV" target="_blank">点击告诉我们~</a></p>**
+
+**<p align="center">如果您觉得我们的开源项目很有帮助，请点击 :star: Star 支持 LinkWeChat 开源团队:heart:</p>**
 
 ---
 
 # 版权声明
 
-LinkWeChat 开源版遵循 [GPL-3.0](https://gitee.com/LinkWeChat/link-wechat/blob/master/LICENSE) 开源协议发布，并提供技术交流学习，但**绝不允许修改后和衍生的代码做为闭源的商业软件发布和销售！** 
+开源不代表免费，LinkWeChat 遵循 [GPL-3.0](https://gitee.com/LinkWeChat/link-wechat/blob/master/LICENSE) 开源协议发布，并提供技术交流学习，但**绝不允许修改后和衍生的代码做为闭源的商业软件发布和销售！** 如果需要将本产品在本地进行任何附带商业化性质行为使用，**请联系项目负责人进行商业授权**，以遵守 GPL 协议保证您的正常使用。
 
-LinkWeChat 开源团队拥有对本开源协议的最终解释权。
+[帮助手册——LinkWeChat 需要付费吗？](https://www.yuque.com/linkwechat/help/xql2ts)
 
-[点击查看 LinkWeChat LICENSE 详细说明](https://gitee.com/LinkWeChat/link-wechat/blob/master/LICENSE)
-
-需要注意的是，目前在国内 GPL 协议**具备合同特征，是一种民事法律行为** ，属于我国《合同法》调整的范围。LinkWeChat 项目团队保留诉讼权利。
+目前在国内 GPL 协议**具备合同特征，是一种民事法律行为** ，属于我国《合同法》调整的范围。LinkWeChat 项目团队保留一切诉讼权利。
 
 [相关案例：违反 GPL 协议赔偿 50 万，国内首例!](https://mp.weixin.qq.com/s/YQ6sNjbDS-P7BViLZIsaoA)
+
+LinkWeChat 开源团队拥有对本开源协议的最终解释权。
 
 # 一、 关于 LinkWeChat
 
@@ -48,7 +54,11 @@ LinkWeChat 开源团队拥有对本开源协议的最终解释权。
 
 > LinkWeChat, Link to WeChat.
 
-基于人工智能的企业微信 SCRM 系统——LinkWeChat基于企业微信开放能力，不仅集成了企微基础的客户管理和后台管理功能，而且通过引流获客、客情维系、社群运营等灵活高效的客户运营模块，让客户与企业之间建立强链接关系，同时进一步通过多元化的客户营销工具，帮助企业提高客户运营效率，强化营销能力，拓展盈利空间，是企业私域流量管理与营销的综合解决方案。
+LinkWeChat 是基于企业微信的开源 SCRM 系统，是企业私域流量管理与营销的综合解决方案。
+
+LinkWeChat 基于企业微信开放能力，不仅集成了企微强大的后台管理及基础的客户管理功能，而且提供了多种渠道、多个方式连接微信客户。并通过客情维系、聊天增强等灵活高效的客户运营模块，让客户与企业之间建立强链接，从而进一步通过多元化的营销工具，帮助企业提高客户运营效率，强化营销能力，拓展盈利空间。
+
+主要运用于电商、零售、教育、金融、政务等服务行业领域。
 
 [更多 LinkWeChat 的故事](https://www.yuque.com/linkwechat/help/dsatfs)
 
@@ -58,20 +68,21 @@ LinkWeChat SCRM 基于企业私域流量营销闭环，遵从获取新客到管�
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/1108/134011_bd2745e6_1480777.png "仟微助手企业微信SCRM智能营销系统-V1.5_13.png")
 
-整个系统共分为八大模块：
+整个系统共分为九大模块：
 
 *   **运营中心** ：客户、客群、会话等全功能数据报表，数据一目了然；
 *   **引流获客** ：活码、群活码、公海、客服等多渠道引流，实现精准获客；
 *   **客户中心** ：助力企业搭建私域流量池，高效运营客户；
+*   **客群中心** ：客群运营场景全覆盖；
 *   **客情维系** ：企业客户运营精细化，朋友圈、红包工具提高客户活跃度；
-*   **社群运营** ：客群运营场景全覆盖，快速拉群；
+*   **内容中心** ：搭建企业自有内容库，多类型素材一键调用；
 *   **全能营销** ：提供多类型、多场景客户营销工具；
 *   **企业风控** ：会话合规存档，敏感内容全局风控；
 *   **企业管理** ：组织架构、自建应用全融合，实现“一个后台”；
 
-V1.5 详细功能清单：
+[LinkWeChat 社区版 V3.0 详细功能清单](https://docs.qq.com/sheet/DZW9HSHpHdWlOYWh2?tab=BB08J3)
 
-[LinkWeChat-社区版V1.5-功能清单](https://docs.qq.com/sheet/DZXlLdmRjSWlzd2R6)
+![输入图片说明](readme-pic/V3.x.jpeg)
 
 ## 1.3 优势
 
@@ -81,9 +92,6 @@ LinkWeChat 基于企业微信从服务内部到对外全面开放能力，可为
 * 二次整合封装企微 API，避免重复踩坑
 * 采用主流 Java 架构，具备高拓展性、灵活性，避免 PHP 架构的缺点
 * 对外提供内部 API，低成本二次开发
-* 基于 NLP 对会话内容进行智能语义分析，实现标签自动化、告警自动化
-
-![输入图片说明](https://images.gitee.com/uploads/images/2020/1231/232301_2dcf24b2_1480777.png "LinkWeChat 企业微信私域流量营销专家-V1.0.4_22.png")
 
 ## 1.4 愿景
 
@@ -98,108 +106,61 @@ LinkWeChat 不做私域营销专家，而是通过开源让每个企业都是自
 
 ## 2.1 在线体验
 
-演示地址：[http://demo.linkwechat.cn/](http://demo.linkwechat.cn/)
+开源演示地址：[http://demo.linkwechat.net/](http://demo.linkwechat.net/)
 
-演示账号/密码：Wecome/123456
+目前支持两种方式体验：
 
- _（注意：演示环境已屏蔽管理权限和相关操作）_ 
+* 在首页扫码二维码申请加入测试企业，申请通过后即可扫码登录，体验系统的完整功能；
+* 点击账密登录并勾选`演示账号登录`即可在线体验后台系统，但不支持体验移动端相关功能；
 
-## 2.2 技术栈
+_（注意：演示环境已屏蔽管理权限和相关操作）_
 
-本项目基于 [RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue?_from=gitee_search) 后台开发框架，感谢 [RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue?_from=gitee_search) 的开源。
+SAAS体验地址：https://saas.pardigital.cn/#/probation
 
- **前端技术栈** 
+## 2.2 系统架构
 
-| 技术栈 | 介绍 | 地址 |
-|:-:|:-:|:-:|
-| Vue | 渐进式 JavaScript 框架  |  https://cn.vuejs.org/  |
-|  Vuex	|专为 Vue.js 应用程序开发的状态管理模式	|https://vuex.vuejs.org/zh/  |
-|Vue Router|	Vue.js 官方的路由管理器|	https://router.vuejs.org/zh/
-|Vue CLI	|基于 Vue.js 进行快速开发的完整系统	|https://cli.vuejs.org/zh/guide/
-|axios|	易用、简洁且高效的 Http 库	|http://www.axios-js.com/zh-cn/
-|Element-UI	|基于 Vue 2.0 的桌面端组件库|	https://element.eleme.io/#/zh-CN
-|ES6|	JavaScript 语言的下一代标准|	https://es6.ruanyifeng.com/
+LinkWeChat V3.0 架构升级，全面升级为微服务架构，整体系统架构如下：
 
+![系统架构](readme-pic/jiagou.png)
 
- **后端技术栈** 
-| 技术栈 | 介绍 | 地址 |
-|:-:|:-:|:-:|
-|Spring Boot	|快捷创建基于 Spring 的生产级应用程序|	https://spring.io/projects/spring-boot
-|MyBatis-Plus|	MyBatis 增强工具	|https://mp.baomidou.com/
-|JWT|	轻量级身份认证规范|	https://jwt.io/introduction
-|Spring Security	|基于 Spring 的强大且高度可定制的身份验证和访问控制框架	|https://spring.io/projects/spring-security/
+## 2.3 技术栈
 
-## 2.3 项目结构
+本项目基于 [RuoYi-Cloud](https://gitee.com/y_project/RuoYi-Cloud) 后台开发框架，感谢 [RuoYi-Cloud](https://gitee.com/y_project/RuoYi-Cloud) 的开源。
 
-**后端结构** 
+* 前端技术栈：ES6、Vue、Vuex、Vue-router、Vue-cli、Axios、Element-ui；
+* 后端技术栈：Spring Boot、Spring Cloud & Alibaba、Nacos、Mybatis-plus、xxljob、RabbitMQ、Forest；
+
+## 2.4 项目结构
+
+**后端结构**
 
 ```
-com.linkwechat     
-├── common            // 工具类
-│       └── annotation                    // 自定义注解
-│       └── config                        // 全局配置
-│       └── constant                      // 通用常量
-│       └── core                          // 核心控制
-│       └── enums                         // 通用枚举
-│       └── exception                     // 通用异常
-│       └── filter                        // 过滤器处理
-│       └── utils                         // 通用类处理
-├── framework         // 框架核心
-│       └── aspectj                       // 注解实现
-│       └── config                        // 系统配置
-│       └── datasource                    // 数据权限
-│       └── interceptor                   // 拦截器
-│       └── manager                       // 异步处理
-│       └── security                      // 权限控制
-│       └── web                           // 前端控制
-├── linkwe-generator   // 代码生成
-├── linkwe-quartz      // 定时任务
-├── linkwe-system      // 系统代码
-├── linkwe-admin       // 后台服务
-├── linkwe-ui          // 页面前端代码
-├── linkwe--wecom      // 企业微信功能
+├── linkwe-api                // 系统业务接口模块
+├── linkwe-auth               // 角色权限部门用户认证等模块
+├── linkwe-common             // 公共组件模块
+├── linkwe-event-task	      // 企微回调任务
+├── linkwe-fileservice	      // 文件服务模块
+├── linkwe-framework	      // 框架配置
+├── linkwe-gateway            // 网关服务
+├── linkwe-scheduler	      // 定时任务相关模块
+├── linkwe-service            // 系统service层抽取,与数据库相关交互
+├── linkwe-wecome             // 企微接口实现
+├── linkwe-wx-api             // 系统中设计微信公众号相关接口模块
 
 ```
 
-**前端结构** 
+**前端结构**
 
 ```
-├── build                      // 构建相关  
-├── bin                        // 执行脚本
-├── public                     // 公共文件
-│   ├── favicon.ico            // favicon图标
-│   └── index.html             // html模板
-├── src                        // 源代码
-│   ├── api                    // 所有请求
-│   ├── assets                 // 主题 字体等静态资源
-│   ├── components             // 全局公用组件
-│   ├── directive              // 全局指令
-│   ├── layout                 // 布局
-│   ├── router                 // 路由
-│   ├── store                  // 全局 store管理
-│   ├── utils                  // 全局公用方法
-│   ├── views                  // view
-│   ├── App.vue                // 入口页面
-│   ├── main.js                // 入口 加载组件 初始化等
-│   ├── permission.js          // 权限管理
-│   └── settings.js            // 系统配置
-├── .editorconfig              // 编码格式
-├── .env.development           // 开发环境配置
-├── .env.production            // 生产环境配置
-├── .env.staging               // 测试环境配置
-├── .eslintignore              // 忽略语法检查
-├── .eslintrc.js               // eslint 配置项
-├── .gitignore                 // git 忽略项
-├── babel.config.js            // babel.config.js
-├── package.json               // package.json
-└── vue.config.js              // vue.config.js
+├── linkwe-pc			// 后台项目
+├── linkwe-mobile		// 移动端项目包含移动工作台、任务宝、群裂变等H5）
 ```
 
-## 2.4 项目部署
+## 2.5 项目部署
 
 点击下方链接进入官方语雀帮助手册查看项目部署方式：
 
-[如何快速部署 LinkWeChat](https://www.yuque.com/linkwechat/help/gpod7i)
+[帮助手册——如何快速部署 LinkWeChat](https://www.yuque.com/linkwechat/help/gt1myw)
 
 建议服务器最低配置：
 
@@ -207,7 +168,7 @@ com.linkwechat
 |:-:|:-:|
 |操作系统|CentOS8.2|
 |CPU|4核|
-|内存|8G|
+|内存|16G|
 |带宽|5M|
 |硬盘|100G|
 
@@ -217,52 +178,41 @@ com.linkwechat
 
 [企业微信-企业内部开发-API 文档](https://open.work.weixin.qq.com/api/doc/90000/90003/90556)
 
-**常见问题列表** 
-
-[1.有哪几种部署方式？](https://www.yuque.com/linkwechat/help/bww8vd)
-
-[2.数据库为什么 Group By 查询报错？](https://www.yuque.com/linkwechat/help/babnva)
-
-[3.项目每个分支的作用是什么？](https://www.yuque.com/linkwechat/help/ztbre1)
-
-[4、运行项目必须配置 Nacos 吗？](https://www.yuque.com/linkwechat/help/yivnfb)
-
-[5、项目启动时为什么报错？](https://www.yuque.com/linkwechat/help/cepvgv)
-
-[6、如何使用 Docker 进行部署？](https://www.yuque.com/linkwechat/help/ffi7bu)
-
-[7、图片为什么不显示或者裂开？](https://www.yuque.com/linkwechat/help/ggqnhb)
-
 点击下方链接进入官方语雀帮助手册查看常见问题的相关描述及更多帮助：
 
 [帮助手册——常见问题](https://www.yuque.com/linkwechat/help/qk5gl6)
 
-# 四、最近规划
+# 四、最近更新
 
-LinkWeChat 团队目前在完成 LinkWeChat V2.0 大版本升级，主要围绕引流获客、客户中心、客情维系等模块进行升级，预计 12 月中旬整体上线。
+## V3.0 更新日志
 
-V2.0 主要的升级内容如下：
+LinkWeChat V3.0 主要围绕系统架构、引流获客、客情维系、内容中心及移动端等模块进行升级。
 
-- [ ] 系统菜单重新整合，结构更加清晰；
-- [ ] 引流获客-员工活码支持分组；
-- [ ] 引流获客-员工活码支持自动排班；
-- [ ] 引流获客-员工活码支持多类型欢迎语；
-- [ ] 引流获客新增客户公海模块，支持一键分配自主添加；
-- [ ] 引流获客-欢迎语升级为欢迎语模板，支持多类型欢迎语个性化配置；
-- [ ] 客户中心-企业客户全新改版，支持查看多人跟进内容；
-- [ ] 客户中心-企业客群支持标签管理；
-- [ ] 客户中心-企业标签支持客群标签管理；
-- [ ] 客情维系-消息群发全新改版，支持多类型群发类型；
-- [ ] 客情维系-消息群发支持查看员工、客户维度的群发详情；
-- [ ] 客情维系-素材中心新增链接、小程序等多类型；
-- [ ] 客情维系-新增朋友圈模块，支持查看企业/个人动态；
-- [ ] 客情维系-支持企业发表朋友圈；
-- [ ] 社群运营-各模块细节调优；
-- [ ] 企业管理-企微配置全新改版，支持多种配置方式。
+主要的升级内容如下：
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/1108/144937_7940336b_1480777.png "屏幕截图.png")
+- [x] 架构调整，升级微服务架构；
+- [x] 拆分客户与客群中心，原素材中心升级为内容中心；
+- [x] 新增门店活码：基于客户实时位置，引导客户快捷添加门店导购或专属群；
+- [x] 新增内容中心，支持多种类型素材、话术及内容模板；
+- [x] 客群活码重新设计，支持群满自动建群；
+- [x] 新增客群画像，支持在侧边栏中快捷查看及跟进客群详情；
+- [x] 新增角色与菜单管理，快捷设置企业员工数据与菜单权限；
+- [x] 新增移动工作台，支持在移动端快捷查看企业数据与动态；支持查看客户与客群画像详情，一键联系；工作台快捷使用小工具；
+- [x] 新增公众号配置，用于快捷绑定公众号；
+- [x] 新增扫码登录，企业员工快捷加入；
+- [x] 新增企业动态，全局洞察企业各维度进展；
+- [x] 优化系统首页相关模块及数据统计逻辑；
+- [x] 优化组织管理相关逻辑；
+- [x] 优化微信客服分配逻辑；
+- [x] 优化会话存档相关解密逻辑，UI页面调优；
+- [x] 优化新客拉群相关数据统计逻辑；
+- [x] 优化全局菜单结构，业务流程更加清晰；
+- [x] 修复了一些已知问题；
+- [x] 其余各模块UI细节调优。
 
-其中微信客服及数据分析模块酌情开源。
+点击下方链接进入官方语雀帮助手册查看历史版本更新日志：
+
+[帮助手册——历史更新](https://www.yuque.com/linkwechat/help/pcmd0o)
 
 # 五、奖项荣誉
 
@@ -278,11 +228,11 @@ V2.0 主要的升级内容如下：
 
 如果你想加入我们的开源交流群，请扫码添加 LinkWeChat 项目作者，加入群聊：
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/1108/145406_89fb9c20_1480777.png "屏幕截图.png")
+![输入图片说明](readme-pic/contact1.png)
 
 如果你有任何 LinkWeChat 产品上的想法、意见或建议，或商务上的合作需求，请扫码添加 LinkWeChat 项目团队进一步沟通：
 
-![输入图片说明](https://images.gitee.com/uploads/images/2021/1108/145220_ddd9d2ef_1480777.png "屏幕截图.png")
+![输入图片说明](readme-pic/contact2.png)
 
 # 七、捐赠支持
 
@@ -338,6 +288,7 @@ V2.0 主要的升级内容如下：
 |     J*s     |   ￥  10.00      |  微信     |       2021-05-19 17:33:10      |   感谢您的开源       |
 |     *茶     |   ￥  10.00      |  微信     |       2021-05-17 20:46:05      |   感谢您的开源       |
 |     悟空     |   ￥   500.00      |   支付宝     |       2021- 11-17 11:05:05      |   感谢您的开源       |
+|     羊一只     |   ￥   20.00      |   微信     |       2022-09-05 11:10:22      |   感谢您的开源       |
 
 
 `LinkWeChat` 全体开发团队感谢以下全部合作伙伴的服务器赞助（排名不分先后）：
@@ -358,6 +309,6 @@ LinkWeChat 开源团队将目前所收项目捐赠全额捐出，仅尽绵薄之
 
 ---
 
- **<p align="center">如果您觉得我们的开源项目很有帮助，请点击 :star: Star 支持 LinkWeChat 开源团队:heart:</p>** 
+**<p align="center">如果您觉得我们的开源项目很有帮助，请点击 :star: Star 支持 LinkWeChat 开源团队:heart:</p>**
 
 ---
