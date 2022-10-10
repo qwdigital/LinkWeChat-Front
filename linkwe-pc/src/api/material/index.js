@@ -10,7 +10,7 @@ search:搜索的值
 mediaType: ''  0 图片（image）、1 语音（voice）、2 视频（video），3 普通文件(file)， 4 文本， 5 海报， 6 海报字体"， 7 图文， 8 链接，9 小程序
  }
  */
-export function getList(params) {
+export function getList (params) {
   return request({ url: service + '/list', params })
 }
 
@@ -18,7 +18,7 @@ export function getList(params) {
  *查询素材详细信息
  * @param {*} id 素材id
  */
-export function getDetail(id) {
+export function getDetail (id) {
   return request({ url: service + '/' + id })
 }
 /**
@@ -33,7 +33,7 @@ digest:摘要
 coverUrl:封面本地资源文件
 }
  */
-export function add(data) {
+export function add (data) {
   return request({ url: service, method: 'post', data })
 }
 
@@ -50,7 +50,7 @@ digest:摘要
 coverUrl:封面本地资源文件
 }
  */
-export function update(data) {
+export function update (data) {
   return request({ url: service, method: 'put', data })
 }
 
@@ -58,7 +58,7 @@ export function update(data) {
  * 删除素材信息
  * @param {*} id
  */
-export function remove(id) {
+export function remove (id) {
   return request({ url: service + '/' + id, method: 'DELETE' })
 }
 
@@ -70,7 +70,7 @@ export function remove(id) {
 type:0 图片（image）、1 语音（voice）、2 视频（video），3 普通文件(file)
 }
  */
-export function upload(data) {
+export function upload (data) {
   return request({
     url: service + '/upload',
     method: 'post',
@@ -86,7 +86,7 @@ export function upload(data) {
  * materials // 移动的素材ids，逗号分隔
  * }
  */
-export function moveGroup(categoryId, materials) {
+export function moveGroup (categoryId, materials) {
   return request({
     url: service + '/resetCategory',
     method: 'put',
@@ -101,7 +101,7 @@ export function moveGroup(categoryId, materials) {
  * 类目树
  * @param {*} mediaType 0 图片（image）、1 语音（voice）、2 视频（video），3 普通文件(file), 4 文本
  */
-export function getTree(mediaType) {
+export function getTree (mediaType) {
   return request({ url: serviceCategory + '/list', params: { mediaType } })
 }
 
@@ -109,7 +109,7 @@ export function getTree(mediaType) {
  *通过id查询类目详细信息
  * @param {*} id
  */
-export function getTreeDetail(id) {
+export function getTreeDetail (id) {
   return request({ url: serviceCategory + '/' + id })
 }
 
@@ -122,7 +122,7 @@ export function getTreeDetail(id) {
     "parentId": "父id"
 }
  */
-export function addTree(data) {
+export function addTree (data) {
   return request({ url: serviceCategory, method: 'post', data })
 }
 
@@ -135,7 +135,7 @@ export function addTree(data) {
     "parentId": "父id"
 }
  */
-export function updateTree(data) {
+export function updateTree (data) {
   return request({ url: serviceCategory, method: 'put', data })
 }
 
@@ -143,7 +143,7 @@ export function updateTree(data) {
  * 删除类目
  * @param {*} data
  */
-export function removeTree(ids) {
+export function removeTree (ids) {
   return request({
     url: serviceCategory + '/' + ids,
     method: 'DELETE'
@@ -157,7 +157,7 @@ export function removeTree(ids) {
 type [string] 是	素材类型
 name [string] 是	文件名称
  */
-export function getMaterialMediaId(data) {
+export function getMaterialMediaId (data) {
   return request({
     url: service + '/temporaryMaterialMediaIdForWeb',
     method: 'POST',

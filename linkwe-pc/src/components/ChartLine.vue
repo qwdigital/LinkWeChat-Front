@@ -153,9 +153,10 @@ export default {
           y: 'bottom',
           // selectedMode: false,
           type: 'scroll', // 分页类型
-          icon: 'line',
-          itemWidth: 16,
-          // itemHeight: 8,
+          icon: 'roundRect',
+          itemWidth: 24,
+          itemHeight: 4,
+          itemGap:14,
           tooltip: {
             show: true,
           },

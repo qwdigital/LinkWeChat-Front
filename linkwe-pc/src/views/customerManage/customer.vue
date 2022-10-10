@@ -1,7 +1,6 @@
 <script>
 import * as api from '@/api/customer'
 import { getList as getListTag } from '@/api/customer/tag'
-import { getAllStaff } from '@/api/organization'
 import AddTag from '@/components/AddTag'
 import SelectTag from '@/components/SelectTag'
 import { dictAddType, dictTrackState } from '@/utils/dictionary'
@@ -23,7 +22,7 @@ export default {
         customerType: '', //客户类型  1:微信客户;2:企业客户
         trackState: '', //跟进状态 1:待跟进;2:跟进中;3:已成交;4:无意向;5:已流失
         addMethod: '', //添加方式 0:未知来源;1:扫描二维码;2:搜索手机号;3:名片分享;4:群聊;5:手机通讯录;6:微信联系人;7:来自微信好友的添加申请;8:安装第三方应用时自动添加的客服人员;9:搜索邮箱;10:视频号主页添加;11:员工活码;12:新客拉群;13:活动裂变;201:内部成员共享;202:管理员/负责人分配
-        gender: '' //0-未知 1-男性 2-女性
+        gender: '', //0-未知 1-男性 2-女性
       },
       queryTag: [], // 搜索框选择的标签
       queryUser: [], // 搜索框选择的添加人
@@ -35,7 +34,7 @@ export default {
       // 添加标签表单
       form: {
         gourpName: '',
-        weTags: []
+        weTags: [],
       },
       list: [], // 客户列表
       staffList: [], // 所有员工列表
@@ -49,11 +48,11 @@ export default {
       selectedTag: [], // 选择的标签
       tagDialogType: {
         title: '', // 选择标签弹窗标题
-        type: '' // 弹窗类型
+        type: '', // 弹窗类型
       },
       dictCustomerType: Object.freeze({ 1: '微信客户', 2: '企业客户' }),
       dictAddType,
-      dictTrackState
+      dictTrackState,
     }
   },
   watch: {},
@@ -61,7 +60,6 @@ export default {
   created() {
     this.getList()
     this.getListTag()
-    this.getAllStaff()
 
     this.$store.dispatch(
       'app/setBusininessDesc',
@@ -96,7 +94,7 @@ export default {
               element.tagIds.forEach((unit, index) => {
                 element.tags.push({
                   tagId: unit,
-                  tagName: element.tagNames[index]
+                  tagName: element.tagNames[index],
                 })
               })
             }
@@ -124,21 +122,16 @@ export default {
           this.$refs.selectTag.getList()
           this.form = {
             gourpName: '',
-            weTags: []
+            weTags: [],
           }
         }
-      })
-    },
-    getAllStaff() {
-      getAllStaff().then(({ data }) => {
-        this.staffList = Object.freeze(data)
       })
     },
     showTagDialog() {
       this.selectedTag = this.queryTag
       this.tagDialogType = {
         title: '选择标签',
-        type: 'query'
+        type: 'query',
       }
       this.dialogVisible = true
       // this.$refs.selectTag.$forceUpdate()
@@ -189,33 +182,33 @@ export default {
             '已有标签[' + hasErrorTag + ']不在标签库中，已被删除或存在异常'
           ),
           type: 'warning',
-          customClass: 'mzindex'
+          customClass: 'mzindex',
         })
         // this.msgError('已有标签[' + hasErrorTag + ']不在标签库中，已被删除或存在异常')
       }
 
       this.tagDialogType = {
-        title: '标签设置' + (repeat.length ? '（重复的标签已去重显示）' : '')
+        title: '标签设置' + (repeat.length ? '（重复的标签已去重显示）' : ''),
       }
       this.dialogVisible = true
       // this.$refs.selectTag.$forceUpdate()
     },
     sync() {
-      const loading = this.$loading({
-        lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      })
+      // const loading = this.$loading({
+      //   lock: true,
+      //   text: 'Loading',
+      //   spinner: 'el-icon-loading',
+      //   background: 'rgba(0, 0, 0, 0.7)',
+      // })
       api
         .sync()
         .then(() => {
-          loading.close()
+          // loading.close()
           this.getList(1)
           this.msgSuccess('后台开始同步数据，请稍后关注进度')
         })
         .catch((fail) => {
-          loading.close()
+          // loading.close()
           console.log(fail)
         })
     },
@@ -246,7 +239,7 @@ export default {
         let data = {
           externalUserid: this.currentEidt.externalUserid,
           addTag: selected,
-          userId: this.currentEidt.firstUserId
+          userId: this.currentEidt.firstUserId,
         }
         // let apiType = {
         //   add: 'makeLabel',
@@ -288,28 +281,29 @@ export default {
       let { externalUserid, firstUserId: userId } = row
       this.$router.push({
         path: 'customerDetail',
-        query: { externalUserid, userId }
+        query: { externalUserid, userId },
       })
     },
 
     // 在职继承
-    transfer(row) {
-      if (!this.extendStaff) {
-        this.msgError('请选择员工')
-        return
-      }
+    async transfer(row) {
+      await this.$refs['SelectStaffForm'].validate()
+      // if (!this.extendStaff) {
+      //   this.msgError('请选择员工')
+      //   return
+      // }
       let data = {
         handoverUserId: this.currentEidt.firstUserId, //移交人
         takeoverUserId: this.extendStaff, //接受人
-        externalUserid: this.currentEidt.externalUserid //客户id，多个客户使用逗号隔开
+        externalUserid: this.currentEidt.externalUserid, //客户id，多个客户使用逗号隔开
       }
       api.jobExtends(data).then((res) => {
         this.msgSuccess('操作成功')
         this.dialogVisibleExtend = false
         this.getList()
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -386,15 +380,10 @@ export default {
       </el-form-item>
 
       <el-form-item label=" ">
-        <el-button v-hasPermi="['customerManage:customer:query']" type="primary" @click="getList(1)"
-          >查询</el-button
-        >
-        <el-button
-          v-hasPermi="['customerManage:customer:query']"
-          type="success"
-          @click="resetForm()"
-          >重置</el-button
-        >
+        <!-- v-hasPermi="['customerManage:customer:query']" -->
+        <el-button type="primary" @click="getList(1)">查询</el-button>
+        <el-button type="success" @click="resetForm()">重置</el-button>
+        <!-- v-hasPermi="['customerManage:customer:query']" -->
         <!-- <el-button
           v-hasPermi="['customerManage:customer:export']"
           type="info"
@@ -417,15 +406,9 @@ export default {
 
     <div class="sub-text-color">客户总数(去重)：{{ noRepeatCustomerTotal }}</div>
 
-    <el-table
-      ref="table"
-      :data="list"
-      tooltip-effect="dark"
-      highlight-current-row
-      @select="handleSelection"
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column type="selection" align="center" width="55"> </el-table-column>
+    <el-table ref="table" :data="list" tooltip-effect="dark" highlight-current-row>
+      <!-- @select="handleSelection" @selection-change="handleSelectionChange" -->
+      <!-- <el-table-column type="selection" align="center" width="55"> </el-table-column> -->
       <el-table-column label="客户" prop="customerName" header-align="center" align="" width="180">
         <template slot-scope="{ row }">
           <div class="cp flex aic" @click="goRoute(row)">
@@ -458,9 +441,9 @@ export default {
       </el-table-column>
       <el-table-column prop="trackState" label="跟进状态" align="center">
         <template slot-scope="{ row }">
-          <el-tag v-if="row.trackState" :type="dictTrackState[~~row.trackState + ''].color">{{
-            dictTrackState[~~row.trackState + ''].name
-          }}</el-tag>
+          <el-tag v-if="row.trackState" :type="dictTrackState[~~row.trackState + ''].color"
+            >{{ dictTrackState[~~row.trackState + ''].name }}
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="addMethod" label="添加方式" align="center">
@@ -474,19 +457,10 @@ export default {
 
       <el-table-column label="操作" width="200" align="center">
         <template slot-scope="{ row }">
-          <el-button
-            v-hasPermi="['customerManage:customer:view']"
-            @click="goRoute(row)"
-            type="text"
-            size="small"
-            >查看</el-button
-          >
-          <el-button
-            v-hasPermi="['customerManage/customer:makeTag']"
-            type="text"
-            @click="makeTag(row)"
-            >标签管理</el-button
-          >
+          <!-- v-hasPermi="['customerManage:customer:view']" -->
+          <el-button @click="goRoute(row)" type="text" size="small">查看</el-button>
+          <el-button type="text" @click="makeTag(row)">标签管理</el-button>
+          <!-- v-hasPermi="['customerManage/customer:makeTag']" -->
           <el-button
             type="text"
             size="small"
@@ -523,30 +497,18 @@ export default {
     </SelectTag>
 
     <!-- 选择添加人弹窗 -->
-    <SelectUser
+    <SelectWeUser
       :visible.sync="dialogVisibleSelectUser"
       title="选择添加人"
       @success="selectedUser"
-    ></SelectUser>
+    ></SelectWeUser>
 
     <!-- 添加标签弹窗 -->
     <AddTag :visible.sync="dialogVisibleAddTag" :form="form" @success="getListTag(true)" />
 
     <!-- 在职继承弹窗 -->
     <el-dialog title="选择员工" :visible.sync="dialogVisibleExtend" :close-on-click-modal="false">
-      <el-form ref="formExtend" inline>
-        <el-form-item prop="extendStaff" label="选择员工">
-          <el-select v-model="extendStaff" placeholder="请选择员工">
-            <el-option
-              v-for="item in staffList"
-              :key="item.userId"
-              :label="item.name"
-              :value="item.userId"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
+      <SelectStaffForm ref="SelectStaffForm" :selected.sync="extendStaff"></SelectStaffForm>
       <div slot="footer">
         <el-button @click="dialogVisibleExtend = false">取 消</el-button>
         <el-button type="primary" @click="transfer">确 定</el-button>

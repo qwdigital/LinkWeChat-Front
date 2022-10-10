@@ -30,7 +30,7 @@ export default {
           <Voice :amrUrl="row.materialUrl"></Voice>
         </template>
       </el-table-column>
-      <el-table-column label="时长" align="center" prop="audioTime" />
+      <el-table-column label="名称" align="center" prop="materialName" />
       <el-table-column label="最近更新时间" align="center" prop="updateTime" width="160">
       </el-table-column>
       <el-table-column

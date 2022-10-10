@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName">
       <el-tab-pane label="员工检索" name="1">
         <employee></employee>
       </el-tab-pane>
@@ -14,25 +14,21 @@
   </div>
 </template>
 <script>
-import employee from './employee.vue'
-import user from './customer.vue'
-import global from './global.vue'
-export default {
-  components: { employee, user, global },
-  data() {
-    return {
-      activeName: '1'
-    }
-  },
-  methods: {
-    handleClick(tab, event) {
-      console.log(tab, event)
-    }
+  import employee from './employee.vue'
+  import user from './customer.vue'
+  import global from './global.vue'
+  export default {
+    components: { employee, user, global },
+    data() {
+      return {
+        activeName: '1'
+      }
+    },
+    methods: {}
   }
-}
 </script>
 <style lang="scss" scoped>
-::v-deep.pd15 {
-  padding: 15px;
-}
+  ::v-deep.pd15 {
+    padding: 15px;
+  }
 </style>

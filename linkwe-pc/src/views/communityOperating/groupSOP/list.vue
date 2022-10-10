@@ -144,13 +144,11 @@ export default {
         </el-form-item>
         <el-form-item label=" ">
           <el-button
-            v-hasPermi="['customerManage:customer:query']"
             type="primary"
             @click="getList(1)"
             >查询</el-button
           >
           <el-button
-            v-hasPermi="['customerManage:customer:query']"
             type="success"
             @click="resetQuery()"
             >重置</el-button
@@ -165,7 +163,6 @@ export default {
       </div>
       <div>
         <el-button
-          v-hasPermi="['customerManage:customer:export']"
           :disabled="multiSelect.length === 0"
           @click="handleBulkRemove"
           type="cyan"
@@ -205,14 +202,12 @@ export default {
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
-            v-hasPermi="['enterpriseWechat:view']"
             size="mini"
             type="text"
             @click="handleRemove(scope.row.ruleId)"
             >删除</el-button
           >
           <el-button
-            v-hasPermi="['enterpriseWechat:edit']"
             size="mini"
             type="text"
             @click="goRoute(scope.row.ruleId)"

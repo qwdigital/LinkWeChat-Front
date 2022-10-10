@@ -2,6 +2,7 @@
 import { upload } from '@/api/material'
 import Video from 'video.js'
 import BenzAMRRecorder from 'benz-amr-recorder'
+import MP4Box from 'mp4box'
 export default {
   name: 'Upload',
   components: {},
@@ -44,12 +45,12 @@ export default {
   data() {
     return {
       loading: false,
-      action: window.lwConfig.BASE_API + '/common/uploadFile2Cos',
+      action: window.lwConfig.BASE_API + '/file/upload',
       // (this.type == 0
       //   ? '/wecom/material/uploadimg'
       //   : '/common/uploadFile2Cos'),
       headers: window.CONFIG.headers,
-      domain: window.lwConfig.BASE_API,
+      // domain: window.lwConfig.BASE_API
     }
   },
   watch: {},
@@ -73,22 +74,23 @@ export default {
         let fileFormat = match && match[0].replace('.', '').toLowerCase()
         if (!(isFormat = this.format.includes(fileFormat))) {
           this.$message.error('文件格式不正确，请重新选择')
+          this.loading = false
+          return Promise.reject()
         }
       }
-
       if (this.type === '0') {
         // 图片
         isFormat = file.type === 'image/jpeg' || file.type === 'image/png'
         isSize = file.size / 1024 / 1024 < this.maxSize
 
         if (!isFormat) {
-          this.$message.error('上传文件只能是 JPG 格式!')
+          this.$message.error('上传文件只能是 JPG/PNG 格式!')
         }
         if (!isSize) {
           this.$message.error('上传文件大小不能超过 2MB!')
         }
-
-        if (this.maxImgPx) {
+        let maxImgPx = this.maxImgPx
+        if (maxImgPx) {
           try {
             await new Promise((resolve) => {
               let width, height
@@ -97,11 +99,11 @@ export default {
               image.onload = () => {
                 width = image.width
                 height = image.height
-                if (width > this.maxImgPx[0]) {
+                if (width > maxImgPx[0]) {
                   isSize = false
-                  this.$message.error('图片“宽”度超限，请重新选择')
-                } else if (height > this.maxImgPx[1]) {
-                  this.$message.error('图片“高”度超限，请重新选择')
+                  this.$message.error(`图片“宽”度超过${maxImgPx[0]}像素，请重新选择`)
+                } else if (height > maxImgPx[1]) {
+                  this.$message.error(`图片“高”度超过${maxImgPx[1]}像素，请重新选择`)
                   isSize = false
                 }
                 window.URL && window.URL.revokeObjectURL(image.src)
@@ -149,9 +151,17 @@ export default {
         // 视频
         isFormat = file.type === 'video/mp4'
         isSize = file.size / 1024 / 1024 < 10
-
         if (!isFormat) {
           this.$message.error('上传文件只能是 mp4 格式!')
+        }
+        let result
+        await this.checkVideoCode(file).then((res) => {
+          result = res
+        })
+        if (result.mime.indexOf('video/mp4') === -1) {
+          this.$message.error('mp4 格式不正确, 请使用标准编码视频!')
+          this.loading = false
+          return Promise.reject()
         }
         if (!isSize) {
           this.$message.error('上传文件大小不能超过 10MB!')
@@ -167,11 +177,28 @@ export default {
       if (!isFormat || !isSize) {
         this.loading = false
       }
-
       // if (beforeUpload) {
       //   return beforeUpload(file)
       // }
       return (isFormat && isSize) || Promise.reject()
+    },
+    checkVideoCode(file) {
+      return new Promise((resolve, reject) => {
+        const mp4boxFile = MP4Box.createFile()
+        const reader = new FileReader()
+        reader.readAsArrayBuffer(file)
+        reader.onload = function (e) {
+          const arrayBuffer = e.target.result
+          arrayBuffer.fileStart = 0
+          mp4boxFile.appendBuffer(arrayBuffer)
+        }
+        mp4boxFile.onReady = function (info) {
+          resolve(info)
+        }
+        mp4boxFile.onError = function (info) {
+          reject(info)
+        }
+      })
     },
     onSuccess(res, file) {
       if (res.code === 200) {

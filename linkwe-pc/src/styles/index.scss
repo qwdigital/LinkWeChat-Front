@@ -1,3 +1,4 @@
+@import './common.scss';
 @import './variables.scss';
 @import './mixin.scss';
 @import './transition.scss';
@@ -55,6 +56,10 @@ a:hover {
   cursor: pointer;
   color: inherit;
   text-decoration: none;
+}
+a:hover {
+  // 提高hover权重，其他地方的ahover如需改变，也使用important
+  color: $blue !important;
 }
 
 div:focus {
@@ -187,19 +192,6 @@ aside {
 
 .multiselect--active {
   z-index: 1000 !important;
-}
-
-.el-table {
-  .el-table__header-wrapper,
-  .el-table__fixed-header-wrapper {
-    th {
-      word-break: break-word;
-      background-color: #f8f8f9;
-      color: #515a6e;
-      height: 40px;
-      font-size: 13px;
-    }
-  }
 }
 
 /** 表单布局 **/

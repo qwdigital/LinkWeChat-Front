@@ -6,9 +6,10 @@ const user = {
     token: getToken(),
     name: '',
     companyName: '',
-    avatar: '',
+    avatar: require('@/assets/image/profile.jpg'),
     roles: [],
     permissions: [],
+    configParamInfo: {},
   },
 
   mutations: {
@@ -19,13 +20,16 @@ const user = {
       state.name = name
     },
     SET_AVATAR: (state, avatar) => {
-      state.avatar = avatar
+      avatar && (state.avatar = avatar)
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
     },
     SET_PERMISSIONS: (state, permissions) => {
       state.permissions = permissions
+    },
+    SET_INFO: (state, configParamInfo) => {
+      state.configParamInfo = configParamInfo
     },
   },
 
@@ -38,9 +42,9 @@ const user = {
       const uuid = userInfo.uuid
       return new Promise((resolve, reject) => {
         login(username, password, code, uuid)
-          .then((res) => {
-            setToken(res.token)
-            commit('SET_TOKEN', res.token)
+          .then(({data}) => {
+            setToken(data.access_token)
+            commit('SET_TOKEN', data.access_token)
             resolve()
           })
           .catch((error) => {
@@ -52,45 +56,55 @@ const user = {
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getInfo(state.token)
-          .then((res) => {
+        getInfo(state.token).then((res) => {
+          try {
             const user = res.user
-            const avatar =
-              user.avatar == ''
-                ? require('@/assets/image/profile.jpg')
-                : window.lwConfig.BASE_API + user.avatar
+            const avatar = user.avatar
+            // : window.lwConfig.BASE_API + user.avatar
             if (res.roles && res.roles.length > 0) {
               // 验证返回的roles是否是一个非空数组
-              commit('SET_ROLES', res.roles)
+              commit(
+                'SET_ROLES',
+                // res.user.roles.map((data) => {
+                //   return data.roleKey
+                // })
+                res.roles
+              )
               commit('SET_PERMISSIONS', res.permissions)
             } else {
               commit('SET_ROLES', ['ROLE_DEFAULT'])
             }
             commit('SET_NAME', user.userName)
             commit('SET_AVATAR', avatar)
+            commit('SET_INFO', res.configParamInfo)
             state.companyName = user.companyName
             resolve(res)
-          })
-          .catch((error) => {
+          } catch (error) {
             reject(error)
-          })
+          }
+        })
       })
     },
 
     // 退出系统
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
-        logout(state.token)
-          .then(() => {
-            commit('SET_TOKEN', '')
-            commit('SET_ROLES', [])
-            commit('SET_PERMISSIONS', [])
-            removeToken()
-            resolve()
-          })
-          .catch((error) => {
-            reject(error)
-          })
+        commit('SET_TOKEN', '')
+        commit('SET_ROLES', [])
+        commit('SET_PERMISSIONS', [])
+        removeToken()
+        resolve()
+        // logout(state.token)
+        //   .then(() => {
+        //     commit('SET_TOKEN', '')
+        //     commit('SET_ROLES', [])
+        //     commit('SET_PERMISSIONS', [])
+        //     removeToken()
+        //     resolve()
+        //   })
+        //   .catch((error) => {
+        //     reject(error)
+        //   })
       })
     },
 

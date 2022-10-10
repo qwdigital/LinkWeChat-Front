@@ -1,54 +1,59 @@
 <script>
-  import { getTree, getList } from '@/api/organization'
+  import { getDeptTree, getDeptUser } from '@/api/organization'
+
   import { createUniqueString } from '@/utils'
   export default {
     name: 'SelectUser',
     components: {},
     props: {
+      isWechat: {
+        type: Boolean,
+        default: true
+      },
       // 添加标签显隐
       visible: {
         type: Boolean,
-        default: false,
+        default: false
       },
       title: {
         type: String,
-        default: '组织架构',
+        default: '组织架构'
       },
       // 是否 只选择叶子节点（人员节点）/禁止选择父节点（部门节点）
       isOnlyLeaf: {
         type: Boolean,
-        default: true,
+        default: true
       },
       // 是否单选
       isSigleSelect: {
         type: Boolean,
-        default: false,
+        default: false
       },
       // 默认选中的节点
       defaultValues: {
         type: Array,
         default: () => [],
         // 必须含有userId和name属性
-        validator (val) {
+        validator(val) {
           return val.every((e) => e.userId && e.name)
-        },
+        }
       },
       // 禁止选中的节点
       disabledValues: {
         type: Array,
-        default: () => [],
+        default: () => []
       },
-      destroyOnClose: Boolean,
+      destroyOnClose: Boolean
     },
-    data () {
+    data() {
       return {
         treeData: [],
         userList: [],
-        defaultKeys: [],
+        defaultKeys: []
       }
     },
     watch: {
-      defaultValues (value) {
+      defaultValues(value) {
         const checkedUserList = []
         if (!Array.isArray(value) || value.length == 0) {
           this.userList = []
@@ -62,48 +67,41 @@
           this.userList = checkedUserList
         }
       },
-      Pvisible (val) {
-        val &&
-          this.$refs.tree &&
-          this.$refs.tree.setCheckedKeys(this.defaultValues.map((e) => e.userId || e.id))
-        if (this.$refs.tree) {
-          setTimeout(() => {
-            this.$refs.tree &&
-              this.$refs.tree.setCheckedKeys(this.defaultValues.map((e) => e.userId || e.id))
-          }, 300);
-        }
-      },
+      Pvisible(val) {
+        val && this.$refs.tree && this.$refs.tree.setCheckedKeys(this.defaultValues.map((e) => e.userId || e.id))
+      }
     },
     computed: {
       Pvisible: {
-        get () {
+        get() {
           return this.visible
         },
-        set (val) {
+        set(val) {
           this.$emit('update:visible', val)
-        },
+        }
       },
-      defaultProps () {
+      defaultProps() {
         let that = this
         return {
           label: 'name',
           children: 'children',
-          disabled (data, node) {
+          disabled(data, node) {
             return (
               (that.isOnlyLeaf && data.isParty) ||
-              that.disabledValues.some((e) => e == (data.userId || data.id))
+              that.disabledValues.some((e) => e == (data.userId || data.id)) ||
+              data.userId === ''
             )
           },
-          isLeaf (data, node) {
+          isLeaf(data, node) {
             return !data.id
-          },
+          }
         }
-      },
+      }
     },
-    created () { },
-    mounted () { },
+    created() {},
+    mounted() {},
     methods: {
-      treeFormat (list) {
+      treeFormat(list) {
         let dealOptions = []
         list.forEach((one) => {
           let findIndex = list.findIndex((item) => {
@@ -122,16 +120,16 @@
         })
         return dealOptions
       },
-      loadNode (node, resolve) {
+      loadNode(node, resolve) {
         if (node.level === 0) {
           if (!Array.isArray(this.defaultValues) || this.defaultValues.length == 0) {
             this.userList = []
           }
-          getTree().then(({ data }) => {
+          getDeptTree().then(({ data }) => {
             // data.forEach((element) => {
             //   element.key = createUniqueString()
             // })
-            let _data = this.handleTree(data)
+            let _data = this.handleDepart(data)
             resolve(this.treeFormat(_data))
             // api.getList({ department: _data[0].id }).then(({ rows, total }) => {
             //   _data && rows.unshift(..._data);
@@ -139,27 +137,38 @@
             // });
           })
         } else {
-          getList({ department: node.data.id, isActivate: 1 }).then(({ rows }) => {
+          getDeptUser({ deptId: node.data.id }).then(({ rows }) => {
             // rows.forEach((element) => {
             //   element.key = createUniqueString()
             // })
-            node.data.children && rows.push(...node.data.children)
-            resolve(rows)
-            this.$refs.tree.setCheckedKeys(this.userList.map((e) => e.userId || e.id))
+            let arr = this.handleUser(rows)
+            node.data.children && arr.push(...node.data.children)
+            resolve(arr)
           })
         }
       },
-      handleTree (data) {
+      handleDepart(data) {
         return data.map((i) => {
-          if (i.id) {
-            i.userId = i.id
+          if (i.deptId) {
+            i.userId = i.deptId
+            i.name = i.deptName
+            i.id = i.deptId
             i.isParty = true
           }
           return i
         })
       },
+      handleUser(data) {
+        return data.map((i) => {
+          if (i.weUserId) {
+            i.userId = this.isWechat ? i.weUserId : i.userId
+            i.name = i.userName
+          }
+          return i
+        })
+      },
       // 选择变化
-      handleCheckChange (data, checked, indeterminate) {
+      handleCheckChange(data, checked, indeterminate) {
         // console.log(arguments)
         if (checked) {
           if (this.isSigleSelect) {
@@ -170,7 +179,7 @@
             if (data.userId && !data.isParty) {
               this.userList.push(data)
             }
-          } else {            
+          } else {
             const isExist = this.userList.findIndex((i) => i.userId === data.userId) > -1
             !isExist && this.userList.push(data)
           }
@@ -182,7 +191,7 @@
         // console.log(data, checked, indeterminate);
         this.userList = this.unique(this.userList)
       },
-      unique (arr) {
+      unique(arr) {
         for (var i = 0; i < arr.length; i++) {
           for (var j = i + 1; j < arr.length; j++) {
             if (arr[i].userId.split('_')[0] == arr[j].userId.split('_')[0]) {
@@ -194,19 +203,19 @@
         return arr
       },
       // 确 定
-      submit () {
+      submit() {
         this.Pvisible = false
         this.$emit('success', [...this.userList])
       },
       // 取消选择
-      cancle (key) {
+      cancle(key) {
         this.$refs.tree.setChecked(key, false)
         let index = this.userList.findIndex((i) => i.userId === key)
         index > -1 && this.userList.splice(index, 1)
         let order = this.defaultValues.findIndex((i) => i.userId === key)
         order > -1 && this.defaultValues.slice().splice(order, 1)
-      },
-    },
+      }
+    }
   }
 </script>
 <template>
@@ -214,7 +223,19 @@
     <el-row :gutter="20">
       <el-col :span="12" :xs="24">
         <div class="head-container">
-          <el-tree node-key="userId" ref="tree" lazy accordion show-checkbox :check-on-click-node="false" :expand-on-click-node="true" :load="loadNode" :props="defaultProps" :check-strictly="isOnlyLeaf" @check-change="handleCheckChange"></el-tree>
+          <el-tree
+            node-key="nodeKey"
+            ref="tree"
+            lazy
+            accordion
+            show-checkbox
+            :check-on-click-node="false"
+            :expand-on-click-node="true"
+            :load="loadNode"
+            :props="defaultProps"
+            :check-strictly="isOnlyLeaf"
+            @check-change="handleCheckChange"
+          ></el-tree>
           <!-- :default-checked-keys="
               defaultValues.map((e) => (isOnlyLeaf ? e.userId : e.userId || e.id))
             " -->

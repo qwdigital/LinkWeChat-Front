@@ -8,7 +8,6 @@ export default {
   components: {
     ChartLine: () => import('@/components/ChartLine'),
     ChartBar: () => import('@/components/ChartBar'),
-    SelectUser: () => import('@/components/SelectUser'),
   },
   props: {
     // 图表类型
@@ -30,6 +29,12 @@ export default {
     requestExport: {
       type: Function,
       default: () => {},
+    },
+    // 自定义图表配置项，使用loadsh.merge(origin, option)和原有的配置进行覆盖合并
+    // loadsh.merge: https://www.html.cn/doc/lodash/#_mergeobject-sources
+    option: {
+      type: Object,
+      default: null,
     },
   },
   data() {
@@ -155,6 +160,9 @@ export default {
         .then(({ rows, total, data }) => {
           this.series = []
           data = data || rows
+          if (!data || !data.length) {
+            return
+          }
 
           if (this.type.includes('Chart')) {
             // （条形图）
@@ -242,7 +250,7 @@ export default {
       this.getList()
     },
     exprotTable() {
-      this.$confirm('是否确认导出吗?', '警告', {
+      this.$confirm('是否确认导出吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
@@ -253,7 +261,7 @@ export default {
           return this.requestExport(query)
         })
         .then((res) => {
-          this.download(res.msg)
+          this.download(res.data)
         })
         .catch((error) => {
           console.error(error)
@@ -290,7 +298,7 @@ export default {
       ></el-date-picker>
       <el-input
         v-if="type.toLowerCase().includes('group')"
-        style="width: 180px"
+        style="width: 180px; margin-left: 20px"
         :value="userArray.map((e) => e.name) + ''"
         readonly
         @focus="showDialog('_groupOwners')"
@@ -298,6 +306,7 @@ export default {
       >
       </el-input>
       <el-select
+        style="margin-left: 20px"
         v-if="['customerGroupMemberTotalChart', 'customerGroupMemberTotalTable'].includes(type)"
         v-model="query.chatIds"
         placeholder="请选择群聊"
@@ -321,7 +330,7 @@ export default {
             'customerContactTable',
           ].includes(type)
         "
-        style="width: 180px"
+        style="width: 180px; margin-left: 20px"
         :value="userArray.map((e) => e.name) + ''"
         readonly
         @focus="showDialog('_users')"
@@ -364,15 +373,23 @@ export default {
         :xData="xData"
         :series="series"
       ></ChartBar>
+
+      <ChartLine
+        v-else-if="'rowEchart'.includes('vChart')"
+        :xData="xData"
+        :legend="legend || legendDict[type]"
+        :series="series"
+        :option="option"
+      ></ChartLine>
     </div>
 
-    <SelectUser
+    <SelectWeUser
       :visible.sync="dialogVisible"
       title="组织架构"
       :defaultValues="userArray"
       @success="getSelectUser"
       :isOnlyLeaf="dialogType === '_groupOwners'"
-    ></SelectUser>
+    ></SelectWeUser>
   </div>
 </template>
 

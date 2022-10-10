@@ -5,7 +5,11 @@ export function dateFormat(dateString, fmt = 'yyyy-MM-dd hh:mm:ss') {
   if (!dateString) {
     return
   }
-  var date = new Date(dateString.replace(/-/g, '/'))
+  var date = dateString
+  if (Object.prototype.toString.call(dateString) !== '[object Date]') {
+    console.log(dateString)
+    date = new Date(dateString.replace(/-/g, '/'))
+  }
   var o = {
     'M+': date.getMonth() + 1, //月份
     'd+': date.getDate(), //日
@@ -14,7 +18,7 @@ export function dateFormat(dateString, fmt = 'yyyy-MM-dd hh:mm:ss') {
     's+': date.getSeconds(), //秒
     'q+': Math.floor((date.getMonth() + 3) / 3), //季度
     'S+': date.getMilliseconds(), //毫秒
-    'w+': '星期' + '日一二三四五六'.charAt(date.getDay()) //星期
+    'w+': '星期' + '日一二三四五六'.charAt(date.getDay()), //星期
   }
 
   if (/(y+)/.test(fmt)) {
@@ -68,13 +72,41 @@ export function formatTime(time, option) {
   }
 }
 
+// 时间差 
+export function diffDate(startDate, endDate) {
+  if (!startDate || !endDate) {
+    return
+  }
+  const start = new Date(startDate)
+  const end = new Date(endDate)
+  const diff = (end - start)/1000
+  console.log(diff)
+  const days = parseInt(diff/86400) 
+  const hours = parseInt(diff/3600)-24*days
+  const minutes = parseInt(diff%3600/60)
+  const seconds = parseInt(diff%60)
+  if (hours) {
+    return (hours + 'h' + minutes + 'm' + seconds + 's')
+  }
+  if (minutes) {
+    return (minutes + 'm' + seconds + 's')
+  }
+  return seconds + 's'
+}
+
+
+
 /**
  * @param {string} url
  * @returns {Object}
  */
-export function getQueryObject(url) {
+export function query2Obj(url) {
   url = url == null ? window.location.href : url
   const search = url.substring(url.lastIndexOf('?') + 1)
+  search = search && search.split('#')[0]
+  if (!search) {
+    return {}
+  }
   const obj = {}
   const reg = /([^?&=]+)=([^?&=]*)/g
   search.replace(reg, (rs, $1, $2) => {
@@ -85,6 +117,21 @@ export function getQueryObject(url) {
     return rs
   })
   return obj
+}
+
+/**
+ * 获取query请求参数中name对应的值
+ * @param string name
+ */
+export function getQueryValue(name) {
+  let url = window.location.href
+
+  let reg = new RegExp('(^|&|\\?)' + name + '=([^&#]*)(&|#|$)')
+  let r = url.match(reg)
+  if (r != null) {
+    return decodeURIComponent(r[2])
+  }
+  return ''
 }
 
 /**
@@ -131,27 +178,27 @@ export function param(json) {
   ).join('&')
 }
 
-/**
- * @param {string} url
- * @returns {Object}
- */
-export function param2Obj(url) {
-  const search = decodeURIComponent(url.split('?')[1]).replace(/\+/g, ' ')
-  if (!search) {
-    return {}
-  }
-  const obj = {}
-  const searchArr = search.split('&')
-  searchArr.forEach((v) => {
-    const index = v.indexOf('=')
-    if (index !== -1) {
-      const name = v.substring(0, index)
-      const val = v.substring(index + 1, v.length)
-      obj[name] = val
-    }
-  })
-  return obj
-}
+// /**
+//  * @param {string} url
+//  * @returns {Object}
+//  */
+// export function param2Obj(url) {
+//   const search = decodeURIComponent(url.split('?')[1]).replace(/\+/g, ' ')
+//   if (!search) {
+//     return {}
+//   }
+//   const obj = {}
+//   const searchArr = search.split('&')
+//   searchArr.forEach((v) => {
+//     const index = v.indexOf('=')
+//     if (index !== -1) {
+//       const name = v.substring(0, index)
+//       const val = v.substring(index + 1, v.length)
+//       obj[name] = val
+//     }
+//   })
+//   return obj
+// }
 
 /**
  * @param {string} val
@@ -358,7 +405,7 @@ export const beautifierConf = {
     indent_inner_html: true,
     comma_first: false,
     e4x: true,
-    indent_empty_lines: true
+    indent_empty_lines: true,
   },
   js: {
     indent_size: '2',
@@ -377,8 +424,8 @@ export const beautifierConf = {
     indent_inner_html: true,
     comma_first: false,
     e4x: true,
-    indent_empty_lines: true
-  }
+    indent_empty_lines: true,
+  },
 }
 
 // 首字母大小
@@ -408,7 +455,7 @@ export const pickerOptions = {
         const start = new Date()
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
         picker.$emit('pick', [start, end])
-      }
+      },
     },
     {
       text: '最近一个月',
@@ -417,7 +464,7 @@ export const pickerOptions = {
         const start = new Date()
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
         picker.$emit('pick', [start, end])
-      }
+      },
     },
     {
       text: '最近三个月',
@@ -426,9 +473,9 @@ export const pickerOptions = {
         const start = new Date()
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
         picker.$emit('pick', [start, end])
-      }
-    }
-  ]
+      },
+    },
+  ],
 }
 
 // echart图表配色规范
@@ -450,5 +497,125 @@ export const echartColors = [
   '#AAAFB7',
   '#DCD7B0',
   '#749E84',
-  '#B0BBDC'
+  '#B0BBDC',
+]
+
+export function uuid(before = '', after = '') {
+  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('')
+  const charsLen = chars.length
+  let uuid = []
+  const len = 16
+  for (let i = 0; i < len; i++) {
+    uuid[i] = chars[0 | (Math.random() * charsLen)]
+  }
+  return before + uuid.join('') + after
+}
+
+// 微信表情包匹配
+export const emotion = [
+  "[微笑]",
+  "[撇嘴]",
+  "[色]",
+  "[发呆]",
+  "[得意]",
+  "[流泪]",
+  "[害羞]",
+  "[闭嘴]",
+  "[睡]",
+  "[大哭]",
+  "[尴尬]",
+  "[发怒]",
+  "[调皮]",
+  "[呲牙]",
+  "[惊讶]",
+  "[难过]",
+  "[酷]",
+  "[冷汗]",
+  "[抓狂]",
+  "[吐]",
+  "[偷笑]",
+  "[可爱]",
+  "[白眼]",
+  "[傲慢]",
+  "[饥饿]",
+  "[困]",
+  "[惊恐]",
+  "[流汗]",
+  "[憨笑]",
+  "[大兵]",
+  "[奋斗]",
+  "[咒骂]",
+  "[疑问]",
+  "[嘘]",
+  "[晕]",
+  "[折磨]",
+  "[衰]",
+  "[骷髅]",
+  "[敲打]",
+  "[再见]",
+  "[擦汗]",
+  "[抠鼻]",
+  "[鼓掌]",
+  "[糗大了]",
+  "[坏笑]",
+  "[左哼哼]",
+  "[右哼哼]",
+  "[哈欠]",
+  "[鄙视]",
+  "[委屈]",
+  "[快哭了]",
+  "[阴险]",
+  "[亲亲]",
+  "[吓]",
+  "[可怜]",
+  "[菜刀]",
+  "[西瓜]",
+  "[啤酒]",
+  "[篮球]",
+  "[乒乓]",
+  "[咖啡]",
+  "[饭]",
+  "[猪头]",
+  "[玫瑰]",
+  "[凋谢]",
+  "[示爱]",
+  "[爱心]",
+  "[心碎]",
+  "[蛋糕]",
+  "[闪电]",
+  "[炸弹]",
+  "[刀]",
+  "[足球]",
+  "[瓢虫]",
+  "[便便]",
+  "[月亮]",
+  "[太阳]",
+  "[礼物]",
+  "[拥抱]",
+  "[强]",
+  "[弱]",
+  "[握手]",
+  "[胜利]",
+  "[抱拳]",
+  "[勾引]",
+  "[拳头]",
+  "[差劲]",
+  "[爱你]",
+  "[NO]",
+  "[OK]",
+  "[爱情]",
+  "[飞吻]",
+  "[跳跳]",
+  "[发抖]",
+  "[怄火]",
+  "[转圈]",
+  "[磕头]",
+  "[回头]",
+  "[跳绳]",
+  "[挥手]",
+  "[激动]",
+  "[街舞]",
+  "[献吻]",
+  "[左太极]",
+  "[右太极]"
 ]

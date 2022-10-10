@@ -19,7 +19,7 @@ export default {
         tagIds: '', // "标签id,多个标签，id使用逗号隔开",
         beginTime: '', // "开始时间",
         endTime: '', // "结束时间"
-        delFlag: 1
+        trackState:5
       },
       queryTag: [], // 搜索框选择的标签
       queryUser: [], // 搜索框选择的添加人
@@ -110,7 +110,7 @@ export default {
       this.selectedTag = this.queryTag
       this.tagDialogType = {
         title: '选择标签',
-        type: 'query'
+        type: '1'
       }
       this.dialogVisible = true
     },
@@ -135,7 +135,7 @@ export default {
       this.query.userIds = list.map((d) => d.userId) + ''
     },
     submitSelectTag(selected) {
-      if (this.tagDialogType.type === 'query') {
+      if (this.tagDialogType.type === '1') {
         this.query.tagIds = selected.map((d) => d.tagId) + ''
         // debugger;
         this.queryTag = selected
@@ -209,11 +209,12 @@ export default {
         </div>
       </el-form-item>
       <el-form-item label=" ">
-        <el-button v-hasPermi="['customerManage:customer:query']" type="primary" @click="getList(1)"
+        <!-- v-hasPermi="['customerManage:customer:query']" -->
+        <el-button  type="primary" @click="getList(1)"
           >查询</el-button
         >
+          <!-- v-hasPermi="['customerManage:customer:query']" -->
         <el-button
-          v-hasPermi="['customerManage:customer:query']"
           type="success"
           @click="resetForm()"
           >重置</el-button
@@ -232,7 +233,6 @@ export default {
       <div>
         通知提醒<el-switch
           class="ml10 mr10"
-          v-hasPermi="['customerManage/customer:makeTag']"
           v-model="isNotice"
           active-value="1"
           inactive-value="0"
@@ -241,6 +241,8 @@ export default {
           @change="remindSwitch"
         ></el-switch>
       </div>
+          <!-- v-hasPermi="['customerManage/customer:makeTag']" -->
+
     </div>
 
     <el-table
@@ -251,7 +253,7 @@ export default {
       style="width: 100%"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" align="center" width="55"></el-table-column>
+      <!-- <el-table-column type="selection" align="center" width="55"></el-table-column> -->
       <el-table-column label="客户" prop="name" align="center">
         <template slot-scope="scope">
           {{ scope.row.customerName }}
@@ -283,15 +285,15 @@ export default {
       </el-table-column>
       <el-table-column label="操作" width="100">
         <template slot-scope="{ row }">
+            <!-- v-hasPermi="['customerManage:customer:view']" -->
+
           <el-button
-            v-hasPermi="['customerManage:customer:view']"
             @click="
               $router.push({
                 path: 'customerDetail',
                 query: {
                   externalUserid: row.externalUserid,
                   userId: row.firstUserId,
-                  delFlag: 1
                 }
               })
             "

@@ -9,7 +9,8 @@ const service = getway + '/customer'
     "pageNum": "当前页",
     "pageSize": "每页显示条数",
     "name": "客户名称",
-    "userId": "添加人id",
+    "userIds": "添加人id",
+    "deptIds": "部门id",
     "tagIds": "标签id,多个标签，id使用逗号隔开",
     "beginTime": "开始时间",
     "endTime": "结束时间"
@@ -24,7 +25,7 @@ export function getListNew (params) {
   return request({
     url: service + '/findWeCustomerList',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -46,7 +47,7 @@ export function getList (params) {
   return request({
     url: service + '/list',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -55,7 +56,7 @@ export function getList (params) {
  */
 export function sync () {
   return request({
-    url: service + '/synchWeCustomer'
+    url: service + '/synchWeCustomer',
   })
 }
 
@@ -75,7 +76,7 @@ export function makeLabel (data) {
   return request({
     url: service + '/makeLabel',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -95,7 +96,7 @@ export function removeLabel (data) {
   return request({
     url: service + '/removeLabel',
     method: 'DELETE',
-    data
+    data,
   })
 }
 
@@ -111,7 +112,7 @@ export function updateBirthday (data) {
   return request({
     url: service,
     method: 'PUT',
-    data
+    data,
   })
 }
 
@@ -120,7 +121,7 @@ export function exportCustomer (query) {
   return request({
     url: service + '/export',
     method: 'get',
-    params: query
+    params: query,
   })
 }
 
@@ -131,13 +132,13 @@ export function exportCustomer (query) {
 export function lossRemind (status) {
   return request({
     url: getway + '/corp/startCustomerChurnNoticeSwitch/' + status,
-    method: 'PUT'
+    method: 'PUT',
   })
 }
 
 export function getLossRemindStatus (status) {
   return request({
-    url: getway + '/corp/getCustomerChurnNoticeSwitch/'
+    url: getway + '/corp/getCustomerChurnNoticeSwitch/',
   })
 }
 /**
@@ -154,7 +155,7 @@ export function jobExtends (data) {
   return request({
     url: service + '/jobExtends',
     method: 'POST',
-    data
+    data,
   })
 }
 
@@ -168,7 +169,7 @@ export function jobExtends (data) {
 export function getDetail (params) {
   return request({
     url: service + '/findWeCustomerBaseInfo',
-    params
+    params,
   })
 }
 
@@ -183,8 +184,8 @@ export function getSummary ({ externalUserid, delFlag }) {
     url: service + '/findWeCustomerInfoSummary',
     params: {
       externalUserid,
-      delFlag
-    }
+      delFlag,
+    },
   })
 }
 /**
@@ -195,14 +196,10 @@ export function getSummary ({ externalUserid, delFlag }) {
  * delFlag: 1 用户是否流失 0 未流失，1流失
  * @returns
  */
-export function getCustomerInfoByUserId ({ externalUserid, userId, delFlag }) {
+export function getCustomerInfoByUserId (data) {
   return request({
     url: service + '/findWeCustomerInfoByUserId',
-    params: {
-      externalUserid,
-      userId,
-      delFlag
-    }
+    params: data
   })
 }
 
@@ -218,7 +215,15 @@ export function getCustomerInfoByUserId ({ externalUserid, userId, delFlag }) {
  */
 export function getFollowUpRecord (params) {
   return request({
-    url: service + '/followUpRecord',
+    // url: service + '/followUpRecord',
+    url: getway + "/trajectory/findTrajectory",
+    params,
+  })
+}
+
+export function getRecordList (params) {
+  return request({
+    url: getway + '/trackRecord/followUpRecord',
     params
   })
 }
@@ -230,6 +235,24 @@ export function getFollowUpRecord (params) {
  */
 export function syncTrack (userIds) {
   return request({
-    url: getway + `/moments/synchMomentsInteracte/${userIds}`
+    url: getway + `/moments/synchMomentsInteracte/${userIds}`,
+  })
+}
+
+/**
+ * 通过条件校验客户数据
+ * @param {*} params
+ *  * {
+    "userIds": "添加人id", 全部时不传
+    "deptIds": "部门id", 全部时不传
+    "tagIds": "标签id,多个标签，id使用逗号隔开", 全部时不传
+}
+ * @returns
+ */
+export function checkByCondition (data) {
+  return request({
+    url: service + '/checkByCondition',
+    method: 'post',
+    data,
   })
 }

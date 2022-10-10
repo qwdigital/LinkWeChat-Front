@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/user'
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/leaveUser'
 
 /**
  * 获取离职已分配员工列表

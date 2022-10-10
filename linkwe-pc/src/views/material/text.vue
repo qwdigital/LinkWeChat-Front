@@ -55,3 +55,6 @@ export default {
     </el-table>
   </MaPage>
 </template>
+<style lang="scss">
+.el-tooltip__popper{max-width: 500px}
+</style>

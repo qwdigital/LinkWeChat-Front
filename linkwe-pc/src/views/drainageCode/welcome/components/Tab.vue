@@ -5,25 +5,37 @@
 
       <el-form label-position="left" inline label-width="80px">
         <el-form-item label="欢迎语">
-          <el-input placeholder="请输入欢迎语" v-model="query.welcomeMsg" style="width:260px;"></el-input>
+          <el-input placeholder="请输入欢迎语" v-model="query.welcomeMsg" style="width: 260px;"></el-input>
         </el-form-item>
         <el-form-item label-width="0">
           <!-- <el-button v-hasPermi="['wecom:code:list']" type="cyan" @click="getList(1)">查询</el-button> -->
           <el-button type="primary" @click="getList(0)">查询</el-button>
-          <el-button @click="query.welcomeMsg = ''">清空</el-button>
+          <el-button
+            @click="
+              query.welcomeMsg = ''
+              getList(0)
+            "
+            >清空</el-button
+          >
         </el-form-item>
       </el-form>
-      <div style="margin-top:20px;display:flex;justify-content:space-between;">
+      <div style="margin-top: 20px; display: flex; justify-content: space-between;">
         <el-button type="primary" size="mini" @click="goRoute()">新建{{ wel[type] }}欢迎语</el-button>
         <div>
-          <el-button style="align-self: flex-end;" size="mini" type="primary" plain @click="removeMult()">批量删除</el-button>
+          <el-button style="align-self: flex-end;" size="mini" type="primary" plain @click="removeMult()"
+            >批量删除</el-button
+          >
         </div>
       </div>
     </div>
     <div>
       <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="欢迎语" align="center" prop="welcomeMsg" min-width="250" show-overflow-tooltip/>
+        <el-table-column label="欢迎语" align="center" prop="welcomeMsg" min-width="250" show-overflow-tooltip>
+          <template slot-scope="scope">
+            {{ scope.row.attachments[0].content }}
+          </template>
+        </el-table-column>
         <el-table-column v-if="type === '2'" label="员工" prop="userNames" align="center"></el-table-column>
         <el-table-column label="创建人" align="center" prop="createBy" />
         <el-table-column label="创建时间" align="center" prop="createTime" />
@@ -52,7 +64,6 @@
         <el-button type="primary" @click="showPreviewDialog = false">关闭</el-button>
       </span>
     </el-dialog>
-
   </div>
 </template>
 
@@ -67,10 +78,10 @@
     props: {
       type: {
         type: Number | String,
-        default: '1',
-      },
+        default: '1'
+      }
     },
-    data () {
+    data() {
       return {
         ids: [],
         // 查询参数
@@ -78,8 +89,8 @@
           pageNum: 1,
           pageSize: 10,
           welcomeMsg: undefined,
-          welcomeMsgTplType: 1,
-          orderByColumn: 'create_time',
+          tplType: 1,
+          orderByColumn: 'wmt.create_time',
           isAsc: 'desc'
         },
         loading: false,
@@ -88,41 +99,45 @@
         wel: {
           1: '活码',
           2: '员工',
-          3: '入群',
+          3: '入群'
         },
         showPreviewDialog: false,
-        previewData: {}
+        previewData: {
+          welcomeMsg: '',
+          materialMsgList: []
+        }
       }
     },
     watch: {},
     computed: {},
-    created () {
-      this.query.welcomeMsgTplType = +this.type
+    created() {
+      this.query.tplType = +this.type
       this.getList()
     },
-    mounted () { },
+    mounted() {},
     methods: {
-      handleSelectionChange (selection) {
+      handleSelectionChange(selection) {
         this.ids = selection.map((item) => item.id)
       },
       /** 查询 */
-      getList (page) {
+      getList(page) {
         page && (this.query.pageNum = page)
         this.loading = true
-        getList(this.query).then(({ rows, total }) => {
-          this.list = rows
-          this.total = +total
-          this.loading = false
-        })
+        getList(this.query)
+          .then(({ rows, total }) => {
+            this.list = rows
+            this.total = +total
+            this.loading = false
+          })
           .catch(() => {
             this.loading = false
           })
       },
       /** 删除按钮操作 */
-      remove (id) {
+      remove(id) {
         // const operIds = id || this.ids + "";
         this.$confirm('是否确认删除吗?', '警告', {
-          type: 'warning',
+          type: 'warning'
         })
           .then(() => {
             return remove(id)
@@ -132,13 +147,13 @@
             this.msgSuccess('删除成功')
           })
       },
-      removeMult () {
+      removeMult() {
         if (!this.ids.length) {
           this.msgInfo('请勾选需要删除的项！')
           return
         }
         this.$confirm('是否确认删除吗?', '警告', {
-          type: 'warning',
+          type: 'warning'
         })
           .then(() => {
             return remove(this.ids.join(','))
@@ -148,68 +163,59 @@
             this.msgSuccess('删除成功')
           })
       },
-      goRoute (data) {
+      goRoute(data) {
         let query = {}
         if (data) {
           localStorage.setItem('obj', JSON.stringify(data))
           query.id = data.id
         } else {
-          query.welcomeMsgTplType = this.type
+          query.tplType = this.type
         }
         this.$router.push({
-          path: '/drainageCode/welcomeAdd',
+          path: '/content/template/welcomeAdd',
           query: query
         })
       },
-      showPreview (data) {
-        // getPreview(data.id).then(res => {
-        this.previewData = data
-        this.previewData.materialMsgList = []
-        let img = []
-        let imgText = []
-        let applet = []
-        if (data.picUrl) {
-          data.picUrl.split(',').forEach(dd => {
-            let obj = {
-              materialUrl: dd,
-              msgType: '0',
-            }
-            img.push(obj)
-          })
-        }
-        if (data.imageText && data.imageText.length) {
-          data.imageText.forEach(dd => {
-            let obj = {
-              materialName: dd.imageTextTile,
-              materialUrl: dd.imageTextUrl,
-              msgType: '8'
-            }
-            imgText.push(obj)
-          })
-        }
-        if (data.applet && data.applet.length) {
-          data.applet.forEach(cc => {
-            let obj = {
-              materialName: cc.appTile,
-              digest: cc.appId,
-              materialUrl: cc.appPath,
-              coverUrl: cc.appPic,
-              msgType: '9'
-            }
-            applet.push(obj)
-          })
-        }
-        this.previewData.materialMsgList.push(...img)
-        this.previewData.materialMsgList.push(...imgText)
-        this.previewData.materialMsgList.push(...applet)
+      showPreview(data) {
+        ;(this.previewData.welcomeMsg = data.attachments ? data.attachments[0].content : ''),
+          (this.previewData.materialMsgList = data.attachments ? this.setEditList(data.attachments) : [])
         this.showPreviewDialog = true
         // })
-
+      },
+      setEditList(list) {
+        let arr = []
+        if (list && list.length) {
+          list.forEach((dd) => {
+            if (dd.msgType === 'image') {
+              let obj = {
+                msgType: '0',
+                materialUrl: dd.picUrl
+              }
+              arr.push(obj)
+            } else if (dd.msgType === 'link') {
+              let ob = {
+                msgType: '8',
+                materialName: dd.title,
+                materialUrl: dd.linkUrl
+              }
+              arr.push(ob)
+            } else if (dd.msgType === 'miniprogram') {
+              let ff = {
+                msgType: '9',
+                digest: dd.appId,
+                materialName: dd.title,
+                coverUrl: dd.picUrl,
+                materialUrl: dd.linkUrl
+              }
+              arr.push(ff)
+            }
+          })
+        }
+        return arr
       }
-    },
+    }
   }
 </script>
-
 
 <style lang="scss" scoped>
   .header {

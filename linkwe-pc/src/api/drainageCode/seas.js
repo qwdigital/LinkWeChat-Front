@@ -1,5 +1,6 @@
+
 import request from '@/utils/request'
-const service = window.CONFIG.services.system
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom
 let
   seas_download_template,
   seas_list,
@@ -21,7 +22,7 @@ let
  */
 export function getList (params) {
   return request({
-    url: service + '/wecom/seas/list',
+    url: service + '/seas/list',
     method: "GET",
     params
   })
@@ -33,7 +34,7 @@ export function getList (params) {
  */
 export function remove (ids) {
   return request({
-    url: service + "/wecom/seas/" + ids,
+    url: service + "/seas/" + ids,
     method: 'DELETE'
   })
 }
@@ -41,7 +42,7 @@ export function remove (ids) {
 // 提醒
 export function alertFn (ids) {
   return request({
-    url: service + "/wecom/seas/remidUser/" + ids,
+    url: service + "/seas/remidUser/" + ids,
     method: 'POST'
   })
 }
@@ -49,14 +50,14 @@ export function alertFn (ids) {
 // 下载模板
 export function downloadTemplate () {
   return request({
-    url: service + '/wecom/seas/importTemplate',
+    url: service + '/seas/importTemplate',
   })
 }
 
 // 数据导入
 export function upload (data) {
   return request({
-    url: service + '/wecom/seas/importData',
+    url: service + '/seas/importData',
     method: 'POST',
     data: data
   })
@@ -72,7 +73,7 @@ export function detail (context, id) {
 // 公海统计  抬头
 export function getTotal () {
   return request({
-    url: service + '/wecom/seas/countCustomerSeas',
+    url: service + '/seas/countCustomerSeas',
     method: "GET",
   })
 }
@@ -80,7 +81,7 @@ export function getTotal () {
 // 公海统计 导入记录 员工记录  groupByType 1导入 2员工
 export function getImportAndStaffList (params) {
   return request({
-    url: service + '/wecom/seas/findSeasRecord',
+    url: service + '/seas/findSeasRecord',
     method: "GET",
     params
   })

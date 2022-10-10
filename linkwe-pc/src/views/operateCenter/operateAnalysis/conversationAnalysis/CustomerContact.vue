@@ -89,9 +89,8 @@ export default {
 <template>
   <div>
     <CardGroupIndex :data="cardData"></CardGroupIndex>
-
-    <div>
-      <div>数据趋势</div>
+    <div class="g-card g-pad20" style="margin-top: 0;">
+      <div class="title">数据趋势</div>
       <el-tabs v-model="active">
         <el-tab-pane v-for="(item, index) of tabs" :key="index" :label="item.label">
           <TabContent
@@ -103,13 +102,13 @@ export default {
       </el-tabs>
     </div>
 
-    <div>
-      <div>员工客户Top5</div>
+    <div class="g-card g-pad20" style="margin-top: 20px;">
+      <div class="title">员工客户Top5</div>
       <TabContentstaffContact type="staffCustomerBar"></TabContentstaffContact>
     </div>
 
-    <div>
-      <div>数据报表</div>
+    <div class="g-card g-pad20" style="margin-top: 20px;">
+      <div class="title">数据报表</div>
       <TabContent
         type="customerContactTable"
         :request="api.getTotalCntCustomer"
@@ -119,4 +118,10 @@ export default {
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .title {
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }</style>

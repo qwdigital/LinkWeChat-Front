@@ -1,16 +1,18 @@
 import request from '@/utils/request'
-const wecom = window.CONFIG.services.wecom
+const wecom = window.lwConfig.services.wecom
 const service = wecom + '/portrait'
+
+// 客户画像
 
 //  根据客户id和当前企业员工id获取客户详细信息
 export function getCustomerInfo(params) {
   return request({
     url: service + '/findWeCustomerInfo',
-    params
+    params,
   })
 }
 // 客户画像资料更新
-export function getWeCustomerInfo(data) {
+export function updateWeCustomerInfo(data) {
   return request({
     url: service + '/updateWeCustomerInfo',
     method: 'post',
@@ -24,8 +26,11 @@ export function getWeCustomerInfo(data) {
       qq: data.qq, // qq
       position: data.position, // 职业
       remarkCorpName: data.remarkCorpName, // 公司
-      description: data.description // 其他描述
-    }
+      provinceId: data.provinceId, // 省
+      cityId: data.cityId, // 市
+      areaId: data.areaId, // 区
+      area: data.area, // 区
+    },
   })
 }
 //
@@ -39,7 +44,7 @@ userId	员工的id	当groupTagType为3的时候需要传该字段
 export function getAllTags(params) {
   return request({
     url: service + '/findAllTags',
-    params
+    params,
   })
 }
 //
@@ -62,20 +67,20 @@ export function updateWeCustomerPorTraitTag(data) {
   return request({
     url: service + '/updateWeCustomerPorTraitTag',
     method: 'post',
-    data
+    data,
   })
 }
 // 查看客户添加的员工
 export function findAddaddEmployes(params) {
   return request({
-    url: service + '/findAddaddEmployes/' + params
+    url: service + '/findAddaddEmployes/' + params,
   })
 }
 //  获取用户添加的群
 export function findAddGroupNum(params) {
   return request({
     url: service + '/findAddGroupNum',
-    params
+    params,
   })
 }
 //  获取轨迹信息
@@ -93,8 +98,8 @@ externalUserid: 客户id
  */
 export function findTrajectory(params) {
   return request({
-    url: service + '/findTrajectory',
-    params
+    url: wecom + '/trajectory/findTrajectory',
+    params,
   })
 }
 
@@ -114,21 +119,21 @@ export function addOrEditWaitHandle(data) {
   return request({
     url: service + '/addOrEditWaitHandle',
     method: 'post',
-    data
+    data,
   })
 }
 //  删除轨迹
 export function removeTrajectory(params) {
   return request({
     url: service + '/removeTrajectory/' + params,
-    method: 'delete'
+    method: 'delete',
   })
 }
 //  完成待办
 export function handleWait(params) {
   return request({
     url: service + '/handleWait/' + params,
-    method: 'delete'
+    method: 'delete',
   })
 }
 
@@ -150,7 +155,7 @@ export function addOrUpdatePersonTags(data) {
   return request({
     url: service + '/addOrUpdatePersonTags',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -162,7 +167,7 @@ export function addOrUpdatePersonTags(data) {
 export function deletePersonTag(ids) {
   return request({
     url: service + '/deletePersonTag/' + ids,
-    method: 'delete'
+    method: 'delete',
   })
 }
 
@@ -174,6 +179,6 @@ export function deletePersonTag(ids) {
 export function sync(userId) {
   return request({
     url: service + '/synchMomentsInteracte/' + userId,
-    method: 'get'
+    method: 'get',
   })
 }

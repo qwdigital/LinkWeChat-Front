@@ -300,15 +300,6 @@ export default {
   created() {
     this.getList()
     this.getTreeselect()
-    this.getDicts('sys_normal_disable').then((response) => {
-      this.statusOptions = response.data
-    })
-    this.getDicts('sys_user_sex').then((response) => {
-      this.sexOptions = response.data
-    })
-    this.getConfigKey('sys.user.initPassword').then((response) => {
-      this.initPassword = response.msg
-    })
   },
   methods: {
     /** 查询用户列表 */

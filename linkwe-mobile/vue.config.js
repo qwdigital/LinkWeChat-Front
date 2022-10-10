@@ -12,6 +12,9 @@ for (const iterator of argvs) {
 }
 process.env.VUE_APP_ENV = process.env.VUE_APP_ENV || process.env.NODE_ENV
 const env = require('./env')
+
+process.env.VUE_APP_TITLE = require('./package.json').description
+
 // 项目部署基础
 // 默认情况下，我们假设你的应用将被部署在域的根目录下,
 // 例如：https://www.my-app.com/
@@ -22,7 +25,7 @@ const env = require('./env')
 
 module.exports = {
   publicPath: env.BASE_URL || '/',
-  outputDir: 'dist', // 打包名称
+  outputDir: 'h5', // 打包名称
   // 打包时不生成.map文件
   productionSourceMap: false,
   // 如果你不需要使用eslint，把lintOnSave设为false即可
@@ -51,6 +54,18 @@ module.exports = {
       patterns: [path.resolve(__dirname, './src/styles/varibles.less')],
     },
   },
+  css: {
+    loaderOptions: {
+      less: {
+        modifyVars: {
+          // 直接覆盖变量
+          // 或者可以通过 less 文件覆盖（文件路径为绝对路径）
+          hack: `true; @import "${path.resolve(__dirname, './src/styles/varibles.less')}";`,
+        },
+      },
+    },
+  },
+
   configureWebpack: {
     resolve: {
       alias: {
@@ -59,6 +74,22 @@ module.exports = {
     },
   },
   chainWebpack(config) {
+    // set svg-sprite-loader
+    config.module
+      .rule('svg')
+      .exclude.add(resolve('src/assets/icons'))
+      .end()
+    config.module
+      .rule('icons')
+      .test(/\.svg$/)
+      .include.add(resolve('src/assets/icons'))
+      .end()
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        symbolId: 'icon-[name]',
+      })
+      .end()
     config.plugin('preload').tap(() => [
       {
         rel: 'preload',

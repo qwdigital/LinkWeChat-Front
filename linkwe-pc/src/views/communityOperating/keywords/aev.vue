@@ -34,6 +34,7 @@
 
       <el-form-item label="选择群活码" prop="groupCodeId">
         <el-image
+          style="width: 160px;height: 160px;"
           v-if="groupQrCode && groupQrCode.codeUrl"
           :src="groupQrCode.codeUrl"
           class="code-image"
@@ -109,7 +110,9 @@ export default {
   },
   created() {
     this.taskId = this.$route.query.id
+    this.$route.meta.title = (this.taskId ? '编辑' : '新建') + '关键词拉群'
     this.taskId && this.getDetail(this.taskId)
+    
   },
   methods: {
     /** 获取详情 */

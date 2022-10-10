@@ -1,8 +1,9 @@
 <script>
 import { getList } from '@/api/drainageCode/group'
+import SelectTag from '@/components/SelectTag.vue'
 
 export default {
-  components: {},
+  components: {SelectTag},
   props: {
     // 添加标签显隐
     visible: {
@@ -25,13 +26,17 @@ export default {
         pageNum: 1,
         pageSize: 10,
         activityName: '',
-        createBy: '',
-        beginTime: '',
-        endTime: ''
+        tagIds: ''
+        // createBy: '',
+        // beginTime: '',
+        // endTime: ''
       },
       list: [], // 列表
       total: 0, // 总条数
-      radio: ''
+      radio: '',
+      tagNames: '',
+      showSelectTag: false,
+      tagList: [],
     }
   },
   watch: {
@@ -57,6 +62,17 @@ export default {
   },
   mounted() {},
   methods: {
+    getSelectTag (list) {
+        this.taglist = list
+        let arr = []
+        let arr1 = []
+        list.forEach(dd => {
+          arr.push(dd.name)
+          arr1.push(dd.tagId)
+        })
+        this.tagNames = arr.join(',')
+        this.query.tagIds = arr1.join(',')
+      },
     // 获取列表
     getList(page) {
       page && (this.query.pageNum = page)
@@ -89,10 +105,11 @@ export default {
 </script>
 
 <template>
+<div>
   <el-dialog
     :title="title"
     :visible.sync="Pvisible"
-    width="650px"
+    width="750px"
     append-to-body
     :close-on-click-modal="false"
   >
@@ -106,8 +123,11 @@ export default {
             placeholder="请输入名称"
             @keydown.enter="getList(1)"
           ></el-input>
+            <!-- v-hasPermi="['contacts:organization:query']" -->
+          <!-- <el-form-item label=" " prop="tagIds"> -->
+            <el-input class="ml10 mr10"  style="width: 150px;" :value="tagNames" readonly @focus="showSelectTag = true" placeholder="请选择客群标签" />
+          <!-- </el-form-item> -->
           <el-button
-            v-hasPermi="['contacts:organization:query']"
             icon="el-icon-search"
             circle
             @click="getList(1)"
@@ -131,18 +151,7 @@ export default {
         </el-table-column>
 
         <el-table-column prop="activityName" label="活码名称" align="center"></el-table-column>
-
-        <el-table-column prop="activityDesc" label="活码描述" align="center" width="160">
-          <template #default="{ row }">
-            <el-popover placement="bottom" width="200" trigger="hover" :content="row.activityDesc">
-              <div slot="reference" class="table-desc overflow-ellipsis">
-                {{ row.activityDesc }}
-              </div>
-            </el-popover>
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="codeUrl" label="活码样式" align="center" width="130">
+        <el-table-column prop="codeUrl" label="二维码" align="center" width="130">
           <template #default="{ row }">
             <el-popover placement="bottom" trigger="hover">
               <el-image slot="reference" :src="row.codeUrl" class="code-image--small"></el-image>
@@ -150,35 +159,27 @@ export default {
             </el-popover>
           </template>
         </el-table-column>
-
-        <el-table-column label="实际群码总数" align="center">
+        <el-table-column label="客群标签">
           <template #default="{ row }">
-            {{ (row.actualList && row.actualList.length) || 0 }}
+            <div>
+              <tag-ellipsis limit="1" :list="row.tags.split(',')"></tag-ellipsis>
+            </div>
           </template>
         </el-table-column>
-
-        <el-table-column prop="availableCodes" label="可用实际群码数" align="center">
-          <template #default="{ row }">
-            <el-popover
-              v-if="row.aboutToExpireCodes > 0"
-              placement="bottom"
-              width="200"
-              trigger="hover"
-              :content="'有' + row.aboutToExpireCodes + '个实际群码即将过期。'"
-            >
-              <i slot="reference" class="el-icon-warning expire-icon"></i>
-            </el-popover>
-
-            {{ row.availableCodes }}
-          </template>
-        </el-table-column>
+        <el-table-column label="活码客群数" align="center" prop="chatGroupNum"></el-table-column>
+        <el-table-column prop="chatGroupMemberTotalNum" label="群总人数" align="center"></el-table-column>
       </el-table>
     </div>
     <div slot="footer">
       <el-button @click="Pvisible = false">取 消</el-button>
       <el-button type="primary" @click="submit">确 定</el-button>
     </div>
+    <div style="z-index: 9999999">
+    </div>
   </el-dialog>
+  <select-tag  :visible.sync="showSelectTag" type="2" :selected="tagList" @success="getSelectTag"></select-tag>
+</div>
+
 </template>
 
 <style lang="scss" scoped>

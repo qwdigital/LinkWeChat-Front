@@ -4,6 +4,8 @@ import MaPage from '@/views/material/components/MaPage'
 import SelectMaterial from '@/components/SelectMaterial'
 import { fabric } from 'fabric'
 
+let positionAdd = 50
+let times = 0
 export default {
   name: 'Poster',
   components: {
@@ -63,6 +65,8 @@ export default {
       this.dialog.preview = true
     },
     async edit(item) {
+      positionAdd = 50
+      times = 0
       try {
         if (item) {
           // 编辑
@@ -113,9 +117,10 @@ export default {
         }
 
         // 删除某个图层
-        var deleteBtn = document.getElementById('deleteBtn')
+        let deleteBtn = document.getElementById('deleteBtn')
+
         function addDeleteBtn(x, y) {
-          deleteBtn.style.display = 'none'
+          // deleteBtn.style.display = 'none'
           deleteBtn.style.left = x - 10 + 'px'
           deleteBtn.style.top = y - 30 + 'px'
           deleteBtn.style.display = 'block'
@@ -130,14 +135,14 @@ export default {
 
         //通用事件另外写法
         canvas.on({
-          'mouse:down': function (e) {
+          'mouse:down': (e) => {
             if (e.target != undefined) {
-              var ob = canvas.getActiveObject()
+              let ob = (this.activeObject = canvas.getActiveObject())
               if (ob) {
-                var i = e.transform.corner
-                if (i == 'tr') {
-                  this.del()
-                }
+                // var i = e.transform.corner
+                // if (i == 'tr') {
+                //   this.del()
+                // }
                 ob.set({
                   transparentCorners: false,
                   cornerColor: 'white',
@@ -153,6 +158,8 @@ export default {
                   centeredRotation: true,
                 })
               }
+            } else {
+              deleteBtn.style.display = 'none'
             }
           },
         })
@@ -257,10 +264,14 @@ export default {
       // })
     },
     addObj(type, obj) {
+      if (!this.form.backgroundImgPath) {
+        this.msgError('请选择背景图片')
+        return
+      }
       let options = {
         fill: '#333333',
-        left: 100,
-        top: 100,
+        left: positionAdd + times * 20,
+        top: positionAdd,
         borderDashArray: [3, 3],
         customType: { text: 1, image: 2, qrcode: 3 }[type], // 自定义类型 1 固定文本 2 固定图片 3 二维码图片
       }
@@ -286,6 +297,11 @@ export default {
 
         default:
           break
+      }
+      positionAdd += 20
+      if (positionAdd > 150) {
+        times++
+        positionAdd = 50
       }
       this.activeObject = this.canvas.getActiveObject()
     },
@@ -546,7 +562,7 @@ export default {
           <div style="">
             <div id="canvas-wrap">
               <i class="el-icon-error" id="deleteBtn"></i>
-              <canvas id="canvas" width="300" height="500" style="border: 1px solid #ddd"> </canvas>
+              <canvas id="canvas" width="375" height="667" style="border: 1px solid #ddd"> </canvas>
             </div>
             <div id="tbody-containerui-image-editor-controls">
               <ul class="menu">
@@ -606,6 +622,16 @@ export default {
   font-size: 24px;
   color: #fff;
   display: none;
+  background: #0279de;
+  width: 24px;
+  height: 24px;
+  padding: 6px;
+  background-clip: content-box;
+  &:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 }
 .img-wrap {
   position: relative;

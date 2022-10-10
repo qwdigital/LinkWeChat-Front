@@ -25,7 +25,7 @@ return  [
     ]
 }
  */
-export function getList(params) {
+export function getList (params) {
   return request({
     url: service + '/findLimitUserRedEnvelops',
     params,
@@ -42,7 +42,7 @@ export function getList(params) {
     "singleCustomerReceiveMoney": 23.94 //单日每员工发红包总额
 }
  */
-export function addOrUpdate(params) {
+export function addOrUpdate (params) {
   return request({
     url: service + '/addOrUpdateUserRedEnvelopsLimit',
     method: 'post',
@@ -59,7 +59,7 @@ export function addOrUpdate(params) {
     "singleCustomerReceiveMoney": 90 //单日每员工发红包总额
 }
  */
-export function batchUpdate(params) {
+export function batchUpdate (params) {
   return request({
     url: service + '/batchUpdateUserRedEnvelopsLimit',
     method: 'post',
@@ -72,7 +72,7 @@ export function batchUpdate(params) {
  * @param {*} ids 多个id，使用逗号隔开
  * @returns
  */
-export function remove(ids) {
+export function remove (ids) {
   return request({
     url: service + '/deleteLimitUserRedEnvelops/' + ids,
     method: 'DELETE',

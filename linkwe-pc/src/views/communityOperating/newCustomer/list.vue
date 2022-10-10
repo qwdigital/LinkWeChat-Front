@@ -179,11 +179,10 @@ export default {
         ></el-date-picker>
       </el-form-item>
       <el-form-item label=" ">
-        <el-button v-hasPermi="['customerManage:customer:query']" type="primary" @click="getList(1)"
+        <el-button  type="primary" @click="getList(1)"
           >查询</el-button
         >
         <el-button
-          v-hasPermi="['customerManage:customer:query']"
           type="success"
           @click="resetQuery()"
           >重置</el-button
@@ -200,7 +199,6 @@ export default {
           >批量下载</el-button
         >
         <el-button
-          v-hasPermi="['customerManage:customer:export']"
           :disabled="!ids.length"
           type="cyan"
           @click="remove()"
@@ -291,13 +289,13 @@ export default {
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{ row }">
-          <el-button v-hasPermi="['enterpriseWechat:edit']" type="text" @click="goRoute(row.id)"
+          <el-button type="text" @click="goRoute(row.id)"
             >编辑</el-button
           >
-          <el-button v-hasPermi="['enterpriseWechat:view']" type="text" @click="download(row)"
+          <el-button type="text" @click="download(row)"
             >下载</el-button
           >
-          <el-button v-hasPermi="['enterpriseWechat:edit']" type="text" @click="remove(row.id)"
+          <el-button type="text" @click="remove(row.id)"
             >删除</el-button
           >
         </template>

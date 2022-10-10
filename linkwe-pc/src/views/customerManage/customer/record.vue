@@ -41,7 +41,8 @@ export default {
       total: 0,
       list: [], // 列表
       dictTrackState,
-      dateFormat
+      dateFormat,
+      goto: true
     }
   },
   computed: {},
@@ -55,13 +56,16 @@ export default {
     getList(page) {
       Object.assign(this.query, {
         externalUserid: this.$route.query.externalUserid,
-        userId: this.userId,
+        weUserId: this.userId,
         trajectoryType: this.trajectoryType
       })
       if (this.viewType) {
         page && (this.query.pageNum = page)
       } else {
         this.query.pageNum++
+        if (this.query.pageNum > 1  && this.goto) {
+          return
+        }
       }
       this.loading = true
       getFollowUpRecord(this.query)
@@ -69,12 +73,17 @@ export default {
           if (this.viewType) {
             this.list = rows
           } else {
+            if (rows.length === this.total) {
+              this.goto = false
+            } else {
+              this.goto = true
+            }
             let list = []
             let dayList = []
 
             // 提取天
             rows.forEach((ele) => {
-              let date = this.dateFormat(ele.trackTime, 'yyyyMMdd')
+              let date = this.dateFormat(ele.createTime, 'yyyyMMdd')
               dayList.includes(date) || dayList.push(date)
             })
             dayList.sort((a, b) => b - a)
@@ -84,7 +93,7 @@ export default {
               let timeList = []
               for (let j = 0; j < rows.length; j++) {
                 // console.log(rows[j].createTime);
-                if (dayList[i] == this.dateFormat(rows[j].trackTime, 'yyyyMMdd')) {
+                if (dayList[i] == this.dateFormat(rows[j].createTime, 'yyyyMMdd')) {
                   timeList.push(rows[j])
                 }
               }
@@ -107,6 +116,7 @@ export default {
         .then(() => {
           this.getList(1)
           this.msgSuccess('后台开始同步数据，请稍后关注进度')
+          this.loading = false
         })
         .catch((fail) => {
           this.loading = false
@@ -130,7 +140,7 @@ export default {
             }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="跟进记录时间" align="center" prop="trackTime" />
+        <el-table-column label="跟进记录时间" align="center" prop="createTime" />
       </el-table>
 
       <div class="ac">
@@ -149,21 +159,22 @@ export default {
     </template>
 
     <div v-else class="timeline-time-wrap">
-      <ul class="infinite-list" v-infinite-scroll="getList" style="overflow: auto">
+      <ul class="infinite-list" v-infinite-scroll="getList"  style="overflow: auto">
+        <!-- -->
         <template v-if="list.length">
           <li v-for="(unit, i) in list" class="infinite-list-item" :key="i">
-            <div class="timeline-time">{{ dateFormat(unit[0].trackTime, 'yyyy-MM-dd w') }}</div>
+            <div class="timeline-time">{{ dateFormat(unit[0].createTime, 'yyyy-MM-dd w') }}</div>
             <el-timeline class="timeline-box">
               <el-timeline-item
                 v-for="(item, index) in unit"
                 :key="index"
                 class="timeline-box-item"
-                :timestamp="item.trackTime.slice(10, 16)"
+                :timestamp="item.createTime.slice(10, 16)"
                 placement="top"
                 type="primary"
               >
                 <p class="timeline-box-item-title">{{ item.title || '无标题' }}</p>
-                <p>{{ item.trackContent || '无内容' }}</p>
+                <p>{{ item.content || '无内容' }}</p>
               </el-timeline-item>
             </el-timeline>
           </li>

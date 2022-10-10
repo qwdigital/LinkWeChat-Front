@@ -11,19 +11,19 @@ export default {
       list: [],
       loading: false,
       finished: false,
-      show: false
+      show: false,
       // userId: this.$store.state.userId,
     }
   },
   watch: {
     userId() {
       this.getList()
-    }
+    },
   },
   computed: {
     userId() {
       return this.$store.state.userId
-    }
+    },
   },
   beforeCreate() {},
   created() {
@@ -37,38 +37,35 @@ export default {
         this.list = []
         this.userId &&
           this.list.push({
-            sideName: '我的'
+            sideName: '我的',
           })
         rows && this.list.push(...rows)
       })
     },
     search(pageNum) {
-      this.$refs['list'][this.active].getList(pageNum)
-      // this.$refs['list' + this.active] && this.$refs['list' + this.active][0].getList(pageNum)
+      // this.$refs['list'][this.active].search(pageNum, this.keyword)
+      this.$refs['list' + this.active] &&
+        this.$refs['list' + this.active][0].search(pageNum, this.keyword)
     },
     cancel() {
+      this.keyword = ''
       this.$nextTick(() => this.search(1))
     },
     refreshCollect() {
       this.userId && this.$refs['list'][0].getList(1)
-    }
+    },
     // add() {},
-  }
+  },
 }
 </script>
 
 <template>
   <div>
-    <van-search
-      v-model="keyword"
-      show-action
-      placeholder="请输入搜索关键词"
-      @cancel="cancel"
-      @search="search(1)"
-    >
-      <!-- <template #action>
-        <van-icon name="plus" @click="add" />
-      </template> -->
+    <van-search v-model="keyword" show-action placeholder="请输入搜索关键词" @search="search(1)">
+      <template #action>
+        <span @click="search(1)">搜索</span>
+        <span class="ml5" @click="cancel">重置</span>
+      </template>
     </van-search>
     <van-tabs v-model="active">
       <!-- <van-tab v-if="!!userId" title="我的">
@@ -76,10 +73,9 @@ export default {
       </van-tab> -->
       <van-tab :title="item.sideName" v-for="(item, index) in list" :key="index">
         <List
-          ref="list"
-          :sideId="item.sideId"
+          :ref="'list' + index"
+          :sideId="item.id"
           :mediaType="item.mediaType"
-          :keyword="keyword"
           @collect="refreshCollect"
         ></List>
       </van-tab>

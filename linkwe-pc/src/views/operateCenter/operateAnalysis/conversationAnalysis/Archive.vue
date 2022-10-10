@@ -105,8 +105,8 @@ export default {
   <div>
     <CardGroupIndex :data="cardData"></CardGroupIndex>
 
-    <div>
-      <div>数据占比</div>
+    <div class="g-card g-pad20" style="margin-top: 0;">
+      <div class="title">数据占比</div>
       <el-row :gutter="10">
         <el-col :span="12">
           <ChartPie
@@ -125,8 +125,8 @@ export default {
       </el-row>
     </div>
 
-    <div>
-      <div>会话存档同意明细</div>
+    <div class="g-card g-pad20" style="margin-top: 20px;">
+      <div class="title">会话存档同意明细</div>
       <el-table :data="list" style="width: 100%">
         <el-table-column align="center" prop="userName" label="存档员工"> </el-table-column>
         <el-table-column align="center" prop="customerName" label="客户"> </el-table-column>
@@ -146,4 +146,10 @@ export default {
 .chart-pie {
   height: 400px;
 }
+.title {
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div style="padding-right: 15px;display: inline-block;" @click="toggleClick">
+  <div style="display: inline-block" @click="toggleClick">
     <svg
       :class="{ 'is-active': $store.state.app.sidebar.opened }"
       class="hamburger"
@@ -29,8 +29,8 @@ export default {
   methods: {
     toggleClick() {
       this.$store.dispatch('app/toggleSideBar')
-    }
-  }
+    },
+  },
 }
 </script>
 

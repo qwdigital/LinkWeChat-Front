@@ -115,8 +115,15 @@ export default {
         })
     },
     // 节点单击事件
-    handleNodeClick(data) {
-      this.query.categoryId = data.id
+    handleNodeClick(data, node) {
+      if (this.query.categoryId === data.id) {
+        this.query.categoryId = ''
+        // this.$nextTick(() => {
+        this.$refs.tree.setCurrentKey(null)
+        // })
+      } else {
+        this.query.categoryId = data.id
+      }
       this.getList(1)
     },
 
@@ -186,9 +193,11 @@ export default {
           :props="treeProps"
           :expand-on-click-node="false"
           highlight-current
+          node-key="id"
           default-expand-all
           @node-click="handleNodeClick"
         >
+        <span class="text-word" slot-scope="{ node, data }" :title="node.label">{{ node.label }}</span>
         </el-tree>
       </el-col>
       <el-col :span="18">
@@ -261,6 +270,12 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+  .text-word {
+    // width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 // .img-wrap {
 //   ::v-deep.el-radio__input {
 //     position: absolute;

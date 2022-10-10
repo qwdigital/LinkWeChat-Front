@@ -44,7 +44,7 @@
         </el-row>
       </div>
       <div class="divider-content"></div>
-      <div class="g-card g-m20">
+      <div class="g-card g-pad20">
         <div class="table-header">导入记录</div>
         <el-table v-loading="importLoading" :data="importList" max-height="600">
           <el-table-column
@@ -109,7 +109,7 @@
         />
       </div>
       <div class="divider-content"></div>
-      <div class="g-card g-m20">
+      <div class="g-card g-pad20">
         <div class="table-header">员工添加统计</div>
         <el-table v-loading="addLoading" :data="addList" max-height="600">
           <el-table-column
@@ -301,7 +301,7 @@ export default {
 .table-header {
   font-size: 16px;
   font-family: PingFangSC-Medium, PingFang SC;
-  font-weight: 500;
+  font-weight: 600;
   color: #333333;
   margin-bottom: 20px;
 }

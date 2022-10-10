@@ -52,7 +52,7 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      max-height: 35px;
+      max-height: 44px;
       max-width: 170px;
       vertical-align: middle;
       margin-right: 12px;

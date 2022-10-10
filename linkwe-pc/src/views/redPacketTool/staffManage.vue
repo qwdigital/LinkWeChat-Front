@@ -99,7 +99,7 @@
         position="right"
         label-width="180px"
       >
-        <el-form-item v-if="!batchUpdate" label="选择员工" prop="userId">
+        <el-form-item v-if="!batchUpdate" label="选择员工" prop="weUserId">
           <el-tag v-for="(item, index) in addMemberForm.users" :key="index">
             {{ item.name || item }}
           </el-tag>
@@ -126,7 +126,7 @@
             :min="0.3"
             :max="5000"
           ></el-input-number>
-          <div class="sub-des">精确到小数点后两位，可输入0.30-5000.00</div>
+          <div class="sub-des">精确到小数点后两位，可输入1.00-5000.00</div>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -134,32 +134,31 @@
         <el-button type="primary" @click="addOrUpdate">确 定</el-button>
       </span>
     </el-dialog>
-
+    <!-- :defaultValues="selectUserData.type == 1 ? queryUser : addMemberForm.users" -->
     <!-- 选择使用员工弹窗 -->
-    <SelectUser
+    <SelectWeUser
       :visible.sync="dialogVisibleSelectUser"
       title="选择使用员工"
       :isOnlyLeaf="true"
       :isSigleSelect="selectUserData.isSigleSelect"
-      :defaultValues="selectUserData.type == 1 ? queryUser : addMemberForm.users"
       :disabledValues="
         selectUserData.type == 1
           ? queryUser
           : list
-              .map((e) => e.userId)
+              .map((e) => e.weUserId)
               .join()
               .split(',')
       "
       destroyOnClose
       @success="submitSelectUser"
-    ></SelectUser>
+    ></SelectWeUser>
   </div>
 </template>
 
 <script>
 import { getList, addOrUpdate, batchUpdate, remove } from '@/api/redPacketTool/staffManage'
 let defaultForm = {
-  userId: '',
+  weUserId: '',
   users: [],
   singleCustomerReceiveNum: 1,
   singleCustomerReceiveMoney: 1,
@@ -179,8 +178,9 @@ export default {
     }
     function validateDaySendSum(rule, value, callback) {
       value = Number(value)
-      if (Number.isNaN(value) || value < 0.3 || value > 5000 || !Number.isInteger(value * 100)) {
-        callback('请输入0.30-5000.00的数字')
+      // || !Number.isInteger(value * 100)
+      if (Number.isNaN(value) || value < 1 || value > 5000) {
+        callback('请输入1.00-5000.00的数字')
       } else {
         callback()
       }
@@ -199,7 +199,7 @@ export default {
       queryUser: [],
       addMemberForm: defaultForm,
       addRules: {
-        userId: [{ required: true, message: '必填项', trigger: 'change' }],
+        weUserId: [{ required: true, message: '必填项', trigger: 'change' }],
         singleCustomerReceiveNum: [
           { required: true, message: '必填项', trigger: 'blur' },
           { validator: validateDaySendNum, trigger: 'blur' },
@@ -250,6 +250,7 @@ export default {
       row.userName && (this.addMemberForm.users = row.userName.split(','))
       this.addMemberForm.singleCustomerReceiveNumMin = +this.addMemberForm.todayIssuedNum || 1
       this.addVisible = true
+      console.log(this.addMemberForm)
       this.$nextTick(() => this.$refs.addMemberForm.clearValidate())
     },
     handleSelectionChange(val) {
@@ -268,11 +269,11 @@ export default {
         this.getList(1)
       } else {
         this.addMemberForm.users = data.map((i) => ({
-          userId: i.userId,
+          weUserId: i.userId,
           name: i.name,
         }))
-        this.addMemberForm.userId = data.map((e) => e.userId) + ''
-        this.$refs.addMemberForm.validateField('userId')
+        this.addMemberForm.weUserId = data.map((e) => e.userId) + ''
+        this.$refs.addMemberForm.validateField('weUserId')
       }
     },
 
@@ -284,6 +285,9 @@ export default {
         if (!validate) return
         let form = Object.assign({}, this.addMemberForm)
         form.singleCustomerReceiveMoney *= 100
+        delete form.todayIssuedAmount
+        delete form.todayNoIssuedAmount
+        delete form.totalIssuedAmount
         ;(this.batchUpdate ? batchUpdate : addOrUpdate)(form).then((res) => {
           this.getList()
           this.addVisible = false

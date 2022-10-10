@@ -1,35 +1,43 @@
 <template>
   <div>
     <div class="tab">
-      <el-steps style="margin-top:10px;" :active="currentActive" align-center>
+      <el-steps style="margin-top: 10px;" :active="currentActive" align-center>
         <el-step title="基础信息"></el-step>
         <el-step title="群发内容"></el-step>
       </el-steps>
     </div>
     <div class="g-card g-pad20" v-if="currentActive === 1">
-      <el-form style="width: 60%;margin:0 auto;" ref="form" :model="form" :rules="rules" label-width="100px">
+      <el-form style="width: 60%; margin: 0 auto;" ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="群发类型" required prop="chatType">
           <el-radio-group v-model="form.chatType">
-            <el-radio :label=1>群发客户</el-radio>
-            <el-radio :label=2>群发客户群</el-radio>
+            <el-radio :label="1">群发客户</el-radio>
+            <el-radio :label="2">群发客户群</el-radio>
           </el-radio-group>
         </el-form-item>
         <template v-if="form.chatType == 2">
           <el-form-item label="群发客户群" required prop="clientGroup">
             <el-radio-group v-model="form.clientGroup">
-              <el-radio :label=0>全部群</el-radio>
-              <el-radio :label=1>部分群</el-radio>
+              <el-radio :label="0">全部群</el-radio>
+              <el-radio :label="1">部分群</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item v-if="form.clientGroup == 1">
             <div>
               <div class="item-magin aic">
-                <div class="item-name">选择群主：</div>
+                <div class="item-name"><span style="color: red;">* </span>选择群主：</div>
                 <!-- <el-tag v-for="(unit, unique) in selectCustomerGroupList" :key="unique">
                   {{ unit.groupLeaderName }}
                 </el-tag> -->
                 <el-tag v-for="item in selectCustomerGroupList" :key="item.userId">{{ item.name }}</el-tag>
-                <el-button type="primary" size="mini" :class="selectCustomerGroupList.length == 1 && 'ml10'" icon="el-icon-circle-plus-outline" plain @click="onSelectCustomerGroup">选择群主</el-button>
+                <el-button
+                  type="primary"
+                  size="mini"
+                  :class="selectCustomerGroupList.length == 1 && 'ml10'"
+                  icon="el-icon-circle-plus-outline"
+                  plain
+                  @click="onSelectCustomerGroup"
+                  >选择群主</el-button
+                >
               </div>
             </div>
           </el-form-item>
@@ -37,47 +45,67 @@
         <template v-if="form.chatType == 1">
           <el-form-item label="群发客户" required prop="pushRange">
             <el-radio-group v-model="form.pushRange">
-              <el-radio :label=0>全部客户</el-radio>
-              <el-radio :label=1>部分客户</el-radio>
+              <el-radio :label="0">全部客户</el-radio>
+              <el-radio :label="1">部分客户</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item v-if="form.pushRange == 1">
             <div>
               <div class="item-magin aic">
-                <div class="item-name">
-                  <span style="color:red;">* </span>添加人</div>
-                <el-button class="mr10" size="mini" icon="el-icon-circle-plus-outline" type="primary" plain @click="onSelectUser(2)">选择添加人</el-button>
+                <div class="item-name"><span style="color: red;">* </span>添加人</div>
+                <el-button
+                  class="mr10"
+                  size="mini"
+                  icon="el-icon-circle-plus-outline"
+                  type="primary"
+                  plain
+                  @click="onSelectUser(2)"
+                  >选择添加人</el-button
+                >
                 <el-tag v-for="item in form.sendClientUserList" :key="item.userId">{{ item.name }}</el-tag>
               </div>
               <div class="item-magin">
                 <div class="item-name">发送性别</div>
                 <el-select v-model="form.gender">
                   <el-option label="全部" value=""></el-option>
-                  <el-option label="未知" :value=0></el-option>
-                  <el-option label="男性" :value=1></el-option>
-                  <el-option label="女性" :value=2></el-option>
+                  <el-option label="未知" :value="0"></el-option>
+                  <el-option label="男性" :value="1"></el-option>
+                  <el-option label="女性" :value="2"></el-option>
                 </el-select>
               </div>
               <div class="item-magin">
-                <div class="item-name">
-                  <span style="color:red;">* </span>添加时间</div>
-                <el-date-picker v-model="form.rangeTime" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+                <div class="item-name"><span style="color: red;">* </span>添加时间</div>
+                <el-date-picker
+                  v-model="form.rangeTime"
+                  type="daterange"
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                >
                 </el-date-picker>
               </div>
               <div class="item-magin aic">
                 <div class="item-name">客户标签</div>
-                <el-button class="mr10" size="mini" icon="el-icon-circle-plus-outline" type="primary" plain @click="onSelectTag">选择标签</el-button>
+                <el-button
+                  class="mr10"
+                  size="mini"
+                  icon="el-icon-circle-plus-outline"
+                  type="primary"
+                  plain
+                  @click="onSelectTag"
+                  >选择标签</el-button
+                >
                 <el-tag v-for="item in form.sendClientTagList" :key="item.tagId">{{ item.name }}</el-tag>
               </div>
               <div class="item-magin">
                 <div class="item-name">跟进状态</div>
                 <el-select v-model="form.trackState">
                   <el-option label="全部" value=""></el-option>
-                  <el-option label="跟进中" :value=2></el-option>
-                  <el-option label="待跟进" :value=1></el-option>
-                  <el-option label="无意向" :value=4></el-option>
-                  <el-option label="已成交" :value=3></el-option>
-                  <el-option label="已流失" :value=5></el-option>
+                  <el-option label="跟进中" :value="2"></el-option>
+                  <el-option label="待跟进" :value="1"></el-option>
+                  <el-option label="无意向" :value="4"></el-option>
+                  <el-option label="已成交" :value="3"></el-option>
+                  <el-option label="已流失" :value="5"></el-option>
                 </el-select>
               </div>
             </div>
@@ -85,15 +113,20 @@
         </template>
         <el-form-item label="发送类型" required prop="isTask">
           <el-radio-group v-model="form.isTask">
-            <el-radio :label=0>立即发送</el-radio>
-            <el-radio :label=1>定时发送</el-radio>
+            <el-radio :label="0">立即发送</el-radio>
+            <el-radio :label="1">定时发送</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item v-if="form.isTask == 1">
           <div>
             <div class="item-magin">
               <div class="item-name">发送时间</div>
-              <el-date-picker v-model="form.sendTime" format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions"></el-date-picker>
+              <el-date-picker
+                v-model="form.sendTime"
+                type="datetime"
+                placeholder="选择日期时间"
+                :picker-options="pickerOptions"
+              ></el-date-picker>
             </div>
           </div>
         </el-form-item>
@@ -104,31 +137,52 @@
       </el-form>
     </div>
     <div v-if="currentActive === 2">
-      <welcome-detail showBack showMorMaterial isgroup :currentActive.sync="currentActive" @update="currentActive = 1" @submit="save"></welcome-detail>
+      <welcome-detail
+        v-loading="loading"
+        showBack
+        :showTemplate="false"
+        showMorMaterial
+        isgroup
+        :currentActive.sync="currentActive"
+        @update="currentActive = 1"
+        @submit="save"
+      ></welcome-detail>
     </div>
     <!-- 选择添加人弹窗 -->
-    <SelectUser :visible.sync="dialogVisibleSelectUser" title="选择添加人" destroyOnClose :defaultValues="selectedUserList" @success="selectedUser"></SelectUser>
+    <SelectWeUser
+      :visible.sync="dialogVisibleSelectUser"
+      title="选择添加人"
+      destroyOnClose
+      :defaultValues="selectedUserList"
+      @success="selectedUser"
+    ></SelectWeUser>
 
     <!-- 选择标签弹窗 -->
-    <SelectTag :visible.sync="dialogVisibleSelectTag" title="选择标签" :defaultValues="form.tag" @success="submitSelectTag">
+    <SelectTag
+      :visible.sync="dialogVisibleSelectTag"
+      title="选择标签"
+      :defaultValues="form.tag"
+      @success="submitSelectTag"
+    >
     </SelectTag>
 
     <!-- 选择客户群聊 -->
     <!-- <SelectCustomerGroup :visible.sync="dialogVisibleSelectCustomerGroup" @success="submitSelectCustomerGroup" :multiSelect="true"></SelectCustomerGroup> -->
-    <SelectUser :visible.sync="dialogVisibleSelectCustomerGroup" title="选择添加人" destroyOnClose :defaultValues="selectCustomerGroupList" @success="submitSelectCustomerGroup"></SelectUser>
-
+    <SelectWeUser
+      :visible.sync="dialogVisibleSelectCustomerGroup"
+      title="选择添加人"
+      destroyOnClose
+      :defaultValues="selectCustomerGroupList"
+      @success="submitSelectCustomerGroup"
+    ></SelectWeUser>
   </div>
 </template>
 
 <script>
-  import {
-    add, getCustomerList
-  } from '@/api/groupMessage'
-  import {
-    getMaterialMediaId
-  } from '@/api/material'
+  import { add, getCustomerList } from '@/api/groupMessage'
+  import { getMaterialMediaId } from '@/api/material'
   import PhoneDialog from '@/components/PhoneDialog'
-  import SelectUser from '@/components/SelectUser'
+  // import SelectUser from '@/components/SelectUser'
   import SelectTag from '@/components/SelectTag'
   import WelcomeDetail from '@/components/WelcomeContent.vue'
   import SelectCustomerGroup from '@/components/SelectCustomerGroup'
@@ -138,12 +192,12 @@
     components: {
       PhoneDialog,
       SelectTag,
-      SelectUser,
+      // SelectUser,
       WelcomeDetail,
       SelectCustomerGroup
     },
     props: {},
-    data () {
+    data() {
       return {
         currentActive: 1,
         loading: false,
@@ -151,109 +205,153 @@
         form: {
           chatType: 1,
           pushRange: 0,
-          clientGroup: 0,	// 群发客户群
-          gender: '',	// 发送客户-性别
-          trackState: '',	// 发送客户-跟进状态
-          rangeTime: [],	// 发送客户-添加时间
-          sendClientTagList: [],	// 发送客户标签
-          sendClientUserList: [],	// 发送客户添加人
+          clientGroup: 0, // 群发客户群
+          gender: '', // 发送客户-性别
+          trackState: '', // 发送客户-跟进状态
+          rangeTime: [], // 发送客户-添加时间
+          sendClientTagList: [], // 发送客户标签
+          sendClientUserList: [], // 发送客户添加人
           tag: [],
           department: [],
           staffId: [],
           isTask: 0,
           sendTime: '',
-          customerList: [], // 客户列表 临时存储
+          customerList: [] // 客户列表 临时存储
         },
         userParty: [],
         rules: {
           clientGroup: [{ validator: this.validateClientGroup, trigger: 'blur' }],
-          isTask: [{ validator: this.validateSettingTimeType, trigger: 'blur' }],
+          isTask: [{ validator: this.validateSettingTimeType, trigger: 'blur' }]
         },
-        statusOptions: Object.freeze([{
-          label: '发送给客户',
-          value: '0'
-        },
-        {
-          label: '发送给客户群',
-          value: '1'
-        }
+        statusOptions: Object.freeze([
+          {
+            label: '发送给客户',
+            value: '0'
+          },
+          {
+            label: '发送给客户群',
+            value: '1'
+          }
         ]),
         activeName: '0',
         dialogVisibleSelectCustomer: false,
         dialogVisibleSelectUser: false,
-        selectedUserList: [],	// 选中回显员工
+        selectedUserList: [], // 选中回显员工
         dialogVisibleSelectTag: false,
         dialogVisibleSelectCustomerGroup: false,
         selectCustomerGroupList: [],
         pickerOptions: {
-          disabledDate (time) {
+          disabledDate(time) {
             var date = new Date()
             date.setFullYear(date.getFullYear() + 2)
             date.setDate(date.getDate() - 1)
-            return (time.getTime() < Date.now() - 8.64e7) || (time.getTime() > date.getTime())
+            return time.getTime() < Date.now() - 8.64e7 || time.getTime() > date.getTime()
           },
-          selectableRange: (() => {
-            let data = new Date()
-            let hour = data.getHours()
-            let minute = data.getMinutes()
-            let second = data.getSeconds()
-            return [`${hour}:${minute}:${second} - 23:59:59`]
-          })(),
+          selectableRange: parseTime(new Date(moment().format('YYYY-MM-DD HH:mm:ss')), '{hh}:{ii}:{ss}') + '- 23:59:59'
         }
       }
     },
-    watch: {},
+    watch: {
+      'form.sendTime'(selectTime) {
+        const myDate = new Date()
+        const now = myDate.valueOf()
+        const time = new Date(selectTime).valueOf()
+        if (time > now) {
+          this.pickerOptions.selectableRange =
+            parseTime(new Date(moment().format('YYYY-MM-DD HH:mm:ss')), '00:00:00') + '- 23:59:59'
+        } else {
+          this.pickerOptions.selectableRange =
+            parseTime(new Date(moment().format('YYYY-MM-DD HH:mm:ss')), '{hh}:{ii}:{ss}') + '- 23:59:00'
+        }
+      }
+    },
     computed: {
       // 是否显示选择的客户标签
-      isOnlyTag () {
+      isOnlyTag() {
         return this.form.tag[0] && this.form.chatType == 0
       },
       // 是否显示选择范围后的文字说明
-      isSelectedText () {
+      isSelectedText() {
         return this.userParty[0] || this.isOnlyTag
       },
       // 选择范围后的文字说明
-      selectedText () {
-        return `将发送消息给${
-          this.userParty[0] ? this.userParty[0].name + '等部门或成员的' : ''
-          }${this.userParty[0] && this.isOnlyTag ? '，且' : ''}${
-          this.isOnlyTag ? '满足' + this.form.tag[0].name + '等标签的' : ''
-          }${this.form.chatType == 0 ? '客户' : '客户群'}`
+      selectedText() {
+        return `将发送消息给${this.userParty[0] ? this.userParty[0].name + '等部门或成员的' : ''}${
+          this.userParty[0] && this.isOnlyTag ? '，且' : ''
+        }${this.isOnlyTag ? '满足' + this.form.tag[0].name + '等标签的' : ''}${
+          this.form.chatType == 0 ? '客户' : '客户群'
+        }`
       }
     },
-    created () {
+    created() {
       this.$store.dispatch(
         'app/setBusininessDesc',
         `
-        <div>
-          <h5>一、什么是群发助手？</h5>
-          <p>
-            成员可把通知、祝福、活动等消息批量发送给不同的客户，并进行后续的服务；管理员或负责人也可创建企业服务消息，由成员发送并进行后续的服务。
-          </p>
-          <h5>二、谁可以使用群发助手？</h5>
-          <p>
-            具有客户联系使用权限的成员，都可以使用群发助手给自己的客户发送消息；超级管理员和业务负责人还可向管理范围内成员的客户创建企业服务消息。
-          </p>
-          <h5>三、群发是否有频率限制？</h5>
-          <p>
-            每个自然月最多接收来自同一企业的管理员或业务负责人的4条群发消息。
-          </p>
-          <h5>四、群发助手其他注意事项</h5>
-          <p>
-            1、群发消息不得出现违反法律法规或侵犯他人合法权益的内容，企业应对其制作、发送和传播的群发消息内容承担全部法律责任。
-          </p>
-          <p>
-            2、不得以任何方式滥用群发助手实施恶意骚扰用户、开展过度营销等行为。
-          </p>
-          <p>
-            3、如企业微信帐号存在异常，则可能导致群发消息发送失败或异常等情况。
-          </p>
-        </div>
-      `
+          <div>
+            <h5>一、什么是群发助手？</h5>
+            <p>
+              成员可把通知、祝福、活动等消息批量发送给不同的客户，并进行后续的服务；管理员或负责人也可创建企业服务消息，由成员发送并进行后续的服务。
+            </p>
+            <h5>二、谁可以使用群发助手？</h5>
+            <p>
+              具有客户联系使用权限的成员，都可以使用群发助手给自己的客户发送消息；超级管理员和业务负责人还可向管理范围内成员的客户创建企业服务消息。
+            </p>
+            <h5>三、群发是否有频率限制？</h5>
+            <p>
+              每个自然月最多接收来自同一企业的管理员或业务负责人的4条群发消息。
+            </p>
+            <h5>四、群发助手其他注意事项</h5>
+            <p>
+              1、群发消息不得出现违反法律法规或侵犯他人合法权益的内容，企业应对其制作、发送和传播的群发消息内容承担全部法律责任。
+            </p>
+            <p>
+              2、不得以任何方式滥用群发助手实施恶意骚扰用户、开展过度营销等行为。
+            </p>
+            <p>
+              3、如企业微信帐号存在异常，则可能导致群发消息发送失败或异常等情况。
+            </p>
+          </div>
+        `
       )
     },
-    mounted () { },
+    mounted() {},
     methods: {
+      parseTime(time, cFormat) {
+        if (arguments.length === 0) {
+          return null
+        }
+        const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
+        let date
+        if (typeof time === 'object') {
+          date = time
+        } else {
+          if (typeof time === 'string' && /^[0-9]+$/.test(time)) {
+            time = parseInt(time)
+          }
+          if (typeof time === 'number' && time.toString().length === 10) {
+            time = time * 1000
+          }
+          date = new Date(time)
+        }
+        const formatObj = {
+          y: date.getFullYear(),
+          m: date.getMonth() + 1,
+          d: date.getDate(),
+          h: date.getHours(),
+          i: date.getMinutes(),
+          s: date.getSeconds(),
+          a: date.getDay()
+        }
+        const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
+          const value = formatObj[key]
+          // Note: getDay() returns 0 on Sunday
+          if (key === 'a') {
+            return ['日', '一', '二', '三', '四', '五', '六'][value]
+          }
+          return value.toString().padStart(2, '0')
+        })
+        return time_str
+      },
       // validatePushUserRange(rule, value, callback) {
       // 	if(value == 1 && this.userParty.length == 0) {
       // 		callback('请选择员工')
@@ -261,22 +359,15 @@
       // 		callback()
       // 	}
       // },
-      validateClientGroup (rule, value, callback) {
-        if (
-          this.form.chatType == 1 &&
-          this.form.clientGroup == 1 &&
-          this.selectCustomerGroupList.length == 0
-        ) {
+      validateClientGroup(rule, value, callback) {
+        if (this.form.chatType == 2 && this.form.clientGroup == 1 && this.selectCustomerGroupList.length == 0) {
           callback('请选择群主')
         } else {
           callback()
         }
       },
-      validateSettingTimeType (rule, value, callback) {
-        if (
-          this.form.isTask == 1 &&
-          !this.form.sendTime
-        ) {
+      validateSettingTimeType(rule, value, callback) {
+        if (this.form.isTask == 1 && !this.form.sendTime) {
           callback('请选择发送时间')
         } else {
           callback()
@@ -284,8 +375,8 @@
       },
       // 下一步
       // 校验数据
-      nextStep () {
-        this.$refs.form.validate(validate => {
+      nextStep() {
+        this.$refs.form.validate((validate) => {
           if (!validate) return
           if (this.form.chatType === 1) {
             let data = {
@@ -294,7 +385,8 @@
               beginTime: '',
               endTime: '',
               gender: '',
-              trackState: ''
+              trackState: '',
+              customerType: 1
             }
             if (this.form.pushRange == 1) {
               if (!this.form.sendClientUserList.length) {
@@ -305,13 +397,13 @@
                 this.msgError('请选择添加时间！')
                 return
               }
-              data.userIds = this.form.sendClientUserList.map(i => i.userId).join(',')
-              data.tagIds = this.form.sendClientTagList.map(i => i.tagId).join(',')
-              data.beginTime = this.form.rangeTime[0] ? moment(this.form.rangeTime[0]).format("YYYY-MM-DD") : ''
-              data.endTime = this.form.rangeTime[1] ? moment(this.form.rangeTime[1]).format("YYYY-MM-DD") : ''
+              data.userIds = this.form.sendClientUserList.map((i) => i.userId).join(',')
+              data.tagIds = this.form.sendClientTagList.map((i) => i.tagId).join(',')
+              data.beginTime = this.form.rangeTime[0] ? moment(this.form.rangeTime[0]).format('YYYY-MM-DD') : ''
+              data.endTime = this.form.rangeTime[1] ? moment(this.form.rangeTime[1]).format('YYYY-MM-DD') : ''
               data.gender = this.form.gender
               data.trackState = this.form.trackState
-              getCustomerList(data).then(res => {
+              getCustomerList(data).then((res) => {
                 if (res.code === 200) {
                   this.form.customerList = res.data
                   if (res.data && res.data.length) {
@@ -331,7 +423,7 @@
           }
         })
       },
-      newArryById (arr) {
+      newArryById(arr) {
         let map = {}
         let dest = []
         for (let i = 0; i < arr.length; i++) {
@@ -354,10 +446,10 @@
         }
         return dest
       },
-      resetData (list) {
+      resetData(list) {
         let arr = []
         if (list && list.length) {
-          list.forEach(dd => {
+          list.forEach((dd) => {
             if (dd.msgType === '0') {
               let obj = {
                 msgType: 'image',
@@ -385,14 +477,16 @@
         }
         return arr
       },
-      save (materialData) {
+      save(materialData) {
         let list = this.resetData(materialData.materialMsgList)
         let myObj = {
           content: materialData.welcomeMsg,
-          attachmentsList: [{
-            content: materialData.welcomeMsg,
-            msgType: 'text'
-          }]
+          attachmentsList: [
+            {
+              content: materialData.welcomeMsg,
+              msgType: 'text'
+            }
+          ]
         }
         myObj.attachmentsList.push(...list)
         let data = Object.assign({}, this.form, myObj)
@@ -407,7 +501,9 @@
           data.isAll = data.pushRange === 0 ? true : false
         } else {
           if (data.clientGroup === 1) {
-            data.senderList = this.selectCustomerGroupList.map((i) => { return { userId: i.userId } })
+            data.senderList = this.selectCustomerGroupList.map((i) => {
+              return { userId: i.userId }
+            })
           } else {
             data.senderList = []
           }
@@ -428,7 +524,8 @@
         delete data.trackState
         delete data.gender
         delete data.staffId
-        add(data).then(res => {
+        this.loading = true
+        add(data).then((res) => {
           if (res.code == 200) {
             // this.$router.go(-1)
             this.$router.push({
@@ -438,13 +535,14 @@
           } else {
             this.msgError(res.msg || '操作失败')
           }
+          this.loading = false
         })
       },
-      onSelectCustomerGroup () {
+      onSelectCustomerGroup() {
         this.dialogVisibleSelectCustomerGroup = true
       },
       // 选择群主
-      submitSelectCustomerGroup (data) {
+      submitSelectCustomerGroup(data) {
         this.selectCustomerGroupList = data
         // let newData = []
         // if (data && data.length > 0) {
@@ -459,7 +557,7 @@
         // this.selectCustomerGroupList = newData
         this.$refs.form.clearValidate('clientGroup')
       },
-      onSelectTag () {
+      onSelectTag() {
         this.selectTagType = 1
         this.selectedTagList = this.form.sendClientTagList
         this.dialogVisibleSelectTag = true
@@ -467,7 +565,7 @@
       /**
        * @param {Number} type 1:群发员工 2: 群发客户-部分客户-添加人
        */
-      onSelectUser (type) {
+      onSelectUser(type) {
         if (type == 1) {
           this.selectedUserList = this.userParty
         } else if (type == 2) {
@@ -477,15 +575,11 @@
         this.dialogVisibleSelectUser = true
       },
       // 显示选择客户范围弹窗
-      showRangeDialog () {
-        this[
-          this.form.chatType == 0 ?
-            'dialogVisibleSelectCustomer' :
-            'dialogVisibleSelectUser'
-        ] = true
+      showRangeDialog() {
+        this[this.form.chatType == 0 ? 'dialogVisibleSelectCustomer' : 'dialogVisibleSelectUser'] = true
       },
       // 选择添加人确认按钮
-      selectedUser (users) {
+      selectedUser(users) {
         // 选择员工
         if (this.selectUserType == 1) {
           users.forEach((d) => {
@@ -499,7 +593,7 @@
         }
       },
       // 选择标签确认按钮
-      submitSelectTag (data) {
+      submitSelectTag(data) {
         if (this.selectTagType == 1) {
           this.form.sendClientTagList = data
         } else {
@@ -510,7 +604,6 @@
     }
   }
 </script>
-
 
 <style lang="scss" scoped>
   .content-border {

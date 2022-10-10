@@ -206,7 +206,7 @@ import {
   getLimit,
   setLimit,
 } from '@/api/redPacketTool/enterprisePacket'
-
+import col from '@/utils/calculation'
 function validateAmount(rule, value, callback) {
   if (value == '') {
     callback()
@@ -214,8 +214,22 @@ function validateAmount(rule, value, callback) {
   }
 
   value = Number(value)
-  if (Number.isNaN(value) || value < 0.01 || value > 1e6 || !Number.isInteger(value * 100)) {
+  if (Number.isNaN(value) || value < 0.01 || value > 1e6 || !Number.isInteger(col.accMul(value, 100))) {
     callback('请输入0.01-1000000的数字，精确到小数点后两位')
+  } else {
+    callback()
+  }
+}
+function validateAmount1(rule, value, callback) {
+  if (value == '') {
+    callback()
+    return
+  }
+
+  value = Number(value)
+  console.log(col.accMul(value, 100))
+  if (Number.isNaN(value) || value < 0.01 || value > 200 || !Number.isInteger(col.accMul(value, 100))) {
+    callback('请输入0.01-200.00的数字，精确到小数点后两位')
   } else {
     callback()
   }
@@ -226,8 +240,8 @@ function validateClientReceiveNum(rule, value, callback) {
     return
   }
 
-  value = Number(value)
-  if (Number.isNaN(value) || value < 1 || value > 10 || value.toString().indexOf('.') > -1) {
+  // value = Number(value)
+  if (Number.isNaN(Number(value)) || Number(value) < 1 || Number(value) > 10 || value.toString().indexOf('.') > -1) {
     callback('请输入 1-10 的正整数')
   } else {
     callback()
@@ -248,7 +262,7 @@ export default {
       },
       limitForm: {
         singleDayPay: '',
-        singleCustomerReceiveNum: '',
+        singleCustomerReceiveNum: 1,
         singleCustomerReceiveMoney: '',
       },
       limitRules: {
@@ -274,7 +288,7 @@ export default {
         name: [{ required: true, message: '必填项' }],
         money: [
           { required: true, message: '必填项', trigger: 'change' },
-          { validator: validateAmount, trigger: 'blur' },
+          { validator: validateAmount1, trigger: 'blur' },
         ],
         sceneType: [{ required: true, message: '必填项', trigger: 'change' }],
       },
@@ -336,6 +350,7 @@ export default {
       singleDayPay /= 100
       singleCustomerReceiveMoney /= 100
       this.limitForm = { id, singleDayPay, singleCustomerReceiveNum, singleCustomerReceiveMoney }
+      this.limitForm.singleCustomerReceiveNum = this.limitForm.singleCustomerReceiveNum || 1
       this.limitDialogVisible = true
       this.$nextTick(() => this.$refs.limitForm.clearValidate())
     },

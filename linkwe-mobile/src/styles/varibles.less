@@ -1,4 +1,12 @@
-@color: #42b9fd;
+@red: #ee0a24;
+@blue: #0079de;
+@orange: #ff976a;
+@orange-dark: #ed6a0c;
+@orange-light: #fffbe8;
+@green: #07c160;
+
+@color: @blue;
+@blueLight: #4ca1e8;
 @colorSub: #4ee699;
 @colorSubDeep: #34b071;
 @borderColor: #106ed2;
@@ -41,4 +49,8 @@
 // 全边框
 .border(@color, @width: 1px) when (default()) {
   border: @width solid @color;
+}
+
+:export {
+  color: @color;
 }

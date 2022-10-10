@@ -1,12 +1,15 @@
 <template>
-  <div>
-    <welcome-content v-if="show" :strType="form.welcomeMsgTplType === '3'" :isSingle="form.welcomeMsgTplType === '3'" :showTemplate="false" :showMember="form.welcomeMsgTplType === '2'" :showMorMaterial="true" :baseData="materialData" @submit="getWelData"></welcome-content>
+  <div v-if="loading">
+    <div style="height:500px;width: 500px;" v-loading="loading"></div>
+  </div>
+  <div v-else>
+    <welcome-content v-if="show" :strType="form.tplType === '3'" :isSingle="form.tplType === '3'" :showTemplate="false" :showMember="form.tplType === '2'" :showMorMaterial="true" :baseData="materialData" @submit="getWelData"></welcome-content>
   </div>
 </template>
 
 <script>
   import {
-    addOrUpdate, getPreview
+    add, update, getPreview
   } from '@/api/drainageCode/welcome'
   import SelectMaterial from '@/components/SelectMaterial'
   import WelcomeContent from '@/components/WelcomeContent.vue'
@@ -28,13 +31,13 @@
         dialogVisibleSelectMaterial: false,
         form: {
           id: '',
-          welcomeMsgTplType: '',
-          welcomeMsg: '',
-          materialMsgList: []
+          tplType: '',
+          attachments: []
         },
         // 遮罩层
         loading: false,
-        show: false
+        show: false,
+
       }
     },
     watch: {},
@@ -44,11 +47,11 @@
       if (this.form.id) {
         let data = JSON.parse(localStorage.getItem('obj'))
         this.form = Object.assign(this.form, data)
-        this.form.welcomeMsgTplType = this.form.welcomeMsgTplType.toString()
+        this.form.tplType = this.form.tplType.toString()
       } else {
-        this.form.welcomeMsgTplType = this.$route.query.welcomeMsgTplType
+        this.form.tplType = this.$route.query.tplType
       }
-      this.name = this.form.welcomeMsgTplType === '1' ? '活码' : this.form.welcomeMsgTplType === '2' ? '员工' : '入群'
+      this.name = this.form.tplType === '1' ? '活码' : this.form.tplType === '2' ? '员工' : '入群'
       this.type = this.form.id ? '编辑' : '新建'
       this.$route.meta.title = (this.form.id ? '编辑' : '新建') + '欢迎语'
       this.form.id && this.getData()
@@ -57,128 +60,144 @@
       this.show = true
     },
     methods: {
-      getWelData (data) {
-        this.form.welcomeMsg = data.welcomeMsg
-        let img = []
-        let imgText = []
-        let applet = []
-        data.materialMsgList.forEach((unit, key) => {
-          if (unit.msgType === '0') {
-            img.push(unit.materialUrl)
-          }
-          if (unit.msgType === '8') {
-            let obj = {
-              imageTextTile: unit.materialName,
-              imageTextUrl: unit.materialUrl
+      getWelData (materialData) {
+        let list = this.resetData(materialData.materialMsgList)
+        let myObj = {
+          // content: materialData.welcomeMsg,
+          attachments: [{
+            content: materialData.welcomeMsg,
+            msgType: 'text'
+          }]
+        }
+        if (materialData.userIds) {
+          myObj.userIds = materialData.userIds
+          myObj.userNames = materialData.userNames
+        }
+        myObj.attachments.push(...list)
+        let data = Object.assign({}, this.form, myObj)
+        this.submit(data)
+      },
+      resetData (list) {
+        let arr = []
+        if (list && list.length) {
+          list.forEach(dd => {
+            if (dd.msgType === '0') {
+              let obj = {
+                msgType: 'image',
+                picUrl: dd.materialUrl
+              }
+              arr.push(obj)
+            } else if (dd.msgType === '8') {
+              let ob = {
+                msgType: 'link',
+                title: dd.materialName,
+                linkUrl: dd.materialUrl
+              }
+              arr.push(ob)
+            } else if (dd.msgType === '9') {
+              let ff = {
+                msgType: 'miniprogram',
+                appId: dd.digest,
+                title: dd.materialName,
+                picUrl: dd.coverUrl,
+                linkUrl: dd.materialUrl
+              }
+              arr.push(ff)
             }
-            imgText.push(obj)
-          }
-          if (unit.msgType === '9') {
-            let oob = {
-              appTile: unit.materialName,
-              appId: unit.digest,
-              appPath: unit.materialUrl,
-              appPic: unit.coverUrl
-            }
-            applet.push(oob)
-          }
-        })
-        if (applet.length) {
-          this.form.applet = applet
-        } else {
-          this.form.applet = []
+          })
         }
-        if (imgText.length) {
-          this.form.imageText = imgText
-        } else {
-          this.form.imageText = []
-        }
-        if (img.length) {
-          this.form.picUrl = img.join(',')
-        } else {
-          this.form.picUrl = ''
-        }
-        if (this.form.welcomeMsgTplType === '2') {
-          this.form.userIds = data.users.map(dd => {
-            return dd.userId
-          }).join(',')
-        }
-        this.submit()
+        return arr
       },
       getData () {
-        // getPreview(this.form.id).then(({ data }) => {
-        this.materialData = this.form
-        this.materialData.users = []
-        if (this.materialData.userIds) {
-          let name = this.materialData.userNames.split(',')
-          this.materialData.userIds.split(',').forEach((ddd, index) => {
-            let obj = {
-              useUserId: ddd,
-              userName: name[index]
-            }
-            this.materialData.users.push(obj)
-          })
-        }
-        this.materialData.materialMsgList = []
-        let img = []
-        let imgText = []
-        let applet = []
-        if (this.form.picUrl) {
-          this.form.picUrl.split(',').forEach(dd => {
-            let obj = {
-              materialUrl: dd,
-              msgType: '0',
-            }
-            img.push(obj)
-          })
-        }
-        if (this.form.imageText && this.form.imageText.length) {
-          this.form.imageText.forEach(dd => {
-            let obj = {
-              materialName: dd.imageTextTile,
-              materialUrl: dd.imageTextUrl,
-              msgType: '8'
-            }
-            imgText.push(obj)
-          })
-        }
-        if (this.form.applet && this.form.applet.length) {
-          this.form.applet.forEach(cc => {
-            let obj = {
-              materialName: cc.appTile,
-              digest: cc.appId,
-              materialUrl: cc.appPath,
-              coverUrl: cc.appPic,
-              msgType: '9'
-            }
-            applet.push(obj)
-          })
-        }
-        this.materialData.materialMsgList.push(...img)
-        this.materialData.materialMsgList.push(...imgText)
-        this.materialData.materialMsgList.push(...applet)
-        this.$forceUpdate()
-        // })
+        getPreview(this.form.id).then(({ data }) => {
+          this.materialData = this.form
+          // this.materialData.users = []
+          // if (this.materialData.userIds) {
+          //   let name = this.materialData.userNames.split(',')
+          //   this.materialData.userIds.split(',').forEach((ddd, index) => {
+          //     let obj = {
+          //       useUserId: ddd,
+          //       userName: name[index]
+          //     }
+          //     this.materialData.users.push(obj)
+          //   })
+          // }
+          this.materialData.welcomeMsg = data.attachments ? data.attachments[0].content : ''
+          this.materialData.materialMsgList = data.attachments ? this.setEditList(data.attachments) : []
+          this.$forceUpdate()
+        })
       },
-      submit () {
-        addOrUpdate(this.form)
-          .then(({
-            data
-          }) => {
-            this.msgSuccess('操作成功')
-            this.loading = false
-            // this.$router.back()
-            console.log(this.form.welcomeMsgTplType === '1')
-            this.$router.push({
-              path: '/drainageCode/welcome/',
-              query: {
-                type: this.form.welcomeMsgTplType.toString()
+      setEditList (list) {
+        let arr = []
+        if (list && list.length) {
+          list.forEach(dd => {
+            if (dd.msgType === 'image') {
+              let obj = {
+                msgType: '0',
+                materialUrl: dd.picUrl
               }
+              arr.push(obj)
+            } else if (dd.msgType === 'link') {
+              let ob = {
+                msgType: '8',
+                materialName: dd.title,
+                materialUrl: dd.linkUrl
+              }
+              arr.push(ob)
+            } else if (dd.msgType === 'miniprogram') {
+              let ff = {
+                msgType: '9',
+                digest: dd.appId,
+                materialName: dd.title,
+                coverUrl: dd.picUrl,
+                materialUrl: dd.linkUrl
+              }
+              arr.push(ff)
+            }
+          })
+        }
+        return arr
+      },
+      submit (data) {
+        this.loading = true
+        data.tplType = Number(data.tplType)
+        delete data.materialMsgList
+        delete data.welcomeMsg
+        if (data.id) {
+          update(data)
+            .then(({
+              data
+            }) => {
+              this.msgSuccess('操作成功')
+              this.loading = false
+              this.$router.push({
+                path: '/content/template/welcome',
+                query: {
+                  type: this.form.tplType.toString()
+                }
+              })
             })
-          })
-          .catch(() => {
-            this.loading = false
-          })
+            .catch(() => {
+              this.loading = false
+            })
+        } else {
+          add(data)
+            .then(({
+              data
+            }) => {
+              this.msgSuccess('操作成功')
+              this.loading = false
+              this.$router.push({
+                path: '/content/template/welcome',
+                query: {
+                  type: this.form.tplType.toString()
+                }
+              })
+            })
+            .catch(() => {
+              this.loading = false
+            })
+        }
       }
     },
   }

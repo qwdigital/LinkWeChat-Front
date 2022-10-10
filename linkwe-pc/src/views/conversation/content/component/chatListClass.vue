@@ -8,99 +8,97 @@
     </div>
     <el-tabs v-model="activeTab" @tab-click="(v) => opened.includes(v.name) || opened.push(v.name)">
       <el-tab-pane v-for="(item, index) of list" :key="index" :label="item.label" :name="item.type">
-        <chatListClassTab
-          v-if="opened.includes(item.type)"
-          :queryChat="queryChat"
-          :type="item.type"
-        ></chatListClassTab>
+        <chatListClassTab v-if="opened.includes(item.type)" :queryChat="queryChat" :type="item.type"></chatListClassTab>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import chatListClassTab from './chatListClassTab.vue'
-import * as api from '@/api/conversation/content.js'
-export default {
-  components: { chatListClassTab },
-  props: {
-    queryChat: {
-      type: Object,
-      default: () => ({})
-    }
-  },
-  data() {
-    return {
-      activeTab: 'all',
-      opened: ['all'],
-      list: [
-        {
-          label: '全部',
-          type: 'all'
-        },
-        {
-          label: '图片及视频',
-          type: 'image'
-        },
-        {
-          label: '文件',
-          type: 'file'
-        },
-        {
-          label: '链接',
-          type: 'link'
-        },
-        {
-          label: '语音通话',
-          type: 'voice'
-        }
-      ]
-    }
-  },
-  watch: {
-    queryChat() {
-      this.opened = ['all']
-    }
-  },
-  mounted() {},
-  methods: {
-    exportList() {
-      this.$confirm('是否确认导出所有数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          return api.exportList(this.queryChat)
+  import chatListClassTab from './chatListClassTab.vue'
+  import * as api from '@/api/conversation/content.js'
+  export default {
+    components: { chatListClassTab },
+    props: {
+      queryChat: {
+        type: Object,
+        default: () => ({})
+      }
+    },
+    data() {
+      return {
+        activeTab: 'all',
+        opened: ['all'],
+        list: [
+          {
+            label: '全部',
+            type: 'all'
+          },
+          {
+            label: '图片及视频',
+            type: 'image,video'
+          },
+          {
+            label: '文件',
+            type: 'file'
+          },
+          {
+            label: '链接',
+            type: 'link'
+          },
+          {
+            label: '语音',
+            type: 'voice,meeting_voice_call'
+          }
+        ]
+      }
+    },
+    watch: {
+      queryChat() {
+        this.opened = ['all']
+        this.activeTab = 'all'
+      }
+    },
+    mounted() {},
+    methods: {
+      exportList() {
+        this.$confirm('是否确认导出所有数据项?', '警告', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         })
-        .then((response) => {
-          this.download(response.msg)
-        })
-        .catch(function (err) {
-          console.log(err)
-        })
+          .then(() => {
+            return api.exportList(this.queryChat)
+          })
+          .then((response) => {
+            this.download(response.data)
+          })
+          .catch(function (err) {
+            console.log(err)
+          })
+      }
     }
   }
-}
 </script>
 <style lang="scss" scoped>
-::v-deep .el-tabs__header {
-  margin: 0;
-}
+  ::v-deep .el-tabs__header {
+    margin: 0;
+  }
 
-.top {
-  padding: 15px;
-}
+  .name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+  }
 
-.name {
-  font-size: 18px;
-  min-height: 20px;
-}
-
-.download {
-  color: #199ed8;
-  text-align: right;
-  font-size: 16px;
-  cursor: pointer;
-}
+  .download {
+    color: #199ed8;
+    text-align: right;
+    font-size: 16px;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.7;
+    }
+  }
 </style>

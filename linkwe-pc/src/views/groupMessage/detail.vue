@@ -119,7 +119,7 @@
           </div>
           <div>
             <el-table v-loading="customer.loading" :data="customer.list">
-              <el-table-column :label="data.chatType === 1 ? '客户':'客户群'" align="center" prop="customerName" />
+              <el-table-column :label="data.chatType === 1 ? '客户':'客户群'" align="center" :prop="data.chatType === 1 ? 'customerName':'chatName'" />
               <el-table-column :label="data.chatType === 1 ? '所属员工':'所属群主'" align="center" prop="userName" />
               <el-table-column label="送达时间" align="center" prop="sendTime" width="180"></el-table-column>
               <el-table-column label="送达状态" align="center" prop="status">
@@ -249,10 +249,12 @@
       resetCustomerQuery () {
         this.queryCustomer.customerName = ''
         this.queryCustomer.status = ''
+        this.getCustomerList(1)
       },
       resetMemberQuery () {
         this.queryMember.userName = ''
         this.queryMember.status = ''
+        this.getMemberList(1)
       },
       getMemberList (page) {
         page && (this.queryMember.pageNum = page)

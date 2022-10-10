@@ -84,7 +84,7 @@ export default {
         })
     },
     getRedPacketInfo() {
-      getRedPacketInfo().then(({ data }) => {
+      getRedPacketInfo(this.redPacket.tenantId).then(({ data }) => {
         // let query = param2Obj(window.location.search)
         // let hash = param2Obj(window.location.hash)
         // Object.assign(query, hash)
@@ -115,11 +115,12 @@ export default {
       let form = {
         orderNo: this.redPacket.orderId, // 订单id
         openId: this.openId, // 客户公众号id
-        appId: window.lwConfig.APPID, // 微信公众号id
+        appId: this.redPacket.appId, // 微信公众号id
         chatId: this.redPacket.chatId, // 客户企微id
         externalUserid: this.redPacket.externalUserid, // 客户企微id
         receiveName: this.receiveName,
         avatar: this.avatar,
+        tenantId: this.redPacket.tenantId, // 租户id
       }
       receiveRedPacket(form).then((data) => {
         if (data.code == 200) {
@@ -135,7 +136,7 @@ export default {
       let form = {
         orderNo: this.redPacket.orderId, // 订单id
         openId: this.openId, // 客户公众号id
-        appId: window.lwConfig.APPID, // 微信公众号id
+        appId: this.redPacket.appId, // 微信公众号id
         chatId: this.redPacket.chatId, // 客户群企微id
         // externalUserid: this.redPacket.externalUserid, // 客户企微id
       }

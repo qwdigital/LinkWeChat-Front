@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/group'
+const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/tag'
 
 // 客户标签
 
@@ -8,7 +8,7 @@ const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '
  * {
     "pageNum": "当前页",
     "pageSize": "每页显示条数",
-    "gourpName": "标签组名"
+    "groupName": "标签组名"
     "groupTagType": "标签分组类型(1:客户标签;2:群标签)"
 }
  */
@@ -23,7 +23,7 @@ export function getList (params) {
  * 新增客户标签
  * @param {Object} data 
 {
-    "gourpName": "标签组名称",
+    "groupName": "标签组名称",
     "weTags": [{
         "name": "标签名"
     }]
@@ -42,7 +42,7 @@ export function add (data) {
  * @param {*} data 
 {
     "id": "主键",
-    "gourpName": "标签分组名",
+    "groupName": "标签分组名",
     "weTags": [{
         "id": "标签id",
         "groupId": "标签组id",

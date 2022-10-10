@@ -35,20 +35,20 @@
     <template v-else>
       <template v-for="task in tasks">
         <template v-if="task.type === 1">
-          <OldCustomerPanel
+          <OldCustomer
             :key="task.taskId"
             :task="task"
             :state="isDone ? true : false"
             @refresh="getTasks"
-          ></OldCustomerPanel>
+          ></OldCustomer>
         </template>
         <template v-else>
-          <SOPPanel
+          <Sop
             :key="task.ruleId"
             :task="task"
             :state="isDone ? true : false"
             @refresh="getTasks"
-          ></SOPPanel>
+          ></Sop>
         </template>
       </template>
     </template>
@@ -61,11 +61,11 @@
 
 <script>
 import { getTasks } from '@/api/community'
-import OldCustomerPanel from '../oldCustomer/panel'
-import SOPPanel from '../SOP/panel'
+import OldCustomer from './OldCustomer'
+import Sop from './Sop'
 
 export default {
-  components: { OldCustomerPanel, SOPPanel },
+  components: { OldCustomer, Sop },
 
   data() {
     return {
@@ -73,7 +73,7 @@ export default {
       taskType: 0, // 任务类型  0:全部  1:老客标签建群  2:群SOP
       loading: false, // 加载状态
       todo: [], // 待处理数据
-      done: [] // 已处理数据
+      done: [], // 已处理数据
     }
   },
 
@@ -82,18 +82,15 @@ export default {
     getTasks() {
       this.loading = true
       getTasks(this.$store.state.userId, this.taskType)
-        .then((res) => {
-          if (res.code === 200) {
-            this.todo = res.todo || []
-            this.done = res.done || []
-          } else {
-          }
+        .then(({ data }) => {
+          this.todo = data.todo || []
+          this.done = data.done || []
           this.loading = false
         })
         .catch((error) => {
           this.loading = false
         })
-    }
+    },
   },
 
   computed: {
@@ -104,7 +101,7 @@ export default {
     tasks() {
       if (this.isDone === 1) return this.done
       return this.todo
-    }
+    },
   },
 
   watch: {
@@ -116,13 +113,12 @@ export default {
       if (val) {
         this.getTasks()
       }
-    }
+    },
   },
 
   created() {
-    document.title = '消息群发'
     this.taskType = parseInt(this.$route.query.type)
-  }
+  },
 }
 </script>
 

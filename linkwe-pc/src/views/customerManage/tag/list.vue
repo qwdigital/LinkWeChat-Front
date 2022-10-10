@@ -24,7 +24,7 @@ export default {
       dialogVisible: false,
       // 表单参数
       form: {
-        gourpName: '',
+        groupName: '',
         weTags: []
       },
       // 添加标签输入框
@@ -33,7 +33,7 @@ export default {
       newInputVisible: false,
       // 表单验证规则
       rules: Object.freeze({
-        gourpName: [{ required: true, message: '必填项', trigger: 'blur' }]
+        groupName: [{ required: true, message: '必填项', trigger: 'blur' }]
       }),
       // 选中数组
       ids: [],
@@ -117,8 +117,8 @@ export default {
   <div class="">
     <div class="mid-action">
       <div>
+          <!-- v-hasPermi="['customerManage:tag:add']" -->
         <el-button
-          v-hasPermi="['customerManage:tag:add']"
           type="primary"
           class="mr10"
           @click="edit()"
@@ -129,8 +129,8 @@ export default {
         </ButtonSync>
       </div>
       <div>
+          <!-- v-hasPermi="['customerManage:tag:remove']" -->
         <el-button
-          v-hasPermi="['customerManage:tag:remove']"
           :disabled="!ids.length"
           type="danger"
           @click="remove()"
@@ -141,7 +141,7 @@ export default {
 
     <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="标签组" align="center" prop="gourpName" />
+      <el-table-column label="标签组" align="center" prop="groupName" />
       <el-table-column label="标签" align="center" prop="weTags">
         <div v-if="row.weTags" slot-scope="{ row }">
           <el-popover placement="bottom" trigger="hover" :disabled="row.weTags.length < 3">
@@ -168,18 +168,18 @@ export default {
       </el-table-column>-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+            <!-- v-hasPermi="['customerManage:tag:edit']" -->
           <el-button
-            v-hasPermi="['customerManage:tag:edit']"
             type="text"
             @click="edit(scope.row, scope.index)"
             >编辑</el-button
           >
           <el-button
-            v-hasPermi="['customerManage:tag:remove']"
             @click="remove(scope.row.groupId)"
             type="text"
             >删除</el-button
           >
+            <!-- v-hasPermi="['customerManage:tag:remove']" -->
         </template>
       </el-table-column>
     </el-table>

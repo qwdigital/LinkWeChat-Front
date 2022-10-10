@@ -4,7 +4,7 @@ import {
   getDetail,
   getSummary,
   getFollowUpRecord,
-  getCustomerInfoByUserId
+  getCustomerInfoByUserId,
 } from '@/api/customer'
 
 import { dictAddType, dictJoinGroupType, dictTrackState } from '@/utils/dictionary'
@@ -22,14 +22,14 @@ export default {
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now()
-        }
+        },
       },
       dictAddType,
       dictJoinGroupType,
       dictTrackState,
 
       active: 0,
-      openedTabs: ['0']
+      openedTabs: ['0'],
     }
   },
   created() {
@@ -71,7 +71,7 @@ export default {
     },
     changeTab(tab) {
       this.openedTabs.includes(tab.$attrs.id) || this.openedTabs.push(tab.$attrs.id)
-    }
+    },
 
     // remark(item) {
     //   return (
@@ -79,7 +79,7 @@ export default {
     //     this.customer.customerName + (item.remarkCorpName ? '-' + item.remarkCorpName : '')
     //   )
     // }
-  }
+  },
 }
 </script>
 
@@ -107,40 +107,41 @@ export default {
       </div>
     </div>
 
-    <el-card shadow="never" style="background-color: transparent; border: none">
+    <!-- <el-card shadow="never" style="background-color: transparent; border: none">
       <div slot="header" class="card-title">社交关系</div>
-      <el-tabs value="1">
-        <el-tab-pane
-          :label="`跟进员工(${customer.trackUsers ? customer.trackUsers.length : 0})`"
-          name="1"
-        >
-          <el-table :data="customer.trackUsers">
-            <el-table-column label="员工" align="center" prop="userName" />
-            <el-table-column prop="addMethod" label="添加方式" align="center">
-              <template slot-scope="{ row }">{{ dictAddType[row.addMethod + ''] }}</template>
-            </el-table-column>
-            <el-table-column label="添加时间" align="center" prop="firstAddTime" />
-            <el-table-column prop="trackState" label="跟进状态" align="center">
-              <template slot-scope="{ row }">
-                <el-tag v-if="row.trackState" :type="dictTrackState[~~row.trackState + ''].color">{{
-                  dictTrackState[~~row.trackState + ''].name
-                }}</el-tag>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-tab-pane>
-        <el-tab-pane :label="`所在客群(${customer.groups ? customer.groups.length : 0})`" name="2">
-          <el-table :data="customer.groups">
-            <el-table-column label="群名" align="center" prop="groupName" />
-            <el-table-column label="群主" align="center" prop="leaderName" />
-            <el-table-column label="入群时间" align="center" prop="joinTime" />
-            <el-table-column prop="joinScene" label="入群方式" align="center">
-              <template slot-scope="{ row }">{{ dictJoinGroupType[row.joinScene + ''] }}</template>
-            </el-table-column>
-          </el-table>
-        </el-tab-pane>
-      </el-tabs>
-    </el-card>
+    </el-card> -->
+    <div class="card-title mb5">社交关系</div>
+    <el-tabs value="1">
+      <el-tab-pane
+        :label="`跟进员工(${customer.trackUsers ? customer.trackUsers.length : 0})`"
+        name="1"
+      >
+        <el-table :data="customer.trackUsers">
+          <el-table-column label="员工" align="center" prop="userName" />
+          <el-table-column prop="addMethod" label="添加方式" align="center">
+            <template slot-scope="{ row }">{{ dictAddType[row.addMethod + ''] }}</template>
+          </el-table-column>
+          <el-table-column label="添加时间" align="center" prop="firstAddTime" />
+          <el-table-column prop="trackState" label="跟进状态" align="center">
+            <template slot-scope="{ row }">
+              <el-tag v-if="row.trackState" :type="dictTrackState[~~row.trackState + ''].color">{{
+                dictTrackState[~~row.trackState + ''].name
+              }}</el-tag>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane :label="`所在客群(${customer.groups ? customer.groups.length : 0})`" name="2">
+        <el-table :data="customer.groups">
+          <el-table-column label="群名" align="center" prop="groupName" />
+          <el-table-column label="群主" align="center" prop="leaderName" />
+          <el-table-column label="入群时间" align="center" prop="joinTime" />
+          <el-table-column prop="joinScene" label="入群方式" align="center">
+            <template slot-scope="{ row }">{{ dictJoinGroupType[row.joinScene + ''] }}</template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+    </el-tabs>
 
     <el-tabs value="0" @tab-click="changeTab">
       <el-tab-pane
@@ -148,7 +149,7 @@ export default {
         label="客户画像汇总"
         id="0"
       >
-        <info-tab></info-tab>
+        <info-tab :trackUsers="customer.trackUsers"></info-tab>
       </el-tab-pane>
       <el-tab-pane
         v-for="(item, index) of customer.trackUsers"

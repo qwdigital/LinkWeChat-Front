@@ -170,7 +170,7 @@ export default {
           <div class="tips">企业ID即CorpID，在企微后台->我的企业中获取</div>
         </el-form-item>
         <el-form-item label="企业名称">
-          <el-input v-model="form.companyName" disabled placeholder="企业名称"></el-input>
+          <el-input v-model="form.corpName" disabled placeholder="企业名称"></el-input>
           <div class="tips">根据企业 ID 配置后回显，不可编辑</div>
         </el-form-item>
 
