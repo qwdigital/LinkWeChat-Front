@@ -38,7 +38,7 @@
 
 # 特别说明
 
-本仓库为 LinkWeChat V3.0 的前端源码库，后端库及项目整体说明请移步至 [LinkWeChat](http://https://gitee.com/LinkWeChat/link-wechat) 查看。
+本仓库为 LinkWeChat V3.0 的前端源码库，后端库及项目整体说明请移步至 [LinkWeChat](https://gitee.com/LinkWeChat/link-wechat) 查看。
 
 本仓库 Readme 仅说明前端相关内容，也可以通过 [LinkWeChat 官方项目手册](https://www.yuque.com/linkwechat/help) 查看详细内容。
 
