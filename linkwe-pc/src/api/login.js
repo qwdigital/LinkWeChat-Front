@@ -42,7 +42,7 @@ export function logout () {
 // 获取验证码
 export function getCodeImg () {
   return request({
-    url: service + '/auth/code',
+    url: service + '/code',
     method: 'get',
   })
 }
