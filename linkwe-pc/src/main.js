@@ -33,6 +33,7 @@ Vue.component('SelectUser', () => import('@/components/SelectUser'))
 Vue.component('SelectWeUser', () => import('@/components/SelectWeUser'))
 Vue.component('SelectStaffForm', () => import('@/components/SelectStaffForm'))
 Vue.component('CoRemoteSelect', () => import('@/components/CoRemoteSelect'))
+Vue.component('PhoneTemplate', () => import('@/components/PhoneTemplate'))
 // 全局方法挂载
 import ClipboardJS from 'clipboard'
 // class ClipboardJS extends clipboard {
