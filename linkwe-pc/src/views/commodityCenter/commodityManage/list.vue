@@ -1,6 +1,13 @@
 <script>
 import * as api from '@/api/commodityCenter/commodityManage'
 
+const defaultForm = {
+  picture: '',
+  price: 1,
+  describe: '',
+  attachments: [],
+}
+
 export default {
   components: {},
   props: {},
@@ -13,12 +20,10 @@ export default {
       },
       // 遮罩层
       loading: false,
+      submitLoading: false,
       dialogVisible: false,
       // 表单参数
-      form: {
-        groupName: '',
-        weTags: [],
-      },
+      form: JSON.parse(JSON.stringify(defaultForm)),
       // 添加标签输入框
       newInput: '',
       // 添加标签显隐
@@ -26,8 +31,8 @@ export default {
       // 表单验证规则
       rules: Object.freeze({
         picture: [{ required: true, message: '必填项', trigger: 'change' }],
-        groupName: [{ required: true, message: '必填项', trigger: 'blur' }],
-        groupName: [{ required: true, message: '必填项', trigger: 'blur' }],
+        price: [{ required: true, message: '必填项', trigger: 'change' }],
+        describe: [{ required: true, message: '必填项', trigger: 'blur' }],
       }),
       // 选中数组
       ids: [],
@@ -61,13 +66,11 @@ export default {
           this.loading = false
         })
     },
-    edit(data, type) {
-      this.form = JSON.parse(
-        JSON.stringify(Object.assign({ groupTagType: this.type, weTags: [] }, data || {}))
-      )
+    edit(data = {}, type) {
+      this.form = JSON.parse(JSON.stringify(Object.assign(defaultForm, data)))
       this.dialogVisible = true
     },
-    syncTag() {
+    sync() {
       const loading = this.$loading({
         lock: true,
         text: 'Loading',
@@ -84,6 +87,21 @@ export default {
         .catch(() => {
           loading.close()
         })
+    },
+    submit() {
+      this.$refs['form'].validate((valid) => {
+        let form = JSON.parse(JSON.stringify(this.form))
+        form.price = form.price.toFixed(2)
+        this.submitLoading = true
+        api[form.id ? 'update' : 'add'](form)
+          .then(() => {
+            this.msgSuccess('操作成功')
+            this.dialogVisible = false
+          })
+          .finally(() => {
+            this.submitLoading = false
+          })
+      })
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
@@ -103,6 +121,14 @@ export default {
           this.getList()
           this.msgSuccess('删除成功')
         })
+    },
+    goRoute(row) {
+      this.$router.push({
+        path: './detail',
+        query: {
+          id: row.id,
+        },
+      })
     },
   },
 }
@@ -148,9 +174,9 @@ export default {
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="{ row, index }">
           <!-- v-hasPermi="['customerManage:tag:edit']" -->
-          <el-button type="text" @click="goRoute(row, index)">详情</el-button>
+          <el-button type="text" @click="goRoute(row)">详情</el-button>
           <el-button type="text" @click="edit(row, index)">编辑</el-button>
-          <el-button @click="remove(row.groupId)" type="text">删除</el-button>
+          <el-button type="text" @click="remove(row.id)">删除</el-button>
           <!-- v-hasPermi="['customerManage:tag:remove']" -->
         </template>
       </el-table-column>
@@ -168,15 +194,15 @@ export default {
     <el-dialog
       :title="form.id ? '修改' : '新建'"
       :visible.sync="dialogVisible"
-      width="600px"
+      width="800px"
       :close-on-click-modal="false"
     >
       <el-row>
         <el-col :span="12">
-          <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+          <el-form ref="form" :model="form" :rules="rules" label-width="100px">
             <el-form-item label="商品封面" prop="picture">
               <upload :fileUrl.sync="form.picture" type="0">
-                <div slot="tip">支持jpg/jpeg/png格式，图片大小不超过20M</div>
+                <div slot="tip" class="tip">支持jpg/jpeg/png格式，图片大小不超过20M</div>
               </upload>
             </el-form-item>
             <el-form-item label="商品单价(元)" prop="price">
@@ -195,39 +221,60 @@ export default {
                 type="textarea"
                 :maxlength="300"
                 show-word-limit
-                :autosize="{ minRows: 2, maxRows: 50 }"
+                :autosize="{ minRows: 4, maxRows: 50 }"
                 placeholder="请输入"
               ></el-input>
             </el-form-item>
 
             <el-form-item label="商品详情">
               <upload :fileUrl.sync="form.attachments" type="0">
-                <div slot="tip">
-                  最多添加八张详情，支持JPG,PNG格式，图片大小不超过2M，建议上传宽高1:1的图片
-                </div>
+                <div slot="tip" class="tip">最多添加八张详情</div>
               </upload>
             </el-form-item>
-            <div slot="footer" class="dialog-footer">
-              <el-button type="primary" v-loading="submitLoading" @click="submit">确 定</el-button>
-              <el-button @click="dialogVisible = false">取 消</el-button>
-            </div>
           </el-form>
         </el-col>
         <el-col :span="12">
           <PhoneTemplate>
-            <el-image style="width: 100%; height: 50px" :src="form.picture"></el-image>
-            <div class="price">￥{{ form.picture }}</div>
-            <div class="content">{{ form.describe }}</div>
-            <el-image
-              v-for="(item, index) of form.attachments"
-              style="width: 100%; height: 50px"
-              :src="item.picURL"
-              :key="index"
-            ></el-image>
+            <div class="phone-content">
+              <el-image
+                class="commodity-img commodity-thumb"
+                style="width: 100%; height: 50px"
+                :src="form.picture"
+              ></el-image>
+              <div class="price">￥{{ form.price.toFixed(2) }}</div>
+              <div class="content">{{ form.describe }}</div>
+              <el-image
+                v-for="(item, index) of form.attachments"
+                class="commodity-img"
+                :src="item.picURL"
+                :key="index"
+              ></el-image>
+            </div>
           </PhoneTemplate>
         </el-col>
       </el-row>
+      <div slot="footer" class="dialog-footer ar">
+        <el-button type="primary" v-loading="submitLoading" @click="submit">确 定</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.tip {
+  color: #aaa;
+  font-size: 12px;
+  line-height: 20px;
+}
+.phone-content {
+  padding: 10px;
+}
+.price {
+  font-weight: 500;
+  font-size: 20px;
+  margin: 10px 0;
+}
+.commodity-img {
+  width: 100%;
+}
+</style>

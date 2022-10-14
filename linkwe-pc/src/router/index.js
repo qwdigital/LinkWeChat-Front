@@ -4,7 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 const originalPush = Router.prototype.push
-Router.prototype.push = function push (location) {
+Router.prototype.push = function push(location) {
   return originalPush.call(this, location).catch((err) => err)
 }
 
@@ -32,6 +32,37 @@ import visitor from '@/layout/visitor'
 
 // 公共路由
 export const constantRoutes = [
+  {
+    path: '/commodityCenter',
+    component: Layout,
+    hidden: true,
+    meta: {
+      title: '商品中心',
+    },
+    children: [
+      {
+        path: 'commodityManage',
+        name: 'group-code-analyse',
+        component: (resolve) => require(['@/views/commodityCenter/commodityManage/list'], resolve),
+        meta: {
+          title: '商品管理',
+          activeMenu: '/commodityCenter/commodityManage',
+          breadcrumb: true,
+        },
+      },
+      {
+        path: 'detail',
+        name: 'group-code-analyse',
+        component: (resolve) =>
+          require(['@/views/commodityCenter/commodityManage/detail'], resolve),
+        meta: {
+          title: '商品管理',
+          activeMenu: '/commodityCenter/commodityManage',
+          breadcrumb: true,
+        },
+      },
+    ],
+  },
   {
     path: '/drainageCode/qrCode',
     component: Layout,
