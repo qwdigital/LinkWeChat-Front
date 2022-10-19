@@ -5,6 +5,10 @@
         <div class="my-title">
           微信支付
         </div>
+        <el-form-item label="商户名称:" prop="merChantName">
+          <el-input style="width: 40%;" v-model="form.merChantName" placeholder="请输入商户名称"></el-input>
+          <!-- <div class="tips"></div> -->
+        </el-form-item>
         <el-form-item label="商户号:" prop="merChantNumber">
           <el-input style="width: 40%;" v-model="form.merChantNumber" placeholder="请输入商户号"></el-input>
           <div class="tips">用于通过API支付商户，在微信支付后台->账号中心->个人信息中获取</div>
@@ -63,6 +67,7 @@
         merChantSecretEditState: false,
         form: {},
         rules: {
+          merChantName: [{ required: true, message: '必填项', trigger: 'blur' }],
           merChantNumber: [{ required: true, message: '必填项', trigger: 'blur' }],
           merChantSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
           certP12Url: [{ required: true, message: '必填项', trigger: 'blur' }]
