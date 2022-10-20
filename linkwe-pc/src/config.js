@@ -63,8 +63,8 @@ window.CONFIG = {
 
   services: {
     wecom: '/open',
-    kf: window.lwConfig.SYSTEM_API,
-    system: "http://192.168.1.133:6180",
+    kf: window.lwConfig.KF_API,
+    system: window.lwConfig.SYSTEM_API,
     common: '/common',
   },
 

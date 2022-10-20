@@ -51,7 +51,7 @@
                   size="mini"
                   @click="
                     $router.push({
-                      path: '/operateCenter/customerGroupManage/groupDetail',
+                      path: '/groupManage/customerGroupManage/groupDetail',
                       query: {
                         chatId: row.chatId
                       }
