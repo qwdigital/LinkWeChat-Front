@@ -63,7 +63,7 @@ window.CONFIG = {
 
   services: {
     wecom: '/open',
-    kf: window.lwConfig.SYSTEM_API,
+    kf: window.lwConfig.KF_API,
     system: window.lwConfig.SYSTEM_API,
     common: '/common',
   },
