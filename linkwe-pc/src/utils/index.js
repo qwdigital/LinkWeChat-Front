@@ -72,29 +72,27 @@ export function formatTime(time, option) {
   }
 }
 
-// 时间差 
+// 时间差
 export function diffDate(startDate, endDate) {
   if (!startDate || !endDate) {
     return
   }
   const start = new Date(startDate)
   const end = new Date(endDate)
-  const diff = (end - start)/1000
+  const diff = (end - start) / 1000
   console.log(diff)
-  const days = parseInt(diff/86400) 
-  const hours = parseInt(diff/3600)-24*days
-  const minutes = parseInt(diff%3600/60)
-  const seconds = parseInt(diff%60)
+  const days = parseInt(diff / 86400)
+  const hours = parseInt(diff / 3600) - 24 * days
+  const minutes = parseInt((diff % 3600) / 60)
+  const seconds = parseInt(diff % 60)
   if (hours) {
-    return (hours + 'h' + minutes + 'm' + seconds + 's')
+    return hours + 'h' + minutes + 'm' + seconds + 's'
   }
   if (minutes) {
-    return (minutes + 'm' + seconds + 's')
+    return minutes + 'm' + seconds + 's'
   }
   return seconds + 's'
 }
-
-
 
 /**
  * @param {string} url
@@ -513,109 +511,226 @@ export function uuid(before = '', after = '') {
 
 // 微信表情包匹配
 export const emotion = [
-  "[微笑]",
-  "[撇嘴]",
-  "[色]",
-  "[发呆]",
-  "[得意]",
-  "[流泪]",
-  "[害羞]",
-  "[闭嘴]",
-  "[睡]",
-  "[大哭]",
-  "[尴尬]",
-  "[发怒]",
-  "[调皮]",
-  "[呲牙]",
-  "[惊讶]",
-  "[难过]",
-  "[酷]",
-  "[冷汗]",
-  "[抓狂]",
-  "[吐]",
-  "[偷笑]",
-  "[可爱]",
-  "[白眼]",
-  "[傲慢]",
-  "[饥饿]",
-  "[困]",
-  "[惊恐]",
-  "[流汗]",
-  "[憨笑]",
-  "[大兵]",
-  "[奋斗]",
-  "[咒骂]",
-  "[疑问]",
-  "[嘘]",
-  "[晕]",
-  "[折磨]",
-  "[衰]",
-  "[骷髅]",
-  "[敲打]",
-  "[再见]",
-  "[擦汗]",
-  "[抠鼻]",
-  "[鼓掌]",
-  "[糗大了]",
-  "[坏笑]",
-  "[左哼哼]",
-  "[右哼哼]",
-  "[哈欠]",
-  "[鄙视]",
-  "[委屈]",
-  "[快哭了]",
-  "[阴险]",
-  "[亲亲]",
-  "[吓]",
-  "[可怜]",
-  "[菜刀]",
-  "[西瓜]",
-  "[啤酒]",
-  "[篮球]",
-  "[乒乓]",
-  "[咖啡]",
-  "[饭]",
-  "[猪头]",
-  "[玫瑰]",
-  "[凋谢]",
-  "[示爱]",
-  "[爱心]",
-  "[心碎]",
-  "[蛋糕]",
-  "[闪电]",
-  "[炸弹]",
-  "[刀]",
-  "[足球]",
-  "[瓢虫]",
-  "[便便]",
-  "[月亮]",
-  "[太阳]",
-  "[礼物]",
-  "[拥抱]",
-  "[强]",
-  "[弱]",
-  "[握手]",
-  "[胜利]",
-  "[抱拳]",
-  "[勾引]",
-  "[拳头]",
-  "[差劲]",
-  "[爱你]",
-  "[NO]",
-  "[OK]",
-  "[爱情]",
-  "[飞吻]",
-  "[跳跳]",
-  "[发抖]",
-  "[怄火]",
-  "[转圈]",
-  "[磕头]",
-  "[回头]",
-  "[跳绳]",
-  "[挥手]",
-  "[激动]",
-  "[街舞]",
-  "[献吻]",
-  "[左太极]",
-  "[右太极]"
+  '[微笑]',
+  '[撇嘴]',
+  '[色]',
+  '[发呆]',
+  '[得意]',
+  '[流泪]',
+  '[害羞]',
+  '[闭嘴]',
+  '[睡]',
+  '[大哭]',
+  '[尴尬]',
+  '[发怒]',
+  '[调皮]',
+  '[呲牙]',
+  '[惊讶]',
+  '[难过]',
+  '[酷]',
+  '[冷汗]',
+  '[抓狂]',
+  '[吐]',
+  '[偷笑]',
+  '[可爱]',
+  '[白眼]',
+  '[傲慢]',
+  '[饥饿]',
+  '[困]',
+  '[惊恐]',
+  '[流汗]',
+  '[憨笑]',
+  '[大兵]',
+  '[奋斗]',
+  '[咒骂]',
+  '[疑问]',
+  '[嘘]',
+  '[晕]',
+  '[折磨]',
+  '[衰]',
+  '[骷髅]',
+  '[敲打]',
+  '[再见]',
+  '[擦汗]',
+  '[抠鼻]',
+  '[鼓掌]',
+  '[糗大了]',
+  '[坏笑]',
+  '[左哼哼]',
+  '[右哼哼]',
+  '[哈欠]',
+  '[鄙视]',
+  '[委屈]',
+  '[快哭了]',
+  '[阴险]',
+  '[亲亲]',
+  '[吓]',
+  '[可怜]',
+  '[菜刀]',
+  '[西瓜]',
+  '[啤酒]',
+  '[篮球]',
+  '[乒乓]',
+  '[咖啡]',
+  '[饭]',
+  '[猪头]',
+  '[玫瑰]',
+  '[凋谢]',
+  '[示爱]',
+  '[爱心]',
+  '[心碎]',
+  '[蛋糕]',
+  '[闪电]',
+  '[炸弹]',
+  '[刀]',
+  '[足球]',
+  '[瓢虫]',
+  '[便便]',
+  '[月亮]',
+  '[太阳]',
+  '[礼物]',
+  '[拥抱]',
+  '[强]',
+  '[弱]',
+  '[握手]',
+  '[胜利]',
+  '[抱拳]',
+  '[勾引]',
+  '[拳头]',
+  '[差劲]',
+  '[爱你]',
+  '[NO]',
+  '[OK]',
+  '[爱情]',
+  '[飞吻]',
+  '[跳跳]',
+  '[发抖]',
+  '[怄火]',
+  '[转圈]',
+  '[磕头]',
+  '[回头]',
+  '[跳绳]',
+  '[挥手]',
+  '[激动]',
+  '[街舞]',
+  '[献吻]',
+  '[左太极]',
+  '[右太极]',
 ]
+
+// 获取微信用户授权登录用户信息
+import { wxLogin, getWechatUserInfo, getWxRedirect } from '@/api/common'
+import { setToken, removeToken } from '@/utils/auth'
+export async function getWechatAuthUserInfo(appId) {
+  let userinfo = sessionStorage.getItem('userinfo')
+  //取缓存中的用户信息
+  if (userinfo) {
+    try {
+      userinfo = JSON.parse(userinfo)
+    } catch (error) {
+      // alert(error)
+    }
+    return userinfo
+  }
+
+  //缓存中没有用户信息，进入授权流程
+  // let appId = 'wxa57479bcd3f15461'
+  // let appId = window.lwConfig.WX_APPID // 微信公众号id
+  // let appId = 'wxa57479bcd3f15461' // 公众号appid
+  let code = getQueryValue('code') //是否存在code
+  // let query = param2Obj() //
+  // let { code, appId, secret } = query
+  let local = window.location.origin.includes('localhost')
+    ? 'http://h5.linkwechat.cn/test.html'
+    : window.location.href
+  if (!code) {
+    //不存在就打开上面的地址进行授权
+    let url = ''
+    if (appId) {
+      url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${encodeURIComponent(
+        local
+      )}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
+    } else {
+      url = (await getWxRedirect()).data
+    }
+    window.location.href = url
+    // return new Promise(() => { })
+    // window.location.href =
+    //     `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`;
+  }
+  try {
+    // let { data } = await getUserOpenid({ code, appId, secret })
+    if (code) {
+      let { data: dataLogin } = await wxLogin(code)
+      setToken(dataLogin.access_token)
+      let { data: dataUser } = await getWechatUserInfo()
+      removeToken()
+      sessionStorage.setItem('userinfo', JSON.stringify(dataUser))
+      return dataUser
+    }
+  } catch (error) {
+    // alert(JSON.stringify(error))
+    return Promise.reject()
+  }
+}
+
+// stime 开始时间 etime 结束时间  currentTime指定日期
+export function compareTime(stime, etime, currentTime) {
+  let startTime = tranDate(stime)
+  let endTime = tranDate(etime)
+  let thisDate = currentTime || new Date()
+  let time =
+    thisDate.getFullYear() +
+    '-' +
+    (thisDate.getMonth() + 1) +
+    '-' +
+    thisDate.getDate() +
+    ' ' +
+    thisDate.getHours() +
+    ':' +
+    thisDate.getMinutes()
+  let nowTime = tranDate(time)
+  if (nowTime < startTime) {
+    return 'before'
+  } else if (nowTime > endTime) {
+    return 'after'
+  } else {
+    return 'middle'
+  }
+}
+function tranDate(time) {
+  return new Date(time.replace(/-/g, '/')).getTime()
+}
+
+// 获取本机公网ip
+export function getIP() {
+  return new Promise(function (resolve, reject) {
+    let script = document.createElement('script')
+    script.setAttribute('charset', 'utf-8')
+    script.setAttribute('type', 'text/javascript')
+    script.setAttribute('src', 'https://pv.sohu.com/cityjson?ie=utf-8')
+    document.getElementsByTagName('head')[0].appendChild(script)
+    script.onload = function () {
+      document.getElementsByTagName('head')[0].removeChild(script)
+      resolve(returnCitySN['cip'])
+    }
+    script.onerror = function () {
+      document.getElementsByTagName('head')[0].removeChild(script)
+      reject('')
+    }
+  })
+}
+
+import { getProCityList } from '@/api/common'
+// import { treeToArray } from './common'
+// 获取省市区树形数据
+export async function getProvinceCityTree() {
+  let area = window.sessionStorage.getItem('provinceCityTree')
+  if (area) {
+    area = JSON.parse(area)
+  } else {
+    area = (await getProCityList()).data
+    window.sessionStorage.setItem('provinceCityTree', JSON.stringify(area))
+  }
+  return area
+}

@@ -1,18 +1,20 @@
 import router from './router'
 import store from './store'
 import { Message } from 'element-ui'
-import NProgress from 'nprogress'
+// import NProgress from 'nprogress'
 // import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/auth'
 
 // NProgress.configure({ showSpinner: false })
 
-const whiteList = ['/login', '/authRedirect', '/bind', '/register', '/test']
-
+const whiteList = ['/authRedirect', '/bind', '/test'] // 不管有没有token都可直接进入的页面路径
+const noLoginList = ['/login', '/register'] // 没有token才能进入的页面
 router.beforeEach((to, from, next) => {
-  // debugger
   // NProgress.start()
-  if (getToken()) {
+  // 无需检测token的， 不管有没有token都可直接进入
+  if (whiteList.includes(to.path) || to.meta.isNoLogin) {
+    next()
+  } else if (getToken()) {
     /* has token*/
     if (to.path === '/login') {
       next({ path: '/' })
@@ -61,15 +63,12 @@ router.beforeEach((to, from, next) => {
         next()
       }
     }
+  } else if (noLoginList.includes(to.path)) {
+    // 没有token才能进入的页面
+    next()
   } else {
-    // 没有token
-    if (whiteList.indexOf(to.path) !== -1 || to.meta.isNoLogin) {
-      // 在免登录白名单，直接进入
-      next()
-    } else {
-      next(`/login?redirect=${to.fullPath}`) // 否则全部重定向到登录页
-      // NProgress.done()
-    }
+    next(`/login?redirect=${to.fullPath}`) // 否则全部重定向到登录页
+    // NProgress.done()
   }
 })
 
