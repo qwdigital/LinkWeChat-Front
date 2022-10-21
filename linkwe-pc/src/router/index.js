@@ -30,8 +30,46 @@ import visitor from '@/layout/visitor'
   }
  */
 
-// 公共路由
-export const constantRoutes = [
+// 开发路由，总后台配置完菜单务必删除，只在开发环境生效
+const devRoutes = [
+  {
+    path: '/smartForms',
+    component: Layout,
+    hidden: true,
+    meta: {
+      title: '商品中心',
+    },
+    children: [
+      {
+        path: 'list',
+        component: (resolve) => require(['@/views/drainageCode/smartForms/index'], resolve),
+        meta: {
+          title: '商品管理',
+          activeMenu: '/commodityCenter/commodityManage',
+          breadcrumb: true,
+        },
+      },
+      {
+        path: 'add',
+        component: (resolve) => require(['@/views/drainageCode/smartForms/add'], resolve),
+        meta: {
+          title: '商品管理',
+          activeMenu: '/commodityCenter/commodityManage',
+          breadcrumb: true,
+        },
+      },
+      {
+        path: 'smartFormStatistics',
+        component: (resolve) =>
+          require(['@/views/drainageCode/smartForms/statistics/index'], resolve),
+        meta: {
+          title: '商品管理',
+          activeMenu: '/commodityCenter/commodityManage',
+          breadcrumb: true,
+        },
+      },
+    ],
+  },
   {
     path: '/commodityCenter',
     component: Layout,
@@ -62,6 +100,19 @@ export const constantRoutes = [
         },
       },
     ],
+  },
+]
+
+// 公共路由
+export const constantRoutes = [
+  {
+    path: '/formsDetail', // 智能表单填写
+    component: (resolve) => require(['@/views/drainageCode/smartForms/build/formsDetail'], resolve),
+    hidden: true,
+    meta: {
+      title: '填写表单',
+      isNoLogin: true,
+    },
   },
   {
     path: '/drainageCode/qrCode',
@@ -131,5 +182,6 @@ export default new Router({
   // mode: process.env.VUE_APP_ENV === 'test' ? 'hash' : 'history', // history 下 element ui 存在bug
   // base: window.lwConfig.BASE_URL,
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes,
+  routes:
+    process.env.NODE_ENV !== 'development' ? constantRoutes : constantRoutes.concat(devRoutes),
 })
