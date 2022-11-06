@@ -1,5 +1,5 @@
 <script>
-import { getList, update, add } from '@/api/appTool/selfApp'
+import { getList, update, add, remove } from '@/api/internalCollaborate/appManage'
 // import clipboard from "clipboard";
 
 export default {
@@ -8,25 +8,26 @@ export default {
   data() {
     return {
       query: {
-        pageNum: 1,
-        pageSize: 10,
-        name: ''
+        // pageNum: 1,
+        // pageSize: 10,
+        // name: '',
       },
-      dateRange: [], // 添加日期
-      total: 0,
+      // dateRange: [], // 添加日期
+      // total: 0,
       form: {},
       list: [],
       dialogVisible: false,
       disabled: false,
       loading: false,
       rules: Object.freeze({
+        agentId: [{ required: true, message: '必填项', trigger: 'blur' }],
+        secret: [{ required: true, message: '必填项', trigger: 'blur' }],
         name: [{ required: true, message: '必填项', trigger: 'blur' }],
-        corpId: [{ required: true, message: '必填项', trigger: 'blur' }],
-        corpSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
-        contactSecret: [{ required: true, message: '必填项', trigger: 'blur' }]
+        description: [{ required: true, message: '必填项', trigger: 'blur' }],
+        logoUrl: [{ required: true, message: '必填项', trigger: 'change' }],
       }),
-      status: ['正常', '停用'],
-      dialogVisibleSelectMaterial: false
+      // status: ['正常', '停用'],
+      // dialogVisibleSelectMaterial: false,
     }
   },
   watch: {},
@@ -36,9 +37,7 @@ export default {
 
     this.$store.dispatch(
       'app/setBusininessDesc',
-      `
-        <div>用于添加自建应用，方便自建应用的配置与管理。</div>
-      `
+      `<div>企业微信自建应用管理，支持通过应用发送应用消息</div> `,
     )
   },
   mounted() {
@@ -46,22 +45,20 @@ export default {
   },
   methods: {
     getList(page) {
-      if (this.dateRange) {
-        this.query.beginTime = this.dateRange[0]
-        this.query.endTime = this.dateRange[1]
-      } else {
-        this.query.beginTime = ''
-        this.query.endTime = ''
-      }
-      page && (this.query.pageNum = page)
+      // if (this.dateRange) {
+      //   this.query.beginTime = this.dateRange[0]
+      //   this.query.endTime = this.dateRange[1]
+      // } else {
+      //   this.query.beginTime = ''
+      //   this.query.endTime = ''
+      // }
+      // page && (this.query.pageNum = page)
       this.loading = true
       getList()
         .then(({ data, total }) => {
-          // debugger
           this.list = data
-          this.loading = false
         })
-        .catch(() => {
+        .finally(() => {
           this.loading = false
         })
     },
@@ -77,7 +74,8 @@ export default {
             .then(() => {
               this.msgSuccess('操作成功')
               this.dialogVisible = false
-              this.getList(!this.form.id && 1)
+              this.getList()
+              // this.getList(!this.form.id && 1)
             })
             .catch(() => {
               this.dialogVisible = false
@@ -85,111 +83,141 @@ export default {
         }
       })
     },
-    goRoute(id, path) {
-      this.$router.push({
-        path: 'taskAev',
-        query: { id }
+    /** 删除按钮操作 */
+    remove(id) {
+      // const operIds = id || this.ids + ''
+      this.$confirm('是否确认删除？该操作不可撤销，请谨慎操作。', {
+        title: '警告',
+        type: 'warning',
       })
+        .then(function () {
+          return remove(id)
+        })
+        .then(() => {
+          this.getList()
+          this.msgSuccess('删除成功')
+        })
     },
+    // goRoute(id, path) {
+    //   this.$router.push({
+    //     path: 'taskAev',
+    //     query: { id },
+    //   })
+    // },
 
     // 选择素材确认按钮
-    submitSelectMaterial(text, image, file) {
-      this.form.logoMediaid = image.id
-      this.form.squareLogoUrl = image.materialUrl
-      this.dialogVisibleSelectMaterial = false
-    }
-  }
+    // submitSelectMaterial(text, image, file) {
+    //   this.form.logoMediaid = image.id
+    //   this.form.squareLogoUrl = image.materialUrl
+    //   this.dialogVisibleSelectMaterial = false
+    // },
+  },
 }
 </script>
 
 <template>
   <div>
-    <!-- <div class="top-search">
-      <el-tooltip
-        effect="light"
-        content="用于添加自建应用，方便自建应用的配置与管理。"
-        placement="top-start"
-      >
-        <i
-          class="el-icon-question"
-          style="font-size: 26px;vertical-align: middle; margin-left: 10px;"
-        ></i>
-      </el-tooltip>
-    </div> -->
-    <!-- <div class="ar mb10">
-      <el-button
-        v-hasPermi="['enterpriseWechat:add']"
-        type="primary"
-        icon="el-icon-plus"
-        @click="goRoute()"
-        >新建任务</el-button
-      >
-    </div> -->
-
     <ul v-loading="loading" class="list-wrap">
-      <li v-for="(item, index) of list" :key="index" class="list" @click="edit(item)">
-        <el-image :src="item.squareLogoUrl" fit="fit"></el-image>
-        <div>
-          <div class="title">{{ item.agentName }}</div>
-          <div class="title">{{ item.agentId }}</div>
-          <div class="desc">{{ item.agentSecret }}</div>
+      <li v-for="(item, index) of list" :key="index" class="list">
+        <div class="flex">
+          <el-image :src="item.logoUrl" fit="fit"></el-image>
+          <div class="">
+            <div class="title blod toe">{{ item.name }}</div>
+            <div class="desc mt10">
+              {{ item.description }}
+            </div>
+          </div>
+        </div>
+        <div class="flex aic mt10">
+          <div class="list-label">AgentId</div>
+          {{ item.agentId }}
+        </div>
+        <div class="flex aic mt10">
+          <div class="list-label">可见范围</div>
+          <!-- <div class="flex">
+            <div v-for="(item, index) of item.allowPartys.split(',')" :key="index">
+              <i class="el-icon-folder-opened" v-if="item"></i>{{ item }}
+            </div>
+          </div> -->
+          <TagEllipsis :list="item.allowPartyName.split(',')"></TagEllipsis>
+        </div>
+        <div class="list-action fr">
+          <!-- <el-button type="text">发送消息</el-button>
+          <el-button type="text">历史消息</el-button> -->
+          <el-button type="text" @click="edit(item)">编辑</el-button>
+          <el-button type="text" @click="remove(item.id)">删除</el-button>
         </div>
       </li>
-      <li class="list aic" @click="edit()">
-        <div class="el-image ac">
-          <i class="el-icon-plus cc" style="color: #666"></i>
+      <li class="list flex aic cp" style="justify-content: center" @click="edit()">
+        <div class="ac theme">
+          <i class="el-icon-plus"></i>
+          添加应用
         </div>
-        <div>添加应用</div>
       </li>
     </ul>
 
-    <!-- <pagination
-      v-show="total > 0"
-      :total="total"
-      :page.sync="query.pageNum"
-      :limit.sync="query.pageSize"
-      @pagination="getList()"
-    /> -->
-
     <el-dialog
-      :title="form.id ? '查看' : '新增'"
+      :title="form.id ? '编辑' : '添加'"
       :visible.sync="dialogVisible"
       :close-on-click-modal="false"
-    >
-      <el-form ref="form" label-position="right" :model="form" :rules="rules" label-width="100px">
-        <el-row :gutter="10">
+      width="580px">
+      <el-form ref="form" label-position="right" :model="form" :rules="rules" label-width="80px">
+        <!-- 添加 -->
+        <template v-if="!form.id">
+          <el-form-item label="应用ID" prop="agentId">
+            <el-input
+              v-model="form.agentId"
+              :disabled="!!form.id"
+              placeholder="请输入应用 AgentId"></el-input>
+            <div class="dialog-tip">如何获取：企微后台->应用管理->自建应用详情->AgentId</div>
+          </el-form-item>
+          <el-form-item label="应用密钥" prop="secret">
+            <el-input v-model="form.secret" placeholder="请输入应用 Secret"></el-input>
+            <div class="dialog-tip">如何获取：企微后台->应用管理->自建应用详情->Secret</div>
+          </el-form-item>
+        </template>
+
+        <!-- 编辑 -->
+        <template v-if="form.id">
+          <el-form-item label="应用名称" prop="name">
+            <el-input
+              v-model="form.name"
+              maxlength="16"
+              show-word-limit
+              placeholder="请输入应用名称"></el-input>
+          </el-form-item>
+          <el-form-item label="应用描述" prop="description">
+            <el-input
+              type="textarea"
+              v-model="form.description"
+              maxlength="60"
+              show-word-limit
+              placeholder="请输入应用描述"></el-input>
+          </el-form-item>
+          <el-form-item label="应用头像" prop="logoUrl">
+            <upload class="image-uploader" :fileUrl.sync="form.logoUrl" type="0"></upload>
+          </el-form-item>
+        </template>
+
+        <!-- <el-row :gutter="10">
           <el-col :span="4">
             <div class="avatar-wrap ac" @click="dialogVisibleSelectMaterial = true">
               <img class="avatar" v-if="form.squareLogoUrl" :src="form.squareLogoUrl" />
               <i v-else class="el-icon-plus avatar-uploader-icon cc"></i>
             </div>
-            <!-- <el-image
-              style="width: 100px; height: 100px;border: 1px solid #eee; border-radius: 5px;"
-              :src="form.squareLogoUrl"
-              fit="fit"
-            ></el-image> -->
           </el-col>
           <el-col :span="20">
-            <el-form-item label="应用标题" prop="agentName">
-              <el-input v-model="form.agentName" placeholder="请输入应用标题"></el-input>
-            </el-form-item>
-            <el-form-item label="应用描述" prop="description">
-              <el-input v-model="form.description" placeholder="请输入应用描述"></el-input>
-            </el-form-item>
             <el-form-item label="应用Id" prop="agentId">
               <el-input
                 v-model="form.agentId"
                 :disabled="!!form.id"
-                placeholder="请输入应用Id"
-              ></el-input>
+                placeholder="请输入应用Id"></el-input>
             </el-form-item>
             <el-form-item label="应用Secret" prop="agentSecret">
               <el-input
                 :disabled="!!form.id"
                 v-model="form.agentSecret"
-                placeholder="请输入应用Secret"
-              ></el-input>
-              <!-- <el-link class="fr" type="primary">如何获取？</el-link> -->
+                placeholder="请输入应用Secret"></el-input>
             </el-form-item>
             <el-form-item label="可见范围" v-if="form.id">
               <div class="flex">
@@ -202,7 +230,7 @@ export default {
               </div>
             </el-form-item>
           </el-col>
-        </el-row>
+        </el-row> -->
       </el-form>
       <div slot="footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -222,26 +250,24 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-.page {
-  padding: 20px;
-  border-radius: 5px;
+.theme {
+  color: $blue;
 }
 .list-wrap {
   display: flex;
   flex-wrap: wrap;
   line-height: 20px;
   .list {
-    width: 23%;
-    padding: 20px;
-    display: flex;
+    width: 33%;
+    padding: 20px 20px 10px;
     border: 1px solid #eee;
     margin: 0 20px 20px 0;
     background: #fff;
     border-radius: 6px;
     .el-image {
       margin-right: 10px;
-      width: 50px;
-      height: 50px;
+      width: 80px;
+      height: 80px;
       flex: none;
       border: 1px solid #eee;
       border-radius: 5px;
@@ -254,20 +280,29 @@ export default {
       color: #ddd;
       word-break: break-all;
     }
+    .list-label {
+      color: #888;
+      width: 90px;
+    }
   }
 }
-.avatar-wrap {
-  position: relative;
-  width: 120px;
-  height: 120px;
-  border: 1px solid #eee;
-  border-radius: 5px;
+
+.dialog-tip {
+  color: #888;
+  font-size: 12px;
 }
-.avatar {
-  width: 100%;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #ddd;
-}
+// .avatar-wrap {
+//   position: relative;
+//   width: 120px;
+//   height: 120px;
+//   border: 1px solid #eee;
+//   border-radius: 5px;
+// }
+// .avatar {
+//   width: 100%;
+// }
+// .avatar-uploader-icon {
+//   font-size: 28px;
+//   color: #ddd;
+// }
 </style>
