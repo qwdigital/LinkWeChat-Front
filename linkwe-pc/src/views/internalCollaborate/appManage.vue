@@ -56,6 +56,10 @@ export default {
       this.loading = true
       getList()
         .then(({ data, total }) => {
+          data.forEach((element) => {
+            element.allowPartyName = (element.allowPartyName || '').split(',')
+            element.allowUserinfoName = (element.allowUserinfoName || '').split(',')
+          })
           this.list = data
         })
         .finally(() => {
@@ -66,6 +70,9 @@ export default {
       this.form = Object.assign({}, data || {})
       this.dialogVisible = true
       type || !data ? (this.disabled = false) : (this.disabled = true)
+      this.$nextTick(() => {
+        this.$refs['form'].clearValidate()
+      })
     },
     submit() {
       this.$refs['form'].validate((valid) => {
@@ -139,7 +146,7 @@ export default {
               <i class="el-icon-folder-opened" v-if="item"></i>{{ item }}
             </div>
           </div> -->
-          <TagEllipsis :list="item.allowPartyName.split(',')"></TagEllipsis>
+          <TagEllipsis :list="item.allowPartyName"></TagEllipsis>
         </div>
         <div class="list-action fr">
           <!-- <el-button type="text">发送消息</el-button>
@@ -259,6 +266,7 @@ export default {
   line-height: 20px;
   .list {
     width: 33%;
+    height: 218px;
     padding: 20px 20px 10px;
     border: 1px solid #eee;
     margin: 0 20px 20px 0;
