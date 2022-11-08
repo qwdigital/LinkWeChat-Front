@@ -1,7 +1,6 @@
 <script>
 import { getList, update, add, remove, sync } from '@/api/internalCollaborate/appManage'
 // import clipboard from "clipboard";
-// import HistoryMsg from './HistoryMsg'
 
 export default {
   components: { HistoryMsg: () => import('./HistoryMsg') },
@@ -256,7 +255,7 @@ export default {
 
     <!-- 历史消息 弹窗 -->
     <el-dialog title="历史消息" :visible.sync="dialogVisibleHistoryMsg" :close-on-click-modal="false">
-      <HistoryMsg :id="id" v-if="dialogVisibleHistoryMsg" ref="historyMsg" />
+      <HistoryMsg :id="id" v-if="dialogVisibleHistoryMsg" />
     </el-dialog>
 
     <!-- 选择素材弹窗 -->
