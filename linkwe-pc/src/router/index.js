@@ -33,7 +33,7 @@ import visitor from '@/layout/visitor'
 // 开发路由，总后台配置完菜单务必删除或注释，只在开发环境生效
 const devRoutes = [
   {
-    path: '/internalCollaborate',
+    path: '/appManage',
     component: Layout,
     hidden: true,
     meta: {
@@ -42,7 +42,7 @@ const devRoutes = [
     children: [
       {
         path: 'list',
-        component: (resolve) => require(['@/views/internalCollaborate/appManage'], resolve),
+        component: (resolve) => require(['@/views/internalCollaborate/appManage/list'], resolve),
         meta: {
           title: '',
           activeMenu: '/commodityCenter/commodityManage',
