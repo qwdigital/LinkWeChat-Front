@@ -153,8 +153,8 @@ export default {
           </div> -->
           <TagEllipsis :list="item.allowPartyName"></TagEllipsis>
         </div>
-        <div class="list-action fr">
-          <!-- <el-button type="text">发送消息</el-button>
+        <div class="list-action fxbw">
+          <!-- <el-button type="text">发送消息</el-button> -->
           <el-button
             type="text"
             @click="
@@ -162,7 +162,7 @@ export default {
               dialogVisibleHistoryMsg = true
             ">
             历史消息
-          </el-button> -->
+          </el-button>
           <el-button type="text" @click="edit(item)">编辑</el-button>
           <el-button type="text" @click="remove(item.id)">删除</el-button>
         </div>

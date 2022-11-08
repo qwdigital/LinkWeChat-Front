@@ -73,6 +73,7 @@ export default {
         .getList(this.query)
         .then(({ data, total }) => {
           this.list = data
+          this.total = +total
         })
         .finally(() => {
           this.loading = false
@@ -99,14 +100,14 @@ export default {
         }
       })
     },
-    remove(id) {
+    removke(id, action, tip) {
       // const operIds = id || this.ids + ''
-      this.$confirm('是否确认删除？该操作不可撤销，请谨慎操作。', {
+      this.$confirm('是否确认' + tip + '？该操作不可撤销，请谨慎操作。', {
         title: '警告',
         type: 'warning',
       })
         .then(function () {
-          return appMsg.remove(id)
+          return appMsg[action](id)
         })
         .then(() => {
           this.getList()
@@ -120,7 +121,7 @@ export default {
 <template>
   <div>
     <el-select v-model="query.status" placeholder="">
-      <el-option v-for="(value, key) in status" :key="key" :label="value" :value="key"> </el-option>
+      <el-option v-for="(value, key) in status" :key="key" :label="value" :value="key"></el-option>
     </el-select>
     <el-table v-loading="loading" :data="list">
       <el-table-column label="消息标题" align="center" prop="title" />
@@ -133,10 +134,10 @@ export default {
       <el-table-column label="发送时间" align="center" prop="groupName" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="{ row }">
-          <el-button type="text" @click="edit(row, 'detail')">详情</el-button>
-          <el-button v-if="[0, 1].includes(row.status)" type="text" @click="edit(row, 'edit')">编辑</el-button>
-          <el-button v-if="row.status == 2" type="text" @click="edit(row, 'revoke')">撤回</el-button>
-          <el-button v-else @click="remove(scope.row.groupId)" type="text">删除</el-button>
+          <!-- <el-button type="text" @click="edit(row, 'detail')">详情</el-button>
+          <el-button v-if="[0, 1].includes(row.status)" type="text" @click="edit(row, 'edit')">编辑</el-button> -->
+          <el-button v-if="row.status == 2" type="text" @click="removke(row.id, 'revoke', '撤回')">撤回</el-button>
+          <el-button v-else @click="removke(row.id, 'remove', '删除')" type="text">删除</el-button>
           <!-- v-hasPermi="['customerManage:tag:remove']" -->
         </template>
       </el-table-column>
