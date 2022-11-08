@@ -14,6 +14,17 @@ export function getList() {
 }
 
 /**
+ * 同步应用信息
+ * @param {*} params
+ */
+export function sync(id) {
+  return request({
+    url: service + `/pull/${id}`,
+    method: 'get',
+  })
+}
+
+/**
  * 删除
  * @param {*} params
  */
@@ -35,7 +46,7 @@ export function remove(id) {
  */
 export function add(data) {
   return request({
-    url: service + '/pull',
+    url: service + '/add',
     method: 'post',
     data,
   })
@@ -65,18 +76,18 @@ export function update(data) {
 
 export const appMsg = {
   /**
- * 获取历史消息列表
- * @param {*} params
- {
-  endTime:'', // string date-time 发送结束时间
-  startTime:'', // string date-time 发送开始时间
-  status:'',// integer int32状态
-  title:'', // string 标题
- }
- */
+   * 获取历史消息列表
+   * @param {*} params
+   {
+    endTime:'', // string date-time 发送结束时间
+    startTime:'', // string date-time 发送开始时间
+    status:'',// integer int32状态
+    title:'', // string 标题
+  }
+  */
   getList(params) {
     return request({
-      url: service + '/list',
+      url: serviceMsg + '/list',
       params,
     })
   },
@@ -87,7 +98,7 @@ export const appMsg = {
    */
   getDetail(id) {
     return request({
-      url: service + `/get/${id}`,
+      url: serviceMsg + `/get/${id}`,
     })
   },
 
@@ -97,7 +108,7 @@ export const appMsg = {
    */
   revoke(id) {
     return request({
-      url: service + `/revoke/${id}`,
+      url: serviceMsg + `/revoke/${id}`,
     })
   },
 
@@ -146,7 +157,7 @@ export const appMsg = {
   // 修改应用消息 data同上
   update(data) {
     return request({
-      url: service + `/update/${data.id}`,
+      url: serviceMsg + `/update/${data.id}`,
       method: 'PUT',
       data,
     })
@@ -158,7 +169,7 @@ export const appMsg = {
    */
   remove(id) {
     return request({
-      url: service + `/delete/${id}`,
+      url: serviceMsg + `/delete/${id}`,
       method: 'delete',
     })
   },

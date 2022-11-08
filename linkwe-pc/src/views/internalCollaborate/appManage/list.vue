@@ -1,9 +1,10 @@
 <script>
-import { getList, update, add, remove } from '@/api/internalCollaborate/appManage'
+import { getList, update, add, remove, sync } from '@/api/internalCollaborate/appManage'
 // import clipboard from "clipboard";
+// import HistoryMsg from './HistoryMsg'
 
 export default {
-  components: {},
+  components: { HistoryMsg: () => import('./HistoryMsg') },
   props: {},
   data() {
     return {
@@ -21,12 +22,13 @@ export default {
       loading: false,
       rules: Object.freeze({
         agentId: [{ required: true, message: '必填项', trigger: 'blur' }],
-        secret: [{ required: true, message: '必填项', trigger: 'blur' }],
         name: [{ required: true, message: '必填项', trigger: 'blur' }],
         description: [{ required: true, message: '必填项', trigger: 'blur' }],
         logoUrl: [{ required: true, message: '必填项', trigger: 'change' }],
       }),
-      // status: ['正常', '停用'],
+
+      id: '',
+      dialogVisibleHistoryMsg: false,
       // dialogVisibleSelectMaterial: false,
     }
   },
@@ -35,10 +37,7 @@ export default {
   created() {
     this.getList()
 
-    this.$store.dispatch(
-      'app/setBusininessDesc',
-      `<div>企业微信自建应用管理，支持通过应用发送应用消息</div> `,
-    )
+    this.$store.dispatch('app/setBusininessDesc', `<div>企业微信自建应用管理，支持通过应用发送应用消息</div> `)
   },
   mounted() {
     // new clipboard(".copy-btn");
@@ -66,6 +65,12 @@ export default {
           this.loading = false
         })
     },
+    sync(item) {
+      sync(item.id).then(({ data }) => {
+        Object.assign(item, data)
+        this.msgSuccess('操作成功')
+      })
+    },
     edit(data, type) {
       this.form = Object.assign({}, data || {})
       this.dialogVisible = true
@@ -90,7 +95,6 @@ export default {
         }
       })
     },
-    /** 删除按钮操作 */
     remove(id) {
       // const operIds = id || this.ids + ''
       this.$confirm('是否确认删除？该操作不可撤销，请谨慎操作。', {
@@ -133,6 +137,7 @@ export default {
             <div class="desc mt10">
               {{ item.description }}
             </div>
+            <el-button size="mini" type="primary" plain @click="sync(item)">同步</el-button>
           </div>
         </div>
         <div class="flex aic mt10">
@@ -150,7 +155,14 @@ export default {
         </div>
         <div class="list-action fr">
           <!-- <el-button type="text">发送消息</el-button>
-          <el-button type="text">历史消息</el-button> -->
+          <el-button
+            type="text"
+            @click="
+              id = item.id
+              dialogVisibleHistoryMsg = true
+            ">
+            历史消息
+          </el-button> -->
           <el-button type="text" @click="edit(item)">编辑</el-button>
           <el-button type="text" @click="remove(item.id)">删除</el-button>
         </div>
@@ -163,6 +175,7 @@ export default {
       </li>
     </ul>
 
+    <!-- 编辑，添加弹窗 -->
     <el-dialog
       :title="form.id ? '编辑' : '添加'"
       :visible.sync="dialogVisible"
@@ -170,28 +183,24 @@ export default {
       width="580px">
       <el-form ref="form" label-position="right" :model="form" :rules="rules" label-width="80px">
         <!-- 添加 -->
-        <template v-if="!form.id">
-          <el-form-item label="应用ID" prop="agentId">
-            <el-input
-              v-model="form.agentId"
-              :disabled="!!form.id"
-              placeholder="请输入应用 AgentId"></el-input>
-            <div class="dialog-tip">如何获取：企微后台->应用管理->自建应用详情->AgentId</div>
-          </el-form-item>
-          <el-form-item label="应用密钥" prop="secret">
-            <el-input v-model="form.secret" placeholder="请输入应用 Secret"></el-input>
-            <div class="dialog-tip">如何获取：企微后台->应用管理->自建应用详情->Secret</div>
-          </el-form-item>
-        </template>
+        <!-- <template v-if="!form.id"> -->
+        <el-form-item label="应用ID" prop="agentId">
+          <el-input v-model="form.agentId" placeholder="请输入应用 AgentId"></el-input>
+          <div class="dialog-tip">如何获取：企微后台->应用管理->自建应用详情->AgentId</div>
+        </el-form-item>
+        <el-form-item
+          label="应用密钥"
+          prop="secret"
+          :rules="{ required: !form.agentId, message: '必填项', trigger: 'blur' }">
+          <el-input v-model="form.secret" placeholder="请输入应用 Secret"></el-input>
+          <div class="dialog-tip">如何获取：企微后台->应用管理->自建应用详情->Secret</div>
+        </el-form-item>
+        <!-- </template> -->
 
         <!-- 编辑 -->
         <template v-if="form.id">
           <el-form-item label="应用名称" prop="name">
-            <el-input
-              v-model="form.name"
-              maxlength="16"
-              show-word-limit
-              placeholder="请输入应用名称"></el-input>
+            <el-input v-model="form.name" maxlength="16" show-word-limit placeholder="请输入应用名称"></el-input>
           </el-form-item>
           <el-form-item label="应用描述" prop="description">
             <el-input
@@ -243,6 +252,11 @@ export default {
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="submit">确 定</el-button>
       </div>
+    </el-dialog>
+
+    <!-- 历史消息 弹窗 -->
+    <el-dialog title="历史消息" :visible.sync="dialogVisibleHistoryMsg" :close-on-click-modal="false">
+      <HistoryMsg :id="id" v-if="dialogVisibleHistoryMsg" ref="historyMsg" />
     </el-dialog>
 
     <!-- 选择素材弹窗 -->
