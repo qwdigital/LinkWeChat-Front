@@ -67,6 +67,7 @@ export default {
     sync(item) {
       sync(item.id).then(({ data }) => {
         Object.assign(item, data)
+        this.getList()
         this.msgSuccess('操作成功')
       })
     },
@@ -279,10 +280,10 @@ export default {
   line-height: 20px;
   .list {
     width: 33%;
-    height: 218px;
+    height: 236px;
     padding: 20px 20px 10px;
-    border: 1px solid #eee;
-    margin: 0 20px 20px 0;
+    border: 1px solid transparent;
+    border-width: 0 20px 20px 0;
     background: #fff;
     border-radius: 6px;
     .el-image {
