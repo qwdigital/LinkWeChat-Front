@@ -130,45 +130,47 @@ export default {
   <div>
     <ul v-loading="loading" class="list-wrap">
       <li v-for="(item, index) of list" :key="index" class="list">
-        <div class="flex">
-          <el-image :src="item.logoUrl" fit="fit"></el-image>
-          <div class="">
-            <div class="title blod toe">{{ item.name }}</div>
-            <div class="desc mt10">
-              {{ item.description }}
+        <div class="list-item">
+          <div class="flex">
+            <el-image :src="item.logoUrl" fit="fit"></el-image>
+            <div class="">
+              <div class="title blod toe">{{ item.name }}</div>
+              <div class="desc mt10">
+                {{ item.description }}
+              </div>
+              <el-button size="mini" type="primary" plain @click="sync(item)">同步</el-button>
             </div>
-            <el-button size="mini" type="primary" plain @click="sync(item)">同步</el-button>
+          </div>
+          <div class="flex aic mt10">
+            <div class="list-label">AgentId</div>
+            {{ item.agentId }}
+          </div>
+          <div class="flex aic mt10">
+            <div class="list-label">可见范围</div>
+            <!-- <div class="flex">
+              <div v-for="(item, index) of item.allowPartys.split(',')" :key="index">
+                <i class="el-icon-folder-opened" v-if="item"></i>{{ item }}
+              </div>
+            </div> -->
+            <TagEllipsis :list="item.allowPartyName"></TagEllipsis>
+          </div>
+          <div class="list-action fxbw">
+            <!-- <el-button type="text">发送消息</el-button> -->
+            <el-button
+              type="text"
+              @click="
+                id = item.id
+                dialogVisibleHistoryMsg = true
+              ">
+              历史消息
+            </el-button>
+            <el-button type="text" @click="edit(item)">编辑</el-button>
+            <el-button type="text" @click="remove(item.id)">删除</el-button>
           </div>
         </div>
-        <div class="flex aic mt10">
-          <div class="list-label">AgentId</div>
-          {{ item.agentId }}
-        </div>
-        <div class="flex aic mt10">
-          <div class="list-label">可见范围</div>
-          <!-- <div class="flex">
-            <div v-for="(item, index) of item.allowPartys.split(',')" :key="index">
-              <i class="el-icon-folder-opened" v-if="item"></i>{{ item }}
-            </div>
-          </div> -->
-          <TagEllipsis :list="item.allowPartyName"></TagEllipsis>
-        </div>
-        <div class="list-action fxbw">
-          <!-- <el-button type="text">发送消息</el-button> -->
-          <el-button
-            type="text"
-            @click="
-              id = item.id
-              dialogVisibleHistoryMsg = true
-            ">
-            历史消息
-          </el-button>
-          <el-button type="text" @click="edit(item)">编辑</el-button>
-          <el-button type="text" @click="remove(item.id)">删除</el-button>
-        </div>
       </li>
-      <li class="list flex aic cp" style="justify-content: center" @click="edit()">
-        <div class="ac theme">
+      <li class="list" @click="edit()">
+        <div class="ac flex aic cp theme list-item" style="justify-content: center">
           <i class="el-icon-plus"></i>
           添加应用
         </div>
@@ -279,11 +281,14 @@ export default {
   flex-wrap: wrap;
   line-height: 20px;
   .list {
-    width: 33%;
-    height: 236px;
+    width: 33.3%;
+    overflow: hidden;
+  }
+  .list-item {
+    height: 218px;
+    margin: 0 20px 20px 0;
     padding: 20px 20px 10px;
-    border: 1px solid transparent;
-    border-width: 0 20px 20px 0;
+    border: 1px solid #eee;
     background: #fff;
     border-radius: 6px;
     .el-image {
