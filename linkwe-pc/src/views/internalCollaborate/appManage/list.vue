@@ -135,7 +135,7 @@ export default {
             <el-image :src="item.logoUrl" fit="fit"></el-image>
             <div class="">
               <div class="title blod toe">{{ item.name }}</div>
-              <div class="desc mt10">
+              <div class="desc">
                 {{ item.description }}
               </div>
               <el-button size="mini" type="primary" plain @click="sync(item)">同步</el-button>
@@ -306,6 +306,7 @@ export default {
     .desc {
       color: #ddd;
       word-break: break-all;
+      margin: 5px 0;
     }
     .list-label {
       color: #888;
