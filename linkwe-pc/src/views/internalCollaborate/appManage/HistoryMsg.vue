@@ -142,13 +142,16 @@ export default {
         </template>
       </el-table-column>
     </el-table>
-    <pagination
-      v-show="total > 0"
-      :total="total"
-      layout="prev, pager, next"
-      :page.sync="query.pageNum"
-      :limit.sync="query.pageSize"
-      @pagination="getList()" />
+
+    <div class="ac mt20">
+      <pagination
+        v-show="total > 0"
+        :total="total"
+        layout="prev, pager, next"
+        :page.sync="query.pageNum"
+        :limit.sync="query.pageSize"
+        @pagination="getList()" />
+    </div>
   </div>
 </template>
 
