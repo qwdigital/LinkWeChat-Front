@@ -109,27 +109,29 @@ export default {
   <div>
     <ul v-loading="loading" class="list-wrap">
       <li v-for="(item, index) of list" :key="index" class="list">
-        <div class="title blod toe">{{ item.name }}</div>
-        <div class="desc mt10">
-          {{ item.description }}
-        </div>
-        <!-- <el-button size="mini" type="primary" plain @click="sync(item)">同步</el-button> -->
-        <div class="list-action fxbw">
-          <!-- <el-button type="text">发送消息</el-button> -->
-          <el-button
-            type="text"
-            @click="
-              id = item.id
-              dialogVisibleHistoryMsg = true
-            ">
-            历史消息
-          </el-button>
-          <el-button type="text" @click="edit(item)">编辑</el-button>
-          <el-button type="text" @click="remove(item.id)">删除</el-button>
+        <div class="list-item">
+          <div class="title blod toe">{{ item.name }}</div>
+          <div class="desc mt10">
+            {{ item.description }}
+          </div>
+          <!-- <el-button size="mini" type="primary" plain @click="sync(item)">同步</el-button> -->
+          <div class="list-action fxbw">
+            <!-- <el-button type="text">发送消息</el-button> -->
+            <el-button
+              type="text"
+              @click="
+                id = item.id
+                dialogVisibleHistoryMsg = true
+              ">
+              历史消息
+            </el-button>
+            <el-button type="text" @click="edit(item)">编辑</el-button>
+            <el-button type="text" @click="remove(item.id)">删除</el-button>
+          </div>
         </div>
       </li>
-      <li class="list flex aic cp" style="justify-content: center" @click="edit()">
-        <div class="ac theme">
+      <li class="list" @click="edit()">
+        <div class="ac flex aic cp theme list-item" style="justify-content: center">
           <i class="el-icon-plus"></i>
           添加机器人
         </div>
@@ -174,7 +176,10 @@ export default {
   flex-wrap: wrap;
   line-height: 20px;
   .list {
-    width: 33%;
+    width: 33.3%;
+    overflow: hidden;
+  }
+  .list-item {
     height: 218px;
     padding: 20px 20px 10px;
     border: 1px solid #eee;

@@ -110,8 +110,11 @@ export default {
       </el-table-column>
     </el-table>
     <pagination
+      style="text-align: center"
+      class="mt20"
       v-show="total > 0"
       :total="total"
+      :background="false"
       layout="prev, pager, next"
       :page.sync="query.pageNum"
       :limit.sync="query.pageSize"
