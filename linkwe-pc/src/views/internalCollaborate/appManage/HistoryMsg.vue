@@ -120,7 +120,7 @@ export default {
 
 <template>
   <div>
-    <el-select v-model="query.status" placeholder="">
+    <el-select class="mb10" v-model="query.status" placeholder="">
       <el-option v-for="(value, key) in status" :key="key" :label="value" :value="key"></el-option>
     </el-select>
     <el-table v-loading="loading" :data="list">
@@ -143,15 +143,16 @@ export default {
       </el-table-column>
     </el-table>
 
-    <div class="ac mt20">
-      <pagination
-        v-show="total > 0"
-        :total="total"
-        layout="prev, pager, next"
-        :page.sync="query.pageNum"
-        :limit.sync="query.pageSize"
-        @pagination="getList()" />
-    </div>
+    <pagination
+      style="text-align: center"
+      class="mt20"
+      v-show="total > 0"
+      :total="total"
+      :background="false"
+      layout="prev, pager, next"
+      :page.sync="query.pageNum"
+      :limit.sync="query.pageSize"
+      @pagination="getList()" />
   </div>
 </template>
 
