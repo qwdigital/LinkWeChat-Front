@@ -11,20 +11,9 @@
     <div class="g-card tab-content form1" v-show="currentActive === 1">
       <el-row>
         <el-col :span="10">
-          <el-form
-            ref="baseForm"
-            :rules="baseRules"
-            :model="baseForm"
-            label-position="left"
-            label-width="150px"
-          >
+          <el-form ref="baseForm" :rules="baseRules" :model="baseForm" label-position="left" label-width="150px">
             <el-form-item label="表单名称" prop="surveyName">
-              <el-input
-                v-model="baseForm.surveyName"
-                maxlength="15"
-                show-word-limit
-                clearable
-              ></el-input>
+              <el-input v-model="baseForm.surveyName" maxlength="15" show-word-limit clearable></el-input>
             </el-form-item>
             <el-form-item label="表单分组" prop="groupId">
               <el-select v-model="baseForm.groupId">
@@ -32,17 +21,11 @@
                   v-for="item in codeCategoryList"
                   :key="item.id"
                   :label="item.name"
-                  :value="item.id"
-                >
-                </el-option>
+                  :value="item.id"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="表单说明">
-              <el-switch
-                v-model="ifFormDescription"
-                :active-value="1"
-                :inactive-value="0"
-              ></el-switch>
+              <el-switch v-model="ifFormDescription" :active-value="1" :inactive-value="0"></el-switch>
               <div v-if="ifFormDescription == 1">
                 <div class="sub-des">开启后，表单首页或表单顶部会有说明文案</div>
                 <el-input
@@ -53,25 +36,20 @@
                   show-word-limit
                   placeholder="请填写表单说明"
                   :autosize="{ minRows: 5, maxRows: 20 }"
-                  clearable
-                />
+                  clearable />
               </div>
             </el-form-item>
             <el-form-item label="表单logo">
               <el-switch v-model="ifFormLogo" :active-value="1" :inactive-value="0"></el-switch>
               <div v-if="ifFormLogo == 1">
                 <div class="sub-des">开启后，表单首页或表单顶部会有logo图</div>
-                <upload
-                  :fileUrl.sync="baseForm.FormLogo"
-                  class="image-uploader"
-                  @update:file="handleUploadedHeadImage"
-                >
+                <upload :fileUrl.sync="baseForm.FormLogo" class="image-uploader" @update:file="handleUploadedHeadImage">
                   <div slot="tip">建议大小2M以内，仅支持png/jpg等图片类型</div>
                 </upload>
               </div>
             </el-form-item>
             <el-form-item>
-              <el-button plain @click.stop="CancelTheNewOne">取消新建</el-button>
+              <el-button plain @click.stop="CancelTheNewOne">取消</el-button>
               <el-button type="primary" @click.stop="nextStep(2)">下一步</el-button>
             </el-form-item>
           </el-form>
@@ -86,8 +64,7 @@
             :ifFormLogo="ifFormLogo"
             :logoUrl="baseForm.FormLogo"
             :FormIdY="formIdN"
-            :id="'y'"
-          ></FormsDetail>
+            :id="'y'"></FormsDetail>
           <div style="display: flex; justify-content: center">
             <el-radio v-model="visibility" label="0">独立首页</el-radio>
           </div>
@@ -103,19 +80,14 @@
             :ifFormLogo="ifFormLogo"
             :logoUrl="baseForm.FormLogo"
             :FormIdY="formIdN"
-            :id="'y'"
-          ></FormsDetail>
+            :id="'y'"></FormsDetail>
           <div style="display: flex; justify-content: center">
             <el-radio v-model="visibility" label="1">表单首页</el-radio>
           </div>
         </el-col>
       </el-row>
     </div>
-    <div
-      class="g-card tab-content"
-      style="height: calc(100vh - 216px)"
-      v-show="currentActive === 2"
-    >
+    <div class="g-card tab-content" style="height: calc(100vh - 216px)" v-show="currentActive === 2">
       <!-- <el-form
         ref="codeForm"
         :rules="codeRules"
@@ -126,7 +98,7 @@
     </el-form> -->
       <Build :pageDataAll="pageDataAll" v-on:toStyles="toStyles"></Build>
       <div class="ar">
-        <el-button plain @click.stop="CancelTheNewOne">取消新建</el-button>
+        <el-button plain @click.stop="CancelTheNewOne">取消</el-button>
         <el-button @click.stop="currentActive = 1">上一步</el-button>
         <el-button type="primary" @click.stop="nextStep(3)">下一步</el-button>
       </div>
@@ -146,15 +118,12 @@
               range-separator="-"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
-              :picker-options="pickerOptions"
-            ></el-date-picker>
+              :picker-options="pickerOptions"></el-date-picker>
           </div>
         </el-form-item>
         <el-form-item label="只允许在微信中填写">
           <el-switch v-model="baseForm.anAuth" :active-value="1" :inactive-value="0"></el-switch>
-          <div class="sub-des" style="margin-left: 120px">
-            开启后会授权登录，提供微信昵称、性别、城市信息
-          </div>
+          <div class="sub-des" style="margin-left: 120px">开启后会授权登录，提供微信昵称、性别、城市信息</div>
         </el-form-item>
         <el-form-item label="每人限制填写1次">
           <el-switch v-model="One" :active-value="1" :inactive-value="0"></el-switch>
@@ -164,7 +133,7 @@
           <div class="sub-des" style="">填写并提交成功后重复打开问卷时则直接跳转结束页</div>
         </el-form-item>
         <el-form-item style="margin-left: auto !important; width: 280px; text-align: right">
-          <el-button plain @click.stop="CancelTheNewOne">取消新建</el-button>
+          <el-button plain @click.stop="CancelTheNewOne">取消</el-button>
           <el-button @click.stop="currentActive = 2">上一步</el-button>
           <el-button type="primary" @click.stop="nextStep(4)">下一步</el-button>
         </el-form-item>
@@ -178,13 +147,7 @@
               <el-form-item label="表单链接">
                 <div style="display: flex">
                   <div>
-                    <el-input
-                      style="width: 400px"
-                      v-model="baseFormUrl4"
-                      disabled
-                      show-word-limit
-                      clearable
-                    ></el-input>
+                    <el-input style="width: 400px" v-model="baseFormUrl4" disabled show-word-limit clearable></el-input>
                   </div>
                 </div>
               </el-form-item>
@@ -193,8 +156,7 @@
                   style="color: #2c8cf0; cursor: pointer"
                   type="button"
                   class="copy-btn"
-                  :data-clipboard-text="baseFormUrl4"
-                >
+                  :data-clipboard-text="baseFormUrl4">
                   复制
                 </div>
               </div>
@@ -216,8 +178,7 @@
                         color: #2c8cf0;
                         cursor: pointer;
                         margin-left: 10px;
-                      "
-                    >
+                      ">
                       下载二维码
                     </div>
                   </div>
@@ -229,11 +190,7 @@
               <div>
                 <div>
                   <div>
-                    <el-switch
-                      v-model="ifChannelsName"
-                      :active-value="1"
-                      :inactive-value="0"
-                    ></el-switch>
+                    <el-switch v-model="ifChannelsName" :active-value="1" :inactive-value="0"></el-switch>
                   </div>
                   <div class="sub-des" style="position: relative; top: -10px">
                     开启后将会在默认链接基础上增加渠道标识
@@ -246,71 +203,40 @@
                     </div>
                     <div class="add_form4_qd_ul" v-for="(item, index) in ChannelsList" :key="index">
                       <div class="add_form4_qd_li1 add_form4_qd_li">
-                        <div
-                          style="
-                            display: flex;
-                            justify-content: center;
-                            :flex ;
-                            justify-content: center;
-                          "
-                        >
+                        <div style="display: flex; justify-content: center; :flex ; justify-content: center">
                           <el-input
                             style="width: 80%"
                             type="text"
                             placeholder="请输入渠道标识"
-                            v-model="ChannelsList[index]"
-                          />
+                            v-model="ChannelsList[index]" />
                         </div>
                       </div>
                       <div class="add_form4_qd_li2 add_form4_qd_li">
-                        {{ baseFormUrl4 + '&dataSource='
-                        }}<el-input
-                          type="text"
-                          placeholder="请输入渠道标识"
-                          v-model="channelsPathList[index]"
-                        /><label for=""></label>
+                        {{ baseFormUrl4 + '&dataSource=' }}
+                        <el-input type="text" placeholder="请输入渠道标识" v-model="channelsPathList[index]" />
+                        <label for=""></label>
                       </div>
                       <div class="add_form4_qd_li3 add_form4_qd_li">
-                        <span
-                          style="color: blue; cursor: pointer"
-                          @click.stop="deletChannels(item, index)"
-                          >取消</span
-                        >
+                        <span style="color: blue; cursor: pointer" @click.stop="deletChannels(item, index)">取消</span>
                       </div>
                     </div>
                   </div>
-                  <div
-                    v-if="ifChannelsName"
-                    style="color: #2c8cf0; cursor: pointer"
-                    @click.stop="addChannels"
-                  >
+                  <div v-if="ifChannelsName" style="color: #2c8cf0; cursor: pointer" @click.stop="addChannels">
                     +继续添加
                   </div>
                 </div>
               </div>
             </el-form-item>
             <el-form-item>
-              <el-button v-if="!$route.query.currentActiveA" plain @click.stop="removeFn"
-                >取消新建</el-button
-              >
-              <el-button v-if="$route.query.currentActiveA" plain @click.stop="cancelFn"
-                >取消</el-button
-              >
-              <el-button
-                v-if="!$route.query.currentActiveA"
-                type="primary"
-                @click.stop="nextStep(3, 4)"
-                >上一步</el-button
-              >
-              <el-button
-                v-if="!$route.query.currentActiveA"
-                type="primary"
-                @click.stop="addFormS('fb')"
-                >确认发布</el-button
-              >
-              <el-button v-if="$route.query.currentActiveA" type="primary" @click.stop="addFormS()"
-                >确认修改</el-button
-              >
+              <el-button v-if="!$route.query.currentActiveA" plain @click.stop="removeFn">取消新建</el-button>
+              <el-button v-if="$route.query.currentActiveA" plain @click.stop="cancelFn">取消</el-button>
+              <el-button v-if="!$route.query.currentActiveA" type="primary" @click.stop="nextStep(3, 4)">
+                上一步
+              </el-button>
+              <el-button v-if="!$route.query.currentActiveA" type="primary" @click.stop="addFormS('fb')">
+                确认发布
+              </el-button>
+              <el-button v-if="$route.query.currentActiveA" type="primary" @click.stop="addFormS()">确认修改</el-button>
             </el-form-item>
           </el-form>
         </el-col>
@@ -324,9 +250,7 @@
     <SelectTag
       :visible.sync="dialogVisibleSelectTag"
       :defaultValues="selectedTagList"
-      @success="submitSelectTag"
-    >
-    </SelectTag>
+      @success="submitSelectTag"></SelectTag>
 
     <!-- 选择使用员工弹窗 -->
     <SelectUser
@@ -336,8 +260,7 @@
       title="选择使用员工"
       :isOnlyLeaf="true"
       :isSigleSelect="codeForm.qrType == 1"
-      @success="selectedUser"
-    ></SelectUser>
+      @success="selectedUser"></SelectUser>
   </div>
 </template>
 <script>
@@ -360,7 +283,6 @@ import SelectMaterial from '@/components/SelectMaterial'
 import WelcomeContent from '@/components/WelcomeContent.vue'
 import Build from './build/index'
 import { dateFormat } from '@/utils/index'
-import { saveForm } from '@/api/communityOperating/groupSOP'
 export default {
   components: {
     PhoneDialog,
@@ -610,8 +532,8 @@ export default {
         this.baseForm.channelsPath = 'Default'
         this.channelsPathList = ['Default']
       }
-      console.log('this.baseForm', this.baseForm)
-      console.log('this.isRepeat(this.channelsPathList)', this.isRepeat(this.channelsPathList))
+      // console.log('this.baseForm', this.baseForm)
+      // console.log('this.isRepeat(this.channelsPathList)', this.isRepeat(this.channelsPathList))
       if (this.isRepeat(this.ChannelsList)) {
         this.msgError('渠道"' + this.isRepeat(this.ChannelsList) + '"重复')
         return
@@ -652,8 +574,6 @@ export default {
         }
       }
 
-      console.log('this.baseForm', this.baseForm)
-
       this.baseForm.styles = JSON.stringify(stylesx)
       //生成各渠道二维码
       // var childs = this.$refs.ewmTAddEwm.childNodes;
@@ -683,9 +603,9 @@ export default {
       // return
       if (xx == 'fb') {
         that.updateSurveyStatus(that.dataFormList.id, 1, that.dataFormList)
+        delete that.baseForm.surveyState
       }
       updateInfoToSurvey(that.baseForm).then((response) => {
-        console.log('更新表单返回值2', response)
         if (xx == 'to3') {
           return
         }
@@ -747,7 +667,6 @@ export default {
           id: id,
           timingStart: dateFormat(new Date()),
         }
-        console.log('data', data)
         this.updateInfoToSurvey(data)
       } else {
         let newData = new Date()
@@ -905,14 +824,12 @@ export default {
       let userList = [] // 当前重复人员
       let passList = [] // 当前之前的人员 不包含默认的第一条
 
-      let current = this.codeForm.empleCodeRosterDto[this.operationIndex].weEmpleCodeUseScops.map(
-        (i) => {
-          return {
-            userId: i.businessId,
-            name: i.businessName,
-          }
+      let current = this.codeForm.empleCodeRosterDto[this.operationIndex].weEmpleCodeUseScops.map((i) => {
+        return {
+          userId: i.businessId,
+          name: i.businessName,
         }
-      )
+      })
       this.codeForm.empleCodeRosterDto.forEach((data, key) => {
         data.weEmpleCodeUseScops.map((i, index) => {
           if (key != this.operationIndex) {
@@ -954,15 +871,11 @@ export default {
               ddd.goto1 = this.checkAuditTime(
                 start,
                 end,
-                this.codeForm.empleCodeRosterDto[this.operationIndex].startDate
+                this.codeForm.empleCodeRosterDto[this.operationIndex].startDate,
               )
             }
             if (this.codeForm.empleCodeRosterDto[this.operationIndex].endDate) {
-              ddd.goto2 = this.checkAuditTime(
-                start,
-                end,
-                this.codeForm.empleCodeRosterDto[this.operationIndex].endDate
-              )
+              ddd.goto2 = this.checkAuditTime(start, end, this.codeForm.empleCodeRosterDto[this.operationIndex].endDate)
             }
           }
         }
@@ -987,14 +900,12 @@ export default {
       if (this.operationIndex === 0) {
         return true
       }
-      let current = this.codeForm.empleCodeRosterDto[this.operationIndex].weEmpleCodeUseScops.map(
-        (i) => {
-          return {
-            userId: i.businessId,
-            name: i.businessName,
-          }
+      let current = this.codeForm.empleCodeRosterDto[this.operationIndex].weEmpleCodeUseScops.map((i) => {
+        return {
+          userId: i.businessId,
+          name: i.businessName,
         }
-      )
+      })
       let first = this.codeForm.empleCodeRosterDto[0].weEmpleCodeUseScops.map((i) => {
         return {
           userId: i.businessId,
@@ -1134,9 +1045,7 @@ export default {
               }
               for (let w = 0; w < styles[i][q].options.length; w++) {
                 if (!styles[i][q].options[w].label) {
-                  this.msgError(
-                    '第' + styles[i][q].page + '页,' + label + ',[下拉选择]名称不能为空'
-                  )
+                  this.msgError('第' + styles[i][q].page + '页,' + label + ',[下拉选择]名称不能为空')
                   return
                 }
               }
@@ -1228,8 +1137,7 @@ export default {
                 this.msgError('渠道标识不能为空！')
                 return
               }
-              this.baseForm.channelsPath =
-                this.baseForm.channelsPath + ',' + this.channelsPathList[i]
+              this.baseForm.channelsPath = this.baseForm.channelsPath + ',' + this.channelsPathList[i]
             } else {
               this.baseForm.channelsName = this.ChannelsList[i]
               this.baseForm.channelsPath = this.channelsPathList[i]
@@ -1271,14 +1179,14 @@ export default {
         return
       }
       this.$refs[form].validate((validate) => {
-        console.log('validate', validate)
-        if (validate) {
-          console.log('nextStep', nextStep)
-          if (nextStep == 2) {
-            console.log('this.ifFormDescription', this.ifFormDescription)
-            // this.currentActive = nextStep
-          }
-        }
+        // console.log('validate', validate)
+        // if (validate) {
+        //   console.log('nextStep', nextStep)
+        //   if (nextStep == 2) {
+        //     console.log('this.ifFormDescription', this.ifFormDescription)
+        //     // this.currentActive = nextStep
+        //   }
+        // }
       })
     },
     isRepeat(ary) {
@@ -1405,8 +1313,7 @@ export default {
         this.codeForm.weEmpleCodeUseScops = selectedUserList
       } else {
         // 自动排班
-        this.codeForm.empleCodeRosterDto[this.selectedRosterIndex].weEmpleCodeUseScops =
-          selectedUserList
+        this.codeForm.empleCodeRosterDto[this.selectedRosterIndex].weEmpleCodeUseScops = selectedUserList
         this.checkStartEnd(null, this.selectedRosterIndex)
       }
     },
@@ -1417,15 +1324,13 @@ export default {
       if (this.codeForm.qrRuleType == 2) {
         this.selectedRosterIndex = index
         let arr = []
-        arr = this.codeForm.empleCodeRosterDto[this.selectedRosterIndex].weEmpleCodeUseScops.map(
-          (dd) => {
-            return {
-              userId: dd.businessId,
-              // id: dd.businessIdType === 1 ? dd.businessId:'',
-              name: dd.businessName,
-            }
+        arr = this.codeForm.empleCodeRosterDto[this.selectedRosterIndex].weEmpleCodeUseScops.map((dd) => {
+          return {
+            userId: dd.businessId,
+            // id: dd.businessIdType === 1 ? dd.businessId:'',
+            name: dd.businessName,
           }
-        )
+        })
         this.selectedUserList = arr
         // this.selectedUserList = [...this.codeForm.weEmpleCodeUseScops[index]]
       } else {
@@ -1523,9 +1428,7 @@ export default {
       if (this.codeForm.qrRuleType === 1) {
         let obj = {
           type: 0,
-          scopeId: this.codeForm.weEmpleCodeUseScops[0].scopeId
-            ? this.codeForm.weEmpleCodeUseScops[0].scopeId
-            : '',
+          scopeId: this.codeForm.weEmpleCodeUseScops[0].scopeId ? this.codeForm.weEmpleCodeUseScops[0].scopeId : '',
           userIds: this.codeForm.weEmpleCodeUseScops.map((dd) => dd.businessId),
         }
         this.codeForm.qrUserInfos = [obj]
