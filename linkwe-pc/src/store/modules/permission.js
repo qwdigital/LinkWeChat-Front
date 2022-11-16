@@ -17,7 +17,7 @@ const permission = {
       state.addRoutes = routes
       state.routes = constantRoutes.concat(routes)
       // 根据roles权限生成可访问的路由表
-      router.addRoutes(routes)
+      routes.forEach((e) => router.addRoute(e))
     },
     SET_DEFAULT_ROUTES: (state, routes) => {
       state.defaultRoutes = constantRoutes.concat(routes)
