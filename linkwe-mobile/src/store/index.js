@@ -37,9 +37,12 @@ export default new Vuex.Store({
         let query = param2Obj() //是否存在code
         // let code = query.code
         let appid = window.lwConfig.APPID || query.corpId
+        let agentid = window.lwConfig.AGENTID || query.agentid
+
         let local = window.location.origin.includes('localhost')
-          ? 'http://h5.linkwechat.cn/test.html':'http://demo.linkwechat.cn/mobile/#/index'
-          // : window.location.href
+          ? 'http://h5.linkwechat.cn/test.html'
+          : window.location.href
+        // : 'http://demo.linkwechat.cn/mobile/#/index'
 
         // 第三方授权重定向回来手动刷新页面
         if (code && window.lwConfig.APPID && count === 1) {
@@ -51,8 +54,8 @@ export default new Vuex.Store({
           count++
           //不存在就打开上面的地址进行授权
           let url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(
-            local
-          )}&response_type=code&scope=snsapi_privateinfo&state=linkwechat&agentid=1000002#wechat_redirect`
+            local,
+          )}&response_type=code&scope=snsapi_privateinfo&state=linkwechat&agentid=${agentid}#wechat_redirect`
           // 注意：第三方授权重定向回来携带的code是直接拼接在url后面的，企微没有做查询字符串hash检测，eg：url***code=****
           // 由于上述原因router hash模式下，使用第三方授权重定向回来的时候不会刷新页面，解析code是需要注意
           // 使用其他授权模式无上述问题
@@ -82,11 +85,12 @@ export default new Vuex.Store({
           let corpInfo = dataUser.corpInfo
           dataUser.user.weUserId && sessionStorage.setItem('userId', dataUser.user.weUserId) // 当前 登录/使用 企业员工真实姓名大驼峰 eg：QinShiHuang
           commit('userId', sessionStorage.userId)
-          corpInfo.appId && sessionStorage.setItem('appId', corpInfo.appId) // 租户微信公众号appid
-          corpInfo.tenantId && sessionStorage.setItem('tenantId', corpInfo.tenantId) // 租户id
+          corpInfo.appId && sessionStorage.setItem('appId', corpInfo.appId) // 微信公众号appid
+
+          // corpInfo.tenantId && sessionStorage.setItem('tenantId', corpInfo.tenantId) // 租户id
           //corpInfo.secret && sessionStorage.userId = store.userId = dataUser.user.weUserId
-          corpInfo.corpId && sessionStorage.setItem('corpId', corpInfo.corpId) // 服务商企业id
-          corpInfo.agentId && sessionStorage.setItem('agentId', corpInfo.agentId) // 代开发应用agentId
+          sessionStorage.setItem('corpId', appid) // 企业id
+          sessionStorage.setItem('agentId', agentid) // 自建应用agentId
           // urlReplaceFirstHistory(window.location.href)
           dataUser.user.companyName &&
             sessionStorage.setItem('companyName', dataUser.user.companyName) // 公司名称
