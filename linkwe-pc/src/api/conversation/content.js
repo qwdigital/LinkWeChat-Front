@@ -1,11 +1,11 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system + window.CONFIG.services.wecom
+const service = window.lwConfig.services.system + window.lwConfig.services.wecom
 
 // 外部联系人 会话列表
 export const getExternalChatList = (fromId) => {
   return request({
     url: service + '/chat/msg/selectExternalChatList/' + fromId,
-    method: 'get'
+    method: 'get',
   })
 }
 
@@ -14,7 +14,7 @@ export const selectAloneChatList = (params) => {
   return request({
     url: service + '/chat/msg/selectAloneChatList',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -22,20 +22,20 @@ export const selectAloneChatList = (params) => {
 export const getInternalChatList = (fromId) => {
   return request({
     url: service + '/chat/msg/selectInternalChatList/' + fromId,
-    method: 'get'
+    method: 'get',
   })
 }
 
 export const getGroupChatList = (fromId) => {
   return request({
     url: service + '/chat/msg/selectGroupChatList/' + fromId,
-    method: 'get'
+    method: 'get',
   })
 }
 export const getGroupChatListNew = (fromId) => {
   return request({
     url: service + '/groupchat/getGroupListByMemberId/' + fromId,
-    method: 'get'
+    method: 'get',
   })
 }
 // export const chatList = (params) => {
@@ -48,7 +48,7 @@ export const getGroupChatListNew = (fromId) => {
 
 /**
  * 全文检索 会话列表
- * @param {*} params 
+ * @param {*} params
  * userName: '',
         customerName: '',
         contact: '',
@@ -58,13 +58,13 @@ export const getGroupChatListNew = (fromId) => {
         pageSize: 10,
         orderByColumn: 't.msg_time',
         isAsc: 'desc' // asc 升序 desc 降序
- * @returns 
+ * @returns
  */
 export const getChatList = (params) => {
   return request({
     url: service + '/chat/msg/selectFullSearchChatList',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -73,7 +73,7 @@ export const exportList = (params) => {
   return request({
     url: service + '/chat/msg/selectFullSearchChatList/export',
     method: 'get',
-    params
+    params,
     // responseType: 'blob'
   })
 }

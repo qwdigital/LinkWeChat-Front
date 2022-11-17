@@ -16,5 +16,4 @@
 //   // BASE_URL: '/', // 路由基础路径
 //   BASE_API: 'http://saas.linkwechat.cn/prod-api',
 //   SYSTEM_API: '/saas-prod-api',
-//   KF_API: '/saas-prod-api',
 // }

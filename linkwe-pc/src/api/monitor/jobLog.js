@@ -1,35 +1,35 @@
 import request from '@/utils/request'
-const base = window.CONFIG.services.system
+const base = window.lwConfig.services.system
 // 查询调度日志列表
-export function listJobLog (query) {
+export function listJobLog(query) {
   return request({
     url: base + '/monitor/jobLog/list',
     method: 'get',
-    params: query
+    params: query,
   })
 }
 
 // 删除调度日志
-export function delJobLog (jobLogId) {
+export function delJobLog(jobLogId) {
   return request({
     url: base + '/monitor/jobLog/' + jobLogId,
-    method: 'delete'
+    method: 'delete',
   })
 }
 
 // 清空调度日志
-export function cleanJobLog () {
+export function cleanJobLog() {
   return request({
     url: base + '/monitor/jobLog/clean',
-    method: 'delete'
+    method: 'delete',
   })
 }
 
 // 导出调度日志
-export function exportJobLog (query) {
+export function exportJobLog(query) {
   return request({
     url: base + '/monitor/jobLog/export',
     method: 'get',
-    params: query
+    params: query,
   })
 }

@@ -1,9 +1,9 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/groupCode'
+const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/groupCode'
 
 /**
  * 获取群活码列表
- * @param {*} params 
+ * @param {*} params
 {
     "pageNum": "当前页",
     "pageSize": "每页显示条数",
@@ -13,16 +13,16 @@ const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '
     "endTime": "结束时间"
 }
  */
-export function getList (params) {
+export function getList(params) {
   return request({
     url: service + '/list',
-    params
+    params,
   })
 }
 
 /**
  * 新增群活码
- * @param {*} data 
+ * @param {*} data
 {
   "file": 活码头像
   "activityName": 活码名称
@@ -33,7 +33,7 @@ export function getList (params) {
   "customerServerQrCode":客服二维码
 }
  */
-export function add (data) {
+export function add(data) {
   return request({
     url: service + '/',
     method: 'post',
@@ -43,8 +43,8 @@ export function add (data) {
 
 /**
  * 更新群活码
- * @param {*} id 群活码ID 
- * @param {*} data 
+ * @param {*} id 群活码ID
+ * @param {*} data
 {
   "file": 活码头像
   "activityName": 活码名称
@@ -55,7 +55,7 @@ export function add (data) {
   "customerServerQrCode":客服二维码
 }
  */
-export function update (data) {
+export function update(data) {
   return request({
     url: service,
     method: 'put',
@@ -65,9 +65,9 @@ export function update (data) {
 
 /**
  * 根据ID获取群活码数据
- * @param {*} params 
+ * @param {*} params
  */
-export function getDetail (id) {
+export function getDetail(id) {
   return request({
     url: service + '/' + id,
   })
@@ -78,7 +78,7 @@ export function getDetail (id) {
  * @param {*}
  * "ids": 群活码ID,多个ID以逗号分隔
  */
-export function remove (ids) {
+export function remove(ids) {
   return request({
     url: service + '/' + ids,
     method: 'delete',
@@ -90,13 +90,13 @@ export function remove (ids) {
  * @param {*}
  * "ids": 群活码ID,多个ID以逗号分隔
  */
-export function downloadBatch (ids) {
+export function downloadBatch(ids) {
   return request({
     url: service + '/downloadBatch',
     params: {
       ids,
     },
-    responseType: 'blob'
+    responseType: 'blob',
   })
 }
 
@@ -105,31 +105,31 @@ export function downloadBatch (ids) {
  * @param {*}
  * "id": 群活码ID,多个ID以逗号分隔
  */
-export function download (id) {
+export function download(id) {
   return request({
     url: service + '/download',
     params: {
       id,
     },
-    responseType: 'blob'
+    responseType: 'blob',
   })
 }
 
-export function getLineChartTotal (data) {
+export function getLineChartTotal(data) {
   return request({
     url: service + '/findWeGroupCodeCountTrend',
-    params: data
+    params: data,
   })
 }
 
-export function getTableTotal (id) {
+export function getTableTotal(id) {
   return request({
-    url: service + '/findWeGroupChatInfos/' + id
+    url: service + '/findWeGroupChatInfos/' + id,
   })
 }
 
-export function getGroupDetail (id) {
+export function getGroupDetail(id) {
   return request({
-    url: service + '/findWeGroupCodeById/' + id
+    url: service + '/findWeGroupCodeById/' + id,
   })
 }

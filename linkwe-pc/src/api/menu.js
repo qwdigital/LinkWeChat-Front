@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system
+const service = window.lwConfig.services.system
 
 // 获取路由
 export const getRouters = () => {

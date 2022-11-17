@@ -1,25 +1,26 @@
 import request from '@/utils/request'
-const base = window.CONFIG.services.system + window.CONFIG.services.wecom
-const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/groupmsg/template'
+const base = window.lwConfig.services.system + window.lwConfig.services.wecom
+const service =
+  window.lwConfig.services.system + window.lwConfig.services.wecom + '/groupmsg/template'
 
 /**
  * 新增群发
  * @param {Object} data
  */
-export function add (data) {
+export function add(data) {
   return request({
     url: service + '/add',
     method: 'post',
-    data
+    data,
   })
 }
 
 // 根据发送条件查询客户
-export function getCustomerList (params) {
+export function getCustomerList(params) {
   return request({
     url: base + '/customer/findAllWeCustomerList',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -33,10 +34,10 @@ pushType:群发类型 0 发给客户 1 发给客户群
 beginTime:开始时间
 endTime:结束时间}
  */
-export function getList (params) {
+export function getList(params) {
   return request({
     url: service + '/list',
-    params
+    params,
   })
 }
 
@@ -44,13 +45,13 @@ export function getList (params) {
  * 群发消息详情
  * @param {*} messageId:微信消息id
  */
-export function getDetail (messageId) {
+export function getDetail(messageId) {
   return request({
     url: service + '/' + messageId,
   })
 }
 
-export function cancelSend (ids) {
+export function cancelSend(ids) {
   return request({
     url: service + '/cancel/' + ids,
   })
@@ -62,19 +63,19 @@ export function cancelSend (ids) {
  * messageId:微信消息id
 status:发送状态 0-未发送 1-已发送 2-因客户不是好友导致发送失败 3-因客户已经收到其他群发消息导致发送失败
  */
-export function getPushResult (params) {
+export function getPushResult(params) {
   return request({
     url: service + '/pushResults',
-    params
+    params,
   })
 }
 
 /**
  * 同步消息发送结果
- * @param {*} data 
+ * @param {*} data
 id:消息id
  */
-export function syncMsg (id) {
+export function syncMsg(id) {
   return request({
     url: service + '/sync/' + id,
     method: 'get',
@@ -82,17 +83,17 @@ export function syncMsg (id) {
 }
 
 // 客户详情
-export function resultList (data) {
+export function resultList(data) {
   return request({
     url: service + '/send/result/list',
-    params: data
+    params: data,
   })
 }
 
 // 员工详情
-export function memberList (data) {
+export function memberList(data) {
   return request({
     url: service + '/task/list',
-    params: data
+    params: data,
   })
 }

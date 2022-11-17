@@ -1,10 +1,9 @@
-
 import request from '@/utils/request'
-const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/actual'
+const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/actual'
 
 /**
  * 获取实际群码
- * @param {*} params 
+ * @param {*} params
   {
       "groupCodeId": "群活码ID",
       "pageNum": "当前页",
@@ -12,16 +11,16 @@ const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '
       "state": "状态",
   }
  */
-export function getList (params) {
+export function getList(params) {
   return request({
     url: service + '/list',
-    params
+    params,
   })
 }
 
 /**
  * 添加实际群码
- * @param {*} data 
+ * @param {*} data
 {
   "groupName": 群名称,
   "actualGroupQrCode": 实际群码图片,
@@ -31,17 +30,17 @@ export function getList (params) {
   "chatGroupName": 客户群名称
 }
  */
-export function add (data) {
+export function add(data) {
   return request({
     url: service + '/',
     method: 'post',
-    data
+    data,
   })
 }
 
 /**
  * 添加实际群码
- * @param {*} data 
+ * @param {*} data
 {
   "id": 实际群码ID,
   "groupName": 群名称,
@@ -52,11 +51,11 @@ export function add (data) {
   "chatGroupName": 客户群名称
 }
  */
-export function update (data) {
+export function update(data) {
   return request({
     url: service + '/',
     method: 'put',
-    data
+    data,
   })
 }
 
@@ -65,7 +64,7 @@ export function update (data) {
  * @param {*}
  * "ids": 实际群活ID,多个ID以逗号分隔
  */
-export function remove (ids) {
+export function remove(ids) {
   return request({
     url: service + '/' + ids,
     method: 'delete',

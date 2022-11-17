@@ -1,25 +1,25 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/chat'
+const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/chat'
 
 /**
  * 侧边栏列表
  * @param {*} params
  */
-export function getList () {
+export function getList() {
   return request({
-    url: service + '/side/list'
+    url: service + '/side/list',
   })
 }
 
 /**
  * 查询素材列表
- * @param {*} params 
+ * @param {*} params
  * { categoryId:类目id
 search:搜索的值
 mediaType: '' 0 图片（image）、1 语音（voice）、2 视频（video），3 普通文件(file), 4 文本
  }
  */
-export function getMaterialList (params) {
+export function getMaterialList(params) {
   return request({ url: service + '/item/mList', params })
 }
 
@@ -34,11 +34,11 @@ export function getMaterialList (params) {
     "using": "是否启用 0 启用 1 未启用"
 }
  */
-export function update (data) {
+export function update(data) {
   return request({
     url: service + '/side',
     method: 'put',
-    data
+    data,
   })
 }
 
@@ -52,10 +52,10 @@ export function update (data) {
     "checkAll": "是否全选 0 全选 1 非全选"
 }
  */
-export function getMaterial (data) {
+export function getMaterial(data) {
   return request({
     url: service + '/item',
     method: 'put',
-    data
+    data,
   })
 }

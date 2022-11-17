@@ -1,8 +1,8 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system
+const service = window.lwConfig.services.system
 
 // 登录方法
-export function login (username, password, code, uuid) {
+export function login(username, password, code, uuid) {
   const data = {
     username,
     password,
@@ -17,14 +17,14 @@ export function login (username, password, code, uuid) {
 }
 
 // 获取企微二维码和登录二维码
-export function getCodeInSyetem () {
+export function getCodeInSyetem() {
   return request({
-    url: service + '/auth/findLoginParam'
+    url: service + '/auth/findLoginParam',
   })
 }
 
 // 获取用户详细信息
-export function getInfo () {
+export function getInfo() {
   return request({
     url: service + '/system/user/getInfo',
     method: 'get',
@@ -32,7 +32,7 @@ export function getInfo () {
 }
 
 // 退出方法
-export function logout () {
+export function logout() {
   return request({
     url: service + '/logout',
     method: 'post',
@@ -40,7 +40,7 @@ export function logout () {
 }
 
 // 获取验证码
-export function getCodeImg () {
+export function getCodeImg() {
   return request({
     url: service + '/code',
     method: 'get',
@@ -48,7 +48,7 @@ export function getCodeImg () {
 }
 
 // 获取应用待开发授权码
-export function getRegisterQrCode () {
+export function getRegisterQrCode() {
   return request({
     url: service + '/auth/getRegisterQrCode',
     method: 'get',
@@ -59,7 +59,7 @@ export function getRegisterQrCode () {
  * 企业微信扫码回调接口(登录)
  * @param {*} auth_code
  */
-export function wxQrLogin (auth_code) {
+export function wxQrLogin(auth_code) {
   return request({
     url: service + '/auth/qrLogin',
     method: 'get',
@@ -72,7 +72,7 @@ export function wxQrLogin (auth_code) {
 /**
  * 获取扫码登陆回调地址
  */
-export function findWxQrLoginInfo () {
+export function findWxQrLoginInfo() {
   return request({
     url: service + '/auth/qrLoginUrl',
     method: 'get',
@@ -82,7 +82,7 @@ export function findWxQrLoginInfo () {
 /**
  * 企业微信推广注册链接
  */
-export function getExtensionRegisterUrl () {
+export function getExtensionRegisterUrl() {
   return request({
     url: service + '/auth/weExtensionRegisterUrl',
     method: 'get',
@@ -92,7 +92,7 @@ export function getExtensionRegisterUrl () {
 /**
  * 获取应用安装授权链接
  */
-export function getInstallThirdAppUrl () {
+export function getInstallThirdAppUrl() {
   return request({
     url: service + '/auth/3rd_install',
     method: 'get',
@@ -105,7 +105,7 @@ export function getInstallThirdAppUrl () {
 /**
  * 获取客服二维码
  */
-export function getCustomerServiceQrUrl () {
+export function getCustomerServiceQrUrl() {
   return request({
     url: service + '/auth/kfQrUrl',
     method: 'get',
@@ -115,52 +115,51 @@ export function getCustomerServiceQrUrl () {
 /**
  * 获取新手引导页用户信息
  */
-export function noviceGuideInfo () {
+export function noviceGuideInfo() {
   return request({
     url: service + '/open/config/findWeSideBar',
     method: 'get',
   })
 }
 
-
 // 试用手机号密码登录
-export function probationLogin (params) {
+export function probationLogin(params) {
   return request({
     url: service + '/auth/sysTrialAccount/applyLogin',
-    method:'post',
-    data: params
+    method: 'post',
+    data: params,
   })
 }
 
 // 图形验证码
-export function getImageCode () {
- return request({
-   url: service + '/auth/sysTrialAccount/captchaImage'
- }) 
+export function getImageCode() {
+  return request({
+    url: service + '/auth/sysTrialAccount/captchaImage',
+  })
 }
 
 // 获取短信验证码
-export function getCodeInPhone (params) {
+export function getCodeInPhone(params) {
   return request({
-    url:  service + '/auth/sysTrialAccount/findVerifyCode',
-    params
+    url: service + '/auth/sysTrialAccount/findVerifyCode',
+    params,
   })
 }
 
 // 申请试用
-export function applyFn (data) {
+export function applyFn(data) {
   return request({
     url: service + '/auth/sysTrialAccount/apply',
     method: 'post',
-    data: data
+    data: data,
   })
 }
 
 // 重置密码
-export function resetPwd (data) {
+export function resetPwd(data) {
   return request({
     url: service + '/auth/sysTrialAccount/resetPwd',
     method: 'post',
-    data
+    data,
   })
 }

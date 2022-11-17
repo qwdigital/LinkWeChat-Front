@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/product'
+const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/product'
 
 /**
  * 商品列表

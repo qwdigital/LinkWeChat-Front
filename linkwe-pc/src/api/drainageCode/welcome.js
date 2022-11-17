@@ -1,14 +1,14 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/tlp'
+const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/tlp'
 
 /**
  * 获取欢迎语列表
- * @param {*} params 
+ * @param {*} params
  */
-export function getList (params) {
+export function getList(params) {
   return request({
     url: service + '/list',
-    params
+    params,
   })
 }
 
@@ -16,9 +16,9 @@ export function getList (params) {
  * 根据欢迎语模板id获取模板使用范围
  * @param {*} id
  */
-export function getScop (id) {
+export function getScop(id) {
   return request({
-    url: service + '/scop/' + id
+    url: service + '/scop/' + id,
   })
 }
 
@@ -43,19 +43,19 @@ export function getScop (id) {
 "userIds":"ShengXiYong,SunXiWang" //员工欢迎语使用范围，员工id用逗号隔开
 }
  */
-export function add (data) {
+export function add(data) {
   return request({
     url: service + '/add',
     method: 'POST',
-    data
+    data,
   })
 }
 
-export function update (data) {
+export function update(data) {
   return request({
     url: service + '/update',
     method: 'PUT',
-    data
+    data,
   })
 }
 
@@ -83,15 +83,15 @@ export function update (data) {
  * 删除欢迎语
  * @param {*} ids
  */
-export function remove (ids) {
+export function remove(ids) {
   return request({
     url: service + '/del/' + ids,
-    method: 'DELETE'
+    method: 'DELETE',
   })
 }
 
 // 预览数据
-export function getPreview (id) {
+export function getPreview(id) {
   return request({
     url: service + '/get/' + id,
   })

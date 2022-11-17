@@ -49,7 +49,7 @@ export default {
       // (this.type == 0
       //   ? '/wecom/material/uploadimg'
       //   : '/common/uploadFile2Cos'),
-      headers: window.CONFIG.headers,
+      headers: window.lwConfig.headers,
       // domain: window.lwConfig.BASE_API
     }
   },
@@ -240,8 +240,7 @@ export default {
       :show-file-list="false"
       :on-success="onSuccess"
       :on-error="onError"
-      :before-upload="handleBeforeUpload"
-    >
+      :before-upload="handleBeforeUpload">
       <slot>
         <template v-if="fileUrl">
           <img v-if="type === '0'" :src="fileUrl" class="upload-img" />
@@ -254,8 +253,7 @@ export default {
               webkit-playsinline="true"
               playsinline="true"
               :autoplay="false"
-              preload="auto"
-            >
+              preload="auto">
               <source :src="fileUrl" type="video/mp4" />
             </video>
           </div>

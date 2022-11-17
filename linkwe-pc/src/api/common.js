@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import { dataURLtoFile } from '@/utils/common'
 
-const service = window.CONFIG.services.system
+const service = window.lwConfig.services.system
 
 export function upload(data) {
   return request({
@@ -22,7 +22,7 @@ export function upload(data) {
 export function download(url, name) {
   return (
     window.lwConfig.DOMAIN +
-    window.CONFIG.services.system +
+    window.lwConfig.services.system +
     `/common/download/url?url=${url}&name=${name}`
   )
 }
@@ -40,7 +40,7 @@ export function uploadDataURL(dataURL) {
   data.append('file', f)
 
   return request({
-    url: window.CONFIG.services.system + '/file/upload',
+    url: window.lwConfig.services.system + '/file/upload',
     method: 'post',
     processData: false,
     data,

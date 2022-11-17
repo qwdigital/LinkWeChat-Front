@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/RedEnvelopes'
+const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/RedEnvelopes'
 
 /**
  * 获取企业红包列表
@@ -11,7 +11,7 @@ status	是 0:启用;1:停用
 sceneType	是 1:客户;2:客群;3:客户与客群
 }
  */
-export function getList (params) {
+export function getList(params) {
   return request({
     url: service + '/redEnvelopes',
     params,
@@ -27,7 +27,7 @@ export function getList (params) {
     "singleCustomerReceiveMoney": 69 //单日每客户收红包总额
 }
  */
-export function setLimit (params) {
+export function setLimit(params) {
   return request({
     url: service + '/limitRedEnvelopes',
     method: 'post',
@@ -38,7 +38,7 @@ export function setLimit (params) {
 /**
  * 红包限额获取
  */
-export function getLimit (params) {
+export function getLimit(params) {
   return request({
     url: service + '/findLimitRedEnvelopes',
   })
@@ -52,7 +52,7 @@ export function getLimit (params) {
     "name": "华东界派" //红包名称
 }
  */
-export function addOrUpdate (params) {
+export function addOrUpdate(params) {
   return request({
     url: service + '/addorUpdateRedEnvelopes',
     method: 'post',
@@ -68,7 +68,7 @@ export function addOrUpdate (params) {
     "status": 1 //0:启用;1:停用
 }
  */
-export function startOrStop (params) {
+export function startOrStop(params) {
   return request({
     url: service + '/startOrStopRedEnvelope',
     method: 'put',
@@ -80,7 +80,7 @@ export function startOrStop (params) {
  * 删除红包
 ids	红包主键，多个用逗号隔开
  */
-export function remove (ids) {
+export function remove(ids) {
   return request({
     url: service + `/deleteRedEnvelop/${ids}`,
     method: 'delete',

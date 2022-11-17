@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/RedEnvelopes'
+const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/RedEnvelopes'
 
 /**
  * 发放记录-发放客户
@@ -14,7 +14,7 @@ const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '
         endTime: '' // 创建结束时间
 }
  */
-export function getList (params) {
+export function getList(params) {
   return request({
     url: service + '/findRedEnveForUser',
     params,
@@ -31,7 +31,7 @@ export function getList (params) {
         endTime: '' // 创建结束时间
 }
  */
-export function exportCustomer (params) {
+export function exportCustomer(params) {
   return request({
     url: service + '/exportRedEnveForUser',
     params,
@@ -51,7 +51,7 @@ export function exportCustomer (params) {
         endTime: '' // 创建结束时间
 }
  */
-export function getListGroup (params) {
+export function getListGroup(params) {
   return request({
     url: service + '/findRedEnveForGroup',
     params,
@@ -68,7 +68,7 @@ export function getListGroup (params) {
           orderNo: '' //订单id
 }
  */
-export function getListGroupUser (params) {
+export function getListGroupUser(params) {
   return request({
     url: service + '/findRedEnveForGroupUser',
     params,
@@ -85,7 +85,7 @@ export function getListGroupUser (params) {
         endTime: '' // 创建结束时间
 }
  */
-export function exportGroup (params) {
+export function exportGroup(params) {
   return request({
     url: service + '/exportRedEnveForGroup',
     params,

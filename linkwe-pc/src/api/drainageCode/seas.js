@@ -1,8 +1,6 @@
-
 import request from '@/utils/request'
-const service = window.CONFIG.services.system + window.CONFIG.services.wecom
-let
-  seas_download_template,
+const service = window.lwConfig.services.system + window.lwConfig.services.wecom
+let seas_download_template,
   seas_list,
   seas_upload,
   seas_remove,
@@ -11,20 +9,19 @@ let
   seas_import_list,
   seas_staff_list
 
-
 /**
  * 获取公海列表
- * @param {*} params 
+ * @param {*} params
 {
     "pageNum": "当前页",
     "pageSize": "每页显示条数",
 }
  */
-export function getList (params) {
+export function getList(params) {
   return request({
     url: service + '/seas/list',
-    method: "GET",
-    params
+    method: 'GET',
+    params,
   })
 }
 
@@ -32,58 +29,57 @@ export function getList (params) {
  * 删除
  * @param {*} ids
  */
-export function remove (ids) {
+export function remove(ids) {
   return request({
-    url: service + "/seas/" + ids,
-    method: 'DELETE'
+    url: service + '/seas/' + ids,
+    method: 'DELETE',
   })
 }
 
 // 提醒
-export function alertFn (ids) {
+export function alertFn(ids) {
   return request({
-    url: service + "/seas/remidUser/" + ids,
-    method: 'POST'
+    url: service + '/seas/remidUser/' + ids,
+    method: 'POST',
   })
 }
 
 // 下载模板
-export function downloadTemplate () {
+export function downloadTemplate() {
   return request({
     url: service + '/seas/importTemplate',
   })
 }
 
 // 数据导入
-export function upload (data) {
+export function upload(data) {
   return request({
     url: service + '/seas/importData',
     method: 'POST',
-    data: data
+    data: data,
   })
 }
 
-export function detail (context, id) {
+export function detail(context, id) {
   return request(context, {
     url: seas_info,
-    params: { id }
+    params: { id },
   })
 }
 
 // 公海统计  抬头
-export function getTotal () {
+export function getTotal() {
   return request({
     url: service + '/seas/countCustomerSeas',
-    method: "GET",
+    method: 'GET',
   })
 }
 
 // 公海统计 导入记录 员工记录  groupByType 1导入 2员工
-export function getImportAndStaffList (params) {
+export function getImportAndStaffList(params) {
   return request({
     url: service + '/seas/findSeasRecord',
-    method: "GET",
-    params
+    method: 'GET',
+    params,
   })
 }
-

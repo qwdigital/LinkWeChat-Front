@@ -29,42 +29,22 @@ const project = {
   _env: process.env.VUE_APP_ENV, // 前端系统环境模式
 }
 
-window.lwConfig = Object.assign(env, common, window.lwConfig || {}, project)
-// Object.defineProperties(window.lwConfig, {})
-
-window.CONFIG = {
-  /**
-   * 是否系统布局配置
-   */
+let init = {
+  // 是否系统布局配置
   showSettings: false,
 
-  /**
-   * 是否显示 tagsView
-   */
+  // 是否显示 tagsView
   tagsView: true,
 
-  /**
-   * 是否固定头部
-   */
+  // 是否固定头部
   fixedHeader: false,
 
-  /**
-   * 是否显示logo
-   */
+  // 是否显示logo
   sidebarLogo: true,
-
-  /**
-   * @type {string | array} 'production' | ['production', 'development']
-   * @description Need show err logs component.
-   * The default is only used in the production env
-   * If you want to also use it in dev, you can pass ['production', 'development']
-   */
-  errorLog: 'production',
 
   services: {
     wecom: '/open',
-    kf: window.lwConfig.KF_API,
-    system: window.lwConfig.SYSTEM_API,
+    system: env.SYSTEM_API,
     common: '/common',
   },
 
@@ -72,6 +52,12 @@ window.CONFIG = {
     return { Authorization: 'Bearer ' + getToken() }
   },
 }
+
+const lwConfig = window.lwConfig || {} // 线上动态配置，用于覆盖系统默认常量的配置信息
+
+window.lwConfig = Object.assign(env, common, lwConfig, project)
+// Object.defineProperties(window.lwConfig, {})
+
 // 统一为img的src不是绝对地址的拼接接口地址
 // document.addEventListener(
 //   'error',
@@ -85,4 +71,4 @@ window.CONFIG = {
 //   true
 // )
 
-export default window.CONFIG
+export default init

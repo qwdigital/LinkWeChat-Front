@@ -1,120 +1,117 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system
-const serviceUser = window.CONFIG.services.system + '/user'
-const base = window.CONFIG.services.system + '/auth'
+const service = window.lwConfig.services.system
+const serviceUser = window.lwConfig.services.system + '/user'
+const base = window.lwConfig.services.system + '/auth'
 
 /* 组织管理 */
 
 // 同步组织架构
-export function setOragnize () {
+export function setOragnize() {
   return request({
     url: service + '/system/user/sync',
-    method: 'post'
+    method: 'post',
   })
 }
 
 // 获取组织部门
-export function getDeptTree () {
+export function getDeptTree() {
   return request({
-    url: service + '/system/dept/list'
+    url: service + '/system/dept/list',
   })
 }
 
 // 获取组织部门下员工
-export function getDeptUser (params) {
+export function getDeptUser(params) {
   return request({
     url: service + '/system/user/list',
-    params
+    params,
   })
 }
-export function getDeptUserAll (params) {
+export function getDeptUserAll(params) {
   return request({
     url: service + '/system/user/listAll',
-    params
+    params,
   })
 }
 
 // 修改员工角色
-export function editUserRoles (params) {
+export function editUserRoles(params) {
   return request({
     url: service + '/system/user/editUserRole',
     data: params,
-    method: 'put'
+    method: 'put',
   })
 }
 
 /* 角色管理 */
 
 // 角色列表
-export function getRolesList (params) {
+export function getRolesList(params) {
   return request({
-    url: service + '/system/role/list'
+    url: service + '/system/role/list',
   })
 }
 
-export function getRoleDetail (roleId) {
+export function getRoleDetail(roleId) {
   return request({
-    url: service + "/system/role/" + roleId
+    url: service + '/system/role/' + roleId,
   })
 }
 
 // 选择角色下拉
-export function getRoleOption () {
+export function getRoleOption() {
   return request({
-    url: service + '/system/role/optionselect'
+    url: service + '/system/role/optionselect',
   })
 }
 
 // 查询菜单下拉树结构
-export function treeselect () {
+export function treeselect() {
   return request({
     url: service + '/system/menu/allTreeselect',
-    method: 'get'
+    method: 'get',
   })
 }
 
 // 角色新增
-export function addRole (params) {
+export function addRole(params) {
   return request({
     url: service + '/system/role',
     method: 'post',
-    data: params
+    data: params,
   })
 }
 
 // 角色编辑
-export function editRole (params) {
+export function editRole(params) {
   return request({
     url: service + '/system/role',
     method: 'put',
-    data: params
+    data: params,
   })
 }
 
 // 角色删除
-export function deleteRole (id) {
+export function deleteRole(id) {
   return request({
     url: service + '/system/role/' + id,
-    method: 'delete'
+    method: 'delete',
   })
 }
 
-
-
-
 /**
  * 获取所有部门
- * @param {*} params 
+ * @param {*} params
  * {
   "id": "部门id ",
   "name": "部门名称",
   "parentId": "父节点id "
 }
  */
-export function getTree (params) {
+export function getTree(params) {
   return request({
     url: service + '/list',
-    params
+    params,
   })
 }
 
@@ -127,40 +124,40 @@ export function getTree (params) {
   "parentId": "父节点id "
 }
 */
-export function updateDepart (data) {
+export function updateDepart(data) {
   return request({
     url: service,
     method: 'put',
-    data
+    data,
   })
 }
 
 /**
  * 新增部门
- * @param {Object} data 
+ * @param {Object} data
  *  * {
   "name": "部门名称",
   "parentId": "父节点id "
 }
  */
-export function addDepart (data) {
+export function addDepart(data) {
   return request({
     url: service,
     method: 'post',
-    data
+    data,
   })
 }
 
-export function removeDepart (ids) {
+export function removeDepart(ids) {
   return request({
     url: service + '/' + ids,
-    method: 'DELETE'
+    method: 'DELETE',
   })
 }
 
 /**
  * 获取通讯录人员列表
- * @param {*} params 
+ * @param {*} params
  * {
     "pageNum": "当前页",
     "pageSize": "当前页显示条数",
@@ -173,10 +170,10 @@ export function removeDepart (ids) {
     "department": "根据组织id获取,获取通讯录人员"
 }
  */
-export function getList (params) {
+export function getList(params) {
   return request({
     url: serviceUser + '/list',
-    params
+    params,
   })
 }
 
@@ -188,13 +185,13 @@ export function getList (params) {
 }
  * @returns
  */
-export function getAllStaff (params) {
+export function getAllStaff(params) {
   return request({
     url: serviceUser + '/findAllWeUser',
     params: {
       isActivate: 1, //1=已激活，2=已禁用，4=未激活，5=退出企业,
-      isConfigCustomerContact: 0 //1:是;0:否
-    }
+      isConfigCustomerContact: 0, //1:是;0:否
+    },
   })
 }
 
@@ -202,9 +199,9 @@ export function getAllStaff (params) {
  * 根据ID获取通讯录人员详情
  * @param {String} id
  */
-export function getUserDetail (id) {
+export function getUserDetail(id) {
   return request({
-    url: serviceUser + '/' + id
+    url: serviceUser + '/' + id,
   })
 }
 
@@ -212,17 +209,17 @@ export function getUserDetail (id) {
  * 新增用户
  * @param {Object} data
  */
-export function addUser (data) {
+export function addUser(data) {
   return request({
     url: serviceUser,
     method: 'post',
-    data
+    data,
   })
 }
 
 /**
  * 更新用户
- * @param {*} data 
+ * @param {*} data
  * {
     "avatarMediaid": "用户头像,该值来自素材库",
     "name": "姓名",
@@ -246,27 +243,27 @@ export function addUser (data) {
     "id": "主键"
 }
  */
-export function updateUser (data) {
+export function updateUser(data) {
   return request({
     url: serviceUser,
     method: 'put',
-    data
+    data,
   })
 }
 
 /**
  * 启用禁用用户 true：启用 false：禁用
- * @param {*} data 
+ * @param {*} data
  * {
     "id": "通讯录客户ID",
     "enable": "启用禁用用户 true：启用 false：禁用"
 }
  */
-export function startOrStop (data) {
+export function startOrStop(data) {
   return request({
     url: serviceUser + '/startOrStop',
     method: 'put',
-    data
+    data,
   })
 }
 
@@ -274,18 +271,18 @@ export function startOrStop (data) {
  * 用户删除接口
  * @param {*} userId
  */
-export function remove (userId) {
+export function remove(userId) {
   return request({
     url: serviceUser + '/' + userId,
-    method: 'DELETE'
+    method: 'DELETE',
   })
 }
 
 /**
  * 同步成员
  */
-export function syncUser () {
+export function syncUser() {
   return request({
-    url: serviceUser + '/synchWeUser'
+    url: serviceUser + '/synchWeUser',
   })
 }

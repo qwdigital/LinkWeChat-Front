@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/tag'
+const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/tag'
 
 // 客户标签
 
@@ -12,16 +12,16 @@ const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '
     "groupTagType": "标签分组类型(1:客户标签;2:群标签)"
 }
  */
-export function getList (params) {
+export function getList(params) {
   return request({
     url: service + '/list',
-    params
+    params,
   })
 }
 
 /**
  * 新增客户标签
- * @param {Object} data 
+ * @param {Object} data
 {
     "groupName": "标签组名称",
     "weTags": [{
@@ -29,17 +29,17 @@ export function getList (params) {
     }]
 }
  */
-export function add (data) {
+export function add(data) {
   return request({
     url: service,
     method: 'post',
-    data
+    data,
   })
 }
 
 /**
  * 客户标签编辑
- * @param {*} data 
+ * @param {*} data
 {
     "id": "主键",
     "groupName": "标签分组名",
@@ -51,11 +51,11 @@ export function add (data) {
     }]
 }
  */
-export function update (data) {
+export function update(data) {
   return request({
     url: service,
     method: 'put',
-    data
+    data,
   })
 }
 
@@ -63,18 +63,18 @@ export function update (data) {
  * 标签批量删除接口
  * @param {*} ids
  */
-export function remove (ids) {
+export function remove(ids) {
   return request({
     url: service + '/' + ids,
-    method: 'DELETE'
+    method: 'DELETE',
   })
 }
 
 /**
  * 同步标签
  */
-export function syncTag () {
+export function syncTag() {
   return request({
-    url: service + '/synchWeTags'
+    url: service + '/synchWeTags',
   })
 }

@@ -1,9 +1,9 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/leaveUser'
+const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/leaveUser'
 
 /**
  * 获取离职已分配员工列表
- * @param {*} params 
+ * @param {*} params
  * {
 pageNum:
 pageSize:
@@ -12,16 +12,16 @@ endTime:
 userName:
 }
  */
-export function getList (params) {
+export function getList(params) {
   return request({
     url: service + '/leaveUserAllocateList',
-    params
+    params,
   })
 }
 
 /**
  * 获取离职未分配员工列表
- * @param {*} params 
+ * @param {*} params
  * {
 pageNum:
 pageSize:
@@ -30,26 +30,26 @@ endTime:
 userName:
 }
  */
-export function getListNo (params) {
+export function getListNo(params) {
   return request({
     url: service + '/leaveUserNoAllocateList',
-    params
+    params,
   })
 }
 
 /**
  * 分配离职员工数据
- * @param {*} data 
+ * @param {*} data
 {
     "handoverUserid": "原跟进成员的userid",
     "takeoverUserid": "接替成员的userid"
 }
  */
-export function allocate (data) {
+export function allocate(data) {
   return request({
     url: service + '/allocateLeaveUserAboutData',
     method: 'put',
-    data
+    data,
   })
 }
 
@@ -64,10 +64,10 @@ export function allocate (data) {
   "handoverUserId": ""
 }
  */
-export function getAllocateCustomers (params) {
+export function getAllocateCustomers(params) {
   return request({
     url: service + '/getAllocateCustomers',
-    params
+    params,
   })
 }
 
@@ -82,9 +82,9 @@ export function getAllocateCustomers (params) {
   "oldOwner": "" 原群主ID
 }
  */
-export function getAllocateGroups (params) {
+export function getAllocateGroups(params) {
   return request({
     url: service + '/getAllocateGroups',
-    params
+    params,
   })
 }

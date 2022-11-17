@@ -1,7 +1,7 @@
 import request from '@/utils/request'
-const service = window.CONFIG.services.system + window.CONFIG.services.wecom + '/fission'
+const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/fission'
 
-export function getList (params) {
+export function getList(params) {
   return request({
     url: service + '/list',
     method: 'get',
@@ -9,7 +9,7 @@ export function getList (params) {
   })
 }
 
-export function addTask (data) {
+export function addTask(data) {
   return request({
     url: service + '/add',
     method: 'post',
@@ -17,7 +17,7 @@ export function addTask (data) {
   })
 }
 
-export function getTaskDetail (id, type) {
+export function getTaskDetail(id, type) {
   let url = type ? `${service}/getInfo/${id}/${type}` : `${service}/getInfo/${id}`
   return request({
     url,
@@ -25,15 +25,14 @@ export function getTaskDetail (id, type) {
   })
 }
 
-
-export function sendFission (id) {
+export function sendFission(id) {
   return request({
     url: `${service}/send/${id}`,
     method: 'get',
   })
 }
 
-export function getStat (params) {
+export function getStat(params) {
   return request({
     url: service + '/stat',
     method: 'get',
@@ -41,7 +40,7 @@ export function getStat (params) {
   })
 }
 
-export function editTask (data) {
+export function editTask(data) {
   return request({
     url: service + '/edit',
     method: 'put',
