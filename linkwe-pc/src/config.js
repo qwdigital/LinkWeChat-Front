@@ -55,7 +55,8 @@ let init = {
 
 const lwConfig = window.lwConfig || {} // 线上动态配置，用于覆盖系统默认常量的配置信息
 
-window.lwConfig = Object.assign(env, common, lwConfig, project)
+// init 含有getter必须放在merge第一位
+window.lwConfig = Object.assign(init, env, common, lwConfig, project)
 // Object.defineProperties(window.lwConfig, {})
 
 // 统一为img的src不是绝对地址的拼接接口地址
