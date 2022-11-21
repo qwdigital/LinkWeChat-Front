@@ -249,10 +249,10 @@
     },
     mounted() {},
     created() {
-      this.query.beginTime = moment(this.value1[0]).format('YYYY-MM-DD')
-      this.query.endTime = moment(this.value1[1]).format('YYYY-MM-DD')
       this.value1[1] = moment(new Date()).format('YYYY-MM-DD')
       this.value1[0] = moment(new Date()).subtract(1, 'months').format('YYYY-MM-DD')
+      this.query.beginTime = moment(this.value1[0]).format('YYYY-MM-DD')
+      this.query.endTime = moment(this.value1[1]).format('YYYY-MM-DD')
       this.getList()
     }
   }
