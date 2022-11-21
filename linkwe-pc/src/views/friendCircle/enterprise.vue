@@ -61,15 +61,7 @@
         <template slot-scope="{ row }">
           <!-- image:图片；text:文本;video:视频；link:图文 -->
           <div>
-            {{
-              row.contentType === 'image'
-                ? '图片'
-                : row.contentType === 'text'
-                ? '文本'
-                : row.contentType === 'video'
-                ? '视频'
-                : '图文'
-            }}
+            {{ dealType(row.realType) }}
           </div>
         </template>
       </el-table-column>
@@ -199,14 +191,50 @@
       }
     },
     methods: {
+      dealType(type) {
+        switch (type) {
+          case 4:
+            return '文本'
+            break
+          case 0:
+            return '图片'
+            break
+          case 9:
+            return '图文'
+            break
+          case 11:
+            return '小程序'
+            break
+          case 12:
+            return '文章'
+            break
+          case 2:
+            return '视频'
+            break
+          case 3:
+            return '文件'
+            break
+          case 5:
+            return '海报'
+            break
+          default:
+            return '文本'
+            break
+        }
+      },
       gotoRoute() {
         this.$router.push({
           path: '/customerMaintain/friendCircle/publish'
         })
       },
       setTimeChange(e) {
-        this.query.beginTime = moment(e[0]).format('YYYY-MM-DD')
-        this.query.endTime = moment(e[1]).format('YYYY-MM-DD')
+        if (e) {
+          this.query.beginTime = moment(e[0]).format('YYYY-MM-DD')
+          this.query.endTime = moment(e[1]).format('YYYY-MM-DD')
+        } else {
+          this.query.beginTime = ''
+          this.query.endTime = ''
+        }
       },
       detailFn(id) {
         this.detailDialogVisible = true
@@ -275,11 +303,10 @@
         }
       }
     },
-    mounted() {
+    mounted() {},
+    created() {
       this.query.beginTime = moment(this.value1[0]).format('YYYY-MM-DD')
       this.query.endTime = moment(this.value1[1]).format('YYYY-MM-DD')
-    },
-    created() {
       this.value1[1] = moment(new Date()).format('YYYY-MM-DD')
       this.value1[0] = moment(new Date()).subtract(1, 'months').format('YYYY-MM-DD')
       this.getList()
