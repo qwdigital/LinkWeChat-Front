@@ -4,18 +4,18 @@
  */
 const envs = {
   development: {
-    DOMAIN: 'http://demo.linkwechat.net',
+    DOMAIN: 'http://dev.linkwechat.net',
     BASE_URL: './', // 路由基础路径
-    BASE_API: 'http://demo.linkwechat.net/linkwechat-api',
-    SYSTEM_API: '/linkwechat-api', // 接口基础路径/nginx接口转发路径
+    BASE_API: 'http://dev.linkwechat.net/linkwechat-dev-api',
+    SYSTEM_API: '/linkwechat-dev-api', // 接口基础路径/nginx接口转发路径
   },
   test: {
-    DOMAIN: 'http://demo.linkwechat.net',
+    DOMAIN: 'http://dev.linkwechat.net',
     BASE_URL: './', // 路由基础路径
-    BASE_API: 'http://demo.linkwechat.net/linkwechat-api',
-    SYSTEM_API: '/linkwechat-api',
+    BASE_API: 'http://dev.linkwechat.net/linkwechat-dev-api',
+    SYSTEM_API: '/linkwechat-dev-api',
     _ISGZIP: true, // 是否开启gzip压缩
-    _ISCDN: false, // 是否开启cdn加速
+    _ISCDN: true, // 是否开启cdn加速
   },
   production: {
     DOMAIN: 'http://demo.linkwechat.net',
@@ -23,7 +23,7 @@ const envs = {
     BASE_API: 'http://demo.linkwechat.net/linkwechat-api',
     SYSTEM_API: '/linkwechat-api',
     _ISGZIP: true, // 是否开启gzip压缩
-    _ISCDN: false, // 是否开启cdn加速
+    _ISCDN: true, // 是否开启cdn加速
   },
 }
 const env = Object.assign(

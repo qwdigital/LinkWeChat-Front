@@ -1,10 +1,10 @@
 import Vue from 'vue'
-import Router from 'vue-router'
+import VueRouter from 'vue-router'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-const originalPush = Router.prototype.push
-Router.prototype.push = function push(location) {
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch((err) => err)
 }
 
@@ -72,8 +72,7 @@ const devRoutes = [
       {
         path: 'detail',
         name: 'group-code-analyse',
-        component: (resolve) =>
-          require(['@/views/commodityCenter/commodityManage/detail'], resolve),
+        component: (resolve) => require(['@/views/commodityCenter/commodityManage/detail'], resolve),
         meta: {
           title: '商品管理',
           activeMenu: '/commodityCenter/commodityManage',
@@ -159,10 +158,9 @@ export const constantRoutes = [
   },
 ]
 
-export default new Router({
+export default new VueRouter({
   // mode: process.env.VUE_APP_ENV === 'test' ? 'hash' : 'history', // history 下 element ui 存在bug
   // base: window.lwConfig.BASE_URL,
   scrollBehavior: () => ({ y: 0 }),
-  routes:
-    process.env.NODE_ENV !== 'development' ? constantRoutes : constantRoutes.concat(devRoutes),
+  routes: process.env.NODE_ENV !== 'development' ? constantRoutes : constantRoutes.concat(devRoutes),
 })

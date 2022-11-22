@@ -1,6 +1,6 @@
 'use strict'
 const path = require('path')
-
+const webpack = require('webpack')
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -61,12 +61,23 @@ module.exports = {
       },
     },
   },
-  configureWebpack: {
-    resolve: {
-      alias: {
-        '@': resolve('src'),
-      },
-    },
+  configureWebpack(config) {
+    config.resolve.alias = {
+      '@': resolve('src'),
+    }
+
+    if (process.env.NODE_ENV !== 'development') {
+      // cdn
+      if (env._ISCDN) {
+        config.externals = {
+          vue: 'Vue',
+          'element-ui': 'ELEMENT',
+          'vue-router': 'VueRouter',
+          vuex: 'Vuex',
+          axios: 'axios',
+        }
+      }
+    }
   },
   chainWebpack(config) {
     // 修复HMR
@@ -95,16 +106,12 @@ module.exports = {
       })
       .end()
 
+    // 删除 moment 语言包
+    config.plugin('ignore').use(new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn$/))
+
     config.when(process.env.NODE_ENV !== 'development', (config) => {
       // cdn
       if (env._ISCDN) {
-        config.externals = {
-          vue: 'vue',
-          'element-ui': 'element-ui',
-          'vue-router': 'vue-router',
-          vuex: 'vuex',
-          axios: 'axios',
-        }
         const cdn = {
           // 访问https://unpkg.com/element-ui/lib/theme-chalk/index.css获取最新版本
           css: [
@@ -113,8 +120,8 @@ module.exports = {
           ],
           js: [
             '//cdn.bootcdn.net/ajax/libs/vue/2.6.10/vue.runtime.min.js',
-            '//cdn.bootcdn.net/ajax/libs/vue-router/3.5.3/vue-router.min.js',
             '//cdn.bootcdn.net/ajax/libs/vuex/3.1.0/vuex.min.js',
+            '//cdn.bootcdn.net/ajax/libs/vue-router/3.5.3/vue-router.min.js',
             '//cdn.bootcdn.net/ajax/libs/axios/0.26.0/axios.min.js',
             '//cdn.bootcdn.net/ajax/libs/element-ui/2.15.7/index.min.js',
             // '//unpkg.com/vue@2.6.10/dist/vue.runtime.min.js', // 访问https://unpkg.com/vue/dist/vue.min.js获取最新版本
@@ -158,11 +165,11 @@ module.exports = {
             priority: 10,
             chunks: 'initial', // only package third parties that are initially dependent
           },
-          elementUI: {
-            name: 'chunk-elementUI', // split elementUI into a single package
-            priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
-            test: /[\\/]node_modules[\\/]_?element-ui(.*)/, // in order to adapt to cnpm
-          },
+          // elementUI: {
+          //   name: 'chunk-elementUI', // split elementUI into a single package
+          //   priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+          //   test: /[\\/]node_modules[\\/]_?element-ui(.*)/, // in order to adapt to cnpm
+          // },
           commons: {
             name: 'chunk-commons',
             test: resolve('src/components'), // can customize your rules
