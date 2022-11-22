@@ -91,57 +91,36 @@ import { getUserOpenid, getWechatUserInfo, getWxRedirect, wxLogin } from '@/api/
 
 // 微信端授权登录
 export async function getWxCode () {
-  let userinfo = sessionStorage.getItem('userinfo')
-  //取缓存中的用户信息
-  if (userinfo) {
-    try {
-      userinfo = JSON.parse(userinfo)
-    } catch (error) {
-      // alert(error)
-    }
-    return userinfo
-  }
-
-  //缓存中没有用户信息，进入授权流程
-  // let appId = 'wxa57479bcd3f15461'
-  let appId = window.lwConfig.appId  // 微信公众号id
-  // let appId = 'wxa57479bcd3f15461' // 公众号appid
-  let code = getQueryValue('code') //是否存在code
-  // let query = param2Obj() //
-  // let { code, appId, secret } = query
-  let local = window.location.origin.includes('localhost')
-    ? 'http://h5.linkwechat.cn/test.html'
-    : window.location.href
-  if (!code) {
-    //不存在就打开上面的地址进行授权
-    let url = ''
-    if (appId) {
-      url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${encodeURIComponent(
-        local
-      )}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
-    } else {
-      url = (await getWxRedirect()).data
-      let id = getQueryValue('appid', url)
-      sessionStorage.setItem('weAppId', id)
-    }
-    window.location.href = url
-    // return new Promise(() => { })
-    // window.location.href =
-    //     `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(local)}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect`;
-  }
+ let userinfo = sessionStorage.getItem('userinfo')
+ //取缓存中的用户信息
+ if (userinfo) {
   try {
-    if (code) {
-      let { data: dataLogin } = await wxLogin(code)
-      sessionStorage.setItem('token', dataLogin.access_token)
-      let { data: dataUser } = await getWechatUserInfo()
-      sessionStorage.setItem('userinfo', JSON.stringify(dataUser))
-      return dataUser
-    }
+   userinfo = JSON.parse(userinfo)
   } catch (error) {
-    // alert(JSON.stringify(error))
-    return Promise.reject()
+  // alert(error)
+ }
+ return userinfo
+ }
+ let code = getQueryValue('code') //是否存在code
+ if (!code) {
+    let url = (await getWxRedirect()).data
+    let id = getQueryValue('appid', url)
+    sessionStorage.setItem('weAppId', id)
+    window.location.href = url
+ }
+ try {
+  if (code) {
+    let { data: dataLogin } = await wxLogin(code)
+    sessionStorage.setItem('token', dataLogin.access_token)
+    let { data: dataUser } = await getWechatUserInfo()
+    sessionStorage.setItem('userinfo', JSON.stringify(dataUser))
+    return dataUser
   }
+} catch (error) {
+  return Promise.reject()
 }
+}
+  
 
 // 日期时间格式化
 export function dateFormat (dateString, fmt = 'yyyy-MM-dd hh:mm:ss') {

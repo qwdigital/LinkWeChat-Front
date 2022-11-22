@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 const service = window.lwConfig.services.wecom
+const weChat = window.lwConfig.services.weChat
 
 /**
  * 获取应用的jsapi_ticket
@@ -17,7 +18,7 @@ export function getAgentTicket (url) {
 
 export function getWxTicket (data) {
   return request({
-    url: service + '/ticket/getWxTicket',
+    url: weChat + '/ticket/getWxTicket',
     params: {
       url: data,
     },
