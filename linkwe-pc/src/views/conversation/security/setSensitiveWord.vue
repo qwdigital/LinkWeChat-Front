@@ -170,14 +170,18 @@
               this.rangeErrorMsg = ''
             }
             const params = this.addForm
-            let auditUserScope = []
-            const obj = {
-              scopeType: 2, // this.auditUserRange.map((d) => d.department) + '',
-              auditScopeId: this.auditUserRange.map((d) => d.userId) + '',
-              auditScopeName: this.auditUserRange.map((d) => d.name) + ''
+            if (this.auditUserRange.length) {
+              let auditUserScope = []
+              const obj = {
+                scopeType: 2, // this.auditUserRange.map((d) => d.department) + '',
+                auditScopeId: this.auditUserRange.map((d) => d.userId) + '',
+                auditScopeName: this.auditUserRange.map((d) => d.name) + ''
+              }
+              auditUserScope.push(obj)
+              params.auditUserScope = auditUserScope
+            } else {
+              params.auditUserScope = []
             }
-            auditUserScope.push(obj)
-            params.auditUserScope = auditUserScope
             params.auditUserId = this.auditUser.map((d) => d.userId) + ''
             params.auditUserName = this.auditUser.map((d) => d.name) + ''
             params.alertFlag = this.alertFlag
