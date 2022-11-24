@@ -1,10 +1,9 @@
 <script>
 import { appMsg } from '@/api/internalCollaborate/appManage'
-import MsgForm from '../components/MsgForm'
 
 export default {
   name: '',
-  components: { MsgForm },
+  components: {},
   props: {
     id: {
       type: String | Number,
@@ -24,7 +23,6 @@ export default {
       list: [],
       loading: false,
 
-      dialogVisible: false,
       status: { '': '全部状态', 0: '草稿', 1: '待发送', 2: '已发送', 3: '发送失败', 4: '已撤回' },
       typeDict: {
         text: '文本',

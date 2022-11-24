@@ -6,7 +6,7 @@ export default {
   components: {},
   props: {
     id: {
-      type: String,
+      type: String | Number,
       required: true,
     },
   },
@@ -21,7 +21,13 @@ export default {
       list: [],
       loading: false,
 
-      dialogVisibleHistoryMsg: false,
+      typeDict: {
+        text: '文本',
+        image: '图片',
+        news: '图文',
+        video: '视频',
+        file: '文件',
+      },
       type: [
         '图片',
         '语音',
@@ -60,8 +66,8 @@ export default {
       this.loading = true
       appMsg
         .getList(this.query)
-        .then(({ data, total }) => {
-          this.list = data
+        .then(({ rows, total }) => {
+          this.list = rows
           this.total = +total
         })
         .finally(() => {
@@ -70,8 +76,6 @@ export default {
     },
     edit(data, type) {
       this.form = Object.assign({}, data || {})
-      this.dialogVisible = true
-      type || !data ? (this.disabled = false) : (this.disabled = true)
     },
     removke(id, action, tip) {
       // const operIds = id || this.ids + ''
@@ -95,16 +99,13 @@ export default {
   <div>
     <el-table v-loading="loading" :data="list">
       <el-table-column label="消息标题" align="center" prop="title" />
-      <el-table-column prop="type" label="类型" align="center">
-        <template slot-scope="{ row }">{{ type[row.type] }}</template>
+      <el-table-column prop="msgType" label="类型" align="center">
+        <template slot-scope="{ row }">{{ typeDict[row.msgType] }}</template>
       </el-table-column>
-      <el-table-column label="发送时间" align="center" prop="groupName" />
+      <el-table-column label="发送时间" align="center" prop="sendTime" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="{ row }">
-          <!-- <el-button type="text" @click="edit(row, 'detail')">详情</el-button>
-          <el-button v-if="[0, 1].includes(row.status)" type="text" @click="edit(row, 'edit')">编辑</el-button> -->
-          <el-button v-if="row.status == 2" type="text" @click="removke(row.id, 'revoke', '撤回')">撤回</el-button>
-          <el-button v-else @click="removke(row.id, 'remove', '删除')" type="text">删除</el-button>
+          <el-button type="text" @click="edit(row, 'detail')">详情</el-button>
           <!-- v-hasPermi="['customerManage:tag:remove']" -->
         </template>
       </el-table-column>
