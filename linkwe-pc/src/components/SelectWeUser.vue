@@ -1,7 +1,5 @@
 <script>
   import { getDeptTree, getDeptUser } from '@/api/organization'
-
-  import { createUniqueString } from '@/utils'
   export default {
     name: 'SelectWeUser',
     components: {},
@@ -45,7 +43,12 @@
       return {
         treeData: [],
         userList: [],
-        defaultKeys: []
+        defaultKeys: [],
+        deptId: '', //根部门Id
+        keywords: '',
+        searchResult: [],
+        searchState: false,
+        checked: []
       }
     },
     watch: {
@@ -90,11 +93,7 @@
           label: 'name',
           children: 'children',
           disabled(data, node) {
-            return (
-              (that.isOnlyLeaf && data.isParty) ||
-              that.disabledValues.some((e) => e == (data.userId || data.id)) ||
-              data.userId === ''
-            )
+            return (that.isOnlyLeaf && data.isParty) || that.disabledValues.some((e) => e == (data.userId || data.id))
           },
           isLeaf(data, node) {
             return !data.id
@@ -105,6 +104,45 @@
     created() {},
     mounted() {},
     methods: {
+      setChange(e) {
+        if (!e) {
+          this.searchState = false
+          this.$refs.tree.setCheckedKeys(this.userList.map((e) => e.userId || e.id))
+        }
+      },
+      setSearch() {
+        if (!this.keywords) return
+        this.searchResult = []
+        this.searchState = true
+        this.checked = this.userList.map((dd) => {
+          return dd.userId
+        })
+        getDeptUser({
+          deptId: this.deptId,
+          userName: this.keywords
+        }).then((res) => {
+          this.searchResult = this.handleName(res.rows)
+        })
+      },
+      setSelectChange(e, index) {
+        if (e) {
+          if (this.isSigleSelect) {
+            this.userList[0] = this.searchResult[index]
+          } else {
+            this.userList.push(this.searchResult[index])
+          }
+          this.checked = this.userList.map((dd) => {
+            return dd.userId
+          })
+          this.$forceUpdate()
+        } else {
+          this.cancle(this.searchResult[index].userId)
+        }
+        setTimeout(() => {
+          this.keywords = ''
+          this.setChange()
+        }, 500)
+      },
       treeFormat(list) {
         let dealOptions = []
         list.forEach((one) => {
@@ -129,23 +167,16 @@
           if (!Array.isArray(this.defaultValues) || this.defaultValues.length == 0) {
             this.userList = []
           }
-          console.log(this.defaultValues)
           getDeptTree().then(({ data }) => {
-            // data.forEach((element) => {
-            //   element.key = createUniqueString()
-            // })
             let _data = this.handleTree(data)
-            resolve(this.treeFormat(_data))
-            // api.getList({ department: _data[0].id }).then(({ rows, total }) => {
-            //   _data && rows.unshift(..._data);
-            //   resolve(rows);
-            // });
+            let value = this.treeFormat(_data)
+            if (value.length) {
+              this.deptId = value[0].deptId
+            }
+            resolve(value)
           })
         } else {
           getDeptUser({ deptId: node.data.id }).then(({ rows }) => {
-            // rows.forEach((element) => {
-            //   element.key = createUniqueString()
-            // })
             let arr = this.handleName(rows)
             node.data.children && arr.push(...node.data.children)
             resolve(arr)
@@ -166,7 +197,7 @@
       handleName(data) {
         return data.map((i) => {
           if (i.userName) {
-            i.userId = i.weUserId ? i.weUserId : ''
+            i.userId = i.weUserId
             i.name = i.userName
           }
           return i
@@ -174,7 +205,6 @@
       },
       // 选择变化
       handleCheckChange(data, checked, indeterminate) {
-        // console.log(arguments)
         if (checked) {
           if (this.isSigleSelect) {
             // 单选情况
@@ -189,11 +219,9 @@
             !isExist && this.userList.push(data)
           }
         } else {
-          // let index = this.userList.indexOf(data)
           let index = this.userList.findIndex((i) => i.userId === data.userId)
           index > -1 && this.userList.splice(index, 1)
         }
-        // console.log(data, checked, indeterminate);
         this.userList = this.unique(this.userList)
       },
       unique(arr) {
@@ -225,26 +253,48 @@
 </script>
 <template>
   <el-dialog :title="title" :visible.sync="Pvisible" :close-on-click-modal="false" :destroy-on-close="destroyOnClose">
-    <el-row :gutter="20">
+    <el-row :gutter="20" class="content">
       <el-col :span="12" :xs="24">
-        <div class="head-container">
-          <el-tree
-            node-key="userId"
-            ref="tree"
-            lazy
-            accordion
-            show-checkbox
-            :check-on-click-node="false"
-            :expand-on-click-node="true"
-            :load="loadNode"
-            :props="defaultProps"
-            :check-strictly="isOnlyLeaf"
-            @check-change="handleCheckChange"
-          ></el-tree>
-          <!-- :default-checked-keys="
-              defaultValues.map((e) => (isOnlyLeaf ? e.userId : e.userId || e.id))
-            " -->
+        <div class="search-input">
+          <el-input
+            size="mini"
+            v-model="keywords"
+            @keyup.enter.native="setSearch"
+            placeholder="请输入员工名称"
+            clearable
+            @change="setChange"
+          >
+            <el-button slot="append" icon="el-icon-search" @click="setSearch"></el-button>
+          </el-input>
         </div>
+        <div class="search-list user-list" v-show="searchState">
+          <el-checkbox-group v-model="checked">
+            <el-row v-for="(item, index) in searchResult" :key="index">
+              <el-checkbox :label="item.userId" :key="index" @change="setSelectChange($event, index)">
+                <div>
+                  {{ item.name }}
+                </div>
+              </el-checkbox>
+            </el-row>
+          </el-checkbox-group>
+        </div>
+        <transition name="fade">
+          <div class="head-container" v-show="!searchState">
+            <el-tree
+              node-key="userId"
+              ref="tree"
+              lazy
+              accordion
+              show-checkbox
+              :check-on-click-node="false"
+              :expand-on-click-node="true"
+              :load="loadNode"
+              :props="defaultProps"
+              :check-strictly="isOnlyLeaf"
+              @check-change="handleCheckChange"
+            ></el-tree>
+          </div>
+        </transition>
       </el-col>
       <el-col :span="12" :xs="24" class="user-list">
         <el-row :gutter="10">选择人员列表</el-row>
@@ -263,9 +313,32 @@
 </template>
 
 <style lang="scss" scoped>
+  .content {
+    min-height: 400px;
+  }
+  .search-input {
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
   .user-list {
     .el-row {
       line-height: 26px;
     }
+  }
+  .search-list {
+    margin-top: 20px;
+    padding: 0 10px;
+  }
+  .fade-enter-active {
+    transition: opacity 0.5s;
+  }
+  .fade-enter {
+    opacity: 0;
+  }
+  .fade-leave-active {
+    transition: opacity 0.5s;
+  }
+  .fade-leave-to {
+    opacity: 0;
   }
 </style>
