@@ -7,7 +7,7 @@ export default {
   components: { MsgForm },
   props: {
     id: {
-      type: String,
+      type: String | Number,
       required: true,
     },
   },
@@ -26,23 +26,13 @@ export default {
 
       dialogVisible: false,
       status: { '': '全部状态', 0: '草稿', 1: '待发送', 2: '已发送', 3: '发送失败', 4: '已撤回' },
-      type: [
-        '图片',
-        '语音',
-        '视频',
-        '文件',
-        '文本',
-        '海报',
-        '活码',
-        '人群',
-        '旅程',
-        '图文',
-        '链接',
-        '小程序',
-        '文章',
-        '企业话术',
-        '客服话术',
-      ],
+      typeDict: {
+        text: '文本',
+        image: '图片',
+        news: '图文',
+        video: '视频',
+        file: '文件',
+      },
       form: {},
     }
   },
@@ -65,8 +55,8 @@ export default {
       this.loading = true
       appMsg
         .getList(this.query)
-        .then(({ data, total }) => {
-          this.list = data
+        .then(({ rows, total }) => {
+          this.list = rows
           this.total = +total
         })
         .finally(() => {
@@ -75,8 +65,8 @@ export default {
     },
     edit(data, type) {
       this.form = Object.assign({}, data || {})
-      this.dialogVisible = true
       type || !data ? (this.disabled = false) : (this.disabled = true)
+      this.$emit('edit', data, type)
     },
     submit() {
       this.$refs['form'].validate((valid) => {
@@ -109,28 +99,35 @@ export default {
           this.msgSuccess('删除成功')
         })
     },
+    resetQuery() {
+      this.query.status = ''
+      this.getList(1)
+    },
   },
 }
 </script>
 
 <template>
   <div>
-    <el-select class="mb10" v-model="query.status" placeholder="">
+    <el-select class="mb10 mr10" v-model="query.status" placeholder="">
       <el-option v-for="(value, key) in status" :key="key" :label="value" :value="key"></el-option>
     </el-select>
+    <el-button type="primary" @click="getList(1)">查询</el-button>
+    <el-button @click="resetQuery" type="info" plain>清空</el-button>
+
     <el-table v-loading="loading" :data="list">
       <el-table-column label="消息标题" align="center" prop="title" />
-      <el-table-column prop="type" label="类型" align="center">
-        <template slot-scope="{ row }">{{ type[row.type] }}</template>
+      <el-table-column prop="msgType" label="类型" align="center">
+        <template slot-scope="{ row }">{{ typeDict[row.msgType] }}</template>
       </el-table-column>
       <el-table-column prop="status" label="消息状态" align="center">
         <template slot-scope="{ row }">{{ status[row.status] }}</template>
       </el-table-column>
-      <el-table-column label="发送时间" align="center" prop="groupName" />
+      <el-table-column label="发送时间" align="center" prop="sendTime" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="{ row }">
-          <!-- <el-button type="text" @click="edit(row, 'detail')">详情</el-button>
-          <el-button v-if="[0, 1].includes(row.status)" type="text" @click="edit(row, 'edit')">编辑</el-button> -->
+          <el-button type="text" @click="edit(row, 'detail')">详情</el-button>
+          <el-button v-if="[0, 1].includes(row.status)" type="text" @click="edit(row, 'edit')">编辑</el-button>
           <el-button v-if="row.status == 2" type="text" @click="removke(row.id, 'revoke', '撤回')">撤回</el-button>
           <el-button v-else @click="removke(row.id, 'remove', '删除')" type="text">删除</el-button>
           <!-- v-hasPermi="['customerManage:tag:remove']" -->

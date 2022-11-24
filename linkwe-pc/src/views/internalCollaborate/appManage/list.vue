@@ -1,5 +1,5 @@
 <script>
-import { getList, update, add, remove, sync } from '@/api/internalCollaborate/appManage'
+import { getList, update, add, remove, sync, appMsg } from '@/api/internalCollaborate/appManage'
 
 export default {
   components: { HistoryMsg: () => import('./HistoryMsg'), MsgForm: () => import('../components/MsgForm') },
@@ -25,7 +25,8 @@ export default {
         logoUrl: [{ required: true, message: '必填项', trigger: 'change' }],
       }),
 
-      id: '',
+      agentId: '',
+      formMsg: {},
       dialogVisibleHistoryMsg: false,
       dialogVisibleSendMsg: false,
     }
@@ -116,10 +117,21 @@ export default {
     // },
 
     // 发送消息确认按钮
-    submitSendMsg(text, image, file) {
-      this.form.logoMediaid = image.id
-      this.form.squareLogoUrl = image.materialUrl
-      this.dialogVisibleSendMsg = false
+    submitSendMsg(form) {
+      form &&
+        (form.id ? appMsg.update : appMsg.add)(form)
+          .then(() => {
+            this.msgSuccess('操作成功')
+            this.dialogVisibleSendMsg = false
+            if (this.dialogVisibleHistoryMsg) {
+              this.$refs.historyMsg.getList()
+            }
+            // this.getList()
+            // this.getList(!this.form.id && 1)
+          })
+          .catch(() => {
+            this.dialogVisibleSendMsg = false
+          })
     },
   },
 }
@@ -158,6 +170,8 @@ export default {
               type="text"
               @click="
                 id = item.id
+                formMsg.agentName = item.name
+                formMsg.agentId = item.agentId
                 dialogVisibleSendMsg = true
               ">
               发送消息
@@ -165,7 +179,7 @@ export default {
             <el-button
               type="text"
               @click="
-                id = item.id
+                agentId = item.agentId
                 dialogVisibleHistoryMsg = true
               ">
               历史消息
@@ -264,7 +278,16 @@ export default {
 
     <!-- 历史消息 弹窗 -->
     <el-dialog title="历史消息" :visible.sync="dialogVisibleHistoryMsg" :close-on-click-modal="false">
-      <HistoryMsg :id="id" v-if="dialogVisibleHistoryMsg" />
+      <HistoryMsg
+        ref="historyMsg"
+        :id="agentId"
+        v-if="dialogVisibleHistoryMsg"
+        @edit="
+          (data) => {
+            dialogVisibleSendMsg = true
+            formMsg = data
+          }
+        " />
     </el-dialog>
 
     <!-- 选择素材弹窗 -->
@@ -278,7 +301,7 @@ export default {
 
     <!-- 编辑/详情发送消息 弹窗 -->
     <el-dialog title="发送消息" :visible.sync="dialogVisibleSendMsg" :close-on-click-modal="false">
-      <MsgForm v-if="dialogVisibleSendMsg" :form="form" />
+      <MsgForm v-if="dialogVisibleSendMsg" :data="formMsg" @submit="submitSendMsg" />
     </el-dialog>
   </div>
 </template>

@@ -144,15 +144,6 @@ export const appMsg = {
     })
   },
 
-  // 保存应用消息 data同上
-  save(data) {
-    return request({
-      url: serviceMsg + '/save',
-      method: 'post',
-      data,
-    })
-  },
-
   // 修改应用消息 data同上
   update(data) {
     return request({
