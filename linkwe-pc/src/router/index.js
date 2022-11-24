@@ -51,36 +51,6 @@ const devRoutes = [
       },
     ],
   },
-  {
-    path: '/commodityCenter',
-    component: Layout,
-    hidden: true,
-    meta: {
-      title: '商品中心',
-    },
-    children: [
-      {
-        path: 'commodityManage',
-        name: 'group-code-analyse',
-        component: (resolve) => require(['@/views/commodityCenter/commodityManage/list'], resolve),
-        meta: {
-          title: '商品管理',
-          activeMenu: '/commodityCenter/commodityManage',
-          breadcrumb: true,
-        },
-      },
-      {
-        path: 'detail',
-        name: 'group-code-analyse',
-        component: (resolve) => require(['@/views/commodityCenter/commodityManage/detail'], resolve),
-        meta: {
-          title: '商品管理',
-          activeMenu: '/commodityCenter/commodityManage',
-          breadcrumb: true,
-        },
-      },
-    ],
-  },
 ]
 
 // 公共路由

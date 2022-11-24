@@ -15,30 +15,17 @@
         series: [],
         cardData: [],
         active: 0,
-        api,
-        form: {
-          picture: '',
-          price: 1,
-          describe: '',
-          attachments: []
-        }
+        api
       }
     },
     computed: {},
     watch: {},
     created() {
-      this.getDetail()
       this.getList()
       this.getTop5Fn()
     },
     mounted() {},
     methods: {
-      getDetail() {
-        api.getDetail(this.$route.query.id).then((res) => {
-          this.form = res.data
-          this.form.attachments = this.form.attachments.split(',')
-        })
-      },
       getTop5Fn() {
         this.loading = true
         api.getDetailTable(this.$route.query.id).then((res) => {
@@ -102,43 +89,20 @@
 
 <template>
   <div>
-    <el-row :gutter="10" type="flex">
-      <el-col :span="18">
-        <CardGroupIndex :data="cardData"></CardGroupIndex>
-        <div class="g-card g-pad20" style="margin-top: 0;">
-          <div class="title">数据趋势</div>
-          <time-search-title @search="getLineData"></time-search-title>
-          <chart-line style="height: 300px;" :legend="legend" :xData="xData" :series="series"></chart-line>
-        </div>
-        <div class="g-card g-pad20" style="margin-top: 20px;">
-          <div class="title">员工订单Top5</div>
-          <el-table v-loading="loading" :data="list" style="width: 100%;">
-            <el-table-column label="员工" align="center" min-width="100" prop="weUserName" />
-            <el-table-column label="订单总数" align="center" prop="orderNum" min-width="100"></el-table-column>
-            <el-table-column label="订单总额（元）" align="center" prop="totalFee" min-width="100"></el-table-column>
-          </el-table>
-        </div>
-      </el-col>
-      <el-col :span="6" style="min-width: 320px; display: flex; justify-content: space-around;">
-        <PhoneTemplate>
-          <div class="phone-content">
-            <el-image
-              class="commodity-img commodity-thumb"
-              style="width: 100%; height: 100px;"
-              :src="form.picture"
-            ></el-image>
-            <div class="price">￥{{ form.price }}</div>
-            <div class="content">{{ form.describe }}</div>
-            <el-image
-              v-for="(item, index) in form.attachments"
-              class="commodity-img"
-              :src="item"
-              :key="index"
-            ></el-image>
-          </div>
-        </PhoneTemplate>
-      </el-col>
-    </el-row>
+    <CardGroupIndex :data="cardData"></CardGroupIndex>
+    <div class="g-card g-pad20" style="margin-top: 0;">
+      <div class="title">数据趋势</div>
+      <time-search-title @search="getLineData"></time-search-title>
+      <chart-line style="height: 300px;" :legend="legend" :xData="xData" :series="series"></chart-line>
+    </div>
+    <div class="g-card g-pad20" style="margin-top: 20px;">
+      <div class="title">员工订单Top5</div>
+      <el-table v-loading="loading" :data="list" style="width: 100%;">
+        <el-table-column label="员工" align="center" min-width="100" prop="weUserName" />
+        <el-table-column label="订单总数" align="center" prop="orderNum" min-width="100"></el-table-column>
+        <el-table-column label="订单总额（元）" align="center" prop="totalFee" min-width="100"></el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 
@@ -148,19 +112,5 @@
     color: #333;
     font-weight: 600;
     margin-bottom: 20px;
-  }
-  .phone-content {
-    padding: 10px;
-  }
-  .price {
-    font-weight: 500;
-    font-size: 20px;
-    margin: 10px 0;
-  }
-  .content {
-    margin: 10px 0;
-  }
-  .commodity-img {
-    width: 100%;
   }
 </style>
