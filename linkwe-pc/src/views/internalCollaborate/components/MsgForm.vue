@@ -103,7 +103,11 @@ export default {
       <div class="">
         <div class="title">
           <span>消息设置</span>
-          <span style="font-size: 12px; margin-left: 10px">将通过应用 【{{ form.agentName }}】 发送消息</span>
+          <span style="font-size: 12px; margin-left: 10px">
+            将通过应用
+            <span class="theme">【{{ form.agentName }}】</span>
+            发送消息
+          </span>
         </div>
 
         <el-form-item label="消息标题" prop="title">
@@ -233,4 +237,8 @@ export default {
   </div>
 </template>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.theme {
+  color: $blue;
+}
+</style>

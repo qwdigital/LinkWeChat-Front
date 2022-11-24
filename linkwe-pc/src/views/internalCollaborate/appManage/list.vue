@@ -174,8 +174,7 @@ export default {
               type="text"
               @click="
                 id = item.id
-                formMsg.agentName = item.name
-                formMsg.agentId = item.agentId
+                formMsg = { agentName: item.name, agentName: item.agentId }
                 dialogVisibleSendMsg = true
               ">
               发送消息
@@ -183,8 +182,7 @@ export default {
             <el-button
               type="text"
               @click="
-                formMsg.agentId = item.agentId
-                formMsg.agentName = item.name
+                formMsg = { agentName: item.name, agentName: item.agentId }
                 dialogVisibleHistoryMsg = true
               ">
               历史消息
@@ -348,7 +346,7 @@ export default {
       font-size: 16px;
     }
     .desc {
-      color: #ddd;
+      color: #888;
       word-break: break-all;
       margin: 5px 0;
     }
