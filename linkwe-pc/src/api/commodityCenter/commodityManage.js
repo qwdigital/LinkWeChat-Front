@@ -71,7 +71,7 @@ export function add(data) {
  * 修改
  * @param {*} data 同新增
  */
-export function update(id, data) {
+export function update(data, id) {
   return request({
     url: service + '/update/' + id,
     method: 'put',
@@ -85,7 +85,30 @@ export function update(id, data) {
  */
 export function remove(ids) {
   return request({
-    url: service + '/' + ids,
+    url: service + '/delete/' + ids,
     method: 'DELETE',
+  })
+}
+
+// 商品详情统计
+export function getDetailTotal(id) {
+  return request({
+    url: service + '/statistics/' + id,
+  })
+}
+
+// 商品详情折线图
+export function getDetailChart(data) {
+  return request({
+    url: service + '/lineChart',
+    data,
+    method:'post'
+  })
+}
+
+// 商品详情top5
+export function getDetailTable(id) {
+  return request({
+    url: service + '/top5/' + id
   })
 }
