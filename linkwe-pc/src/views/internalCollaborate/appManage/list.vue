@@ -29,6 +29,7 @@ export default {
       formMsg: {},
       dialogVisibleHistoryMsg: false,
       dialogVisibleSendMsg: false,
+      disabled: false,
     }
   },
   watch: {},
@@ -179,7 +180,8 @@ export default {
             <el-button
               type="text"
               @click="
-                agentId = item.agentId
+                formMsg.agentId = item.agentId
+                formMsg.agentName = item.name
                 dialogVisibleHistoryMsg = true
               ">
               历史消息
@@ -280,12 +282,13 @@ export default {
     <el-dialog title="历史消息" :visible.sync="dialogVisibleHistoryMsg" :close-on-click-modal="false">
       <HistoryMsg
         ref="historyMsg"
-        :id="agentId"
+        :id="formMsg.agentId"
         v-if="dialogVisibleHistoryMsg"
         @edit="
-          (data) => {
+          (data, type) => {
             dialogVisibleSendMsg = true
-            formMsg = data
+            disabled = type === 'detail'
+            formMsg = Object.assign({ agentId: formMsg.agentId, agentName: formMsg.agentName }, data)
           }
         " />
     </el-dialog>
@@ -301,7 +304,7 @@ export default {
 
     <!-- 编辑/详情发送消息 弹窗 -->
     <el-dialog title="发送消息" :visible.sync="dialogVisibleSendMsg" :close-on-click-modal="false">
-      <MsgForm v-if="dialogVisibleSendMsg" :data="formMsg" @submit="submitSendMsg" />
+      <MsgForm v-if="dialogVisibleSendMsg" :data="formMsg" :disabled="disabled" @submit="submitSendMsg" />
     </el-dialog>
   </div>
 </template>

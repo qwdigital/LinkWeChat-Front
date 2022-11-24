@@ -14,6 +14,9 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    disabled: {
+      type: Boolean,
+    },
   },
 
   data() {
@@ -212,7 +215,7 @@ export default {
       </el-form>
     </div>
 
-    <div class="mt20">
+    <div v-if="!disabled" class="mt20">
       <el-button @click="$emit('submit')">取 消</el-button>
       <el-button type="primary" @click="submit">确 定</el-button>
     </div>

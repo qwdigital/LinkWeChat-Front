@@ -68,22 +68,6 @@ export default {
       type || !data ? (this.disabled = false) : (this.disabled = true)
       this.$emit('edit', data, type)
     },
-    submit() {
-      this.$refs['form'].validate((valid) => {
-        if (valid) {
-          ;(this.form.id ? update : add)(this.form)
-            .then(() => {
-              this.msgSuccess('操作成功')
-              this.dialogVisible = false
-              this.getList()
-              // this.getList(!this.form.id && 1)
-            })
-            .catch(() => {
-              this.dialogVisible = false
-            })
-        }
-      })
-    },
     // 删除和撤销
     removke(id, action, tip) {
       // const operIds = id || this.ids + ''
@@ -127,7 +111,7 @@ export default {
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="{ row }">
           <el-button type="text" @click="edit(row, 'detail')">详情</el-button>
-          <el-button v-if="[0, 1].includes(row.status)" type="text" @click="edit(row, 'edit')">编辑</el-button>
+          <el-button v-if="['0', '1'].includes(row.status + '')" type="text" @click="edit(row, 'edit')">编辑</el-button>
           <el-button v-if="row.status == 2" type="text" @click="removke(row.id, 'revoke', '撤回')">撤回</el-button>
           <el-button v-else @click="removke(row.id, 'remove', '删除')" type="text">删除</el-button>
           <!-- v-hasPermi="['customerManage:tag:remove']" -->
