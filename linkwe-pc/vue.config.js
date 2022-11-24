@@ -137,21 +137,20 @@ module.exports = {
           args[0].cdn = cdn
           return args
         })
+        config
+          .plugin('ScriptExtHtmlWebpackPlugin')
+          .after('html')
+          .use('script-ext-html-webpack-plugin', [
+            {
+              // `runtime` must same as runtimeChunk name. default is `runtime`
+              inline: /runtime\..*\.js$/,
+            },
+          ])
+          .end()
       }
 
-      config
-        .plugin('ScriptExtHtmlWebpackPlugin')
-        .after('html')
-        .use('script-ext-html-webpack-plugin', [
-          {
-            // `runtime` must same as runtimeChunk name. default is `runtime`
-            inline: /runtime\..*\.js$/,
-          },
-        ])
-        .end()
-
       config.optimization.minimizer('terser').tap((options) => {
-        options[0].terserOptions.compress.drop_console = false
+        options[0].terserOptions.compress.drop_console = !env._ISLOG
         options[0].terserOptions.compress.drop_debugger = false
         return options
       })

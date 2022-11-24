@@ -1,9 +1,10 @@
 <script>
 import { appMsg } from '@/api/internalCollaborate/appManage'
+import MsgForm from '../components/MsgForm'
 
 export default {
   name: '',
-  components: {},
+  components: { MsgForm },
   props: {
     id: {
       type: String,
@@ -17,14 +18,14 @@ export default {
         pageSize: 10,
         title: '',
         status: '',
-        id: this.id,
+        agentId: this.id,
       },
       total: 0,
       list: [],
       loading: false,
 
-      dialogVisibleHistoryMsg: false,
-      status: { '': '全部状态', 0: '草稿', 1: '待发送', 2: '已发送', 3: '已撤回' },
+      dialogVisible: false,
+      status: { '': '全部状态', 0: '草稿', 1: '待发送', 2: '已发送', 3: '发送失败', 4: '已撤回' },
       type: [
         '图片',
         '语音',
@@ -43,13 +44,6 @@ export default {
         '客服话术',
       ],
       form: {},
-      rules: Object.freeze({
-        agentId: [{ required: true, message: '必填项', trigger: 'blur' }],
-        secret: [{ required: true, message: '必填项', trigger: 'blur' }],
-        name: [{ required: true, message: '必填项', trigger: 'blur' }],
-        description: [{ required: true, message: '必填项', trigger: 'blur' }],
-        logoUrl: [{ required: true, message: '必填项', trigger: 'change' }],
-      }),
     }
   },
   computed: {},
@@ -100,6 +94,7 @@ export default {
         }
       })
     },
+    // 删除和撤销
     removke(id, action, tip) {
       // const operIds = id || this.ids + ''
       this.$confirm('是否确认' + tip + '？该操作不可撤销，请谨慎操作。', {

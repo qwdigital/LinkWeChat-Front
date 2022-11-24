@@ -1,9 +1,8 @@
 <script>
 import { getList, update, add, remove, sync } from '@/api/internalCollaborate/appManage'
-// import clipboard from "clipboard";
 
 export default {
-  components: { HistoryMsg: () => import('./HistoryMsg') },
+  components: { HistoryMsg: () => import('./HistoryMsg'), MsgForm: () => import('../components/MsgForm') },
   props: {},
   data() {
     return {
@@ -28,7 +27,7 @@ export default {
 
       id: '',
       dialogVisibleHistoryMsg: false,
-      // dialogVisibleSelectMaterial: false,
+      dialogVisibleSendMsg: false,
     }
   },
   watch: {},
@@ -116,12 +115,12 @@ export default {
     //   })
     // },
 
-    // 选择素材确认按钮
-    // submitSelectMaterial(text, image, file) {
-    //   this.form.logoMediaid = image.id
-    //   this.form.squareLogoUrl = image.materialUrl
-    //   this.dialogVisibleSelectMaterial = false
-    // },
+    // 发送消息确认按钮
+    submitSendMsg(text, image, file) {
+      this.form.logoMediaid = image.id
+      this.form.squareLogoUrl = image.materialUrl
+      this.dialogVisibleSendMsg = false
+    },
   },
 }
 </script>
@@ -155,7 +154,14 @@ export default {
             <TagEllipsis :list="item.allowPartyName"></TagEllipsis>
           </div>
           <div class="list-action fxbw">
-            <!-- <el-button type="text">发送消息</el-button> -->
+            <el-button
+              type="text"
+              @click="
+                id = item.id
+                dialogVisibleSendMsg = true
+              ">
+              发送消息
+            </el-button>
             <el-button
               type="text"
               @click="
@@ -269,6 +275,11 @@ export default {
       @success="submitSelectMaterial"
     >
     </SelectMaterial> -->
+
+    <!-- 编辑/详情发送消息 弹窗 -->
+    <el-dialog title="发送消息" :visible.sync="dialogVisibleSendMsg" :close-on-click-modal="false">
+      <MsgForm v-if="dialogVisibleSendMsg" :form="form" />
+    </el-dialog>
   </div>
 </template>
 

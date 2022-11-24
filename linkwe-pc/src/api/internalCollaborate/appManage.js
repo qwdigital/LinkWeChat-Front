@@ -130,7 +130,6 @@ export const appMsg = {
         content: '', // string 文本内容（文本消息必传）
         description: '', // string 消息的描述（视频、文本卡片、图文 必传）
         linkUrl: '', // string 点击后跳转的链接。最长2048字节，请确保包含了协议头(http/https) （文本卡片、图文 必传）
-        mediaId: '', // string 素材id（语音、视频、文件 必传）
         msgType: '', // string 消息类型 文本:text, 图片:image, 语音:voice, 视频:video, 文件:file, 文本卡片:textcard, 图文:news, 图文消息:link, 小程序：miniprogram
         picUrl: '', // string 图文消息的图片链接，支持JPG、PNG格式，较好的效果为大图 1068*455，小图150*150。（文本卡片、图文 必传）
         title: '', // string 消息的标题（视频、文本卡片、图文 必传）
