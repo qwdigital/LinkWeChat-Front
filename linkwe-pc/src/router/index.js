@@ -31,27 +31,7 @@ import visitor from '@/layout/visitor'
  */
 
 // 开发路由，总后台配置完菜单务必删除或注释，只在开发环境生效
-const devRoutes = [
-  {
-    path: '/appManage',
-    component: Layout,
-    hidden: true,
-    meta: {
-      title: '应用管理',
-    },
-    children: [
-      {
-        path: 'list',
-        component: (resolve) => require(['@/views/internalCollaborate/appManage/list'], resolve),
-        meta: {
-          title: '',
-          activeMenu: '/commodityCenter/commodityManage',
-          breadcrumb: true,
-        },
-      },
-    ],
-  },
-]
+const devRoutes = []
 
 // 公共路由
 export const constantRoutes = [
