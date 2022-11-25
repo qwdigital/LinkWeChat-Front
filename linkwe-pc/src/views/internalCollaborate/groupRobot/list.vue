@@ -1,5 +1,5 @@
 <script>
-import { getList, update, add, remove } from '@/api/internalCollaborate/groupRobot'
+import { getList, update, add, remove, appMsg } from '@/api/internalCollaborate/groupRobot'
 
 export default {
   components: { HistoryMsg: () => import('./HistoryMsg'), MsgForm: () => import('../components/MsgForm') },
@@ -209,7 +209,7 @@ export default {
     overflow: hidden;
   }
   .list-item {
-    height: 125px;
+    height: 128px;
     padding: 20px 20px 0;
     border: 1px solid #eee;
     margin: 0 20px 20px 0;
