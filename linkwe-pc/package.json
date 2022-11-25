@@ -5,7 +5,7 @@
   "license": "GPL-3.0",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "serve:test": "vue-cli-service serve",
+    "serve:test": "vue-cli-service serve --ENV=test",
     "develop": "vue-cli-service build --ENV=development",
     "build": "vue-cli-service build",
     "test": "vue-cli-service build --ENV=test",
