@@ -1,26 +1,20 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/agent'
+const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/group/robot'
 const serviceMsg = service + '/msg'
 
-// 应用管理
+// 机器人管理
 /**
  * 列表
  * @param {*} params
+ * {
+  endTime:'',	query	string 否 结束时间
+  groupName:'',	query	string 否 群名称
+  startTime:'',	query	string 否 开始时间
+ * }
  */
 export function getList() {
   return request({
     url: service + '/list',
-  })
-}
-
-/**
- * 同步应用信息
- * @param {*} params
- */
-export function sync(id) {
-  return request({
-    url: service + `/pull/${id}`,
-    method: 'get',
   })
 }
 
@@ -36,11 +30,11 @@ export function remove(id) {
 }
 
 /**
- * 添加应用
+ * 添加
  * @param {*} data
 {
-    "agentId": "应用ID",
-    "secret": "应用密钥"
+  groupName: string 群名称
+  webHookUrl: string 群机器人链接
 }
  * @returns
  */
@@ -53,15 +47,8 @@ export function add(data) {
 }
 
 /**
- * 编辑应用信息
- * @param {*} data
-{
-  description:'', // string 企业应用详情
-homeUrl:'', // string 应用主页url
-logoUrl:'', // string 企业应用头像
-name:'', // string 企业应用名称
-redirectDomain:'', // string 企业应用可信域名
-}
+ * 编辑
+ * @param {*} data 同上
  * @returns
  */
 export function update(data) {
@@ -72,7 +59,7 @@ export function update(data) {
   })
 }
 
-// 应用消息
+// ---- 机器人消息 ------
 
 export const appMsg = {
   /**
@@ -81,7 +68,8 @@ export const appMsg = {
    {
     endTime:'', // string date-time 发送结束时间
     startTime:'', // string date-time 发送开始时间
-    status:'',// integer int32状态
+    robotId	query	integer 否 机器人ID
+    status:'',// integer int32状态 0-草稿 1-待发送 2-已发送 3-发送失败
     title:'', // string 标题
   }
   */
@@ -92,39 +80,32 @@ export const appMsg = {
     })
   },
 
-  /**
-   * 应用消息详情
-   * @param {*} id
-   */
-  getDetail(id) {
-    return request({
-      url: serviceMsg + `/get/${id}`,
-    })
-  },
+  // /**
+  //  * 应用消息详情
+  //  * @param {*} id
+  //  */
+  // getDetail(id) {
+  //   return request({
+  //     url: serviceMsg + `/get/${id}`,
+  //   })
+  // },
+
+  // /**
+  //  * 撤销应用消息
+  //  * @param {*} id
+  //  */
+  // revoke(id) {
+  //   return request({
+  //     url: serviceMsg + `/revoke/${id}`,
+  //   })
+  // },
 
   /**
-   * 撤销应用消息
-   * @param {*} id
-   */
-  revoke(id) {
-    return request({
-      url: serviceMsg + `/revoke/${id}`,
-    })
-  },
-
-  /**
- * 新增应用消息
+ * 新增消息
  * @param {*} data
     {
-      agentId:'', // integer int32 应用ID
-      planSendTime: '', // string date-time 计划时间
-      scopeType:'', // integer int32 范围类型 1-全部 2-自定义
-      sendTime: '', // string date-time 发送时间
-      sendType:'', // integer int32 发送方式 1-立即发送 2-定时发送
-      title: '', // string 消息标题
-      toParty: '', // string 示例值 接收消息的部门
-      toTag: '', // string 示例值 接收消息的标签
-      toUser: '', // string 示例值 接收消息的成员
+      robotId:'', // integer 机器人ID
+      msgTitle: '', // string 消息标题
       WeMessageTemplate:{
         appId: '', // string 小程序appid（可以在微信公众平台上查询），必须是关联到企业的小程序应用
         content: '', // string 文本内容（文本消息必传）
@@ -145,32 +126,23 @@ export const appMsg = {
     })
   },
 
-  // 保存应用消息 data同上
-  save(data) {
-    return request({
-      url: serviceMsg + '/save',
-      method: 'post',
-      data,
-    })
-  },
+  // // 修改应用消息 data同上
+  // update(data) {
+  //   return request({
+  //     url: serviceMsg + `/update/${data.id}`,
+  //     method: 'PUT',
+  //     data,
+  //   })
+  // },
 
-  // 修改应用消息 data同上
-  update(data) {
-    return request({
-      url: serviceMsg + `/update/${data.id}`,
-      method: 'PUT',
-      data,
-    })
-  },
-
-  /**
-   * 删除
-   * @param {*} id
-   */
-  remove(id) {
-    return request({
-      url: serviceMsg + `/delete/${id}`,
-      method: 'delete',
-    })
-  },
+  // /**
+  //  * 删除
+  //  * @param {*} id
+  //  */
+  // remove(id) {
+  //   return request({
+  //     url: serviceMsg + `/delete/${id}`,
+  //     method: 'delete',
+  //   })
+  // },
 }

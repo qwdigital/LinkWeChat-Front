@@ -10,10 +10,10 @@ const envs = {
     SYSTEM_API: '/linkwechat-dev-api', // 接口基础路径/nginx接口转发路径
   },
   test: {
-    DOMAIN: 'http://dev.linkwechat.net',
+    DOMAIN: 'http://demo.linkwechat.net',
     BASE_URL: './', // 路由基础路径
-    BASE_API: 'http://dev.linkwechat.net/linkwechat-dev-api',
-    SYSTEM_API: '/linkwechat-dev-api',
+    BASE_API: 'http://demo.linkwechat.net/linkwechat-api',
+    SYSTEM_API: '/linkwechat-api',
     _ISGZIP: true, // 是否开启gzip压缩
     _ISCDN: true, // 是否开启cdn加速
   },

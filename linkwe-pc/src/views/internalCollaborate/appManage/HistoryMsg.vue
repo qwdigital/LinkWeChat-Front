@@ -62,9 +62,13 @@ export default {
         })
     },
     edit(data, type) {
+      this.loading = true
       this.form = Object.assign({}, data || {})
-      type || !data ? (this.disabled = false) : (this.disabled = true)
-      this.$emit('edit', data, type)
+      appMsg.getDetail(data.id).then((res) => {
+        this.$emit('edit', res.data, type)
+      }) .finally(() => {
+          this.loading = false
+        })
     },
     // 删除和撤销
     removke(id, action, tip) {

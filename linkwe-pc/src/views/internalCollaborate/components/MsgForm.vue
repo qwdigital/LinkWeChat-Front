@@ -51,7 +51,12 @@ export default {
   },
   computed: {},
   watch: {},
-  created() {},
+  created() {
+    if (this.form.robotId) {
+      // 机器人消息没有视频类型
+      delete this.typeDict.video
+    }
+  },
   mounted() {},
   methods: {
     selectedUser(value) {
@@ -77,7 +82,7 @@ export default {
         }
       })
     },
-    async submit() {
+    async submit(status) {
       let form = JSON.parse(JSON.stringify(this.form))
       let valid = await this.$refs['form'].validate()
       valid = await this.$refs['formCon'].validate()
@@ -89,6 +94,7 @@ export default {
         } else {
           form.toParty = form.toParty.map((e) => e.userId)
           form.toUser = form.toUser.map((e) => e.userId)
+          form.status = status
           this.$emit('submit', form)
         }
       }
@@ -99,7 +105,8 @@ export default {
 
 <template>
   <div style="margin: 0 20px">
-    <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+    <!-- 应用消息 -->
+    <el-form class="mb20" v-if="form.agentId" ref="form" :model="form" :rules="rules" label-width="100px">
       <div class="">
         <div class="title">
           <span>消息设置</span>
@@ -145,83 +152,87 @@ export default {
       </div>
     </el-form>
 
-    <div class="mt20">
+    <el-form ref="formCon" :model="form.weMessageTemplate" :rules="rules" label-width="100px">
       <div class="title">消息内容</div>
-      <el-form ref="formCon" :model="form.weMessageTemplate" :rules="rules" label-width="100px">
-        <el-form-item label="发送类型" prop="msgType">
-          <el-radio-group v-model="form.weMessageTemplate.msgType">
-            <el-radio v-for="(item, label, index) in typeDict" :key="index" :label="label">
-              {{ item }}
-            </el-radio>
-          </el-radio-group>
-        </el-form-item>
+      <!-- 机器人消息标题 -->
+      <el-form-item v-if="form.robotId" label="消息标题" prop="title">
+        <el-input v-model="form.msgTitle" placeholder="请输入标题" maxlength="30" show-word-limit></el-input>
+      </el-form-item>
 
-        <el-form-item label="文本内容" prop="content" v-if="form.weMessageTemplate.msgType === 'text'">
+      <el-form-item label="内容类型" prop="msgType">
+        <el-radio-group v-model="form.weMessageTemplate.msgType">
+          <el-radio v-for="(item, label, index) in typeDict" :key="index" :label="label">
+            {{ item }}
+          </el-radio>
+        </el-radio-group>
+      </el-form-item>
+
+      <el-form-item label="文本内容" prop="content" v-if="form.weMessageTemplate.msgType === 'text'">
+        <el-input
+          v-model="form.weMessageTemplate.content"
+          type="textarea"
+          :autosize="{ minRows: 2, maxRows: 50 }"
+          placeholder="请输入内容"
+          maxlength="2000"
+          show-word-limit></el-input>
+      </el-form-item>
+
+      <!-- 图片 -->
+      <el-form-item label="图片" prop="fileUrl" v-else-if="form.weMessageTemplate.msgType === 'image'">
+        <Upload :fileUrl.sync="form.weMessageTemplate.fileUrl" :maxSize="20" type="0">
+          <div slot="tip">支持jpg/jpeg/png格式，图片大小不超过2M</div>
+        </Upload>
+      </el-form-item>
+
+      <!-- 图文 -->
+      <template v-else-if="form.weMessageTemplate.msgType === 'news'">
+        <el-form-item label="图文地址" prop="linkUrl">
           <el-input
-            v-model="form.weMessageTemplate.content"
+            v-model="form.weMessageTemplate.linkUrl"
+            type="text"
+            placeholder="请输入图文地址，以http://或https://开头"></el-input>
+        </el-form-item>
+        <el-form-item label="图文标题" prop="title">
+          <el-input
+            v-model="form.weMessageTemplate.title"
+            type="text"
+            :maxlength="64"
+            show-word-limit
+            placeholder="请输入图文标题"></el-input>
+        </el-form-item>
+        <el-form-item label="图文描述" prop="description">
+          <el-input
+            v-model="form.weMessageTemplate.description"
             type="textarea"
+            :maxlength="200"
+            show-word-limit
             :autosize="{ minRows: 2, maxRows: 50 }"
-            placeholder="请输入内容"
-            maxlength="2000"
-            show-word-limit></el-input>
+            placeholder="请输入"></el-input>
         </el-form-item>
-
-        <!-- 图片 -->
-        <el-form-item label="图片" prop="fileUrl" v-else-if="form.weMessageTemplate.msgType === 'image'">
-          <Upload :fileUrl.sync="form.weMessageTemplate.fileUrl" :maxSize="20" type="0">
-            <div slot="tip">支持jpg/jpeg/png格式，图片大小不超过2M</div>
+        <el-form-item label="图文封面">
+          <Upload :fileUrl.sync="form.weMessageTemplate.picUrl" type="0">
+            <div slot="tip">支持jpg/jpeg/png格式，建议200*200</div>
           </Upload>
         </el-form-item>
+      </template>
 
-        <!-- 图文 -->
-        <template v-else-if="form.weMessageTemplate.msgType === 'news'">
-          <el-form-item label="图文地址" prop="linkUrl">
-            <el-input
-              v-model="form.weMessageTemplate.linkUrl"
-              type="text"
-              placeholder="请输入图文地址，以http://或https://开头"></el-input>
-          </el-form-item>
-          <el-form-item label="图文标题" prop="title">
-            <el-input
-              v-model="form.weMessageTemplate.title"
-              type="text"
-              :maxlength="64"
-              show-word-limit
-              placeholder="请输入图文标题"></el-input>
-          </el-form-item>
-          <el-form-item label="图文描述" prop="description">
-            <el-input
-              v-model="form.weMessageTemplate.description"
-              type="textarea"
-              :maxlength="200"
-              show-word-limit
-              :autosize="{ minRows: 2, maxRows: 50 }"
-              placeholder="请输入"></el-input>
-          </el-form-item>
-          <el-form-item label="图文封面">
-            <Upload :fileUrl.sync="form.weMessageTemplate.picUrl" type="0">
-              <div slot="tip">支持jpg/jpeg/png格式，建议200*200</div>
-            </Upload>
-          </el-form-item>
-        </template>
+      <el-form-item v-else-if="form.weMessageTemplate.msgType === 'video'" label="上传视频" prop="fileUrl">
+        <Upload :fileUrl.sync="form.weMessageTemplate.fileUrl" :type="2" @getPicUrl="getPicUrl">
+          <div slot="tip">支持mp4/mov格式，视频大小不超过100M</div>
+        </Upload>
+      </el-form-item>
 
-        <el-form-item v-else-if="form.weMessageTemplate.msgType === 'video'" label="上传视频" prop="fileUrl">
-          <Upload :fileUrl.sync="form.weMessageTemplate.fileUrl" :type="2" @getPicUrl="getPicUrl">
-            <div slot="tip">支持mp4/mov格式，视频大小不超过100M</div>
-          </Upload>
-        </el-form-item>
+      <el-form-item v-else-if="form.weMessageTemplate.msgType === 'file'" label="上传文件" prop="fileUrl">
+        <Upload :fileUrl.sync="form.weMessageTemplate.fileUrl" :type="3" :isThree="true">
+          <div slot="tip">支持pdf/ppt/word文件，单个文件大小不超过50M</div>
+        </Upload>
+      </el-form-item>
+    </el-form>
 
-        <el-form-item v-else-if="form.weMessageTemplate.msgType === 'file'" label="上传文件" prop="fileUrl">
-          <Upload :fileUrl.sync="form.weMessageTemplate.fileUrl" :type="3" :isThree="true">
-            <div slot="tip">支持pdf/ppt/word文件，单个文件大小不超过50M</div>
-          </Upload>
-        </el-form-item>
-      </el-form>
-    </div>
-
-    <div v-if="!disabled" class="mt20">
+    <div v-if="!disabled" class="mt20 ar">
       <el-button @click="$emit('submit')">取 消</el-button>
-      <el-button type="primary" @click="submit">确 定</el-button>
+      <el-button type="primary" @click="submit(1)">确定发送</el-button>
+      <el-button v-if="form.agentId" type="primary" @click="submit(0)">存为草稿</el-button>
     </div>
 
     <!-- 选择发起员工弹窗 -->

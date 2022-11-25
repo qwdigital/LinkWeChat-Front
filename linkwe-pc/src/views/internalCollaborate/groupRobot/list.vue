@@ -1,8 +1,8 @@
 <script>
-import { getList, update, add, remove, sync } from '@/api/internalCollaborate/groupRobot'
+import { getList, update, add, remove } from '@/api/internalCollaborate/groupRobot'
 
 export default {
-  components: { HistoryMsg: () => import('./HistoryMsg') },
+  components: { HistoryMsg: () => import('./HistoryMsg'), MsgForm: () => import('../components/MsgForm') },
   props: {},
   data() {
     return {
@@ -12,13 +12,13 @@ export default {
       disabled: false,
       loading: false,
       rules: Object.freeze({
-        name: [{ required: true, message: '必填项', trigger: 'blur' }],
-        WebHook: [{ required: true, message: '必填项', trigger: 'blur' }],
+        groupName: [{ required: true, message: '必填项', trigger: 'blur' }],
+        webHookUrl: [{ required: true, message: '必填项', trigger: 'blur' }],
       }),
 
-      id: '',
+      formMsg: {},
       dialogVisibleHistoryMsg: false,
-      // dialogVisibleSelectMaterial: false,
+      dialogVisibleSendMsg: false,
     }
   },
   watch: {},
@@ -26,29 +26,19 @@ export default {
   created() {
     this.getList()
 
-    this.$store.dispatch('app/setBusininessDesc', `<div>企业微信自建应用管理，支持通过应用发送应用消息</div> `)
+    this.$store.dispatch('app/setBusininessDesc', `<div>通过群机器人给内部群发送消息，通知员工</div> `)
   },
   mounted() {},
   methods: {
     getList(page) {
       this.loading = true
       getList()
-        .then(({ data, total }) => {
-          data.forEach((element) => {
-            element.allowPartyName = (element.allowPartyName || '').split(',')
-            element.allowUserinfoName = (element.allowUserinfoName || '').split(',')
-          })
-          this.list = data
+        .then(({ rows, total }) => {
+          this.list = rows
         })
         .finally(() => {
           this.loading = false
         })
-    },
-    sync(item) {
-      sync(item.id).then(({ data }) => {
-        Object.assign(item, data)
-        this.msgSuccess('操作成功')
-      })
     },
     edit(data, type) {
       this.form = Object.assign({}, data || {})
@@ -88,6 +78,22 @@ export default {
           this.msgSuccess('删除成功')
         })
     },
+
+    // 发送消息确认按钮
+    submitSendMsg(form) {
+      if (form) {
+        ;(form.id ? appMsg.update : appMsg.add)(form)
+          .then(() => {
+            this.msgSuccess('操作成功')
+            this.dialogVisibleSendMsg = false
+          })
+          .catch(() => {
+            this.dialogVisibleSendMsg = false
+          })
+      } else {
+        this.dialogVisibleSendMsg = false
+      }
+    },
     // goRoute(id, path) {
     //   this.$router.push({
     //     path: 'taskAev',
@@ -110,17 +116,25 @@ export default {
     <ul v-loading="loading" class="list-wrap">
       <li v-for="(item, index) of list" :key="index" class="list">
         <div class="list-item">
-          <div class="title blod toe">{{ item.name }}</div>
+          <div class="title blod toe">{{ item.groupName }}</div>
           <div class="desc mt10">
-            {{ item.description }}
+            {{ item.webHookUrl }}
           </div>
           <!-- <el-button size="mini" type="primary" plain @click="sync(item)">同步</el-button> -->
           <div class="list-action fxbw">
-            <!-- <el-button type="text">发送消息</el-button> -->
             <el-button
               type="text"
               @click="
-                id = item.id
+                formMsg = { robotId: item.id }
+                disabledMsg = false
+                dialogVisibleSendMsg = true
+              ">
+              发送消息
+            </el-button>
+            <el-button
+              type="text"
+              @click="
+                formMsg = { robotId: item.id }
                 dialogVisibleHistoryMsg = true
               ">
               历史消息
@@ -144,13 +158,13 @@ export default {
       :visible.sync="dialogVisible"
       :close-on-click-modal="false"
       width="580px">
-      <el-form ref="form" label-position="right" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="群名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入群名称"></el-input>
+      <el-form ref="form" label-position="right" :model="form" :rules="rules" label-width="90px">
+        <el-form-item label="群名称" prop="groupName">
+          <el-input v-model="form.groupName" placeholder="请输入群名称"></el-input>
           <div class="dialog-tip">如何获取：企微后台->应用管理->自建应用详情->AgentId</div>
         </el-form-item>
-        <el-form-item label="WebHook" prop="secret">
-          <el-input v-model="form.secret" placeholder="请输入WebHook URL"></el-input>
+        <el-form-item label="WebHook" prop="webHookUrl">
+          <el-input v-model="form.webHookUrl" placeholder="请输入WebHook URL"></el-input>
           <div class="dialog-tip">如何获取：企业微信内部群 -> 开启群机器人 -> 复制地址</div>
         </el-form-item>
       </el-form>
@@ -162,7 +176,22 @@ export default {
 
     <!-- 历史消息 弹窗 -->
     <el-dialog title="历史消息" :visible.sync="dialogVisibleHistoryMsg" :close-on-click-modal="false">
-      <HistoryMsg :id="id" v-if="dialogVisibleHistoryMsg" ref="historyMsg" />
+      <HistoryMsg
+        :id="formMsg.robotId"
+        v-if="dialogVisibleHistoryMsg"
+        ref="historyMsg"
+        @edit="
+          (data, type) => {
+            dialogVisibleSendMsg = true
+            disabledMsg = true
+            formMsg = data
+          }
+        " />
+    </el-dialog>
+
+    <!-- 编辑/详情发送消息 弹窗 -->
+    <el-dialog title="发送消息" :visible.sync="dialogVisibleSendMsg" :close-on-click-modal="false">
+      <MsgForm v-if="dialogVisibleSendMsg" :data="formMsg" :disabled="disabledMsg" @submit="submitSendMsg" />
     </el-dialog>
   </div>
 </template>
@@ -180,8 +209,8 @@ export default {
     overflow: hidden;
   }
   .list-item {
-    height: 218px;
-    padding: 20px 20px 10px;
+    height: 125px;
+    padding: 20px 20px 0;
     border: 1px solid #eee;
     margin: 0 20px 20px 0;
     background: #fff;
@@ -191,6 +220,9 @@ export default {
     }
     .desc {
       color: #ddd;
+      height: 40px;
+      overflow: hidden;
+      text-overflow: ellipsis;
       word-break: break-all;
     }
   }

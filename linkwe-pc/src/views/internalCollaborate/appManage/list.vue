@@ -25,7 +25,6 @@ export default {
         logoUrl: [{ required: true, message: '必填项', trigger: 'change' }],
       }),
 
-      agentId: '',
       formMsg: {},
       dialogVisibleHistoryMsg: false,
       dialogVisibleSendMsg: false,
@@ -173,8 +172,8 @@ export default {
             <el-button
               type="text"
               @click="
-                id = item.id
                 formMsg = { agentName: item.name, agentId: item.agentId }
+                disabledMsg = false
                 dialogVisibleSendMsg = true
               ">
               发送消息
@@ -280,11 +279,7 @@ export default {
     </el-dialog>
 
     <!-- 历史消息 弹窗 -->
-    <el-dialog
-      title="历史消息"
-      :visible.sync="dialogVisibleHistoryMsg"
-      :close-on-click-modal="false"
-      @close="disabledMsg = false">
+    <el-dialog title="历史消息" :visible.sync="dialogVisibleHistoryMsg" :close-on-click-modal="false">
       <HistoryMsg
         ref="historyMsg"
         :id="formMsg.agentId"
