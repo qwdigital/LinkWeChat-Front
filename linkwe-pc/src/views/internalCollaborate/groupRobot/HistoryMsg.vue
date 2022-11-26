@@ -59,6 +59,7 @@ export default {
     },
     edit(data) {
       this.form = Object.assign({}, data || {})
+      data.weMessageTemplate || (data.weMessageTemplate = data)
       this.$emit('edit', data)
     },
   },
