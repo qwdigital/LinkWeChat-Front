@@ -64,9 +64,12 @@ export default {
     edit(data, type) {
       this.loading = true
       this.form = Object.assign({}, data || {})
-      appMsg.getDetail(data.id).then((res) => {
-        this.$emit('edit', res.data, type)
-      }) .finally(() => {
+      appMsg
+        .getDetail(data.id)
+        .then((res) => {
+          this.$emit('edit', res.data, type)
+        })
+        .finally(() => {
           this.loading = false
         })
     },
@@ -102,7 +105,7 @@ export default {
     <el-button @click="resetQuery" type="info" plain>清空</el-button>
 
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="消息标题" align="center" prop="title" />
+      <el-table-column label="消息标题" align="center" prop="msgTitle" />
       <el-table-column prop="msgType" label="类型" align="center">
         <template slot-scope="{ row }">{{ typeDict[row.msgType] }}</template>
       </el-table-column>
