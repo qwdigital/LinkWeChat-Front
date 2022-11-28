@@ -1,398 +1,500 @@
 <script>
-  import { upload } from '@/api/material'
-  import Video from 'video.js'
-  import BenzAMRRecorder from 'benz-amr-recorder'
-  import MP4Box from 'mp4box'
+import { getCosConfig, getVideoPic } from '@/api/common'
+import { dateFormat, uuid } from '@/utils/index'
+import Video from 'video.js'
+import Cos from 'cos-js-sdk-v5'
+import BenzAMRRecorder from 'benz-amr-recorder'
+import MP4Box from 'mp4box'
 
-  export default {
-    name: 'Upload',
-    components: {},
-    props: {
-      fileUrl: {
-        type: String,
-        default: ''
-      },
-      fileUrls: {
-        type: Array,
-        default: null
-      },
-      fileName: {
-        type: String,
-        default: ''
-      },
-      fileNames: {
-        type: Array,
-        default: () => []
-      },
-      // 监视弹框显示隐藏
-      dalogChange: {
-        type: Boolean,
-        default: false
-      },
-      // 0 图片（image）、1 语音（voice）、2 视频（video），3 普通文件(file)
-      type: {
-        type: String,
-        default: '0'
-      },
-      // 上传文件大小不能超过 maxSize MB
-      maxSize: {
-        type: Number,
-        default: 2
-      },
-      // 图片的宽高像素限制 [width(number), height(number)],默认null不限制
-      maxImgPx: {
-        type: Array,
-        default: null // () => [100, 100]
-      },
-      // 限制允许上传的文件格式 eg:["bmp", "jpg", "png", "jpeg", "gif"]
-      format: {
-        type: Array,
-        default: null
-      },
-      // 是否能上传多个
-      multiple: {
-        type: Boolean,
-        default: false
-      },
-      // 最多上传几个
-      limit: {
-        type: Number,
-        default: 1
-      },
-      // 是否限制文件只能上传word/pdf/ppt
-      isThree: {
-        type: Boolean,
-        default: false
-      }
-      // beforeUpload: {
-      //   type: Function,
-      //   default: function() {
-      //     return function() {}
-      //   },
-      // },
+export default {
+  components: {},
+  props: {
+    // 单文件上传时使用
+    fileUrl: {
+      type: String,
+      default: '',
     },
-    data() {
-      return {
-        loading: false,
-        action: window.lwConfig.BASE_API + '/file/upload',
-        // (this.type == 0
-        //   ? '/wecom/material/uploadimg'
-        //   : '/common/uploadFile2Cos'),
-        headers: window.lwConfig.headers,
-        // domain: window.lwConfig.BASE_API
+    fileName: {
+      type: String,
+      default: '',
+    },
 
-        dialogImageUrl: '',
-        dialogVisible: false,
-        urls: [],
-        names: [], // 批量上传图片名称
-        picUrl: '', // 视频第一帧
-        fileList: []
-      }
+    // 多文件上传时使用，例如: [{name: 'food.jpg', url: 'https://xxx.cdn.com/xxx.jpg'}]
+    fileList: {
+      type: Array,
+      default: () => [],
     },
-    watch: {
-      fileUrls: {
-        handler(value) {
-          this.names = this.fileNames
-          this.urls = value
-        },
-        immediate: true
-      },
-      fileUrl: {
-        handler(value) {
-          if (this.$refs.video) {
-            this.$refs.video.src = value
-          }
-        }
-      },
-      dalogChange(val) {
-        this.$refs.multPic.clearFiles()
-      }
-    },
-    computed: {
-      accept() {
-        return ['image/*', 'amr/*', 'video/*', '*'][this.type]
-      }
-    },
-    created() {},
-    mounted() {},
-    methods: {
-      handleRemove(i) {
-        this.fileList = []
-        if (this.urls.length === 0) {
-          this.urls = []
-        } else {
-          this.urls.splice(i, 1)
-          this.urls.forEach((el, index) => {
-            let obj = { url: '', name: '' }
-            obj.url = el
-            this.fileList.push(obj)
-          })
-        }
-        if (this.names.length === 0) {
-          this.names = []
-        } else {
-          this.names.splice(i, 1)
-          this.names.forEach((item, index) => {
-            this.fileList[index].name = item
-          })
-        }
-        this.$emit('update:fileUrls', this.urls)
-        this.$emit('update:fileNames', this.names)
-      },
-      handleExceed(file, fileList) {
-        this.$message.error(`最多上传${this.limit}张`)
-        this.loading = false
-      },
-      async handleBeforeUpload(file, filelist) {
-        this.loading = true
-        let isFormat = true
-        let isSize = true
-        if (this.format && this.format.length) {
-          // 校验格式
-          let reg = /\.(\w+)$/g
-          let match = file.name.match(reg)
-          let fileFormat = match && match[0].replace('.', '').toLowerCase()
-          if (!(isFormat = this.format.includes(fileFormat))) {
-            this.$message.error('文件格式不正确，请重新选择')
-            this.loading = false
-            return Promise.reject()
-          }
-        }
-        if (this.type === '0') {
-          // 图片
-          isFormat = file.type === 'image/jpeg' || file.type === 'image/png'
-          isSize = file.size / 1024 / 1024 < this.maxSize
-          if (!isFormat) {
-            this.$message.error('上传文件只能是 JPG/PNG 格式!')
-            this.loading = false
-          }
-          if (!isSize) {
-            this.$message.error('上传文件大小不能超过 2MB!')
-            this.loading = false
-          }
-          let maxImgPx = this.maxImgPx
-          if (maxImgPx) {
-            try {
-              await new Promise((resolve) => {
-                let width, height
-                let image = new Image()
-                //加载图片获取图片真实宽度和高度
-                image.onload = () => {
-                  width = image.width
-                  height = image.height
-                  if (width > maxImgPx[0]) {
-                    isSize = false
-                    this.$message.error(`图片“宽”度超过${maxImgPx[0]}像素，请重新选择`)
-                  } else if (height > maxImgPx[1]) {
-                    this.$message.error(`图片“高”度超过${maxImgPx[1]}像素，请重新选择`)
-                    isSize = false
-                  }
-                  window.URL && window.URL.revokeObjectURL(image.src)
-                  resolve()
-                }
-                if (window.URL) {
-                  let url = window.URL.createObjectURL(file)
-                  image.src = url
-                } else if (window.FileReader) {
-                  let reader = new FileReader()
-                  reader.onload = function (e) {
-                    let data = e.target.result
-                    image.src = data
-                  }
-                  reader.readAsDataURL(file)
-                }
-              })
-            } catch (e) {
-              console.error(e)
-            }
-          }
-        } else if (this.type === '1') {
-          // 语音
-          isFormat = /.amr$/gi.test(file.name)
-          isSize = file.size / 1024 / 1024 < 2
 
-          if (!isFormat) {
-            this.$message.error('上传文件只能是 amr 格式!')
-            this.loading = false
-          }
-          if (!isSize) {
-            this.$message.error('上传文件大小不能超过 2MB!')
-            this.loading = false
-          }
-          let amr = new BenzAMRRecorder()
-          try {
-            await amr.initWithBlob(file)
-            isSize = amr.getDuration() <= 60
-            if (!isSize) {
-              this.$message.error('上传文件时长不能超过 60秒!')
-              this.loading = false
-            }
-          } catch (error) {
-            console.log(error)
-            this.$message.error('文件损坏')
-          }
-        } else if (this.type === '2') {
-          // 视频
-          isFormat = file.type === 'video/mp4'
-          isSize = file.size / 1024 / 1024 < 100
-          if (!isFormat) {
-            this.$message.error('上传文件只能是 mp4 格式!')
-            this.loading = false
-          }
-          let result
-          await this.checkVideoCode(file).then((res) => {
-            console.log(res)
-            result = res
-          })
-          if (result.mime.indexOf('video/mp4') === -1) {
-            this.$message.error('mp4 格式不正确, 请使用标准编码视频!')
-            this.loading = false
-            return Promise.reject()
-          }
-          if (!isSize) {
-            this.$message.error('上传文件大小不能超过 100MB!')
-          }
-        } else if (this.type === '3') {
-          // 普通文件
-          isSize = file.size / 1024 / 1024 < 50
-          if (!isSize) {
-            this.$message.error('上传文件大小不能超过 50MB!')
-          }
-          if (this.isThree) {
-            isFormat = this.fileType(file.name)
-            if (!isFormat) {
-              this.$message.error('上传文件只能是 word/pdf/ppt!')
-              this.loading = false
-            }
-          }
-        }
-        if (!isSize) {
-          this.loading = false
-        }
-        // if (beforeUpload) {
-        //   return beforeUpload(file)
-        // }
-        return (isFormat && isSize) || Promise.reject()
+    // 0 图片（image）、1 语音（voice）、2 视频（video），3 普通文件(file)
+    type: {
+      type: String,
+      default: '0',
+      validator: function (value) {
+        // 这个值必须匹配下列字符串中的一个
+        return ['0', '1', '2', '3'].includes(value)
       },
-      checkVideoCode(file) {
-        return new Promise((resolve, reject) => {
-          const mp4boxFile = MP4Box.createFile()
-          const reader = new FileReader()
-          reader.readAsArrayBuffer(file)
-          reader.onload = function (e) {
-            const arrayBuffer = e.target.result
-            arrayBuffer.fileStart = 0
-            mp4boxFile.appendBuffer(arrayBuffer)
-          }
-          mp4boxFile.onReady = function (info) {
-            resolve(info)
-          }
-          mp4boxFile.onError = function (info) {
-            reject(info)
-          }
-        })
-      },
-      fileType(file) {
-        let filecontent = JSON.parse(JSON.stringify(file))
-        filecontent = filecontent.split('.')
-        let type = filecontent[filecontent.length - 1]
-        if (['doc', 'docx', 'pdf', 'ppt', 'pptx', 'pps', 'pptsx'].includes(type)) {
-          return true
-        } else {
-          return false
-        }
-      },
-      onSuccess(res, file) {
-        if (res.code === 200) {
-          // this.$emit('update:fileUrl', res.data.materialUrl)
-          // this.$emit('update:fileName', res.data.materialName)
+    },
+    // 上传文件大小不能超过 maxSize MB, 各类型有默认限制 参见: maxSizeDefault
+    maxSize: {
+      type: Number,
+      default: undefined,
+    },
+    // 图片的宽高像素限制 [width(number), height(number)],默认null不限制
+    maxImgPx: {
+      type: Array,
+      default: null, // () => [100, 100]
+    },
+    // 允许上传的文件格式后缀名 eg:["jpg", "png"]，['*']为不限制，各类型有默认限制 参见: formatDefault
+    format: {
+      type: Array,
+      default: undefined,
+    },
+    // 选择上传文件类型, 用于过滤系统选择文件类型, 默认根据类型自动匹配：见 acceptAuto，
+    accept: {
+      type: String,
+      default: '',
+    },
+    // 是否能上传多个
+    multiple: {
+      type: Boolean,
+      default: false,
+    },
+    // multiple为true是有效，最多上传几个,默认不限制，最小为1，大于1是自动开启可多选,
+    limit: {
+      type: Number,
+      default: undefined,
+    },
+    // onProgress: {
+    //   type: Function,
+    //   default: null,
+    // },
+    // beforeUpload: {
+    //   type: Function,
+    //   default: function() {
+    //     return function() {}
+    //   },
+    // },
 
-          // if (this.type == 0) {
-          //   res.url = res.data.url
-          //   res.fileName = res.data.url
-          // }
-          if (this.fileUrls || this.fileUrls === []) {
-            this.urls.push(res.data.url)
-            this.names.push(res.data.name)
-          }
-          this.$emit('update:fileUrl', res.data.url)
-          this.$emit('update:fileUrls', this.urls)
-          this.$emit('update:fileName', res.data.name)
-          this.$emit('update:fileNames', this.names)
-          this.$emit('update:file', file)
-          this.loading = false
-          // this.fileUrl = URL.createObjectURL(file.raw)
-        } else {
-          this.loading = false
-          this.$message.error(res.msg)
-        }
-      },
-      onError(err, file, fileList) {
-        this.loading = false
-        this.$message.error('上传文件失败')
-      }
+    // 图片操作  目前支持有 view：查看，remove：删除，download：下载
+    // action: {
+    //   type: Array,
+    //   default: () => ["view", "remove"],
+    // },
+  },
+  data() {
+    return {
+      loading: false,
+
+      fileUrlWatch: this.fileUrl,
+      fileNameWatch: this.fileName,
+      fileListWatch: this.fileList,
+
+      picUrl: '', // 视频第一帧
+      file: undefined,
+      speed: 0, // 上传网速
+      percentage: 0, //上传进度
+
+      // cos配置信息
+      cosConfig: { bucketName: '', cosImgUrlPrefix: '', region: '' },
+      cosInstance: undefined, // cos实例
     }
-  }
+  },
+  watch: {
+    fileUrl: {
+      handler(value) {
+        this.fileUrlWatch = value
+      },
+    },
+    fileName: {
+      handler(value) {
+        this.fileNameWatch = value
+      },
+    },
+    loading(val) {
+      this.$emit('loadingChange', val)
+    },
+  },
+  computed: {
+    // 识别选择文件类型
+    acceptAuto() {
+      return ['image/*', 'amr/*', 'video/*'][this.type]
+    },
+  },
+  created() {
+    getCosConfig().then((res) => {
+      this.cosConfig = res
+      this.cosInstance = new Cos({
+        SecretId: res.secretId,
+        SecretKey: res.secretKey,
+      })
+    })
+  },
+  mounted() {
+    // const cosInstance = new Cos({
+    //   // getAuthorization 必选参数
+    //   getAuthorization: function (options, callback) {
+    //     // 服务端例子：https://github.com/tencentyun/qcloud-cos-sts-sdk/blob/master/scope.md
+    //     // 异步获取临时密钥
+    //     var url = window.lwConfig.SYSTEM_API + '/file/get/config' // url替换成您自己的后端服务
+    //     var xhr = new XMLHttpRequest()
+    //     xhr.open('get', url, true)
+    //     xhr.setRequestHeader('Content-Type', 'application/json')
+    //     xhr.onload = function (e) {
+    //       try {
+    //         var data = JSON.parse(e.target.responseText)
+    //         var credentials = data.credentials
+    //       } catch (e) {}
+    //       if (!data || !credentials) {
+    //         return console.error('credentials invalid:\n' + JSON.stringify(data, null, 2))
+    //       }
+    //       callback({
+    //         TmpSecretId: decrypt(credentials.secretId),
+    //         TmpSecretKey: credentials.secretKey,
+    //         SecurityToken: credentials.sessionToken,
+    //         // 建议返回服务器时间作为签名的开始时间，避免用户浏览器本地时间偏差过大导致签名错误
+    //         StartTime: data.startTime, // 时间戳，单位秒，如：1580000000
+    //         ExpiredTime: data.expiredTime, // 时间戳，单位秒，如：1580000000
+    //         // ScopeLimit: true, // 细粒度控制权限需要设为 true，会限制密钥只在相同请求时重复使用
+    //       })
+    //     }
+    //     xhr.send()
+    //     // xhr.send(JSON.stringify(options.Scope))
+    //   },
+    // })
+  },
+  methods: {
+    upload() {
+      this.loading = true
+      let file = undefined
+      if (!this.multiple || this.limit == 1) {
+        file = this.file
+      } else {
+        // 多选上传是多次调用单传的
+        file = this.file.shift()
+      }
+      let date = new Date()
+      let format = file.name.match(/\.(\w+)$/g)
+      format = format && format[0]
+      const params = {
+        Bucket: this.cosConfig.bucketName /* 填入您自己的存储桶，必须字段 */,
+        Region: this.cosConfig.region /* 存储桶所在地域，例如ap-beijing，必须字段 */,
+        Key: `/${dateFormat(date, 'yyyy-MM-dd')}/t${date.getTime()}-${uuid()}${format}`,
+        /* 存储在桶里的对象键（例如1.jpg，a/b/test.txt），必须字段。*/
+        // 此处使用的格式: /日期/t时间戳-uid-文件后缀名
+      }
+
+      // 实例可能未初始化完成
+      if (!this.cosInstance) {
+        this.$message.error('存储空间正忙，请稍后再试')
+        return
+      }
+
+      this.cosInstance.uploadFile(
+        {
+          ...params,
+          Body: file /* 必须，上传文件对象，可以是input[type="file"]的file对象 */,
+          onProgress: (progressData) => {
+            this.percentage = progressData.percent * 100
+            this.speed = (progressData.speed / 1024 / 1024).toFixed(2)
+            // this.onProgress && this.onProgress(this.percentage, this.speed)
+          },
+        },
+        (err1, data) => {
+          this.percentage = this.speed = 0
+
+          if (err1) {
+            this.loading = false
+            this.$message.error('上传失败，请稍后再试')
+          } else {
+            let location = 'https://' + data.Location
+
+            this.type == 2
+              ? //获取视频第一帧画面
+                getVideoPic({ url: location }).then((res) => {
+                  this.loading = false
+                  this.$emit('getPicUrl', res.data.url)
+                })
+              : (this.loading = false)
+
+            // 使用本地链接提供预览，避免上传后下载的问题
+            let url = window.URL.createObjectURL(file)
+
+            let name = file.name
+            if (!this.multiple) {
+              this.fileUrlWatch = url
+              this.$emit('update:fileUrl', location)
+              this.$emit('update:fileName', (this.fileNameWatch = name))
+            } else {
+              this.fileListWatch = this.fileListWatch.concat({ name, url })
+              this.$emit('update:fileList', this.fileList.concat({ name, url: location }))
+            }
+          }
+        },
+      )
+    },
+    remove(i) {
+      this.$confirm('确定要删除吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        let clone = JSON.parse(JSON.stringify(this.fileList))
+        this.fileListWatch.splice(i, 1)
+        clone.splice(i, 1)
+        this.$emit('update:fileList', clone)
+      })
+    },
+    handleExceed(file, fileList) {
+      this.$message.error('最多上传' + this.limit + '张')
+      this.loading = false
+    },
+    async handleBeforeUpload(file, filelist) {
+      this.loading = true
+      let isFormat = true
+      let isSize = true
+
+      // type： 0 图片（image）、1 语音（voice）、2 视频（video），3 普通文件(file)
+
+      // 统一校验文件后缀名格式
+      // 如果没有显示配置 format 格式限制，则使用默认下面校验
+      let format = this.format
+      let tip = ''
+      if (!format || !format.length) {
+        let formatDefault = {
+          0: { tip: 'png/jpg', value: ['png', 'jpg', 'jpeg'] },
+          1: { value: ['amr'] },
+          2: { value: ['mp4'] },
+          3: { tip: 'word/pdf/ppt', value: ['doc', 'docx', 'pdf', 'ppt', 'pptx', 'pps', 'pptsx'] },
+        }
+        format = formatDefault[this.type].value
+        tip = formatDefault[this.type].tip
+      }
+      let match = file.name.match(/\.(\w+)$/g)
+      let fileFormat = match && match[0].replace('.', '').toLowerCase()
+      isFormat = format[0] === '*' || format.includes(fileFormat)
+      if (!isFormat) {
+        this.$message.error('文件格式错误，仅支持 ' + (tip || format.join('，')) + ' 格式!')
+        this.loading = false
+        return Promise.reject()
+      }
+
+      // 统一校验文件体积
+      // 如果没有显式配置 maxSize 限制大小，则使用下面默认值，单位 MB，
+      let maxSize = this.maxSize
+      if (!maxSize) {
+        let maxSizeDefault = { 0: 2, 1: 2, 2: 100, 3: 50 }
+        maxSize || (maxSize = maxSizeDefault[this.type])
+      }
+      isSize = file.size / 1024 / 1024 < maxSize
+      if (!isSize) {
+        this.$message.error('上传文件大小不能超过 ' + maxSize + 'MB!')
+        this.loading = false
+        return Promise.reject()
+      }
+
+      // 各类型独有的校验
+      let validate = true
+      if (this.type === '0') {
+        // 图片
+        let maxImgPx = this.maxImgPx
+        if (maxImgPx) {
+          try {
+            await new Promise((resolve) => {
+              let width, height
+              let image = new Image()
+              //加载图片获取图片真实宽度和高度
+              image.onload = () => {
+                width = image.width
+                height = image.height
+                if (width > maxImgPx[0]) {
+                  validate = false
+                  this.$message.error(`图片“宽”度超过${maxImgPx[0]}像素，请重新选择`)
+                } else if (height > maxImgPx[1]) {
+                  this.$message.error(`图片“高”度超过${maxImgPx[1]}像素，请重新选择`)
+                  validate = false
+                }
+                window.URL && window.URL.revokeObjectURL(image.src)
+                resolve()
+              }
+              if (window.URL) {
+                let url = window.URL.createObjectURL(file)
+                image.src = url
+              } else if (window.FileReader) {
+                let reader = new FileReader()
+                reader.onload = function (e) {
+                  let data = e.target.result
+                  image.src = data
+                }
+                reader.readAsDataURL(file)
+              }
+            })
+          } catch (e) {
+            console.error(e)
+          }
+        }
+      } else if (this.type === '1') {
+        // 语音
+        let amr = new BenzAMRRecorder()
+        try {
+          await amr.initWithBlob(file)
+          validate = amr.getDuration() <= 60
+          if (!validate) {
+            this.$message.error('上传文件时长不能超过 60秒!')
+          }
+        } catch (error) {
+          console.log(error)
+          this.$message.error('文件已损坏')
+        }
+      } else if (this.type === '2') {
+        // 视频
+        let result = await this.checkVideoCode(file)
+        if (result.mime.indexOf('video/mp4') === -1) {
+          this.$message.error('mp4 格式不正确, 请使用标准编码视频!')
+          this.loading = false
+          return Promise.reject()
+        }
+      } else if (this.type === '3') {
+        // 普通文件
+      }
+      if (!validate) {
+        this.loading = false
+      }
+      // if (beforeUpload) {
+      //   return beforeUpload(file)
+      // }
+      if (!this.multiple || this.limit == 1) {
+        this.file = file
+      } else {
+        Array.isArray(this.file) || (this.file = []) // 多选
+        this.file.push(file)
+      }
+      return validate || Promise.reject()
+    },
+    onError(err, file, fileList) {
+      this.loading = false
+      this.$message.error('上传文件失败')
+    },
+    checkVideoCode(file) {
+      return new Promise((resolve, reject) => {
+        const mp4boxFile = MP4Box.createFile()
+        const reader = new FileReader()
+        reader.readAsArrayBuffer(file)
+        reader.onload = function (e) {
+          const arrayBuffer = e.target.result
+          arrayBuffer.fileStart = 0
+          mp4boxFile.appendBuffer(arrayBuffer)
+        }
+        mp4boxFile.onReady = function (info) {
+          resolve(info)
+        }
+        mp4boxFile.onError = function (info) {
+          reject(info)
+        }
+      })
+    },
+    showView(index) {
+      let imager = index !== undefined ? this.$refs.image[index] : this.$refs.image
+      imager.clickHandler()
+      this.$nextTick(() => {
+        // 为遮罩层添加关闭事件
+        let maskEl = imager.$children[0].$refs['el-image-viewer__wrapper'].firstChild
+        maskEl.addEventListener('click', () => {
+          event.stopPropagation()
+          imager.closeViewer()
+        })
+      })
+      // this.$refs.image.$refs.closeViewer();
+    },
+  },
+}
 </script>
 
 <template>
   <div>
-    <div v-if="fileUrls || fileUrls === []">
-      <div class="img-style">
-        <!-- 多个图片 -->
-        <div v-for="(item, index) in fileUrls" :key="index" class="img-item">
-          <img class="upload-img" :src="item" alt="" @mouseenter="enterImg(index)" @mouseleave="leaveImg(index)" />
-          <span class="mask">
-            <span class="item-delete" @click="handleRemove(index)">
-              <i class="el-icon-delete"></i>
-            </span>
-          </span>
+    <!-- 多个上传文件列表展示 -->
+    <template v-if="multiple">
+      <!-- 图片 -->
+      <template v-if="type == 0">
+        <!-- <transition-group> -->
+        <div v-for="(item, index) in fileListWatch" :key="index" class="img-item">
+          <el-image
+            ref="image"
+            class="upload-img"
+            :src="item.url"
+            fit="contain"
+            :preview-src-list="fileListWatch.map((e) => e.url)"
+            alt="" />
+          <div class="action-mask">
+            <i class="el-icon-search mr5" @click="showView(index)"></i>
+            <!-- <span v-if="action.includes('download')" @click="download(item)">
+              <i class="el-icon-download"></i>
+            </span> -->
+            <i class="el-icon-delete mr5" @click="remove(index)"></i>
+          </div>
         </div>
-        <el-upload
-          ref="multPic"
-          v-loading="loading"
-          element-loading-text="正在上传..."
-          class="uploader"
-          :accept="accept"
-          :action="action"
-          :headers="headers"
-          :data="{ mediaType: type }"
-          :show-file-list="false"
-          :file-list="fileList"
-          :on-success="onSuccess"
-          :on-error="onError"
-          :before-upload="handleBeforeUpload"
-          :multiple="multiple"
-          :limit="limit"
-          :on-exceed="handleExceed"
-        >
-          <slot>
-            <template>
-              <i class="el-icon-plus uploader-icon"></i>
-            </template>
-          </slot>
-        </el-upload>
-      </div>
-    </div>
-    <div v-else>
-      <el-upload
-        ref="multPic"
-        v-loading="loading"
-        element-loading-text="正在上传..."
-        class="uploader"
-        :accept="accept"
-        :action="action"
-        :headers="headers"
-        :data="{ mediaType: type }"
-        :show-file-list="false"
+        <!-- </transition-group> -->
+      </template>
+      <!-- 后续再这里扩展其他文件列表 -->
+    </template>
+
+    <el-upload
+      ref="multPic"
+      class="uploader"
+      action="/api"
+      :accept="accept || acceptAuto"
+      :http-request="upload"
+      :data="{ mediaType: type }"
+      :show-file-list="false"
+      :file-list="fileListWatch"
+      :disabled="loading"
+      :multiple="multiple && limit != 1"
+      :limit="limit"
+      :on-error="onError"
+      :on-exceed="handleExceed"
+      :before-upload="handleBeforeUpload">
+      <!--
+      element-loading-text="正在上传..."
         :on-success="onSuccess"
-        :on-error="onError"
-        :before-upload="handleBeforeUpload"
-      >
-        <slot>
-          <template v-if="fileUrl || (fileUrls && fileUrls.length)">
+       -->
+
+      <slot>
+        <i v-if="!loading && !fileUrlWatch" class="el-icon-plus uploader-icon upload-action"></i>
+
+        <transition>
+          <!-- 上传精度条 -->
+          <div class="upload-action" v-if="loading">
+            <el-progress class="progress cc" type="circle" :percentage="percentage"></el-progress>
+            <div class="el-loading-spinner">
+              <svg viewBox="25 25 50 50" class="circular">
+                <circle cx="50" cy="50" r="20" fill="none" class="path"></circle>
+              </svg>
+            </div>
+            <div class="cc" style="margin-top: 35px">
+              {{ speed + 'M/s' }}
+            </div>
+          </div>
+
+          <!-- 单文件上传的文件展示 -->
+          <template v-if="!loading && fileUrlWatch && !multiple">
             <div v-if="type === '0'">
-              <img v-if="fileUrl" :src="fileUrl" class="upload-img" />
+              <el-image
+                v-if="fileUrlWatch"
+                ref="image"
+                :src="fileUrlWatch"
+                class="upload-img"
+                :preview-src-list="[fileUrlWatch]"
+                fit="contain" />
+
+              <div class="action-mask" @click.self.stop>
+                <i class="el-icon-search" @click.prevent.stop="showView()"></i>
+                <i class="el-icon-edit"></i>
+                <!-- <span v-if="action.includes('download')" @click.prevent.stop="download(item)">
+              <i class="el-icon-download"></i>
+            </span> -->
+                <!-- <span @click.prevent.stop="remove()">
+                  <i class="el-icon-delete"></i>
+                </span> -->
+              </div>
             </div>
             <div v-else-if="type === '2'">
               <video
@@ -404,18 +506,28 @@
                 webkit-playsinline="true"
                 playsinline="true"
                 :autoplay="false"
-                preload="auto"
-              >
-                <source :src="fileUrl" type="video/mp4" />
+                :key="fileUrlWatch"
+                preload="auto">
+                <source :src="fileUrlWatch" type="video/mp4" />
               </video>
+              <div class="action-mask" style="height: 50%" @click.self.stop>
+                <i class="el-icon-edit"></i>
+              </div>
             </div>
-            <div v-else>{{ fileName }}</div>
+            <div v-else class="al">
+              {{ fileNameWatch || fileUrlWatch }}
+              <i class="el-icon-edit ml10"></i>
+              <!-- a链接用本地视频打不开，视频地址使用远程地址 -->
+              <a @click.stop :href="/\.mp4$/.test(fileNameWatch) ? fileUrl : fileUrlWatch" target="_blank">
+                <i class="el-icon-view ml10" style="vertical-align: middle"></i>
+              </a>
+            </div>
           </template>
-          <i v-else class="el-icon-plus uploader-icon"></i>
-        </slot>
-      </el-upload>
-    </div>
+        </transition>
+      </slot>
+    </el-upload>
 
+    <!-- 上传格式，大小等提示语 -->
     <div class="tip">
       <slot name="tip"></slot>
     </div>
@@ -423,72 +535,76 @@
 </template>
 
 <style lang="scss" scoped>
-  ::v-deep.uploader {
-    display: inline-block;
-    .el-upload {
-      border-radius: 6px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      &:hover {
-        border-color: #409eff;
-      }
-    }
-  }
-
-  .uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
+::v-deep.uploader {
+  display: inline-block;
+  vertical-align: middle;
+  .el-upload {
     border-radius: 6px;
-    border: 1px dashed #d9d9d9;
-  }
-  .upload-img {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
-  .tip {
-    color: #aaa;
-    font-size: 12px;
-  }
-  .img-style {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .img-item {
-    margin-right: 10px;
-    margin-bottom: 10px;
-    position: relative;
-  }
-  .mask {
-    position: absolute;
-    display: block;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
     cursor: pointer;
-    text-align: center;
-    color: #fff;
-    opacity: 0;
-    font-size: 20px;
-    transition: opacity 0.3s;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-    line-height: 178px;
-    .item-delete {
-      display: none;
-    }
+    position: relative;
+    overflow: hidden;
   }
-  .mask:hover {
-    opacity: 1;
-    background-color: rgba(0, 0, 0, 0.5);
-    .item-delete {
-      display: inline-block;
-    }
+}
+
+.upload-action {
+  width: 178px;
+  height: 178px;
+  position: relative;
+  text-align: center;
+}
+.uploader-icon {
+  display: block;
+  font-size: 28px;
+  line-height: 178px;
+  text-align: center;
+  color: #8c939d;
+  border-radius: 6px;
+  border: 1px dashed #d9d9d9;
+  transition: all 0.3s;
+  &:hover {
+    border-color: $blue;
+    color: $blue;
   }
+}
+.progress {
+  overflow: hidden;
+}
+.upload-img {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+.tip {
+  color: #aaa;
+  font-size: 12px;
+}
+.img-item {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 10px 10px 0;
+  transition: all 0.3s;
+}
+.action-mask {
+  position: absolute;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 30px;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  cursor: pointer;
+  text-align: center;
+  color: #fff;
+  opacity: 0;
+  font-size: 20px;
+  transition: opacity 0.3s;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+.action-mask:hover {
+  opacity: 1;
+}
 </style>

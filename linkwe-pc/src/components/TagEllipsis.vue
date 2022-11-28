@@ -59,5 +59,8 @@ export default {
 .tag-ellipsis {
   display: inline-block;
   line-height: 34px;
+  .el-tag {
+    vertical-align: middle;
+  }
 }
 </style>

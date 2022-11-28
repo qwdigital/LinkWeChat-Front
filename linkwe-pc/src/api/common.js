@@ -1,3 +1,4 @@
+import { decryptAES } from '@/utils/jsencrypt'
 import request from '@/utils/request'
 import { dataURLtoFile } from '@/utils/common'
 
@@ -11,6 +12,28 @@ export function upload(data) {
   })
 }
 
+// 获取cos配置
+export function getCosConfig(data) {
+  return request({
+    url: service + '/file/get/config',
+    params: data,
+  }).then(({ data }) => {
+    let res = {}
+    Object.keys(data).forEach((key) => {
+      res[key] = decryptAES(data[key])
+    })
+    return res
+  })
+}
+
+// 获取视频第一帧
+export function getVideoPic(params) {
+  return request({
+    url: window.lwConfig.services.system + '/file/getVideoFirstImg/',
+    params,
+  })
+}
+
 /**
  * 下载网络连接文件
  * @param {*} params
@@ -20,11 +43,7 @@ export function upload(data) {
 }
  */
 export function download(url, name) {
-  return (
-    window.lwConfig.DOMAIN +
-    window.lwConfig.services.system +
-    `/common/download/url?url=${url}&name=${name}`
-  )
+  return window.lwConfig.DOMAIN + window.lwConfig.services.system + `/common/download/url?url=${url}&name=${name}`
 }
 
 /**
