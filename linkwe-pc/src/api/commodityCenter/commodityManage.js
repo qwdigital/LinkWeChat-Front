@@ -112,3 +112,55 @@ export function getDetailTable(id) {
     url: service + '/top5/' + id
   })
 }
+
+// 订单列表
+export function getOrderTalbe(data) {
+  return request({
+    url: service + '/order/page/list',
+    params: data
+  })
+}
+
+// 订单同步
+export function setOrderSync() {
+  return request({
+    url: service + '/order/orderSync'
+  })
+}
+
+// 订单导出
+export function exportOrder(data) {
+  return request({
+    url: service + '/order/export',
+    params: data
+  })
+}
+
+// 订单交易状态
+export function getOrderState(orderId) {
+  return request({
+    url: service + '/order/trading/status/' + orderId
+  })
+}
+
+// 订单退款状态
+export function getRefundOrderState(orderNo) {
+  return request({
+    url: service + '/refund/refund/status/' + orderNo
+  })
+}
+
+// 商品分析 汇总
+export function getGoodsTotal() {
+  return request({
+    url: service + '/analyze/statistics'
+  })
+}
+
+// 商品分析 
+export function getLineChartTotal(data) {
+  return request({
+    url: service + '/analyze/lineChart',
+    params: data
+  })
+}
