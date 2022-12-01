@@ -34,16 +34,23 @@
         multiple: true,
         total: 0,
         list: [],
-        lastSyncTime: 0
+        lastSyncTime: 0,
+        fileList: []
       }
     },
     computed: {},
     created() {
+      this.$store.dispatch(
+        'app/setBusininessDesc',
+        `
+			     <div>快捷创建商品图册，员工一键发送给客户，客户直接购买。</div>
+			   `
+      )
       this.getList()
     },
     methods: {
       resetForm() {
-        this.query.name = 1
+        this.query.name = ''
         this.getList(1)
       },
       getList(page) {
@@ -62,12 +69,18 @@
           })
       },
       edit(data) {
-        data
-          ? api.getDetail(data.id).then((res) => {
-              this.form = res.data
-              this.form.attachments = this.form.attachments.split(',')
+        this.fileList = []
+        if (data) {
+          api.getDetail(data.id).then((res) => {
+            this.form = res.data
+            let arr = this.form.attachments.split(',')
+            arr.forEach((dd) => {
+              this.fileList.push({ url: dd })
             })
-          : (this.form = JSON.parse(JSON.stringify(defaultForm)))
+          })
+        } else {
+          this.form = JSON.parse(JSON.stringify(defaultForm))
+        }
         this.dialogVisible = true
       },
       sync() {
@@ -92,7 +105,7 @@
         this.$refs['form'].validate((valid) => {
           let form = JSON.parse(JSON.stringify(this.form))
           form.price = form.price.toFixed(2)
-          form.attachments = form.attachments.join(',')
+          form.attachments = this.fileList.map((dd) => dd.url).join(',')
           this.submitLoading = true
           api[form.id ? 'update' : 'add'](form, form.id)
             .then(() => {
@@ -136,7 +149,7 @@
   }
 </script>
 <template>
-  <div class="">
+  <div class="g-card g-pad20">
     <el-form ref="queryForm" :inline="true" :model="query" label-width="110px" class="top-search">
       <el-form-item label="商品名称或描述" prop="name">
         <el-input v-model="query.name" placeholder="请输入"></el-input>
@@ -157,7 +170,7 @@
         <div slot-scope="{ row }">
           <div style="display: flex;">
             <el-image
-              style="width: 50px; height: 50px; margin-right: 3px; flex-shrink: 0;"
+              style="width: 50px; height: 50px; margin-right: 5px; flex-shrink: 0;"
               :src="row.picture"
             ></el-image>
             <span class="limit_span">{{ row.describe }}</span>
@@ -214,7 +227,7 @@
               ></el-input>
             </el-form-item>
             <el-form-item label="商品详情">
-              <upload :fileUrls.sync="form.attachments" :limit="8" type="0">
+              <upload :fileList.sync="fileList" :multiple="true" :limit="8" type="0">
                 <div slot="tip" class="tip">最多添加八张详情</div>
               </upload>
             </el-form-item>
@@ -230,12 +243,7 @@
               ></el-image>
               <div class="price">￥{{ form.price }}</div>
               <div class="content">{{ form.describe }}</div>
-              <el-image
-                v-for="(item, index) in form.attachments"
-                class="commodity-img"
-                :src="item"
-                :key="index"
-              ></el-image>
+              <el-image v-for="(item, index) in fileList" class="commodity-img" :src="item.url" :key="index"></el-image>
             </div>
           </PhoneTemplate>
         </el-col>

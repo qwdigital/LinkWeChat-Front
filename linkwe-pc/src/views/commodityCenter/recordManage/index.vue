@@ -14,19 +14,69 @@
         </div>
       </div>
     </div>
-    <div class="g-card g-pad20" style="margin-top: 20px;">
-      <div class="title">
-        访问场景top5
-      </div>
-      <div class="data-content" style="margin-top: 20px;">
-        <div class="chart-content">
-          <search-title @search="getTop5Fn"></search-title>
-          <div class="column">
-            <div class="column-item">
-              <chart-bar style="height: 300px;" :xData="bar1" :series="value1" :legend="barLegend1"></chart-bar>
+    <div class="column">
+      <div class="column-item" style="margin-right: 20px;">
+        <div class="g-card g-pad20" style="margin-top: 20px; height: 450px;">
+          <div class="title">
+            商品订单top5
+          </div>
+          <div class="data-content" style="margin-top: 20px;">
+            <div class="chart-content">
+              <search-title @search="getGoodsTop5Fn"></search-title>
+              <el-table v-loading="goodsTableLoading" :data="goodsTableList" style="width: 100%;">
+                <el-table-column label="商品" align="center" width="200" prop="xtime" show-overflow-tooltip>
+                  <div slot-scope="{ row }">
+                    <div style="display: flex;">
+                      <el-image
+                        style="width: 50px; height: 50px; margin-right: 5px; flex-shrink: 0;"
+                        :src="row.picture"
+                      ></el-image>
+                      <span class="limit_span">{{ row.productDesc }}</span>
+                    </div>
+                  </div>
+                </el-table-column>
+                <el-table-column label="订单总数" align="center" prop="orderNum" show-overflow-tooltip />
+                <el-table-column
+                  label="订单总额（元）"
+                  align="center"
+                  prop="totalFee"
+                  show-overflow-tooltip
+                ></el-table-column>
+                <el-table-column
+                  label="净收入（元）"
+                  align="center"
+                  prop="netIncome"
+                  show-overflow-tooltip
+                ></el-table-column>
+              </el-table>
             </div>
-            <div class="column-item">
-              <chart-bar style="height: 300px;" :xData="bar2" :series="value2" :legend="barLegend2"></chart-bar>
+          </div>
+        </div>
+      </div>
+      <div class="column-item">
+        <div class="g-card g-pad20" style="margin-top: 20px; height: 450px;">
+          <div class="title">
+            员工订单top5
+          </div>
+          <div class="data-content" style="margin-top: 20px;">
+            <div class="chart-content">
+              <search-title @search="getMemebersTop5Fn"></search-title>
+              <el-table v-loading="memberTableLoading" :data="memberTableList" style="width: 100%;">
+                <el-table-column
+                  label="员工"
+                  align="center"
+                  min-width="100"
+                  prop="weUserName"
+                  show-overflow-tooltip
+                ></el-table-column>
+                <el-table-column label="订单总数" align="center" prop="orderNum" show-overflow-tooltip />
+                <el-table-column
+                  label="订单总额（元）"
+                  align="center"
+                  prop="totalFee"
+                  show-overflow-tooltip
+                ></el-table-column>
+              </el-table>
             </div>
           </div>
         </div>
@@ -43,46 +93,26 @@
         </div>
         <div class="table-content">
           <el-table v-loading="loading" :data="tableList" style="width: 100%;">
-            <el-table-column label="日期" align="center" min-width="100" prop="xtime" show-overflow-tooltip />
+            <el-table-column label="日期" align="center" min-width="100" prop="dateStr" show-overflow-tooltip />
+            <el-table-column label="订单总数" align="center" min-width="100" prop="orderNum" show-overflow-tooltip />
             <el-table-column
-              label="访问客户总数"
+              label="订单总额（元）"
               align="center"
-              min-width="100"
-              prop="visitTotalCnt"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              label="咨询客户总数"
-              align="center"
-              prop="consultTotalCnt"
+              prop="totalFee"
               min-width="100"
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
-              label="接待客户总数"
+              label="退款总额（元）"
               align="center"
-              prop="receptionTotalCnt"
+              prop="refundFee"
               min-width="100"
               show-overflow-tooltip
             ></el-table-column>
             <el-table-column
-              label="今日新增访问客户"
+              label="净收入（元）"
               align="center"
-              prop="tdVisitCnt"
-              min-width="100"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              label="今日新增咨询客户"
-              align="center"
-              prop="tdConsultCnt"
-              min-width="100"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              label="今日新增接待客户"
-              align="center"
-              prop="tdReceptionCnt"
+              prop="netIncome"
               min-width="100"
               show-overflow-tooltip
             ></el-table-column>
@@ -106,7 +136,8 @@
   import {
     getTableExport,
     getTableTotal,
-    getBarTop5Total,
+    getGoodsTop5,
+    getMembersTop5,
     getLineChartTotal,
     getGoodsTotal
   } from '@/api/commodityCenter/commodityManage'
@@ -123,8 +154,6 @@
     data() {
       return {
         exportLoading: false,
-        barLegend1: ['访问客户总数'],
-        barLegend2: ['咨询客户总数'],
         legend: ['订单总额(元)', '退款总额(元)', '净收入(元)'],
         xdata: [],
         series: [],
@@ -186,10 +215,10 @@
         },
         tableList: [],
         loading: false,
-        bar1: [],
-        bar2: [],
-        value1: [],
-        value2: [],
+        goodsTableLoading: false,
+        goodsTableList: [],
+        memberTableLoading: false,
+        memberTableList: [],
         tableSearch: {}
       }
     },
@@ -202,20 +231,20 @@
         })
           .then(() => {
             this.exportLoading = true
-            return getTableExport(Object.assign({}, this.query, this.tableSearch))
+            return getTableExport(Object.assign({}, this.tableSearch))
           })
           .then((res) => {
             if (!res) return
             const blob = new Blob([res], { type: 'application/vnd.ms-excel' }) // 构造一个blob对象来处理数据，并设置文件类型
             if (window.navigator.msSaveOrOpenBlob) {
               //兼容IE10
-              navigator.msSaveBlob(blob, '场景分析')
+              navigator.msSaveBlob(blob, '商品分析')
             } else {
               const href = URL.createObjectURL(blob) //创建新的URL表示指定的blob对象
               const a = document.createElement('a') //创建a标签
               a.style.display = 'none'
               a.href = href // 指定下载链接
-              a.download = dateFormat(new Date(), 'yyyy-MM-dd') + '_场景分析.xlsx' //指定下载文件名
+              a.download = dateFormat(new Date(), 'yyyy-MM-dd') + '_商品分析.xlsx' //指定下载文件名
               a.click() //触发下载
               URL.revokeObjectURL(a.href) //释放URL对象
             }
@@ -246,6 +275,7 @@
       getLineData(data) {
         this.$forceUpdate()
         getLineChartTotal({
+          type: 'customization',
           startDate: data.beginTime,
           endDate: data.endTime
         }).then((res) => {
@@ -254,41 +284,33 @@
           let arr1 = []
           let arr2 = []
           let arr3 = []
-          if (res.data && res.data.length) {
-            res.data.forEach((dd) => {
-              this.xdata.push(dd.xtime)
-              arr1.push(dd.visitTotalCnt)
-              arr2.push(dd.consultTotalCnt)
-              arr3.push(dd.receptionTotalCnt)
-            })
-            this.series = [arr1, arr2, arr3]
-          }
+          this.xdata = res.data.xAxis.data
+          arr1 = res.data.series[0].data
+          arr2 = res.data.series[1].data
+          arr3 = res.data.series[2].data
+          this.series = [arr1, arr2, arr3]
         })
       },
-      getTop5Fn(data) {
-        getBarTop5Total(data).then((res) => {
-          if (res.data.consult && res.data.consult.length) {
-            this.bar1 = []
-            this.value1 = []
-            res.data.consult.forEach((dd) => {
-              this.bar1.push(dd.sceneName)
-              this.value1.push(dd.total)
-            })
-          } else {
-            this.bar1 = []
-            this.value1 = []
-          }
-          if (res.data.visit && res.data.visit.length) {
-            this.bar2 = []
-            this.value2 = []
-            res.data.visit.forEach((dd) => {
-              this.bar2.push(dd.sceneName)
-              this.value2.push(dd.total)
-            })
-          } else {
-            this.bar2 = []
-            this.value2 = []
-          }
+      getGoodsTop5Fn(data) {
+        this.goodsTableLoading = true
+        getGoodsTop5({
+          type: 'customization',
+          startDate: data.beginTime,
+          endDate: data.endTime
+        }).then((res) => {
+          this.goodsTableList = res.data
+          this.goodsTableLoading = false
+        })
+      },
+      getMemebersTop5Fn(data) {
+        this.memberTableLoading = true
+        getMembersTop5({
+          type: 'customization',
+          startDate: data.beginTime,
+          endDate: data.endTime
+        }).then((res) => {
+          this.memberTableList = res.data
+          this.memberTableLoading = false
         })
       },
       getTableChangeSize() {
@@ -301,8 +323,13 @@
       },
       getTableFn(data) {
         this.loading = true
-        this.tableSearch = data
-        getTableTotal(Object.assign({}, this.query, data)).then((res) => {
+        let obj = {
+          type: 'customization',
+          startDate: data.beginTime,
+          endDate: data.endTime
+        }
+        this.tableSearch = obj
+        getTableTotal(Object.assign({}, this.query, obj)).then((res) => {
           this.tableList = res.rows
           this.total = Number(res.total)
           this.loading = false
@@ -310,6 +337,12 @@
       }
     },
     created() {
+      this.$store.dispatch(
+        'app/setBusininessDesc',
+        `
+			     <div>全部商品及订单数据总览与数据分析。</div>
+			   `
+      )
       this.getSceneTotalFn()
     }
   }
@@ -326,18 +359,18 @@
     color: #333;
     font-weight: 600;
   }
+  .column {
+    display: flex;
+    .column-item {
+      flex: 1;
+    }
+  }
   .data-content {
     margin-top: 10px;
     .chart-content {
       margin-top: 10px;
       .my_button {
         float: right;
-      }
-      .column {
-        display: flex;
-        .column-item {
-          flex: 1;
-        }
       }
     }
     .search-content {

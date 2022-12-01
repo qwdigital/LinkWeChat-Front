@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="g-card g-pad20">
     <el-form :inline="true" label-width="110px" class="top-search">
       <el-form-item label="商品名称或描述" prop="productName">
         <el-input v-model="query.productName" placeholder="请输入商品名称或描述"></el-input>
@@ -74,6 +74,24 @@
                 {{ { 1: '@微信', 2: '@企业微信' }[row.externalType] }}
               </span>
             </div>
+            <div v-if="row.address && row.phone" class="ml10" style="align-self: baseline;">
+              <el-popover trigger="hover" width="400">
+                <el-form ref="form" label-width="100px">
+                  <el-form-item label="联系人：">
+                    {{ row.contact }}
+                  </el-form-item>
+                  <el-form-item label="联系地址：">
+                    {{ row.address }}
+                  </el-form-item>
+                  <el-form-item label="联系电话：">
+                    {{ row.phone }}
+                  </el-form-item>
+                </el-form>
+                <div style="display: inline;" slot="reference">
+                  <i class="el-icon-warning"></i>
+                </div>
+              </el-popover>
+            </div>
           </div>
         </template>
       </el-table-column>
@@ -81,8 +99,28 @@
       <el-table-column label="付款金额(元)" align="center" prop="totalFee" />
       <el-table-column label="收款员工" align="center" prop="weUserName" />
       <el-table-column label="收款商户" align="center" prop="mchName"> </el-table-column>
-      <el-table-column label="交易状态" align="center" prop="orderStateStr" />
-      <el-table-column label="退款状态" align="center" prop="refundStateStr" />
+      <el-table-column label="交易状态" align="center" prop="orderStateStr">
+        <template slot-scope="{ row }">
+          <a
+            v-if="row.orderStateStr"
+            style="color: #0079de; border-bottom: 1px solid #0079de;"
+            @click="tradingStateFn(row.orderNo)"
+            >{{ row.orderStateStr }}</a
+          >
+          <span v-else> - </span>
+        </template>
+      </el-table-column>
+      <el-table-column label="退款状态" align="center" prop="refundStateStr">
+        <template slot-scope="{ row }">
+          <a
+            v-if="row.refundStateStr"
+            style="color: #0079de; border-bottom: 1px solid #0079de;"
+            @click="refundStateFn(row.refundNo)"
+            >{{ row.refundStateStr }}</a
+          >
+          <span v-else> - </span>
+        </template>
+      </el-table-column>
     </el-table>
     <pagination
       v-show="total > 0"
@@ -97,13 +135,15 @@
         <el-col :span="12">
           <el-form ref="form" label-width="100px">
             <el-form-item label="交易时间：">
-              <!-- {{}} -->
+              {{ orderState.payTime }}
             </el-form-item>
             <el-form-item label="交易单号：">
-              <!-- {{}} -->
+              {{ orderState.orderNo }}
+              <el-button type="text" plain size="mini" @click="handleCopy(orderState.orderNo)">复制</el-button>
             </el-form-item>
             <el-form-item label="商户单号：">
-              <!-- {{}} -->
+              {{ orderState.mchNo }}
+              <el-button type="text" plain size="mini" @click="handleCopy(orderState.mchNo)">复制</el-button>
             </el-form-item>
           </el-form>
         </el-col>
@@ -117,19 +157,20 @@
         <el-col :span="12">
           <el-form ref="form" label-width="100px">
             <el-form-item label="退款发起时间：">
-              <!-- {{}} -->
+              {{ refundState.refundTime }}
             </el-form-item>
             <el-form-item label="退款发起人：">
-              <!-- {{}} -->
+              {{ refundState.refundUserName }}
             </el-form-item>
             <el-form-item label="退款备注：">
-              <!-- {{}} -->
+              {{ refundState.remark }}
             </el-form-item>
             <el-form-item label="退款金额（元）">
-              <!-- {{}} -->
+              {{ refundState.refundFee }}
             </el-form-item>
             <el-form-item label="退款单号：">
-              <!-- {{}} -->
+              {{ refundState.refundNo }}
+              <el-button type="text" plain size="mini" @click="handleCopy(orderState.refundNo)">复制</el-button>
             </el-form-item>
           </el-form>
         </el-col>
@@ -149,6 +190,8 @@
 
 <script>
   import * as api from '@/api/commodityCenter/commodityManage'
+  import { dateFormat } from '@/utils/index'
+
   export default {
     components: {},
     props: {},
@@ -176,19 +219,53 @@
         dialogVisibleSelect: false,
         dateRange: [],
         dialogStateVisible: false,
-        dialogVisible: false
+        dialogVisible: false,
+        orderState: {
+          payTime: '',
+          orderNo: '',
+          mchNo: ''
+        },
+        refundState: {
+          refundTime: '',
+          refundNo: '',
+          refundUserName: '',
+          refundFee: '',
+          remark: ''
+        }
       }
     },
     computed: {},
     created() {
+      this.$store.dispatch(
+        'app/setBusininessDesc',
+        `
+			     <div>查看商品所有订单及明细记录。</div>
+			   `
+      )
       this.getList()
     },
     methods: {
-      tradingStateFn(id) {
-        api.getOrderState(id)
+      handleCopy(text) {
+        const input = document.createElement('input')
+        input.style.cssText = 'opacity: 0;'
+        input.type = 'text'
+        input.value = text // 修改文本框的内容
+        document.body.appendChild(input)
+        input.select() // 选中文本
+        document.execCommand('copy') // 执行浏览器复制命令
+        this.$message({ message: '复制成功', type: 'success' })
       },
-      refundStateFn(orderNo) {
-        api.getRefundOrderState(orderNo)
+      tradingStateFn(id) {
+        api.getOrderState(id).then((res) => {
+          this.orderState = res.data
+          this.dialogVisible = true
+        })
+      },
+      refundStateFn(id) {
+        api.getRefundOrderState(id).then((res) => {
+          this.refundState = res.data
+          this.dialogStateVisible = true
+        })
       },
       resetForm() {
         this.query = {
@@ -227,10 +304,31 @@
           background: 'rgba(0, 0, 0, 0.7)'
         })
         api
-          .exportOrder()
+          .exportOrder({
+            productName: this.query.productName,
+            externalName: this.query.externalName,
+            weUserId: this.query.weUserId,
+            orderState: this.query.orderState,
+            refundState: this.query.refundState,
+            beginTime: this.query.beginTime,
+            endTime: this.query.endTime
+          })
           .then((res) => {
+            if (!res) return
+            const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+            if (window.navigator.msSaveOrOpenBlob) {
+              //兼容IE10
+              navigator.msSaveBlob(blob, '订单')
+            } else {
+              const href = URL.createObjectURL(blob)
+              const a = document.createElement('a')
+              a.style.display = 'none'
+              a.href = href
+              a.download = dateFormat(new Date(), 'yyyy-MM-dd') + '_订单.xlsx'
+              a.click() //触发下载
+              URL.revokeObjectURL(a.href) //释放URL对象
+            }
             loading.close()
-            console.log(res)
           })
           .catch(() => {
             loading.close()

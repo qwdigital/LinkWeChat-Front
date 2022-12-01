@@ -132,7 +132,8 @@ export function setOrderSync() {
 export function exportOrder(data) {
   return request({
     url: service + '/order/export',
-    params: data
+    params: data,
+    responseType: 'blob',
   })
 }
 
@@ -157,10 +158,47 @@ export function getGoodsTotal() {
   })
 }
 
-// 商品分析 
+// 商品分析 折线图
 export function getLineChartTotal(data) {
   return request({
     url: service + '/analyze/lineChart',
+    method: 'post',
+    data
+  })
+}
+
+// 商品分析 商品top5
+export function getGoodsTop5(data) {
+  return request({
+    url: service + '/analyze/top5',
+    method: 'post',
+    data
+  })
+}
+
+// 商品分析 员工top5
+export function getMembersTop5(data) {
+  return request({
+    url: service + '/analyze/user/top5',
+    method: 'post',
+    data
+  })
+}
+
+// 商品分析 数据报表
+export function getTableTotal(data) {
+  return request({
+    url: service + '/analyze/data/report',
     params: data
+  })
+}
+
+// 商品分析 数据报表 导出
+export function getTableExport(params) {
+  return request({
+    url: service + '/analyze/data/report/export',
+    method: 'post',
+    responseType: 'blob',
+    params,
   })
 }
