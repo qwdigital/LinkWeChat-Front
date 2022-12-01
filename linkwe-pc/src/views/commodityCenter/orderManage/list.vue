@@ -76,7 +76,7 @@
             </div>
             <div v-if="row.address && row.phone" class="ml10" style="align-self: baseline;">
               <el-popover trigger="hover" width="400">
-                <el-form ref="form" label-width="100px">
+                <el-form ref="form">
                   <el-form-item label="联系人：">
                     {{ row.contact }}
                   </el-form-item>
@@ -115,7 +115,7 @@
           <a
             v-if="row.refundStateStr"
             style="color: #0079de; border-bottom: 1px solid #0079de;"
-            @click="refundStateFn(row.refundNo)"
+            @click="refundStateFn(row.orderNo)"
             >{{ row.refundStateStr }}</a
           >
           <span v-else> - </span>
@@ -132,18 +132,32 @@
     <!-- 弹窗 -->
     <el-dialog title="交易状态" :visible.sync="dialogVisible" width="800px" :close-on-click-modal="false">
       <el-row>
-        <el-col :span="12">
+        <el-col>
           <el-form ref="form" label-width="100px">
             <el-form-item label="交易时间：">
               {{ orderState.payTime }}
             </el-form-item>
             <el-form-item label="交易单号：">
               {{ orderState.orderNo }}
-              <el-button type="text" plain size="mini" @click="handleCopy(orderState.orderNo)">复制</el-button>
+              <el-button
+                type="primary"
+                style="margin-left: 20px;"
+                plain
+                size="mini"
+                @click="handleCopy(orderState.orderNo)"
+                >复制</el-button
+              >
             </el-form-item>
             <el-form-item label="商户单号：">
               {{ orderState.mchNo }}
-              <el-button type="text" plain size="mini" @click="handleCopy(orderState.mchNo)">复制</el-button>
+              <el-button
+                style="margin-left: 20px;"
+                type="primary"
+                plain
+                size="mini"
+                @click="handleCopy(orderState.mchNo)"
+                >复制</el-button
+              >
             </el-form-item>
           </el-form>
         </el-col>
@@ -153,28 +167,31 @@
       </div>
     </el-dialog>
     <el-dialog title="退款状态" :visible.sync="dialogStateVisible" width="800px" :close-on-click-modal="false">
-      <el-row>
-        <el-col :span="12">
-          <el-form ref="form" label-width="100px">
+      <div style="background-color: #f5f5f5; padding: 20px;">
+        <div class="g-card g-pad20" v-for="(unit, key) in refundStateList" :key="key">
+          <el-form ref="form">
             <el-form-item label="退款发起时间：">
-              {{ refundState.refundTime }}
+              {{ unit.refundTime }}
             </el-form-item>
             <el-form-item label="退款发起人：">
-              {{ refundState.refundUserName }}
+              {{ unit.refundUserName }}
             </el-form-item>
             <el-form-item label="退款备注：">
-              {{ refundState.remark }}
+              {{ unit.remark }}
             </el-form-item>
             <el-form-item label="退款金额（元）">
-              {{ refundState.refundFee }}
+              {{ unit.refundFee }}
             </el-form-item>
             <el-form-item label="退款单号：">
-              {{ refundState.refundNo }}
-              <el-button type="text" plain size="mini" @click="handleCopy(orderState.refundNo)">复制</el-button>
+              {{ unit.refundNo }}
+              <el-button style="margin-left: 20px;" type="primary" plain size="mini" @click="handleCopy(unit.refundNo)"
+                >复制</el-button
+              >
             </el-form-item>
           </el-form>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
+
       <div slot="footer" class="dialog-footer ar">
         <el-button @click="dialogStateVisible = false">关 闭</el-button>
       </div>
@@ -225,13 +242,7 @@
           orderNo: '',
           mchNo: ''
         },
-        refundState: {
-          refundTime: '',
-          refundNo: '',
-          refundUserName: '',
-          refundFee: '',
-          remark: ''
-        }
+        refundStateList: []
       }
     },
     computed: {},
@@ -263,7 +274,8 @@
       },
       refundStateFn(id) {
         api.getRefundOrderState(id).then((res) => {
-          this.refundState = res.data
+          this.refundStateList = res.data
+          this.refundStateList = [...this.refundStateList, ...this.refundStateList]
           this.dialogStateVisible = true
         })
       },

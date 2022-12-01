@@ -194,11 +194,11 @@ export function getTableTotal(data) {
 }
 
 // 商品分析 数据报表 导出
-export function getTableExport(params) {
+export function getTableExport(data) {
   return request({
     url: service + '/analyze/data/report/export',
     method: 'post',
     responseType: 'blob',
-    params,
+    data,
   })
 }
