@@ -84,7 +84,7 @@ export default {
         } else {
           let isInSelectDepart = item.userDepts.some((e) => value.some((e2) => e2.userId === e.deptId))
           // 人员
-          if (isInSelectDepart) {
+          if (!isInSelectDepart) {
             this.form.toUser.push(item.userId)
             this.form.toUserName.push(item.name)
           }
