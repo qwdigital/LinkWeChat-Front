@@ -179,7 +179,7 @@
             <el-form-item label="退款备注：">
               {{ unit.remark }}
             </el-form-item>
-            <el-form-item label="退款金额（元）">
+            <el-form-item label="退款金额（元）：">
               {{ unit.refundFee }}
             </el-form-item>
             <el-form-item label="退款单号：">
@@ -275,7 +275,6 @@
       refundStateFn(id) {
         api.getRefundOrderState(id).then((res) => {
           this.refundStateList = res.data
-          this.refundStateList = [...this.refundStateList, ...this.refundStateList]
           this.dialogStateVisible = true
         })
       },
