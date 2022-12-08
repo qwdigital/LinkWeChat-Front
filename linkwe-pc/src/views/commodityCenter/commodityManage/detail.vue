@@ -56,18 +56,22 @@
             this.cardData = [
               {
                 title: '订单总数',
+                tips: '所有商品全部的订单总数',
                 value: data.orderNum
               },
               {
                 title: '订单总额(元)',
+                tips: '所有商品全部的订单总额，精确到两位小数点',
                 value: data.orderFee
               },
               {
                 title: '退款总额(元)',
+                tips: '所有商品全部的退款总额，精确到两位小数点',
                 value: data.refundFee
               },
               {
                 title: '净收入(元)',
+                tips: '订单总额-退款总额，精确到两位小数点',
                 value: data.netIncome
               }
             ]
