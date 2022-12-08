@@ -73,10 +73,12 @@
         if (data) {
           api.getDetail(data.id).then((res) => {
             this.form = res.data
-            let arr = this.form.attachments.split(',')
-            arr.forEach((dd) => {
-              this.fileList.push({ url: dd })
-            })
+            if (this.form.attachments) {
+              let arr = this.form.attachments.split(',')
+              arr.forEach((dd) => {
+                this.fileList.push({ url: dd })
+              })
+            }
           })
         } else {
           this.form = JSON.parse(JSON.stringify(defaultForm))
@@ -237,10 +239,12 @@
           <PhoneTemplate>
             <div class="phone-content">
               <el-image
+                v-if="form.picture"
                 class="commodity-img commodity-thumb"
-                style="width: 100%; height: 100px;"
+                style="width: 100%;"
                 :src="form.picture"
               ></el-image>
+              <div v-else class="commodity-img commodity-thumb"></div>
               <div class="price">￥{{ form.price }}</div>
               <div class="content">{{ form.describe }}</div>
               <el-image v-for="(item, index) in fileList" class="commodity-img" :src="item.url" :key="index"></el-image>

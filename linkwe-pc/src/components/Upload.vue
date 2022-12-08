@@ -465,7 +465,12 @@
        -->
 
       <slot>
-        <i v-if="!loading && !fileUrlWatch" class="el-icon-plus uploader-icon upload-action"></i>
+        <template v-if="multiple">
+          <i v-if="limit !== fileListWatch.length" class="el-icon-plus uploader-icon upload-action"></i>
+        </template>
+        <template v-else>
+          <i v-if="!loading && !fileUrlWatch" class="el-icon-plus uploader-icon upload-action"></i>
+        </template>
 
         <transition>
           <!-- 上传精度条 -->
