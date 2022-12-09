@@ -161,7 +161,7 @@
       @select="handleSelection"
       @selection-change="handleSelectionChange"
     >
-      <!-- <el-table-column type="selection" align="center" width="55"> </el-table-column> -->
+      <el-table-column type="selection" align="center" width="55"> </el-table-column>
       <el-table-column type="index" label="序号" width="55"></el-table-column>
       <el-table-column prop="userName" label="已离职员工"></el-table-column>
       <el-table-column prop="department" label="所属部门"></el-table-column>
