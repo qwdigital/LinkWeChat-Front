@@ -6,7 +6,7 @@
     name: 'Dimission',
     components: { SelectWeUser },
     props: {},
-    data () {
+    data() {
       return {
         // 查询参数
         query: {
@@ -31,7 +31,7 @@
     },
     watch: {},
     computed: {},
-    created () {
+    created() {
       this.getList()
       this.$store.dispatch(
         'app/setBusininessDesc',
@@ -40,10 +40,10 @@
       `
       )
     },
-    mounted () { },
+    mounted() {},
     methods: {
       /** 查询 */
-      getList (page) {
+      getList(page) {
         if (this.dateRange) {
           this.query.beginTime = this.dateRange[0]
           this.query.endTime = this.dateRange[1]
@@ -64,18 +64,18 @@
             this.loading = false
           })
       },
-      resetForm (formName) {
+      resetForm(formName) {
         this.dateRange = []
         this.$refs['queryForm'].resetFields()
       },
-      showSelectDialog () {
+      showSelectDialog() {
         if (this.currentRow.userId) {
           this.dialogVisibleSelectUser = true
         } else {
           this.$message.warning('请先选择一位员工')
         }
       },
-      allocate (userlist) {
+      allocate(userlist) {
         if (userlist.length > 1) {
           this.dialogVisibleSelectUser = true
           return
@@ -96,15 +96,15 @@
           })
       },
       // // 选中数据
-      // handleCurrentChange(val) {
-      //   this.currentRow = val
-      // },
+      handleCurrentChange(val) {
+        this.currentRow = val
+      },
       // 多选框选中数据
-      handleSelectionChange (selection) {
+      handleSelectionChange(selection) {
         this.currentRow = selection[0]
       },
       // 用于多选变单选
-      handleSelection (selection, row) {
+      handleSelection(selection, row) {
         this.$nextTick(() => {
           this.$refs.table.clearSelection()
           this.$refs.table.toggleRowSelection(row)
@@ -121,13 +121,22 @@
         <el-input v-model="query.userName" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="离职日期">
-        <el-date-picker v-model="dateRange" type="daterange" value-format="yyyy-MM-dd" :picker-options="pickerOptions" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" align="right"></el-date-picker>
+        <el-date-picker
+          v-model="dateRange"
+          type="daterange"
+          value-format="yyyy-MM-dd"
+          :picker-options="pickerOptions"
+          range-separator="-"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          align="right"
+        ></el-date-picker>
       </el-form-item>
 
       <el-form-item label>
         <!-- v-hasPermi="['customerManage:dimission:query']" -->
-        <el-button  type="primary" @click="getList(1)">查询</el-button>
-        <el-button  type="success" @click="resetForm('queryForm')">重置</el-button>
+        <el-button type="primary" @click="getList(1)">查询</el-button>
+        <el-button type="success" @click="resetForm('queryForm')">重置</el-button>
         <!-- v-hasPermi="['customerManage:dimission:query']" -->
       </el-form-item>
     </el-form>
@@ -136,13 +145,22 @@
       <div></div>
       <div>
         <!-- v-hasPermi="['customerManage:dimission:filter']" -->
-        <el-button  type="primary" @click="$router.push({ path: 'allocatedStaffList' })">已分配的离职员工</el-button>
-        <el-button  type="info" @click="showSelectDialog">分配给其他员工</el-button>
+        <el-button type="primary" @click="$router.push({ path: 'allocatedStaffList' })">已分配的离职员工</el-button>
+        <el-button type="info" @click="showSelectDialog">分配给其他员工</el-button>
         <!-- v-hasPermi="['customerManage:dimission:allocate']" -->
       </div>
     </div>
 
-    <el-table v-loading="loading" ref="multipleTable" :data="list" tooltip-effect="dark" style="width: 100%" highlight-current-row @select="handleSelection" @selection-change="handleSelectionChange">
+    <el-table
+      v-loading="loading"
+      ref="multipleTable"
+      :data="list"
+      tooltip-effect="dark"
+      style="width: 100%;"
+      highlight-current-row
+      @select="handleSelection"
+      @selection-change="handleSelectionChange"
+    >
       <!-- <el-table-column type="selection" align="center" width="55"> </el-table-column> -->
       <el-table-column type="index" label="序号" width="55"></el-table-column>
       <el-table-column prop="userName" label="已离职员工"></el-table-column>
@@ -159,7 +177,13 @@
       </el-table-column>-->
     </el-table>
 
-    <pagination v-show="total > 0" :total="total" :page.sync="query.pageNum" :limit.sync="query.pageSize" @pagination="getList()" />
+    <pagination
+      v-show="total > 0"
+      :total="total"
+      :page.sync="query.pageNum"
+      :limit.sync="query.pageSize"
+      @pagination="getList()"
+    />
 
     <!-- 选择添加人弹窗 -->
     <SelectWeUser :visible.sync="dialogVisibleSelectUser" title="选择分配人" @success="allocate"></SelectWeUser>

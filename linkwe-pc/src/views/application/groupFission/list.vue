@@ -3,7 +3,7 @@
 
   export default {
     name: 'Group',
-    data () {
+    data() {
       return {
         query: {
           pageNum: 1,
@@ -11,15 +11,15 @@
           taskName: '',
           startTime: '',
           overTime: '',
-          fissionType: 2,
+          fissionType: 2
         },
         dateRange: [],
         tableData: [],
         total: 0,
-        loading: false,
+        loading: false
       }
     },
-    created () {
+    created() {
       this.getList()
 
       this.$store.dispatch(
@@ -30,7 +30,7 @@
       )
     },
     methods: {
-      setChange (e) {
+      setChange(e) {
         if (e) {
           this.query.startTime = e[0]
           this.query.overTime = e[1]
@@ -39,19 +39,19 @@
           this.query.overTime = ''
         }
       },
-      resetFn () {
+      resetFn() {
         this.query = {
           pageNum: 1,
           pageSize: 10,
           taskName: '',
           startTime: '',
           overTime: '',
-          fissionType: 2,
+          fissionType: 2
         }
         this.dateRange = []
         this.getList()
       },
-      getList (data) {
+      getList(data) {
         this.loading = true
         let params = Object.assign({}, this.query, data)
         api.getList(params).then(({ rows, total }) => {
@@ -60,23 +60,23 @@
           this.loading = false
         })
       },
-      resetForm () { },
-      toDetail (row) {
+      resetForm() {},
+      toDetail(row) {
         this.$router.push({
-          path: `detail?id=${row.id}`,
+          path: `detail?id=${row.id}`
         })
       },
-      newAdd () {
+      newAdd() {
         this.$router.push({
-          path: 'add',
+          path: 'add'
         })
       },
-      toEdit (row) {
+      toEdit(row) {
         this.$router.push({
-          path: `add?id=${row.id}`,
+          path: `add?id=${row.id}`
         })
-      },
-    },
+      }
+    }
   }
 </script>
 
@@ -87,12 +87,32 @@
         <el-input v-model="query.taskName" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="添加日期">
-        <el-date-picker v-model="dateRange" @change="setChange" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right"></el-date-picker>
+        <el-date-picker
+          v-model="dateRange"
+          @change="setChange"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          align="right"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label=" ">
-        <el-button v-hasPermi="['customerManage:customer:query']" type="primary" @click="getList({ pageNum: 1 })" :loading="loading">查询</el-button>
+        <el-button
+          v-hasPermi="['customerManage:customer:query']"
+          type="primary"
+          @click="getList({ pageNum: 1 })"
+          :loading="loading"
+          >查询</el-button
+        >
         <el-button @click="resetFn" type="success">清空</el-button>
-        <el-button v-hasPermi="['customerManage:customer:query']" type="primary" style="background: #fa7216; color: #ffffff; border-color: #fa7216" @click="newAdd()">新增任务</el-button>
+        <el-button
+          v-hasPermi="['customerManage:customer:query']"
+          type="primary"
+          style="background: #fa7216; color: #ffffff; border-color: #fa7216;"
+          @click="newAdd()"
+          >新增任务</el-button
+        >
       </el-form-item>
     </el-form>
     <el-table :data="tableData">
@@ -101,7 +121,7 @@
       <el-table-column prop="fissStatus" label="活动状态">
         <template slot-scope="{ row }">
           <p>
-            {{ { 0: '待开始', 1: '进行中', 2: '已结束', }[row.fissStatus] }}
+            {{ { '-1': '失败', 0: '待开始', 1: '进行中', 2: '已结束' }[row.fissStatus] }}
           </p>
         </template>
       </el-table-column>
@@ -112,12 +132,24 @@
       </el-table-column>
       <el-table-column prop="operation" label="操作">
         <template slot-scope="scope">
-          <el-button @click="toDetail(scope.row)" v-hasPermi="['enterpriseWechat:view']" size="medium" type="text" icon="el-icon-view"></el-button>
+          <el-button
+            @click="toDetail(scope.row)"
+            v-hasPermi="['enterpriseWechat:view']"
+            size="medium"
+            type="text"
+            icon="el-icon-view"
+          ></el-button>
           <!-- <el-button v-if="scope.row.fissStatus != 2" @click="toEdit(scope.row)" v-hasPermi="['enterpriseWechat:edit']" size="medium" type="text" icon="el-icon-edit-outline" style="color: #e74e59"></el-button> -->
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-show="total > 0" :total="total" :page.sync="query.pageNum" :limit.sync="query.pageSize" @pagination="getList()" />
+    <pagination
+      v-show="total > 0"
+      :total="total"
+      :page.sync="query.pageNum"
+      :limit.sync="query.pageSize"
+      @pagination="getList()"
+    />
   </div>
 </template>
 
