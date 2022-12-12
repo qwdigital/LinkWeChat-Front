@@ -210,8 +210,8 @@
         <el-col :span="12">
           <el-form ref="form" :model="form" :rules="rules" label-width="100px">
             <el-form-item label="商品封面" prop="picture">
-              <upload :fileUrl.sync="form.picture" type="0">
-                <div slot="tip" class="tip">支持jpg/jpeg/png格式，图片大小不超过20M</div>
+              <upload :fileUrl.sync="form.picture" type="0" :maxSize="10" :format="['jpg', 'png']">
+                <div slot="tip" class="tip">支持jpg/png格式，图片大小不超过10M</div>
               </upload>
             </el-form-item>
             <el-form-item label="商品单价(元)" prop="price">
@@ -229,7 +229,14 @@
               ></el-input>
             </el-form-item>
             <el-form-item label="商品详情">
-              <upload :fileList.sync="fileList" :multiple="true" :limit="8" type="0">
+              <upload
+                :fileList.sync="fileList"
+                :multiple="true"
+                :limit="8"
+                type="0"
+                :maxSize="10"
+                :format="['jpg', 'png']"
+              >
                 <div slot="tip" class="tip">最多添加八张详情</div>
               </upload>
             </el-form-item>
