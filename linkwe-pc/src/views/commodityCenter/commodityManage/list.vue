@@ -222,7 +222,7 @@
               <el-input
                 v-model="form.describe"
                 type="textarea"
-                :maxlength="300"
+                :maxlength="270"
                 show-word-limit
                 :autosize="{ minRows: 4, maxRows: 50 }"
                 placeholder="请输入"
