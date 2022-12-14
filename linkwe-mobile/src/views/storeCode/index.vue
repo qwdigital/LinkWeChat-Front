@@ -8,7 +8,7 @@
       </div>
       <div class="code_content">
         <img class="code_img" v-if="data.codeState === 1" src="../../assets/no_code.svg" alt="" />
-        <img class="code_img" v-else :src="data.customerServiceUrl" alt="" />
+        <img class="code_img" v-else @touchstart="setStart" @touchend="setEnd" :src="data.customerServiceUrl" alt="" />
       </div>
       <div class="sub-des" v-if="data.codeState !== 1">
         长按识别二维码添加客服
