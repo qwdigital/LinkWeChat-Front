@@ -29,7 +29,7 @@
         <img class="code_img" v-else src="../../assets/no_code.svg" alt="" />
         <!-- <img class="code_img" v-else src="../../../assets/drainageCode/code.png" alt=""> -->
       </div>
-      <div class="sub-des">
+      <div class="sub-des" v-if="currentItem.shopGuideUrl">
         长按识别二维码添加门店导购
       </div>
     </template>

@@ -31,7 +31,7 @@
 
         <!-- <img class="code_img" v-else src="../../../assets/drainageCode/code.png" alt=""> -->
       </div>
-      <div class="sub-des">
+      <div class="sub-des" v-if="currentItem.groupCodeUrl">
         长按识别二维码添加添加门店群
       </div>
       <div class="tip" style="margin-top: 20px; font-size: 16px;">
