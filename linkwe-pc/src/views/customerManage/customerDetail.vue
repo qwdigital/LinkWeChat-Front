@@ -53,7 +53,7 @@
        * userId	是	当前跟进人id
        */
       getDetail() {
-        getDetail({ ...this.$route.query, delFlag: 1 }).then(({ data }) => {
+        getDetail({ ...this.$route.query, delFlag: this.$route.query.isDelete ? 1 : 0 }).then(({ data }) => {
           data.companyTags && (data.companyTags = data.companyTags.split(','))
           this.customer = data
 
