@@ -115,7 +115,7 @@ module.exports = {
         const cdn = {
           // 访问https://unpkg.com/element-ui/lib/theme-chalk/index.css获取最新版本
           css: [
-            '//cdn.bootcdn.net/ajax/libs/element-ui/2.15.7/theme-chalk/index.min.css',
+            // '//cdn.bootcdn.net/ajax/libs/element-ui/2.15.7/theme-chalk/index.min.css',
             // '//unpkg.com/element-ui@2.15.7/lib/theme-chalk/index.css'
           ],
           js: [
