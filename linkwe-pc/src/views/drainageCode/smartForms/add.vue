@@ -31,7 +31,7 @@
                 <el-input
                   ref="msgTextarea"
                   type="textarea"
-                  v-model="baseForm.FormDescription"
+                  v-model="baseForm.formDescription"
                   maxlength="200"
                   show-word-limit
                   placeholder="请填写表单说明"
@@ -43,7 +43,7 @@
               <el-switch v-model="ifFormLogo" :active-value="1" :inactive-value="0"></el-switch>
               <div v-if="ifFormLogo == 1">
                 <div class="sub-des">开启后，表单首页或表单顶部会有logo图</div>
-                <upload :fileUrl.sync="baseForm.FormLogo" class="image-uploader" @update:file="handleUploadedHeadImage">
+                <upload :fileUrl.sync="baseForm.formLogo" class="image-uploader" @update:file="handleUploadedHeadImage">
                   <div slot="tip">建议大小2M以内，仅支持png/jpg等图片类型</div>
                 </upload>
               </div>
@@ -60,9 +60,9 @@
             :index="1"
             :surveyName="baseForm.surveyName"
             :ifFormDescription="ifFormDescription"
-            :FormDescription="baseForm.FormDescription"
+            :formDescription="baseForm.formDescription"
             :ifFormLogo="ifFormLogo"
-            :logoUrl="baseForm.FormLogo"
+            :logoUrl="baseForm.formLogo"
             :FormIdY="formIdN"
             :id="'y'"></FormsDetail>
           <div style="display: flex; justify-content: center">
@@ -76,9 +76,9 @@
             unionDomId="FormsDetail3"
             :surveyName="baseForm.surveyName"
             :ifFormDescription="ifFormDescription"
-            :FormDescription="baseForm.FormDescription"
+            :formDescription="baseForm.formDescription"
             :ifFormLogo="ifFormLogo"
-            :logoUrl="baseForm.FormLogo"
+            :logoUrl="baseForm.formLogo"
             :FormIdY="formIdN"
             :id="'y'"></FormsDetail>
           <div style="display: flex; justify-content: center">
@@ -346,8 +346,8 @@ export default {
         styles: '', //表单数据
         fillingRules: 0, //填写规则
         surveyState: 0, //表单状态
-        FormDescription: '', //表单说明
-        FormLogo: '', //logo图片路径
+        formDescription: '', //表单说明
+        formLogo: '', //logo图片路径
         tinyint: 0, //是否定时收集
         anAuth: 0, //是否微信授权
         //多渠道地址,
@@ -635,11 +635,11 @@ export default {
           this.baseForm.surveyName = data.surveyName
           if (data.formDescription) {
             this.ifFormDescription = 1
-            this.baseForm.FormDescription = data.formDescription
+            this.baseForm.formDescription = data.formDescription
           }
           if (data.formLogo) {
             this.ifFormLogo = 1
-            this.baseForm.FormLogo = data.formLogo
+            this.baseForm.formLogo = data.formLogo
             this.baseForm.logoUrl = data.formLogo
           }
           this.pageDataAll = JSON.parse(data.styles)
@@ -998,14 +998,14 @@ export default {
           return
         }
         if (this.ifFormDescription) {
-          if (!this.baseForm.FormDescription) {
+          if (!this.baseForm.formDescription) {
             this.msgError('表单说明不能为空！')
             return
           }
         }
         if (this.ifFormLogo) {
           if (!this.baseForm.logoUrl) {
-            this.baseForm.logoUrl = this.baseForm.FormLogo
+            this.baseForm.logoUrl = this.baseForm.formLogo
           }
           if (!this.baseForm.logoUrl) {
             console.log('this.baseForm', this.baseForm)

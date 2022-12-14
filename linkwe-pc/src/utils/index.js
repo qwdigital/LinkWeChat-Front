@@ -27,10 +27,7 @@ export function dateFormat(dateString, fmt = 'yyyy-MM-dd hh:mm:ss') {
 
   for (var k in o) {
     if (new RegExp('(' + k + ')').test(fmt)) {
-      fmt = fmt.replace(
-        RegExp.$1,
-        RegExp.$1.length == 1 || String(o[k]).length > 1 ? o[k] : '0' + o[k]
-      )
+      fmt = fmt.replace(RegExp.$1, RegExp.$1.length == 1 || String(o[k]).length > 1 ? o[k] : '0' + o[k])
     }
   }
 
@@ -66,9 +63,7 @@ export function formatTime(time, option) {
   if (option) {
     return parseTime(time, option)
   } else {
-    return (
-      d.getMonth() + 1 + '月' + d.getDate() + '日' + d.getHours() + '时' + d.getMinutes() + '分'
-    )
+    return d.getMonth() + 1 + '月' + d.getDate() + '日' + d.getHours() + '时' + d.getMinutes() + '分'
   }
 }
 
@@ -172,7 +167,7 @@ export function param(json) {
     Object.keys(json).map((key) => {
       if (json[key] === undefined) return ''
       return encodeURIComponent(key) + '=' + encodeURIComponent(json[key])
-    })
+    }),
   ).join('&')
 }
 
@@ -245,8 +240,7 @@ export function toggleClass(element, className) {
   if (nameIndex === -1) {
     classString += '' + className
   } else {
-    classString =
-      classString.substr(0, nameIndex) + classString.substr(nameIndex + className.length)
+    classString = classString.substr(0, nameIndex) + classString.substr(nameIndex + className.length)
   }
   element.className = classString
 }
@@ -640,15 +634,13 @@ export async function getWechatAuthUserInfo(appId) {
   let code = getQueryValue('code') //是否存在code
   // let query = param2Obj() //
   // let { code, appId, secret } = query
-  let local = window.location.origin.includes('localhost')
-    ? 'http://h5.linkwechat.cn/test.html'
-    : window.location.href
+  let local = window.location.origin.includes('localhost') ? 'http://h5.linkwechat.cn/test.html' : window.location.href
   if (!code) {
     //不存在就打开上面的地址进行授权
     let url = ''
     if (appId) {
       url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${encodeURIComponent(
-        local
+        local,
       )}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
     } else {
       url = (await getWxRedirect()).data
@@ -704,21 +696,24 @@ function tranDate(time) {
 
 // 获取本机公网ip
 export function getIP() {
-  return new Promise(function (resolve, reject) {
-    let script = document.createElement('script')
-    script.setAttribute('charset', 'utf-8')
-    script.setAttribute('type', 'text/javascript')
-    script.setAttribute('src', 'https://pv.sohu.com/cityjson?ie=utf-8')
-    document.getElementsByTagName('head')[0].appendChild(script)
-    script.onload = function () {
-      document.getElementsByTagName('head')[0].removeChild(script)
-      resolve(returnCitySN['cip'])
-    }
-    script.onerror = function () {
-      document.getElementsByTagName('head')[0].removeChild(script)
-      reject('')
-    }
-  })
+  // return new Promise(function (resolve, reject) {
+  //   let script = document.createElement('script')
+  //   script.setAttribute('charset', 'utf-8')
+  //   script.setAttribute('type', 'text/javascript')
+  //   script.setAttribute('src', 'https://pv.sohu.com/cityjson?ie=utf-8')
+  //   document.getElementsByTagName('head')[0].appendChild(script)
+  //   script.onload = function () {
+  //     document.getElementsByTagName('head')[0].removeChild(script)
+  //     resolve(returnCitySN['cip'])
+  //   }
+  //   script.onerror = function () {
+  //     document.getElementsByTagName('head')[0].removeChild(script)
+  //     reject('')
+  //   }
+  // })
+  return axios({
+    url: 'https://api.ipify.org/?format=json',
+  }).then(({ data }) => data.ip || Promise.reject())
 }
 
 import { getProCityList } from '@/api/common'

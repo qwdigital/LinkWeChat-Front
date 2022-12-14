@@ -1,92 +1,23 @@
 <template>
-  <div
-    :style="
-      Ifcontainer
-        ? ''
-        : 'background:#666;display: flex;justify-content: center;height: 100%;padding: 30px;'
-    "
-  >
+  <div :style="Ifcontainer ? '' : 'background:#666;display: flex;justify-content: center;height: 100%;padding: 30px;'">
     <div
       :class="Ifcontainer ? 'container' : 'container containerPC'"
       data-title="调查问卷"
       :id="cpUnionDomId"
-      v-loading="loading"
-    >
+      v-loading="loading">
       <!-- 电脑端预览 -->
-      <phone-template
-        v-if="style == 'y' && fromList"
-        style="margin: 0 auto"
-        :title="fromList.surveyName"
-      >
-        <div
-          v-if="ifFormLogo && !formId && !fromList.formLogo"
-          style="display: flex; justify-content: center; margin-top: 30px"
-        >
-          <div
-            v-if="!logoUrl"
-            style="
-              width: 100px;
-              height: 100px;
-              background-color: #f2f2f2;
-              border-radius: 50%;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            "
-          >
-            Logo
-          </div>
-          <div
-            v-if="logoUrl"
-            style="
-              width: 100px;
-              height: 100px;
-              border-radius: 50%;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              overflow: hidden;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            "
-          >
-            <img object-fit="cover" :src="logoUrl" style="width: 100%; height: 100%" />
-          </div>
-        </div>
-        <div
-          v-if="fromList.formLogo"
-          style="display: flex; justify-content: center; margin-top: 30px"
-        >
-          <div
-            v-if="fromList.formLogo"
-            style="
-              width: 100px;
-              height: 100px;
-              border-radius: 50%;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              overflow: hidden;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            "
-          >
-            <el-image
-              object-fit="cover"
-              :src="fromList.formLogo"
-              style="width: 100%; height: 100%"
-            ></el-image>
-          </div>
+      <phone-template v-if="style == 'y' && fromList" style="margin: 0 auto" :title="fromList.surveyName">
+        <div style="display: flex; justify-content: center; margin-top: 30px">
+          <template v-if="ifFormLogo && !formId && !fromList.formLogo">
+            <div v-if="!logoUrl" class="form-logo" style="">Logo</div>
+            <el-image v-else fit="cover" :src="logoUrl" class="form-logo" />
+          </template>
+          <el-image v-if="fromList.formLogo" fit="cover" :src="fromList.formLogo" class="form-logo" />
         </div>
         <div v-if="fromList.surveyName" class="ac mt20" style="font-size: 20px; font-weight: 700">
           {{ fromList.surveyName }}
         </div>
-        <div
-          v-if="fromList.formDescription"
-          style="font-size: 16px; padding: 30px 30px 0; line-height: 20px"
-        >
+        <div v-if="fromList.formDescription" style="font-size: 16px; padding: 30px 30px 0; line-height: 20px">
           {{ fromList.formDescription }}
         </div>
         <div v-if="fromList.visibility == 0" style="padding: 15px; margin- top: 10px">
@@ -99,14 +30,12 @@
               fromList.surveyState != 2 &&
               fromList.surveyState != 3) ||
             (fromList.visibility == 1 && style == 'y')
-          "
-        >
+          ">
           <div v-if="drawingList.length != 0">
             <el-form
               :size="formConf.size"
               :label-position="formConf.labelPosition"
-              :label-width="formConf.labelWidth + 'px'"
-            >
+              :label-width="formConf.labelWidth + 'px'">
               <draggable-item
                 v-for="(element, index) in drawingList"
                 v-show="element.formCodeId != 0"
@@ -115,22 +44,17 @@
                 :element="element"
                 :index="index"
                 :active-id="activeId"
-                :form-conf="formConf"
-              />
+                :form-conf="formConf" />
             </el-form>
           </div>
-          <div
-            v-if="drawingList.length == 0 && fromList.surveyName"
-            style="padding: 15px; position: relative"
-          >
+          <div v-if="drawingList.length == 0 && fromList.surveyName" style="padding: 15px; position: relative">
             <el-form
               ref="elForm"
               :model="formData"
               :rules="rules"
               size="medium"
               label-width="100px"
-              label-position="top"
-            >
+              label-position="top">
               <div style="color: transparent; position: relative; top: 500px">
                 <span style="color: transparent; position: relative; top: 500px">1</span>
               </div>
@@ -139,8 +63,7 @@
                   v-model="formData.userName"
                   placeholder="请输入你的姓名"
                   clearable
-                  :style="{ width: '100%' }"
-                ></el-input>
+                  :style="{ width: '100%' }"></el-input>
               </el-form-item>
               <el-form-item label="手机号" prop="mobile">
                 <el-input
@@ -149,40 +72,23 @@
                   :maxlength="11"
                   show-word-limit
                   clearable
-                  :style="{ width: '100%' }"
-                ></el-input>
+                  :style="{ width: '100%' }"></el-input>
               </el-form-item>
             </el-form>
           </div>
           <div style="color: #fff">1</div>
-          <div
-            v-if="page == pageData.length && page != 1"
-            style="padding: 1rem; position: relative; top: 0.5rem"
-          >
+          <div v-if="page == pageData.length && page != 1" style="padding: 1rem; position: relative; top: 0.5rem">
             <div @click="dePage" class="formDetailPush">上一页</div>
           </div>
-          <div
-            v-if="page == pageData.length"
-            style="padding: 1rem; position: relative; top: 0.5rem"
-          >
+          <div v-if="page == pageData.length" style="padding: 1rem; position: relative; top: 0.5rem">
             <div @click.stop="fromPush()" class="formDetailPush">确认提交</div>
           </div>
-          <div
-            v-if="page != pageData.length && page == 1"
-            style="padding: 1rem; position: relative; top: 0.5rem"
-          >
+          <div v-if="page != pageData.length && page == 1" style="padding: 1rem; position: relative; top: 0.5rem">
             <div @click="addPage" class="formDetailPush">下一页</div>
           </div>
           <div
             v-if="page != pageData.length && page != 1"
-            style="
-              padding: 1rem;
-              position: relative;
-              top: 0.5rem;
-              display: flex;
-              justify-content: space-between;
-            "
-          >
+            style="padding: 1rem; position: relative; top: 0.5rem; display: flex; justify-content: space-between">
             <div @click="dePage" style="width: 45%" class="formDetailPush">上一页</div>
             <div @click="addPage" style="width: 45%" class="formDetailPush">下一页</div>
           </div>
@@ -204,41 +110,15 @@
           ></div> -->
       <!-- 手机端 -->
       <div v-if="style != 'y' && drawingList.length != 0" class="container">
-        <div
-          v-if="fromList.formLogo && !ifEnd"
-          style="display: flex; justify-content: center; margin-top: 30px"
-        >
-          <div
-            v-if="fromList.formLogo"
-            style="
-              width: 100px;
-              height: 100px;
-              border-radius: 50%;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              overflow: hidden;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            "
-          >
-            <el-image
-              object-fit="cover"
-              :src="fromList.formLogo"
-              style="width: 100%; height: 100%"
-            ></el-image>
-          </div>
+        <div v-if="fromList.formLogo && !ifEnd" style="display: flex; justify-content: center; margin-top: 30px">
+          <el-image fit="cover" :src="fromList.formLogo" class="form-logo"></el-image>
         </div>
         <div v-if="fromList.surveyName" class="ac mt20">
           <span style="font-size: 20px; font-weight: 700">
             {{ fromList.surveyName }}
           </span>
         </div>
-        <div
-          v-if="fromList.formDescription && !ifEnd"
-          style="font-size: 16px; padding: 30px 30px 0; line-height: 20px"
-        >
+        <div v-if="fromList.formDescription && !ifEnd" style="font-size: 16px; padding: 30px 30px 0; line-height: 20px">
           {{ fromList.formDescription }}
         </div>
         <div v-if="fromList.visibility == 0 && !ifEnd" style="padding: 15px; margin- top: 8px">
@@ -249,8 +129,7 @@
           <el-form
             :size="formConf.size"
             :label-position="formConf.labelPosition"
-            :label-width="formConf.labelWidth + 'px'"
-          >
+            :label-width="formConf.labelWidth + 'px'">
             <div v-for="(element, index) in drawingList" :key="element.renderKey">
               <draggable-item
                 v-show="element.formCodeId != 0"
@@ -258,8 +137,7 @@
                 :element="element"
                 :index="index"
                 :active-id="activeId"
-                :form-conf="formConf"
-              />
+                :form-conf="formConf" />
               <div v-show="element.formCodeId == 0" style="padding: 10px; padding-bottom: 0">
                 {{ element.defaultValue }}
               </div>
@@ -285,40 +163,21 @@
             </div> -->
           <div style="color: transparent; margin-top: 50px">1</div>
           <div>
-            <div
-              v-if="page == pageData.length && page != 1"
-              style="padding: 1rem; position: relative; top: 0.5rem"
-            >
+            <div v-if="page == pageData.length && page != 1" style="padding: 1rem; position: relative; top: 0.5rem">
               <div @click="dePage" class="formDetailPush">上一页</div>
             </div>
-            <div
-              v-if="page == pageData.length && !ifEnd"
-              style="padding: 1rem; position: relative; top: 0.5rem"
-            >
+            <div v-if="page == pageData.length && !ifEnd" style="padding: 1rem; position: relative; top: 0.5rem">
               <div @click.stop="fromPush()" class="formDetailPush">确认提交</div>
             </div>
-            <div
-              v-if="page == pageData.length && ifEnd"
-              style="padding: 1rem; position: relative; top: 0.5rem"
-            >
+            <div v-if="page == pageData.length && ifEnd" style="padding: 1rem; position: relative; top: 0.5rem">
               <div class="formDetailPush">您已完成填写</div>
             </div>
-            <div
-              v-if="page != pageData.length && page == 1"
-              style="padding: 1rem; position: relative; top: 0.5rem"
-            >
+            <div v-if="page != pageData.length && page == 1" style="padding: 1rem; position: relative; top: 0.5rem">
               <div @click="addPage" class="formDetailPush">下一页</div>
             </div>
             <div
               v-if="page != pageData.length && page != 1"
-              style="
-                padding: 1rem;
-                position: relative;
-                top: 0.5rem;
-                display: flex;
-                justify-content: space-between;
-              "
-            >
+              style="padding: 1rem; position: relative; top: 0.5rem; display: flex; justify-content: space-between">
               <div @click="dePage" style="width: 45%" class="formDetailPush">上一页</div>
               <div @click="addPage" style="width: 45%" class="formDetailPush">下一页</div>
             </div>
@@ -367,7 +226,7 @@ export default {
     'index',
     'surveyName',
     'ifFormDescription',
-    'FormDescription',
+    'formDescription',
     'ifFormLogo',
     'logoUrl',
     'unionDomId',
@@ -478,19 +337,14 @@ export default {
         this.fromList.fromLogo = val
       },
     },
-    FormDescription: {
+    formDescription: {
       handler(val) {
-        console.log('FormDescription', val)
         this.fromList.formDescription = val
       },
     },
     // eslint-disable-next-line func-names
     'activeData.label': function (val, oldVal) {
-      if (
-        this.activeData.placeholder === undefined ||
-        !this.activeData.tag ||
-        oldActiveId !== this.activeId
-      ) {
+      if (this.activeData.placeholder === undefined || !this.activeData.tag || oldActiveId !== this.activeId) {
         return
       }
       this.activeData.placeholder = this.activeData.placeholder.replace(oldVal, '')
@@ -588,8 +442,9 @@ export default {
 
     //表单提交
     async fromPush() {
-      this.userIp = this.userIp || (await getIP())
-      if (!this.userIp) {
+      try {
+        this.userIp = this.userIp || (await getIP())
+      } catch (error) {
         this.toast('获取ip失败')
         return
       }
@@ -680,11 +535,7 @@ export default {
         let curItem = answer[i]
         if (curItem.required) {
           let label = curItem.label.substring(curItem.label.indexOf('.') + 1)
-          if (
-            curItem.defaultValue === '' ||
-            curItem.defaultValue === undefined ||
-            curItem.defaultValue.length === 0
-          ) {
+          if (curItem.defaultValue === '' || curItem.defaultValue === undefined || curItem.defaultValue.length === 0) {
             // this.toast('第' + curItem.page + '页,' + label + ',' + '不能为空')
             this.toast(`第${curItem.page}页,${label},${formCodeDict[curItem.formCodeId]}不能为空`)
             return
@@ -693,17 +544,13 @@ export default {
           if (curItem.formCodeId == 4) {
             if (curItem.max) {
               if (curItem.defaultValue > curItem.max) {
-                this.toast(
-                  '第' + curItem.page + '页,' + label + ',数字文本中数字不能大于' + curItem.max
-                )
+                this.toast('第' + curItem.page + '页,' + label + ',数字文本中数字不能大于' + curItem.max)
                 return
               }
             }
             if (curItem.min) {
               if (curItem.defaultValue < curItem.min) {
-                this.toast(
-                  '第' + curItem.page + '页,' + label + ',数字文本中数字不能小于' + curItem.min
-                )
+                this.toast('第' + curItem.page + '页,' + label + ',数字文本中数字不能小于' + curItem.min)
                 return
               }
             }
@@ -712,10 +559,7 @@ export default {
           }
 
           if (curItem.regList && curItem.regList.length != 0) {
-            curItem.regList[0].pattern = curItem.regList[0].pattern.substring(
-              1,
-              curItem.regList[0].pattern.length - 2
-            )
+            curItem.regList[0].pattern = curItem.regList[0].pattern.substring(1, curItem.regList[0].pattern.length - 2)
             let a = new RegExp(curItem.regList[0].pattern)
 
             if (!a.test(curItem.defaultValue)) {
@@ -901,7 +745,7 @@ export default {
     },
     _isMobile() {
       let flag = navigator.userAgent.match(
-        /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+        /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i,
       )
       return flag
     },
@@ -1029,8 +873,9 @@ export default {
     async siteStas() {
       if (!['y', 'q'].includes(this.style)) {
         //智能表单站点统计 PV
-        this.userIp = this.userIp || (await getIP())
-        if (!this.userIp) {
+        try {
+          this.userIp = this.userIp || (await getIP())
+        } catch (error) {
           this.toast('获取ip失败')
           return
         }
@@ -1075,7 +920,15 @@ export default {
 <style lang="scss" scoped>
 $selectedColor: #f6f7ff;
 $lighterBlue: #409eff;
-
+.form-logo {
+  width: 100px;
+  height: 100px;
+  background-color: #f2f2f2;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .container {
   overflow-y: auto;
   position: relative;
