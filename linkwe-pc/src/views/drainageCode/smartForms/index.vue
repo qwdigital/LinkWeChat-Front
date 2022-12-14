@@ -2,7 +2,7 @@
   <div>
     <div class="g-card">
       <el-row type="flex" justify="space-between">
-        <el-col :span="5" class="left g-pad20">
+        <el-col :span="4" class="left g-pad20">
           <div class="title">
             <div class="title-name">表单分组</div>
             <div class="title-btn" @click="addGroup">添加</div>
@@ -33,9 +33,9 @@
             </div>
           </div>
         </el-col>
-        <el-col :span="19" class="g-pad20" style="width: 85%">
+        <el-col :span="20" class="g-pad20">
           <div>
-            <el-form :inline="true" label-width="80px" label-position="left" class="top-search">
+            <el-form :inline="true" label-width="70px" label-position="left" class="top-search">
               <el-form-item label="表单ID">
                 <el-input
                   onkeyup="value=value.replace(/[^\d]/g,'')"
@@ -525,7 +525,6 @@ export default {
           this.total = Number(res.total)
           this.list = res.rows
           for (let i = 0; i < this.list.length; i++) {
-            this.list[i].groupName = this.query.groupName
             if (this.list[i].surveyState == 4) {
               if (this.list[i].timingStart) {
                 let newData = new Date()
