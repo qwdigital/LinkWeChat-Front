@@ -7,6 +7,7 @@
           <el-input
             class="mb10"
             placeholder="搜索客户"
+            clearable
             prefix-icon="el-icon-search"
             v-model="customerQuery.name"
             @keyup.enter.native="getCustomerList(1)"

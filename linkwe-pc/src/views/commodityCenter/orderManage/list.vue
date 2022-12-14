@@ -2,13 +2,13 @@
   <div class="g-card g-pad20">
     <el-form :inline="true" label-width="110px" class="top-search">
       <el-form-item label="商品名称或描述" prop="productName">
-        <el-input v-model="query.productName" placeholder="请输入商品名称或描述"></el-input>
+        <el-input clearable v-model="query.productName" placeholder="请输入商品名称或描述"></el-input>
       </el-form-item>
       <el-form-item label="客户名称" prop="externalName">
-        <el-input v-model="query.externalName" placeholder="请输入客户名称"></el-input>
+        <el-input clearable v-model="query.externalName" placeholder="请输入客户名称"></el-input>
       </el-form-item>
       <el-form-item label="收款员工" prop="name">
-        <el-input :value="qrUserName" readonly @focus="dialogVisibleSelect = true" placeholder="请选择员工" />
+        <el-input clearable :value="qrUserName" readonly @focus="dialogVisibleSelect = true" placeholder="请选择员工" />
       </el-form-item>
       <el-form-item label="交易状态" prop="name">
         <el-select v-model="query.orderState" :popper-append-to-body="false">
@@ -32,6 +32,7 @@
       </el-form-item>
       <el-form-item label="交易时间" prop="name">
         <el-date-picker
+          clearable
           v-model="dateRange"
           type="daterange"
           value-format="yyyy-MM-dd"

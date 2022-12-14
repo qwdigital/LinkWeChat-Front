@@ -14,6 +14,7 @@
         </el-form-item>
         <el-form-item label="时间范围">
           <el-date-picker
+            clearable
             v-model="value1"
             format="yyyy-MM-dd"
             @change="setTimeChange"

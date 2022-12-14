@@ -12,6 +12,7 @@
       </el-form-item>
       <el-form-item label="时间范围">
         <el-date-picker
+          clearable
           v-model="dateRange"
           type="daterange"
           format="yyyy-MM-dd"

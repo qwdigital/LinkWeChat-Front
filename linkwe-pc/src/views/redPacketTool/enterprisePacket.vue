@@ -3,7 +3,7 @@
     <div class="top-search">
       <el-form inline label-position="right" :model="query" label-width="100px" ref="queryForm">
         <el-form-item label="红包状态" prop="status">
-          <el-select v-model="query.status" placeholder="请选择">
+          <el-select clearable v-model="query.status" placeholder="请选择">
             <el-option
               v-for="(item, key) in dictStatusType"
               :key="key"
@@ -13,7 +13,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="发送场景" prop="sceneType">
-          <el-select v-model="query.sceneType" placeholder="请选择" size="small">
+          <el-select clearable v-model="query.sceneType" placeholder="请选择" size="small">
             <el-option
               v-for="(item, key) in dictSendSence"
               :key="key"

@@ -109,13 +109,13 @@
           </div>
         </el-form-item>
         <el-form-item label="领取客户" prop="customerName">
-          <el-input v-model="query.customerName" placeholder="请输入"></el-input>
+          <el-input clearable v-model="query.customerName" placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item label="发放时间">
-          <el-date-picker v-model="dateRange" value-format="yyyy-MM-dd" type="daterange" :picker-options="pickerOptions" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right"></el-date-picker>
+          <el-date-picker clearable v-model="dateRange" value-format="yyyy-MM-dd" type="daterange" :picker-options="pickerOptions" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right"></el-date-picker>
         </el-form-item>
         <el-form-item label="全部类型" prop="sendState">
-          <el-select v-model="query.sendState" placeholder="请选择">
+          <el-select clearable v-model="query.sendState" placeholder="请选择">
             <el-option v-for="(item, key) in dictStatusType" :key="key" :label="item" :value="key"></el-option>
           </el-select>
         </el-form-item>

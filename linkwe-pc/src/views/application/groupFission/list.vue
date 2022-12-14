@@ -84,10 +84,11 @@
   <div class="app-container">
     <el-form ref="queryForm" :inline="true" :model="query" class="top-search" size="small">
       <el-form-item label="裂变名" prop="taskName">
-        <el-input v-model="query.taskName" placeholder="请输入"></el-input>
+        <el-input clearable v-model="query.taskName" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="添加日期">
         <el-date-picker
+          clearable
           v-model="dateRange"
           @change="setChange"
           type="daterange"

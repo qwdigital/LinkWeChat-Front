@@ -154,7 +154,7 @@
   <div class="g-card g-pad20">
     <el-form ref="queryForm" :inline="true" :model="query" label-width="110px" class="top-search">
       <el-form-item label="商品名称或描述" prop="name">
-        <el-input v-model="query.name" placeholder="请输入"></el-input>
+        <el-input clearable v-model="query.name" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label=" ">
         <el-button type="primary" @click="getList(1)">查询</el-button>

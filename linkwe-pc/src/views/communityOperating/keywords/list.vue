@@ -151,16 +151,17 @@
   <div>
     <el-form ref="queryForm" :inline="true" :model="query" label-width="100px" class="top-search" size="small">
       <el-form-item label="活码名称" prop="taskName">
-        <el-input v-model="query.taskName" placeholder="请输入"></el-input>
+        <el-input clearable v-model="query.taskName" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="创建人" prop="createBy">
-        <el-input v-model="query.createBy" placeholder="请输入"></el-input>
+        <el-input clearable v-model="query.createBy" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="关键词" prop="keywords">
-        <el-input v-model="query.keywords" placeholder="请输入"></el-input>
+        <el-input clearable v-model="query.keywords" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker
+          clearable
           v-model="dateRange"
           value-format="yyyy-MM-dd"
           type="daterange"

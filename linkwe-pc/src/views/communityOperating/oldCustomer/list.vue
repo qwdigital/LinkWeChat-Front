@@ -216,7 +216,7 @@
     <div class="top-search">
       <el-form inline label-position="right" :model="query" label-width="100px" ref="queryForm">
         <el-form-item label="任务名称" prop="taskName">
-          <el-input v-model="query.taskName" placeholder="请输入"></el-input>
+          <el-input clearable v-model="query.taskName" placeholder="请输入"></el-input>
         </el-form-item>
         <!-- <el-form-item label="发送方式" prop="sendType">
           <el-select v-model="query.sendType" placeholder="请选择" size="small">
@@ -229,10 +229,11 @@
           </el-select>
         </el-form-item> -->
         <el-form-item label="创建人" prop="createBy">
-          <el-input v-model="query.createBy" placeholder="请输入"></el-input>
+          <el-input clearable v-model="query.createBy" placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item label="创建时间">
           <el-date-picker
+            clearable
             v-model="dateRange"
             value-format="yyyy-MM-dd"
             type="daterange"

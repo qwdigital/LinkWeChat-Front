@@ -6,7 +6,7 @@
   export default {
     name: 'Group',
     components: { SelectTag },
-    data () {
+    data() {
       return {
         // 查询参数
         query: {
@@ -42,12 +42,12 @@
       }
     },
     computed: {},
-    created () {
+    created() {
       this.getList()
     },
     methods: {
       /** 查询 */
-      getList (page) {
+      getList(page) {
         if (this.dateRange) {
           this.query.beginTime = this.dateRange[0]
           this.query.endTime = this.dateRange[1]
@@ -79,7 +79,7 @@
             this.loading = false
           })
       },
-      showTagDialog () {
+      showTagDialog() {
         this.selectedTag = this.queryTag
         this.tagDialogType = {
           title: '选择标签',
@@ -88,7 +88,7 @@
         this.dialogVisible = true
         // this.$refs.selectTag.$forceUpdate()
       },
-      makeTag (data) {
+      makeTag(data) {
         this.makeLabelCustomerList = data || this.ids
         this.tagDialogType.type = ''
         let curTags = []
@@ -102,7 +102,7 @@
         this.selectedTag = curTags
         this.dialogVisible = true
       },
-      submitSelectTag (selected) {
+      submitSelectTag(selected) {
         if (this.tagDialogType.type === 'query') {
           this.queryTag = selected
           this.dialogVisible = false
@@ -130,14 +130,14 @@
         }
       },
       /** 重置按钮操作 */
-      resetQuery () {
+      resetQuery() {
         this.dateRange = []
         this.queryTag = []
         this.queryUser = []
         this.$refs['queryForm'].resetFields()
         this.getList(1)
       },
-      sync () {
+      sync() {
         // const loading = this.$loading({
         //   lock: true,
         //   text: 'Loading',
@@ -151,7 +151,7 @@
         })
       },
       // 多选框选中数据
-      handleSelectionChange (selection) {
+      handleSelectionChange(selection) {
         this.ids = selection.map((item) => item.id)
         this.multiple = !selection.length
       }
@@ -179,10 +179,10 @@
   <div class="">
     <el-form :model="query" ref="queryForm" :inline="true" class="top-search" label-width="80px">
       <el-form-item label="群名" prop="groupName">
-        <el-input v-model="query.groupName" placeholder="请输入群名" clearable />
+        <el-input clearable v-model="query.groupName" placeholder="请输入群名" clearable />
       </el-form-item>
       <el-form-item label="群主" prop="groupLeaderName">
-        <el-input v-model="query.groupLeaderName" placeholder="请输入群主" clearable />
+        <el-input clearable v-model="query.groupLeaderName" placeholder="请输入群主" clearable />
       </el-form-item>
       <el-form-item label="群标签">
         <div class="tag-input" @click="showTagDialog">
@@ -193,7 +193,16 @@
         </div>
       </el-form-item>
       <el-form-item label="创建日期">
-        <el-date-picker v-model="dateRange" value-format="yyyy-MM-dd" type="daterange" :picker-options="pickerOptions" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+        <el-date-picker
+          clearable
+          v-model="dateRange"
+          value-format="yyyy-MM-dd"
+          type="daterange"
+          :picker-options="pickerOptions"
+          range-separator="-"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label=" ">
         <!-- v-hasPermi="['customerManage:group:query']" -->
@@ -252,12 +261,16 @@
       <el-table-column label="创建时间" align="center" prop="createTime" width="180"></el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="text" @click="
+          <el-button
+            type="text"
+            @click="
               $router.push({
                 path: 'groupDetail',
                 query: { chatId: scope.row.chatId }
               })
-            ">查看详情</el-button>
+            "
+            >查看详情</el-button
+          >
           <!-- v-hasPermi="['customerManage:group:view']" -->
           <el-button type="text" @click="makeTag(scope.row)">标签管理</el-button>
           <!-- v-hasPermi="['customerManage/customer:makeTag']" -->
@@ -265,10 +278,23 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total > 0" :total="total" :page.sync="query.pageNum" :limit.sync="query.pageSize" @pagination="getList()" />
+    <pagination
+      v-show="total > 0"
+      :total="total"
+      :page.sync="query.pageNum"
+      :limit.sync="query.pageSize"
+      @pagination="getList()"
+    />
 
     <!-- 选择标签弹窗 -->
-    <SelectTag ref="selectTag" :visible.sync="dialogVisible" type="2" :title="tagDialogType.title" :defaultValues="selectedTag" @success="submitSelectTag">
+    <SelectTag
+      ref="selectTag"
+      :visible.sync="dialogVisible"
+      type="2"
+      :title="tagDialogType.title"
+      :defaultValues="selectedTag"
+      @success="submitSelectTag"
+    >
     </SelectTag>
   </div>
 </template>

@@ -118,10 +118,11 @@
   <div class="page">
     <el-form ref="queryForm" :inline="true" :model="query" label-width="100px" class="top-search">
       <el-form-item label="已离职员工" prop="userName">
-        <el-input v-model="query.userName" placeholder="请输入"></el-input>
+        <el-input clearable v-model="query.userName" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="离职日期">
         <el-date-picker
+          clearable
           v-model="dateRange"
           type="daterange"
           value-format="yyyy-MM-dd"

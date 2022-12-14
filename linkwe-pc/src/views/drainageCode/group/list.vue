@@ -3,7 +3,7 @@
     <div class="g-card g-pad20">
       <el-form ref="queryForm" :model="query" inline class="top-search" label-position="left" label-width="80px">
         <el-form-item label="活码名称" prop="activityName">
-          <el-input v-model="query.activityName" placeholder="请输入活码名称"></el-input>
+          <el-input clearable v-model="query.activityName" placeholder="请输入活码名称"></el-input>
         </el-form-item>
         <el-form-item label="客群标签" prop="tagIds">
           <el-input :value="tagNames" readonly @focus="showSelectTag = true" placeholder="请选择客群标签" />

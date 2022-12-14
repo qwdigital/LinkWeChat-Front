@@ -5,7 +5,7 @@
 
       <el-form label-position="left" inline label-width="80px">
         <el-form-item label="欢迎语">
-          <el-input placeholder="请输入欢迎语" v-model="query.welcomeMsg" style="width: 260px;"></el-input>
+          <el-input clearable placeholder="请输入欢迎语" v-model="query.welcomeMsg" style="width: 260px;"></el-input>
         </el-form-item>
         <el-form-item label-width="0">
           <!-- <el-button v-hasPermi="['wecom:code:list']" type="cyan" @click="getList(1)">查询</el-button> -->
