@@ -1,4 +1,5 @@
 import { parseTime } from './common'
+import axios from 'axios'
 
 // 日期时间格式化
 export function dateFormat(dateString, fmt = 'yyyy-MM-dd hh:mm:ss') {
@@ -7,7 +8,6 @@ export function dateFormat(dateString, fmt = 'yyyy-MM-dd hh:mm:ss') {
   }
   var date = dateString
   if (Object.prototype.toString.call(dateString) !== '[object Date]') {
-    console.log(dateString)
     date = new Date(dateString.replace(/-/g, '/'))
   }
   var o = {
@@ -668,9 +668,17 @@ export async function getWechatAuthUserInfo(appId) {
 
 // stime 开始时间 etime 结束时间  currentTime指定日期
 export function compareTime(stime, etime, currentTime) {
+  if (!stime || !etime) {
+    return
+  }
+  let thisDate = ''
+  if (currentTime) {
+    thisDate = new Date(currentTime)
+  } else {
+    thisDate = new Date()
+  }
   let startTime = tranDate(stime)
   let endTime = tranDate(etime)
-  let thisDate = currentTime || new Date()
   let time =
     thisDate.getFullYear() +
     '-' +
@@ -711,6 +719,7 @@ export function getIP() {
   //     reject('')
   //   }
   // })
+
   return axios({
     url: 'https://api.ipify.org/?format=json',
   }).then(({ data }) => data.ip || Promise.reject())
@@ -728,4 +737,12 @@ export async function getProvinceCityTree() {
     window.sessionStorage.setItem('provinceCityTree', JSON.stringify(area))
   }
   return area
+}
+
+// 判断是否为移动端
+export function isMobile() {
+  let flag = navigator.userAgent.match(
+    /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i,
+  )
+  return flag
 }
