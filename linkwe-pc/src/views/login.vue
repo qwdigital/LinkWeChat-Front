@@ -232,11 +232,7 @@ export default {
   },
 }
 </script>
-<style>
-.el-popover {
-  width: 280px !important;
-}
-</style>
+
 <style rel="stylesheet/scss" lang="scss" scoped>
 .login {
   display: flex;
