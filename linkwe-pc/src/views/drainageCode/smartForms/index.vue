@@ -35,7 +35,7 @@
         </el-col>
         <el-col :span="19" class="g-pad20" style="width: 85%">
           <div>
-            <el-form :inline="true" label-width="80px" label-position="left">
+            <el-form :inline="true" label-width="80px" label-position="left" class="top-search">
               <el-form-item label="表单ID">
                 <el-input
                   onkeyup="value=value.replace(/[^\d]/g,'')"
@@ -52,23 +52,25 @@
                   placeholder="请输入表单名称"
                   @keyup.enter.native="search()" />
               </el-form-item>
-              <!-- <el-form-item label="创建时间">
-                <el-date-picker v-model="seachDate" format="yyyy-MM-dd" value-format="yyyyMMdd" type="daterange"
-                  range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-              </el-form-item> -->
               <el-form-item label="创建时间">
-                <!--       <el-date-picker v-model="seachDate" format="yyyy-MM-dd" value-format="yyyyMMdd" type="daterange"
-                  range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker> -->
                 <el-date-picker
+                  v-model="dateRange"
+                  value-format="yyyy-MM-dd"
+                  type="daterange"
+                  :picker-options="pickerOptions"
+                  range-separator="-"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"></el-date-picker>
+                <!-- <el-date-picker
                   v-model="query.createTime"
+                  type="daterange"
                   default-time="['00:00:00','00:00:00']"
                   value-format="yyyy-MM-dd HH:mm:ss"
-                  placeholder="选择时间"></el-date-picker>
+                  placeholder="选择时间"></el-date-picker> -->
               </el-form-item>
               <el-form-item label="选择状态" prop="addState">
                 <el-select v-model="query.surveyState">
                   <el-option label="未发布" :value="0"></el-option>
-                  <el-option label="未收集" :value="4"></el-option>
                   <el-option label="收集中" :value="1"></el-option>
                   <el-option label="已暂停" :value="2"></el-option>
                   <el-option label="已结束" :value="3"></el-option>
@@ -137,7 +139,6 @@
                 <div v-if="row.surveyState == 1">收集中</div>
                 <div v-if="row.surveyState == 2">已暂停</div>
                 <div v-if="row.surveyState == 3">已结束</div>
-                <div v-if="row.surveyState == 4">未收集</div>
               </template>
             </el-table-column>
             <el-table-column
@@ -324,6 +325,8 @@ export default {
         // orderByColumn: 'wqc.update_time',
         // isAsc: 'desc',
       },
+      // 日期范围
+      dateRange: [],
       userArray: [], // 选择人员
       userArrayStr: '',
       dialogVisible: false,
@@ -509,6 +512,13 @@ export default {
       this.getList()
     },
     getList() {
+      if (this.dateRange) {
+        this.query.startDate = this.dateRange[0]
+        this.query.endDate = this.dateRange[1]
+      } else {
+        this.query.startDate = ''
+        this.query.endDate = ''
+      }
       this.loading = true
       surveyList(this.query)
         .then((res) => {
