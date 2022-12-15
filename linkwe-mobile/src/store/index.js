@@ -58,8 +58,8 @@ export default new Vuex.Store({
           dataUser.user.weUserId && sessionStorage.setItem('userId', dataUser.user.weUserId) // 当前 登录/使用 企业员工真实姓名大驼峰 eg：QinShiHuang
           commit('userId', sessionStorage.userId)
           corpInfo.appId && sessionStorage.setItem('appId', corpInfo.appId) // 微信公众号appid
-          sessionStorage.setItem('corpId', appid) // 企业id
-          sessionStorage.setItem('agentId', agentid) // 自建应用agentId
+          sessionStorage.setItem('corpId', corpInfo.corpId) // 企业id
+          sessionStorage.setItem('agentId', corpInfo.agentId) // 自建应用agentId
           dataUser.user.companyName &&
             sessionStorage.setItem('companyName', dataUser.user.companyName) // 公司名称
           dataUser.user.avatar && sessionStorage.setItem('avatar', dataUser.user.avatar) // 用户头像
