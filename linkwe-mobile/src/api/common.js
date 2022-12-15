@@ -79,6 +79,21 @@ export function getWxRedirect (redirectUrl = location.href) {
 }
 
 /**
+ * 获取企业授权链接
+ * @param {*} redirectUrl 回调跳转地址
+ * @returns
+ */
+ export function getWcRedirect (redirectUrl = location.href) {
+  return request({
+    url: '/auth/wcRedirect',
+    method: 'get',
+    params: {
+      redirectUrl,
+    },
+  })
+}
+
+/**
  * 微信获取token接口
  * @param {*} code 是 code码 必填
  * @param {*} openId 否 微信用户ID 非必填
