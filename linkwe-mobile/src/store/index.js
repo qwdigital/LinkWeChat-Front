@@ -26,25 +26,27 @@ export default new Vuex.Store({
     // 企业微信端授权登录
     async login({ commit }) {
       //取缓存中的用户信息
-      window.lwConfig.TOKEN && (sessionStorage.token = window.lwConfig.TOKEN)
       if (!sessionStorage.token) {
         // 解决授权重定向返回问题
         let indexRoute = router.getRoutes().find((e) => e.path == '')
         indexRoute && (indexRoute.redirect = window.location.hash.slice(1))
         //缓存中没有用户信息，进入授权流程
         let code = getQueryValue('code') //是否存在code
-        // 第三方授权重定向回来手动刷新页面
-        if (code && count === 1) {
-          commit('reload')
-        }
         if (!code) {
           count++
           let url = (await getWcRedirect()).data
           window.location.replace(url)
+          return Promise.reject()
         }
-        let dataLogin = await login(code)
-        // 存入sessionStorage，解决刷新重复code获取用户问题
-        dataLogin.data && sessionStorage.setItem('token', dataLogin.data.access_token)
+         // 第三方授权重定向回来手动刷新页面
+        if (code && count === 1) {
+          commit('reload')
+        }
+        if (code) {
+          let dataLogin = await login(code)
+          // 存入sessionStorage，解决刷新重复code获取用户问题
+          dataLogin.data && sessionStorage.setItem('token', dataLogin.data.access_token)
+        }
       }
       if (sessionStorage.token && !sessionStorage.userId) {
         let dataUser = {}
@@ -56,6 +58,7 @@ export default new Vuex.Store({
         try {
           let corpInfo = dataUser.corpInfo
           dataUser.user.weUserId && sessionStorage.setItem('userId', dataUser.user.weUserId) // 当前 登录/使用 企业员工真实姓名大驼峰 eg：QinShiHuang
+          dataUser.user.userId && sessionStorage.setItem('sysId', dataUser.user.userId) // 当前系统的userId
           commit('userId', sessionStorage.userId)
           corpInfo.appId && sessionStorage.setItem('appId', corpInfo.appId) // 微信公众号appid
           sessionStorage.setItem('corpId', corpInfo.corpId) // 企业id

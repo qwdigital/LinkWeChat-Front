@@ -33,8 +33,8 @@
           <el-select clearable v-model="query.addState">
             <el-option label="待添加" :value="0"></el-option>
             <el-option label="已添加" :value="1"></el-option>
-            <!-- <el-option label="待通过" :value="3">
-						</el-option> -->
+            <el-option label="待通过" :value="3">
+						</el-option>
           </el-select>
         </el-form-item>
         <el-form-item label-width="0">

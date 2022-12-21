@@ -224,7 +224,7 @@ router.beforeEach(async (to, from, next) => {
     if (init && !noAuth) {
       Toast.loading()
       await store.dispatch('login')
-      window.lwConfig.TOKEN || (await wxConfig())
+      await wxConfig()
       init = false
       Toast.clear()
     }
