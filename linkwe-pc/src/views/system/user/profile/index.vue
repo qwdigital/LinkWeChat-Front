@@ -72,7 +72,7 @@
         user: {},
         roleGroup: {},
         postGroup: {},
-        activeTab: 'userinfo'
+        activeTab: 'resetPwd'
       }
     },
     created() {
