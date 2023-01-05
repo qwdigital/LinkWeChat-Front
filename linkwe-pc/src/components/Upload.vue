@@ -42,7 +42,7 @@
       // 图片的宽高像素限制 [width(number), height(number)],默认null不限制
       maxImgPx: {
         type: Array,
-        default: [1440, 1080] // () => [100, 100]
+        default: () => [1440, 1080] // () => [100, 100]
       },
       // 允许上传的文件格式后缀名 eg:["jpg", "png"]，['*']为不限制，各类型有默认限制 参见: formatDefault
       format: {
