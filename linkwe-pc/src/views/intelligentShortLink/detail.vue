@@ -2,7 +2,9 @@
 import { getDetail, getLineAnalysis, getAnalysis } from '@/api/intelligentShortLink'
 export default {
   name: '',
-  components: {},
+  components: {
+    TimeSearchTitle: () => import('@/components/common/TimeSearchTitle'),
+  },
   data() {
     return {
       loading: false,
@@ -21,7 +23,6 @@ export default {
     let id = this.$route.query.id
     this.getList(id)
     this.getAnalysis(id)
-    this.getLineAnalysis()
   },
   mounted() {},
   methods: {
@@ -86,11 +87,11 @@ export default {
           this.loading = false
         })
     },
-    getLineAnalysis() {
+    getLineAnalysis(data) {
       let query = {
         id: this.$route.query.id,
-        beginTime: this.dateRange[0],
-        endTime: this.dateRange[1],
+        beginTime: data.beginTime,
+        endTime: data.endTime,
       }
       getLineAnalysis(query).then(({ data }) => {
         this.xData = data.map((e) => e.xtime)
@@ -119,17 +120,7 @@ export default {
       <div class="title">数据趋势</div>
       <CardGroupIndex :data="cardData"></CardGroupIndex>
       <div>
-        <el-date-picker
-          v-model="dateRange"
-          :picker-options="pickerOptions"
-          class="ml20"
-          value-format="yyyy-MM-dd"
-          type="daterange"
-          :clearable="false"
-          range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          @change="getLineAnalysis()"></el-date-picker>
+        <TimeSearchTitle @search="getLineAnalysis"></TimeSearchTitle>
       </div>
       <ChartLine
         :xData="xData"
