@@ -1,16 +1,42 @@
 <script>
+import { getDetail, getLineAnalysis, getAnalysis } from '@/api/intelligentShortLink'
 export default {
   name: '',
   components: {},
   data() {
-    return {}
+    return {
+      loading: false,
+      form: {},
+      dateRange: [new Date().setDate(-7)],
+      data: [],
+      xData: [],
+      series: [],
+    }
   },
-  computed: {},
+  computed: {
+    ChartLine: () => import('@/components/ChartLine'),
+  },
   watch: {},
-  created() {},
+  created() {
+    let id = this.$route.query.id
+    this.getList(id)
+    this.getAnalysis(id)
+    this.getLineAnalysis()
+  },
   mounted() {},
   methods: {
-    getAnalysis() {
+    getDetail(id) {
+      this.loading = true
+      getDetail(id)
+        .then(({ data }) => {
+          this.form = data
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    getAnalysis(id) {
       this.loading = true
       getAnalysis()
         .then(({ data }) => {
@@ -60,6 +86,19 @@ export default {
           this.loading = false
         })
     },
+    getLineAnalysis() {
+      let query = {
+        id: this.$route.query.id,
+        beginTime: this.dateRange[0],
+        endTime: this.dateRange[1],
+      }
+      getLineAnalysis(query).then(({ data }) => {
+        this.xData = data.map((e) => e.xtime)
+        this.series.push(data.map((e) => e.addCnt))
+        this.series.push(data.map((e) => e.lostCnt))
+        this.series.push(data.map((e) => e.netCnt))
+      })
+    },
   },
 }
 </script>
@@ -79,6 +118,23 @@ export default {
     <div class="g-card g-pad20">
       <div class="title">数据趋势</div>
       <CardGroupIndex :data="cardData"></CardGroupIndex>
+      <div>
+        <el-date-picker
+          v-model="dateRange"
+          :picker-options="pickerOptions"
+          class="ml20"
+          value-format="yyyy-MM-dd"
+          type="daterange"
+          :clearable="false"
+          range-separator="-"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          @change="getLineAnalysis()"></el-date-picker>
+      </div>
+      <ChartLine
+        :xData="xData"
+        :legend="['访问总数(pv)', '访问总人数(uv)', '小程序打开数']"
+        :series="series"></ChartLine>
     </div>
   </div>
 </template>

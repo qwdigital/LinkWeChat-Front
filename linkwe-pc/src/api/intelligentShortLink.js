@@ -45,9 +45,24 @@ export function update(data) {
 }
 
 // 短链数据统计（传ID查单个）
-export function getAnalysis(data) {
+export function getAnalysis(id) {
   return request({
     url: service + '/data/statistics',
+    params: { id },
+  })
+}
+
+/**
+ * 短链折线统计
+ * {
+beginTime,,string,false,,开始时间
+endTime,,string,false,,结束时间
+id,,integer,false,,主键id
+}
+ */
+export function getLineAnalysis(data) {
+  return request({
+    url: service + '/line/statistics',
     params: data,
   })
 }
