@@ -5,37 +5,20 @@ export default {
   name: '',
   components: {
     PhonePreview: () => import('./components/PhonePreview.vue'),
-    Add: () => import('./components/Add.vue'),
+    Add: () => import('./components/Add'),
   },
   data() {
     return {
+      loading: false,
       currentActive: 0,
       form: {
         jumpType: 1,
         extensionType: 1,
-        touchType: 0,
+        type: 0,
         avatar: '',
         qrCode: '',
       },
-      rules: {
-        shortLinkName: [{ required: true, message: '必填项', trigger: 'blur' }],
-        name: [{ required: true, message: '必填项', trigger: 'blur' }],
-        describe: [{ required: true, message: '必填项', trigger: 'blur' }],
-        longLink: [
-          { required: true, message: '必填项', trigger: 'blur' },
-          {
-            validator(rule, value, callback) {
-              if (value && !/^http/gi.test(value)) callback('链接格式错误，需以http(s)开头')
-            },
-            trigger: 'blur',
-          },
-        ],
-        avatar: [{ required: true, message: '必填项', trigger: 'change' }],
-        qrCode: [{ required: true, message: '必填项', trigger: 'change' }],
-        qrCodeId: [{ required: true, message: '必填项', trigger: 'change' }],
-        appId: [{ required: true, message: '必填项', trigger: 'blur' }],
-        secret: [{ required: true, message: '必填项', trigger: 'blur' }],
-      },
+
       typeDict,
       touchTypeDict,
       data: {},
@@ -66,9 +49,13 @@ export default {
         })
     },
     submit() {
-      this.$refs['form'].validate((validate) => {
+      this.$refs.add.$refs['form'].validate((validate) => {
         if (validate) {
-          this.form.type = this.form.touchType
+          if ([1, 0].includes(this.form.type)) {
+            this.form.touchType = this.form.type + 1
+          } else {
+            delete this.form.touchType
+          }
           this.loading = true
           ;(this.form.id ? update : add)(this.form)
             .then((res) => {
@@ -119,16 +106,16 @@ export default {
       </el-form-item>
       <el-form-item label="推广类型">
         <el-radio-group v-model="form.extensionType">
-          <el-radio-button v-for="(item, key) in typeDict" :key="key" :label="key">
+          <el-radio-button v-for="(item, key) in typeDict" :key="key" :label="+key">
             {{ item.name }}
           </el-radio-button>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="触达类型">
-        <el-radio-group v-model="form.touchType">
+        <el-radio-group v-model="form.type">
           <template v-for="(item, key) in typeDict">
             <div v-show="form.extensionType == key" :key="key">
-              <el-radio-button v-for="(unit, unique) in item.touchType" :key="key + '-' + unique" :label="unique">
+              <el-radio-button v-for="(unit, unique) in item.touchType" :key="key + '-' + unique" :label="+unique">
                 {{ unit.name }}
               </el-radio-button>
             </div>
@@ -136,16 +123,16 @@ export default {
         </el-radio-group>
       </el-form-item>
       <div class="g-card g-pad20" style="background: #eee">
-        <span>{{ touchTypeDict[form.touchType].tip }}</span>
+        <span>{{ touchTypeDict[form.type].tip }}</span>
       </div>
     </el-form>
 
     <div v-show="currentActive == 1" class="fxbw ais mt10" style="overflow: auto">
       <div class="g-card g-pad20" style="width: 58%">
-        <Add :form="form" />
+        <Add ref="add" :form="form" />
       </div>
 
-      <div class="g-card g-pad20" style="width: 40%; margin-top: 0">
+      <div style="width: 40%">
         <PhonePreview :data="form" />
       </div>
     </div>
@@ -179,9 +166,4 @@ export default {
   </el-container>
 </template>
 
-<style lang="scss" scoped>
-.tips {
-  color: #aaa;
-  font-size: 12px;
-}
-</style>
+<style lang="scss" scoped></style>

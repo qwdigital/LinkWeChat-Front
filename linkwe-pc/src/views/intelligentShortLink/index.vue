@@ -2,7 +2,9 @@
 import { getList, getAnalysis, remove } from '@/api/intelligentShortLink'
 export default {
   name: '',
-  components: {},
+  components: {
+    CardGroupIndex: () => import('@/components/CardGroupIndex'),
+  },
   data() {
     return {
       loading: false,

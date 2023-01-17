@@ -5,7 +5,9 @@ export default {
   components: {
     TimeSearchTitle: () => import('@/components/common/TimeSearchTitle'),
     PhonePreview: () => import('./components/PhonePreview.vue'),
+    CardGroupIndex: () => import('@/components/CardGroupIndex'),
     ChartLine: () => import('@/components/ChartLine'),
+    Add: () => import('./components/Add'),
   },
   data() {
     return {
@@ -93,10 +95,11 @@ export default {
       }
       getLineAnalysis(query).then(({ data }) => {
         this.series = []
-        this.xData = data.map((e) => e.xtime)
-        this.series.push(data.map((e) => e.pvTodayCount))
-        this.series.push(data.map((e) => e.uvTodayCount))
-        this.series.push(data.map((e) => e.openTodayCount))
+        this.xData = data.xaxis
+        this.series = data.yaxis
+        // this.series.push(data.map((e) => e.pvTodayCount))
+        // this.series.push(data.map((e) => e.uvTodayCount))
+        // this.series.push(data.map((e) => e.openTodayCount))
       })
     },
   },
@@ -123,7 +126,7 @@ export default {
             :series="series"></ChartLine>
         </div>
       </div>
-      <div class="g-card g-pad20" style="width: 40%; margin-top: 0">
+      <div style="width: 40%">
         <PhonePreview :data="data" />
       </div>
     </div>
