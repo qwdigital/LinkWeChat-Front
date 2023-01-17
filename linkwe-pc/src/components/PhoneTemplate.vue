@@ -29,30 +29,27 @@ export default {
   margin: 0 auto;
   padding: 0 10px;
   position: relative;
-  width: 300px;
-  height: 640px;
+  width: 375px;
+  height: 800px;
   background: url(../assets/drainageCode/preview-bg.png);
   background-repeat: no-repeat;
   background-size: 100% 100%;
 
   .preview-title {
     position: absolute;
-    top: 37px;
+    top: 55px;
     left: 50%;
     transform: translateX(-50%);
     font-size: 14px;
-    font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #333333;
   }
 
   .preview-content {
     position: relative;
-    height: 545px;
+    height: calc(100% - 120px);
     overflow-y: auto;
-    top: 70px;
-    // left: 50%;
-    // transform: translateX(-50%);
+    top: 88px;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
   }
