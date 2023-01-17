@@ -19,7 +19,7 @@
         })
       }
     },
-    data () {
+    data() {
       return {
         // 添加标签输入框
         newInput: '',
@@ -35,7 +35,7 @@
     watch: {},
     computed: {
       Pvisible: {
-        get () {
+        get() {
           if (this.visible) {
             this.$nextTick(() => {
               this.$refs['form'].clearValidate()
@@ -43,15 +43,15 @@
           }
           return this.visible
         },
-        set (val) {
+        set(val) {
           this.$emit('update:visible', val)
         }
       }
     },
-    created () { },
-    mounted () { },
+    created() {},
+    mounted() {},
     methods: {
-      closeTag (tag, index) {
+      closeTag(tag, index) {
         // if (tag.id) {
         //   tag.status = 1
         //   this.$forceUpdate()
@@ -60,13 +60,13 @@
         // }
       },
 
-      showInput () {
+      showInput() {
         this.visibleAdd = true
         this.$nextTick((_) => {
           this.$refs.saveTagInput.$refs.input.focus()
         })
       },
-      newInputConfirm () {
+      newInputConfirm() {
         let name = this.newInput
         if (name) {
           Array.isArray(this.form.weTags) || (this.form.weTags = [])
@@ -82,7 +82,7 @@
         this.visibleAdd = false
         this.newInput = ''
       },
-      submit () {
+      submit() {
         if (!this.visibleAdd) {
           this.$refs['form'].validate((valid) => {
             this.newInput = ''
@@ -96,26 +96,56 @@
               this.$emit('success')
             })
           })
-        } 
+        }
       }
     }
   }
 </script>
 
 <template>
-  <el-dialog :title="(form.groupId ? '修改' : '添加') + '标签/组'" :visible.sync="Pvisible" width="500px" append-to-body :close-on-click-modal="false">
+  <el-dialog
+    :title="(form.groupId ? '修改' : '添加') + '标签/组'"
+    :visible.sync="Pvisible"
+    width="500px"
+    append-to-body
+    :close-on-click-modal="false"
+  >
     <el-form ref="form" :model="form" :rules="rules" label-width="100px">
       <el-form-item label="标签组名称" prop="groupName">
-        <el-input v-model.trim="form.groupName" maxlength="15" show-word-limit placeholder="请输入标签组名称，该名称不支持再次修改" :disabled="!!form.groupId" />
+        <el-input
+          v-model.trim="form.groupName"
+          maxlength="15"
+          show-word-limit
+          placeholder="请输入标签组名称，该名称不支持再次修改"
+        />
       </el-form-item>
       <el-form-item label="标签" prop="weTags">
         <template v-for="(item, index) in form.weTags">
-          <el-tag v-if="item.status !== 1" type="primary" closable size="medium" :key="index" @close="closeTag(item, index)">
+          <el-tag
+            v-if="item.status !== 1"
+            type="primary"
+            closable
+            size="medium"
+            :key="index"
+            @close="closeTag(item, index)"
+          >
             {{ item.name }}
           </el-tag>
         </template>
-        <el-input class="input-new-tag" v-if="visibleAdd" v-model.trim="newInput" ref="saveTagInput" size="mini" maxlength="10" show-word-limit @keyup.enter.native="newInputConfirm" @blur="newInputConfirm"></el-input>
-        <el-button v-else type="primary" plain class="button-new-tag" size="mini" @click="showInput">+ 添加标签</el-button>
+        <el-input
+          class="input-new-tag"
+          v-if="visibleAdd"
+          v-model.trim="newInput"
+          ref="saveTagInput"
+          size="mini"
+          maxlength="10"
+          show-word-limit
+          @keyup.enter.native="newInputConfirm"
+          @blur="newInputConfirm"
+        ></el-input>
+        <el-button v-else type="primary" plain class="button-new-tag" size="mini" @click="showInput"
+          >+ 添加标签</el-button
+        >
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">

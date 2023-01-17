@@ -1,141 +1,151 @@
 <script>
-import * as api from '@/api/customer/tag'
-import AddTag from '@/components/AddTag'
+  import * as api from '@/api/customer/tag'
+  import AddTag from '@/components/AddTag'
 
-export default {
-  name: 'GroupTag',
-  components: { AddTag },
-  props: {
-    // "标签分组类型(1:客户标签;2:群标签)"
-    type: {
-      type: String,
-      default: '1'
-    }
-  },
-  data() {
-    return {
-      query: {
-        pageNum: 1,
-        pageSize: 10,
-        groupTagType: this.type
+  export default {
+    name: 'GroupTag',
+    components: { AddTag },
+    props: {
+      // "标签分组类型(1:客户标签;2:群标签)"
+      type: {
+        type: String,
+        default: '1'
+      }
+    },
+    data() {
+      return {
+        query: {
+          pageNum: 1,
+          pageSize: 10,
+          groupName: '',
+          groupTagType: this.type
+        },
+        // 遮罩层
+        loading: false,
+        dialogVisible: false,
+        // 表单参数
+        form: {
+          groupName: '',
+          weTags: []
+        },
+        // 添加标签输入框
+        newInput: '',
+        // 添加标签显隐
+        newInputVisible: false,
+        // 表单验证规则
+        rules: Object.freeze({
+          groupName: [{ required: true, message: '必填项', trigger: 'blur' }]
+        }),
+        // 选中数组
+        ids: [],
+        // 非多个禁用
+        multiple: true,
+        // 总条数
+        total: 0,
+        // 表格数据
+        list: [],
+        lastSyncTime: 0
+      }
+    },
+    computed: {},
+    created() {
+      // this.query.groupTagType = this.type
+      this.getList()
+    },
+    methods: {
+      resetQuery() {
+        this.query.groupName = ''
+        this.getList(1)
       },
-      // 遮罩层
-      loading: false,
-      dialogVisible: false,
-      // 表单参数
-      form: {
-        groupName: '',
-        weTags: []
+      getList(page) {
+        page && (this.query.pageNum = page)
+        this.loading = true
+        api
+          .getList(this.query)
+          .then(({ rows, total, lastSyncTime }) => {
+            this.list = rows
+            this.total = +total
+            this.lastSyncTime = lastSyncTime
+            this.loading = false
+          })
+          .catch(() => {
+            this.loading = false
+          })
       },
-      // 添加标签输入框
-      newInput: '',
-      // 添加标签显隐
-      newInputVisible: false,
-      // 表单验证规则
-      rules: Object.freeze({
-        groupName: [{ required: true, message: '必填项', trigger: 'blur' }]
-      }),
-      // 选中数组
-      ids: [],
-      // 非多个禁用
-      multiple: true,
-      // 总条数
-      total: 0,
-      // 表格数据
-      list: [],
-      lastSyncTime: 0
-    }
-  },
-  computed: {},
-  created() {
-    // this.query.groupTagType = this.type
-    this.getList()
-  },
-  methods: {
-    getList(page) {
-      page && (this.query.pageNum = page)
-      this.loading = true
-      api
-        .getList(this.query)
-        .then(({ rows, total, lastSyncTime }) => {
-          this.list = rows
-          this.total = +total
-          this.lastSyncTime = lastSyncTime
-          this.loading = false
+      edit(data, type) {
+        this.form = JSON.parse(JSON.stringify(Object.assign({ groupTagType: this.type, weTags: [] }, data || {})))
+        this.dialogVisible = true
+      },
+      syncTag() {
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
         })
-        .catch(() => {
-          this.loading = false
+        api
+          .syncTag()
+          .then(() => {
+            loading.close()
+            this.msgSuccess('后台开始同步数据，请稍后关注进度')
+            this.getList()
+          })
+          .catch(() => {
+            loading.close()
+          })
+      },
+      // 多选框选中数据
+      handleSelectionChange(selection) {
+        this.ids = selection.map((item) => item.groupId)
+        this.multiple = !selection.length
+      },
+      /** 删除按钮操作 */
+      remove(id) {
+        const operIds = id || this.ids + ''
+        this.$confirm('是否确认删除吗?', '警告', {
+          type: 'warning'
         })
-    },
-    edit(data, type) {
-      this.form = JSON.parse(
-        JSON.stringify(Object.assign({ groupTagType: this.type, weTags: [] }, data || {}))
-      )
-      this.dialogVisible = true
-    },
-    syncTag() {
-      const loading = this.$loading({
-        lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      })
-      api
-        .syncTag()
-        .then(() => {
-          loading.close()
-          this.msgSuccess('后台开始同步数据，请稍后关注进度')
-          this.getList()
-        })
-        .catch(() => {
-          loading.close()
-        })
-    },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.groupId)
-      this.multiple = !selection.length
-    },
-    /** 删除按钮操作 */
-    remove(id) {
-      const operIds = id || this.ids + ''
-      this.$confirm('是否确认删除吗?', '警告', {
-        type: 'warning'
-      })
-        .then(function() {
-          return api.remove(operIds)
-        })
-        .then(() => {
-          this.getList()
-          this.msgSuccess('删除成功')
-        })
+          .then(function () {
+            return api.remove(operIds)
+          })
+          .then(() => {
+            this.getList()
+            this.msgSuccess('删除成功')
+          })
+      }
     }
   }
-}
 </script>
 <template>
   <div class="">
     <div class="mid-action">
       <div>
-          <!-- v-hasPermi="['customerManage:tag:add']" -->
-        <el-button
-          type="primary"
-          class="mr10"
-          @click="edit()"
-          >新建标签组</el-button
-        >
+        <el-form :inline="true" label-width="0" label-position="left">
+          <el-form-item label="">
+            <el-input
+              v-model="query.groupName"
+              placeholder="请输入标签组名称"
+              clearable
+              @keyup.enter.native="getList(1)"
+            />
+          </el-form-item>
+          <el-form-item label-width="0">
+            <el-button type="primary" @click="getList(1)">查询</el-button>
+            <el-button @click="resetQuery" type="info" plain>清空</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    <div class="mid-action">
+      <div>
+        <!-- v-hasPermi="['customerManage:tag:add']" -->
+        <el-button type="primary" class="mr10" @click="edit()">新建标签组</el-button>
         <ButtonSync v-if="type == 1" :lastSyncTime="lastSyncTime" @click="syncTag">
           同步企微标签
         </ButtonSync>
       </div>
       <div>
-          <!-- v-hasPermi="['customerManage:tag:remove']" -->
-        <el-button
-          :disabled="!ids.length"
-          type="danger"
-          @click="remove()"
-          >批量删除</el-button
-        >
+        <!-- v-hasPermi="['customerManage:tag:remove']" -->
+        <el-button :disabled="!ids.length" type="danger" @click="remove()">批量删除</el-button>
       </div>
     </div>
 
@@ -168,18 +178,10 @@ export default {
       </el-table-column>-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-            <!-- v-hasPermi="['customerManage:tag:edit']" -->
-          <el-button
-            type="text"
-            @click="edit(scope.row, scope.index)"
-            >编辑</el-button
-          >
-          <el-button
-            @click="remove(scope.row.groupId)"
-            type="text"
-            >删除</el-button
-          >
-            <!-- v-hasPermi="['customerManage:tag:remove']" -->
+          <!-- v-hasPermi="['customerManage:tag:edit']" -->
+          <el-button type="text" @click="edit(scope.row, scope.index)">编辑</el-button>
+          <el-button @click="remove(scope.row.groupId)" type="text">删除</el-button>
+          <!-- v-hasPermi="['customerManage:tag:remove']" -->
         </template>
       </el-table-column>
     </el-table>
