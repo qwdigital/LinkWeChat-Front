@@ -68,6 +68,7 @@ export default {
     submit() {
       this.$refs['form'].validate((validate) => {
         if (validate) {
+          this.form.type = this.form.touchType
           this.loading = true
           ;(this.form.id ? update : add)(this.form)
             .then((res) => {

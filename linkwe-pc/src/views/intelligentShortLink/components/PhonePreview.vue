@@ -1,12 +1,13 @@
 // 短链移动端样式预览
 <script>
-import { touchTypeDict } from './components/mixin'
+import { touchTypeDict } from './mixin'
 export default {
   name: '',
   components: {},
   props: {
     data: {
       type: Object,
+      default: {},
     },
   },
   data() {
@@ -24,9 +25,8 @@ export default {
 
 <template>
   <div>
-    <div class="title">预览</div>
-
-    <PhoneTemplate :title="touchTypeDict[data.touchType].previewMobileTitle">
+    <div class="g-title">预览</div>
+    <PhoneTemplate v-if="touchTypeDict[data.touchType]" :title="touchTypeDict[data.touchType].previewMobileTitle">
       <template v-if="data.touchType == 0">
         <div class="mask" style="position: absolute">
           <div class="cc ac g-card g-pad20" style="width: 70%">公众号文章示例</div>

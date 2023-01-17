@@ -1,5 +1,5 @@
 <script>
-import { touchTypeDict } from './components/mixin'
+import { touchTypeDict } from './mixin'
 export default {
   name: '',
   components: {},

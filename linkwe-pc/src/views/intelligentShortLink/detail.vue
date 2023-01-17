@@ -5,19 +5,17 @@ export default {
   components: {
     TimeSearchTitle: () => import('@/components/common/TimeSearchTitle'),
     PhonePreview: () => import('./components/PhonePreview.vue'),
+    ChartLine: () => import('@/components/ChartLine'),
   },
   data() {
     return {
       loading: false,
-      form: {},
-      data: [],
+      data: {},
       xData: [],
       series: [],
     }
   },
-  computed: {
-    ChartLine: () => import('@/components/ChartLine'),
-  },
+  computed: {},
   watch: {},
   created() {
     let id = this.$route.query.id
@@ -96,9 +94,9 @@ export default {
       getLineAnalysis(query).then(({ data }) => {
         this.series = []
         this.xData = data.map((e) => e.xtime)
-        this.series.push(data.map((e) => e.addCnt))
-        this.series.push(data.map((e) => e.lostCnt))
-        this.series.push(data.map((e) => e.netCnt))
+        this.series.push(data.map((e) => e.pvTodayCount))
+        this.series.push(data.map((e) => e.uvTodayCount))
+        this.series.push(data.map((e) => e.openTodayCount))
       })
     },
   },
@@ -108,26 +106,26 @@ export default {
 <template>
   <div>
     <div class="fxbw">
-      <div style="width: 40%">
+      <div style="width: 58%">
+        <div class="g-title">短链内容</div>
         <div class="g-card g-pad20">
-          <div class="title">短链内容</div>
           <Add :form="data" />
+        </div>
+        <div class="g-title">数据趋势</div>
+        <div class="g-card g-pad20">
+          <CardGroupIndex :data="cardData"></CardGroupIndex>
+          <div>
+            <TimeSearchTitle @search="getLineAnalysis"></TimeSearchTitle>
+          </div>
+          <ChartLine
+            :xData="xData"
+            :legend="['访问总数(pv)', '访问总人数(uv)', '小程序打开数']"
+            :series="series"></ChartLine>
         </div>
       </div>
       <div class="g-card g-pad20" style="width: 40%; margin-top: 0">
         <PhonePreview :data="data" />
       </div>
-    </div>
-    <div class="g-card g-pad20">
-      <div class="title">数据趋势</div>
-      <CardGroupIndex :data="cardData"></CardGroupIndex>
-      <div>
-        <TimeSearchTitle @search="getLineAnalysis"></TimeSearchTitle>
-      </div>
-      <ChartLine
-        :xData="xData"
-        :legend="['访问总数(pv)', '访问总人数(uv)', '小程序打开数']"
-        :series="series"></ChartLine>
     </div>
   </div>
 </template>
