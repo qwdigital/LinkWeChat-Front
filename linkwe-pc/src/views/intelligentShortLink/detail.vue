@@ -4,12 +4,12 @@ export default {
   name: '',
   components: {
     TimeSearchTitle: () => import('@/components/common/TimeSearchTitle'),
+    PhonePreview: () => import('./components/PhonePreview.vue'),
   },
   data() {
     return {
       loading: false,
       form: {},
-      dateRange: [new Date().setDate(-7)],
       data: [],
       xData: [],
       series: [],
@@ -94,6 +94,7 @@ export default {
         endTime: data.endTime,
       }
       getLineAnalysis(query).then(({ data }) => {
+        this.series = []
         this.xData = data.map((e) => e.xtime)
         this.series.push(data.map((e) => e.addCnt))
         this.series.push(data.map((e) => e.lostCnt))
@@ -110,10 +111,11 @@ export default {
       <div style="width: 40%">
         <div class="g-card g-pad20">
           <div class="title">短链内容</div>
+          <Add :form="data" />
         </div>
       </div>
       <div class="g-card g-pad20" style="width: 40%; margin-top: 0">
-        <PhoneTemplate :title="dictDesc[form.touchType].previewMobileTitle"></PhoneTemplate>
+        <PhonePreview :data="data" />
       </div>
     </div>
     <div class="g-card g-pad20">

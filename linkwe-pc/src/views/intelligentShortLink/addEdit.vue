@@ -1,8 +1,12 @@
 <script>
 import { getDetail, add, update } from '@/api/intelligentShortLink'
+import { typeDict, touchTypeDict } from './components/mixin'
 export default {
   name: '',
-  components: {},
+  components: {
+    PhonePreview: () => import('./components/PhonePreview.vue'),
+    Add: () => import('./components/Add.vue'),
+  },
   data() {
     return {
       currentActive: 0,
@@ -32,109 +36,14 @@ export default {
         appId: [{ required: true, message: '必填项', trigger: 'blur' }],
         secret: [{ required: true, message: '必填项', trigger: 'blur' }],
       },
-      dictDesc: [],
-      dictTouchType: Object.freeze({
-        1: {
-          name: '公众号',
-          touchType: {
-            0: {
-              name: '文章',
-              allName: '跳入微信-公众号-文章',
-              tip: '跳转进入微信后，打开一篇公众号文章',
-              previewMobileTitle: '公众号标题',
-            },
-            1: {
-              name: '二维码',
-              allName: '跳入微信-公众号-二维码',
-              tip: '跳转进入微信后，展示一张公众号二维码，长按引导关注',
-              previewMobileTitle: '添加公众号',
-            },
-          },
-        },
-        2: {
-          name: '个人微信',
-          touchType: {
-            2: {
-              name: '个人二维码',
-              allName: '跳入微信-个人微信-个人二维码',
-              tip: '跳转进入微信后，展示一张个人二维码，长按扫码添加好友',
-              previewMobileTitle: '添加微信',
-            },
-            3: {
-              name: '群二维码',
-              allName: '跳入微信-个人微信-群二维码',
-              tip: '跳转进入微信后，展示一张微信群二维码，长按扫码入群',
-              previewMobileTitle: '添加微信群',
-            },
-          },
-        },
-        3: {
-          name: '企业微信',
-          touchType: {
-            4: {
-              name: '员工活码',
-              allName: '跳入微信-企业微信-员工活码',
-              tip: '跳转进入微信后，展示一张企微员工活码，长按扫码添加企业员工',
-              previewMobileTitle: '添加企业员工',
-            },
-            5: {
-              name: '客群活码',
-              allName: '跳入微信-企业微信-客群活码',
-              tip: '跳转进入微信后，展示一张企微客群活码，长按扫码入群',
-              previewMobileTitle: '添加企业客群',
-            },
-            6: {
-              name: '门店导购活码',
-              allName: '跳入微信-企业微信-门店导购码',
-              tip: '跳转进入微信后，展示一张门店导购码，长按扫码添加附近门店的导购',
-              previewMobileTitle: '添加门店导购',
-            },
-            8: {
-              name: '门店群活码',
-              allName: '跳入微信-企业微信-门店群活码',
-              tip: '跳转进入微信后，展示一张门店群活码，长按扫码进入附近的门店群',
-              previewMobileTitle: '添加门店群',
-            },
-          },
-        },
-        4: {
-          name: '小程序',
-          touchType: {
-            7: {
-              name: '个人小程序',
-              allName: '跳入微信-小程序-个人小程序',
-              tip: '跳转进入微信后，直接打开一个个人小程序',
-              previewMobileTitle: '打开小程序',
-            },
-            9: {
-              name: '企业小程序',
-              allName: '跳入微信-小程序-企业小程序',
-              tip: '跳转进入微信后，直接打开一个企业小程序',
-              previewMobileTitle: '打开小程序',
-            },
-            10: {
-              name: '小程序二维码',
-              allName: '跳入微信-小程序-小程序二维码',
-              tip: '跳转进入微信后，展示一张小程序二维码，长按扫码打开小程序',
-              previewMobileTitle: '打开小程序',
-            },
-          },
-        },
-      }),
-      prefixFormLabel: Object.freeze({
-        1: '公众号',
-        2: '微信',
-        3: '微信群',
-        10: '小程序',
-      }),
+      typeDict,
+      touchTypeDict,
       data: {},
     }
   },
   computed: {},
   watch: {},
-  created() {
-    Object.values(this.dictTouchType).forEach((element) => Object.assign(this.dictDesc, element.touchType))
-  },
+  created() {},
   mounted() {
     this.clipboard = new this.ClipboardJS('.copy-btn')
   },
@@ -209,14 +118,14 @@ export default {
       </el-form-item>
       <el-form-item label="推广类型">
         <el-radio-group v-model="form.extensionType">
-          <el-radio-button v-for="(item, key) in dictTouchType" :key="key" :label="key">
+          <el-radio-button v-for="(item, key) in typeDict" :key="key" :label="key">
             {{ item.name }}
           </el-radio-button>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="触达类型">
         <el-radio-group v-model="form.touchType">
-          <template v-for="(item, key) in dictTouchType">
+          <template v-for="(item, key) in typeDict">
             <div v-show="form.extensionType == key" :key="key">
               <el-radio-button v-for="(unit, unique) in item.touchType" :key="key + '-' + unique" :label="unique">
                 {{ unit.name }}
@@ -226,154 +135,17 @@ export default {
         </el-radio-group>
       </el-form-item>
       <div class="g-card g-pad20" style="background: #eee">
-        <span>{{ dictDesc[form.touchType].tip }}</span>
+        <span>{{ touchTypeDict[form.touchType].tip }}</span>
       </div>
     </el-form>
 
     <div v-show="currentActive == 1" class="fxbw ais mt10" style="overflow: auto">
       <div class="g-card g-pad20" style="width: 58%">
-        <el-form ref="form" :model="form" label-suffix="：" label-width="140px" :rules="rules">
-          <el-form-item label="短链类型">
-            <span>{{ dictDesc[form.touchType].allName }}</span>
-          </el-form-item>
-          <el-form-item label="短链名称" prop="shortLinkName">
-            <el-input
-              clearable
-              v-model="form.shortLinkName"
-              placeholder="请输入"
-              maxlength="30"
-              show-word-limit></el-input>
-          </el-form-item>
-
-          <!-- 公众号文章 -->
-          <template v-if="form.touchType == 0">
-            <el-form-item prop="longLink" label="公众号文章链接">
-              <el-input clearable v-model="form.longLink" placeholder="请输入"></el-input>
-              <div class="tips">请在公众号后台文章发布列表页中获取并复制文章的永久链接</div>
-            </el-form-item>
-          </template>
-          <!-- 公众号二维码,个人二维码,群二维码,小程序二维码 -->
-          <template v-else-if="Object.keys(prefixFormLabel).includes(form.touchType + '')">
-            <el-form-item prop="name" :label="prefixFormLabel[form.touchType] + '名称'">
-              <el-input clearable v-model="form.name" placeholder="请输入" maxlength="15" show-word-limit></el-input>
-            </el-form-item>
-            <el-form-item prop="describe" :label="prefixFormLabel[form.touchType] + '描述'">
-              <el-input
-                clearable
-                v-model="form.describe"
-                placeholder="请输入"
-                maxlength="30"
-                show-word-limit></el-input>
-            </el-form-item>
-            <el-form-item prop="avatar" :label="prefixFormLabel[form.touchType] + '头像'">
-              <upload class="image-uploader" :fileUrl.sync="form.avatar"></upload>
-            </el-form-item>
-            <el-form-item prop="qrCode" :label="prefixFormLabel[form.touchType] + '二维码'">
-              <upload class="image-uploader" :fileUrl.sync="form.qrCode"></upload>
-            </el-form-item>
-          </template>
-          <!-- 员工活码,客群活码 -->
-          <template v-else-if="[4, 5].includes(+form.touchType)">
-            <el-form-item prop="qrCodeId" :label="'选择' + dictDesc[form.touchType].name">
-              <el-button
-                type="primary"
-                plain
-                @click="choiceQqcode(form.touchType, '选择' + dictDesc[form.touchType].name)">
-                选择{{ dictDesc[form.touchType].name }}
-              </el-button>
-            </el-form-item>
-          </template>
-          <!-- 门店导购活码,门店群活码 -->
-          <template v-else-if="[6, 8].includes(+form.touchType)">
-            <el-form-item prop="qrCodeId" :label="dictDesc[form.touchType].name">
-              <el-button
-                type="primary"
-                plain
-                @click="choiceQqcode(form.touchType, '选择' + dictDesc[form.touchType].name)">
-                暂无{{ dictDesc[form.touchType].name }}，去配置
-              </el-button>
-            </el-form-item>
-          </template>
-          <!-- 个人小程序 -->
-          <template v-else-if="form.touchType == 7">
-            <el-form-item prop="name" label="小程序名称">
-              <el-input clearable v-model="form.name" placeholder="请输入" maxlength="15" show-word-limit></el-input>
-            </el-form-item>
-            <el-form-item prop="avatar" label="小程序头像">
-              <upload class="image-uploader" :fileUrl.sync="form.avatar"></upload>
-            </el-form-item>
-            <el-form-item prop="appId" label="小程序AppID">
-              <el-input clearable v-model="form.appId" placeholder="请输入" maxlength="30" show-word-limit></el-input>
-            </el-form-item>
-            <el-form-item prop="longLink" label="小程序页面路径">
-              <el-input
-                clearable
-                v-model="form.longLink"
-                placeholder="请输入"
-                maxlength="30"
-                show-word-limit></el-input>
-            </el-form-item>
-          </template>
-          <!-- 企业小程序 -->
-          <template v-else-if="form.touchType == 9">
-            <el-form-item prop="name" label="小程序名称">
-              <el-input clearable v-model="form.name" placeholder="请输入" maxlength="15" show-word-limit></el-input>
-            </el-form-item>
-            <el-form-item prop="avatar" label="小程序头像">
-              <upload class="image-uploader" :fileUrl.sync="form.avatar"></upload>
-            </el-form-item>
-            <el-form-item prop="appId" label="小程序AppID">
-              <el-input clearable v-model="form.appId" placeholder="请输入" maxlength="30" show-word-limit></el-input>
-            </el-form-item>
-            <el-form-item prop="secret" label="小程序Secret">
-              <el-input clearable v-model="form.secret" placeholder="请输入" maxlength="30" show-word-limit></el-input>
-            </el-form-item>
-            <el-form-item prop="" label="小程序原始ID">
-              <el-input clearable v-model="form.name" placeholder="请输入" maxlength="30" show-word-limit></el-input>
-            </el-form-item>
-            <el-form-item prop="longLink" label="小程序页面路径">
-              <el-input
-                clearable
-                v-model="form.longLink"
-                placeholder="请输入"
-                maxlength="30"
-                show-word-limit></el-input>
-            </el-form-item>
-          </template>
-        </el-form>
+        <Add :form="form" />
       </div>
 
       <div class="g-card g-pad20" style="width: 40%; margin-top: 0">
-        <PhoneTemplate :title="dictDesc[form.touchType].previewMobileTitle">
-          <template v-if="form.touchType == 0">
-            <div class="mask" style="position: absolute">
-              <div class="cc ac g-card g-pad20" style="width: 70%">公众号文章示例</div>
-            </div>
-          </template>
-          <template v-else-if="[7, 9, 10].includes(+form.touchType)">
-            <div class="g-card g-pad20 cc ac" style="width: 80%">
-              小程序
-              <el-image style="width: 120px; height: 120px" :src="form.avatar" error="头像" fit="fit"></el-image>
-              <el-button type="primary">点击打开小程序</el-button>
-            </div>
-          </template>
-          <template v-else>
-            <div class="g-card g-pad20 cc ac" style="width: 80%">
-              <div class="al bfc-o">
-                <el-image
-                  class="fl mr10"
-                  style="width: 50px; height: 50px"
-                  :src="form.avatar"
-                  error="头像"
-                  fit="fit"></el-image>
-                <div class="toe">{{ form.name || '名称' }}</div>
-                <div class="tips mt20 toe">{{ form.describe || '描述' }}</div>
-              </div>
-              <el-image style="width: 120px; height: 120px; margin: 20px 0" :src="url" :fit="fit"></el-image>
-              <div class="mt20">长按二维码{{ dictDesc[form.touchType].previewMobileTitle }}</div>
-            </div>
-          </template>
-        </PhoneTemplate>
+        <PhonePreview :data="form" />
       </div>
     </div>
 
