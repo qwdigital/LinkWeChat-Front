@@ -48,6 +48,7 @@ export function alertFn(ids) {
 export function downloadTemplate() {
   return request({
     url: service + '/seas/importTemplate',
+    responseType: 'blob',
   })
 }
 
