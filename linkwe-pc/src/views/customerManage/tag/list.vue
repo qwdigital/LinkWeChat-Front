@@ -135,6 +135,7 @@
           </el-form-item>
         </el-form>
       </div>
+    </div>
     <div class="mid-action">
       <div>
         <!-- v-hasPermi="['customerManage:tag:add']" -->
