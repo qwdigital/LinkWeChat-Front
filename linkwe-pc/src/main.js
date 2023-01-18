@@ -46,8 +46,8 @@ ClipboardJS.prototype.e = {
     {
       fn() {
         Element.Notification.success({
-          title: '成功',
-          message: '链接已复制到剪切板，可粘贴。',
+          title: '复制成功',
+          // message: '链接已复制到剪切板，可粘贴。',
         })
       },
     },
@@ -56,8 +56,8 @@ ClipboardJS.prototype.e = {
     {
       fn() {
         Element.Notification.error({
-          title: '成功',
-          message: '链接复制失败',
+          title: '复制失败',
+          // message: '链接复制失败',
         })
       },
     },
