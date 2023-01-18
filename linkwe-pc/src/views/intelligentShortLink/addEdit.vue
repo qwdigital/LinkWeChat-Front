@@ -128,13 +128,11 @@ export default {
     </el-form>
 
     <div v-show="currentActive == 1" class="fxbw ais mt10" style="overflow: auto">
-      <div class="g-card g-pad20" style="width: 58%">
+      <div class="g-card g-pad20 mr10" style="flex: auto">
         <Add ref="add" :form="form" />
       </div>
 
-      <div style="width: 40%">
-        <PhonePreview :data="form" />
-      </div>
+      <PhonePreview :data="form" />
     </div>
 
     <div v-show="currentActive == 2" class="g-card g-pad20 ac">

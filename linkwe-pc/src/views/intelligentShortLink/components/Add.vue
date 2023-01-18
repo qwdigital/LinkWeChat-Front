@@ -38,7 +38,11 @@ export default {
       }),
     }
   },
-  computed: {},
+  computed: {
+    isDetail() {
+      return this.$route.path.endsWith('/detail')
+    },
+  },
   watch: {},
   created() {},
   mounted() {},
@@ -48,7 +52,14 @@ export default {
 
 <template>
   <div>
-    <el-form ref="form" :model="form" label-suffix="：" label-width="140px" :rules="rules">
+    <el-form
+      :class="isDetail && 'form-detail'"
+      :disabled="isDetail"
+      ref="form"
+      :model="form"
+      label-suffix="："
+      label-width="140px"
+      :rules="rules">
       <el-form-item label="短链类型">
         <span>{{ touchTypeDict[form.type].allName }}</span>
       </el-form-item>
@@ -57,10 +68,17 @@ export default {
       </el-form-item>
 
       <!-- 公众号文章 -->
-      <el-form-item prop="longLink" label="公众号文章链接" v-if="form.type == 0">
-        <el-input clearable v-model="form.longLink" placeholder="请输入"></el-input>
-        <div class="tips">请在公众号后台文章发布列表页中获取并复制文章的永久链接</div>
-      </el-form-item>
+      <template v-if="form.type == 0">
+        <el-form-item prop="longLink" label="公众号文章链接">
+          <!-- <template v-if="isDetail">
+            {{ form.longLink }}
+          </template>
+          <template v-else>
+          </template> -->
+          <el-input clearable v-model="form.longLink" placeholder="请输入"></el-input>
+          <div v-if="!isDetail" class="tips">请在公众号后台文章发布列表页中获取并复制文章的永久链接</div>
+        </el-form-item>
+      </template>
 
       <!-- 公众号二维码,个人二维码,群二维码,小程序二维码 -->
       <template v-else-if="Object.keys(prefixFormLabel).includes(form.type + '')">
