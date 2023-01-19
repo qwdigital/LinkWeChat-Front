@@ -16,8 +16,8 @@
       <div class="g-card g-pad20 cc ac" style="width: 80%">
         <div class="al bfc-o">
           <image class="fl mr10" style="width: 50px; height: 50px" :src="data.avatar" error="头像" fit="fit"></image>
-          <div class="toe">{{ data.name || '名称' }}</div>
-          <div class="tips mt20 toe">{{ data.describe || '描述' }}</div>
+          <div class="toe">{{ data.name || '无名称' }}</div>
+          <div class="tips mt20 toe">{{ data.describe || '无描述' }}</div>
         </div>
         <image style="width: 120px; height: 120px; margin: 20px 0" :src="data.qrCode" fit="fit"></image>
         <div class="mt20">长按二维码{{ touchTypeDict[data.type].previewMobileTitle }}</div>
