@@ -170,10 +170,12 @@ export default {
       <el-table-column label="类型" align="center" prop="type">
         <template slot-scope="{ row }">{{ touchTypeDict[row.type + ''].allName }}</template>
       </el-table-column>
-      <el-table-column label="短链地址" align="center" prop="consultTotalCnt" show-overflow-tooltip>
+      <el-table-column label="短链地址" align="center" prop="shortLink" show-overflow-tooltip>
+        <!-- <template slot-scope="{ row }">{{ row.shortLink }}</template> -->
+      </el-table-column>
+      <el-table-column label="" align="center" prop="type" width="35">
         <template slot-scope="{ row }">
-          <span>{{ row.shortLink }}</span>
-          <i class="el-icon-copy-document copy-btn ml20 cp" title="复制" :data-clipboard-text="row.shortLink"></i>
+          <i class="el-icon-copy-document copy-btn cp" title="复制" :data-clipboard-text="row.shortLink"></i>
         </template>
       </el-table-column>
       <el-table-column label="状态" align="center" prop="status">
