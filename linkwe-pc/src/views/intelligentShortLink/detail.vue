@@ -40,7 +40,7 @@ export default {
     },
     getAnalysis(id) {
       this.loading = true
-      getAnalysis()
+      getAnalysis(id)
         .then(({ data }) => {
           this.cardData = [
             {

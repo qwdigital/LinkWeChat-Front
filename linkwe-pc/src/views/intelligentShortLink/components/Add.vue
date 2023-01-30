@@ -172,15 +172,17 @@ export default {
       </template>
     </el-form>
 
-    <SelectQrCode
-      :visible.sync="selectQrCodeVisible"
-      @success="submitSelectQrCode"
-      :selected="[form.qrCodeId]"></SelectQrCode>
+    <template v-if="isDetail">
+      <SelectQrCode
+        :visible.sync="selectQrCodeVisible"
+        @success="submitSelectQrCode"
+        :selected="[form.qrCodeId]"></SelectQrCode>
 
-    <SelectStaffQrCode
-      :visible.sync="selectStaffQrCodeVisible"
-      @success="submitSelectQrCode"
-      :selected="[form.qrCodeId]"></SelectStaffQrCode>
+      <SelectStaffQrCode
+        :visible.sync="selectStaffQrCodeVisible"
+        @success="submitSelectQrCode"
+        :selected="[form.qrCodeId]"></SelectStaffQrCode>
+    </template>
   </div>
 </template>
 
