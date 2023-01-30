@@ -1,9 +1,8 @@
 <script>
-import { getList } from '@/api/drainageCode/group'
-import SelectTag from '@/components/SelectTag.vue'
+import { getList } from '@/api/drainageCode/staff'
 
 export default {
-  components: { SelectTag },
+  components: {},
   props: {
     // 添加标签显隐
     visible: {
@@ -12,7 +11,7 @@ export default {
     },
     title: {
       type: String,
-      default: '选择群活码',
+      default: '选择员工活码',
     },
     selected: {
       type: Array,
@@ -25,18 +24,18 @@ export default {
       query: {
         pageNum: 1,
         pageSize: 10,
-        activityName: '',
-        tagIds: '',
         // createBy: '',
         // beginTime: '',
         // endTime: ''
+        orderByColumn: 'wqc.update_time',
+        isAsc: 'desc',
       },
       list: [], // 列表
+      userArray: [], //
       total: 0, // 总条数
       radio: '',
-      tagNames: '',
-      showSelectTag: false,
-      tagList: [],
+      qrUserName: '',
+      dialogVisible: false,
     }
   },
   watch: {
@@ -62,17 +61,6 @@ export default {
   },
   mounted() {},
   methods: {
-    getSelectTag(list) {
-      this.taglist = list
-      let arr = []
-      let arr1 = []
-      list.forEach((dd) => {
-        arr.push(dd.name)
-        arr1.push(dd.tagId)
-      })
-      this.tagNames = arr.join(',')
-      this.query.tagIds = arr1.join(',')
-    },
     // 获取列表
     getList(page) {
       page && (this.query.pageNum = page)
@@ -86,6 +74,11 @@ export default {
         .catch(() => {
           this.loading = false
         })
+    },
+    getSelectUser(data) {
+      this.userArray = data
+      this.qrUserName = data.map((e) => e.name) + ''
+      this.query.qrUserIds = data.map((e) => e.userId) + ''
     },
     submit() {
       this.Pvisible = false
@@ -111,18 +104,22 @@ export default {
         <el-form ref="form" :model="query" label-width="">
           <el-form-item label="">
             <el-input
-              v-model="query.activityName"
+              v-model="query.qrName"
               class="mr10"
+              clearable
               style="width: 150px"
-              placeholder="请输入名称"
+              placeholder="请输入活码名称"
               @keydown.enter="getList(1)"></el-input>
+
             <el-input
+              :value="userArray.map((e) => e.name) + ''"
+              clearable
+              @clear="userArray = []"
+              @focus="dialogVisible = true"
               class="mr10"
               style="width: 150px"
-              :value="tagNames"
-              readonly
-              @focus="showSelectTag = true"
-              placeholder="请选择客群标签" />
+              placeholder="请选择员工" />
+
             <el-button icon="el-icon-search" circle @click="getList(1)"></el-button>
 
             <el-pagination
@@ -136,29 +133,35 @@ export default {
         </el-form>
         <el-table :data="list" v-loading="loading">
           <el-table-column width="30">
-            <template slot-scope="scope">
-              <el-radio v-model="radio" :label="scope.row">'</el-radio>
+            <template slot-scope="{ row }">
+              <el-radio v-model="radio" :label="row"></el-radio>
             </template>
           </el-table-column>
 
-          <el-table-column prop="activityName" label="活码名称" align="center"></el-table-column>
-          <el-table-column prop="codeUrl" label="二维码" align="center" width="130">
+          <el-table-column prop="name" label="活码名称" align="center"></el-table-column>
+          <el-table-column prop="qrCode" label="二维码" align="center" width="130">
             <template #default="{ row }">
               <el-popover placement="bottom" trigger="hover">
-                <el-image slot="reference" :src="row.codeUrl" class="code-image--small"></el-image>
-                <el-image :src="row.codeUrl" class="code-image"></el-image>
+                <el-image slot="reference" :src="row.qrCode" class="code-image--small"></el-image>
+                <el-image :src="row.qrCode" class="code-image"></el-image>
               </el-popover>
             </template>
           </el-table-column>
-          <el-table-column label="客群标签">
+          <el-table-column label="标签" align="center">
             <template #default="{ row }">
-              <div>
-                <tag-ellipsis limit="1" :list="row.tags.split(',')"></tag-ellipsis>
+              <tag-ellipsis limit="1" :list="row.qrTags"></tag-ellipsis>
+            </template>
+          </el-table-column>
+          <el-table-column label="使用员工" align="center" min-width="140" prop="qrUserInfos" show-overflow-tooltip>
+            <template slot-scope="{ row }">
+              <div v-for="(unit, key) in row.qrUserInfos" :key="key" style="display: inline">
+                <template v-for="(item, index) in unit.weQrUserList">
+                  <span :key="index">{{ item.userName + ' ' }}</span>
+                </template>
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="活码客群数" align="center" prop="chatGroupNum"></el-table-column>
-          <el-table-column prop="chatGroupMemberTotalNum" label="群总人数" align="center"></el-table-column>
+          <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180"></el-table-column>
         </el-table>
       </div>
       <div slot="footer">
@@ -167,7 +170,12 @@ export default {
       </div>
       <div style="z-index: 9999999"></div>
     </el-dialog>
-    <select-tag :visible.sync="showSelectTag" type="2" :selected="tagList" @success="getSelectTag"></select-tag>
+
+    <SelectWeUser
+      :visible.sync="dialogVisible"
+      title="组织架构"
+      :defaultValues="userArray"
+      @success="getSelectUser"></SelectWeUser>
   </div>
 </template>
 

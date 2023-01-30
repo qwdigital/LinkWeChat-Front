@@ -49,7 +49,7 @@ export default {
                 :src="data.avatar"
                 error="头像"
                 fit="fit"></el-image>
-              <div class="toe">{{ data.name || '名称' }}</div>
+              <div class="toe">{{ data.shortLinkName || '名称' }}</div>
               <div class="tips mt20 toe">{{ data.describe || '描述' }}</div>
             </div>
             <el-image style="width: 120px; height: 120px; margin: 20px 0" :src="data.qrCode" fit="fit"></el-image>

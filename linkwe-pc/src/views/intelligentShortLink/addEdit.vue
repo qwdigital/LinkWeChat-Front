@@ -48,6 +48,9 @@ export default {
           this.loading = false
         })
     },
+    goStep(type) {
+      this.$refs.add.$refs.form.clearValidate()
+    },
     submit() {
       this.$refs.add.$refs['form'].validate((validate) => {
         if (validate) {
@@ -59,7 +62,7 @@ export default {
           this.loading = true
           ;(this.form.id ? update : add)(this.form)
             .then((res) => {
-              this.data = res
+              this.data = res.data
               this.currentActive++
             })
             .catch((e) => {
@@ -72,11 +75,17 @@ export default {
       })
     },
     download() {
-      const name = this.form.shortLinkName + '.png'
-      const link = document.createElement('a') // 创建a标签
-      link.href = this.data.shortUrl
-      link.download = name // 重命名文件
-      link.click()
+      let canvas = document.createElement('canvas')
+      this.$refs.qrCode.setAttribute('crossOrigin', 'anonymous')
+      canvas.getContext('2d').drawImage(this.$refs.qrCode, 0, 0)
+      canvas.toBlob((blob) => {
+        let url = URL.createObjectURL(blob)
+        const link = document.createElement('a') // 创建a标签
+        link.href = link.download = url
+        link.click()
+        link.remove()
+        URL.revokeObjectURL(url)
+      })
     },
   },
 }
@@ -101,7 +110,14 @@ export default {
       <el-form-item label="跳转类型">
         <el-radio-group v-model="form.jumpType">
           <el-radio-button :label="1">跳入微信</el-radio-button>
-          <el-tooltip :value="true" manual class="item" effect="light" content="尽情期待" placement="top">
+          <el-tooltip
+            :value="currentActive == 0"
+            manual
+            class="item"
+            transition="normal"
+            effect="light"
+            content="尽情期待"
+            placement="top">
             <el-radio-button :label="2" disabled>跳出微信</el-radio-button>
           </el-tooltip>
         </el-radio-group>
@@ -146,20 +162,20 @@ export default {
       <div class="g-card g-pad20" style="background: #eee; width: 50%; margin: 30px auto">
         <span>{{ data.shortUrl }}</span>
       </div>
-      <el-image style="width: 120px; height: 120px" :src="data.qrCode" fit="fit"></el-image>
+      <img ref="qrCode" style="width: 120px; height: 120px" :src="data.qrCode" fit="fit" crossOrigin="anonymous" />
       <div>
         <el-button type="text" class="copy-btn" :data-clipboard-text="data.shortUrl">复制链接</el-button>
-        <el-button type="text" @click="download(row)">下载二维码</el-button>
+        <el-button type="text" @click="download()">下载二维码</el-button>
       </div>
     </div>
 
     <el-footer class="mt20 ar" style="padding: 0" height="">
       <template v-if="currentActive == 0">
         <el-button plain @click="$router.back()">取消</el-button>
-        <el-button type="primary" @click="currentActive++">下一步</el-button>
+        <el-button type="primary" @click="goStep(currentActive++)">下一步</el-button>
       </template>
       <template v-else-if="currentActive == 1">
-        <el-button type="primary" @click="currentActive--">上一步</el-button>
+        <el-button type="primary" @click="goStep(currentActive--)">上一步</el-button>
         <el-button type="primary" @click="submit()">生成短链</el-button>
       </template>
       <template v-else-if="currentActive == 2">

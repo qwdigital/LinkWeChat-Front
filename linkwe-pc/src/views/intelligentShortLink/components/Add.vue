@@ -1,7 +1,10 @@
 <script>
 import { touchTypeDict } from './mixin'
 export default {
-  components: {},
+  components: {
+    SelectQrCode: () => import('@/components/SelectQrCode.vue'),
+    SelectStaffQrCode: () => import('@/components/SelectStaffQrCode.vue'),
+  },
   props: {
     form: {
       type: Object,
@@ -36,6 +39,8 @@ export default {
         3: '微信群',
         10: '小程序',
       }),
+      selectQrCodeVisible: false,
+      selectStaffQrCodeVisible: false,
     }
   },
   computed: {
@@ -46,7 +51,18 @@ export default {
   watch: {},
   created() {},
   mounted() {},
-  methods: {},
+  methods: {
+    choiceQqcode(type) {
+      this[type == 4 ? 'selectStaffQrCodeVisible' : 'selectQrCodeVisible'] = true
+    },
+    // 选择二维码确认按钮
+    submitSelectQrCode(data) {
+      this.form.qrCodeId = data.id
+      // this.form.qrCodeName = data.activityName
+      this.form.qrCode = data.codeUrl || data.qrCode
+      // this.$refs.form.validateField('groupCodeId')
+    },
+  },
 }
 </script>
 
@@ -97,7 +113,14 @@ export default {
       </template>
       <!-- 员工活码,客群活码 -->
       <template v-else-if="[4, 5].includes(+form.type)">
-        <el-form-item prop="qrCodeId" :label="'选择' + touchTypeDict[form.type].name">
+        <el-form-item prop="5" :label="'选择' + touchTypeDict[form.type].name">
+          <el-image
+            v-if="form.qrCode"
+            class="mr10"
+            style="width: 100px; height: 100px; vertical-align: middle"
+            :src="form.qrCode"
+            fit="fit"></el-image>
+          <!-- <span>{{ form.qrCodeName }}</span> -->
           <el-button type="primary" plain @click="choiceQqcode(form.type, '选择' + touchTypeDict[form.type].name)">
             选择{{ touchTypeDict[form.type].name }}
           </el-button>
@@ -148,6 +171,16 @@ export default {
         </el-form-item>
       </template>
     </el-form>
+
+    <SelectQrCode
+      :visible.sync="selectQrCodeVisible"
+      @success="submitSelectQrCode"
+      :selected="[form.qrCodeId]"></SelectQrCode>
+
+    <SelectStaffQrCode
+      :visible.sync="selectStaffQrCodeVisible"
+      @success="submitSelectQrCode"
+      :selected="[form.qrCodeId]"></SelectStaffQrCode>
   </div>
 </template>
 
