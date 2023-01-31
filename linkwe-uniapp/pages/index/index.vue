@@ -11,7 +11,7 @@
         <div class="mt20 mb20">
           <image style="width: 120px; height: 120px" :src="data.avatar" error="头像" fit="fit"></image>
         </div>
-        <button type="primary">点击打开小程序</button>
+        <button type="primary" @tap="open()">点击打开小程序</button>
       </div>
     </template>
     <template v-else>
@@ -47,13 +47,13 @@
     onLoad(options) {
       const query = options.query; // 这个就是你的参数，是个json对象
       console.log('onLoad options', options); // 场景值为 1065﻿
+      this.getDetail(query.route)
     },
     created() {
       // let id = this.$route.query.id
-      var pages = getCurrentPages()
-      var page = pages[pages.length - 1]
-      console.log('当前页面路由地址数据信息', page)
-      this.getDetail(page.route)
+      // var pages = getCurrentPages()
+      // var page = pages[pages.length - 1]
+      // console.log('当前页面路由地址数据信息', page)
     },
     methods: {
       getDetail(path) {

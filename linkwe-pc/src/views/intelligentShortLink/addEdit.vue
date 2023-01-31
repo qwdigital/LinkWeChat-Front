@@ -49,6 +49,10 @@ export default {
           this.loading = false
         })
     },
+    extensionTypeChange(val) {
+      let touchTypeList = this.typeDict[val].touchType
+      this.form.type = Object.keys(touchTypeList)[0]
+    },
     goStep(type) {
       this.$refs.add.$refs.form.clearValidate()
     },
@@ -127,7 +131,7 @@ export default {
         </el-tooltip> -->
       </el-form-item>
       <el-form-item label="推广类型">
-        <el-radio-group v-model="form.extensionType">
+        <el-radio-group v-model="form.extensionType" @change="extensionTypeChange">
           <el-radio-button v-for="(item, key) in typeDict" :key="key" :label="+key">
             {{ item.name }}
           </el-radio-button>
