@@ -28,6 +28,7 @@ export default {
   watch: {},
   created() {},
   mounted() {
+    this.$route.query.id && this.getDetail()
     this.clipboard = new this.ClipboardJS('.copy-btn')
   },
   destroyed() {
@@ -38,8 +39,8 @@ export default {
       this.loading = true
       let id = this.$route.query.id
       getDetail(id)
-        .then((res) => {
-          this.form = res
+        .then(({ data }) => {
+          this.form = data
         })
         .catch((e) => {
           console.log(e)

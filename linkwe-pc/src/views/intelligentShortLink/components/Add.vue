@@ -1,10 +1,8 @@
 <script>
 import { touchTypeDict } from './mixin'
+import { getCode } from '@/api/drainageCode/store'
 export default {
-  components: {
-    SelectQrCode: () => import('@/components/SelectQrCode.vue'),
-    SelectStaffQrCode: () => import('@/components/SelectStaffQrCode.vue'),
-  },
+  components: {},
   props: {
     form: {
       type: Object,
@@ -39,8 +37,13 @@ export default {
         3: '微信群',
         10: '小程序',
       }),
-      selectQrCodeVisible: false,
-      selectStaffQrCodeVisible: false,
+
+      selectQrCode: () => import('@/components/SelectQrCode.vue'),
+      selectStaffQrCode: () => import('@/components/SelectStaffQrCode.vue'),
+      component: '',
+      qrCodeVisible: false,
+
+      storeLoading: false,
     }
   },
   computed: {
@@ -48,12 +51,27 @@ export default {
       return this.$route.path.endsWith('/detail')
     },
   },
-  watch: {},
+  watch: {
+    'form.type'(val) {
+      if ([6, 8].includes(+val)) {
+        this.storeLoading = true
+        getCode({ 6: 1, 8: 2 }[val])
+          .then(({ data }) => {
+            this.form.qrCode = data && data.storeCodeConfigQr
+            this.storeLoading = false
+          })
+          .finally(() => {
+            this.storeLoading = false
+          })
+      }
+    },
+  },
   created() {},
   mounted() {},
   methods: {
     choiceQqcode(type) {
-      this[type == 4 ? 'selectStaffQrCodeVisible' : 'selectQrCodeVisible'] = true
+      this.qrCodeVisible = true
+      this.component = this[type == 4 ? 'selectStaffQrCode' : 'selectQrCode']
     },
     // 选择二维码确认按钮
     submitSelectQrCode(data) {
@@ -111,29 +129,34 @@ export default {
           <upload class="image-uploader" :fileUrl.sync="form.qrCode"></upload>
         </el-form-item>
       </template>
+
       <!-- 员工活码,客群活码 -->
-      <template v-else-if="[4, 5].includes(+form.type)">
-        <el-form-item prop="5" :label="'选择' + touchTypeDict[form.type].name">
+      <template v-else-if="[4, 5, 6, 8].includes(+form.type)">
+        <el-form-item prop="qrCodeId" :label="touchTypeDict[form.type].name">
+          <!-- <el-form-item prop="5" :label="'选择' + touchTypeDict[form.type].name"> -->
           <el-image
             v-if="form.qrCode"
             class="mr10"
-            style="width: 100px; height: 100px; vertical-align: middle"
+            style="width: 150px; height: 150px; vertical-align: middle"
             :src="form.qrCode"
             fit="fit"></el-image>
-          <!-- <span>{{ form.qrCodeName }}</span> -->
-          <el-button type="primary" plain @click="choiceQqcode(form.type, '选择' + touchTypeDict[form.type].name)">
+
+          <!-- 员工活码,客群活码 -->
+          <el-button v-if="[4, 5].includes(+form.type)" type="primary" plain @click="choiceQqcode(form.type)">
             选择{{ touchTypeDict[form.type].name }}
           </el-button>
-        </el-form-item>
-      </template>
-      <!-- 门店导购活码,门店群活码 -->
-      <template v-else-if="[6, 8].includes(+form.type)">
-        <el-form-item prop="qrCodeId" :label="touchTypeDict[form.type].name">
-          <el-button type="primary" plain @click="choiceQqcode(form.type, '选择' + touchTypeDict[form.type].name)">
+          <!-- 门店导购活码,门店群活码 -->
+          <el-button
+            v-else-if="[6, 8].includes(+form.type) && !form.qrCode"
+            v-loading="storeLoading"
+            type="primary"
+            plain
+            @click="$router.push('/drainageCode/qrCode/store/list')">
             暂无{{ touchTypeDict[form.type].name }}，去配置
           </el-button>
         </el-form-item>
       </template>
+
       <!-- 个人小程序 -->
       <template v-else-if="form.type == 7">
         <el-form-item prop="name" label="小程序名称">
@@ -172,17 +195,23 @@ export default {
       </template>
     </el-form>
 
-    <template v-if="isDetail">
-      <SelectQrCode
+    <keepAlive>
+      <component
+        :is="component"
+        :visible.sync="qrCodeVisible"
+        @success="submitSelectQrCode"
+        :selected="[form.qrCodeId].filter((e) => !!e)" />
+
+      <!-- <SelectQrCode
         :visible.sync="selectQrCodeVisible"
         @success="submitSelectQrCode"
-        :selected="[form.qrCodeId]"></SelectQrCode>
+        :selected="[form.qrCodeId].filter((e) => !!e)"></SelectQrCode>
 
       <SelectStaffQrCode
         :visible.sync="selectStaffQrCodeVisible"
         @success="submitSelectQrCode"
-        :selected="[form.qrCodeId]"></SelectStaffQrCode>
-    </template>
+        :selected="[form.qrCodeId].filter((e) => !!e)"></SelectStaffQrCode> -->
+    </keepAlive>
   </div>
 </template>
 
