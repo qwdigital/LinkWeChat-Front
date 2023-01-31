@@ -34,14 +34,18 @@ export default {
           </div>
         </template>
         <template v-else-if="[7, 9, 10].includes(+data.type)">
-          <div class="g-card g-pad20 cc ac" style="width: 80%">
-            小程序
-            <el-image style="width: 120px; height: 120px" :src="data.avatar" error="头像" fit="fit"></el-image>
+          <div class="g-card g-pad20 cc ac" style="width: 70%; padding-bottom: 50px">
+            <div class="mt10">小程序</div>
+            <div class="mt20 mb20">
+              <el-image style="width: 120px; height: 120px" :src="data.avatar">
+                <!-- <div slot="placeholder">请设置</div> -->
+              </el-image>
+            </div>
             <el-button type="primary">点击打开小程序</el-button>
           </div>
         </template>
         <template v-else>
-          <div class="g-card g-pad20 cc ac" style="width: 80%">
+          <div class="g-card g-pad20 cc ac" style="width: 70%">
             <div class="al bfc-o">
               <el-image
                 class="fl mr10"

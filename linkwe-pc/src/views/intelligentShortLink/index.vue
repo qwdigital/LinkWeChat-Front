@@ -178,9 +178,9 @@ export default {
           <i class="el-icon-copy-document copy-btn cp" title="复制" :data-clipboard-text="row.shortLink"></i>
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="status">
+      <!-- <el-table-column label="状态" align="center" prop="status">
         <template slot-scope="{ row }">{{ dictStatus[row.status + ''] }}</template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="最后更新时间" align="center" prop="updateTime" show-overflow-tooltip></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">
