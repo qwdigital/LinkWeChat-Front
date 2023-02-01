@@ -33,15 +33,15 @@ export default {
             <div class="cc ac g-card g-pad20" style="width: 70%">公众号文章示例</div>
           </div>
         </template>
-        <template v-else-if="[7, 9, 10].includes(+data.type)">
+        <template v-else-if="[7, 9].includes(+data.type)">
           <div class="g-card g-pad20 cc ac" style="width: 70%; padding-bottom: 50px">
-            <div class="mt10">小程序</div>
+            <div class="mt10">{{ data.name || '小程序' }}</div>
             <div class="mt20 mb20">
               <el-image style="width: 120px; height: 120px" :src="data.avatar">
                 <!-- <div slot="placeholder">请设置</div> -->
               </el-image>
             </div>
-            <el-button type="primary">点击打开小程序</el-button>
+            <el-button type="primary">点击打开{{ data.name || '小程序' }}</el-button>
           </div>
         </template>
         <template v-else>
@@ -53,7 +53,7 @@ export default {
                 :src="data.avatar"
                 error="头像"
                 fit="fit"></el-image>
-              <div class="toe">{{ data.shortLinkName || '名称' }}</div>
+              <div class="toe">{{ data.name || '名称' }}</div>
               <div class="tips mt20 toe">{{ data.describe || '描述' }}</div>
             </div>
             <el-image style="width: 120px; height: 120px; margin: 20px 0" :src="data.qrCode" fit="fit"></el-image>

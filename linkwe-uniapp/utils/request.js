@@ -14,6 +14,8 @@ http.interceptors.request.use(
     // if (config.custom.auth) {
     //   config.header.token = 'token'
     // }
+    config.header['Authorization'] =
+      'eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX3R5cGUiOiIwMCIsInVzZXJfaWQiOjEsImxvZ2luX3R5cGUiOiJMaW5rV2VDaGF0QVBJIiwidXNlcl9uYW1lIjoiYWRtaW4iLCJ1c2VyX2tleSI6IjYyZjRiYWZmLWY2NzYtNGNlOS1iNDNhLTZhMjhlM2QwYTEwNiIsImNvcnBfbmFtZSI6IuS7n-W-ruenkeaKgCIsImNvcnBfaWQiOiJ3dzYyMmZjODUyZjc5YzNmMTMifQ.CvkoSw7K1eT-AjmfFYX5e2MlxKFNjfqzPpIwPlEuNDRL3ZASTW7t6UlGUl5CbYGI-F-3EPcVvFm9PcEk_YKtlQ'
     // if (config.custom.loading) {
     //  uni.showLoading()
     // }
@@ -35,14 +37,14 @@ http.interceptors.response.use(
   (response) => {
     /* 对响应成功做点什么 可使用async await 做异步操作*/
     let data = response.data
-    if (data.code == 200 || (data.code != 0 && data.code != 500)) {
-      return data.result || data.record || data.data
+    if (data.code == 200) {
+      return data
     }
     uni.hideLoading()
     uni.showToast({
       icon: 'none',
       title: data.msg,
-      duration: 2000,
+      duration: 3000,
     })
     return Promise.reject(response) // return Promise.reject 可使promise状态进入catch
   },
@@ -67,7 +69,7 @@ export async function get(url, params) {
   })
 }
 
-export default function (config = {}) {
+export default function(config = {}) {
   config.baseURL = cfg.BASE_API
   // 兼容get方法使用data传参
   if ((config.method || 'get').toLowerCase() === 'get' && !config.params) {

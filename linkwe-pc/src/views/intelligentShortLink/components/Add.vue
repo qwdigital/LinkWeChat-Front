@@ -186,9 +186,9 @@ export default {
         <el-form-item prop="secret" label="小程序Secret">
           <el-input clearable v-model="form.secret" placeholder="请输入" maxlength="30" show-word-limit></el-input>
         </el-form-item>
-        <el-form-item prop="" label="小程序原始ID">
+        <!-- <el-form-item prop="" label="小程序原始ID">
           <el-input clearable v-model="form.name" placeholder="请输入" maxlength="30" show-word-limit></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item prop="longLink" label="小程序页面路径">
           <el-input clearable v-model="form.longLink" placeholder="请输入" maxlength="30" show-word-limit></el-input>
         </el-form-item>
