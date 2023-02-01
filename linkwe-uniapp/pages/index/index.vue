@@ -67,8 +67,8 @@
             this.data = data
             console.log('data', data)
             uni.setNavigationBarTitle({
-              // title: touchTypeDict[data.type].previewMobileTitle,
-              title: data.shortLinkName
+              title: touchTypeDict[data.type].previewMobileTitle,
+              // title: data.shortLinkName
             })
           })
           .catch(() => {})
