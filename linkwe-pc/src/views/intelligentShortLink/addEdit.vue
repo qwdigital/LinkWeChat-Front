@@ -163,14 +163,22 @@ export default {
 
     <div v-show="currentActive == 2" class="g-card g-pad20 ac">
       <i class="el-icon-success" style="font-size: 36px; color: #06c160; margin: 10px 0 20px"></i>
-      <div style="">短链创建成功，支持直接复制链接或下载短链二维码</div>
+      <div style="">短链创建成功</div>
       <div class="g-card g-pad20" style="background: #eee; width: 50%; margin: 30px auto">
         <span>{{ data.shortUrl }}</span>
       </div>
-      <img ref="qrCode" style="width: 120px; height: 120px" :src="data.qrCode" fit="fit" crossOrigin="anonymous" />
+      <img ref="qrCode" style="width: 130px; height: 130px" :src="data.qrCode" fit="fit" crossOrigin="anonymous" />
       <div>
         <el-button type="text" class="copy-btn" :data-clipboard-text="data.shortUrl">复制链接</el-button>
         <el-button type="text" @click="download()">下载二维码</el-button>
+
+        <div style="font-size: 12px; color: #aaa">
+          此链接适用于短信、邮件、外部网页、微信内等拉起小程序的业务场景，不支持在微信内直接打开，
+          <a
+            href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/qrcode-link/url-scheme/generateScheme.html">
+            详见>>
+          </a>
+        </div>
       </div>
     </div>
 

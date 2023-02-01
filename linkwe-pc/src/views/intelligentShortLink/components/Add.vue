@@ -17,8 +17,8 @@ export default {
         longLink: [
           { required: true, message: '必填项', trigger: 'blur' },
           {
-            validator(rule, value, callback) {
-              if (value && !/^http/gi.test(value)) callback('链接格式错误，需以http(s)开头')
+            validator: (rule, value, callback) => {
+              if (this.form.type == 0 && value && !/^http/gi.test(value)) callback('链接格式错误，需以http(s)开头')
               else callback()
             },
             trigger: 'blur',
@@ -169,7 +169,7 @@ export default {
           <el-input clearable v-model="form.appId" placeholder="请输入" maxlength="30" show-word-limit></el-input>
         </el-form-item>
         <el-form-item prop="longLink" label="小程序页面路径">
-          <el-input clearable v-model="form.longLink" placeholder="请输入" maxlength="30" show-word-limit></el-input>
+          <el-input clearable v-model="form.longLink" placeholder="请输入" maxlength="50" show-word-limit></el-input>
         </el-form-item>
       </template>
       <!-- 企业小程序 -->
