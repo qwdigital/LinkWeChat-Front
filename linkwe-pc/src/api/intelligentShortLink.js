@@ -38,7 +38,7 @@ export function add(data) {
 // 修改
 export function update(data) {
   return request({
-    url: service + '/update/' + id,
+    url: service + '/update/' + data.id,
     method: 'PUT',
     data,
   })

@@ -40,7 +40,7 @@ export default {
     },
     getAnalysis(id) {
       this.loading = true
-      getAnalysis()
+      getAnalysis(id)
         .then(({ data }) => {
           this.cardData = [
             {
@@ -109,7 +109,7 @@ export default {
 
 <template>
   <div class="fxbw ais">
-    <div class="pr10" style="flex: auto; overflow: hidden">
+    <div class="pr10" style="flex: auto; overflow: auto">
       <div class="g-title fxbw">
         短链内容
         <el-button type="primary" class="fr" @click="$router.push({ path: './addEdit', query: { id: data.id } })">
@@ -120,7 +120,7 @@ export default {
         <Add :form="data" />
       </div>
       <div class="g-title mt20 mb10">数据趋势</div>
-      <CardGroupIndex :data="cardData"></CardGroupIndex>
+      <CardGroupIndex :data="cardData" style="margin-right: -10px"></CardGroupIndex>
       <div class="g-card g-pad20" style="margin-top: 0">
         <TimeSearchTitle @search="getLineAnalysis"></TimeSearchTitle>
         <ChartLine

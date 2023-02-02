@@ -206,6 +206,7 @@
 .el-form-item {
   margin: 0 !important;
   padding: 10px;
+  transition: all 0.2s;
   &:hover {
     background: #e5f1fc;
     border-radius: 10px;
