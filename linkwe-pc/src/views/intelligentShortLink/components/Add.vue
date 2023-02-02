@@ -76,8 +76,24 @@ export default {
     // 选择二维码确认按钮
     submitSelectQrCode(data) {
       this.form.qrCodeId = data.id
-      // this.form.qrCodeName = data.activityName
-      this.form.qrCode = data.codeUrl || data.qrCode
+
+      if (this.form.type == 4) {
+        let desc = []
+        data.qrUserInfos &&
+          data.qrUserInfos.forEach((element) => {
+            element.weQrUserList &&
+              element.weQrUserList.forEach((el) => {
+                desc.push(el.userName)
+              })
+          })
+        this.form.describe = desc + ''
+        this.form.name = data.name
+        this.form.qrCode = data.qrCode
+      } else {
+        this.form.describe = data.tags
+        this.form.name = data.activityName
+        this.form.qrCode = data.codeUrl
+      }
       // this.$refs.form.validateField('groupCodeId')
     },
   },
@@ -131,34 +147,40 @@ export default {
       </template>
 
       <!-- 员工活码,客群活码 -->
-      <template v-else-if="[4, 5, 6, 8].includes(+form.type)">
+      <template v-else-if="[4, 5].includes(+form.type)">
         <el-form-item prop="qrCodeId" :label="touchTypeDict[form.type].name">
-          <!-- <el-form-item prop="5" :label="'选择' + touchTypeDict[form.type].name"> -->
-          <el-image
-            v-if="form.qrCode"
-            class="mr10"
-            style="width: 150px; height: 150px; vertical-align: middle"
-            :src="form.qrCode"
-            fit="fit"></el-image>
-
           <!-- 员工活码,客群活码 -->
-          <el-button v-if="[4, 5].includes(+form.type)" type="primary" plain @click="choiceQqcode(form.type)">
-            选择{{ touchTypeDict[form.type].name }}
+          <el-button v-if="!form.qrCode" type="primary" plain @click="choiceQqcode(form.type)">
+            {{ '选择' + touchTypeDict[form.type].name }}
           </el-button>
-          <!-- 门店导购活码,门店群活码 -->
-          <el-button
-            v-else-if="[6, 8].includes(+form.type) && !form.qrCode"
-            v-loading="storeLoading"
-            type="primary"
-            plain
-            @click="$router.push('/drainageCode/qrCode/store/list')">
-            暂无{{ touchTypeDict[form.type].name }}，去配置
-          </el-button>
+          <el-form v-else label-width="">
+            <el-form-item label="活码名称">{{ form.name }}</el-form-item>
+            <el-form-item :label="form.type == 4 ? '使用员工' : '活码客群'">
+              <tag-ellipsis v-if="form.describe" limit="2" :list="form.describe.split(',')"></tag-ellipsis>
+            </el-form-item>
+            <el-form-item label="二维码">
+              <el-image class="mr10 qrCode" :src="form.qrCode" fit="fit"></el-image>
+              <el-button type="text" @click="choiceQqcode(form.type)">修改</el-button>
+            </el-form-item>
+          </el-form>
         </el-form-item>
       </template>
 
-      <!-- 个人小程序 -->
-      <template v-else-if="form.type == 7">
+      <!-- 门店导购活码,门店群活码 -->
+      <el-form-item v-else-if="[6, 8].includes(+form.type)" prop="5" :label="'选择' + touchTypeDict[form.type].name">
+        <el-button
+          v-if="form.qrCode"
+          v-loading="storeLoading"
+          type="primary"
+          plain
+          @click="$router.push('/drainageCode/qrCode/store/list')">
+          暂无{{ touchTypeDict[form.type].name }}，去配置
+        </el-button>
+        <el-image v-else class="mr10 qrCode" :src="form.qrCode" fit="fit"></el-image>
+      </el-form-item>
+
+      <!-- 个人小程序,企业小程序 -->
+      <template v-else-if="[7, 9].includes(+form.type)">
         <el-form-item prop="name" label="小程序名称">
           <el-input clearable v-model="form.name" placeholder="请输入" maxlength="15" show-word-limit></el-input>
         </el-form-item>
@@ -166,31 +188,18 @@ export default {
           <upload class="image-uploader" :fileUrl.sync="form.avatar"></upload>
         </el-form-item>
         <el-form-item prop="appId" label="小程序AppID">
-          <el-input clearable v-model="form.appId" placeholder="请输入" maxlength="30" show-word-limit></el-input>
+          <el-input clearable v-model="form.appId" placeholder="请输入" show-word-limit></el-input>
         </el-form-item>
-        <el-form-item prop="longLink" label="小程序页面路径">
-          <el-input clearable v-model="form.longLink" placeholder="请输入" maxlength="50" show-word-limit></el-input>
-        </el-form-item>
-      </template>
-      <!-- 企业小程序 -->
-      <template v-else-if="form.type == 9">
-        <el-form-item prop="name" label="小程序名称">
-          <el-input clearable v-model="form.name" placeholder="请输入" maxlength="15" show-word-limit></el-input>
-        </el-form-item>
-        <el-form-item prop="avatar" label="小程序头像">
-          <upload class="image-uploader" :fileUrl.sync="form.avatar"></upload>
-        </el-form-item>
-        <el-form-item prop="appId" label="小程序AppID">
-          <el-input clearable v-model="form.appId" placeholder="请输入" maxlength="30" show-word-limit></el-input>
-        </el-form-item>
+        <!-- <template v-if="form.type == 0">
         <el-form-item prop="secret" label="小程序Secret">
-          <el-input clearable v-model="form.secret" placeholder="请输入" maxlength="30" show-word-limit></el-input>
+          <el-input clearable v-model="form.secret" placeholder="请输入" show-word-limit></el-input>
         </el-form-item>
-        <!-- <el-form-item prop="" label="小程序原始ID">
-          <el-input clearable v-model="form.name" placeholder="请输入" maxlength="30" show-word-limit></el-input>
-        </el-form-item> -->
+        <el-form-item prop="" label="小程序原始ID">
+          <el-input clearable v-model="form.name" placeholder="请输入" show-word-limit></el-input>
+        </el-form-item>
+      </template> -->
         <el-form-item prop="longLink" label="小程序页面路径">
-          <el-input clearable v-model="form.longLink" placeholder="请输入" maxlength="30" show-word-limit></el-input>
+          <el-input clearable v-model="form.longLink" placeholder="请输入" show-word-limit></el-input>
         </el-form-item>
       </template>
     </el-form>
@@ -219,5 +228,10 @@ export default {
 .tips {
   color: #aaa;
   font-size: 12px;
+}
+::v-deep.qrCode {
+  width: 150px;
+  height: 150px;
+  vertical-align: bottom;
 }
 </style>

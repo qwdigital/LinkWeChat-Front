@@ -5,28 +5,32 @@
         <web-view :webview-styles="webviewStyles" :src="data.longLink"></web-view>
       </div>
     </template>
-    <template v-else-if="[7, 9].includes(+data.type)">
-      <div class="g-card g-pad20 cc ac" style="width: 70%">
+    <div v-else class="g-card g-pad20 cc ac" style="width: 70%">
+      <!-- 个人小程序，企业小程序 -->
+      <template v-if="[7, 9].includes(+data.type)">
         <div class="">{{ data.name || '小程序' }}</div>
         <div class="mt20 mb20">
           <image style="width: 150px; height: 150px" :src="data.avatar" show-menu-by-longpress fit="fit"></image>
         </div>
         <button type="primary" @tap="open()">点击打开{{ data.name || '小程序' }}</button>
-      </div>
-    </template>
-    <template v-else>
-      <div class="g-card g-pad20 cc ac" style="width: 70%">
-        <div class="al bfc-o">
-          <image class="fl mr10" style="width: 50px; height: 50px" :src="data.avatar" show-menu-by-longpress fit="fit">
+      </template>
+
+      <template v-else>
+        <!-- 员工活码，客群活码-->
+        <div v-if="[4, 5].includes(+data.type)" class="mt10">{{ data.name || '活码名称' }}</div>
+
+        <div v-else class="al bfc-o">
+          <image class="fl mr10" style="width: 50px; height: 50px" :src="data.avatar" show-menu-by-longpress>
           </image>
-          <div class="toe">{{ data.name || '无名称' }}</div>
-          <div class="tips mt20 toe">{{ data.describe || '无描述' }}</div>
+          <div class="toe">{{ data.name || '名称' }}</div>
+          <div class="tips mt20 toe">{{ data.describe || '描述' }}</div>
         </div>
-        <image style="width: 180px; height: 180px; margin: 20px 0" :src="data.qrCode" show-menu-by-longpress fit="fit">
+
+        <image style="width: 180px; height: 180px; margin: 20px 0" :src="data.qrCode" show-menu-by-longpress>
         </image>
         <div class="mt20">长按二维码{{ touchTypeDict[data.type].previewMobileTitle }}</div>
-      </div>
-    </template>
+      </template>
+    </div>
   </view>
 </template>
 
@@ -47,7 +51,7 @@
       }
     },
     onLoad(options) {
-      console.log('onLoad options', options); // 场景值为 1065﻿
+      console.log('onLoad options', options);
       this.getDetail(options.id)
     },
     created() {
