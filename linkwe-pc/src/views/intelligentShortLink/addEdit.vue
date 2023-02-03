@@ -172,13 +172,13 @@ export default {
         <el-button type="text" class="copy-btn" :data-clipboard-text="data.shortUrl">复制链接</el-button>
         <el-button type="text" @click="download()">下载二维码</el-button>
 
-        <div style="font-size: 12px; color: #aaa">
-          此链接适用于短信、邮件、外部网页、微信内等拉起小程序的业务场景，不支持在微信内直接打开，
+        <!-- <div style="font-size: 12px; color: #aaa">
+          此链接适用于短信、邮件、外部网页、微信内等拉起小程序的业务场景，
           <a
             href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/qrcode-link/url-scheme/generateScheme.html">
             详见>>
           </a>
-        </div>
+        </div> -->
       </div>
     </div>
 

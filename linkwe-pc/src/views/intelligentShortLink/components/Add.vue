@@ -169,7 +169,7 @@ export default {
       <!-- 门店导购活码,门店群活码 -->
       <el-form-item v-else-if="[6, 8].includes(+form.type)" prop="5" :label="'选择' + touchTypeDict[form.type].name">
         <el-button
-          v-if="form.qrCode"
+          v-if="!form.qrCode"
           v-loading="storeLoading"
           type="primary"
           plain

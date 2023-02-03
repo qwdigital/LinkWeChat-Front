@@ -43,8 +43,10 @@ export default {
             <el-button type="primary">点击打开{{ data.name || '小程序' }}</el-button>
           </template>
           <template v-else>
-            <!-- 员工活码，客群活码-->
-            <div v-if="[4, 5].includes(+data.type)" class="mt10">{{ data.name || '活码名称' }}</div>
+            <!-- 员工活码，客群活码 门店导购活码 门店群活码 -->
+            <div v-if="[4, 5, 6, 8].includes(+data.type)" class="mt10">
+              {{ data.name || touchTypeDict[data.type].name }}
+            </div>
 
             <div v-else class="al bfc-o">
               <el-image class="fl mr10" style="width: 50px; height: 50px" :src="data.avatar" fit="fit"></el-image>
