@@ -44,6 +44,7 @@ export default {
       qrCodeVisible: false,
 
       storeLoading: false,
+      isLoadForm: false,
     }
   },
   computed: {
@@ -52,7 +53,14 @@ export default {
     },
   },
   watch: {
-    'form.type'(val) {
+    'form.type'(val, oldVal) {
+      // 触达类型改变时情况已有表单数据
+      if (!this.form.id || this.isLoadForm) {
+        debugger
+        this.$refs.form.resetFields()
+      }
+      this.isLoadForm = true
+      // <!-- 门店导购活码,门店群活码 -->
       if ([6, 8].includes(+val)) {
         this.storeLoading = true
         getCode({ 6: 1, 8: 2 }[val])
@@ -64,6 +72,9 @@ export default {
             this.storeLoading = false
           })
       }
+    },
+    'form.id'(val) {
+      this.isLoadForm = true
     },
   },
   created() {},
@@ -148,7 +159,7 @@ export default {
 
       <!-- 员工活码,客群活码 -->
       <template v-else-if="[4, 5].includes(+form.type)">
-        <el-form-item prop="qrCodeId" :label="touchTypeDict[form.type].name">
+        <el-form-item prop="qrCode" :label="touchTypeDict[form.type].name">
           <!-- 员工活码,客群活码 -->
           <el-button v-if="!form.qrCode" type="primary" plain @click="choiceQqcode(form.type)">
             {{ '选择' + touchTypeDict[form.type].name }}
@@ -167,7 +178,10 @@ export default {
       </template>
 
       <!-- 门店导购活码,门店群活码 -->
-      <el-form-item v-else-if="[6, 8].includes(+form.type)" prop="5" :label="'选择' + touchTypeDict[form.type].name">
+      <el-form-item
+        v-else-if="[6, 8].includes(+form.type)"
+        prop="qrCode"
+        :label="'选择' + touchTypeDict[form.type].name">
         <el-button
           v-if="!form.qrCode"
           v-loading="storeLoading"

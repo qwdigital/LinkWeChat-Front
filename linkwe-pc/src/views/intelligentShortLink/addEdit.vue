@@ -115,20 +115,13 @@ export default {
       <el-form-item label="跳转类型">
         <el-radio-group v-model="form.jumpType">
           <el-radio-button :label="1">跳入微信</el-radio-button>
-          <el-tooltip
-            :value="currentActive == 0"
-            manual
-            class="item"
-            transition="normal"
-            effect="light"
-            content="尽情期待"
-            placement="top">
+          <!-- manual
+          :value="currentActive == 0"
+           transition="normal" -->
+          <el-tooltip class="item" effect="light" content="尽情期待" placement="top">
             <el-radio-button :label="2" disabled>跳出微信</el-radio-button>
           </el-tooltip>
         </el-radio-group>
-        <!-- <el-tooltip :value="true" class="item" effect="light" content="尽情期待" placement="top">
-          <el-button :label="2">跳出微信</el-button>
-        </el-tooltip> -->
       </el-form-item>
       <el-form-item label="推广类型">
         <el-radio-group v-model="form.extensionType" @change="extensionTypeChange">

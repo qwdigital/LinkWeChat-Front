@@ -9,10 +9,9 @@
       <!-- 个人小程序，企业小程序 -->
       <template v-if="[7, 9].includes(+data.type)">
         <div class="">{{ data.name || '小程序' }}</div>
-        <div class="mt20 mb20">
-          <image style="width: 150px; height: 150px" :src="data.avatar" show-menu-by-longpress fit="fit"></image>
-        </div>
-        <button type="primary" @tap="open()">点击打开{{ data.name || '小程序' }}</button>
+        <image style="width: 200px; height: 200px; display: block; margin: 20px auto 30px;" :src="data.avatar"
+          show-menu-by-longpress fit="fit"></image>
+        <button class="" type="primary" @tap="open()">点击打开{{ data.name || '小程序' }}</button>
       </template>
 
       <template v-else>
@@ -27,9 +26,9 @@
           <div class="tips mt20 toe">{{ data.describe || '描述' }}</div>
         </div>
 
-        <image style="width: 180px; height: 180px; margin: 20px 0" :src="data.qrCode" show-menu-by-longpress>
+        <image style="width: 200px; height: 200px; margin: 20px 0 30px" :src="data.qrCode" show-menu-by-longpress>
         </image>
-        <div class="mt20">长按二维码{{ touchTypeDict[data.type].previewMobileTitle }}</div>
+        <div class="">长按二维码{{ touchTypeDict[data.type].previewMobileTitle }}</div>
       </template>
     </div>
   </view>
