@@ -34,7 +34,7 @@
           :src="data.qrCode"
           show-menu-by-longpress></image>
 
-        <div v-if="[5, 6].includes(+data.type)" class="toe">长按二维码保存后，使用微信扫一扫打开</div>
+        <div v-if="[5, 6, 8].includes(+data.type)" class="toe">长按二维码保存后，使用微信扫一扫打开</div>
         <div v-else class="">长按二维码{{ touchTypeDict[data.type].previewMobileTitle }}</div>
       </template>
     </div>

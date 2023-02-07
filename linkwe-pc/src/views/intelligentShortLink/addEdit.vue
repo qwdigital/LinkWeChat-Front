@@ -148,7 +148,7 @@ export default {
 
     <div v-show="currentActive == 1" class="fxbw ais mt10" style="overflow: auto">
       <div class="g-card g-pad20 mr10" style="flex: auto">
-        <Add ref="add" :form="form" />
+        <Add ref="add" :form.sync="form" />
       </div>
 
       <PhonePreview :data="form" />
