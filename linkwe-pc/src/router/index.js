@@ -30,8 +30,12 @@ import visitor from '@/layout/visitor'
   }
  */
 
-// 开发路由，总后台配置完菜单务必删除或注释，只在开发环境生效
-const devRoutes = []
+export let devRoutes = []
+
+// 开发环境路由，总后台配置完菜单务必删除或注释，只在开发环境生效
+if (process.env.VUE_APP_ENV === 'development') {
+  devRoutes = devRoutes.concat()
+}
 
 // 公共路由
 export const constantRoutes = [
@@ -44,26 +48,26 @@ export const constantRoutes = [
       isNoLogin: true,
     },
   },
-  {
-    path: '/drainageCode/qrCode',
-    component: Layout,
-    hidden: true,
-    meta: {
-      title: '客群活码',
-    },
-    children: [
-      {
-        path: 'analyse',
-        name: 'group-code-analyse',
-        component: (resolve) => require(['@/views/drainageCode/group/analyse'], resolve),
-        meta: {
-          title: '活码统计',
-          activeMenu: '/drainageCode/qrCode/customerGroup',
-          breadcrumb: true,
-        },
-      },
-    ],
-  },
+  // {
+  //   path: '',
+  //   component: Layout,
+  //   hidden: true,
+  //   meta: {
+  //     title: '客群活码',
+  //   },
+  //   children: [
+  //     {
+  //       path: '/drainageCode/qrCode/analyse',
+  //       name: 'group-code-analyse',
+  //       component: (resolve) => require(['@/views/drainageCode/group/analyse'], resolve),
+  //       meta: {
+  //         title: '活码统计',
+  //         activeMenu: '/drainageCode/qrCode/customerGroup',
+  //         breadcrumb: true,
+  //       },
+  //     },
+  //   ],
+  // },
   {
     path: '/redirect',
     component: Layout,
