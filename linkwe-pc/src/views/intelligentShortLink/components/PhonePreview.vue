@@ -37,14 +37,16 @@ export default {
           <!-- 个人小程序，企业小程序 -->
           <template v-if="[7, 9].includes(+data.type)">
             <div class="mt10">{{ data.name || '小程序' }}</div>
-            <div class="mt20 mb20">
-              <el-image style="width: 120px; height: 120px" :src="data.avatar"></el-image>
-            </div>
+            <el-image
+              style="width: 120px; height: 120px; display: block; margin: 20px auto 30px"
+              :src="data.avatar"></el-image>
             <el-button type="primary">点击打开{{ data.name || '小程序' }}</el-button>
           </template>
           <template v-else>
-            <!-- 员工活码，客群活码-->
-            <div v-if="[4, 5].includes(+data.type)" class="mt10">{{ data.name || '活码名称' }}</div>
+            <!-- 员工活码，客群活码 门店导购活码 门店群活码 -->
+            <div v-if="[4, 5, 6, 8].includes(+data.type)" class="mt10">
+              {{ data.name || touchTypeDict[data.type].name }}
+            </div>
 
             <div v-else class="al bfc-o">
               <el-image class="fl mr10" style="width: 50px; height: 50px" :src="data.avatar" fit="fit"></el-image>
@@ -52,8 +54,8 @@ export default {
               <div class="tips mt20 toe">{{ data.describe || '描述' }}</div>
             </div>
 
-            <el-image style="width: 120px; height: 120px; margin: 20px 0" :src="data.qrCode" fit="fit"></el-image>
-            <div class="mt20">长按二维码{{ touchTypeDict[data.type].previewMobileTitle }}</div>
+            <el-image style="width: 120px; height: 120px; margin: 20px 0 30px" :src="data.qrCode" fit="fit"></el-image>
+            <div class="">长按二维码{{ touchTypeDict[data.type].previewMobileTitle }}</div>
           </template>
         </div>
       </PhoneTemplate>

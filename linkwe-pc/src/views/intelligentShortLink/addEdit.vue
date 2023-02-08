@@ -115,20 +115,13 @@ export default {
       <el-form-item label="跳转类型">
         <el-radio-group v-model="form.jumpType">
           <el-radio-button :label="1">跳入微信</el-radio-button>
-          <el-tooltip
-            :value="currentActive == 0"
-            manual
-            class="item"
-            transition="normal"
-            effect="light"
-            content="尽情期待"
-            placement="top">
+          <!-- manual
+          :value="currentActive == 0"
+           transition="normal" -->
+          <el-tooltip class="item" effect="light" content="尽情期待" placement="top">
             <el-radio-button :label="2" disabled>跳出微信</el-radio-button>
           </el-tooltip>
         </el-radio-group>
-        <!-- <el-tooltip :value="true" class="item" effect="light" content="尽情期待" placement="top">
-          <el-button :label="2">跳出微信</el-button>
-        </el-tooltip> -->
       </el-form-item>
       <el-form-item label="推广类型">
         <el-radio-group v-model="form.extensionType" @change="extensionTypeChange">
@@ -155,7 +148,7 @@ export default {
 
     <div v-show="currentActive == 1" class="fxbw ais mt10" style="overflow: auto">
       <div class="g-card g-pad20 mr10" style="flex: auto">
-        <Add ref="add" :form="form" />
+        <Add ref="add" :form.sync="form" />
       </div>
 
       <PhonePreview :data="form" />
@@ -172,13 +165,13 @@ export default {
         <el-button type="text" class="copy-btn" :data-clipboard-text="data.shortUrl">复制链接</el-button>
         <el-button type="text" @click="download()">下载二维码</el-button>
 
-        <div style="font-size: 12px; color: #aaa">
-          此链接适用于短信、邮件、外部网页、微信内等拉起小程序的业务场景，不支持在微信内直接打开，
+        <!-- <div style="font-size: 12px; color: #aaa">
+          此链接适用于短信、邮件、外部网页、微信内等拉起小程序的业务场景，
           <a
             href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/qrcode-link/url-scheme/generateScheme.html">
             详见>>
           </a>
-        </div>
+        </div> -->
       </div>
     </div>
 

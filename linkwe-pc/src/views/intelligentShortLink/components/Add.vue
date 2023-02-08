@@ -44,6 +44,7 @@ export default {
       qrCodeVisible: false,
 
       storeLoading: false,
+      isLoadForm: false,
     }
   },
   computed: {
@@ -52,23 +53,38 @@ export default {
     },
   },
   watch: {
-    'form.type'(val) {
-      if ([6, 8].includes(+val)) {
-        this.storeLoading = true
-        getCode({ 6: 1, 8: 2 }[val])
-          .then(({ data }) => {
-            this.form.qrCode = data && data.storeCodeConfigQr
-            this.storeLoading = false
-          })
-          .finally(() => {
-            this.storeLoading = false
-          })
+    'form.type'(val, oldVal) {
+      // 触达类型改变时情况已有表单数据
+      if (!this.form.id || this.isLoadForm) {
+        let { id, jumpType, extensionType, type } = this.form
+        this.$emit('update:form', { id, jumpType, extensionType, type })
+        // this.$refs.form.resetFields()
       }
+      this.isLoadForm = true
+      // <!-- 门店导购活码,门店群活码 -->
+      if ([6, 8].includes(+val)) {
+        this.getCode()
+      }
+    },
+    'form.id'(val) {
+      this.isLoadForm = true
     },
   },
   created() {},
   mounted() {},
   methods: {
+    // 获取门店导购活码,门店群活码
+    getCode() {
+      this.storeLoading = true
+      getCode({ 6: 1, 8: 2 }[this.form.type])
+        .then(({ data }) => {
+          this.form.qrCode = data && data.storeCodeConfigQr
+          this.storeLoading = false
+        })
+        .finally(() => {
+          this.storeLoading = false
+        })
+    },
     choiceQqcode(type) {
       this.qrCodeVisible = true
       this.component = this[type == 4 ? 'selectStaffQrCode' : 'selectQrCode']
@@ -108,7 +124,7 @@ export default {
       ref="form"
       :model="form"
       label-suffix="："
-      label-width="140px"
+      label-width="160px"
       :rules="rules">
       <el-form-item label="短链类型">
         <span>{{ touchTypeDict[form.type].allName }}</span>
@@ -148,11 +164,12 @@ export default {
 
       <!-- 员工活码,客群活码 -->
       <template v-else-if="[4, 5].includes(+form.type)">
-        <el-form-item prop="qrCodeId" :label="touchTypeDict[form.type].name">
+        <el-form-item prop="qrCode" :label="touchTypeDict[form.type].name">
           <!-- 员工活码,客群活码 -->
-          <el-button v-if="!form.qrCode" type="primary" plain @click="choiceQqcode(form.type)">
+          <el-button v-if="!form.qrCode && !isDetail" type="primary" plain @click="choiceQqcode(form.type)">
             {{ '选择' + touchTypeDict[form.type].name }}
           </el-button>
+
           <el-form v-else label-width="">
             <el-form-item label="活码名称">{{ form.name }}</el-form-item>
             <el-form-item :label="form.type == 4 ? '使用员工' : '活码客群'">
@@ -160,23 +177,29 @@ export default {
             </el-form-item>
             <el-form-item label="二维码">
               <el-image class="mr10 qrCode" :src="form.qrCode" fit="fit"></el-image>
-              <el-button type="text" @click="choiceQqcode(form.type)">修改</el-button>
+              <el-button v-if="!isDetail" type="text" @click="choiceQqcode(form.type)">修改</el-button>
             </el-form-item>
           </el-form>
         </el-form-item>
       </template>
 
       <!-- 门店导购活码,门店群活码 -->
-      <el-form-item v-else-if="[6, 8].includes(+form.type)" prop="5" :label="'选择' + touchTypeDict[form.type].name">
+      <el-form-item
+        v-else-if="[6, 8].includes(+form.type)"
+        prop="qrCode"
+        :label="'选择' + touchTypeDict[form.type].name">
         <el-button
-          v-if="form.qrCode"
+          v-if="!form.qrCode && !isDetail"
           v-loading="storeLoading"
           type="primary"
           plain
           @click="$router.push('/drainageCode/qrCode/store/list')">
           暂无{{ touchTypeDict[form.type].name }}，去配置
         </el-button>
-        <el-image v-else class="mr10 qrCode" :src="form.qrCode" fit="fit"></el-image>
+        <div v-else>
+          <el-image v-loading="storeLoading" class="mr10 qrCode" :src="form.qrCode" fit="fit"></el-image>
+          <el-button v-if="!isDetail" type="text" @click="getCode()">同步</el-button>
+        </div>
       </el-form-item>
 
       <!-- 个人小程序,企业小程序 -->
