@@ -1,5 +1,6 @@
 <script>
 import { getList, getAnalysis, remove } from '@/api/intelligentShortLink'
+import { touchTypeDict } from './components/mixin'
 export default {
   name: '',
   components: {
@@ -14,19 +15,7 @@ export default {
         pageSize: 10,
         pageNum: 1,
       },
-      dictTouchType: Object.freeze({
-        0: '跳入微信-公众号-文章',
-        1: '跳入微信-公众号-二维码',
-        2: '跳入微信-个人微信-个人二维码',
-        3: '跳入微信-个人微信-群二维码',
-        4: '跳入微信-企业微信-员工活码',
-        5: '跳入微信-企业微信-客群活码',
-        6: '跳入微信-企业微信-门店导购码',
-        8: '跳入微信-企业微信-门店群活码',
-        7: '跳入微信-小程序-个人小程序',
-        9: '跳入微信-小程序-企业小程序',
-        10: '跳入微信-小程序-小程序二维码',
-      }),
+      touchTypeDict,
       dictStatus: Object.freeze({
         1: '启用',
         2: '关闭',
@@ -145,64 +134,70 @@ export default {
   <div>
     <CardGroupIndex :data="cardData"></CardGroupIndex>
 
-    <div class="table-content">
-      <el-form ref="queryForm" :inline="true" :model="query" class="top-search">
-        <el-form-item label="" prop="shortLinkName">
-          <el-input clearable v-model="query.shortLinkName" placeholder="请输入"></el-input>
-        </el-form-item>
-        <el-form-item label="" prop="touchType">
-          <el-select clearable v-model="query.touchType" placeholder="请选择">
-            <el-option v-for="(item, index) in dictTouchType" :key="index" :label="item" :value="index"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="" prop="status">
-          <el-select clearable v-model="query.status" placeholder="请选择">
-            <el-option v-for="(item, index) in dictStatus" :key="index" :label="item" :value="index"></el-option>
-          </el-select>
-        </el-form-item>
+    <el-form ref="queryForm" :inline="true" :model="query" class="top-search">
+      <el-form-item label="" prop="shortLinkName">
+        <el-input clearable v-model="query.shortLinkName" placeholder="请输入"></el-input>
+      </el-form-item>
+      <el-form-item label="" prop="type">
+        <el-select clearable v-model="query.type" placeholder="请选择">
+          <el-option
+            v-for="(item, index) in touchTypeDict"
+            :key="index"
+            :label="item.allName"
+            :value="+index"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="" prop="status">
+        <el-select clearable v-model="query.status" placeholder="请选择">
+          <el-option v-for="(item, index) in dictStatus" :key="index" :label="item" :value="+index"></el-option>
+        </el-select>
+      </el-form-item>
 
-        <el-form-item label=" ">
-          <el-button type="primary" @click="getList(1)">查询</el-button>
-          <el-button type="success" @click="resetForm()">重置</el-button>
-        </el-form-item>
-      </el-form>
+      <el-form-item label="">
+        <el-button type="primary" @click="getList(1)">查询</el-button>
+        <el-button type="success" @click="resetForm()">重置</el-button>
+      </el-form-item>
 
-      <div class="mid-action">
+      <el-form-item class="fr">
         <el-button type="primary" class="mr10" @click="goRoute()">新建短链</el-button>
         <el-button :disabled="!ids.length" type="danger" @click="remove()">批量删除</el-button>
-      </div>
+      </el-form-item>
+    </el-form>
 
-      <el-table v-loading="loading" :data="list">
-        <el-table-column label="短链名称" align="center" min-width="100" prop="shortLinkName" show-overflow-tooltip />
-        <el-table-column label="类型" align="center" prop="touchType" min-width="100">
-          <template slot-scope="{ row }">{{ dictTouchType[row.touchType + ''] }}</template>
-        </el-table-column>
-        <el-table-column label="短链地址" align="center" prop="consultTotalCnt" min-width="100" show-overflow-tooltip>
-          <template slot-scope="{ row }">
-            <span>{{ row.shortLink }}</span>
-            <i class="el-icon-copy-document copy-btn ml20 cp" :data-clipboard-text="row.shortLink"></i>
-          </template>
-        </el-table-column>
-        <el-table-column label="状态" align="center" prop="status" min-width="100">
-          <template slot-scope="{ row }">{{ dictStatus[row.status + ''] }}</template>
-        </el-table-column>
-        <el-table-column
-          label="最后更新时间"
-          align="center"
-          prop="tdVisitCnt"
-          min-width="100"
-          show-overflow-tooltip></el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-          <template slot-scope="{ row }">
-            <el-button type="text" @click="goRoute(row, 'detail')">详情|统计</el-button>
-            <el-button type="text" @click="goRoute(row)">编辑</el-button>
-            <el-button @click="remove(row.id)" type="text">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <pagination :total="total" :page.sync="query.pageNum" :limit.sync="query.pageSize" @pagination="getList()" />
-    </div>
+    <el-table v-loading="loading" :data="list" @selection-change="(val) => (ids = val.map((e) => e.id))">
+      <el-table-column type="selection" width="55" align="center"></el-table-column>
+      <el-table-column label="短链名称" align="center" prop="shortLinkName" show-overflow-tooltip />
+      <el-table-column label="类型" align="center" prop="type">
+        <template slot-scope="{ row }">{{ touchTypeDict[row.type + ''].allName }}</template>
+      </el-table-column>
+      <el-table-column label="短链地址" align="center" prop="shortLink" show-overflow-tooltip>
+        <!-- <template slot-scope="{ row }">{{ row.shortLink }}</template> -->
+      </el-table-column>
+      <el-table-column label="" align="center" prop="type" width="35">
+        <template slot-scope="{ row }">
+          <i class="el-icon-copy-document copy-btn cp" title="复制" :data-clipboard-text="row.shortLink"></i>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="状态" align="center" prop="status">
+        <template slot-scope="{ row }">{{ dictStatus[row.status + ''] }}</template>
+      </el-table-column> -->
+      <el-table-column label="最后更新时间" align="center" prop="updateTime" show-overflow-tooltip></el-table-column>
+      <el-table-column label="操作" align="center">
+        <template slot-scope="{ row }">
+          <el-button type="text" @click="goRoute(row, 'detail')">详情|统计</el-button>
+          <el-button type="text" @click="goRoute(row)">编辑</el-button>
+          <el-button @click="remove(row.id)" type="text">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination :total="total" :page.sync="query.pageNum" :limit.sync="query.pageSize" @pagination="getList()" />
   </div>
 </template>
 
-<style lang="less" scoped></style>
+<style lang="scss" scoped>
+.el-icon-copy-document {
+  &:hover {
+    color: $blue;
+  }
+}
+</style>

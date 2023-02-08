@@ -1,5 +1,6 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/short/link'
+import config from '@/config.js'
+const service = config.services.wecom + '/short/link'
 
 // 智能短链
 
@@ -11,10 +12,10 @@ export function getList(data) {
   })
 }
 
-// 详情
-export function getDetail(id) {
+// 通过短链接获取短链详情
+export function getDetail(path) {
   return request({
-    url: service + '/get/' + id,
+    url: service + '/getByShort/' + path,
   })
 }
 
@@ -38,7 +39,7 @@ export function add(data) {
 // 修改
 export function update(data) {
   return request({
-    url: service + '/update/' + data.id,
+    url: service + '/update/' + id,
     method: 'PUT',
     data,
   })

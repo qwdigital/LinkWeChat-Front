@@ -206,6 +206,7 @@
 .el-form-item {
   margin: 0 !important;
   padding: 10px;
+  transition: all 0.2s;
   &:hover {
     background: #e5f1fc;
     border-radius: 10px;
@@ -219,5 +220,44 @@
   &:hover {
     background: none;
     border-radius: 0;
+  }
+}
+
+// 表单禁用详情数据展示
+.form-detail {
+  .el-input.is-disabled .el-input__inner,
+  .el-textarea.is-disabled .el-textarea__inner {
+    background-color: transparent;
+    // border-color: transparent;
+    color: inherit;
+    cursor: default;
+    // &:hover {
+    //   border-color: transparent;
+    // }
+  }
+  .el-radio__input.is-disabled {
+    .el-radio__inner {
+      background-color: #fff;
+      border-color: #dcdfe6;
+      cursor: default;
+    }
+    + span.el-radio__label {
+      color: inherit;
+      cursor: default;
+    }
+    &.is-checked .el-radio__inner {
+      background-color: $blue;
+      border-color: $blue;
+      cursor: default;
+
+      &::after {
+        background-color: #fff;
+      }
+    }
+  }
+
+  // 必填红 * 隐藏
+  .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:before {
+    display: none;
   }
 }

@@ -28,6 +28,7 @@ export default {
   watch: {},
   created() {},
   mounted() {
+    this.$route.query.id && this.getDetail()
     this.clipboard = new this.ClipboardJS('.copy-btn')
   },
   destroyed() {
@@ -38,8 +39,8 @@ export default {
       this.loading = true
       let id = this.$route.query.id
       getDetail(id)
-        .then((res) => {
-          this.form = res
+        .then(({ data }) => {
+          this.form = data
         })
         .catch((e) => {
           console.log(e)
@@ -47,6 +48,13 @@ export default {
         .finally(() => {
           this.loading = false
         })
+    },
+    extensionTypeChange(val) {
+      let touchTypeList = this.typeDict[val].touchType
+      this.form.type = Object.keys(touchTypeList)[0]
+    },
+    goStep(type) {
+      this.$refs.add.$refs.form.clearValidate()
     },
     submit() {
       this.$refs.add.$refs['form'].validate((validate) => {
@@ -59,7 +67,7 @@ export default {
           this.loading = true
           ;(this.form.id ? update : add)(this.form)
             .then((res) => {
-              this.data = res
+              this.data = res.data
               this.currentActive++
             })
             .catch((e) => {
@@ -72,11 +80,17 @@ export default {
       })
     },
     download() {
-      const name = this.form.shortLinkName + '.png'
-      const link = document.createElement('a') // 创建a标签
-      link.href = this.data.shortUrl
-      link.download = name // 重命名文件
-      link.click()
+      let canvas = document.createElement('canvas')
+      this.$refs.qrCode.setAttribute('crossOrigin', 'anonymous')
+      canvas.getContext('2d').drawImage(this.$refs.qrCode, 0, 0)
+      canvas.toBlob((blob) => {
+        let url = URL.createObjectURL(blob)
+        const link = document.createElement('a') // 创建a标签
+        link.href = link.download = url
+        link.click()
+        link.remove()
+        URL.revokeObjectURL(url)
+      })
     },
   },
 }
@@ -101,11 +115,23 @@ export default {
       <el-form-item label="跳转类型">
         <el-radio-group v-model="form.jumpType">
           <el-radio-button :label="1">跳入微信</el-radio-button>
-          <el-radio-button :label="2">跳出微信</el-radio-button>
+          <el-tooltip
+            :value="currentActive == 0"
+            manual
+            class="item"
+            transition="normal"
+            effect="light"
+            content="尽情期待"
+            placement="top">
+            <el-radio-button :label="2" disabled>跳出微信</el-radio-button>
+          </el-tooltip>
         </el-radio-group>
+        <!-- <el-tooltip :value="true" class="item" effect="light" content="尽情期待" placement="top">
+          <el-button :label="2">跳出微信</el-button>
+        </el-tooltip> -->
       </el-form-item>
       <el-form-item label="推广类型">
-        <el-radio-group v-model="form.extensionType">
+        <el-radio-group v-model="form.extensionType" @change="extensionTypeChange">
           <el-radio-button v-for="(item, key) in typeDict" :key="key" :label="+key">
             {{ item.name }}
           </el-radio-button>
@@ -128,35 +154,41 @@ export default {
     </el-form>
 
     <div v-show="currentActive == 1" class="fxbw ais mt10" style="overflow: auto">
-      <div class="g-card g-pad20" style="width: 58%">
+      <div class="g-card g-pad20 mr10" style="flex: auto">
         <Add ref="add" :form="form" />
       </div>
 
-      <div style="width: 40%">
-        <PhonePreview :data="form" />
-      </div>
+      <PhonePreview :data="form" />
     </div>
 
     <div v-show="currentActive == 2" class="g-card g-pad20 ac">
       <i class="el-icon-success" style="font-size: 36px; color: #06c160; margin: 10px 0 20px"></i>
-      <div style="">短链创建成功，支持直接复制链接或下载短链二维码</div>
+      <div style="">短链创建成功</div>
       <div class="g-card g-pad20" style="background: #eee; width: 50%; margin: 30px auto">
         <span>{{ data.shortUrl }}</span>
       </div>
-      <el-image style="width: 120px; height: 120px" :src="data.qrCode" fit="fit"></el-image>
+      <img ref="qrCode" style="width: 130px; height: 130px" :src="data.qrCode" fit="fit" crossOrigin="anonymous" />
       <div>
         <el-button type="text" class="copy-btn" :data-clipboard-text="data.shortUrl">复制链接</el-button>
-        <el-button type="text" @click="download(row)">下载二维码</el-button>
+        <el-button type="text" @click="download()">下载二维码</el-button>
+
+        <div style="font-size: 12px; color: #aaa">
+          此链接适用于短信、邮件、外部网页、微信内等拉起小程序的业务场景，不支持在微信内直接打开，
+          <a
+            href="https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/qrcode-link/url-scheme/generateScheme.html">
+            详见>>
+          </a>
+        </div>
       </div>
     </div>
 
     <el-footer class="mt20 ar" style="padding: 0" height="">
       <template v-if="currentActive == 0">
         <el-button plain @click="$router.back()">取消</el-button>
-        <el-button type="primary" @click="currentActive++">下一步</el-button>
+        <el-button type="primary" @click="goStep(currentActive++)">下一步</el-button>
       </template>
       <template v-else-if="currentActive == 1">
-        <el-button type="primary" @click="currentActive--">上一步</el-button>
+        <el-button type="primary" @click="goStep(currentActive--)">上一步</el-button>
         <el-button type="primary" @click="submit()">生成短链</el-button>
       </template>
       <template v-else-if="currentActive == 2">

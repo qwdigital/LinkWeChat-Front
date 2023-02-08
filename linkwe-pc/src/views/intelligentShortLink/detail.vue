@@ -13,6 +13,7 @@ export default {
     return {
       loading: false,
       data: {},
+      cardData: [],
       xData: [],
       series: [],
     }
@@ -21,7 +22,7 @@ export default {
   watch: {},
   created() {
     let id = this.$route.query.id
-    this.getList(id)
+    this.getDetail(id)
     this.getAnalysis(id)
   },
   mounted() {},
@@ -30,7 +31,7 @@ export default {
       this.loading = true
       getDetail(id)
         .then(({ data }) => {
-          this.form = data
+          this.data = data
         })
         .catch(() => {})
         .finally(() => {
@@ -39,7 +40,7 @@ export default {
     },
     getAnalysis(id) {
       this.loading = true
-      getAnalysis()
+      getAnalysis(id)
         .then(({ data }) => {
           this.cardData = [
             {
@@ -107,29 +108,28 @@ export default {
 </script>
 
 <template>
-  <div>
-    <div class="fxbw">
-      <div style="width: 58%">
-        <div class="g-title">短链内容</div>
-        <div class="g-card g-pad20">
-          <Add :form="data" />
-        </div>
-        <div class="g-title">数据趋势</div>
-        <div class="g-card g-pad20">
-          <CardGroupIndex :data="cardData"></CardGroupIndex>
-          <div>
-            <TimeSearchTitle @search="getLineAnalysis"></TimeSearchTitle>
-          </div>
-          <ChartLine
-            :xData="xData"
-            :legend="['访问总数(pv)', '访问总人数(uv)', '小程序打开数']"
-            :series="series"></ChartLine>
-        </div>
+  <div class="fxbw ais">
+    <div class="pr10" style="flex: auto; overflow: auto">
+      <div class="g-title fxbw">
+        短链内容
+        <el-button type="primary" class="fr" @click="$router.push({ path: './addEdit', query: { id: data.id } })">
+          编辑
+        </el-button>
       </div>
-      <div style="width: 40%">
-        <PhonePreview :data="data" />
+      <div class="g-card g-pad20">
+        <Add :form="data" />
+      </div>
+      <div class="g-title mt20 mb10">数据趋势</div>
+      <CardGroupIndex :data="cardData" style="margin-right: -10px"></CardGroupIndex>
+      <div class="g-card g-pad20" style="margin-top: 0">
+        <TimeSearchTitle @search="getLineAnalysis"></TimeSearchTitle>
+        <ChartLine
+          :xData="xData"
+          :legend="['访问总数(pv)', '访问总人数(uv)', '小程序打开数']"
+          :series="series"></ChartLine>
       </div>
     </div>
+    <PhonePreview :data="data" />
   </div>
 </template>
 
