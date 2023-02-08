@@ -124,7 +124,7 @@ export default {
       return routes
     },
     ishttp(url) {
-      return /^(\/|http)/.test(url)
+      return /^http/.test(url)
     },
   },
 }
