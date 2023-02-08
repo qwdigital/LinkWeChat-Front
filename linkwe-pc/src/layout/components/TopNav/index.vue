@@ -55,15 +55,9 @@ export default {
     },
     // 默认激活的一级菜单路径 eg：/drainageCode
     activeMenu() {
-      const path = this.$route.path
-      let activePath = this.routers.filter((e) => !e.hidden).path
-      if (path.lastIndexOf('/') > 0) {
-        activePath = path.substring(0, path.indexOf('/', 1))
-      }
-      var routes = this.activeRoutes(activePath)
-      if (routes.length === 0) {
-        activePath = path
-      }
+      let activePath = this.$route.path.match(/\/[^\/]+/)
+      activePath = activePath && activePath[0]
+      this.activeRoutes(activePath)
       return activePath
     },
   },
@@ -115,9 +109,10 @@ export default {
         }
       }
     },
-    // 当前激活的路由
+    // 当前激活的侧边栏菜单
     activeRoutes(path) {
-      let routes = this.routers.filter((e) => e.path == path)
+      let activeRoute = this.routers.find((e) => e.path == path)
+      let routes = (activeRoute && activeRoute.children) || []
       if (routes.length > 0) {
         this.$store.commit('SET_SIDEBAR_ROUTERS', routes)
       }
