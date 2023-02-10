@@ -441,6 +441,7 @@
   .userinfo {
     display: flex;
     .portrait {
+      flex-shrink: 0;
       width: 120px;
       height: 120px;
       border-radius: 120px;
@@ -465,6 +466,12 @@
       flex-direction: column;
       justify-content: space-between;
       padding: 10px 0;
+      max-width: 200px;
+      span {
+        white-space: nowrap; /*强制单行显示*/
+        text-overflow: ellipsis; /*超出部分省略号表示*/
+        overflow: hidden; /*超出部分隐藏*/
+      }
       span:nth-child(1) {
         font-size: 16px;
       }
