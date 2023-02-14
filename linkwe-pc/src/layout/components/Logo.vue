@@ -1,16 +1,12 @@
 <template>
-  <div class="logo-container" :class="{ collapse: collapse }">
-    <transition name="sidebarLogoFade">
-      <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
+  <transition name="sidebarLogoFade">
+    <div class="logo-container" :class="{ collapse: collapse }">
+      <router-link key="collapse" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <!-- <h1 v-else class="sidebar-title">{{ title }}</h1> -->
       </router-link>
-      <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <!-- <h1 class="sidebar-title">{{ title }}</h1> -->
-      </router-link>
-    </transition>
-  </div>
+      <i class="el-icon-s-operation"></i>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -25,7 +21,7 @@ export default {
   data() {
     return {
       title: process.env.VUE_APP_TITLE,
-      logo: this.lwConfig.LOGO_TEXT_LIGHT,
+      logo: this.lwConfig.LOGO_TEXT_DARK,
     }
   },
 }
@@ -43,14 +39,11 @@ export default {
 
 .logo-container {
   position: relative;
-  width: 210px;
-  text-align: center;
+  width: 330px;
   overflow: hidden;
-
+  display: flex;
+  align-items: center;
   & .sidebar-logo-link {
-    height: 100%;
-    width: 100%;
-
     & .sidebar-logo {
       max-height: 44px;
       max-width: 170px;
@@ -74,6 +67,11 @@ export default {
     .sidebar-logo {
       margin-right: 0px;
     }
+  }
+
+  .el-icon-s-operation {
+    color: #333;
+    font-size: 20px;
   }
 }
 </style>
