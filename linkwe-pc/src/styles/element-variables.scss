@@ -4,12 +4,20 @@
 **/
 
 /* theme color */
-$--color-primary: #07c160;
+$--color-primary: $blue;
 $--color-success: #07c160;
 $--color-warning: #faad14;
 $--color-danger: #eb5e12;
 // $--color-info: #fa7216;
 // $--color-info: #1E1E1E;
+
+$--background-color-base: #e6f8ef !default;
+
+$--border-color-extra-light: #e6f8ef;
+
+$--datepicker-inrange-background-color: $--border-color-extra-light !default;
+/// color||Color|0
+$--datepicker-inrange-hover-background-color: $--border-color-extra-light !default;
 
 $--button-font-weight: 400;
 

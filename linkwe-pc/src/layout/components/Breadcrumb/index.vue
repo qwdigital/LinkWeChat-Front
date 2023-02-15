@@ -1,3 +1,4 @@
+// 导航面包屑
 <template>
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
@@ -6,14 +7,10 @@
       </el-breadcrumb-item>
       <el-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
         <span
-          v-if="
-            item.redirect === 'noRedirect' ||
-            index == levelList.length - 1 ||
-            !/^\//gi.test(item.redirect)
-          "
-          class="no-redirect"
-          >{{ transformTitle(item.meta.title) }}</span
-        >
+          v-if="item.redirect === 'noRedirect' || index == levelList.length - 1 || !/^\//gi.test(item.redirect)"
+          class="no-redirect">
+          {{ transformTitle(item.meta.title) }}
+        </span>
         <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
       </el-breadcrumb-item>
     </transition-group>
@@ -61,9 +58,7 @@ export default {
       //   matched = [{ path: '/index', meta: { title: '首页' } }].concat(matched)
       // }
 
-      this.levelList = matched.filter(
-        (item) => item.meta && item.meta.title && item.meta.breadcrumb !== false
-      )
+      this.levelList = matched.filter((item) => item.meta && item.meta.title && item.meta.breadcrumb !== false)
     },
     isDashboard(route) {
       const name = route && route.name
@@ -106,12 +101,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.app-breadcrumb.el-breadcrumb {
+.el-breadcrumb {
   display: inline-block;
   vertical-align: middle;
   font-size: 14px;
   line-height: 50px;
-  margin-left: 8px;
+  margin-left: 20px;
 
   .no-redirect {
     color: #999;
@@ -124,5 +119,8 @@ export default {
 }
 .home {
   color: $blue;
+}
+::v-deep .el-breadcrumb__separator {
+  margin: 0 5px;
 }
 </style>

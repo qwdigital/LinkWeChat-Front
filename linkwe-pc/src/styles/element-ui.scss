@@ -261,3 +261,36 @@
     display: none;
   }
 }
+
+.diy-theme {
+  .el-date-table td.in-range div {
+    // background-color: #e6f8ef;
+  }
+  // .el-input__inner,
+  // .tag-input {
+  //   background-color: transparent;
+  // }
+  // .tag-input {
+  // }
+
+  .el-pagination.is-background .btn-prev,
+  .el-pagination.is-background .btn-next,
+  .el-pagination.is-background .el-pager li {
+    background-color: transparent;
+    border-radius: 4px;
+    height: 30px;
+    border: 1px solid #d4d6d9;
+  }
+  .el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color: transparent;
+    border-color: $blue;
+    color: $blue;
+  }
+  .el-dialog {
+    border-radius: var(--border-radius);
+  }
+  .el-button--default {
+    border-color: $blue;
+    color: $blue;
+  }
+}

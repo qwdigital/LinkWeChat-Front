@@ -49,7 +49,6 @@ export default {
     this.onlyOneChild = null
     return {}
   },
-  computed() {},
   methods: {
     hasOneShowingChild(children, parent) {
       // 菜单叶子，无子路由的

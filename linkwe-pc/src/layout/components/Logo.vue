@@ -4,7 +4,7 @@
       <router-link key="collapse" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo" />
       </router-link>
-      <i class="el-icon-s-operation"></i>
+      <hamburger />
     </div>
   </transition>
 </template>
@@ -15,8 +15,10 @@ export default {
   props: {
     collapse: {
       type: Boolean,
-      // required: true,
     },
+  },
+  components: {
+    Hamburger: () => import('./Hamburger'),
   },
   data() {
     return {

@@ -7,14 +7,15 @@
       <div class="main main-size">
         <sidebar v-if="isSidebar" class="sidebar-container" />
         <div class="main-container">
-          <div v-show="visiableSidebarRouters">
-            <hamburger id="hamburger-container" class="hamburger-container" />
-            <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+          <div class="breadcrumb-wrap" v-show="visiableSidebarRouters">
+            <breadcrumb />
           </div>
-          <app-main />
-          <right-panel v-if="showSettings">
-            <settings />
-          </right-panel>
+          <div class="page-content">
+            <app-main />
+            <RightPanel v-if="showSettings">
+              <settings />
+            </RightPanel>
+          </div>
         </div>
       </div>
     </div>
@@ -25,7 +26,6 @@
 import RightPanel from '@/components/RightPanel'
 import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
 import Breadcrumb from './components/Breadcrumb'
-import Hamburger from './components/Hamburger'
 import CustomerService from './components/CustomerService'
 
 import ResizeMixin from './mixin/ResizeHandler'
@@ -35,7 +35,6 @@ export default {
   name: 'Layout',
   components: {
     Breadcrumb,
-    Hamburger,
     AppMain,
     Navbar,
     RightPanel,
@@ -79,24 +78,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@/styles/mixin.scss';
-
 .app-wrapper {
-  @include clearfix;
   position: relative;
   height: 100%;
   width: 100%;
+
+  .main-container {
+    min-height: 100%;
+    transition: all 0.28s;
+    position: relative;
+    flex: auto;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .breadcrumb-wrap {
+    background: #fff;
+    border-top: 1px solid #eee;
+  }
+  .page-content {
+    margin: 20px 20px 0;
+  }
 
   &.mobile.openSidebar {
     position: fixed;
     top: 0;
   }
-  //   .customer-service {
-  //     position: absolute;
-  //     bottom: 120px;
-  //     right: 20px;
-  //     z-index: 99999;
-  //   }
   .top-wrap {
     height: 64px;
   }
@@ -110,48 +117,9 @@ export default {
       display: flex;
       align-items: stretch;
     }
+
+    .breadcrumb-wrap {
+    }
   }
-}
-
-.drawer-bg {
-  background: #000;
-  opacity: 0.3;
-  width: 100%;
-  top: 0;
-  height: 100%;
-  position: absolute;
-  z-index: 999;
-}
-
-.fixed-header {
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 9;
-  width: calc(100% - #{$sideBarWidth});
-  transition: width 0.28s;
-}
-
-.hideSidebar .fixed-header {
-  width: calc(100% - 54px);
-}
-
-.mobile .fixed-header {
-  width: 100%;
-}
-
-.hamburger-container {
-  cursor: pointer;
-  transition: background 0.3s;
-  -webkit-tap-highlight-color: transparent;
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.025);
-  }
-}
-.slogan {
-  font-size: 22px;
-  color: #999;
-  vertical-align: middle;
 }
 </style>
