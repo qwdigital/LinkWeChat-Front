@@ -276,7 +276,7 @@ export default {
 
 <style lang="scss" scoped>
 .theme {
-  color: $blue;
+  color: var(--color);
 }
 ::v-deep.detail-form {
   .el-input.is-disabled .el-input__inner,
@@ -300,8 +300,8 @@ export default {
       cursor: default;
     }
     &.is-checked .el-radio__inner {
-      background-color: $blue;
-      border-color: $blue;
+      background-color: var(--color);
+      border-color: var(--color);
       cursor: default;
 
       &::after {
