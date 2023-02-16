@@ -11,9 +11,11 @@
           v-for="(route, index) in sidebarRouters"
           :key="route.path + index"
           :item="route"
+          level="1"
           :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
+
     <div class="card">
       <div class="">{{ lwConfig.SYSTEM_NAME }}</div>
       <div class="info mt10 mb5">版本：全功能最新版</div>
@@ -111,6 +113,7 @@ export default {
   // 菜单，目录
   .el-menu-item,
   .el-submenu > .el-submenu__title {
+    padding: 0 !important;
     margin: 4px auto;
     font-weight: 500;
     height: 40px;

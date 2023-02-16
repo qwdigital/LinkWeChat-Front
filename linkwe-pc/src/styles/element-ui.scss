@@ -123,58 +123,58 @@
 }
 
 .app-main.page {
-  .el-table {
-    background-color: transparent;
-    &::before {
-      content: none;
-    }
-    .el-table__header-wrapper th,
-    .el-table__fixed-header-wrapper th,
-    .el-table__header-wrapper tr {
-      background-color: transparent !important;
-      height: 40px;
-    }
-    .el-table__body-wrapper,
-    .el-table__fixed-body-wrapper {
-      tr {
-        box-shadow: 0px 0px 5px 0px rgba(195, 195, 195, 0.35);
-        height: 50px;
-      }
-    }
-    // th.is-leaf,
-    // td {
-    //    border-bottom: 0;
-    //  }
-    tr td {
-      &:first-child {
-        border-radius: 4px 0 0 4px;
-        border-left: 1px solid #ddd;
-      }
-      &:last-child {
-        border-radius: 0 4px 4px 0;
-        border-right: 1px solid #ddd;
-      }
-    }
-    .el-table__body {
-      border-spacing: 0 10px;
-    }
-    .el-table__fixed,
-    .el-table__fixed-right {
-      &::before {
-        content: none;
-      }
-    }
-    .el-table__fixed .el-table__fixed-body-wrapper {
-      tr td:last-child {
-        border-right: inherit;
-      }
-    }
-    .el-table__fixed-right .el-table__fixed-body-wrapper {
-      tr td:first-child {
-        border-left: inherit;
-      }
-    }
-  }
+  // .el-table {
+  //   background-color: transparent;
+  //   &::before {
+  //     content: none;
+  //   }
+  //   .el-table__header-wrapper th,
+  //   .el-table__fixed-header-wrapper th,
+  //   .el-table__header-wrapper tr {
+  //     background-color: transparent !important;
+  //     height: 40px;
+  //   }
+  //   .el-table__body-wrapper,
+  //   .el-table__fixed-body-wrapper {
+  //     tr {
+  //       box-shadow: 0px 0px 5px 0px rgba(195, 195, 195, 0.35);
+  //       height: 50px;
+  //     }
+  //   }
+  //   // th.is-leaf,
+  //   // td {
+  //   //    border-bottom: 0;
+  //   //  }
+  //   tr td {
+  //     &:first-child {
+  //       border-radius: 4px 0 0 4px;
+  //       border-left: 1px solid #ddd;
+  //     }
+  //     &:last-child {
+  //       border-radius: 0 4px 4px 0;
+  //       border-right: 1px solid #ddd;
+  //     }
+  //   }
+  //   .el-table__body {
+  //     border-spacing: 0 10px;
+  //   }
+  //   .el-table__fixed,
+  //   .el-table__fixed-right {
+  //     &::before {
+  //       content: none;
+  //     }
+  //   }
+  //   .el-table__fixed .el-table__fixed-body-wrapper {
+  //     tr td:last-child {
+  //       border-right: inherit;
+  //     }
+  //   }
+  //   .el-table__fixed-right .el-table__fixed-body-wrapper {
+  //     tr td:first-child {
+  //       border-left: inherit;
+  //     }
+  //   }
+  // }
 }
 
 .el-form-item {
@@ -377,5 +377,66 @@
     left: calc(50% - 10px);
     transform: translateX(-50%);
     background: var(--color);
+  }
+
+  .el-table {
+    background-color: transparent;
+    &::before {
+      content: none;
+    }
+    .el-table__header-wrapper th,
+    .el-table__fixed-header-wrapper th,
+    .el-table__header-wrapper tr {
+      background-color: #f5f7fa;
+      height: 40px;
+      color: #1d2129;
+      border-radius: var(--border-radius-small);
+    }
+    .el-table__body-wrapper,
+    .el-table__fixed-body-wrapper {
+      tr {
+        // box-shadow: 0px 0px 5px 0px rgba(195, 195, 195, 0.35);
+        height: 50px;
+      }
+    }
+    .el-table__body {
+      border-collapse: collapse;
+    }
+    // th.is-leaf,
+    // td {
+    //    border-bottom: 0;
+    //  }
+    &.el-table--small .el-table__row .el-table__cell {
+      border-bottom: 1px solid #dfe6ec;
+      border-top: 1px solid #dfe6ec;
+      padding: 15px 0;
+    }
+    th.el-table__cell.is-leaf {
+      border-bottom: 0;
+    }
+    tr:hover td {
+      &:first-child {
+        border-radius: var(--border-radius-big) 0 0 var(--border-radius-big);
+      }
+      &:last-child {
+        border-radius: 0 var(--border-radius-big) var(--border-radius-big) 0;
+      }
+    }
+    .el-table__fixed,
+    .el-table__fixed-right {
+      &::before {
+        content: none;
+      }
+    }
+    .el-table__fixed .el-table__fixed-body-wrapper {
+      tr td:last-child {
+        border-right: inherit;
+      }
+    }
+    .el-table__fixed-right .el-table__fixed-body-wrapper {
+      tr td:first-child {
+        border-left: inherit;
+      }
+    }
   }
 }

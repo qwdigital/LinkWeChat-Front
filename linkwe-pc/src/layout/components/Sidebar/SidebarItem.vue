@@ -2,16 +2,19 @@
   <div v-if="!item.hidden">
     <app-link v-if="isLeafMeu(item)" :to="resolvePath(onlyOneChild.path, onlyOneChild.query)">
       <el-menu-item v-if="onlyOneChild.meta" :index="resolvePath(onlyOneChild.path)">
-        {{ onlyOneChild.meta.title }}
+        <div class="menu-title" :style="{ padding: `0px ${15 * level}px` }">{{ onlyOneChild.meta.title }}</div>
       </el-menu-item>
     </app-link>
 
     <el-submenu v-else :index="resolvePath(item.path)" popper-append-to-body>
-      <span slot="title" v-if="item.meta">{{ item.meta.title }}</span>
+      <div slot="title" class="menu-title" :style="{ padding: `0px ${20 * level}px` }" v-if="item.meta">
+        {{ item.meta.title }}
+      </div>
       <sidebar-item
         v-for="child in item.children"
         :key="child.path"
         :is-nest="true"
+        :level="~~level + 1"
         :item="child"
         :base-path="resolvePath(child.path)"
         class="nest-menu" />
@@ -35,6 +38,10 @@ export default {
     item: {
       type: Object,
       required: true,
+    },
+    level: {
+      type: String | Number,
+      default: 1,
     },
     isNest: {
       type: Boolean,
