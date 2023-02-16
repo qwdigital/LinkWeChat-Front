@@ -105,11 +105,11 @@ export default {
     top: 0;
   }
   .top-wrap {
-    height: 64px;
+    height: var(--top-nav-heght);
   }
 
   .main-wrap {
-    height: calc(100vh - 64px);
+    height: calc(100vh - var(--top-nav-heght));
     background: #edf2f9;
     .main {
       height: 100%;

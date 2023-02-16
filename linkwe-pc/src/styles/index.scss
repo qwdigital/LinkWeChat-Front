@@ -386,7 +386,7 @@ aside {
     color: #333;
     padding: 0 20px;
     background: #fff;
-    border-radius: 4px 4px 0 0;
+    border-radius: var(--border-radius-big) var(--border-radius-big) 0 0;
     .desc {
       font-weight: 400;
       margin-left: 5px;
@@ -394,7 +394,7 @@ aside {
       color: #999;
     }
     & + .g-card {
-      border-radius: 0 0 4px 4px;
+      border-radius: 0 0 var(--border-radius-big) var(--border-radius-big);
       margin-top: 0;
     }
   }
@@ -403,14 +403,14 @@ aside {
     @extend .g-title;
     font-size: 16px;
     & + .g-card {
-      border-radius: 0 0 4px 4px;
+      border-radius: 0 0 var(--border-radius-big) var(--border-radius-big);
       margin-top: 0;
     }
   }
 
   // 卡片样式
   &card {
-    margin-top: 10px;
+    margin-top: 16px;
     border-radius: var(--border-radius-big);
     background: #fff;
     overflow: auto;
