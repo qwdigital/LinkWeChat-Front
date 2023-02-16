@@ -197,7 +197,7 @@ export default {
 <style lang="scss" scoped>
 .el-icon-copy-document {
   &:hover {
-    color: $blue;
+    color: var(--color);
   }
 }
 </style>

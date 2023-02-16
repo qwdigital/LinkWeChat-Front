@@ -220,8 +220,8 @@
       cursor: default;
     }
     &.is-checked .el-radio__inner {
-      background-color: $blue;
-      border-color: $blue;
+      background-color: var(--color);
+      border-color: var(--color);
       cursor: default;
 
       &::after {
@@ -257,8 +257,8 @@
   }
   .el-pagination.is-background .el-pager li:not(.disabled).active {
     background-color: transparent;
-    border-color: $blue;
-    color: $blue;
+    border-color: var(--color);
+    color: var(--color);
   }
   // to fixed https://github.com/ElemeFE/element/issues/2461
   // .el-dialog {
@@ -298,8 +298,8 @@
     }
   }
   .el-button--default {
-    border-color: $blue;
-    color: $blue;
+    border-color: var(--color);
+    color: var(--color);
   }
   .el-button--default.el-button--primary {
     color: #fff;

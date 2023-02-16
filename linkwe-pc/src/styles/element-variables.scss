@@ -4,7 +4,7 @@
 **/
 
 /* theme color */
-$--color-primary: $blue;
+$--color-primary: var(--color);
 $--color-success: #07c160;
 $--color-warning: #faad14;
 $--color-danger: #eb5e12;
