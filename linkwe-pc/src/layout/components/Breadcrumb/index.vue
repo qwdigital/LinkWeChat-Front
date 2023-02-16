@@ -118,7 +118,7 @@ export default {
   margin-left: 10px;
 }
 .home {
-  color: $blue;
+  color: var(--color);
 }
 ::v-deep .el-breadcrumb__separator {
   margin: 0 5px;

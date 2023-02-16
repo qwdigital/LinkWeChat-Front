@@ -120,7 +120,7 @@ export default {
     }
     // background-color: $subMenuBg !important;
     &:hover {
-      color: $blue;
+      color: var(--color);
       background-color: transparent !important;
     }
   }
@@ -136,7 +136,7 @@ export default {
   }
   // 当前激活菜单
   .el-menu-item.is-active {
-    background: linear-gradient(to right, $blue 0%, $light-blue 100%);
+    background: linear-gradient(to right, var(--color) 0%, $light-blue 100%);
     box-shadow: 0px 13px 16px 0px rgba(7, 168, 85, 0.2);
     border-radius: 8px;
     color: #fff !important;
@@ -145,7 +145,7 @@ export default {
 
   // 当前激活菜单所属上级菜单标题目录
   .is-active > .el-submenu__title {
-    color: $blue !important;
+    color: var(--color) !important;
   }
 }
 

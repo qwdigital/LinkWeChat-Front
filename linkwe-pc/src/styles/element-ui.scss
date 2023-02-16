@@ -220,8 +220,8 @@
       cursor: default;
     }
     &.is-checked .el-radio__inner {
-      background-color: $blue;
-      border-color: $blue;
+      background-color: var(--color);
+      border-color: var(--color);
       cursor: default;
 
       &::after {
@@ -237,9 +237,9 @@
 }
 
 .diy-theme {
-  .el-date-table td.in-range div {
-    // background-color: #e6f8ef;
-  }
+  // .el-date-table td.in-range div {
+  //   background-color: #e6f8ef;
+  // }
   // .el-input__inner,
   // .tag-input {
   //   background-color: transparent;
@@ -247,6 +247,7 @@
   // .tag-input {
   // }
 
+  // 分页
   .el-pagination.is-background .btn-prev,
   .el-pagination.is-background .btn-next,
   .el-pagination.is-background .el-pager li {
@@ -257,8 +258,8 @@
   }
   .el-pagination.is-background .el-pager li:not(.disabled).active {
     background-color: transparent;
-    border-color: $blue;
-    color: $blue;
+    border-color: var(--color);
+    color: var(--color);
   }
   // to fixed https://github.com/ElemeFE/element/issues/2461
   // .el-dialog {
@@ -268,6 +269,7 @@
   //   margin: 0 auto;
   // }
 
+  // 弹窗
   .el-dialog {
     display: flex;
     flex-direction: column;
@@ -297,15 +299,83 @@
       color: #86909c;
     }
   }
+
+  // 按钮
   .el-button--default {
-    border-color: $blue;
-    color: $blue;
+    border-color: var(--color);
+    color: var(--color);
   }
   .el-button--default.el-button--primary {
     color: #fff;
   }
-}
-.el-button--small:not(.el-button--text) {
-  padding: 9px 19px;
-  border-radius: var(--border-radius-small);
+  .el-button--small:not(.el-button--text) {
+    padding: 9px 19px;
+    border-radius: var(--border-radius-small);
+  }
+
+  // 步骤条
+  .el-step__icon {
+    width: 40px;
+    height: 40px;
+    border: 0;
+  }
+  .el-step.is-center .el-step__main {
+    position: absolute;
+    top: 1px;
+    left: calc(50% + 30px);
+  }
+  .el-step.is-horizontal .el-step__line {
+    height: 1px;
+    top: 20px;
+    left: 120px;
+    right: 10px;
+    background: #e8e9ed;
+  }
+  .el-step.is-center .el-step__line {
+    top: 20px;
+    left: calc(50% + 30px + 80px);
+    right: calc(-50% + 30px);
+  }
+  .el-step__head.is-success .el-step__icon.is-text {
+    background: #c7eddb; // 图标背景
+  }
+  .el-step__title.is-process {
+    color: #86909c; // 标题颜色
+  }
+  .el-step__head.is-process {
+    color: #fff; // 数字颜色
+    .el-step__icon.is-text {
+      background: var(--color);
+    }
+  }
+  .el-step__head.is-wait {
+    color: #86909c;
+    .el-step__icon.is-text {
+      background: #e8e9ed;
+    }
+  }
+
+  // 抽屉
+  .el-drawer.rtl {
+    top: var(--top-nav-heght);
+    height: auto;
+    box-shadow: -4px 0px 40px 0px rgba(29, 33, 41, 0.1);
+    border-radius: 16px 0px 0px 0px;
+  }
+
+  // 标签页选中高亮线
+  .el-tabs__active-bar {
+    display: none;
+  }
+  .el-tabs__item.is-active::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    width: 40px;
+    height: 2px;
+    bottom: 0;
+    left: calc(50% - 10px);
+    transform: translateX(-50%);
+    background: var(--color);
+  }
 }

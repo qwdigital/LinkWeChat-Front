@@ -311,7 +311,7 @@ export default {
 
 <style lang="scss" scoped>
 .theme {
-  color: $blue;
+  color: var(--color);
 }
 .list-wrap {
   display: flex;

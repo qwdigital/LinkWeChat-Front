@@ -9,16 +9,8 @@
           <h3 class="title">{{ lwConfig.SYSTEM_NAME }}</h3>
           <template v-if="loginType === 'account'">
             <el-form-item prop="username">
-              <el-input
-                v-model="loginForm.username"
-                type="text"
-                auto-complete="off"
-                placeholder="账号">
-                <svg-icon
-                  style="height: 33px"
-                  slot="prefix"
-                  icon-class="user"
-                  class="el-input__icon input-icon" />
+              <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
+                <svg-icon style="height: 33px" slot="prefix" icon-class="user" class="el-input__icon input-icon" />
               </el-input>
             </el-form-item>
             <el-form-item prop="password">
@@ -28,11 +20,7 @@
                 auto-complete="off"
                 placeholder="密码"
                 @keyup.enter.native="handleLogin">
-                <svg-icon
-                  style="height: 33px"
-                  slot="prefix"
-                  icon-class="password"
-                  class="el-input__icon input-icon" />
+                <svg-icon style="height: 33px" slot="prefix" icon-class="password" class="el-input__icon input-icon" />
               </el-input>
             </el-form-item>
             <el-form-item prop="code">
@@ -160,14 +148,10 @@ export default {
       }
     })
     window.lwConfig.IS_PUBLISH_DIALOG &&
-      this.$alert(
-        'LinkWeChat V2.5 已正式发布，遇到使用上的问题欢迎提交 Issue，我们将光速修复。',
-        '提示',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-        },
-      )
+      this.$alert('LinkWeChat V2.5 已正式发布，遇到使用上的问题欢迎提交 Issue，我们将光速修复。', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+      })
   },
   methods: {
     changeLoginType(type) {
@@ -346,7 +330,7 @@ export default {
   z-index: 20;
 }
 .link {
-  color: $blue;
+  color: var(--color);
   font-size: 14px;
   float: right;
   padding-right: 25px;

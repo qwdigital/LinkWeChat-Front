@@ -570,8 +570,8 @@ export default {
   border: 1px dashed #d9d9d9;
   transition: all 0.3s;
   &:hover {
-    border-color: $blue;
-    color: $blue;
+    border-color: var(--color);
+    color: var(--color);
   }
 }
 .progress {
