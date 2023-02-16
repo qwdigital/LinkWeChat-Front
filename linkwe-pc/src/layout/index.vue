@@ -5,7 +5,7 @@
     </div>
     <div class="main-wrap">
       <div class="main main-size">
-        <sidebar v-if="isSidebar" class="sidebar-container" />
+        <sidebar v-if="isSidebar" />
         <div class="main-container">
           <div class="breadcrumb-wrap" v-show="visiableSidebarRouters">
             <breadcrumb />

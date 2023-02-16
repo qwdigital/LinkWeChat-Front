@@ -411,7 +411,7 @@ aside {
   // 卡片样式
   &card {
     margin-top: 10px;
-    border-radius: 16px;
+    border-radius: var(--border-radius-big);
     background: #fff;
     overflow: auto;
     &:first-child {
@@ -427,7 +427,7 @@ aside {
       width: 200px;
       height: 90px;
       background: linear-gradient(90deg, #3c89f0 0%, #1364f4 100%);
-      border-radius: 4px;
+      border-radius: var(--border-radius-small);
       padding: 20px;
       margin-right: 10px;
       font-weight: 400;

@@ -5,8 +5,9 @@
   --color-success: #07c160;
   --color-warning: #faad14;
   --color-danger: #eb5e12;
-  --border-radius: 16px;
-  --border-radius-sub: 8px;
+  --border-radius: 8px;
+  --border-radius-small: 4px;
+  --border-radius-big: 16px;
 }
 // base color
 $blue: #07c160;
@@ -57,4 +58,13 @@ $border-radius: 4px;
 .bglg {
   background: linear-gradient(to left, $blue 0%, $light-blue 100%);
   box-shadow: 0px 13px 16px 0px rgba(7, 168, 85, 0.2);
+}
+.border-radius-small {
+  border-radius: 4px;
+}
+.border-radius {
+  border-radius: 8px;
+}
+.border-radius-big {
+  border-radius: 16px;
 }
