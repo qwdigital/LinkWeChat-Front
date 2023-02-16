@@ -1,17 +1,6 @@
 <template>
-  <el-menu :default-active="activeMenu" background-color="transparent" mode="horizontal" @select="handleSelect">
-    <template v-for="(item, index) in topMenus">
-      <el-menu-item :index="item.path" :key="index">{{ item.meta.title }}</el-menu-item>
-    </template>
-
-    <!-- 顶部菜单超出数量折叠 -->
-    <!-- <el-submenu :style="{'--theme': theme}" :index="currentIndex">
-      <template slot="title">{{name}}</template>
-      <template v-for="(item, index) in topMenus">
-        <el-menu-item :index="item.path" :key="index">
-          <svg-icon :icon-class="item.meta.icon" /> {{ item.meta.title }}</el-menu-item>
-      </template>
-    </el-submenu> -->
+  <el-menu :default-active="activeMenu" mode="horizontal" @select="handleSelect">
+    <el-menu-item v-for="(item, index) in topMenus" :index="item.path" :key="index">{{ item.meta.title }}</el-menu-item>
   </el-menu>
 </template>
 
@@ -134,20 +123,44 @@ export default {
 }
 .el-menu--horizontal > .el-menu-item {
   float: left;
-  height: 50px !important;
-  line-height: 50px !important;
-  color: #fff !important;
-  // padding: 0 5px !important;
-  margin: 0 10px !important;
-}
-.el-menu-item:hover {
-  background-color: transparent !important;
+  height: 38px !important;
+  line-height: 38px !important;
+  color: #1d2129;
+  border-radius: 8px;
+  font-weight: bold;
+  margin: 0 4px !important;
+  border: 0;
+  &::after {
+    content: '';
+    display: block;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    transition: opacity 0.3s;
+    @extend .bglg;
+  }
+  &:not(.is-disabled) {
+    &:hover,
+    &:focus {
+      &::after {
+        opacity: 1;
+      }
+      background-color: transparent;
+      color: #fff;
+    }
+  }
 }
 
 .el-menu--horizontal > .el-menu-item.is-active,
 .el-menu--horizontal > .el-submenu.is-active .el-submenu__title {
-  border-bottom: 2px solid #fff !important;
-  // color: #303133;
+  @extend .bglg;
+  color: #fff;
+  border: 0;
 }
 
 /* submenu item */

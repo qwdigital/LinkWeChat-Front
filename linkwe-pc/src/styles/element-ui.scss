@@ -72,32 +72,6 @@
   }
 }
 
-// to fixed https://github.com/ElemeFE/element/issues/2461
-.el-dialog {
-  transform: none;
-  left: 0;
-  position: relative;
-  margin: 0 auto;
-}
-
-.el-dialog {
-  display: flex;
-  flex-direction: column;
-  margin: 0 !important;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  /*height:600px;*/
-  max-height: calc(100% - 30px);
-  max-width: calc(100% - 30px);
-}
-
-.el-dialog .el-dialog__body {
-  flex: 1;
-  overflow: auto;
-  padding-top: 15px;
-}
 // .el-dialog:not(.is-fullscreen) {
 //   margin-top: 6vh !important;
 // }
@@ -260,4 +234,78 @@
   .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:before {
     display: none;
   }
+}
+
+.diy-theme {
+  .el-date-table td.in-range div {
+    // background-color: #e6f8ef;
+  }
+  // .el-input__inner,
+  // .tag-input {
+  //   background-color: transparent;
+  // }
+  // .tag-input {
+  // }
+
+  .el-pagination.is-background .btn-prev,
+  .el-pagination.is-background .btn-next,
+  .el-pagination.is-background .el-pager li {
+    background-color: transparent;
+    border-radius: 4px;
+    height: 30px;
+    border: 1px solid #d4d6d9;
+  }
+  .el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color: transparent;
+    border-color: $blue;
+    color: $blue;
+  }
+  // to fixed https://github.com/ElemeFE/element/issues/2461
+  // .el-dialog {
+  //   transform: none;
+  //   left: 0;
+  //   position: relative;
+  //   margin: 0 auto;
+  // }
+
+  .el-dialog {
+    display: flex;
+    flex-direction: column;
+    margin: 0 !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-height: calc(100% - 30px);
+    max-width: calc(100% - 30px);
+    border-radius: var(--border-radius-big);
+    padding: 0 12px;
+  }
+  .el-dialog__title {
+    font-weight: 500;
+  }
+  .el-dialog__body {
+    flex: 1;
+    overflow: auto;
+    padding: 0;
+  }
+  .el-dialog__headerbtn {
+    top: 18px;
+    right: 25px;
+    .el-dialog__close {
+      font-size: 22px;
+      color: #86909c;
+    }
+  }
+  .el-button--default {
+    border-color: $blue;
+    color: $blue;
+  }
+  .el-button--default.el-button--primary {
+    color: #fff;
+  }
+}
+.el-button--small:not(.el-button--text) {
+  padding: 9px 19px;
+  border-radius: var(--border-radius-small);
 }
