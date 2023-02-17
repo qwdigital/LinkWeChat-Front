@@ -256,3 +256,13 @@ export function checkByCondition(data) {
     data,
   })
 }
+
+// 批量删除或打标签
+export function multiMakeTag(data) {
+  return request({
+    url: service + '/batchMakeLabel',
+    method: 'post',
+    data
+  })
+}
+  
