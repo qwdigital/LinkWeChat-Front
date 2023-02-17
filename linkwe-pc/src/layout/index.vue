@@ -10,12 +10,10 @@
           <div class="breadcrumb-wrap" v-show="visiableSidebarRouters">
             <breadcrumb />
           </div>
-          <div class="page-content">
-            <app-main />
-            <RightPanel v-if="showSettings">
+          <app-main />
+          <!-- <RightPanel v-if="showSettings">
               <settings />
-            </RightPanel>
-          </div>
+            </RightPanel> -->
         </div>
       </div>
     </div>
@@ -95,9 +93,6 @@ export default {
   .breadcrumb-wrap {
     background: #fff;
     border-top: 1px solid #eee;
-  }
-  .page-content {
-    margin: 20px 20px 0;
   }
 
   &.mobile.openSidebar {

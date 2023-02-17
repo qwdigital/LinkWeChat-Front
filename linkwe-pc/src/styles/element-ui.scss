@@ -379,6 +379,7 @@
     background: var(--color);
   }
 
+  // 表格
   .el-table {
     background-color: transparent;
     &::before {
@@ -389,7 +390,7 @@
     .el-table__header-wrapper tr {
       background-color: #f5f7fa;
       height: 40px;
-      color: #1d2129;
+      color: var(--font-black);
       border-radius: var(--border-radius-small);
     }
     .el-table__body-wrapper,

@@ -1,14 +1,16 @@
 // css var
-:root {
-  --color: #07c160;
-  --color-lighter: #90de45;
+html {
+  --color: #07c160; // 主题色
+  --color-lighter: #90de45; // 浅主题色
   --color-success: #07c160;
   --color-warning: #faad14;
   --color-danger: #eb5e12;
-  --border-radius: 8px;
-  --border-radius-small: 4px;
-  --border-radius-big: 16px;
-  --top-nav-heght: 64px;
+  --border-radius: 8px; // 圆角
+  --border-radius-small: 4px; // 小圆角
+  --border-radius-big: 16px; // 大圆角
+  --card-margin: 16px; // 卡片间距
+  --top-nav-heght: 64px; // 顶部导航条高度
+  --font-black: #1d2129; // 通用字体黑色
 }
 // base color
 $light-blue: #90de45;
