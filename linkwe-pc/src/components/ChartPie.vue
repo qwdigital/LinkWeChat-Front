@@ -4,14 +4,14 @@ import { echartColors } from '@/utils/index'
 import merge from 'lodash.merge'
 
 export default {
-  // 折线图
+  // 饼图
   name: 'ChartPie',
   components: {},
   props: {
     // 图例
     legend: {
       type: Array,
-      default: () => ['新增客户']
+      default: () => ['新增客户'],
     },
     // 展示数据集
     series: {
@@ -21,15 +21,15 @@ export default {
         { value: 735, name: 'Direct' },
         { value: 580, name: 'Email' },
         { value: 484, name: 'Union Ads' },
-        { value: 300, name: 'Video Ads' }
-      ]
+        { value: 300, name: 'Video Ads' },
+      ],
     },
     // 自定义图表配置项，使用loadsh.merge(origin, option)和原有的配置进行覆盖合并
     // loadsh.merge: https://www.html.cn/doc/lodash/#_mergeobject-sources
     option: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {}
@@ -38,7 +38,7 @@ export default {
   watch: {
     series() {
       this.drawChart()
-    }
+    },
   },
   created() {},
   mounted() {
@@ -56,19 +56,19 @@ export default {
         //   top: 'bottom'
         // },
         tooltip: {
-          textStyle: {
-            color: '#FFF', // 设置文字颜色
-            fontSize: 12
-          },
           trigger: 'item',
-          backgroundColor: '#505050',
-          borderWidth: 0,
-          axisPointer: {
-            type: 'cross',
-            label: {
-              backgroundColor: '#6a7985'
-            }
-          }
+          // textStyle: {
+          //   color: '#FFF', // 设置文字颜色
+          //   fontSize: 12,
+          // },
+          // backgroundColor: '#505050',
+          // borderWidth: 0,
+          // axisPointer: {
+          //   type: 'cross',
+          //   label: {
+          //     backgroundColor: '#6a7985',
+          //   },
+          // },
         },
         legend: {
           x: 'center',
@@ -79,20 +79,20 @@ export default {
           itemWidth: 8,
           itemHeight: 8,
           tooltip: {
-            show: true
+            show: true,
           },
           textStyle: {
             color: '#36363A',
             fontSize: 12,
-            lineHeight: 14
-          }
+            lineHeight: 14,
+          },
         },
         grid: {
           left: '3%',
           right: '3%',
           bottom: '20px',
           top: '30px',
-          containLabel: true
+          containLabel: true,
         },
         series: {
           type: 'pie',
@@ -102,10 +102,10 @@ export default {
             itemStyle: {
               shadowBlur: 10,
               shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
+        },
       }
       this.option && merge(option, this.option)
       option && this.myChart.setOption(option)
@@ -113,8 +113,8 @@ export default {
       new ResizeObserver((entries) => {
         this.myChart.resize()
       }).observe(this.$refs.chart)
-    }
-  }
+    },
+  },
 }
 </script>
 

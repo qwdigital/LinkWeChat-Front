@@ -88,99 +88,77 @@
         <!-- 企业动态开始 -->
         <div class="g-title-sub fxbw card-title">
           <span>企业动态</span>
-          <div class="right-icon" v-show="this.dynamicsOutList.length" @click="searchAll">
-            ->
+          <span class="title-right-icon cp" v-show="this.dynamicsOutList.length" @click="searchAll">
+            ➔
             <!-- <svg-icon class="right-icon" iconClass="right"></svg-icon> -->
-          </div>
+          </span>
         </div>
         <div class="g-card enterprise-card-item">
           <template v-if="this.dynamicsOutList.length">
             <div class="dynamics-item" v-for="(item, index) in dynamicsOutList" :key="index">
-              <div class="dynamics-left">
-                <div class="top">
-                  <span :class="item.operatorType === 1 ? 'customer' : 'staff'">
+              <div class="info fxbw aic bfc-o">
+                <div>
+                  <span :class="[item.operatorType === 1 ? 'customer' : 'staff', 'type']">
                     {{ item.operatorType === 1 ? '客户' : '员工' }}
                   </span>
-                  <span>{{ item.operatorName }}</span>
+                  <span class="operatorName">{{ item.operatorName }}</span>
                 </div>
-                <div class="bottom">
-                  <span
-                    :class="
-                      item.action === '删除员工' || item.action === '解散群聊' || item.action === '退出群聊'
-                        ? 'unnomal'
-                        : 'nomal'
-                    ">
-                    {{ item.action }}
-                  </span>
-                  <span>{{ item.operatoredObjectName }}</span>
-                </div>
-              </div>
-              <div class="dynamics-right">
-                <el-tag>
+
+                <span :class="[item.operatorType === 1 ? 'customer' : 'staff', 'type type1 fr']">
                   {{ item.trajectoryType === 1 ? '客户动态' : item.trajectoryType === 5 ? '客群动态' : '' }}
-                </el-tag>
-                <span class="time">{{ item.createTime }}</span>
+                </span>
+              </div>
+              <div class="operator bfc-o">
+                <span
+                  :class="
+                    item.action === '删除员工' || item.action === '解散群聊' || item.action === '退出群聊'
+                      ? 'unnomal'
+                      : 'nomal'
+                  ">
+                  {{ item.action }}
+                </span>
+                <span class="name">{{ item.operatoredObjectName }}</span>
+                <span class="time fr">{{ item.createTime }}</span>
               </div>
             </div>
           </template>
 
           <div class="sub-text-color ac" v-else>暂无数据</div>
         </div>
-        <!-- 企业动态结束 -->
-        <div class="index-r-bottom">
-          <div class="card-item"></div>
-          <div class="card-content">
-            <div class="card-title">
-              <span></span>
-              <span>帮助中心</span>
-            </div>
-            <div class="card-box">
-              <div class="enterprise-dynamics help-center">
-                <!-- <a
-                  class="dynamics-item"
-                  v-for="(item, index) in helpCenterList"
-                  :key="index"
-                  :href="item.url"
-                  target="_blank"
-                >
-                  <div>
-                    <svg-icon
-                      class="left-icon"
-                      :iconClass="item.icon"
-                    ></svg-icon>
-                    <span>{{ item.title }}</span>
-                  </div>
 
-                  <svg-icon class="right-icon" iconClass="right"></svg-icon>
-                </a> -->
-                <a class="dynamics-item" href="https://www.yuque.com/linkwechat/help/ozzxus" target="_blank">
-                  <div>
-                    <svg-icon class="left-icon" iconClass="latest-progress"></svg-icon>
-                    <span>最新进展</span>
-                  </div>
-                  <svg-icon class="right-icon" iconClass="right"></svg-icon>
-                </a>
-                <el-tooltip class="item" effect="light" content="即将上线，敬请期待" placement="top">
-                  <div class="dynamics-item">
-                    <div>
-                      <svg-icon class="left-icon" iconClass="product-manual"></svg-icon>
-                      <span>产品手册</span>
-                    </div>
-                    <svg-icon class="right-icon" iconClass="right"></svg-icon>
-                  </div>
-                </el-tooltip>
-                <el-tooltip class="item" effect="light" content="即将上线，敬请期待" placement="top">
-                  <div class="dynamics-item">
-                    <div>
-                      <svg-icon class="left-icon" iconClass="problem"></svg-icon>
-                      <span>常见问题</span>
-                    </div>
-                    <svg-icon class="right-icon" iconClass="right"></svg-icon>
-                  </div>
-                </el-tooltip>
-              </div>
+        <!-- 帮助中心 -->
+        <div class="g-title-sub fxbw">
+          <span>帮助中心</span>
+          <a
+            class="title-right-icon"
+            style="color: #fff !important; background: #000"
+            href="https://www.yuque.com/linkwechat/help"
+            target="_blank">
+            ➔
+          </a>
+        </div>
+        <div class="g-card help-center">
+          <a class="help-item" href="https://www.yuque.com/linkwechat/help/ozzxus" target="_blank">
+            <div>
+              <svg-icon class="left-icon" iconClass="latest-progress"></svg-icon>
+              <span>最新进展</span>
             </div>
-          </div>
+            <svg-icon class="right-icon" iconClass="right"></svg-icon>
+          </a>
+          <a class="help-item" href="https://www.yuque.com/linkwechat/help" target="_blank">
+            <div>
+              <svg-icon class="left-icon" iconClass="product-manual"></svg-icon>
+              <span>产品手册</span>
+            </div>
+            <svg-icon class="right-icon" iconClass="right"></svg-icon>
+          </a>
+          <a class="help-item" href="https://www.yuque.com/linkwechat/help/qk5gl6" target="_blank">
+            <div>
+              <svg-icon class="left-icon" iconClass="problem"></svg-icon>
+              <span>常见问题</span>
+            </div>
+            <svg-icon class="right-icon" iconClass="right"></svg-icon>
+          </a>
         </div>
       </div>
     </div>
@@ -526,40 +504,6 @@ export default {
     color: #666;
   }
 
-  //   .fontgay {
-  //     text-indent: 4em;
-  //     color: #999;
-  //     font-size: 14px;
-  //     font-weight: 200;
-  //   }
-
-  //   #fatherbox {
-  //     padding-top: 30px;
-  //     height: 380px;
-  //     overflow-y: scroll;
-  //     overflow: hidden;
-  //     border-radius: 5px;
-  //     font-size: 16px;
-  //     background: #fff;
-  //   }
-
-  //   #echart {
-  //     width: 100%;
-  //     height: 100%;
-  //   }
-
-  .fr {
-    float: right;
-  }
-
-  //   .descend {
-  //     color: #ff0000;
-  //   }
-
-  //   .ascend {
-  //     color: green;
-  //   }
-
   .tables {
     width: 100%;
     height: 154px;
@@ -571,20 +515,6 @@ export default {
 
   .index_l {
     width: 76%;
-  }
-
-  .circle {
-    width: 80px;
-    height: 80px;
-    background: #999;
-    border-radius: 50%;
-    margin: 0 auto;
-
-    img {
-      border-radius: 50%;
-      width: 80px;
-      height: 80px;
-    }
   }
 
   .index_r {
@@ -614,162 +544,96 @@ export default {
       }
     }
     //   企业动态
+    .card-title {
+      background: linear-gradient(270deg, #07c160 0%, #90de45 100%);
+      padding-bottom: 10px;
+    }
+    .title-right-icon {
+      width: 16px;
+      height: 16px;
+      line-height: 15px;
+      background: white;
+      border-radius: 50%;
+      font-size: 12px;
+      text-align: center;
+    }
     .enterprise-card-item {
+      overflow: hidden;
+      border-radius: var(--border-radius-big);
+      margin-top: -10px;
       .dynamics-item {
         border-bottom: 1px solid #f1f1f1;
-        display: flex;
-        justify-content: space-between;
-        padding-bottom: 20px;
-        margin-bottom: 30px;
-        .dynamics-left {
-          .top {
-            margin-bottom: 7px;
-            span:nth-child(1) {
-              display: inline-block;
-              max-width: 80px;
-              padding: 0 2px;
-              //   height: 18px;
-              border-radius: 4px;
-              font-size: 12px;
-              line-height: 20px;
-              text-align: center;
-              margin-right: 8px;
-            }
-            .customer {
-              background: #ecf5ff;
-              color: var(--color);
-            }
-            .staff {
-              background: #effffa;
-              color: #00d695;
-            }
-            span:nth-child(2) {
-              font-size: 16px;
-              font-family: 'PingFang SC-粗体', 'PingFang SC';
-              color: #222222;
-              line-height: 30px;
-              font-weight: 600;
-            }
-          }
-          .bottom {
-            span {
-              font-size: 14px;
-              font-family: 'PingFang SC-中等', 'PingFang SC';
-              font-weight: normal;
-              color: #666666;
-              line-height: 28px;
-            }
-            .nomal {
-              color: var(--color);
-            }
-            .unnomal {
-              color: #e34d59;
-            }
+        padding: 16px 0;
+        .info {
+          span {
+            vertical-align: middle;
           }
         }
-        .dynamics-right {
-          display: flex;
-          flex-direction: column;
-          text-align: right;
-          span {
-            font-size: 14px;
-            font-family: 'PingFang SC-中等', 'PingFang SC';
-            font-weight: normal;
-            line-height: 28px;
+        .type {
+          display: inline-block;
+          max-width: 80px;
+          padding: 3px 5px;
+          border-radius: 4px;
+          font-size: 12px;
+          margin-right: 8px;
+        }
+        .customer {
+          background: #ecf5ff;
+          color: #1869ff;
+          border-color: #1869ff;
+        }
+        .staff {
+          background: #effffa;
+          color: var(--color);
+          border-color: var(--color);
+        }
+        .type1 {
+          padding: 4px 8px;
+          background: none;
+          border: 1px solid;
+          border-color: inherit;
+        }
+
+        .operatorName {
+          font-size: 16px;
+          color: #222222;
+          font-weight: 600;
+        }
+        .operator {
+          font-size: 12px;
+          color: #4e5969;
+          margin-top: 5px;
+          .nomal {
+            color: var(--color);
           }
-          span:nth-child(1) {
-            color: #666666;
-            margin-bottom: 9px;
-          }
-          .time {
-            color: #999999;
+          .unnomal {
+            color: #e34d59;
           }
         }
       }
     }
-    .index-r-bottom {
-      margin-top: 20px;
-      position: relative;
-      .card-item {
-        width: 100%;
-        height: 100%;
-        //   background: linear-gradient(
-        //     180deg,
-        //     #0079de 0%,
-        //     rgba(0, 121, 222, 0.2) 100%
-        //   );
-        background: linear-gradient(60deg, #0079de, #fff);
-        opacity: 0.3;
-        border-radius: 8px 8px 8px 8px;
-      }
-      .card-content {
-        width: 100%;
-        .card-title {
-          display: flex;
-          align-items: center;
-          height: 65px;
-          padding: 10px 17px;
-          position: relative;
-          top: 0;
-          span:nth-child(1) {
-            display: block;
-            width: 4px;
-            height: 14px;
-            background: #0079de;
-            border-radius: 1px 1px 1px 1px;
-            margin-right: 7px;
-          }
-          span:nth-child(2) {
-            font-size: 18px;
-            font-family: 'PingFang SC-粗体', 'PingFang SC';
-            font-weight: normal;
-            color: #222222;
-            line-height: 22px;
-            font-weight: 600;
-            display: inline-block;
-            width: 30%;
-          }
+
+    .help-center {
+      .help-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #f1f1f1;
+        padding: 16px 0;
+        // font-size: 12px;
+        &:first-child {
+          margin-top: -16px;
         }
-        .card-box {
-          position: relative;
-          bottom: 0;
-          width: 100%;
-          background: #ffffff;
-          box-shadow: 0px 2px 6px -3px rgba(0, 0, 0, 0.04);
-          border-radius: 0px 0px 8px 8px;
-          display: flex;
-          flex-wrap: wrap;
-          // padding-top: 24px;
-          .enterprise-dynamics {
-            padding: 30px 16px 8px 16px;
-            width: 100%;
-            .dynamics-item {
-              display: flex;
-              justify-content: space-between;
-              padding-bottom: 9px;
-            }
-          }
-          .help-center {
-            .dynamics-item {
-              line-height: 50px;
-              margin-bottom: 30px;
-              .left-icon {
-                font-size: 26px;
-                vertical-align: middle;
-                margin-right: 10px;
-              }
-              .right-icon {
-                font-size: 20px;
-                margin-top: 20px;
-              }
-              span {
-                font-size: 16px;
-              }
-            }
-            .dynamics-item:hover {
-              cursor: pointer;
-            }
-          }
+        span {
+          vertical-align: middle;
+        }
+        .left-icon {
+          font-size: 26px;
+          vertical-align: middle;
+          margin-right: 10px;
+        }
+        .right-icon {
+          font-size: 20px;
         }
       }
     }
@@ -806,9 +670,6 @@ export default {
       margin-bottom: 20px;
       font-weight: bold;
     }
-  }
-  ::v-deep.card-index-li {
-    background-color: #f9f9f9;
   }
 
   .car {

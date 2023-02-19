@@ -10,15 +10,7 @@ export default {
     // X轴坐标数据
     xData: {
       type: Array,
-      default: () => [
-        '腾讯广告',
-        '巨量引擎',
-        '京东数坊',
-        '达摩盘',
-        '数据银行',
-        '微信广告',
-        '企业微信',
-      ],
+      default: () => ['腾讯广告', '巨量引擎', '京东数坊', '达摩盘', '数据银行', '微信广告', '企业微信'],
     },
     // 图例
     legend: {
@@ -62,7 +54,7 @@ export default {
       })
     },
   },
-  created() { },
+  created() {},
   mounted() {
     this.drawChart()
   },
@@ -100,18 +92,18 @@ export default {
         //   text: 'Stacked Area Chart'
         // },
         tooltip: {
-          backgroundColor: '#505050',
-          borderWidth: 0,
-          textStyle: {
-            color: '#fff',
-          },
           trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            label: {
-              backgroundColor: '#6a7985',
-            },
-          },
+          // backgroundColor: '#505050',
+          // borderWidth: 0,
+          // textStyle: {
+          //   color: '#fff',
+          // },
+          // axisPointer: {
+          //   type: 'cross',
+          //   label: {
+          //     backgroundColor: '#6a7985',
+          //   },
+          // },
         },
         legend: {
           data: this.legend,
