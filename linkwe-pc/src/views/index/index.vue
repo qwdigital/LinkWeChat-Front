@@ -423,7 +423,7 @@ export default {
       width: 90px;
       height: 90px;
       border-radius: 50%;
-      border: 1px solid #eeeeee;
+      border: 1px solid #fafafa;
     }
   }
   .wel {
