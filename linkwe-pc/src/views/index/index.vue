@@ -1,55 +1,45 @@
 <template>
   <div class="index bgnone">
-    <div class="index_l">
-      <div class="tables">
-        <div>
-          <el-row type="flex" class="row-bg" justify="space-between">
-            <el-col :span="6">
-              <div class="userinfo">
-                <div class="portrait">
-                  <img :src="$store.state.user.avatar" alt="" v-if="$store.state.user.avatar" />
-                  <svg-icon icon-class="user" class="code-user" v-else></svg-icon>
-                </div>
-                <div class="info">
-                  <span>{{ greetings + ',' }}</span>
-                  <span>{{ $store.state.user.name }}</span>
-                  <span>{{ roleGroup }}</span>
-                </div>
+    <div class="index-l">
+      <div class="flex">
+        <div class="userinfo">
+          <div class="portrait">
+            <img class="portrait-img" :src="$store.state.user.avatar" alt="" v-if="$store.state.user.avatar" />
+            <!-- <svg-icon icon-class="user" class="code-user" v-else></svg-icon> -->
+          </div>
+          <div class="wel toe">
+            <span>{{ greetings }}，</span>
+            <span>{{ $store.state.user.name }}</span>
+          </div>
+          <div class="role toe bglg">{{ roleGroup }}管理员</div>
+        </div>
+
+        <div class="g-card data-view">
+          <div class="g-card-title fxbw">
+            数据总览
+            <span class="desc">更新时间：{{ table.synchTime }}</span>
+          </div>
+          <div class="data-view-wrap">
+            <div class="data-view-item" v-for="(item, index) in pannelList" :key="index">
+              <div class="fl view-item-icon">
+                <img class="view-item-img" :src="$store.state.user.avatar" alt="" v-if="$store.state.user.avatar" />
               </div>
-            </el-col>
-            <el-col :span="14">
-              <el-row type="flex" class="row-bg" justify="space-between" style="margin-top: 15px; text-align: center">
-                <el-col :span="6" class="col_style" v-for="(item, index) in pannelList" :key="index">
-                  <span>{{ item.title }}</span>
-                  <el-popover trigger="hover" :content="item.content" placement="top-start">
-                    <i slot="reference" class="el-icon-question"></i>
-                  </el-popover>
-                </el-col>
-              </el-row>
-              <el-row
-                type="flex"
-                class="row-bg"
-                justify="space-between"
-                style="margin-top: 10px; font-size: 35px; font-weight: bold; color: #0079de; text-align: center">
-                <el-col :span="6">
-                  <count-to :start-val="0" :end-val="table.customerTotalNumber" :duration="durationCount" />
-                </el-col>
-                <el-col :span="6">
-                  <count-to :start-val="0" :end-val="table.groupTotalNumber" :duration="durationCount" />
-                </el-col>
-                <el-col :span="6">
-                  <count-to :start-val="0" :end-val="table.groupMemberTotalNumber" :duration="durationCount" />
-                </el-col>
-              </el-row>
-            </el-col>
-          </el-row>
+              <div class="col-style">
+                <span>{{ item.title }}</span>
+                <el-popover trigger="hover" :content="item.content" placement="top-start">
+                  <i slot="reference" class="el-icon-warning-outline ml5"></i>
+                </el-popover>
+              </div>
+              <count-to class="view-item-num" :start-val="0" :end-val="item.num" :duration="durationCount" />
+            </div>
+          </div>
         </div>
-        <div class="up-time">
-          <span>数据更新时间：{{ table.synchTime }}</span>
-        </div>
+        <!-- <div class="data-view">
+        </div> -->
       </div>
-      <div class="g-title-sub">客户数据</div>
+
       <div class="g-card">
+        <div class="g-card-title">客户数据</div>
         <CardGroupIndex :data="cardData"></CardGroupIndex>
         <TabContent
           type="realDataChart"
@@ -57,8 +47,8 @@
           :request="api.getRealCnt"></TabContent>
       </div>
 
-      <div class="g-title-sub">客群数据</div>
       <div class="g-card">
+        <div class="g-card-title">客群数据</div>
         <CardGroupIndex :data="groupCardData"></CardGroupIndex>
         <TabContent
           type="groupMemberChart"
@@ -66,22 +56,24 @@
           :request="api.getRealCntMember"></TabContent>
       </div>
     </div>
-    <div class="index_r">
-      <div class="content_right">
-        <div class="g-card inedx_r_top_t">
-          <p class="companyName">{{ $store.state.user.companyName }}</p>
-          <p class="info">
+
+    <!-- 右侧 -->
+    <div class="index-r">
+      <div class="content-right">
+        <div class="g-card inedx-r-top">
+          <div class="companyName">{{ $store.state.user.companyName }}</div>
+          <div class="info">
             当前版本：
             <span class="fr">{{ table.currentEdition }}</span>
-          </p>
-          <p class="info">
+          </div>
+          <div class="info">
             使用人数：
             <span class="fr">{{ table.userNumbers }}</span>
-          </p>
-          <p class="info">
+          </div>
+          <div class="info">
             到期时间：
             <span class="fr">{{ table.dueDate }}</span>
-          </p>
+          </div>
           <!-- <el-button :type="buttonColor" @click="submit" class="mt20">{{ buttomText }}</el-button> -->
         </div>
 
@@ -127,17 +119,17 @@
         </div>
 
         <!-- 帮助中心 -->
-        <div class="g-title-sub fxbw">
-          <span>帮助中心</span>
-          <a
-            class="title-right-icon"
-            style="color: #fff !important; background: #000"
-            href="https://www.yuque.com/linkwechat/help"
-            target="_blank">
-            ➔
-          </a>
-        </div>
         <div class="g-card help-center">
+          <div class="g-card-title fxbw">
+            <span>帮助中心</span>
+            <a
+              class="title-right-icon"
+              style="color: #fff !important; background: #000"
+              href="https://www.yuque.com/linkwechat/help"
+              target="_blank">
+              ➔
+            </a>
+          </div>
           <a class="help-item" href="https://www.yuque.com/linkwechat/help/ozzxus" target="_blank">
             <div>
               <svg-icon class="left-icon" iconClass="latest-progress"></svg-icon>
@@ -162,6 +154,7 @@
         </div>
       </div>
     </div>
+
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%">
       <div class="dialog-content" v-if="dialogTitle === '立即续费/升级'">
         <img :src="customerServiceQr" alt="" />
@@ -386,8 +379,11 @@ export default {
       })
     },
     tableInfo() {
-      api.indexInfo().then((res) => {
-        this.table = res.data
+      api.indexInfo().then(({ data }) => {
+        this.table = data
+        this.pannelList[0].num = data.customerTotalNumber
+        this.pannelList[1].num = data.groupTotalNumber
+        this.pannelList[2].num = data.groupMemberTotalNumber
         if (this.table.dueDay > 10) {
           this.buttomText = '立即续费/升级'
           this.buttonColor = 'primary'
@@ -408,57 +404,77 @@ export default {
 </script>
 <style lang="scss" scoped>
 .userinfo {
+  position: relative;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 218px;
+  background: linear-gradient(180deg, #ffffff 50%, rgba(255, 255, 255, 0.2) 100%);
+  border-radius: var(--border-radius-big);
+  padding: 20px;
   .portrait {
-    flex-shrink: 0;
-    width: 120px;
-    height: 120px;
-    border-radius: 120px;
-    // border: 1px solid #eaeaea;
-    margin-right: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    img {
-      width: 100%;
-      height: 100%;
-    }
-    .code-user {
-      width: 80%;
-      height: 80%;
-      color: #999;
+    border: 10px solid #fff;
+    margin-top: -55px;
+    border-radius: 50%;
+    background: #fff;
+    text-align: center;
+    width: 118px;
+    .portrait-img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 1px solid #eeeeee;
     }
   }
-  .info {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px 0;
-    max-width: 200px;
-    span {
-      white-space: nowrap; /*强制单行显示*/
-      text-overflow: ellipsis; /*超出部分省略号表示*/
-      overflow: hidden; /*超出部分隐藏*/
+  .wel {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 0 0 16px;
+  }
+  .role {
+    color: white;
+    padding: 6px 8px;
+    border-radius: var(--border-radius-small);
+  }
+}
+.data-view {
+  margin: 0 0 0 16px;
+  flex: auto;
+  .data-view-wrap {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .data-view-wrap {
+    margin: 20px -20px 0;
+  }
+  .data-view-item {
+    border-left: 1px solid #e2e8f0;
+    &:first-child {
+      border: 0;
     }
-    span:nth-child(1) {
-      font-size: 16px;
+  }
+  .view-item-icon {
+    width: 54px;
+    height: 54px;
+    overflow: hidden;
+    background: #edf2f9;
+    border-radius: var(--border-radius-big);
+    margin: 0 16px;
+    .view-item-img {
+      width: 100%;
     }
-    span:nth-child(2) {
-      font-size: 20px;
-      font-weight: bold;
-    }
-    span:nth-child(3) {
-      font-size: 12px;
-      background: #0079de;
-      color: #fff;
-      display: block;
-      padding: 0 5px;
-      height: 24px;
-      line-height: 24px;
-      border-radius: 5px;
-      text-align: center;
-    }
+  }
+
+  .col-style {
+    color: #4e5969;
+  }
+  .view-item-num {
+    font-size: 24px;
+    font-weight: 500;
+    color: #1d2129;
+    // margin-top: 10px;
+    line-height: 50px;
+    font-family: Bahnschrift-Regular, Bahnschrift;
   }
 }
 .sub-text-color {
@@ -467,16 +483,8 @@ export default {
   margin-top: 20px;
 }
 .up-time {
-  margin-top: -10px;
-  margin-right: 20px;
-  text-align: right;
   color: #999;
-  font-size: 14px;
   font-weight: 200;
-}
-.col_style {
-  display: flex;
-  justify-content: space-around;
 }
 .el-icon-question {
   color: #999;
@@ -498,35 +506,16 @@ export default {
 }
 .index {
   display: flex;
-  .col_style {
-    font-size: 18px;
-    font-weight: 500;
-    color: #666;
-  }
-
-  .tables {
-    width: 100%;
-    height: 154px;
-    background: #fff;
-    border-radius: 5px;
-    padding: 15px;
-    font-size: 16px;
-  }
-
-  .index_l {
+  padding-top: 38px;
+  .index-l {
     width: 76%;
   }
 
-  .index_r {
+  .index-r {
     width: 23%;
     margin-left: 1%;
 
-    .inedx_r_top_t {
-      line-height: 24px;
-      p {
-        padding-top: 9px;
-      }
-
+    .inedx-r-top {
       .companyName {
         line-height: 36px;
         font-size: 18px;
@@ -536,6 +525,8 @@ export default {
       }
 
       .info {
+        line-height: 24px;
+        margin-top: 10px;
         color: #4e5969;
         .fr {
           color: var(--font-black);
@@ -561,6 +552,7 @@ export default {
       overflow: hidden;
       border-radius: var(--border-radius-big);
       margin-top: -10px;
+      padding-top: 0;
       .dynamics-item {
         border-bottom: 1px solid #f1f1f1;
         padding: 16px 0;
@@ -621,7 +613,7 @@ export default {
         border-bottom: 1px solid #f1f1f1;
         padding: 16px 0;
         // font-size: 12px;
-        &:first-child {
+        &:first-of-type {
           margin-top: -16px;
         }
         span {
@@ -638,69 +630,5 @@ export default {
       }
     }
   }
-
-  .box {
-    width: 100%;
-  }
-
-  .titlebox {
-    height: 80px;
-    padding: 10px 0;
-    background: #f1f1f1;
-
-    p {
-      line-height: 30px;
-      margin: 0;
-      padding: 0;
-    }
-  }
-
-  .adminname {
-    font-size: 20px;
-    font-weight: bold;
-  }
-
-  .dataall {
-    width: 100%;
-    background: #fff;
-    border-radius: 5px;
-    padding: 20px;
-    font-size: 20px;
-    .title {
-      margin-bottom: 20px;
-      font-weight: bold;
-    }
-  }
-
-  .car {
-    line-height: 70px;
-
-    .grid-content {
-      overflow: hidden;
-      background: #fff;
-      border-radius: 5px;
-      padding: 10px 30px;
-
-      .craname {
-        line-height: 50px;
-        font-size: 16px;
-      }
-
-      img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: #eee;
-      }
-    }
-  }
-}
-
-.card {
-  margin-top: 40px;
-  background: #fff;
-  border-radius: 5px;
-  padding: 20px;
-  font-size: 16px;
 }
 </style>

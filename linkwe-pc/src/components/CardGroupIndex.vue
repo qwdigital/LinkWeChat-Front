@@ -62,7 +62,7 @@ export default {
         <span>{{ row[defaultProps.title] }}</span>
         <div v-if="row[defaultProps.tips] !== undefined" class="fr">
           <el-popover trigger="hover" :content="row[defaultProps.tips]" placement="top-start">
-            <i slot="reference" class="el-icon-question"></i>
+            <i slot="reference" class="el-icon-warning-outline"></i>
           </el-popover>
         </div>
       </div>
@@ -110,7 +110,7 @@ export default {
     font-size: $font-size-keydata;
     line-height: 1.15;
   }
-  .el-icon-question {
+  .el-icon-warning-outline {
     color: #999;
   }
   .icon-arrow {
