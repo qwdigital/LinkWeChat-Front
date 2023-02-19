@@ -40,8 +40,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial,
-    sans-serif;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
   overflow: hidden;
 }
 
@@ -117,6 +116,10 @@ li {
 
 .bgw {
   background: white;
+}
+
+.bgnone {
+  background: none !important;
 }
 
 .blod {
@@ -295,14 +298,16 @@ li {
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
-  body,img,video {
+  body,
+  img,
+  video {
     filter: invert(1) hue-rotate(180deg);
   }
   // 不使用暗黑模式
   .no-dark {
     position: relative;
-    &::before{
-      content: " ";
+    &::before {
+      content: ' ';
       position: absolute;
       display: block;
       height: 100%;

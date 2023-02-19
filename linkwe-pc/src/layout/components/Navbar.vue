@@ -226,7 +226,7 @@ export default {
       .avatar-wrapper {
         position: relative;
         .user-avatar {
-          ---temp: rgba(225, 225, 225, 0.1);
+          ---temp: #fafafa;
           display: inline-block;
           position: relative;
           width: 34px;

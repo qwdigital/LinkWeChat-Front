@@ -58,16 +58,16 @@ export default {
 <template>
   <ul class="card-group-index flex">
     <li v-for="(row, index) in data" :key="index" class="card-index-li">
-      <div class="mb5 label">
+      <div class="label">
         <span>{{ row[defaultProps.title] }}</span>
         <div v-if="row[defaultProps.tips] !== undefined" class="fr">
           <el-popover trigger="hover" :content="row[defaultProps.tips]" placement="top-start">
-            <i slot="reference" class="el-icon-question"></i>
+            <i slot="reference" class="el-icon-warning-outline"></i>
           </el-popover>
         </div>
       </div>
-      <div class="mb15 value">{{ row[defaultProps.value] || 0 }}</div>
-      <div v-if="row[defaultProps.title1] !== undefined || row[defaultProps.value1] !== undefined">
+      <div class="mt5 value">{{ row[defaultProps.value] || 0 }}</div>
+      <div class="mt15" v-if="row[defaultProps.title1] !== undefined || row[defaultProps.value1] !== undefined">
         {{ row[defaultProps.title1] }}
         <span class="fr" :class="row[defaultProps.noArrow] || getClass(row[defaultProps.value1])">
           {{ row[defaultProps.noArrow] ? '' : getArrow(row[defaultProps.value1]) }}
@@ -83,13 +83,15 @@ export default {
 .card-index-li {
   position: relative;
   width: 200px;
-  // height: 108px;
-  // background: linear-gradient(90deg, #f7f8fb 0%, #f1f3f8 100%);
   background: #fff;
-  border-radius: $border-radius;
-  margin: 0 10px 20px 0;
+  border-radius: var(--border-radius-big);
+  border: 1px solid #edf2f9;
+  margin: 0 10px 0 0;
   line-height: 1;
   padding: 22px 20px;
+  &:last-child {
+    margin-right: 0;
+  }
   .card-icon {
     position: absolute;
     top: 0;
@@ -108,7 +110,7 @@ export default {
     font-size: $font-size-keydata;
     line-height: 1.15;
   }
-  .el-icon-question {
+  .el-icon-warning-outline {
     color: #999;
   }
   .icon-arrow {

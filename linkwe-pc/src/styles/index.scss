@@ -383,7 +383,7 @@ aside {
     height: 60px;
     font-size: 18px;
     font-weight: 500;
-    color: #333;
+    color: var(--font-black);
     padding: 0 20px;
     background: #fff;
     border-radius: var(--border-radius-big) var(--border-radius-big) 0 0;
@@ -398,24 +398,43 @@ aside {
       margin-top: 0;
     }
   }
-  // 二级 分类标题
+  // 二级标题
   &title-sub {
     @extend .g-title;
     font-size: 16px;
-    & + .g-card {
-      border-radius: 0 0 var(--border-radius-big) var(--border-radius-big);
+    margin-top: var(--card-margin);
+    &:first-child {
       margin-top: 0;
     }
+    // & + .g-card {
+    //   border-radius: 0 0 var(--border-radius-big) var(--border-radius-big);
+    //   margin-top: 0;
+    //   padding-top: 0;
+    // }
   }
 
   // 卡片样式
   &card {
-    margin-top: 16px;
+    margin-top: var(--card-margin);
     border-radius: var(--border-radius-big);
     background: #fff;
     overflow: auto;
+    padding: 20px;
     &:first-child {
       margin-top: 0;
+    }
+    // 卡片标题
+    .g-card-title {
+      padding-bottom: 20px;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--font-black);
+      .desc {
+        font-weight: 400;
+        margin-left: 5px;
+        font-size: 12px;
+        color: #86909c;
+      }
     }
   }
 

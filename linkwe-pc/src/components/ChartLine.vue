@@ -16,15 +16,7 @@ export default {
     // X轴坐标数据
     xData: {
       type: Array,
-      default: () => [
-        '2021-12-01',
-        '2021-12-02',
-        '2021-12-03',
-        '2021-12-03',
-        '2021-12-04',
-        '2021-12-05',
-        '2021-12-06',
-      ],
+      default: () => ['2021-12-01', '2021-12-02', '2021-12-03', '2021-12-03', '2021-12-04', '2021-12-05', '2021-12-06'],
     },
     // 图例; 单个图例可传字符串，实际转换成单元素数组[string]
     legend: {
@@ -124,19 +116,19 @@ export default {
         //   text: 'Stacked Area Chart'
         // },
         tooltip: {
-          textStyle: {
-            color: '#FFF', // 设置文字颜色
-            fontSize: 12,
-          },
           trigger: 'axis',
-          backgroundColor: '#505050',
-          borderWidth: 0,
-          axisPointer: {
-            type: 'cross',
-            label: {
-              backgroundColor: '#6a7985',
-            },
-          },
+          // textStyle: {
+          //   color: '#FFF', // 设置文字颜色
+          //   fontSize: 12,
+          // },
+          // backgroundColor: '#505050',
+          // borderWidth: 0,
+          // axisPointer: {
+          //   type: 'cross',
+          //   label: {
+          //     backgroundColor: '#6a7985',
+          //   },
+          // },
         },
         legend: {
           data: legend,
@@ -156,7 +148,7 @@ export default {
           icon: 'roundRect',
           itemWidth: 24,
           itemHeight: 4,
-          itemGap:14,
+          itemGap: 14,
           tooltip: {
             show: true,
           },
