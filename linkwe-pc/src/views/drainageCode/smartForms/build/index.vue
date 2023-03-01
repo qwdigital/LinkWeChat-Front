@@ -9,7 +9,8 @@
       <el-scrollbar class="left-scrollbar">
         <div class="components-list">
           <div class="components-title">
-            <svg-icon icon-class="component" class="mr5" />表单控件
+            <svg-icon icon-class="component" class="mr5" />
+            表单控件
           </div>
           <draggable
             class="components-draggable"
@@ -18,24 +19,20 @@
             :clone="cloneComponent"
             :draggable="false"
             :sort="false"
-            @end="onEnd"
-          >
+            @end="onEnd">
             <div
               v-for="(element, index) in inputComponents"
               :key="index"
               class="components-item"
               @click="addComponent(element)"
-              style="width: 98%"
-            >
+              style="width: 98%">
               <div class="components-body">
                 <svg-icon :icon-class="element.tagIcon" />
                 {{ element.label }}
               </div>
             </div>
           </draggable>
-          <div style="display: flex; justify-content: center; color: #b6b6b6">
-            更多控件持续上线中...
-          </div>
+          <div style="display: flex; justify-content: center; color: #b6b6b6">更多控件持续上线中...</div>
         </div>
       </el-scrollbar>
     </div>
@@ -51,8 +48,7 @@
               index + 1 == page
                 ? 'smartForms_build_index_lix smartForms_build_index_liBtn'
                 : 'smartForms_build_index_lix'
-            "
-          >
+            ">
             <div
               class="smartForms_build_index_ul_liX_hover"
               style="
@@ -63,23 +59,17 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-              "
-            >
+              ">
               第{{ index + 1 }}页
             </div>
             <div
               @click.stop="deletePage(index)"
               class="smartForms_build_index_ul_liY_hover"
-              style="position: absolute; right: 2px; top: 9px"
-            >
+              style="position: absolute; right: 2px; top: 9px">
               <i class="el-icon-close"></i>
             </div>
           </div>
-          <div
-            @click="addPage()"
-            class="smartForms_build_index_li"
-            style="width: 30px; border-left: none"
-          >
+          <div @click="addPage()" class="smartForms_build_index_li" style="width: 30px; border-left: none">
             <div>+</div>
           </div>
         </div>
@@ -90,14 +80,8 @@
             :size="formConf.size"
             :label-position="formConf.labelPosition"
             :disabled="formConf.disabled"
-            :label-width="formConf.labelWidth + 'px'"
-          >
-            <draggable
-              class="drawing-board"
-              :list="drawingList"
-              :animation="340"
-              group="componentsGroup"
-            >
+            :label-width="formConf.labelWidth + 'px'">
+            <draggable class="drawing-board" :list="drawingList" :animation="340" group="componentsGroup">
               <draggable-item
                 v-for="(element, index) in drawingList"
                 :key="element.renderKey"
@@ -108,8 +92,7 @@
                 :form-conf="formConf"
                 @activeItem="activeFormItem"
                 @copyItem="drawingItemCopy"
-                @deleteItem="drawingItemDelete"
-              />
+                @deleteItem="drawingItemDelete" />
             </draggable>
             <div v-show="!drawingList.length" class="empty-info">从左侧点选组件进行表单设计</div>
           </el-form>
@@ -121,15 +104,13 @@
       :active-data="activeData"
       :form-conf="formConf"
       :show-field="!!drawingList.length"
-      @tag-change="tagChange"
-    />
+      @tag-change="tagChange" />
 
     <code-type-dialog
       :visible.sync="dialogVisible"
       title="选择生成类型"
       :show-file-name="showFileName"
-      @confirm="generate"
-    />
+      @confirm="generate" />
     <input id="copyNode" type="hidden" />
   </div>
 </template>
@@ -196,11 +177,7 @@ export default {
   watch: {
     // eslint-disable-next-line func-names
     'activeData.label': function (val, oldVal) {
-      if (
-        this.activeData.placeholder === undefined ||
-        !this.activeData.tag ||
-        oldActiveId !== this.activeId
-      ) {
+      if (this.activeData.placeholder === undefined || !this.activeData.tag || oldActiveId !== this.activeId) {
         return
       }
       // this.activeData.placeholder = this.activeData.placeholder.replace(oldVal, '')
@@ -231,10 +208,7 @@ export default {
         for (let i = 0; i < this.pageData.length; i++) {
           for (let q = 0; q < this.pageData[i].length; q++) {
             console.log('this.pageData[i][q].formCodeId', this.pageData[i][q].formCodeId)
-            if (
-              this.pageData[i][q].formCodeId == '625' ||
-              this.pageData[i][q].formCodeId == '626'
-            ) {
+            if (this.pageData[i][q].formCodeId == '625' || this.pageData[i][q].formCodeId == '626') {
               this.pageData[i].splice(q, 1)
             }
           }
@@ -356,10 +330,7 @@ export default {
             this.pageData[i][q].page = i + 1
             this.pageData[i][q].pageNo = q + 1
             if (this.pageData[i][q].label.indexOf('.') != -1) {
-              console.log(
-                'this.pageData[i][q].label.indexOf(".")',
-                this.pageData[i][q].label.length
-              )
+              console.log('this.pageData[i][q].label.indexOf(".")', this.pageData[i][q].label.length)
               // let a=this.pageData[i][q].label.slice(this.pageData[i][q].label.indexOf("."),this.pageData[i][q].label.length);
               // this.pageData[i][q].label=t+a;
               this.pageData[i][q].TitleNumber = t
@@ -367,10 +338,7 @@ export default {
               // this.pageData[i][q].label=t+'.'+this.pageData[i][q].label
               this.pageData[i][q].TitleNumber = t
             }
-            if (
-              this.pageData[i][q].formCodeId == '625' &&
-              this.pageData[i][q].formCodeId == '626'
-            ) {
+            if (this.pageData[i][q].formCodeId == '625' && this.pageData[i][q].formCodeId == '626') {
               this.pageData[i].splice(q, 1)
               that.toPage(this.page)
             }
@@ -555,10 +523,7 @@ export default {
       delete this.activeData.tagIcon
       delete this.activeData.document
       Object.keys(newTag).forEach((key) => {
-        if (
-          this.activeData[key] !== undefined &&
-          typeof this.activeData[key] === typeof newTag[key]
-        ) {
+        if (this.activeData[key] !== undefined && typeof this.activeData[key] === typeof newTag[key]) {
           newTag[key] = this.activeData[key]
         }
       })
@@ -685,7 +650,7 @@ export default {
     margin-left: 6px;
   }
   .el-icon-plus {
-    color: #409eff;
+    color: var(--color);
   }
   .el-icon-delete {
     color: #157a0c;
@@ -705,7 +670,6 @@ export default {
 }
 
 $selectedColor: #f6f7ff;
-$lighterBlue: #409eff;
 
 .container {
   position: relative;
@@ -817,7 +781,7 @@ $lighterBlue: #409eff;
   left: 12px;
   top: 6px;
   line-height: 30px;
-  color: #00afff;
+  color: var(--color);
   font-weight: 600;
   font-size: 17px;
   white-space: nowrap;
@@ -878,7 +842,7 @@ $lighterBlue: #409eff;
       display: initial;
     }
     & > .component-name {
-      color: $lighterBlue;
+      color: var(--color);
     }
   }
   .el-form-item {
@@ -916,7 +880,7 @@ $lighterBlue: #409eff;
     min-height: 80px;
   }
   &.active-from-item {
-    border: 1px dashed $lighterBlue;
+    border: 1px dashed var(--color);
   }
   .component-name {
     position: absolute;
@@ -957,11 +921,11 @@ $lighterBlue: #409eff;
   }
   & > .drawing-item-copy {
     right: 56px;
-    border-color: $lighterBlue;
-    color: $lighterBlue;
+    border-color: var(--color);
+    color: var(--color);
     background: #fff;
     &:hover {
-      background: $lighterBlue;
+      background: var(--color);
       color: #fff;
     }
   }

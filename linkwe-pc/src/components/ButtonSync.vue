@@ -4,12 +4,12 @@ export default {
   props: {
     customeBtn: {
       type: Boolean,
-      default: false
+      default: false,
     },
     lastSyncTime: {
       type: [String, Number],
-      default: 0
-    }
+      default: 0,
+    },
   },
   components: {},
   data() {
@@ -19,7 +19,7 @@ export default {
     disabled() {
       // return this.lastSyncTime ? (+new Date() - +new Date(this.lastSyncTime)) / 3600000 < 2 : false
       return false
-    }
+    },
   },
   watch: {},
   created() {},
@@ -31,8 +31,8 @@ export default {
       //   return
       // }
       this.$emit('click')
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -43,13 +43,15 @@ export default {
       effect="light"
       class="item"
       content="由于企业微信开放平台的限制，两小时内不得重复同步操作"
-      placement="top-start"
-    >
+      placement="top-start">
       <el-tag type="info" size="default"><slot></slot></el-tag>
     </el-tooltip>
-    <el-button v-else v-preventReClick type="primary" @click="sync">
-      <slot></slot>
-    </el-button>
+    <div v-else v-preventReClick class="cp" @click="sync">
+      <slot v-if="$slots.button" name="button"></slot>
+      <el-button v-else type="primary">
+        <slot></slot>
+      </el-button>
+    </div>
   </div>
 </template>
 

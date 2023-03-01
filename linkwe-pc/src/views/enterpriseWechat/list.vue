@@ -16,7 +16,10 @@
       <el-tab-pane label="公众号配置" name="5">
         <part5 @submit="savePart1" :data="form"></part5>
       </el-tab-pane>
-      <el-tab-pane label="小程序配置g" name="7">
+      <el-tab-pane label="直播配置" name="6">
+        <part6 @submit="savePart1" :data="form"></part6>
+      </el-tab-pane>
+      <el-tab-pane label="小程序配置" name="7">
         <part7 @submit="savePart1" :data="form"></part7>
       </el-tab-pane>
     </el-tabs>
@@ -32,6 +35,7 @@ export default {
     part3: () => import('./part3.vue'),
     part4: () => import('./part4.vue'),
     part5: () => import('./part5.vue'),
+    part6: () => import('./part6.vue'),
     part7: () => import('./part7.vue'),
   },
   props: {},
@@ -110,4 +114,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.tips {
+  color: #aaa;
+  font-size: 12px;
+}
+</style>

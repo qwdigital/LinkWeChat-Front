@@ -7,7 +7,7 @@
     </app-link>
 
     <el-submenu v-else :index="resolvePath(item.path)" popper-append-to-body>
-      <div slot="title" class="menu-title" :style="{ padding: `0px ${20 * level}px` }" v-if="item.meta">
+      <div slot="title" class="menu-title" :style="{ padding: `0px ${15 * level}px` }" v-if="item.meta">
         {{ item.meta.title }}
       </div>
       <sidebar-item

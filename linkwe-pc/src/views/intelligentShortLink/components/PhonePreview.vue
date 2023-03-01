@@ -24,16 +24,16 @@ export default {
 </script>
 
 <template>
-  <div class="g-card" style="margin-top: 0">
+  <div class="g-card mt0">
     <div class="g-title">预览</div>
     <div class="g-pad20">
       <PhoneTemplate v-if="touchTypeDict[data.type]" :title="touchTypeDict[data.type].previewMobileTitle">
         <template v-if="data.type == 0">
           <div class="mask" style="position: absolute">
-            <div class="cc ac g-card g-pad20" style="width: 70%">公众号文章示例</div>
+            <div class="cc ac g-card" style="width: 70%">公众号文章示例</div>
           </div>
         </template>
-        <div v-else class="g-card g-pad20 cc ac" style="width: 70%; padding-bottom: 50px">
+        <div v-else class="g-card cc ac" style="width: 70%; padding-bottom: 50px">
           <!-- 个人小程序，企业小程序 -->
           <template v-if="[7, 9].includes(+data.type)">
             <div class="mt10">{{ data.name || '小程序' }}</div>

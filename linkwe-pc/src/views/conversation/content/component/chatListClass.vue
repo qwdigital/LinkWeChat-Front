@@ -16,6 +16,8 @@
 
 <script>
   import chatListClassTab from './chatListClassTab.vue'
+  import { dateFormat } from '@/utils/index'
+
   import * as api from '@/api/conversation/content.js'
   export default {
     components: { chatListClassTab },
@@ -70,8 +72,22 @@
           .then(() => {
             return api.exportList(this.queryChat)
           })
-          .then((response) => {
-            this.download(response.data)
+          .then((res) => {
+            if (!res) return
+            const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+
+            if (window.navigator.msSaveOrOpenBlob) {
+              //兼容IE10
+              navigator.msSaveBlob(blob, '会话存档')
+            } else {
+              const href = URL.createObjectURL(blob) //创建新的URL表示指定的blob对象
+              const a = document.createElement('a') //创建a标签
+              a.style.display = 'none'
+              a.href = href // 指定下载链接
+              a.download = dateFormat(new Date(), 'yyyy-MM-dd') + '_会话存档.xlsx' //指定下载文件名
+              a.click() //触发下载
+              URL.revokeObjectURL(a.href) //释放URL对象
+            }
           })
           .catch(function (err) {
             console.log(err)

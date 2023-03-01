@@ -168,11 +168,7 @@ export default {
             // （条形图）
             this.xData = data.map((e) => e.xtime)
 
-            if (
-              'customerTotalChart,customerGroupTotalChart,customerGroupMemberTotalChart'.includes(
-                this.type
-              )
-            ) {
+            if ('customerTotalChart,customerGroupTotalChart,customerGroupMemberTotalChart'.includes(this.type)) {
               // 客户总数 / 客群总数 / 客群成员总数 （条形图）
               this.series = data.map((e) => e.totalCnt)
             } else if (this.type === 'realDataChart') {
@@ -275,12 +271,12 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div v-loading="loading">
     <div class="operation">
       <el-button-group>
         <el-button type="primary" :plain="timeRange != 7" @click="setTime(7)">近一周</el-button>
-        <el-button type="primary" :plain="timeRange != 30" @click="setTime(30)">近一月 </el-button>
-        <el-button type="primary" :plain="!!timeRange" @click="setTime()">自定义 </el-button>
+        <el-button type="primary" :plain="timeRange != 30" @click="setTime(30)">近一月</el-button>
+        <el-button type="primary" :plain="!!timeRange" @click="setTime()">自定义</el-button>
       </el-button-group>
       <el-date-picker
         v-if="!timeRange"
@@ -294,102 +290,70 @@ export default {
         range-separator="-"
         start-placeholder="开始日期"
         end-placeholder="结束日期"
-        @change="getList(1)"
-      ></el-date-picker>
+        @change="getList(1)"></el-date-picker>
       <el-input
         v-if="type.toLowerCase().includes('group')"
         style="width: 180px; margin-left: 20px"
         :value="userArray.map((e) => e.name) + ''"
         readonly
         @focus="showDialog('_groupOwners')"
-        placeholder="请选择群主"
-      >
-      </el-input>
+        placeholder="请选择群主"></el-input>
       <el-select
         style="margin-left: 20px"
         v-if="['customerGroupMemberTotalChart', 'customerGroupMemberTotalTable'].includes(type)"
         v-model="query.chatIds"
         placeholder="请选择群聊"
         clearable
-        @change="getList()"
-      >
+        @change="getList()">
         <el-option
           v-for="item in groupChats"
           :key="item.chatId"
           :label="item.groupName"
-          :value="item.chatId"
-        >
-        </el-option>
+          :value="item.chatId"></el-option>
       </el-select>
       <el-input
-        v-if="
-          [
-            'customerTotalChart',
-            'customerTotalTable',
-            'realDataChart',
-            'customerContactTable',
-          ].includes(type)
-        "
+        v-if="['customerTotalChart', 'customerTotalTable', 'realDataChart', 'customerContactTable'].includes(type)"
         style="width: 180px; margin-left: 20px"
         :value="userArray.map((e) => e.name) + ''"
         readonly
         @focus="showDialog('_users')"
-        placeholder="请选择部门或员工"
-      />
-      <el-button v-if="type.includes('Table')" class="fr" type="primary" @click="exprotTable"
-        >导出 Excel</el-button
-      >
+        placeholder="请选择部门或员工" />
+      <el-button v-if="type.includes('Table')" class="fr" type="primary" @click="exprotTable">导出 Excel</el-button>
     </div>
 
-    <div v-loading="loading">
-      <ChartLine
-        v-if="type.includes('Chart')"
-        :xData="xData"
-        :legend="legend || legendDict[type]"
-        :series="series"
-      ></ChartLine>
+    <ChartLine
+      v-if="type.includes('Chart')"
+      :xData="xData"
+      :legend="legend || legendDict[type]"
+      :series="series"></ChartLine>
 
-      <template v-else-if="type.includes('Table')">
-        <el-table :data="list" style="width: 100%">
-          <el-table-column
-            v-for="(item, index) in tableProps[type]"
-            :key="index"
-            :prop="item.prop"
-            :label="item.label"
-            align="center"
-          >
-          </el-table-column>
-        </el-table>
-        <pagination
-          :total="total"
-          :page.sync="query.pageNum"
-          :limit.sync="query.pageSize"
-          @pagination="getList()"
-        />
-      </template>
+    <template v-else-if="type.includes('Table')">
+      <el-table :data="list" style="width: 100%">
+        <el-table-column
+          v-for="(item, index) in tableProps[type]"
+          :key="index"
+          :prop="item.prop"
+          :label="item.label"
+          align="center"></el-table-column>
+      </el-table>
+      <pagination :total="total" :page.sync="query.pageNum" :limit.sync="query.pageSize" @pagination="getList()" />
+    </template>
 
-      <ChartBar
-        v-else-if="'staffCustomerBar'.includes(type)"
-        :xData="xData"
-        :series="series"
-      ></ChartBar>
+    <ChartBar v-else-if="'staffCustomerBar'.includes(type)" :xData="xData" :series="series"></ChartBar>
 
-      <ChartLine
-        v-else-if="'rowEchart'.includes('vChart')"
-        :xData="xData"
-        :legend="legend || legendDict[type]"
-        :series="series"
-        :option="option"
-      ></ChartLine>
-    </div>
+    <ChartLine
+      v-else-if="'rowEchart'.includes('vChart')"
+      :xData="xData"
+      :legend="legend || legendDict[type]"
+      :series="series"
+      :option="option"></ChartLine>
 
     <SelectWeUser
       :visible.sync="dialogVisible"
       title="组织架构"
       :defaultValues="userArray"
       @success="getSelectUser"
-      :isOnlyLeaf="dialogType === '_groupOwners'"
-    ></SelectWeUser>
+      :isOnlyLeaf="dialogType === '_groupOwners'"></SelectWeUser>
   </div>
 </template>
 

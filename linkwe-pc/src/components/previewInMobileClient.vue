@@ -7,9 +7,8 @@
         <div class="msg">
           <div class="word">
             <p
-              style="line-height: 18px;"
-              v-html="list.welcomeMsg.replace(/\n|\r\n/g, '<br>').replace(/ /g, ' &nbsp')"
-            ></p>
+              style="line-height: 18px"
+              v-html="list.welcomeMsg.replace(/\n|\r\n/g, '<br>').replace(/ /g, ' &nbsp')"></p>
           </div>
         </div>
       </div>
@@ -43,10 +42,14 @@
         <div class="msg" v-if="data.msgType === '9'">
           <div class="miniprogram">
             <div class="mini-header">
-              <img src="../assets/drainageCode/miniprogram-icon.png" alt="" /> {{ data.materialName }}
+              <img src="../assets/drainageCode/miniprogram-icon.png" alt="" />
+              {{ data.materialName }}
             </div>
             <img class="mini-img" :src="data.coverUrl" />
-            <div class="mini-footer"><img src="../assets/drainageCode/miniprogram-link.png" /> 小程序</div>
+            <div class="mini-footer">
+              <img src="../assets/drainageCode/miniprogram-link.png" />
+              小程序
+            </div>
           </div>
         </div>
       </div>
@@ -96,163 +99,163 @@
   </div>
 </template>
 <script>
-  export default {
-    name: 'preview-client',
-    components: {},
-    props: {
-      name: {
-        type: String,
-        default: '小微'
-      },
-      list: {
-        type: Object,
-        default: {}
-      }
+export default {
+  name: 'preview-client',
+  components: {},
+  props: {
+    name: {
+      type: String,
+      default: '小微',
     },
-    data() {
-      return {}
+    list: {
+      type: Object,
+      default: {},
     },
-    computed: {},
-    created() {},
-    mounted() {},
-    methods: {}
-  }
+  },
+  data() {
+    return {}
+  },
+  computed: {},
+  created() {},
+  mounted() {},
+  methods: {},
+}
 </script>
 <style lang="scss" scoped>
-  .preview {
-    margin: 0 auto;
-    position: relative;
-    width: 300px;
-    height: 640px;
-    background: url(../assets/drainageCode/preview-bg.png);
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
+.preview {
+  margin: 0 auto;
+  position: relative;
+  width: 300px;
+  height: 640px;
+  background: url(../assets/drainageCode/preview-bg.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 
-    .title {
-      position: absolute;
-      top: 37px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 14px;
-      font-family: PingFangSC-Regular, PingFang SC;
+  .title {
+    position: absolute;
+    top: 37px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+
+    font-weight: 400;
+    color: #333333;
+  }
+
+  .content {
+    position: absolute;
+    height: 545px;
+    width: 280px;
+    overflow-y: auto;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    padding: 20px;
+
+    .item {
+      font-size: 12px;
+
       font-weight: 400;
-      color: #333333;
-    }
+      color: #666666;
+      display: flex;
+      margin-top: 20px;
 
-    .content {
-      position: absolute;
-      height: 545px;
-      width: 280px;
-      overflow-y: auto;
-      top: 70px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-bottom-left-radius: 20px;
-      border-bottom-right-radius: 20px;
-      padding: 20px;
+      &:first-child {
+        margin-top: 0;
+      }
 
-      .item {
-        font-size: 12px;
-        font-family: PingFangSC-Regular, PingFang SC;
-        font-weight: 400;
-        color: #666666;
-        display: flex;
-        margin-top: 20px;
+      .avatar222 {
+        // align-self: center;
+        margin-right: 5px;
+      }
 
-        &:first-child {
-          margin-top: 0;
-        }
+      .msg {
+        position: relative;
+        min-height: 26px;
+        background: #ffffff;
+        box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
+        border: 1px solid #e1edfc;
+        display: inline-block;
+        border-radius: 4px;
+        box-sizing: border-box;
+        word-break: break-all;
+        margin-left: 5px;
 
-        .avatar222 {
-          // align-self: center;
-          margin-right: 5px;
-        }
-
-        .msg {
-          position: relative;
-          min-height: 26px;
-          background: #ffffff;
+        &:before {
+          content: ' ';
+          display: block;
+          position: absolute;
+          left: -5px;
           box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
-          border: 1px solid #e1edfc;
-          display: inline-block;
-          border-radius: 4px;
-          box-sizing: border-box;
-          word-break: break-all;
-          margin-left: 5px;
+          border-width: 5px;
+          border-left: 0;
+          width: 0;
+          border-style: solid;
+          border-color: transparent;
+          border-right-color: #fff;
+          top: 8px;
+          z-index: 888;
+        }
 
-          &:before {
-            content: ' ';
-            display: block;
-            position: absolute;
-            left: -5px;
-            box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
-            border-width: 5px;
-            border-left: 0;
-            width: 0;
-            border-style: solid;
-            border-color: transparent;
-            border-right-color: #fff;
-            top: 8px;
-            z-index: 888;
+        .word {
+          padding: 5px 12px;
+        }
+
+        .image {
+          padding: 12px;
+
+          img {
+            width: 94px;
+            height: 90px;
           }
+        }
 
-          .word {
-            padding: 5px 12px;
-          }
+        .word-and-image {
+          padding: 12px;
+          .sub-content {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
 
-          .image {
-            padding: 12px;
-
+            font-weight: 400;
+            color: #999999;
             img {
-              width: 94px;
-              height: 90px;
+              height: 40px;
+              width: 40px;
             }
           }
-
-          .word-and-image {
-            padding: 12px;
-            .sub-content {
-              margin-top: 10px;
-              display: flex;
-              justify-content: space-between;
-              font-size: 12px;
-              font-family: PingFangSC-Regular, PingFang SC;
-              font-weight: 400;
-              color: #999999;
-              img {
-                height: 40px;
-                width: 40px;
-              }
+        }
+        .miniprogram {
+          padding: 12px;
+          .mini-header {
+            display: flex;
+            align-items: center;
+            img {
+              height: 18px;
+              width: 18px;
+              margin-right: 5px;
             }
           }
-          .miniprogram {
-            padding: 12px;
-            .mini-header {
-              display: flex;
-              align-items: center;
-              img {
-                height: 18px;
-                width: 18px;
-                margin-right: 5px;
-              }
-            }
-            .mini-img {
-              margin: 10px 0;
-              width: 143px;
-              height: 120px;
-            }
-            .mini-footer {
-              display: flex;
-              align-items: center;
-              img {
-                height: 14px;
-                width: 14px;
-                margin-right: 5px;
-              }
+          .mini-img {
+            margin: 10px 0;
+            width: 143px;
+            height: 120px;
+          }
+          .mini-footer {
+            display: flex;
+            align-items: center;
+            img {
+              height: 14px;
+              width: 14px;
+              margin-right: 5px;
             }
           }
         }
       }
     }
   }
+}
 </style>

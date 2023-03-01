@@ -1,96 +1,75 @@
 <template>
-  <div class="login">
-    <div class="login-wrap">
-      <img class="login-bg1" src="@/assets/image/login_bg1.png" alt="" />
-      <img class="login-bg2" src="@/assets/image/login_bg2.png" alt="" />
-      <img class="login-bg3" src="@/assets/image/login_bg3.png" alt="" />
-      <div class="login-form-wrap">
-        <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-          <h3 class="title">{{ lwConfig.SYSTEM_NAME }}</h3>
-          <template v-if="loginType === 'account'">
-            <el-form-item prop="username">
-              <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
-                <svg-icon style="height: 33px" slot="prefix" icon-class="user" class="el-input__icon input-icon" />
-              </el-input>
-            </el-form-item>
-            <el-form-item prop="password">
-              <el-input
-                v-model="loginForm.password"
-                type="password"
-                auto-complete="off"
-                placeholder="密码"
-                @keyup.enter.native="handleLogin">
-                <svg-icon style="height: 33px" slot="prefix" icon-class="password" class="el-input__icon input-icon" />
-              </el-input>
-            </el-form-item>
-            <el-form-item prop="code">
-              <div style="display: flex">
-                <el-input
-                  v-model="loginForm.code"
-                  auto-complete="off"
-                  placeholder="验证码"
-                  @keyup.enter.native="handleLogin">
-                  <svg-icon
-                    slot="prefix"
-                    icon-class="validCode"
-                    style="height: 33px"
-                    class="el-input__icon input-icon" />
-                </el-input>
-                <div class="login-code" style="margin-left: 10px">
-                  <img :src="codeUrl" @click="getCode" class="login-code-img" />
-                </div>
-              </div>
-            </el-form-item>
-            <el-checkbox class="fr" v-model="loginForm.rememberMe">记住密码</el-checkbox>
-            <el-checkbox
-              class="fl"
-              v-model="isDemonstrationLogin"
-              @change="changeDemonAccount"
-              style="margin: 0px 0px 25px 10px">
-              演示账号登录
-            </el-checkbox>
-            <el-form-item style="width: 100%">
-              <el-button
-                :loading="loading"
-                size="medium"
-                type="primary"
-                style="width: 100%"
-                @click.native.prevent="handleLogin">
-                <span v-if="!loading">登 录</span>
-                <span v-else>登 录 中...</span>
-              </el-button>
-            </el-form-item>
-            <div style="margin-bottom: 20px">
-              <a @click="changeLoginType('url')" class="link">企微登录</a>
+  <div class="login cc fcbw">
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
+      <img class="logo" :src="lwConfig.LOGO_TEXT_DARK" alt="" />
+      <div class="login-title">欢迎来到{{ lwConfig.SYSTEM_NAME }}</div>
+      <div class="login-text">登录你的账户</div>
+      <template v-if="loginType === 'account'">
+        <el-form-item prop="username">
+          <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
+            <svg-icon style="height: 33px" slot="prefix" icon-class="user" class="el-input__icon input-icon" />
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input
+            v-model="loginForm.password"
+            type="password"
+            auto-complete="off"
+            placeholder="密码"
+            @keyup.enter.native="handleLogin">
+            <svg-icon style="height: 33px" slot="prefix" icon-class="password" class="el-input__icon input-icon" />
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="code">
+          <div style="display: flex">
+            <el-input
+              v-model="loginForm.code"
+              auto-complete="off"
+              placeholder="验证码"
+              @keyup.enter.native="handleLogin">
+              <svg-icon slot="prefix" icon-class="validCode" style="height: 33px" class="el-input__icon input-icon" />
+            </el-input>
+            <div class="login-code" style="margin-left: 10px">
+              <img :src="codeUrl" @click="getCode" class="login-code-img" />
             </div>
-          </template>
-          <template v-else>
-            <img style="height: 180px; width: 180px" :src="wechatCodeUrl" alt="" />
-            <!-- <div class="desc al">企业注册后，员工可直接扫码登录，无需重复注册</div> -->
-            <div class="desc al">扫码加入企业，点击企业微信登录，即可扫码登录系统</div>
-            <el-form-item class="ac">
-              <a :href="authLink">
-                <img
-                  src="//wwcdn.weixin.qq.com/node/wwopen/wwopenmng/style/images/independent/brand/300x40_white$4dab5411.png"
-                  srcset="
-                    //wwcdn.weixin.qq.com/node/wwopen/wwopenmng/style/images/independent/brand/300x40_white_2x$6a1f5234.png 2x
-                  "
-                  alt="点我加入企业微信" />
-              </a>
-            </el-form-item>
-            <div style="margin-bottom: 20px">
-              <a @click="changeLoginType('account')" class="link">账号密码登录</a>
-            </div>
-          </template>
-        </el-form>
+          </div>
+        </el-form-item>
+        <el-checkbox class="fr" v-model="loginForm.rememberMe">记住密码</el-checkbox>
+        <el-checkbox
+          class="fl"
+          v-model="isDemonstrationLogin"
+          @change="changeDemonAccount"
+          style="margin: 0px 0px 25px 10px">
+          演示账号登录
+        </el-checkbox>
+        <el-form-item style="width: 100%">
+          <el-button
+            :loading="loading"
+            size="medium"
+            type="primary"
+            style="width: 100%"
+            @click.native.prevent="handleLogin">
+            <span v-if="!loading">登 录</span>
+            <span v-else>登 录 中...</span>
+          </el-button>
+          <div class="link" @click="changeLoginType('url')">企微登录</div>
+        </el-form-item>
+      </template>
+      <div v-else class="ac">
+        <img class="wechat-code" :src="wechatCodeUrl" alt="" />
+        <!-- <div class="desc al">企业注册后，员工可直接扫码登录，无需重复注册</div> -->
+        <div class="desc">扫码体验完整功能</div>
+        <a :href="authLink">
+          <el-button :loading="loading" size="medium" type="primary" style="width: 100%">企业微信登录</el-button>
+          <!-- <img
+            src="//wwcdn.weixin.qq.com/node/wwopen/wwopenmng/style/images/independent/brand/300x40_white$4dab5411.png"
+ /> -->
+        </a>
+        <div class="link" @click="changeLoginType('account')">账号密码登录</div>
       </div>
-    </div>
-
-    <!--  底部  -->
-    <div class="el-login-footer">
-      <span>
-        {{ lwConfig.COPYRIGHT || 'Copyright © 2018-2022 LinkWeChat All Rights Reserved.' }}
-      </span>
+    </el-form>
+    <div>
+      <img src="@/assets/login.png" class="login-img" alt="" />
     </div>
   </div>
 </template>
@@ -147,11 +126,11 @@ export default {
         this.getCookie()
       }
     })
-    window.lwConfig.IS_PUBLISH_DIALOG &&
-      this.$alert('LinkWeChat V2.5 已正式发布，遇到使用上的问题欢迎提交 Issue，我们将光速修复。', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-      })
+    // window.lwConfig.IS_PUBLISH_DIALOG &&
+    //   this.$alert('LinkWeChat V2.5 已正式发布，遇到使用上的问题欢迎提交 Issue，我们将光速修复。', '提示', {
+    //     confirmButtonText: '确定',
+    //     cancelButtonText: '取消',
+    //   })
   },
   methods: {
     changeLoginType(type) {
@@ -219,28 +198,35 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .login {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  // background-image: url('../assets/image/login-background.png');
-  background-size: cover;
+  position: relative;
+  max-width: 1234px;
+  max-height: 878px;
+  background: #ffffff;
+  border-radius: 56px 56px 56px 56px;
+  .logo {
+    position: absolute;
+    height: 58px;
+    left: 38px;
+    top: 38px;
+  }
 }
-.title {
-  margin: 0px auto 30px auto;
-  text-align: center;
-  color: #027dfe;
+.login-title {
+  font-size: 16px;
+  color: #4e5969;
+}
+.login-text {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1d2129;
+  margin: 26px auto 50px auto;
 }
 
 .login-form {
-  border-radius: 6px;
-  width: 400px;
-  padding: 25px 25px 5px 25px;
-  position: absolute;
-  top: 100px;
-  z-index: 10;
+  width: 50%;
+  padding: 0 calc((50% - 360px) / 2);
   .el-input {
     height: 38px;
+    line-height: 38px;
     input {
       height: 38px;
     }
@@ -249,7 +235,7 @@ export default {
     text-align: center;
     color: #aaa;
     font-size: 12px;
-    margin-bottom: 50px;
+    margin: -22px 0 50px;
   }
   .input-icon {
     height: 39px;
@@ -257,93 +243,33 @@ export default {
     margin-left: 2px;
   }
 }
-.login-tip {
-  font-size: 13px;
-  text-align: center;
-  color: #bfbfbf;
-}
 .login-code {
-  width: 33%;
-  height: 38px;
-  float: right;
-  img {
+  .login-code-img {
+    height: 32px;
     cursor: pointer;
     vertical-align: middle;
   }
 }
-.el-login-footer {
-  height: 40px;
-  line-height: 40px;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  // color: #fff;
-  font-family: Arial;
-  font-size: 12px;
-  letter-spacing: 1px;
-  z-index: 90;
-}
-.login-code-img {
-  height: 38px;
-}
-.login ::v-deep.el-dialog {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  margin-top: 0vh !important;
-}
-.el-dialog__body {
-  padding: 0px 20px;
-}
-[class*='login-bg'] {
-  position: absolute;
-  z-index: 0;
-}
-.login-form-wrap {
-  position: relative;
-  background: #fff;
-  text-align: center;
-  height: 609px;
-  top: 50px;
-  left: 100px;
-}
-.login-wrap {
-  position: relative;
-  width: 1180px;
-  height: 720px;
-  overflow: hidden;
-}
-.login-bg1 {
-  top: 0;
-  left: 0;
-}
-.login-bg2 {
-  top: 50px;
-  left: 370px;
-  z-index: 10;
-}
-.login-bg3 {
-  top: 220px;
-  right: 25px;
-  z-index: 20;
-}
+
 .link {
   color: var(--color);
   font-size: 14px;
-  float: right;
-  padding-right: 25px;
-  &:hover {
-    text-decoration: underline;
-  }
-}
-.code_con {
-  text-align: center;
+  // padding-left: 25px;
   margin-top: 20px;
-  img {
-    height: 200px;
-    width: 200px;
-  }
+  text-align: left;
+  cursor: pointer;
+}
+.wechat-code {
+  width: 220px;
+  height: 240px;
+  padding: 20px;
+  background: #ffffff;
+  box-shadow: 0px 8px 24px 0px rgba(7, 193, 96, 0.16);
+  border-radius: 24px 24px 24px 24px;
+  border: 1px solid #07c160;
+}
+.login-img {
+  padding: 20px;
+  width: 100%;
 }
 </style>

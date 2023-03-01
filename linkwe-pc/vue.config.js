@@ -1,6 +1,7 @@
 'use strict'
 const path = require('path')
 const webpack = require('webpack')
+
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -57,7 +58,8 @@ module.exports = {
     loaderOptions: {
       sass: {
         //依次导入的公用的scss变量，公用的scss混入，共用的默认样式
-        prependData: `@import "./src/styles/variables.scss";`,
+        // prependData: `@import "./src/styles/variables.scss";`,
+        sassOptions: { outputStyle: 'expanded' },
       },
     },
   },
@@ -120,8 +122,8 @@ module.exports = {
           ],
           js: [
             '//cdn.bootcdn.net/ajax/libs/vue/2.6.10/vue.runtime.min.js',
-            '//cdn.bootcdn.net/ajax/libs/vuex/3.1.0/vuex.min.js',
             '//cdn.bootcdn.net/ajax/libs/vue-router/3.5.3/vue-router.min.js',
+            '//cdn.bootcdn.net/ajax/libs/vuex/3.1.0/vuex.min.js',
             '//cdn.bootcdn.net/ajax/libs/axios/0.26.0/axios.min.js',
             '//cdn.bootcdn.net/ajax/libs/element-ui/2.15.7/index.min.js',
             // '//unpkg.com/vue@2.6.10/dist/vue.runtime.min.js', // 访问https://unpkg.com/vue/dist/vue.min.js获取最新版本
@@ -131,27 +133,18 @@ module.exports = {
             // '//unpkg.com/element-ui@2.15.7/lib/index.js',
           ],
         }
+
         // 如果使用多页面打包，使用vue inspect --plugins查看html是否在结果数组中
         config.plugin('html').tap((args) => {
           // html中添加cdn
           args[0].cdn = cdn
           return args
         })
-        config
-          .plugin('ScriptExtHtmlWebpackPlugin')
-          .after('html')
-          .use('script-ext-html-webpack-plugin', [
-            {
-              // `runtime` must same as runtimeChunk name. default is `runtime`
-              inline: /runtime\..*\.js$/,
-            },
-          ])
-          .end()
       }
 
       config.optimization.minimizer('terser').tap((options) => {
         options[0].terserOptions.compress.drop_console = !env._ISLOG
-        options[0].terserOptions.compress.drop_debugger = false
+        options[0].terserOptions.compress.drop_debugger = true
         return options
       })
 
@@ -178,8 +171,18 @@ module.exports = {
           },
         },
       })
-      config.optimization.runtimeChunk('single')
 
+      config.optimization.runtimeChunk('single')
+      config
+        .plugin('ScriptExtHtmlWebpackPlugin')
+        .after('html')
+        .use('script-ext-html-webpack-plugin', [
+          {
+            // `runtime` must same as runtimeChunk name. default is `runtime`
+            inline: /runtime\..*\.js$/,
+          },
+        ])
+        .end()
       config.plugin('preload').tap(() => [
         {
           rel: 'preload',

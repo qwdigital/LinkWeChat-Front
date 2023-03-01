@@ -30,25 +30,52 @@
              <svg-icon class="right-icon" iconClass="customer-service"></svg-icon>
            </div>
        </el-popover> -->
+
         <el-tooltip content="企业微信-管理后台" effect="dark" placement="bottom">
           <div class="right-menu-item hover-effect">
-            <svg-icon class="right-icon mt5" iconClass="qiyeweixin" @click="goLink2()"></svg-icon>
-            <!-- <img @click="goLink2()" style="height:20px;width:24px;margin-top:4px;" src="@/assets/image/wechat-logo.png"></img> -->
+            <svg-icon
+              class="right-icon"
+              iconClass="qiyeweixin"
+              style="color: #0082f0"
+              @click="goto('https://work.weixin.qq.com/wework_admin/loginpage_wx?from=myhome_baidu')"></svg-icon>
+            <!-- <img @click="goto()" style="height:20px;width:24px;margin-top:4px;" src="@/assets/image/wechat-logo.png"></img> -->
           </div>
         </el-tooltip>
-        <!-- <el-tooltip content="源码地址" effect="dark" placement="bottom">
+        <el-tooltip content="源码地址" effect="dark" placement="bottom">
           <div class="right-menu-item hover-effect">
-            <svg-icon icon-class="github" @click="goto(0)" />
+            <svg-icon class="right-icon" icon-class="gitee" @click="goto('https://gitee.com/LinkWeChat/link-wechat')" />
           </div>
         </el-tooltip>
 
-        <el-tooltip content="文档地址" effect="dark" placement="bottom">
+        <el-tooltip content="LinkWeChat官网" effect="dark" placement="bottom">
           <div class="right-menu-item hover-effect">
-            <i class="el-icon-reading document" @click="goto(1)"></i>
+            <i class="el-icon-link right-icon" @click="goto('https://www.linkwechat.net/')" />
           </div>
         </el-tooltip>
 
-        <screenfull id="screenfull" class="right-menu-item hover-effect" /> -->
+        <el-tooltip content="文档手册" effect="dark" placement="bottom">
+          <div class="right-menu-item hover-effect">
+            <i class="el-icon-reading document right-icon" @click="goto('https://www.yuque.com/linkwechat/help')"></i>
+          </div>
+        </el-tooltip>
+
+        <el-tooltip content="功能清单" effect="dark" placement="bottom">
+          <div class="right-menu-item hover-effect">
+            <i
+              class="el-icon-tickets right-icon"
+              @click="goto('https://docs.qq.com/sheet/DZW9HSHpHdWlOYWh2?tab=BB08J3')"></i>
+          </div>
+        </el-tooltip>
+
+        <el-tooltip content="需求墙" effect="dark" placement="bottom">
+          <div class="right-menu-item hover-effect">
+            <i
+              class="el-icon-data-board right-icon"
+              @click="goto('https://docs.qq.com/sheet/DZWxGU0JGVFRVdWZV?tab=BB08J2')"></i>
+          </div>
+        </el-tooltip>
+
+        <!-- <screenfull id="screenfull" class="right-menu-item hover-effect" /> -->
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
@@ -128,11 +155,9 @@ export default {
         })
       })
     },
-    goto(type) {
-      window.open(type ? 'https://www.yuque.com/linkwechat/help/dsatfs' : 'https://gitee.com/LinkWeChat/link-wechat')
-    },
-    goLink2() {
-      window.open('https://work.weixin.qq.com/wework_admin/loginpage_wx?from=myhome_baidu', '_blank')
+
+    goto(url) {
+      window.open(url)
     },
     goLink(path) {
       if (!isExternal(path)) {
@@ -175,7 +200,7 @@ export default {
   }
 }
 .right-icon {
-  font-size: 18px;
+  font-size: 22px;
 }
 //
 .navbar {
@@ -195,6 +220,7 @@ export default {
   .right-menu {
     position: absolute;
     right: 0;
+    background: #fff;
 
     &:focus {
       outline: none;
@@ -202,7 +228,7 @@ export default {
 
     .right-menu-item {
       display: inline-block;
-      padding: 0 0 0 8px;
+      padding: 0 0 0 15px;
       // color: #5a5e66;
       vertical-align: middle;
 
@@ -213,10 +239,6 @@ export default {
         // &:hover {
         //   background: rgba(0, 0, 0, 0.025);
         // }
-      }
-
-      .document {
-        font-size: 20px;
       }
     }
 
@@ -241,6 +263,7 @@ export default {
           max-width: 100px;
           vertical-align: middle;
           font-weight: 500;
+          margin-left: 8px;
         }
 
         .el-icon-arrow-down {

@@ -1,5 +1,5 @@
 <template>
-  <div class="g-card g-pad20">
+  <div>
     <el-form :inline="true" label-width="110px" class="top-search">
       <el-form-item label="商品名称或描述" prop="productName">
         <el-input clearable v-model="query.productName" placeholder="请输入商品名称或描述"></el-input>
@@ -40,96 +40,96 @@
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
-          align="right"
-        ></el-date-picker>
+          align="right"></el-date-picker>
       </el-form-item>
-      <el-form-item label=" ">
+      <el-form-item label="">
         <el-button type="primary" @click="getList(1)">查询</el-button>
-        <el-button type="success" @click="resetForm()">重置</el-button>
+        <el-button @click="resetForm()">重置</el-button>
       </el-form-item>
     </el-form>
-    <div class="mid-action">
-      <el-button type="primary" class="mr10" @click="sync()">同步订单</el-button>
-      <el-button type="danger" @click="exportFn()">导出Excel</el-button>
+    <div class="g-card">
+      <div class="mid-action">
+        <el-button type="primary" class="mr10" @click="sync()">同步订单</el-button>
+        <el-button type="danger" @click="exportFn()">导出Excel</el-button>
+      </div>
+      <el-table v-loading="loading" :data="list">
+        <el-table-column label="商品" align="center" prop="" width="200">
+          <div slot-scope="{ row }">
+            <div style="display: flex">
+              <el-image
+                style="width: 50px; height: 50px; margin-right: 3px; flex-shrink: 0"
+                :src="row.picture"></el-image>
+              <span class="limit_span">{{ row.describe }}</span>
+            </div>
+          </div>
+        </el-table-column>
+        <el-table-column label="客户" align="center" prop="price">
+          <template slot-scope="{ row }">
+            <div class="cp flex aic">
+              <el-image style="width: 50px; height: 50px; flex: none" :src="row.externalAvatar" fit="fit"></el-image>
+              <div class="ml10">
+                <p>{{ row.externalName }}</p>
+                <!-- <i :class="['el-icon-s-custom', { 1: 'man', 2: 'woman' }[row.gender]]"></i> -->
+                <span :style="{ color: row.externalType === 1 ? '#4bde03' : '#f9a90b' }">
+                  {{ { 1: '@微信', 2: '@企业微信' }[row.externalType] }}
+                </span>
+              </div>
+              <div v-if="row.address && row.phone" class="ml10" style="align-self: baseline">
+                <el-popover trigger="hover" width="400">
+                  <el-form ref="form">
+                    <el-form-item label="联系人：">
+                      {{ row.contact }}
+                    </el-form-item>
+                    <el-form-item label="联系地址：">
+                      {{ row.address }}
+                    </el-form-item>
+                    <el-form-item label="联系电话：">
+                      {{ row.phone }}
+                    </el-form-item>
+                  </el-form>
+                  <div style="display: inline" slot="reference">
+                    <i class="el-icon-warning"></i>
+                  </div>
+                </el-popover>
+              </div>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="购买数量" align="center" prop="productNum" />
+        <el-table-column label="付款金额(元)" align="center" prop="totalFee" />
+        <el-table-column label="收款员工" align="center" prop="weUserName" />
+        <el-table-column label="收款商户" align="center" prop="mchName"></el-table-column>
+        <el-table-column label="交易状态" align="center" prop="orderStateStr">
+          <template slot-scope="{ row }">
+            <a
+              v-if="row.orderStateStr"
+              style="color: var(--color); border-bottom: 1px solid var(--color)"
+              @click="tradingStateFn(row.orderNo)">
+              {{ row.orderStateStr }}
+            </a>
+            <span v-else>-</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="退款状态" align="center" prop="refundStateStr">
+          <template slot-scope="{ row }">
+            <a
+              v-if="row.refundStateStr"
+              style="color: var(--color); border-bottom: 1px solid var(--color)"
+              @click="refundStateFn(row.orderNo)">
+              {{ row.refundStateStr }}
+            </a>
+            <span v-else>-</span>
+          </template>
+        </el-table-column>
+      </el-table>
+      <pagination
+        v-show="total > 0"
+        :total="total"
+        :page.sync="query.pageNum"
+        :limit.sync="query.pageSize"
+        @pagination="getList()" />
     </div>
-    <el-table v-loading="loading" :data="list">
-      <el-table-column label="商品" align="center" prop="" width="200">
-        <div slot-scope="{ row }">
-          <div style="display: flex;">
-            <el-image
-              style="width: 50px; height: 50px; margin-right: 3px; flex-shrink: 0;"
-              :src="row.picture"
-            ></el-image>
-            <span class="limit_span">{{ row.describe }}</span>
-          </div>
-        </div>
-      </el-table-column>
-      <el-table-column label="客户" align="center" prop="price">
-        <template slot-scope="{ row }">
-          <div class="cp flex aic">
-            <el-image style="width: 50px; height: 50px; flex: none;" :src="row.externalAvatar" fit="fit"></el-image>
-            <div class="ml10">
-              <p>{{ row.externalName }}</p>
-              <!-- <i :class="['el-icon-s-custom', { 1: 'man', 2: 'woman' }[row.gender]]"></i> -->
-              <span :style="{ color: row.externalType === 1 ? '#4bde03' : '#f9a90b' }">
-                {{ { 1: '@微信', 2: '@企业微信' }[row.externalType] }}
-              </span>
-            </div>
-            <div v-if="row.address && row.phone" class="ml10" style="align-self: baseline;">
-              <el-popover trigger="hover" width="400">
-                <el-form ref="form">
-                  <el-form-item label="联系人：">
-                    {{ row.contact }}
-                  </el-form-item>
-                  <el-form-item label="联系地址：">
-                    {{ row.address }}
-                  </el-form-item>
-                  <el-form-item label="联系电话：">
-                    {{ row.phone }}
-                  </el-form-item>
-                </el-form>
-                <div style="display: inline;" slot="reference">
-                  <i class="el-icon-warning"></i>
-                </div>
-              </el-popover>
-            </div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="购买数量" align="center" prop="productNum" />
-      <el-table-column label="付款金额(元)" align="center" prop="totalFee" />
-      <el-table-column label="收款员工" align="center" prop="weUserName" />
-      <el-table-column label="收款商户" align="center" prop="mchName"> </el-table-column>
-      <el-table-column label="交易状态" align="center" prop="orderStateStr">
-        <template slot-scope="{ row }">
-          <a
-            v-if="row.orderStateStr"
-            style="color: #0079de; border-bottom: 1px solid #0079de;"
-            @click="tradingStateFn(row.orderNo)"
-            >{{ row.orderStateStr }}</a
-          >
-          <span v-else> - </span>
-        </template>
-      </el-table-column>
-      <el-table-column label="退款状态" align="center" prop="refundStateStr">
-        <template slot-scope="{ row }">
-          <a
-            v-if="row.refundStateStr"
-            style="color: #0079de; border-bottom: 1px solid #0079de;"
-            @click="refundStateFn(row.orderNo)"
-            >{{ row.refundStateStr }}</a
-          >
-          <span v-else> - </span>
-        </template>
-      </el-table-column>
-    </el-table>
-    <pagination
-      v-show="total > 0"
-      :total="total"
-      :page.sync="query.pageNum"
-      :limit.sync="query.pageSize"
-      @pagination="getList()"
-    />
+
     <!-- 弹窗 -->
     <el-dialog title="交易状态" :visible.sync="dialogVisible" width="800px" :close-on-click-modal="false">
       <el-row>
@@ -142,23 +142,23 @@
               {{ orderState.orderNo }}
               <el-button
                 type="primary"
-                style="margin-left: 20px;"
+                style="margin-left: 20px"
                 plain
                 size="mini"
-                @click="handleCopy(orderState.orderNo)"
-                >复制</el-button
-              >
+                @click="handleCopy(orderState.orderNo)">
+                复制
+              </el-button>
             </el-form-item>
             <el-form-item label="商户单号：">
               {{ orderState.mchNo }}
               <el-button
-                style="margin-left: 20px;"
+                style="margin-left: 20px"
                 type="primary"
                 plain
                 size="mini"
-                @click="handleCopy(orderState.mchNo)"
-                >复制</el-button
-              >
+                @click="handleCopy(orderState.mchNo)">
+                复制
+              </el-button>
             </el-form-item>
           </el-form>
         </el-col>
@@ -168,8 +168,8 @@
       </div>
     </el-dialog>
     <el-dialog title="退款状态" :visible.sync="dialogStateVisible" width="800px" :close-on-click-modal="false">
-      <div style="background-color: #f5f5f5; padding: 20px;">
-        <div class="g-card g-pad20" v-for="(unit, key) in refundStateList" :key="key">
+      <div style="background-color: #f5f5f5; padding: 20px">
+        <div class="g-card" v-for="(unit, key) in refundStateList" :key="key">
           <el-form ref="form">
             <el-form-item label="退款发起时间：">
               {{ unit.refundTime }}
@@ -185,9 +185,9 @@
             </el-form-item>
             <el-form-item label="退款单号：">
               {{ unit.refundNo }}
-              <el-button style="margin-left: 20px;" type="primary" plain size="mini" @click="handleCopy(unit.refundNo)"
-                >复制</el-button
-              >
+              <el-button style="margin-left: 20px" type="primary" plain size="mini" @click="handleCopy(unit.refundNo)">
+                复制
+              </el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -201,237 +201,236 @@
       :visible.sync="dialogVisibleSelect"
       title="组织架构"
       :defaultValues="userArray"
-      @success="getSelectUser"
-    ></SelectWeUser>
+      @success="getSelectUser"></SelectWeUser>
   </div>
 </template>
 
 <script>
-  import * as api from '@/api/commodityCenter/commodityManage'
-  import { dateFormat } from '@/utils/index'
+import * as api from '@/api/commodityCenter/commodityManage'
+import { dateFormat } from '@/utils/index'
 
-  export default {
-    components: {},
-    props: {},
-    data() {
-      return {
-        query: {
-          pageNum: 1,
-          pageSize: 10,
-          productName: '',
-          externalName: '',
-          weUserId: '',
-          orderState: '',
-          refundState: '',
-          beginTime: '',
-          endTime: ''
-        },
-        loading: false,
-        dialogVisible: false,
-        total: 0,
-        list: [],
-        lastSyncTime: 0,
-        qrUserName: undefined,
-        userArray: [], // 选择人员
-        userArrayStr: '',
-        dialogVisibleSelect: false,
-        dateRange: [],
-        dialogStateVisible: false,
-        dialogVisible: false,
-        orderState: {
-          payTime: '',
-          orderNo: '',
-          mchNo: ''
-        },
-        refundStateList: []
-      }
-    },
-    computed: {},
-    created() {
-      this.$store.dispatch(
-        'app/setBusininessDesc',
-        `
+export default {
+  components: {},
+  props: {},
+  data() {
+    return {
+      query: {
+        pageNum: 1,
+        pageSize: 10,
+        productName: '',
+        externalName: '',
+        weUserId: '',
+        orderState: '',
+        refundState: '',
+        beginTime: '',
+        endTime: '',
+      },
+      loading: false,
+      dialogVisible: false,
+      total: 0,
+      list: [],
+      lastSyncTime: 0,
+      qrUserName: undefined,
+      userArray: [], // 选择人员
+      userArrayStr: '',
+      dialogVisibleSelect: false,
+      dateRange: [],
+      dialogStateVisible: false,
+      dialogVisible: false,
+      orderState: {
+        payTime: '',
+        orderNo: '',
+        mchNo: '',
+      },
+      refundStateList: [],
+    }
+  },
+  computed: {},
+  created() {
+    this.$store.dispatch(
+      'app/setBusininessDesc',
+      `
 			     <div>查看商品所有订单及明细记录。</div>
-			   `
-      )
+			   `,
+    )
+    this.getList()
+  },
+  methods: {
+    handleCopy(text) {
+      const input = document.createElement('input')
+      input.style.cssText = 'opacity: 0;'
+      input.type = 'text'
+      input.value = text // 修改文本框的内容
+      document.body.appendChild(input)
+      input.select() // 选中文本
+      document.execCommand('copy') // 执行浏览器复制命令
+      this.$message({ message: '复制成功', type: 'success' })
+    },
+    tradingStateFn(id) {
+      api.getOrderState(id).then((res) => {
+        this.orderState = res.data
+        this.dialogVisible = true
+      })
+    },
+    refundStateFn(id) {
+      api.getRefundOrderState(id).then((res) => {
+        this.refundStateList = res.data
+        this.dialogStateVisible = true
+      })
+    },
+    resetForm() {
+      this.query = {
+        pageNum: 1,
+        pageSize: 10,
+        productName: '',
+        externalName: '',
+        weUserId: '',
+        orderState: '',
+        refundState: '',
+        beginTime: '',
+        endTime: '',
+      }
       this.getList()
     },
-    methods: {
-      handleCopy(text) {
-        const input = document.createElement('input')
-        input.style.cssText = 'opacity: 0;'
-        input.type = 'text'
-        input.value = text // 修改文本框的内容
-        document.body.appendChild(input)
-        input.select() // 选中文本
-        document.execCommand('copy') // 执行浏览器复制命令
-        this.$message({ message: '复制成功', type: 'success' })
-      },
-      tradingStateFn(id) {
-        api.getOrderState(id).then((res) => {
-          this.orderState = res.data
-          this.dialogVisible = true
+    getList(page) {
+      page && (this.query.pageNum = page)
+      this.loading = true
+      api
+        .getOrderTalbe(this.query)
+        .then(({ rows, total, lastSyncTime }) => {
+          this.list = rows
+          this.total = +total
+          this.lastSyncTime = lastSyncTime
+          this.loading = false
         })
-      },
-      refundStateFn(id) {
-        api.getRefundOrderState(id).then((res) => {
-          this.refundStateList = res.data
-          this.dialogStateVisible = true
+        .catch(() => {
+          this.loading = false
         })
-      },
-      resetForm() {
-        this.query = {
-          pageNum: 1,
-          pageSize: 10,
-          productName: '',
-          externalName: '',
-          weUserId: '',
-          orderState: '',
-          refundState: '',
-          beginTime: '',
-          endTime: ''
-        }
-        this.getList()
-      },
-      getList(page) {
-        page && (this.query.pageNum = page)
-        this.loading = true
-        api
-          .getOrderTalbe(this.query)
-          .then(({ rows, total, lastSyncTime }) => {
-            this.list = rows
-            this.total = +total
-            this.lastSyncTime = lastSyncTime
-            this.loading = false
-          })
-          .catch(() => {
-            this.loading = false
-          })
-      },
-      exportFn() {
-        const loading = this.$loading({
-          lock: true,
-          text: 'Loading',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
+    },
+    exportFn() {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)',
+      })
+      api
+        .exportOrder({
+          productName: this.query.productName,
+          externalName: this.query.externalName,
+          weUserId: this.query.weUserId,
+          orderState: this.query.orderState,
+          refundState: this.query.refundState,
+          beginTime: this.query.beginTime,
+          endTime: this.query.endTime,
         })
-        api
-          .exportOrder({
-            productName: this.query.productName,
-            externalName: this.query.externalName,
-            weUserId: this.query.weUserId,
-            orderState: this.query.orderState,
-            refundState: this.query.refundState,
-            beginTime: this.query.beginTime,
-            endTime: this.query.endTime
-          })
-          .then((res) => {
-            if (!res) return
-            const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
-            if (window.navigator.msSaveOrOpenBlob) {
-              //兼容IE10
-              navigator.msSaveBlob(blob, '订单')
-            } else {
-              const href = URL.createObjectURL(blob)
-              const a = document.createElement('a')
-              a.style.display = 'none'
-              a.href = href
-              a.download = dateFormat(new Date(), 'yyyy-MM-dd') + '_订单.xlsx'
-              a.click() //触发下载
-              URL.revokeObjectURL(a.href) //释放URL对象
-            }
-            loading.close()
-          })
-          .catch(() => {
-            loading.close()
-          })
-      },
-      sync() {
-        const loading = this.$loading({
-          lock: true,
-          text: 'Loading',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
+        .then((res) => {
+          if (!res) return
+          const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+          if (window.navigator.msSaveOrOpenBlob) {
+            //兼容IE10
+            navigator.msSaveBlob(blob, '订单')
+          } else {
+            const href = URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.style.display = 'none'
+            a.href = href
+            a.download = dateFormat(new Date(), 'yyyy-MM-dd') + '_订单.xlsx'
+            a.click() //触发下载
+            URL.revokeObjectURL(a.href) //释放URL对象
+          }
+          loading.close()
         })
-        api
-          .setOrderSync()
-          .then(() => {
-            loading.close()
-            this.msgSuccess('后台开始同步数据，请稍后关注进度')
-            this.getList()
-          })
-          .catch(() => {
-            loading.close()
-          })
-      },
-      getSelectUser(data) {
-        this.userArray = data
-        this.qrUserName = this.userArray
-          .map(function (obj, index) {
-            return obj.name
-          })
-          .join(',')
-        this.query.weUserId = this.userArray
-          .map(function (obj, index) {
-            return obj.userId
-          })
-          .join(',')
-      },
-      setChange(data) {
-        if (data) {
-          this.query.beginTime = data[0]
-          this.query.endTime = data[1]
-        } else {
-          this.query.beginTime = ''
-          this.query.endTime = ''
-        }
+        .catch(() => {
+          loading.close()
+        })
+    },
+    sync() {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)',
+      })
+      api
+        .setOrderSync()
+        .then(() => {
+          loading.close()
+          this.msgSuccess('后台开始同步数据，请稍后关注进度')
+          this.getList()
+        })
+        .catch(() => {
+          loading.close()
+        })
+    },
+    getSelectUser(data) {
+      this.userArray = data
+      this.qrUserName = this.userArray
+        .map(function (obj, index) {
+          return obj.name
+        })
+        .join(',')
+      this.query.weUserId = this.userArray
+        .map(function (obj, index) {
+          return obj.userId
+        })
+        .join(',')
+    },
+    setChange(data) {
+      if (data) {
+        this.query.beginTime = data[0]
+        this.query.endTime = data[1]
+      } else {
+        this.query.beginTime = ''
+        this.query.endTime = ''
       }
-    }
-  }
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
-  .el-icon-s-custom {
-    font-size: 16px;
-    color: #999;
-    &.man {
-      color: #13a2e8;
-    }
-    &.woman {
-      color: #f753b2;
-    }
+.el-icon-s-custom {
+  font-size: 16px;
+  color: #999;
+  &.man {
+    color: #13a2e8;
   }
-  .tip {
-    color: #aaa;
-    font-size: 12px;
-    line-height: 20px;
+  &.woman {
+    color: #f753b2;
   }
-  .phone-content {
-    padding: 10px;
-  }
-  .price {
-    font-weight: 500;
-    font-size: 20px;
-    margin: 10px 0;
-  }
-  .content {
-    margin: 10px 0;
-  }
-  .commodity-img {
-    width: 100%;
-  }
-  .limit_span {
-    // width: 250px;
-    // overflow: hidden;
-    // text-overflow: ellipsis;
-    // // white-space: nowrap;
-    // display: inline-block;
+}
+.tip {
+  color: #aaa;
+  font-size: 12px;
+  line-height: 20px;
+}
+.phone-content {
+  padding: 10px;
+}
+.price {
+  font-weight: 500;
+  font-size: 20px;
+  margin: 10px 0;
+}
+.content {
+  margin: 10px 0;
+}
+.commodity-img {
+  width: 100%;
+}
+.limit_span {
+  // width: 250px;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  // // white-space: nowrap;
+  // display: inline-block;
 
-    white-space: pre-wrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
+  white-space: pre-wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
 </style>

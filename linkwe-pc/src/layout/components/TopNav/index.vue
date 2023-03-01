@@ -115,6 +115,10 @@ export default {
 </script>
 
 <style lang="scss">
+.bglg {
+  background: linear-gradient(to left, var(--color) 0%, var(--color-lighter) 100%);
+  box-shadow: 0px 13px 16px 0px rgba(7, 168, 85, 0.2);
+}
 .el-menu {
   background-color: transparent !important;
 }

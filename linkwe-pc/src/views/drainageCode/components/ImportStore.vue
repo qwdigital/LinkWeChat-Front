@@ -1,6 +1,11 @@
 <template>
   <div>
-    <el-dialog title="批量导入" :visible.sync="dialogVisible" width="500px">
+    <el-dialog
+      :close-on-click-modal="false"
+      :show-close="false"
+      title="批量导入"
+      :visible.sync="dialogVisible"
+      width="500px">
       <div class="download_template">
         <span>请下载门店模板，按格式修改后导入</span>
         <el-button size="mini" type="text" plain @click="downloadFn">下载模板</el-button>
@@ -15,7 +20,8 @@
           ref="upload"
           :on-remove="handleRemove"
           :on-change="setFileData"
-          :auto-upload="false">
+          :auto-upload="false"
+          :on-exceed="handlerExceed">
           <i class="el-icon-upload"></i>
           <div style="font-size: 12px">
             将文件拖拽到此区域
@@ -31,7 +37,13 @@
         <div>3、所属地区请务必按照“xxx省xxx市xxx区/县”格式填写。</div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button
+          @click="
+            dialogVisible = false
+            file = ''
+          ">
+          取 消
+        </el-button>
         <el-button type="primary" @click="submitImport" v-loading="submitLoading">确 定</el-button>
       </span>
     </el-dialog>
@@ -67,6 +79,9 @@ export default {
     },
   },
   methods: {
+    handlerExceed() {
+      this.msgError('上传文件个数最大为1，请选择拖拽一份文件或删除已存在文件！')
+    },
     submitImport() {
       if (!this.file) {
         this.msgInfo('请先上传文件！')

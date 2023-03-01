@@ -5,7 +5,6 @@ export default {
   components: {
     TimeSearchTitle: () => import('@/components/common/TimeSearchTitle'),
     PhonePreview: () => import('./components/PhonePreview.vue'),
-    CardGroupIndex: () => import('@/components/CardGroupIndex'),
     ChartLine: () => import('@/components/ChartLine'),
     Add: () => import('./components/Add'),
   },
@@ -110,18 +109,18 @@ export default {
 <template>
   <div class="fxbw ais">
     <div class="pr10" style="flex: auto; overflow: auto">
-      <div class="g-title fxbw">
-        短链内容
-        <el-button type="primary" class="fr" @click="$router.push({ path: './addEdit', query: { id: data.id } })">
-          编辑
-        </el-button>
-      </div>
-      <div class="g-card g-pad20">
+      <div class="g-card">
+        <div class="g-card-title fxbw">
+          短链内容
+          <el-button type="primary" class="fr" @click="$router.push({ path: './addEdit', query: { id: data.id } })">
+            编辑
+          </el-button>
+        </div>
         <Add :form="data" />
       </div>
-      <div class="g-title mt20 mb10">数据趋势</div>
-      <CardGroupIndex :data="cardData" style="margin-right: -10px"></CardGroupIndex>
-      <div class="g-card g-pad20" style="margin-top: 0">
+      <div class="g-card">
+        <div class="g-card-title">数据趋势</div>
+        <CardGroupIndex :data="cardData" style="margin-right: -10px"></CardGroupIndex>
         <TimeSearchTitle @search="getLineAnalysis"></TimeSearchTitle>
         <ChartLine
           :xData="xData"

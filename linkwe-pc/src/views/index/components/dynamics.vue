@@ -1,64 +1,52 @@
 <template>
   <div class="dynamics">
     <div class="dynamics-content" v-infinite-scroll="load">
-        <div
-          class="dynamics-item"
-          v-for="(item, index) in dynamicsOutList"
-          :key="index"
-        >
-          <div class="dynamics-left">
-            <div class="top">
-              <span :class="item.operatorType === 1 ? 'customer' : 'staff'">{{
-                item.operatorType === 1 ? "客户" : "员工"
-              }}</span>
-              <span>{{ item.operatorName }}</span>
-            </div>
-            <div class="bottom">
-              <span
-                :class="
-                  item.action === '删除员工' ||
-                  item.action === '解散群聊' ||
-                  item.action === '退出群聊'
-                    ? 'unnomal'
-                    : 'nomal'
-                "
-                >{{ item.action }}&nbsp;&nbsp;</span
-              >
-              <span>{{ item.operatoredObjectName }}</span>
-            </div>
+      <div class="dynamics-item" v-for="(item, index) in dynamicsOutList" :key="index">
+        <div class="dynamics-left">
+          <div class="top">
+            <span :class="item.operatorType === 1 ? 'customer' : 'staff'">
+              {{ item.operatorType === 1 ? '客户' : '员工' }}
+            </span>
+            <span>{{ item.operatorName }}</span>
           </div>
-          <div class="dynamics-right">
-            <span>{{
-              item.trajectoryType === 1
-                ? "客户动态"
-                : item.trajectoryType === 5
-                ? "客群动态"
-                : ""
-            }}</span>
-            <span>{{ item.createTime }}</span>
+          <div class="bottom">
+            <span
+              :class="
+                item.action === '删除员工' || item.action === '解散群聊' || item.action === '退出群聊'
+                  ? 'unnomal'
+                  : 'nomal'
+              ">
+              {{ item.action }}&nbsp;&nbsp;
+            </span>
+            <span>{{ item.operatoredObjectName }}</span>
           </div>
         </div>
+        <div class="dynamics-right">
+          <span>{{ item.trajectoryType === 1 ? '客户动态' : item.trajectoryType === 5 ? '客群动态' : '' }}</span>
+          <span>{{ item.createTime }}</span>
+        </div>
+      </div>
       <div v-if="finished" class="ac">暂无更多数据</div>
     </div>
   </div>
 </template>
 
 <script>
-import { getCompanyDynamicsData } from "@/api/index";
+import { getCompanyDynamicsData } from '@/api/index'
 export default {
   data() {
     return {
       loading: false,
       finished: false,
       dynamicsFrom: {
-        trajectoryType:'',
+        trajectoryType: '',
         pageSize: 10,
         pageNum: 1,
       },
       dynamicsOutList: [],
       total: 0,
       isLoad: false,
-    };
+    }
   },
   methods: {
     // tabClick(i) {
@@ -73,49 +61,45 @@ export default {
     // },
     load() {
       if (this.total > this.dynamicsOutList.length) {
-        this.dynamicsFrom.pageNum++;
-        this.getDynamicsData();
-      } else if (this.total < this.dynamicsOutList.length){
-        this.finished = true;
+        this.dynamicsFrom.pageNum++
+        this.getDynamicsData()
+      } else if (this.total < this.dynamicsOutList.length) {
+        this.finished = true
       }
     },
     // 获取企业轨迹
     getDynamicsData(page) {
-      page && (this.dynamicsFrom.pageNum = page);
-      this.loading = true;
-      this.finished = false;
+      page && (this.dynamicsFrom.pageNum = page)
+      this.loading = true
+      this.finished = false
       getCompanyDynamicsData(this.dynamicsFrom).then((res) => {
         if (res.code === 200) {
           if (this.dynamicsFrom.pageNum > 1) {
-            this.dynamicsOutList = [...this.dynamicsOutList, ...res.rows];
+            this.dynamicsOutList = [...this.dynamicsOutList, ...res.rows]
           } else {
-            this.dynamicsOutList = res.rows;
+            this.dynamicsOutList = res.rows
           }
-          this.total = Number(res.total);
+          this.total = Number(res.total)
           this.dynamicsOutList.forEach((item) => {
             item.operatoredObjectType =
-              item.operatoredObjectType === 1
-                ? "客户"
-                : item.operatoredObjectType === 2
-                ? "员工"
-                : "客群";
-          });
+              item.operatoredObjectType === 1 ? '客户' : item.operatoredObjectType === 2 ? '员工' : '客群'
+          })
           if (this.total <= this.dynamicsOutList.length) {
-            this.finished = true;
+            this.finished = true
           }
         }
-        this.loading = false;
-        this.isLoad = false;
-      });
+        this.loading = false
+        this.isLoad = false
+      })
     },
   },
   mounted() {
-    this.getDynamicsData();
+    this.getDynamicsData()
   },
   created() {
     // this.dynamicsFrom.dataScope = this.$route.query.dataScope;
-  }
-};
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -153,7 +137,7 @@ export default {
           }
           .customer {
             background: #ecf5ff;
-            color: #0079de;
+            color: var(--color);
           }
           .staff {
             background: #effffa;
@@ -161,7 +145,7 @@ export default {
           }
           span:nth-child(2) {
             font-size: 14px;
-            font-family: "PingFang SC-粗体", "PingFang SC";
+            font-family: 'PingFang SC-粗体', 'PingFang SC';
             color: #222222;
             line-height: 20px;
             font-weight: 600;
@@ -170,13 +154,13 @@ export default {
         .bottom {
           span {
             font-size: 12px;
-            font-family: "PingFang SC-中等", "PingFang SC";
+            font-family: 'PingFang SC-中等', 'PingFang SC';
             font-weight: normal;
             color: #666666;
             line-height: 17px;
           }
           .nomal {
-            color: #0079de;
+            color: var(--color);
           }
           .unnomal {
             color: #e34d59;
@@ -189,7 +173,7 @@ export default {
         text-align: right;
         span {
           font-size: 12px;
-          font-family: "PingFang SC-中等", "PingFang SC";
+          font-family: 'PingFang SC-中等', 'PingFang SC';
           font-weight: normal;
           line-height: 17px;
         }

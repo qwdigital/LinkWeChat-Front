@@ -1,5 +1,5 @@
 <template>
-  <div class="index bgnone">
+  <div class="index">
     <div class="index-l">
       <div class="flex">
         <div class="userinfo">
@@ -21,10 +21,10 @@
           </div>
           <div class="data-view-wrap">
             <div class="data-view-item" v-for="(item, index) in pannelList" :key="index">
-              <div class="fl view-item-icon">
-                <img class="view-item-img" :src="$store.state.user.avatar" alt="" v-if="$store.state.user.avatar" />
-              </div>
-              <div class="col-style">
+              <div
+                class="view-item-icon fl"
+                :style="{ backgroundImage: `url(${require('./asstes/' + index + '.png')})` }"></div>
+              <div class="view-item-title">
                 <span>{{ item.title }}</span>
                 <el-popover trigger="hover" :content="item.content" placement="top-start">
                   <i slot="reference" class="el-icon-warning-outline ml5"></i>
@@ -88,18 +88,19 @@
         <div class="g-card enterprise-card-item">
           <template v-if="this.dynamicsOutList.length">
             <div class="dynamics-item" v-for="(item, index) in dynamicsOutList" :key="index">
-              <div class="info fxbw aic bfc-o">
+              <div class="info fcbw bfc-o">
                 <div>
-                  <span :class="[item.operatorType === 1 ? 'customer' : 'staff', 'type']">
+                  <span :class="[item.operatorType === 1 ? 'customer' : 'staff', 'type lh1']">
                     {{ item.operatorType === 1 ? '客户' : '员工' }}
                   </span>
                   <span class="operatorName">{{ item.operatorName }}</span>
                 </div>
 
-                <span :class="[item.operatorType === 1 ? 'customer' : 'staff', 'type type1 fr']">
+                <span :class="[item.operatorType === 1 ? 'customer' : 'staff', 'type1 fr lh1']">
                   {{ item.trajectoryType === 1 ? '客户动态' : item.trajectoryType === 5 ? '客群动态' : '' }}
                 </span>
               </div>
+
               <div class="operator bfc-o">
                 <span
                   :class="
@@ -115,7 +116,7 @@
             </div>
           </template>
 
-          <div class="sub-text-color ac" v-else>暂无数据</div>
+          <div class="g-tip-color ac" v-else>暂无数据</div>
         </div>
 
         <!-- 帮助中心 -->
@@ -166,24 +167,20 @@
 </template>
 <script>
 import { getUserProfile } from '@/api/system/user'
-import Dynamics from './components/dynamics.vue'
-import TabContent from './components/TabContent'
 import * as api from '@/api/index'
-// import * as echarts from "echarts";
-import CardGroupIndex from '@/components/CardGroupIndex'
-import { getCustomerServiceQrUrl } from '@/api/login'
+// import { getCustomerServiceQrUrl } from '@/api/login'
 import CountTo from 'vue-count-to'
 export default {
   name: 'Index',
-  components: { CountTo, Dynamics, TabContent, CardGroupIndex },
+  components: {
+    CountTo,
+    Dynamics: () => import('./components/dynamics'),
+    TabContent: () => import('./components/TabContent'),
+  },
   data() {
     return {
       api,
       table: {
-        // userCount: 0,
-        // customerCount: 0,
-        // groupCount: 0,
-        // groupMemberCount: 0,
         currentEdition: '-', // 当前版本
         userNumbers: 0, // 使用人数
         dueDate: '-', // 到期时间
@@ -403,168 +400,137 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.userinfo {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 218px;
-  background: linear-gradient(180deg, #ffffff 50%, rgba(255, 255, 255, 0.2) 100%);
-  border-radius: var(--border-radius-big);
-  padding: 20px;
-  .portrait {
-    border: 10px solid #fff;
-    margin-top: -55px;
-    border-radius: 50%;
-    background: #fff;
-    text-align: center;
-    width: 118px;
-    .portrait-img {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      border: 1px solid #fafafa;
-    }
-  }
-  .wel {
-    font-size: 22px;
-    font-weight: bold;
-    margin: 0 0 16px;
-  }
-  .role {
-    color: white;
-    padding: 6px 8px;
-    border-radius: var(--border-radius-small);
-  }
-}
-.data-view {
-  margin: 0 0 0 16px;
-  flex: auto;
-  .data-view-wrap {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .data-view-wrap {
-    margin: 20px -20px 0;
-  }
-  .data-view-item {
-    border-left: 1px solid #e2e8f0;
-    &:first-child {
-      border: 0;
-    }
-  }
-  .view-item-icon {
-    width: 54px;
-    height: 54px;
-    overflow: hidden;
-    background: #edf2f9;
-    border-radius: var(--border-radius-big);
-    margin: 0 16px;
-    .view-item-img {
-      width: 100%;
-    }
-  }
-
-  .col-style {
-    color: #4e5969;
-  }
-  .view-item-num {
-    font-size: 24px;
-    font-weight: 500;
-    color: #1d2129;
-    // margin-top: 10px;
-    line-height: 50px;
-    font-family: Bahnschrift-Regular, Bahnschrift;
-  }
-}
-.sub-text-color {
-  text-align: center;
-  width: 100%;
-  margin-top: 20px;
-}
-.up-time {
-  color: #999;
-  font-weight: 200;
-}
-.el-icon-question {
-  color: #999;
-  font-size: 14px;
-}
-.dialog-content {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  img {
-    width: 260px;
-    height: 260px;
-  }
-  span {
-    font-size: 20px;
-    line-height: 50px;
-  }
-}
 .index {
   display: flex;
   padding-top: 38px;
-  .index-l {
-    width: 76%;
+}
+.index-l {
+  width: 76%;
+  .userinfo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 218px;
+    background: url('./asstes/bg.svg') no-repeat;
+    border-radius: var(--border-radius-big);
+    padding: 0px 20px 20px;
+    margin-top: -38px;
+    .portrait {
+      padding: 10px;
+      .portrait-img {
+        display: block;
+        margin: 0 auto;
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        border: 1px solid #fafafa;
+      }
+    }
+    .wel {
+      font-size: 22px;
+      font-weight: bold;
+      margin: 2px 0 16px;
+    }
+    .role {
+      color: white;
+      padding: 6px 8px;
+      font-size: 12px;
+      line-height: 1;
+      border-radius: var(--border-radius-small);
+    }
   }
+  .data-view {
+    margin: 0 0 0 16px;
+    flex: auto;
+    .data-view-wrap {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin: 30px -20px 0;
+    }
+    .data-view-item {
+      border-left: 1px solid #e2e8f0;
+      &:first-child {
+        border: 0;
+      }
+    }
+    .view-item-icon {
+      width: 54px;
+      height: 54px;
+      overflow: hidden;
+      background: #edf2f9 center no-repeat;
+      // background-repeat: no-repeat;
+      border-radius: var(--border-radius-big);
+      margin: 0 16px;
+    }
 
-  .index-r {
-    width: 23%;
-    margin-left: 1%;
+    .view-item-title {
+      color: #4e5969;
+      margin-bottom: 10px;
+    }
+    .view-item-num {
+      font-size: 24px;
+      font-weight: 500;
+      color: #1d2129;
+      font-family: Bahnschrift-Regular, Bahnschrift;
+    }
+  }
+}
 
-    .inedx-r-top {
-      .companyName {
-        line-height: 36px;
-        font-size: 18px;
-        font-weight: 500;
-        color: #333;
+.index-r {
+  width: 23%;
+  margin-left: 1%;
+
+  .inedx-r-top {
+    .companyName {
+      line-height: 36px;
+      font-size: 18px;
+      font-weight: 500;
+      color: #333;
+      font-weight: bold;
+    }
+
+    .info {
+      line-height: 24px;
+      margin-top: 10px;
+      color: #4e5969;
+      .fr {
+        color: var(--font-black);
         font-weight: bold;
       }
+    }
+  }
+  //   企业动态
+  .card-title {
+    background: linear-gradient(270deg, #07c160 0%, #90de45 100%);
+    padding-bottom: 10px;
+  }
+  .title-right-icon {
+    width: 16px;
+    height: 16px;
+    line-height: 15px;
+    background: white;
+    border-radius: 50%;
+    font-size: 12px;
+    text-align: center;
+  }
+  .enterprise-card-item {
+    overflow: hidden;
+    border-radius: var(--border-radius-big);
+    margin-top: -10px;
+    padding-top: 0;
+    .dynamics-item {
+      border-bottom: 1px solid #f1f1f1;
+      padding: 16px 0;
 
       .info {
-        line-height: 24px;
-        margin-top: 10px;
-        color: #4e5969;
-        .fr {
-          color: var(--font-black);
-          font-weight: bold;
-        }
-      }
-    }
-    //   企业动态
-    .card-title {
-      background: linear-gradient(270deg, #07c160 0%, #90de45 100%);
-      padding-bottom: 10px;
-    }
-    .title-right-icon {
-      width: 16px;
-      height: 16px;
-      line-height: 15px;
-      background: white;
-      border-radius: 50%;
-      font-size: 12px;
-      text-align: center;
-    }
-    .enterprise-card-item {
-      overflow: hidden;
-      border-radius: var(--border-radius-big);
-      margin-top: -10px;
-      padding-top: 0;
-      .dynamics-item {
-        border-bottom: 1px solid #f1f1f1;
-        padding: 16px 0;
-        .info {
-          span {
-            vertical-align: middle;
-          }
+        span {
+          vertical-align: middle;
         }
         .type {
           display: inline-block;
           max-width: 80px;
-          padding: 3px 5px;
+          padding: 4px 5px 3px;
           border-radius: 4px;
           font-size: 12px;
           margin-right: 8px;
@@ -580,55 +546,77 @@ export default {
           border-color: var(--color);
         }
         .type1 {
-          padding: 4px 8px;
+          padding: 5px 8px 4px;
+          border-radius: 4px;
           background: none;
+          font-size: 12px;
           border: 1px solid;
-          border-color: inherit;
         }
-
         .operatorName {
           font-size: 16px;
           color: #222222;
           font-weight: 600;
         }
-        .operator {
-          font-size: 12px;
-          color: #4e5969;
-          margin-top: 5px;
-          .nomal {
-            color: var(--color);
-          }
-          .unnomal {
-            color: #e34d59;
-          }
+      }
+
+      .operator {
+        font-size: 12px;
+        color: #4e5969;
+        margin-top: 10px;
+        .nomal {
+          color: var(--color);
+        }
+        .unnomal {
+          color: #e34d59;
         }
       }
     }
 
-    .help-center {
-      .help-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #f1f1f1;
-        padding: 16px 0;
-        // font-size: 12px;
-        &:first-of-type {
-          margin-top: -16px;
-        }
-        span {
-          vertical-align: middle;
-        }
-        .left-icon {
-          font-size: 26px;
-          vertical-align: middle;
-          margin-right: 10px;
-        }
-        .right-icon {
-          font-size: 20px;
-        }
+    .g-tip-color {
+      text-align: center;
+      width: 100%;
+      margin-top: 20px;
+    }
+  }
+
+  .help-center {
+    .help-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #f1f1f1;
+      padding: 16px 0;
+      // font-size: 12px;
+      &:first-of-type {
+        margin-top: -16px;
+      }
+      span {
+        vertical-align: middle;
+      }
+      .left-icon {
+        font-size: 26px;
+        vertical-align: middle;
+        margin-right: 10px;
+      }
+      .right-icon {
+        font-size: 20px;
       }
     }
+  }
+}
+
+.dialog-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  img {
+    width: 260px;
+    height: 260px;
+  }
+  span {
+    font-size: 20px;
+    line-height: 50px;
   }
 }
 </style>

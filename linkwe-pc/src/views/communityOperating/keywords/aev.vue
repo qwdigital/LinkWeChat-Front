@@ -1,45 +1,33 @@
 <template>
-  <div class="wrap" v-loading="loading">
-    <el-form :model="form" ref="form" :rules="rules" label-width="100px">
+  <div class="flex" v-loading="loading">
+    <el-form :model="form" ref="form" :rules="rules" label-width="100px" class="g-card flex1 mr20">
       <el-form-item label="活码名称" prop="taskName">
-        <el-input
-          v-model="form.taskName"
-          maxlength="30"
-          show-word-limit
-          placeholder="请输入名称"
-          clearable
-        />
+        <el-input v-model="form.taskName" maxlength="30" show-word-limit placeholder="请输入名称" clearable />
       </el-form-item>
 
       <el-form-item label="关键词" prop="keywords">
         <el-input
           v-model="form.keywords"
           placeholder="请输入关键词,多个词用英文逗号分隔,每个词不超过10个字"
-          clearable
-        >
-        </el-input>
+          clearable></el-input>
       </el-form-item>
 
       <el-form-item label="加群引导语" prop="welcomeMsg">
-        <el-input
-          type="textarea"
+        <TextareaExtend
           v-model="form.welcomeMsg"
           maxlength="220"
           show-word-limit
           :autosize="{ minRows: 5, maxRows: 20 }"
           placeholder="请输入加群引导语"
-          clearable
-        />
+          clearable />
       </el-form-item>
 
       <el-form-item label="选择群活码" prop="groupCodeId">
         <el-image
-          style="width: 160px;height: 160px;"
+          style="width: 160px; height: 160px"
           v-if="groupQrCode && groupQrCode.codeUrl"
           :src="groupQrCode.codeUrl"
-          class="code-image"
-        >
-        </el-image>
+          class="code-image"></el-image>
 
         <el-button
           type="primary"
@@ -47,9 +35,9 @@
           class="ml10"
           icon="el-icon-plus"
           size="mini"
-          @click="dialogVisibleSelectQrCode = true"
-          >{{ groupQrCode && groupQrCode.codeUrl ? '修改' : '添加' }}</el-button
-        >
+          @click="dialogVisibleSelectQrCode = true">
+          {{ groupQrCode && groupQrCode.codeUrl ? '修改' : '添加' }}
+        </el-button>
       </el-form-item>
 
       <el-form-item label=" ">
@@ -58,24 +46,19 @@
       </el-form-item>
     </el-form>
 
-    <div class="preview-wrap">
+    <div class="preview-wrap g-card mt0">
       <!-- 预览 -->
-      <div class="tip">欢迎语样式</div>
-
       <PhoneDialog
         :message="form.welcomeMsg || '请输入加群引导语'"
-        :isOther="groupQrCode && groupQrCode.codeUrl ? true : false"
-      >
-        <el-image style="border-radius: 6px; width: 100px;" :src="groupQrCode.codeUrl"> </el-image>
+        :isOther="groupQrCode && groupQrCode.codeUrl ? true : false">
+        <el-image style="border-radius: 6px; width: 100px" :src="groupQrCode.codeUrl"></el-image>
       </PhoneDialog>
     </div>
 
     <SelectQrCode
       :visible.sync="dialogVisibleSelectQrCode"
       @success="submitSelectQrCode"
-      :selected="codes"
-    >
-    </SelectQrCode>
+      :selected="codes"></SelectQrCode>
   </div>
 </template>
 
@@ -96,7 +79,7 @@ export default {
         taskName: '', // 任务名称
         groupCodeId: '', // 群活码ID
         welcomeMsg: '', // 欢迎语
-        keywords: '' // 关键词
+        keywords: '', // 关键词
       },
       codes: [],
       groupQrCode: {},
@@ -104,15 +87,14 @@ export default {
         taskName: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
         welcomeMsg: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
         keywords: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
-        groupCodeId: [{ required: true, message: '该项为必填项', trigger: 'change' }]
-      })
+        groupCodeId: [{ required: true, message: '该项为必填项', trigger: 'change' }],
+      }),
     }
   },
   created() {
     this.taskId = this.$route.query.id
-    this.$route.meta.title = (this.taskId ? '编辑' : '新建') + '关键词拉群'
+    // this.$route.meta.title = (this.taskId ? '编辑' : '新建') + '关键词拉群'
     this.taskId && this.getDetail(this.taskId)
-    
   },
   methods: {
     /** 获取详情 */
@@ -173,19 +155,12 @@ export default {
       this.groupQrCode = data
       this.form.groupCodeId = data.id
       this.$refs.form.validateField('groupCodeId')
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-.wrap {
-  display: flex;
-  margin-top: 24px;
-  .el-form {
-    margin-right: 10%;
-  }
-}
 .el-form-item {
   width: 500px;
 }

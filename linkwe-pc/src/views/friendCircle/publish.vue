@@ -3,7 +3,7 @@
     <el-row :gutter="10" type="flex" style="margin-top: 10px">
       <el-col>
         <el-form label-width="110px" label-position="right">
-          <div class="g-card g-pad20">
+          <div class="g-card">
             <el-form-item label="可见客户" required>
               <el-radio-group v-model="form.scopeType">
                 <el-radio :label="1">全部可见</el-radio>
@@ -11,31 +11,29 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item label="客户标签" v-if="form.scopeType === 0">
-              <el-tag sizi="mini" v-for="(unit, key) in selectedTagList" :key="key">{{
-                unit.name
-              }}</el-tag>
+              <el-tag sizi="mini" v-for="(unit, key) in selectedTagList" :key="key">{{ unit.name }}</el-tag>
               <div>
-                <el-button type="primary" size="mini" plain @click="selectedFn"
-                  >选择客户标签</el-button
-                >
+                <el-button type="primary" size="mini" plain @click="selectedFn">选择客户标签</el-button>
               </div>
             </el-form-item>
             <el-form-item label="添加人" v-if="form.scopeType === 0">
-              <el-tag sizi="mini" v-for="(unit, key) in selectedUserList" :key="key">{{
-                unit.name
-              }}</el-tag>
+              <el-tag sizi="mini" v-for="(unit, key) in selectedUserList" :key="key">{{ unit.name }}</el-tag>
               <div>
-                <el-button type="primary" size="mini" plain @click="onSelectUser"
-                  >选择添加人</el-button
-                >
+                <el-button type="primary" size="mini" plain @click="onSelectUser">选择添加人</el-button>
               </div>
             </el-form-item>
           </div>
-          <FriendCircleContent ref="friendCircleContent" :data="form"></FriendCircleContent>
-          <el-form-item label-width="0" style="margin-top: 20px; margin-bottom: 0">
+          <!-- <FriendCircleContent ref="friendCircleContent" :data="form"></FriendCircleContent> -->
+          <AddMaterial
+            :moduleType="4"
+            @update="onBackStep"
+            @submit="submit"
+            :otherType="3"
+            :showPhone="false"></AddMaterial>
+          <!-- <el-form-item label-width="0" style="margin-top: 20px; margin-bottom: 0">
             <el-button @click="onBackStep">取消</el-button>
             <el-button type="primary" @click="submit">保存</el-button>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
       </el-col>
     </el-row>
@@ -43,24 +41,23 @@
     <SelectTag
       :visible.sync="dialogVisibleSelectTag"
       :defaultValues="selectedTagList"
-      @success="submitSelectTag"
-    >
-    </SelectTag>
+      @success="submitSelectTag"></SelectTag>
     <SelectUser
       :defaultValues="selectedUserList"
       :visible.sync="dialogVisibleSelectUser"
       title="选择使用员工"
-      @success="selectedUser"
-    ></SelectUser>
+      @success="selectedUser"></SelectUser>
   </div>
 </template>
 
 <script>
 import { gotoPublish } from '@/api/circle'
+import AddMaterial from '@/components/ContentCenter/AddMaterial'
 
 export default {
   name: 'publish-detail',
   components: {
+    AddMaterial,
     SelectTag: () => import('@/components/SelectTag'),
     FriendCircleContent: () => import('@/components/FriendCircleContent'),
   },
@@ -116,26 +113,120 @@ export default {
       this.$router.go(-1)
     },
 
-    submit() {
-      if (this.$refs.friendCircleContent.validate()) {
-        if (this.form.scopeType === 0) {
-          this.form.customerTag = this.selectedTagList
-            .map((dd) => {
-              return dd.tagId
-            })
-            .join(',')
-          this.form.noAddUser = this.selectedUserList
-            .map((dd) => {
-              return dd.userId
-            })
-            .join(',')
+    submit(data) {
+      console.log(data)
+      this.form.content = data.templateInfo
+      if (data.attachments.length !== 0) {
+        this.form.contentType = 'link'
+        this.form.realType = data.attachments[0].realType
+        this.form.materialId = data.attachments[0].materialId
+        this.dealType(data.attachments[0])
+      } else {
+        this.form.otherContent = []
+        this.form.contentType = 'text'
+      }
+      // if (this.$refs.friendCircleContent.validate()) {
+      if (this.form.scopeType === 0) {
+        this.form.customerTag = this.selectedTagList
+          .map((dd) => {
+            return dd.tagId
+          })
+          .join(',')
+        this.form.noAddUser = this.selectedUserList
+          .map((dd) => {
+            return dd.userId
+          })
+          .join(',')
+      }
+      gotoPublish(this.form).then((res) => {
+        if (res.code === 200) {
+          this.msgSuccess('操作成功')
+          this.$router.go(-1)
         }
-        gotoPublish(this.form).then((res) => {
-          if (res.code === 200) {
-            this.msgSuccess('操作成功')
-            this.$router.go(-1)
+      })
+      // }
+    },
+    filPicType(file) {
+      let filecontent = JSON.parse(JSON.stringify(file))
+      filecontent = filecontent.split('.')
+      let type = filecontent[filecontent.length - 1]
+      if (type === 'pdf') {
+        return window.lwConfig.DEFAULT_H5_PDF
+      } else if (['doc', 'docx'].includes(type)) {
+        return window.lwConfig.DEFAULT_H5_WORDE
+      } else if (['ppt', 'pptx', 'pps', 'pptsx'].includes(type)) {
+        return window.lwConfig.DEFAULT_H5_PPT
+      } else {
+        return ''
+      }
+    },
+    dealType(data) {
+      this.form.otherContent = []
+      let arr = {}
+      let linkUrl = window.document.location.origin + '/mobile/#/metrialDetail?materiaId=' + data.materialId
+      switch (data.realType) {
+        case 0:
+          arr = {
+            annexType: 'link',
+            annexUrl: data.picUrl,
+            other: data.picUrl,
           }
-        })
+          this.form.otherContent.push(arr)
+          break
+        case 2:
+          arr = {
+            annexType: 'link',
+            annexUrl: linkUrl,
+            other: data.picUrl,
+            title: data.title,
+          }
+          this.form.otherContent.push(arr)
+          break
+        case 3:
+          arr = {
+            annexType: 'link',
+            annexUrl: linkUrl,
+            other: this.filPicType(data.fileUrl),
+            title: data.title,
+          }
+          this.form.otherContent.push(arr)
+          break
+        case 4:
+          arr = {
+            annexType: 'link',
+            annexUrl: linkUrl,
+            other: data.content,
+            title: data.title,
+          }
+          this.form.otherContent.push(arr)
+          break
+        case 5:
+          arr = {
+            annexType: 'link',
+            annexUrl: linkUrl,
+            other: data.fileUrl,
+            title: data.title,
+          }
+          this.form.otherContent.push(arr)
+          break
+        case 9:
+          arr = {
+            annexType: 'link',
+            annexUrl: data.linkUrl,
+            other: data.picUrl ? data.picUrl : window.lwConfig.DEFAULT_H5_TP,
+            title: data.title,
+          }
+          this.form.otherContent.push(arr)
+          break
+        case 12:
+          arr = {
+            annexType: 'link',
+            annexUrl: linkUrl,
+            other: data.picUrl ? data.picUrl : window.lwConfig.DEFAULT_H5_ART,
+            title: data.title,
+          }
+          this.form.otherContent.push(arr)
+          break
       }
     },
   },

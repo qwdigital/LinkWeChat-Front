@@ -5,9 +5,9 @@ const common = {
   SYSTEM_NAME: 'LinkWeChat', // 系统简称
   SYSTEM_NAME_MOBILE: 'LinkWeChat', // 移动端应用简称
   // SYSTEM_NAME_ALL: 'LinkWeChat--全链路私域数字化营销增长解决方案', // 系统全称
-  COMPANY_NAME: '仟微科技', // 公司简称
-  COMPANY_NAME_ALL: '仟微科技', // 公司全称
-  COPYRIGHT: 'Copyright © 2018-2022 LinkWeChat All Rights Reserved.', // 版权信息
+  COMPANY_NAME: 'LinkWeChat', // 公司简称
+  COMPANY_NAME_ALL: 'LinkWeChat', // 公司全称
+  COPYRIGHT: 'Copyright © 2018-2023 LinkWeChat All Rights Reserved.', // 版权信息
   LOGO_DARK: env.BASE_URL + 'static/LOGO_DARK.png', // 深色logo
   LOGO_LIGHT: env.BASE_URL + 'static/LOGO_LIGHT.png', // 淡色logo
   LOGO_TEXT_DARK: env.BASE_URL + 'static/LOGO_TEXT_DARK.png', // 深色logo+文字
@@ -20,6 +20,13 @@ const common = {
   IS_PUBLISH_DIALOG: false, // 是否显示发布弹窗
   COOKIEEXPIRES: 0.5, // token在Cookie中存储的天数，默认0.5天
   WORKWEIXINPAGENAME: 'EnterpriseWechat', // 企业微信设置页面路由name
+  DEFAULT_H5_PIC: env.DOMAIN + '/static/PIC.png',
+  DEFAULT_H5_ART: env.DOMAIN + '/static/ARTICAL.png', // 文章默认封面
+  DEFAULT_H5_TP: env.DOMAIN + '/static/TEXT_PIC.png', // 图文默认封面
+  DEFAULT_H5_PDF: env.DOMAIN + '/static/PDF.png', // pdf默认封面
+  DEFAULT_H5_WORDE: env.DOMAIN + '/static/WORD.png',
+  DEFAULT_H5_PPT: env.DOMAIN + '/static/PPT.png',
+  PRIVIEW_URL: env.VIEW_URL,
 }
 
 // 以下仅用于系统信息展示，不作为项目变量使用，请勿在代码中使用
@@ -58,6 +65,9 @@ const lwConfig = window.lwConfig || {} // 线上动态配置，用于覆盖系�
 // init 含有getter必须放在merge第一位
 window.lwConfig = Object.assign(init, env, common, lwConfig, project)
 // Object.defineProperties(window.lwConfig, {})
+
+// 灰色主题
+// if (process.env.VUE_APP_ENV === 'production') document.documentElement.style.filter = 'grayscale(100%)'
 
 // 统一为img的src不是绝对地址的拼接接口地址
 // document.addEventListener(

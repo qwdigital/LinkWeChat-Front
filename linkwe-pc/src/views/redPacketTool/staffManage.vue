@@ -12,7 +12,7 @@
         </el-form-item>
         <el-form-item label-width="0">
           <el-button type="primary" @click="getList(1)">查询</el-button>
-          <el-button type="success" @click="resetQuery">重置</el-button>
+          <el-button @click="resetQuery">重置</el-button>
         </el-form-item>
       </el-form>
       <el-button
@@ -20,8 +20,8 @@
         @click="
           batchUpdate = false
           edit()
-        "
-        >新建员工限额
+        ">
+        新建员工限额
       </el-button>
       <!-- <el-button
         type="primary"
@@ -35,7 +35,7 @@
       > -->
     </div>
 
-    <div class="g-card g-pad20">
+    <div class="g-card">
       <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column prop="userName" label="员工姓名" align="center" />
@@ -45,19 +45,13 @@
           </template>
         </el-table-column>
         <el-table-column label="今日已发放金额/剩余金额" align="center">
-          <template slot-scope="{ row }">
-            {{ row.todayIssuedAmount }}/{{ row.todayNoIssuedAmount }}
-          </template>
+          <template slot-scope="{ row }">{{ row.todayIssuedAmount }}/{{ row.todayNoIssuedAmount }}</template>
         </el-table-column>
         <el-table-column label="今日已发放次数/剩余次数" align="center">
-          <template slot-scope="{ row }">
-            {{ row.todayIssuedNum }}/{{ row.todayNoIssuedNum }}
-          </template>
+          <template slot-scope="{ row }">{{ row.todayIssuedNum }}/{{ row.todayNoIssuedNum }}</template>
         </el-table-column>
         <el-table-column label="累计已发放次数/金额" align="center" width="180">
-          <template slot-scope="{ row }">
-            {{ row.totalIssuedNum }}/{{ row.totalIssuedAmount }}
-          </template>
+          <template slot-scope="{ row }">{{ row.totalIssuedNum }}/{{ row.totalIssuedAmount }}</template>
         </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="{ row }">
@@ -66,9 +60,9 @@
               @click="
                 batchUpdate = false
                 edit(row)
-              "
-              >编辑</el-button
-            >
+              ">
+              编辑
+            </el-button>
             <el-button type="text" @click="remove(row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -77,12 +71,7 @@
         <div style="align-self: flex-end">
           <!-- <el-button type="primary" plain size="mini" @click="remove(null)">批量删除</el-button> -->
         </div>
-        <pagination
-          :total="total"
-          :page.sync="query.pageNum"
-          :limit.sync="query.pageSize"
-          @pagination="getList()"
-        />
+        <pagination :total="total" :page.sync="query.pageNum" :limit.sync="query.pageSize" @pagination="getList()" />
       </div>
     </div>
 
@@ -90,15 +79,8 @@
       :title="(addMemberForm.id ? '编辑' : '新建') + '员工限额'"
       :visible.sync="addVisible"
       width="40%"
-      :close-on-click-modal="false"
-    >
-      <el-form
-        ref="addMemberForm"
-        :model="addMemberForm"
-        :rules="addRules"
-        position="right"
-        label-width="180px"
-      >
+      :close-on-click-modal="false">
+      <el-form ref="addMemberForm" :model="addMemberForm" :rules="addRules" position="right" label-width="180px">
         <el-form-item v-if="!batchUpdate" label="选择员工" prop="weUserId">
           <el-tag v-for="(item, index) in addMemberForm.users" :key="index">
             {{ item.name || item }}
@@ -109,13 +91,8 @@
           </template>
         </el-form-item>
         <el-form-item label="单日员工发红包次数" prop="singleCustomerReceiveNum">
-          <el-input
-            v-model="addMemberForm.singleCustomerReceiveNum"
-            placeholder="请输入次数"
-          ></el-input>
-          <div class="sub-des">
-            输入 {{ addMemberForm.singleCustomerReceiveNumMin }}-999999 的正整数
-          </div>
+          <el-input v-model="addMemberForm.singleCustomerReceiveNum" placeholder="请输入次数"></el-input>
+          <div class="sub-des">输入 {{ addMemberForm.singleCustomerReceiveNumMin }}-999999 的正整数</div>
         </el-form-item>
         <el-form-item label="单日员工发红包总额(元)" prop="singleCustomerReceiveMoney">
           <el-input-number
@@ -124,8 +101,7 @@
             :precision="2"
             :step="0.1"
             :min="0.3"
-            :max="5000"
-          ></el-input-number>
+            :max="5000"></el-input-number>
           <div class="sub-des">精确到小数点后两位，可输入1.00-5000.00</div>
         </el-form-item>
       </el-form>
@@ -150,8 +126,7 @@
               .split(',')
       "
       destroyOnClose
-      @success="submitSelectUser"
-    ></SelectWeUser>
+      @success="submitSelectUser"></SelectWeUser>
   </div>
 </template>
 
@@ -318,7 +293,7 @@ export default {
 }
 .sub-des {
   font-size: 12px;
-  font-family: PingFangSC-Regular, PingFang SC;
+
   font-weight: 400;
   color: #999999;
 }

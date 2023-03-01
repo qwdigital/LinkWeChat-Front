@@ -130,36 +130,29 @@ export default {
           :src="form.qrCode"
           fit="fit"
           :preview-src-list="[form.qrCode]"
-          style="width: 150px; height: 150px"
-        ></el-image>
+          style="width: 150px; height: 150px"></el-image>
         <div>
           <el-button type="text" @click="download()">下载二维码</el-button>
-          <el-button type="text" class="copy-btn" :data-clipboard-text="form.qrCode"
-            >复制链接</el-button
-          >
+          <el-button type="text" class="copy-btn" :data-clipboard-text="form.qrCode">复制链接</el-button>
         </div>
       </div>
       <el-form ref="form" label-width="100px">
         <el-form-item label="使用成员：">
-          <el-tag size="small" v-for="(item, index) in form.weEmpleCodeUseScops" :key="index">{{
-            item.businessName
-          }}</el-tag>
+          <el-tag v-for="(item, index) in form.weEmpleCodeUseScops" :key="index">{{ item.businessName }}</el-tag>
         </el-form-item>
         <el-form-item label="活动场景：">{{ form.activityScene }}</el-form-item>
         <el-form-item label="类型：">{{ type[form.codeType] }}</el-form-item>
-        <el-form-item label="设置：">{{
-          `客户添加时${form.isJoinConfirmFriends === 1 ? '无' : ''}需经过确认自动成为好友`
-        }}</el-form-item>
+        <el-form-item label="设置：">
+          {{ `客户添加时${form.isJoinConfirmFriends === 1 ? '无' : ''}需经过确认自动成为好友` }}
+        </el-form-item>
         <el-form-item label="创建人：">{{ form.createBy }}</el-form-item>
         <el-form-item label="创建时间：">{{ form.createTime }}</el-form-item>
       </el-form>
 
       <el-form ref="form" label-width="100px">
-        <el-form-item label="扫码标签："
-          ><el-tag size="small" v-for="(item, index) in form.weEmpleCodeTags" :key="index">{{
-            item.tagName
-          }}</el-tag></el-form-item
-        >
+        <el-form-item label="扫码标签：">
+          <el-tag v-for="(item, index) in form.weEmpleCodeTags" :key="index">{{ item.tagName }}</el-tag>
+        </el-form-item>
         <el-form-item label="欢迎语：">{{ form.welcomeMsg }}</el-form-item>
       </el-form>
     </div>
@@ -168,17 +161,12 @@ export default {
     <div class="mb15">累计总人数：{{ total }}</div>
     <div>
       <el-button-group>
-        <el-button size="small" type="primary" :plain="timeRange != 7" @click="setTime(7)"
-          >近7日</el-button
-        >
-        <el-button size="small" type="primary" :plain="timeRange != 30" @click="setTime(30)"
-          >近30日</el-button
-        >
+        <el-button type="primary" :plain="timeRange != 7" @click="setTime(7)">近7日</el-button>
+        <el-button type="primary" :plain="timeRange != 30" @click="setTime(30)">近30日</el-button>
       </el-button-group>
 
       <el-date-picker
         v-model="dateRange"
-        size="small"
         class="ml20"
         style="width: 260px"
         value-format="yyyy-MM-dd"
@@ -187,8 +175,7 @@ export default {
         range-separator="-"
         start-placeholder="开始日期"
         end-placeholder="结束日期"
-        @change="getList"
-      ></el-date-picker>
+        @change="getList"></el-date-picker>
     </div>
     <div class="chart" ref="chart" style="width: 90%; height: 400px"></div>
   </div>

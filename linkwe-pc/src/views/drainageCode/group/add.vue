@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="g-card g-pad20">
-      <el-steps :active="active" align-center>
+    <div class="g-card">
+      <el-steps :active="active" align-center finish-status="success">
         <el-step title="活码设置"></el-step>
         <el-step title="生成活码"></el-step>
       </el-steps>
     </div>
-    <div class="g-card g-pad20">
+    <div class="g-card">
       <div>
         <div v-if="active === 0">
           <BaseInfo ref="baseInfo" :groupCodeId="groupCodeId" @next="next"></BaseInfo>
@@ -87,13 +87,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.tab {
-  height: 78px;
-  background: #fff;
-  border-top: 1px solid #f1f1f1;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
 .page-content {
   padding-top: 50px;
   padding-bottom: 20px;

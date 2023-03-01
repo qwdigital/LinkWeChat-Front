@@ -1,17 +1,10 @@
 <template>
   <div class="boot-guide">
     <div class="top">
-      <span class="title"
-        >还差最后一步：设置应用侧边栏。即可完成基础权限配置，使用{{
-          lwConfig.SYSTEM_NAME
-        }}系统功能啦~</span
-      >
-      <el-steps
-        class="g-card g-pad20"
-        style="margin-top: 10px"
-        :active="currentActive"
-        align-center
-      >
+      <span class="title">
+        还差最后一步：设置应用侧边栏。即可完成基础权限配置，使用{{ lwConfig.SYSTEM_NAME }}系统功能啦~
+      </span>
+      <el-steps class="g-card" style="margin-top: 10px" :active="currentActive" align-center finish-status="success">
         <el-step title="应用:客户画像"></el-step>
         <el-step title="应用:聊天素材"></el-step>
         <el-step title="应用:关键词群"></el-step>
@@ -40,22 +33,12 @@
               </div>
               <div class="right-text">
                 输入页面名称：{{ list.boxDataTwo.title2 }}
-                <el-button
-                  type="primary"
-                  size="mini"
-                  @click="handleCopy(list.boxDataTwo.title2)"
-                  >复制名称</el-button
-                >
+                <el-button type="primary" size="mini" @click="handleCopy(list.boxDataTwo.title2)">复制名称</el-button>
               </div>
               <div class="right-text">{{ list.boxDataTwo.title3 }}</div>
               <div class="right-text">
                 {{ list.boxDataTwo.title4 }}
-                <el-button
-                  type="primary"
-                  size="mini"
-                  @click="handleCopy(list.boxDataTwo.title4)"
-                  >复制链接</el-button
-                >
+                <el-button type="primary" size="mini" @click="handleCopy(list.boxDataTwo.title4)">复制链接</el-button>
               </div>
             </div>
           </div>
@@ -64,18 +47,8 @@
           </div>
           <div class="bottom">
             <div class="bottom-content">
-              <el-button
-                type="primary"
-                @click="back()"
-                v-if="currentActive > 0"
-                >{{ list.buttonData.one }}</el-button
-              >
-              <el-button
-                type="primary"
-                @click="next()"
-                v-if="currentActive < 4"
-                >{{ list.buttonData.two }}</el-button
-              >
+              <el-button type="primary" @click="back()" v-if="currentActive > 0">{{ list.buttonData.one }}</el-button>
+              <el-button type="primary" @click="next()" v-if="currentActive < 4">{{ list.buttonData.two }}</el-button>
             </div>
           </div>
         </div>
@@ -84,10 +57,10 @@
   </div>
 </template>
 <script>
-import { getToken } from "@/utils/auth";
-import { noviceGuideInfo } from "@/api/login.js";
+import { getToken } from '@/utils/auth'
+import { noviceGuideInfo } from '@/api/login.js'
 export default {
-  name: "customer-service-manage-add",
+  name: 'customer-service-manage-add',
   data() {
     return {
       currentActive: 0,
@@ -97,136 +70,136 @@ export default {
           boxData: [
             {
               title: `管理员账号登录企业微信管理后台——进入【应用管理】——点击【${lwConfig.SYSTEM_NAME_MOBILE}】`,
-              url: require("@/assets/register/guid/customer-portrait-one.png"),
+              url: require('@/assets/register/guid/customer-portrait-one.png'),
             },
             {
               title: `在【${lwConfig.SYSTEM_NAME_MOBILE}】应用内找到“配置到聊天工具栏”功能中的“配置”按钮`,
-              url: require("@/assets/register/guid/customer-portrait-two.png"),
+              url: require('@/assets/register/guid/customer-portrait-two.png'),
             },
             {
-              title: "进入“配置到聊天工具栏”功能页后点击“配置页面”按钮配置路径",
-              url: require("@/assets/register/guid/customer-portrait-three.png"),
+              title: '进入“配置到聊天工具栏”功能页后点击“配置页面”按钮配置路径',
+              url: require('@/assets/register/guid/customer-portrait-three.png'),
             },
           ],
           boxDataTwo: {
             step: 4,
-            title1: "配置【客户画像】功能页，请按照以下信息进行填写",
-            title2: "客户画像",
-            title3: "输入页面内容：选择“自定义”，内容链接为：",
-            title4: "https://×××××××",
-            url: require("@/assets/register/guid/customer-portrait-four.png"),
+            title1: '配置【客户画像】功能页，请按照以下信息进行填写',
+            title2: '客户画像',
+            title3: '输入页面内容：选择“自定义”，内容链接为：',
+            title4: 'https://×××××××',
+            url: require('@/assets/register/guid/customer-portrait-four.png'),
           },
           buttonData: {
-            one: "返回上一步",
-            two: "我已配置，进入下一步",
+            one: '返回上一步',
+            two: '我已配置，进入下一步',
           },
         },
         {
           boxData: [
             {
-              title: "在当前页面内点击“继续配置”按钮",
-              url: require("@/assets/register/guid/chat-material-five.png"),
+              title: '在当前页面内点击“继续配置”按钮',
+              url: require('@/assets/register/guid/chat-material-five.png'),
             },
           ],
           boxDataTwo: {
             step: 2,
-            title1: "配置【聊天素材】功能页，请按照以下信息进行填写",
-            title2: "聊天素材",
-            title3: "输入页面内容：选择“自定义”，内容链接为：",
-            title4: "https://×××××××",
-            url: require("@/assets/register/guid/chat-material-six.png"),
+            title1: '配置【聊天素材】功能页，请按照以下信息进行填写',
+            title2: '聊天素材',
+            title3: '输入页面内容：选择“自定义”，内容链接为：',
+            title4: 'https://×××××××',
+            url: require('@/assets/register/guid/chat-material-six.png'),
           },
           buttonData: {
-            one: "返回上一步",
-            two: "我已配置，进入下一步",
+            one: '返回上一步',
+            two: '我已配置，进入下一步',
           },
         },
         {
           boxData: [
             {
-              title: "在当前页面内点击“继续配置”按钮",
-              url: require("@/assets/register/guid/keyword-group-seven.png"),
+              title: '在当前页面内点击“继续配置”按钮',
+              url: require('@/assets/register/guid/keyword-group-seven.png'),
             },
           ],
           boxDataTwo: {
             step: 2,
-            title1: "配置【关键词群】功能页，请按照以下信息进行填写",
-            title2: "关键词群",
-            title3: "输入页面内容：选择“自定义”，内容链接为：",
-            title4: "https://×××××××",
-            url: require("@/assets/register/guid/keyword-group-eight.png"),
+            title1: '配置【关键词群】功能页，请按照以下信息进行填写',
+            title2: '关键词群',
+            title3: '输入页面内容：选择“自定义”，内容链接为：',
+            title4: 'https://×××××××',
+            url: require('@/assets/register/guid/keyword-group-eight.png'),
           },
           buttonData: {
-            one: "返回上一步",
-            two: "我已配置，进入下一步",
+            one: '返回上一步',
+            two: '我已配置，进入下一步',
           },
         },
         {
           boxData: [
             {
-              title: "在当前页面内点击“继续配置”按钮",
-              url: require("@/assets/register/guid/red-envelopes-nine.png"),
+              title: '在当前页面内点击“继续配置”按钮',
+              url: require('@/assets/register/guid/red-envelopes-nine.png'),
             },
           ],
           boxDataTwo: {
             step: 2,
-            title1: "配置【红包】功能页，请按照以下信息进行填写",
-            title2: "红包",
-            title3: "输入页面内容：选择“自定义”，内容链接为：",
-            title4: "https://×××××××",
-            url: require("@/assets/register/guid/red-envelopes-ten.png"),
+            title1: '配置【红包】功能页，请按照以下信息进行填写',
+            title2: '红包',
+            title3: '输入页面内容：选择“自定义”，内容链接为：',
+            title4: 'https://×××××××',
+            url: require('@/assets/register/guid/red-envelopes-ten.png'),
           },
           buttonData: {
-            one: "返回上一步",
-            two: "配置完成，进入系统",
+            one: '返回上一步',
+            two: '配置完成，进入系统',
           },
         },
       ],
-    };
+    }
   },
   components: {},
   methods: {
     // 复制文本
     handleCopy(text) {
-      const input = document.createElement("input");
-      input.style.cssText = "opacity: 0;";
-      input.type = "text";
-      input.value = text; // 修改文本框的内容
-      document.body.appendChild(input);
-      input.select(); // 选中文本
-      document.execCommand("copy"); // 执行浏览器复制命令
-      this.$message({ message: "复制成功", type: "success" });
+      const input = document.createElement('input')
+      input.style.cssText = 'opacity: 0;'
+      input.type = 'text'
+      input.value = text // 修改文本框的内容
+      document.body.appendChild(input)
+      input.select() // 选中文本
+      document.execCommand('copy') // 执行浏览器复制命令
+      this.$message({ message: '复制成功', type: 'success' })
     },
     // 上一步
     back() {
-      this.currentActive--;
+      this.currentActive--
     },
     // 下一步
     next() {
       if (this.currentActive === 3) {
         this.$router.push({
-          path: "/",
-        });
+          path: '/',
+        })
       } else {
-        this.currentActive++;
+        this.currentActive++
       }
     },
   },
   mounted() {
-    let token = getToken();
+    let token = getToken()
     noviceGuideInfo(token).then((res) => {
-      this.stepDataList[0].boxDataTwo.title2 = res.data.customerPortraitName;
-      this.stepDataList[0].boxDataTwo.title4 = res.data.customerPortraitUrl;
-      this.stepDataList[1].boxDataTwo.title2 = res.data.materialName;
-      this.stepDataList[1].boxDataTwo.title4 = res.data.materialUrl;
-      this.stepDataList[2].boxDataTwo.title2 = res.data.wordGroupName;
-      this.stepDataList[2].boxDataTwo.title4 = res.data.wordGroupUrl;
-      this.stepDataList[3].boxDataTwo.title2 = res.data.redEnvelopesName;
-      this.stepDataList[3].boxDataTwo.title4 = res.data.redEnvelopesUrl;
-    });
+      this.stepDataList[0].boxDataTwo.title2 = res.data.customerPortraitName
+      this.stepDataList[0].boxDataTwo.title4 = res.data.customerPortraitUrl
+      this.stepDataList[1].boxDataTwo.title2 = res.data.materialName
+      this.stepDataList[1].boxDataTwo.title4 = res.data.materialUrl
+      this.stepDataList[2].boxDataTwo.title2 = res.data.wordGroupName
+      this.stepDataList[2].boxDataTwo.title4 = res.data.wordGroupUrl
+      this.stepDataList[3].boxDataTwo.title2 = res.data.redEnvelopesName
+      this.stepDataList[3].boxDataTwo.title4 = res.data.redEnvelopesUrl
+    })
   },
   created() {},
-};
+}
 </script>
 <style lang="scss" scoped>
 svg.svg-icon {
@@ -280,7 +253,7 @@ svg.svg-icon {
     font-size: 16px;
     display: flex;
     .left {
-      color: #2c8cf0;
+      color: var(--color);
       font-weight: 600;
     }
     .right {
@@ -298,9 +271,9 @@ svg.svg-icon {
   }
   .bottom {
     .bottom-content {
-        position: fixed;
-        bottom: 40px;
-        left: 60%;
+      position: fixed;
+      bottom: 40px;
+      left: 60%;
     }
   }
 }

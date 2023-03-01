@@ -18,8 +18,8 @@
 
     <div class="card">
       <div class="">{{ lwConfig.SYSTEM_NAME }}</div>
-      <div class="info mt10 mb5">版本：全功能最新版</div>
-      <div class="info">期限：本世纪末</div>
+      <div class="info mt10 mb5">版本: 全功能v4最新版</div>
+      <!-- <div class="info">期限: 本世纪末</div> -->
       <div class="mt10 mb10">欢迎您登陆本系统</div>
       <el-popover placement="top" title="" width="80" trigger="hover">
         <el-button slot="reference" type="default" plain>联系客服</el-button>
@@ -62,10 +62,11 @@ export default {
 
 <style lang="scss" scoped>
 ::v-deep.sidebar-container {
-  --bottom-card-height: 168px;
-
+  --side-bar-width: 200px;
+  display: flex;
+  flex-direction: column;
   transition: width 0.28s;
-  width: $sideBarWidth !important;
+  width: var(--side-bar-width) !important;
   background-color: #fff;
   bottom: 0;
   z-index: 1001;
@@ -86,7 +87,7 @@ export default {
   // }
 
   .el-scrollbar {
-    height: calc(100% - var(--bottom-card-height) - 30px);
+    flex: auto;
     border-bottom: 20px solid transparent;
   }
 
@@ -110,11 +111,12 @@ export default {
     width: 100% !important;
   }
 
-  // 菜单，目录
+  // 叶子菜单，目录
   .el-menu-item,
   .el-submenu > .el-submenu__title {
     padding: 0 !important;
-    margin: 4px auto;
+    // margin: 4px auto;
+    margin: 4px 10px;
     font-weight: 500;
     height: 40px;
     line-height: 40px;
@@ -127,9 +129,9 @@ export default {
       background-color: transparent !important;
     }
   }
-  // 叶子菜单项
+  // 叶子菜单
   .el-menu-item {
-    margin: 4px 16px;
+    // margin: 4px 16px;
     min-width: auto;
     // a {
     //   &:hover {
@@ -139,7 +141,7 @@ export default {
   }
   // 当前激活菜单
   .el-menu-item.is-active {
-    background: linear-gradient(to right, var(--color) 0%, $light-blue 100%);
+    background: linear-gradient(to right, var(--color) 0%, var(--color-lighter) 100%);
     box-shadow: 0px 13px 16px 0px rgba(7, 168, 85, 0.2);
     border-radius: 8px;
     color: #fff !important;
@@ -207,12 +209,12 @@ export default {
 
 .card {
   color: #fff;
-  height: 168px;
-  margin: 0 20px;
+  margin: 0 20px 30px;
   padding: 20px;
   background: linear-gradient(315deg, #07c160 0%, #90de45 100%);
   box-shadow: 0px 15px 20px 0px rgba(64, 64, 64, 0.12);
   border-radius: var(--border-radius);
+
   .info {
     font-size: 12px;
   }

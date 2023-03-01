@@ -3,14 +3,17 @@
   import { getList as getListTag } from '@/api/customer/tag'
   import AddTag from '@/components/AddTag'
   import SelectTag from '@/components/SelectTag'
+  import DeleteTag from '@/components/DeleteTag'
   import { dictAddType, dictTrackState } from '@/utils/dictionary'
+  import { getList } from '@/api/salesCenter/businessConver.js'
 
   export default {
     name: 'Customer',
-    components: { AddTag, SelectTag },
+    components: { AddTag, SelectTag, DeleteTag },
     props: {},
     data() {
       return {
+        stageList: [],
         query: {
           pageNum: 1,
           pageSize: 10,
@@ -22,7 +25,8 @@
           customerType: '', //客户类型  1:微信客户;2:企业客户
           trackState: '', //跟进状态 1:待跟进;2:跟进中;3:已成交;4:无意向;5:已流失
           addMethod: '', //添加方式 0:未知来源;1:扫描二维码;2:搜索手机号;3:名片分享;4:群聊;5:手机通讯录;6:微信联系人;7:来自微信好友的添加申请;8:安装第三方应用时自动添加的客服人员;9:搜索邮箱;10:视频号主页添加;11:员工活码;12:新客拉群;13:活动裂变;201:内部成员共享;202:管理员/负责人分配
-          gender: '' //0-未知 1-男性 2-女性
+          gender: '', //0-未知 1-男性 2-女性
+          noTagCheck: false
         },
         queryTag: [], // 搜索框选择的标签
         queryUser: [], // 搜索框选择的添加人
@@ -38,7 +42,6 @@
         },
         list: [], // 客户列表
         staffList: [], // 所有员工列表
-        multipleSelection: [], // 多选数组
         dialogVisible: false, // 选择标签弹窗显隐
         dialogVisibleSelectUser: false, // 选择添加人弹窗显隐
         dialogVisibleAddTag: false, // 添加标签弹窗显隐
@@ -52,12 +55,22 @@
         },
         dictCustomerType: Object.freeze({ 1: '微信客户', 2: '企业客户' }),
         dictAddType,
-        dictTrackState
+        dictTrackState,
+        multiObj: {
+          state: 'add', // 'delete'
+          title: '批量打标签',
+          showDialog: false
+        },
+        multipleSelection: [], // 多选数组
+        mulSelectedTag: [],
+        deleteData: [],
+        deleteDialog: false
       }
     },
     watch: {},
     computed: {},
     created() {
+      this.getStage()
       this.getList()
       this.getListTag()
 
@@ -70,6 +83,100 @@
     },
     mounted() {},
     methods: {
+      setValue(data) {
+        let str = ''
+        this.stageList.forEach((dd) => {
+          if (dd.stageVal == data) {
+            str = dd.stageKey
+          }
+        })
+        return str
+      },
+      unique(arr) {
+        if (!Array.isArray(arr)) {
+          console.log('type error!')
+          return
+        }
+        let res = []
+        for (let i = 0; i < arr.length; i++) {
+          if (res.indexOf(arr[i]) === -1) {
+            res.push(arr[i])
+          }
+        }
+        return res
+      },
+      openDeleteDialog() {
+        let str = ''
+        this.multipleSelection.forEach((dd) => {
+          if (dd.tagIds) {
+            str = str + ',' + dd.tagIds
+          }
+        })
+        this.deleteData = this.unique(str.split(','))
+        this.deleteDialog = true
+      },
+      getDeleteData(data) {
+        let arr = []
+        this.multipleSelection.forEach((dd) => {
+          let obj = {
+            externalUserid: dd.externalUserid,
+            addTag: data,
+            userId: dd.firstUserId
+          }
+          arr.push(obj)
+        })
+        this.loading = true
+        api
+          .multiMakeTag({ addOrRemove: false, weMakeCustomerTagList: arr })
+          .then((res) => {
+            this.getList(1)
+            this.msgSuccess('批量删除标签成功')
+            this.deleteData = []
+            this.deleteDialog = false
+            this.loading = false
+          })
+          .catch(() => {
+            this.loading = false
+          })
+      },
+      multiOperation(state) {
+        this.multiObj.state = state
+        if (state === 'add') {
+          this.multiObj.title = '批量打标签'
+        } else {
+          this.multiObj.title = '批量删标签'
+        }
+        this.multiObj.showDialog = true
+      },
+      getMultiOperation(data) {
+        let arr = []
+        this.multipleSelection.forEach((dd) => {
+          let obj = {
+            externalUserid: dd.externalUserid,
+            addTag: data,
+            userId: dd.firstUserId
+          }
+          arr.push(obj)
+        })
+        this.loading = true
+        api
+          .multiMakeTag({ addOrRemove: this.multiObj.state === 'add' ? true : false, weMakeCustomerTagList: arr })
+          .then((res) => {
+            this.getList(1)
+            this.msgSuccess(this.multiObj.state === 'add' ? '批量设置标签成功' : '批量删除标签成功')
+            this.multiObj.showDialog = false
+            this.multipleSelection = []
+            this.loading = false
+          })
+          .catch(() => {
+            this.loading = false
+          })
+      },
+      getStage() {
+        getList().then((res) => {
+          this.stageList = res.data
+        })
+      },
       getList(page) {
         // console.log(this.dateRange);
         if (this.dateRange) {
@@ -128,6 +235,7 @@
         })
       },
       showTagDialog() {
+        this.query.noTagCheck = false
         this.selectedTag = this.queryTag
         this.tagDialogType = {
           title: '选择标签',
@@ -263,6 +371,7 @@
         this.dateRange = []
         this.queryTag = []
         this.queryUser = []
+        this.query.noTagCheck = false
         this.$refs['queryForm'].resetFields()
         this.getList(1)
       },
@@ -302,6 +411,10 @@
           this.dialogVisibleExtend = false
           this.getList()
         })
+      },
+      setData(data) {
+        this.queryTag = []
+        this.query.tagIds = ''
       }
     }
   }
@@ -309,22 +422,14 @@
 
 <template>
   <div v-loading="loading">
-    <el-form ref="queryForm" :inline="true" :model="query" label-width="100px" class="top-search" size="small">
+    <el-form ref="queryForm" :inline="true" :model="query" label-width="70px" class="top-search">
       <el-form-item label="客户名称" prop="name">
-        <el-input clearable v-model="query.name" placeholder="请输入"></el-input>
+        <el-input v-model="query.name" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="客户类型" prop="customerType">
-        <el-select clearable v-model="query.customerType" placeholder="请选择">
+        <el-select :popper-append-to-body="false" v-model="query.customerType" placeholder="请选择">
           <el-option v-for="(item, index) in dictCustomerType" :key="index" :label="item" :value="index"></el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="客户标签" prop="customerType">
-        <div class="tag-input" @click="showTagDialog">
-          <span class="tag-place" v-if="!queryTag.length">请选择</span>
-          <template v-else>
-            <el-tag v-for="(unit, unique) in queryTag" :key="unique">{{ unit.name }}</el-tag>
-          </template>
-        </div>
       </el-form-item>
       <el-form-item label="跟进员工" prop="customerType">
         <div class="tag-input" @click="dialogVisibleSelectUser = true">
@@ -334,19 +439,23 @@
           </template>
         </div>
       </el-form-item>
-      <el-form-item label="跟进状态" prop="trackState">
-        <el-select clearable v-model="query.trackState" placeholder="请选择">
-          <el-option v-for="(item, index) in dictTrackState" :key="index" :label="item.name" :value="index"></el-option>
+      <el-form-item label="商机阶段" prop="trackState">
+        <el-select :popper-append-to-body="false" v-model="query.trackState" placeholder="请选择">
+          <el-option
+            v-for="(item, index) in stageList"
+            :key="index"
+            :label="item.stageKey"
+            :value="item.stageVal"
+          ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="添加方式" prop="addMethod">
-        <el-select clearable v-model="query.addMethod" placeholder="请选择">
+        <el-select :popper-append-to-body="false" v-model="query.addMethod" placeholder="请选择">
           <el-option v-for="(item, index) in dictAddType" :key="index" :label="item" :value="index"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="添加日期">
         <el-date-picker
-          clearable
           v-model="dateRange"
           value-format="yyyy-MM-dd"
           type="daterange"
@@ -357,11 +466,22 @@
           align="right"
         ></el-date-picker>
       </el-form-item>
+      <el-form-item label="客户标签" prop="customerType">
+        <div class="tag-input" @click="showTagDialog">
+          <span class="tag-place" v-if="!queryTag.length">请选择</span>
+          <template v-else>
+            <el-tag v-for="(unit, unique) in queryTag" :key="unique">{{ unit.name }}</el-tag>
+          </template>
+        </div>
+      </el-form-item>
+      <el-form-item>
+        <el-checkbox v-model="query.noTagCheck" @change="setData">无标签客户</el-checkbox>
+      </el-form-item>
 
-      <el-form-item label=" ">
+      <el-form-item label="">
         <!-- v-hasPermi="['customerManage:customer:query']" -->
         <el-button type="primary" @click="getList(1)">查询</el-button>
-        <el-button type="success" @click="resetForm()">重置</el-button>
+        <el-button @click="resetForm()">重置</el-button>
         <!-- v-hasPermi="['customerManage:customer:query']" -->
         <!-- <el-button
           v-hasPermi="['customerManage:customer:export']"
@@ -372,91 +492,111 @@
       </el-form-item>
     </el-form>
 
-    <div class="mid-action">
-      <div>
-        <!-- 共
-        <span class="num">{{ total }}</span> 位客户，实际客户
-        <span class="num">{{ total }}</span> 位。 -->
-        <ButtonSync :lastSyncTime="lastSyncTime" @click="sync">同步客户</ButtonSync>
-        <!-- <el-button v-hasPermi="['customerManage:customer:checkRepeat']" type="primary">查看重复客户</el-button> -->
-        <span class="sub-text-color"> 最近同步：{{ lastSyncTime }} </span>
-      </div>
-    </div>
-
-    <div class="sub-text-color">客户总数(去重)：{{ noRepeatCustomerTotal }}</div>
-
-    <el-table ref="table" :data="list" tooltip-effect="dark" highlight-current-row>
-      <!-- @select="handleSelection" @selection-change="handleSelectionChange" -->
-      <!-- <el-table-column type="selection" align="center" width="55"> </el-table-column> -->
-      <el-table-column label="客户" prop="customerName" header-align="center" align="" width="180">
-        <template slot-scope="{ row }">
-          <div class="cp flex aic" @click="goRoute(row)">
-            <el-image style="width: 50px; height: 50px; flex: none;" :src="row.avatar" fit="fit"></el-image>
-            <div class="ml10">
-              <p>{{ row.customerName }}</p>
-              <i :class="['el-icon-s-custom', { 1: 'man', 2: 'woman' }[row.gender]]"></i>
-              <span :style="{ color: row.customerType === 1 ? '#4bde03' : '#f9a90b' }">
-                {{ { 1: '@微信', 2: '@企业微信' }[row.customerType] }}
-              </span>
-            </div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="tagNames" label="客户标签" align="center" width="220">
-        <div v-if="row.tagNames" slot-scope="{ row }">
-          <TagEllipsis :list="row.tagNames"></TagEllipsis>
+    <div class="g-card">
+      <div class="g-card-title mid-action">
+        <div>
+          共
+          <span class="fc">{{ noRepeatCustomerTotal }}</span>
+          位客户（去重）
         </div>
-        <span v-else>无标签</span>
-      </el-table-column>
-      <!-- <el-table-column prop="corpName" label="公司名称" align="center"></el-table-column> -->
-      <el-table-column prop="userName" label="跟进员工" align="center">
-        <!-- <template slot-scope="{ row }">{{
+        <!-- 共
+        <span class="fc">{{ total }}</span> 位客户，实际客户
+        <span class="fc">{{ total }}</span> 位。 -->
+        <div>
+          <span class="desc">最近同步：{{ lastSyncTime }}</span>
+          <ButtonSync :lastSyncTime="lastSyncTime" @click="sync">同步客户</ButtonSync>
+          <!-- <el-button v-hasPermi="['customerManage:customer:checkRepeat']" type="primary">查看重复客户</el-button> -->
+          <el-button class="ml10" type="primary" :disabled="!multipleSelection.length" @click="multiOperation('add')">
+            批量打标签
+          </el-button>
+          <el-button type="primary" :disabled="!multipleSelection.length" @click="openDeleteDialog()">
+            批量删标签
+          </el-button>
+        </div>
+      </div>
+
+      <el-table
+        ref="table"
+        :data="list"
+        tooltip-effect="dark"
+        highlight-current-row
+        @selection-change="handleSelectionChange"
+      >
+        <!-- -->
+        <el-table-column type="selection" align="center" width="55"></el-table-column>
+        <el-table-column label="客户" prop="customerName" header-align="center" align="" width="180">
+          <template slot-scope="{ row }">
+            <div class="cp flex aic" @click="goRoute(row)">
+              <el-image class="avatar" :src="row.avatar" fit="fit"></el-image>
+              <div class="ml10">
+                <p class="blod">{{ row.customerName }}</p>
+                <i :class="['el-icon-s-custom', { 1: 'man', 2: 'woman' }[row.gender]]"></i>
+                <span :style="{ color: row.customerType === 1 ? '#4bde03' : '#f9a90b' }">
+                  {{ { 1: '@微信', 2: '@企业微信' }[row.customerType] }}
+                </span>
+              </div>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="tagNames" label="客户标签" align="center" width="220">
+          <div v-if="row.tagNames" slot-scope="{ row }">
+            <TagEllipsis :list="row.tagNames"></TagEllipsis>
+          </div>
+          <span v-else>无标签</span>
+        </el-table-column>
+        <!-- <el-table-column prop="corpName" label="公司名称" align="center"></el-table-column> -->
+        <el-table-column prop="userName" label="跟进员工" align="center">
+          <!-- <template slot-scope="{ row }">{{
           row.weFlowerCustomerRels[0] ? row.weFlowerCustomerRels[0].userName : ''
         }}</template> -->
-      </el-table-column>
-      <el-table-column prop="trackState" label="跟进状态" align="center">
-        <template slot-scope="{ row }">
-          <el-tag v-if="row.trackState" :type="dictTrackState[~~row.trackState + ''].color"
-            >{{ dictTrackState[~~row.trackState + ''].name }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column prop="addMethod" label="添加方式" align="center">
-        <template slot-scope="{ row }">{{ dictAddType[row.addMethod + ''] }}</template>
-      </el-table-column>
-      <el-table-column prop="firstAddTime" label="添加时间" align="center">
-        <!-- <template slot-scope="{ row }">{{
+        </el-table-column>
+        <el-table-column prop="trackState" label="商机阶段" align="center">
+          <template slot-scope="{ row }">
+            <!-- <el-tag v-if="row.trackState" :type="dictTrackState[~~row.trackState + ''].color">
+              {{ dictTrackState[~~row.trackState + ''].name }}
+            </el-tag> -->
+            <el-tag v-if="row.trackState">
+              {{ setValue(row.trackState) }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="addMethod" label="添加方式" align="center">
+          <template slot-scope="{ row }">{{ dictAddType[row.addMethod + ''] }}</template>
+        </el-table-column>
+        <el-table-column prop="firstAddTime" label="添加时间" align="center">
+          <!-- <template slot-scope="{ row }">{{
           row.weFlowerCustomerRels[0] ? row.weFlowerCustomerRels[0].createTime : ''
         }}</template> -->
-      </el-table-column>
+        </el-table-column>
 
-      <el-table-column label="操作" width="200" align="center">
-        <template slot-scope="{ row }">
-          <!-- v-hasPermi="['customerManage:customer:view']" -->
-          <el-button @click="goRoute(row)" type="text" size="small">查看</el-button>
-          <el-button type="text" @click="makeTag(row)">标签管理</el-button>
-          <!-- v-hasPermi="['customerManage/customer:makeTag']" -->
-          <el-button
-            type="text"
-            size="small"
-            :disabled="row.isTransfer"
-            @click="
-              dialogVisibleExtend = true
-              currentEidt = row
-            "
-            >在职继承
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+        <el-table-column label="操作" width="200" align="center">
+          <template slot-scope="{ row }">
+            <!-- v-hasPermi="['customerManage:customer:view']" -->
+            <el-button @click="goRoute(row)" type="text">查看</el-button>
+            <el-button type="text" @click="makeTag(row)">标签管理</el-button>
+            <!-- v-hasPermi="['customerManage/customer:makeTag']" -->
+            <el-button
+              type="text"
+              :disabled="row.isTransfer"
+              @click="
+                dialogVisibleExtend = true
+                currentEidt = row
+              "
+            >
+              在职继承
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
 
-    <pagination
-      v-show="total > 0"
-      :total="total"
-      :page.sync="query.pageNum"
-      :limit.sync="query.pageSize"
-      @pagination="getList()"
-    />
+      <pagination
+        v-show="total > 0"
+        :total="total"
+        :page.sync="query.pageNum"
+        :limit.sync="query.pageSize"
+        @pagination="getList()"
+      />
+    </div>
 
     <!-- 选择标签弹窗 -->
     <SelectTag
@@ -485,10 +625,33 @@
         <el-button type="primary" @click="transfer">确 定</el-button>
       </div>
     </el-dialog>
+
+    <SelectTag
+      v-if="multiObj.showDialog"
+      ref="multiTag"
+      :selected="mulSelectedTag"
+      :visible.sync="multiObj.showDialog"
+      :title="multiObj.title"
+      @success="getMultiOperation"
+    ></SelectTag>
+    <DeleteTag
+      v-if="deleteDialog"
+      ref="deleteTag"
+      :visible.sync="deleteDialog"
+      :initList="deleteData"
+      :selected="deleteData"
+      @success="getDeleteData"
+    ></DeleteTag>
   </div>
 </template>
 
 <style lang="scss" scoped>
+  .avatar {
+    width: 56px;
+    height: 56px;
+    flex: none;
+    border-radius: var(--border-radius-big);
+  }
   .el-icon-s-custom {
     font-size: 16px;
     // margin-left: 4px;

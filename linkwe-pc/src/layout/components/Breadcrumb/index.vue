@@ -14,7 +14,7 @@
         <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
       </el-breadcrumb-item>
     </transition-group>
-    <el-popover v-if="busininessDesc" placement="top-start" title="引导语" trigger="hover">
+    <el-popover v-if="busininessDesc" placement="bottom-start" title="" trigger="hover">
       <div v-html="busininessDesc"></div>
       <i class="el-icon-question" slot="reference"></i>
     </el-popover>
@@ -87,8 +87,13 @@ export default {
       if (reg.test(title)) {
         let query = this.$route.query
         if (query && query.id) {
-          // 带路由查询id参数的替换 {*} 为详情 eg:活码{添加} 替换为 活码详情
-          title = title.replace(reg, '详情')
+          if (query.isDetail) {
+            // 带路由查询id和isDetail参数的替换 {*} 为详情 eg:活码{添加} 替换为 活码详情
+            title = title.replace(reg, '详情')
+          } else {
+            // 带路由查询id参数的替换 {*} 为编辑 eg:活码{添加} 替换为 活码编辑
+            title = title.replace(reg, '编辑')
+          }
         } else {
           // 默认情况下都替换为 新建
           title = title.replace(reg, '新建')

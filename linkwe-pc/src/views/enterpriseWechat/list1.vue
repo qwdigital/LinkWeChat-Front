@@ -26,8 +26,8 @@ export default {
         agentSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
         contactSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
         seasRedirectUrl: [{ required: true, message: '必填项', trigger: 'blur' }],
-        sopTagRedirectUrl: [{ required: true, message: '必填项', trigger: 'blur' }]
-      })
+        sopTagRedirectUrl: [{ required: true, message: '必填项', trigger: 'blur' }],
+      }),
       // status: ['正常', '停用']
     }
   },
@@ -93,8 +93,8 @@ export default {
         this.msgSuccess('操作成功')
         this.getList()
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -161,10 +161,8 @@ export default {
         label-position="right"
         :model="form"
         :rules="rules"
-        size="small"
         label-width="160px"
-        :disabled="disabled"
-      >
+        :disabled="disabled">
         <el-form-item label="企业ID" prop="corpId">
           <el-input :disabled="form.id" v-model="form.corpId" placeholder=""></el-input>
           <div class="tips">企业ID即CorpID，在企微后台->我的企业中获取</div>

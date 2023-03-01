@@ -10,41 +10,31 @@
     <div class="add_form4_qd_ul" v-for="(item, index) in ChannelsList" :key="index">
       <div class="add_form4_qd_li1 add_form4_qd_li">
         <div style="display: flex; justify-content: center; :flex ; justify-content: center">
-          <el-input
-            style="width: 80%"
-            type="text"
-            placeholder="请输入渠道标识"
-            v-model="ChannelsList[index]"
-          />
+          <el-input style="width: 80%" type="text" placeholder="请输入渠道标识" v-model="ChannelsList[index]" />
         </div>
       </div>
       <div class="add_form4_qd_li22 add_form4_qd_li">
         <!-- <img style="height:80px;" :src="eImgList[index]" alt=""> -->
         <el-popover placement="bottom" trigger="hover" v-if="eImgList[index]">
           <el-image slot="reference" :src="eImgList[index]" class="code-image--small"></el-image>
-          <el-image :src="eImgList[index]" class="code-image"> </el-image>
+          <el-image :src="eImgList[index]" class="code-image"></el-image>
         </el-popover>
       </div>
       <div class="add_form4_qd_li2 add_form4_qd_li">
-        {{ baseFormUrl4 + '&dataSource=' }}{{ channelsPathList[index] }}<label for=""></label>
+        {{ baseFormUrl4 + '&dataSource=' }}{{ channelsPathList[index] }}
+        <label for=""></label>
       </div>
       <div
         class="add_form4_qd_li3 add_form4_qd_li"
-        style="display: flex; align-items: center; justify-content: space-around"
-      >
+        style="display: flex; align-items: center; justify-content: space-around">
         <div
-          style="display: flex; color: #2c8cf0; cursor: pointer; flex: 1; justify-content: center"
+          style="display: flex; color: var(--color); cursor: pointer; flex: 1; justify-content: center"
           type="button"
           class="copy-btn"
-          :data-clipboard-text="baseFormUrl4 + '&dataSource=' + channelsPathList[index]"
-        >
+          :data-clipboard-text="baseFormUrl4 + '&dataSource=' + channelsPathList[index]">
           复制
         </div>
-        <div
-          @click="btnDownload(index)"
-          style="color: #2c8cf0; cursor: pointer; flex: 1"
-          class="copy-btn"
-        >
+        <div @click="btnDownload(index)" style="color: var(--color); cursor: pointer; flex: 1" class="copy-btn">
           下载二维码
         </div>
       </div>
@@ -133,10 +123,7 @@ export default {
             }
             let rwmNum = 0
             for (let w = 0; w < this.ChannelsList.length; w++) {
-              console.log(
-                '二维码转换内容',
-                that.baseFormUrl4 + '&dataSource=' + that.channelsPathList[w]
-              )
+              console.log('二维码转换内容', that.baseFormUrl4 + '&dataSource=' + that.channelsPathList[w])
               var qrcode = new QRCode(this.$refs.ewmTAddEwm, {
                 text: that.baseFormUrl4 + '&dataSource=' + that.channelsPathList[w], // 需要转换为二维码的内容
                 width: 150,

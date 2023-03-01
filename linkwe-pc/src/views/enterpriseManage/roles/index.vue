@@ -4,12 +4,8 @@
       <el-row type="flex" justify="space-between">
         <el-col :span="5" class="left g-pad20">
           <div class="title">
-            <div class="title-name">
-              角色列表
-            </div>
-            <div class="title-btn" @click="addFn">
-              新建
-            </div>
+            <div class="title-name">角色列表</div>
+            <div class="title-btn" @click="addFn">新建</div>
           </div>
           <div class="item-list">
             <div
@@ -17,11 +13,10 @@
               :class="{ active: activeIndex == key }"
               v-for="(role, key) in roles"
               :key="role.id"
-              @click="switchRole(key, role)"
-            >
+              @click="switchRole(key, role)">
               <div class="name">
                 {{ role.roleName }}
-                <span style="margin-left: 10px;">({{ role.userCount }})</span>
+                <span style="margin-left: 10px">({{ role.userCount }})</span>
               </div>
             </div>
           </div>
@@ -31,7 +26,7 @@
             {{ currentStatus === 'detail' ? '角色详情' : currentStatus === 'add' ? '新建角色' : '编辑角色' }}
           </div>
           <div v-if="currentStatus === 'detail'">
-            <div style="margin-top: 20px;">
+            <div style="margin-top: 20px">
               <el-form ref="codeForm" label-position="right" label-width="80px">
                 <el-form-item label="角色员工">
                   <template v-for="(item, index) in roleObj.users">
@@ -55,8 +50,7 @@
                     node-key="id"
                     disabled
                     empty-text="加载中，请稍后"
-                    :props="defaultProps"
-                  ></el-tree>
+                    :props="defaultProps"></el-tree>
                 </el-form-item>
               </el-form>
             </div>
@@ -75,8 +69,7 @@
               :data="roleObj"
               @update="updateFn"
               @cancel="cancel"
-              :list="menuOptions"
-            />
+              :list="menuOptions" />
           </div>
         </el-col>
       </el-row>
@@ -84,263 +77,263 @@
   </div>
 </template>
 <script>
-  import { getRolesList, getRoleDetail, treeselect, deleteRole } from '@/api/organization'
-  import AddOrEdit from './add.vue'
-  export default {
-    name: 'manage-center-roles',
-    data() {
-      return {
-        roles: [],
-        activeIndex: 0,
-        roleObj: {
-          users: []
+import { getRolesList, getRoleDetail, treeselect, deleteRole } from '@/api/organization'
+import AddOrEdit from './add.vue'
+export default {
+  name: 'manage-center-roles',
+  data() {
+    return {
+      roles: [],
+      activeIndex: 0,
+      roleObj: {
+        users: [],
+      },
+      currentStatus: 'detail',
+      defaultProps: {
+        children: 'children',
+        label: 'label',
+        disabled: this.isDisabled,
+      },
+      menuOptions: [],
+      dataScopeOptions: [
+        {
+          value: '1',
+          label: '全部数据权限',
         },
-        currentStatus: 'detail',
-        defaultProps: {
-          children: 'children',
-          label: 'label',
-          disabled: this.isDisabled
+        {
+          value: '2',
+          label: '自定数据权限',
         },
-        menuOptions: [],
-        dataScopeOptions: [
-          {
-            value: '1',
-            label: '全部数据权限'
-          },
-          {
-            value: '2',
-            label: '自定数据权限'
-          },
-          {
-            value: '3',
-            label: '本部门数据权限'
-          },
-          {
-            value: '4',
-            label: '本部门及以下数据权限'
-          },
-          {
-            value: '5',
-            label: '仅本人数据权限'
-          }
-        ]
+        {
+          value: '3',
+          label: '本部门数据权限',
+        },
+        {
+          value: '4',
+          label: '本部门及以下数据权限',
+        },
+        {
+          value: '5',
+          label: '仅本人数据权限',
+        },
+      ],
+    }
+  },
+  components: {
+    AddOrEdit,
+  },
+  created() {
+    this.getList()
+    this.getMenuTreeselect()
+  },
+  methods: {
+    isDisabled() {
+      return true
+    },
+    setName() {
+      let str = ''
+      this.dataScopeOptions.map((data) => {
+        if (data.value == this.roleObj.dataScope) {
+          str = data.label
+        }
+      })
+      return str
+    },
+    updateFn() {
+      if (this.currentStatus === 'edit') {
+        this.currentStatus = 'detail'
+        getRolesList().then((res) => {
+          this.roles = res.rows
+        })
+        this.getRoleDetailFn(this.roles[this.activeIndex].roleId)
+      } else {
+        this.currentStatus = 'detail'
+        this.getList()
       }
     },
-    components: {
-      AddOrEdit
-    },
-    created() {
-      this.getList()
-      this.getMenuTreeselect()
-    },
-    methods: {
-      isDisabled() {
-        return true
-      },
-      setName() {
-        let str = ''
-        this.dataScopeOptions.map((data) => {
-          if (data.value == this.roleObj.dataScope) {
-            str = data.label
-          }
+    cancel() {
+      this.$confirm(`是否确认取消${this.currentStatus === 'add' ? '新建' : '编辑'}角色？取消后不可恢复。`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          this.currentStatus = 'detail'
+          this.getRoleDetailFn(this.roleObj.roleId)
         })
-        return str
-      },
-      updateFn() {
-        if (this.currentStatus === 'edit') {
-          this.currentStatus = 'detail'
-          getRolesList().then((res) => {
-            this.roles = res.rows
-          })
-          this.getRoleDetailFn(this.roles[this.activeIndex].roleId)
-        } else {
-          this.currentStatus = 'detail'
-          this.getList()
+        .catch(function () {})
+    },
+    getList() {
+      getRolesList().then((res) => {
+        this.roles = res.rows
+        if (this.roles && this.roles.length) {
+          this.activeIndex = 0
+          this.getRoleDetailFn(this.roles[0].roleId)
         }
-      },
-      cancel() {
+      })
+    },
+    getRoleDetailFn(id) {
+      getRoleDetail(id).then((res) => {
+        this.roleObj = res.data
+        if (this.roleObj.menus) {
+          let arr = this.roleObj.menus.map((data) => {
+            return data.menuId
+          })
+          this.$refs.menu.setCheckedKeys(arr)
+        }
+      })
+    },
+    addFn() {
+      if (this.currentStatus !== 'detail') {
         this.$confirm(`是否确认取消${this.currentStatus === 'add' ? '新建' : '编辑'}角色？取消后不可恢复。`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
+        })
+          .then(() => {
+            this.currentStatus = 'add'
+          })
+          .catch(function () {})
+      } else {
+        this.currentStatus = 'add'
+      }
+    },
+    switchRole(index, data) {
+      if (this.currentStatus !== 'detail') {
+        this.$confirm(`是否确认取消${this.currentStatus === 'add' ? '新建' : '编辑'}角色？取消后不可恢复。`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
         })
           .then(() => {
             this.currentStatus = 'detail'
-            this.getRoleDetailFn(this.roleObj.roleId)
+            this.activeIndex = index
+            this.getRoleDetailFn(data.roleId)
           })
           .catch(function () {})
-      },
-      getList() {
-        getRolesList().then((res) => {
-          this.roles = res.rows
-          if (this.roles && this.roles.length) {
-            this.activeIndex = 0
-            this.getRoleDetailFn(this.roles[0].roleId)
-          }
-        })
-      },
-      getRoleDetailFn(id) {
-        getRoleDetail(id).then((res) => {
-          this.roleObj = res.data
-          if (this.roleObj.menus) {
-            let arr = this.roleObj.menus.map((data) => {
-              return data.menuId
-            })
-            this.$refs.menu.setCheckedKeys(arr)
-          }
-        })
-      },
-      addFn() {
-        if (this.currentStatus !== 'detail') {
-          this.$confirm(`是否确认取消${this.currentStatus === 'add' ? '新建' : '编辑'}角色？取消后不可恢复。`, '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          })
-            .then(() => {
-              this.currentStatus = 'add'
-            })
-            .catch(function () {})
-        } else {
-          this.currentStatus = 'add'
-        }
-      },
-      switchRole(index, data) {
-        if (this.currentStatus !== 'detail') {
-          this.$confirm(`是否确认取消${this.currentStatus === 'add' ? '新建' : '编辑'}角色？取消后不可恢复。`, '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          })
-            .then(() => {
-              this.currentStatus = 'detail'
-              this.activeIndex = index
-              this.getRoleDetailFn(data.roleId)
-            })
-            .catch(function () {})
-        } else {
-          this.activeIndex = index
-          this.getRoleDetailFn(data.roleId)
-        }
-      },
-      edtiFn() {
-        this.currentStatus = 'edit'
-      },
-      deleteFn() {
-        this.$confirm('是否确认删除角色？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        })
-          .then(() => {
-            deleteRole(this.roleObj.roleId).then((res) => {
-              this.getList()
-            })
-          })
-          .catch(function () {})
-      },
-      /** 查询菜单树结构 */
-      getMenuTreeselect() {
-        treeselect().then((response) => {
-          this.menuOptions = response.data
-        })
+      } else {
+        this.activeIndex = index
+        this.getRoleDetailFn(data.roleId)
       }
-    }
-  }
+    },
+    edtiFn() {
+      this.currentStatus = 'edit'
+    },
+    deleteFn() {
+      this.$confirm('是否确认删除角色？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          deleteRole(this.roleObj.roleId).then((res) => {
+            this.getList()
+          })
+        })
+        .catch(function () {})
+    },
+    /** 查询菜单树结构 */
+    getMenuTreeselect() {
+      treeselect().then((response) => {
+        this.menuOptions = response.data
+      })
+    },
+  },
+}
 </script>
 <style lang="scss" scoped>
-  .title-name {
-    font-size: 14px;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 600;
-    color: #333333;
+.title-name {
+  font-size: 14px;
+
+  font-weight: 600;
+  color: #333333;
+  display: flex;
+  align-items: center;
+}
+.bottom {
+  display: flex;
+  justify-content: flex-end;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+.left {
+  border-right: 1px solid #f1f1f1;
+  .title {
+    color: var(--color);
     display: flex;
+    justify-content: space-between;
     align-items: center;
-  }
-  .bottom {
-    display: flex;
-    justify-content: flex-end;
-    border-radius: 5px;
-    padding: 20px;
-    background-color: #f5f5f5;
-  }
-  .left {
-    border-right: 1px solid #f1f1f1;
-    .title {
-      color: #3c88f0;
+    // padding-right: 20px;
+
+    .title-btn {
+      cursor: pointer;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      // padding-right: 20px;
+      font-size: 14px;
 
-      .title-btn {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-        font-family: PingFangSC-Regular, PingFang SC;
-        font-weight: 400;
-        color: #3c88f0;
+      font-weight: 400;
+      color: var(--color);
 
-        &:hover {
-          opacity: 0.7;
-        }
-      }
-    }
-
-    .item-list {
-      max-height: 800px;
-      padding-top: 20px;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      overflow-x: hidden;
-      overflow-y: auto;
-
-      .item {
-        cursor: pointer;
-        display: flex;
-        // justify-content: space-between;
-        align-items: center;
-        font-size: 12px;
-        color: #000;
-        height: 40px;
-        line-height: 40px;
-        width: 100%;
-        padding-left: 20px;
-        border-radius: 5px;
-        .name {
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-
-        .dropdown {
-          .dot {
-            cursor: pointer;
-            width: 14px;
-            height: 14px;
-            line-height: 14px;
-            font-size: 14px;
-            font-family: JMT-Font, JMT;
-            font-weight: normal;
-            color: #3c88f0;
-            margin-right: 20px;
-            margin-left: 5px;
-          }
-        }
-
-        &:hover {
-          color: #3c88f0;
-          background: #f5f8fe;
-          opacity: 0.8;
-        }
-      }
-
-      .active {
-        color: #3c88f0;
-        background: #f5f8fe;
+      &:hover {
+        opacity: 0.7;
       }
     }
   }
+
+  .item-list {
+    max-height: 800px;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    .item {
+      cursor: pointer;
+      display: flex;
+      // justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #000;
+      height: 40px;
+      line-height: 40px;
+      width: 100%;
+      padding-left: 20px;
+      border-radius: 5px;
+      .name {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .dropdown {
+        .dot {
+          cursor: pointer;
+          width: 14px;
+          height: 14px;
+          line-height: 14px;
+          font-size: 14px;
+          font-family: JMT-Font, JMT;
+          font-weight: normal;
+          color: var(--color);
+          margin-right: 20px;
+          margin-left: 5px;
+        }
+      }
+
+      &:hover {
+        color: var(--color);
+        background: #f5f8fe;
+        opacity: 0.8;
+      }
+    }
+
+    .active {
+      color: var(--color);
+      background: #f5f8fe;
+    }
+  }
+}
 </style>

@@ -10,13 +10,13 @@ export default {
         ruleName: '', // 规则名称
         createBy: '', // 创建人
         beginTime: '', // 创建开始时间
-        endTime: '' // 创建结束时间
+        endTime: '', // 创建结束时间
       },
       dateRange: [], // 添加日期
       total: 0, // 群SOP数据总量
       list: [], // 群SOP数据
       multiSelect: [], // 多选数据
-      loading: false
+      loading: false,
     }
   },
   watch: {
@@ -28,7 +28,7 @@ export default {
       } else {
         ;[this.query.beginTime, this.query.endTime] = dateRange
       }
-    }
+    },
   },
   created() {
     this.getList()
@@ -37,7 +37,7 @@ export default {
       'app/setBusininessDesc',
       `
         <div>管理员在创建群 SOP 规则后，员工通过推送的消息通知，在规定时间内给规定群聊发送规定内容。</div>
-      `
+      `,
     )
   },
   methods: {
@@ -60,7 +60,7 @@ export default {
     goRoute(id) {
       this.$router.push({
         path: 'groupSOPAev',
-        query: { id: id }
+        query: { id: id },
       })
     },
     // 重置查询参数
@@ -74,7 +74,7 @@ export default {
       this.$confirm('确认删除当前数据?删除操作无法撤销，请谨慎操作。', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       })
         .then(() => {
           const ids = this.multiSelect.map((r) => r.ruleId)
@@ -93,7 +93,7 @@ export default {
       this.$confirm('确认删除当前数据?删除操作无法撤销，请谨慎操作。', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       })
         .then(() => {
           remove(id + '').then((res) => {
@@ -115,115 +115,80 @@ export default {
         const groups = row.groupList.map((g) => g.groupName)
         return groups.join('，')
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
 <template>
   <div>
-    <div class="top-search">
-      <el-form inline label-position="right" :model="query" label-width="100px" ref="queryForm">
-        <el-form-item label="规则名称" prop="ruleName">
-          <el-input v-model="query.ruleName" placeholder="请输入"></el-input>
-        </el-form-item>
-        <el-form-item label="创建人" prop="createBy">
-          <el-input v-model="query.createBy" placeholder="请输入"></el-input>
-        </el-form-item>
-        <el-form-item label="创建时间">
-          <el-date-picker
-            v-model="dateRange"
-            value-format="yyyy-MM-dd"
-            type="daterange"
-            :picker-options="pickerOptions"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            align="right"
-          ></el-date-picker>
-        </el-form-item>
-        <el-form-item label=" ">
-          <el-button
-            type="primary"
-            @click="getList(1)"
-            >查询</el-button
-          >
-          <el-button
-            type="success"
-            @click="resetQuery()"
-            >重置</el-button
-          >
-        </el-form-item>
-      </el-form>
-    </div>
+    <el-form inline label-position="right" :model="query" label-width="100px" ref="queryForm" class="top-search">
+      <el-form-item label="规则名称" prop="ruleName">
+        <el-input v-model="query.ruleName" placeholder="请输入"></el-input>
+      </el-form-item>
+      <el-form-item label="创建人" prop="createBy">
+        <el-input v-model="query.createBy" placeholder="请输入"></el-input>
+      </el-form-item>
+      <el-form-item label="创建时间">
+        <el-date-picker
+          v-model="dateRange"
+          value-format="yyyy-MM-dd"
+          type="daterange"
+          :picker-options="pickerOptions"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          align="right"></el-date-picker>
+      </el-form-item>
+      <el-form-item label="">
+        <el-button type="primary" @click="getList(1)">查询</el-button>
+        <el-button @click="resetQuery()">重置</el-button>
+      </el-form-item>
+    </el-form>
 
-    <div class="mid-action">
-      <div>
+    <div class="g-card">
+      <div class="mid-action">
         <el-button type="primary" @click="goRoute()">新建规则</el-button>
+        <el-button :disabled="multiSelect.length === 0" @click="handleBulkRemove" type="cyan">批量删除</el-button>
       </div>
-      <div>
-        <el-button
-          :disabled="multiSelect.length === 0"
-          @click="handleBulkRemove"
-          type="cyan"
-          >批量删除</el-button
-        >
-      </div>
+
+      <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="50" align="center"></el-table-column>
+        <el-table-column
+          label="规则名称"
+          align="center"
+          prop="ruleName"
+          :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column label="执行群聊" align="center" width="120">
+          <template #default="{ row }">
+            <el-popover placement="bottom" width="200" trigger="hover" :content="getDisplayGroups(row)">
+              <div slot="reference" class="table-desc overflow-ellipsis">
+                {{ getDisplayGroups(row) }}
+              </div>
+            </el-popover>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="创建人" align="center" prop="createBy"></el-table-column>
+
+        <el-table-column label="创建人" align="center" prop="createBy"></el-table-column>
+        <el-table-column label="创建时间" align="center" prop="createTime"></el-table-column>
+
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="scope">
+            <el-button size="mini" type="text" @click="handleRemove(scope.row.ruleId)">删除</el-button>
+            <el-button size="mini" type="text" @click="goRoute(scope.row.ruleId)">编辑</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <pagination
+        v-show="total > 0"
+        :total="total"
+        :page.sync="query.pageNum"
+        :limit.sync="query.pageSize"
+        @pagination="getList()" />
     </div>
-
-    <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="50" align="center"></el-table-column>
-      <el-table-column
-        label="规则名称"
-        align="center"
-        prop="ruleName"
-        :show-overflow-tooltip="true"
-      ></el-table-column>
-      <el-table-column label="执行群聊" align="center" width="120">
-        <template #default="{ row }">
-          <el-popover
-            placement="bottom"
-            width="200"
-            trigger="hover"
-            :content="getDisplayGroups(row)"
-          >
-            <div slot="reference" class="table-desc overflow-ellipsis">
-              {{ getDisplayGroups(row) }}
-            </div>
-          </el-popover>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="创建人" align="center" prop="createBy"></el-table-column>
-
-      <el-table-column label="创建人" align="center" prop="createBy"></el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime"></el-table-column>
-
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            @click="handleRemove(scope.row.ruleId)"
-            >删除</el-button
-          >
-          <el-button
-            size="mini"
-            type="text"
-            @click="goRoute(scope.row.ruleId)"
-            >编辑</el-button
-          >
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <pagination
-      v-show="total > 0"
-      :total="total"
-      :page.sync="query.pageNum"
-      :limit.sync="query.pageSize"
-      @pagination="getList()"
-    />
   </div>
 </template>
 

@@ -8,24 +8,24 @@ export default {
     // 当前跟进人id
     userId: {
       type: String,
-      default: null
+      default: null,
     },
     // 所有跟进人id（用于客户画像汇总的同步）
     userIdAll: {
       type: String,
-      default: null
+      default: null,
     },
     // 1:客户动态;2:员工动态;3:互动动态;4:跟进动态
     trajectoryType: {
       type: String,
-      default: null
+      default: null,
     },
     // 视图展示类型 1:表格展示，2:轨迹时间线展示
     viewType: {
       type: String,
-      default: ''
+      default: '',
     },
-    lastSyncTime: String
+    lastSyncTime: String,
   },
   components: {},
   data() {
@@ -35,14 +35,14 @@ export default {
         pageSize: 10,
         externalUserid: '', //	是	当前客户id
         userId: null, //		当前跟进人id,
-        trajectoryType: null //	1:客户动态;2:员工动态;3:互动动态;4:跟进动态
+        trajectoryType: null, //	1:客户动态;2:员工动态;3:互动动态;4:跟进动态
       },
       loading: false,
       total: 0,
       list: [], // 列表
       dictTrackState,
       dateFormat,
-      goto: true
+      goto: true,
     }
   },
   computed: {},
@@ -57,13 +57,13 @@ export default {
       Object.assign(this.query, {
         externalUserid: this.$route.query.externalUserid,
         weUserId: this.userId,
-        trajectoryType: this.trajectoryType
+        trajectoryType: this.trajectoryType,
       })
       if (this.viewType) {
         page && (this.query.pageNum = page)
       } else {
         this.query.pageNum++
-        if (this.query.pageNum > 1  && this.goto) {
+        if (this.query.pageNum > 1 && this.goto) {
           return
         }
       }
@@ -122,8 +122,8 @@ export default {
           this.loading = false
           console.error(fail)
         })
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -135,9 +135,9 @@ export default {
         <el-table-column label="跟进记录" align="center" prop="trackContent" />
         <el-table-column prop="trackState" label="跟进状态" align="center">
           <template slot-scope="{ row }">
-            <el-tag v-if="row.trackState" :type="dictTrackState[~~row.trackState + ''].color">{{
-              dictTrackState[~~row.trackState + ''].name
-            }}</el-tag>
+            <el-tag v-if="row.trackState" :type="dictTrackState[~~row.trackState + ''].color">
+              {{ dictTrackState[~~row.trackState + ''].name }}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="跟进记录时间" align="center" prop="createTime" />
@@ -152,14 +152,12 @@ export default {
           :page-sizes="[10, 20, 50]"
           :page-size="query.pageSize"
           layout="total, prev, pager, next"
-          :total="total"
-        >
-        </el-pagination>
+          :total="total"></el-pagination>
       </div>
     </template>
 
     <div v-else class="timeline-time-wrap">
-      <ul class="infinite-list" v-infinite-scroll="getList"  style="overflow: auto">
+      <ul class="infinite-list" v-infinite-scroll="getList" style="overflow: auto">
         <!-- -->
         <template v-if="list.length">
           <li v-for="(unit, i) in list" class="infinite-list-item" :key="i">
@@ -171,8 +169,7 @@ export default {
                 class="timeline-box-item"
                 :timestamp="item.createTime.slice(10, 16)"
                 placement="top"
-                type="primary"
-              >
+                type="primary">
                 <p class="timeline-box-item-title">{{ item.title || '无标题' }}</p>
                 <p>{{ item.content || '无内容' }}</p>
               </el-timeline-item>
@@ -220,6 +217,6 @@ export default {
 }
 
 ::v-deep .el-timeline-item__tail {
-  border-left-color: #3c88f0;
+  border-left-color: var(--color);
 }
 </style>

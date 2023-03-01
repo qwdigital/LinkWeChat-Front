@@ -1,22 +1,22 @@
 <script>
-  export default {
-    name: '',
-    components: {},
-    data() {
-      return {}
-    },
-    computed: {},
-    watch: {},
-    created() {},
-    mounted() {},
-    methods: {}
-  }
+export default {
+  name: '',
+  components: {},
+  data() {
+    return {}
+  },
+  computed: {},
+  watch: {},
+  created() {},
+  mounted() {},
+  methods: {},
+}
 </script>
 
 <template>
-  <div class="login-wrap">
+  <div class="visitor">
     <!-- <div class="login-top--wrap">
-      <div class="login-top--main main-size fxbw aic">
+      <div class="login-top--main main-size fcbw">
         <div class="logo-top--wrap">
           <img :src="lwConfig.LOGO_TEXT_DARK" class="logo-top" />
           <a href="https://open.work.weixin.qq.com" target="_blank"><img src="https://open.work.weixin.qq.com/service/img?id=ww38152475d1bca752&t=isp&c=white&s=medium" srcset="
@@ -43,52 +43,54 @@
 
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>{{ lwConfig.COPYRIGHT }}</span>
+      <span>
+        {{ lwConfig.COPYRIGHT || 'Copyright © 2018-2022 LinkWeChat All Rights Reserved.' }}
+      </span>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-  .contact-code {
-    width: 80px;
+.contact-code {
+  width: 80px;
+}
+.visitor {
+  height: 100vh;
+  background: #e3ebf6;
+  .login-top--wrap {
+    background: #fff;
+    padding: 5px 20px;
+    box-shadow: 0px 5px 5px rgb(215 215 215 / 35%);
   }
-  .login-wrap {
-    height: 100vh;
-    background: #eee;
-    .login-top--wrap {
-      background: #fff;
-      padding: 5px 20px;
-      box-shadow: 0px 5px 5px rgb(215 215 215 / 35%);
-    }
 
-    .logo-top--wrap {
-      display: flex;
-      align-items: center;
-      .logo-top {
-        max-height: 44px;
-        max-width: 170px;
-      }
-    }
-
-    .login-nav--wrap {
-      .nav-li {
-        color: #aaa;
-        margin-left: 20px;
-      }
+  .logo-top--wrap {
+    display: flex;
+    align-items: center;
+    .logo-top {
+      max-height: 44px;
+      max-width: 170px;
     }
   }
 
-  .el-login-footer {
-    height: 40px;
-    line-height: 40px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    // color: #fff;
-    font-family: Arial;
-    font-size: 12px;
-    letter-spacing: 1px;
-    z-index: 90;
+  .login-nav--wrap {
+    .nav-li {
+      color: #aaa;
+      margin-left: 20px;
+    }
   }
+}
+
+.el-login-footer {
+  height: 40px;
+  line-height: 40px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  // color: #fff;
+  font-family: Arial;
+  font-size: 12px;
+  letter-spacing: 1px;
+  z-index: 90;
+}
 </style>

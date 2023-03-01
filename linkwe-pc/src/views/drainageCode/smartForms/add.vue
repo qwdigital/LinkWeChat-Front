@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="tab">
-      <el-steps style="margin-top: 10px" :active="currentActive" align-center>
+    <div class="g-card">
+      <el-steps :active="currentActive" align-center finish-status="success">
         <el-step title="基础信息"></el-step>
         <el-step title="表单画布"></el-step>
         <el-step title="表单设置"></el-step>
@@ -153,7 +153,7 @@
               </el-form-item>
               <div style="margin-left: 15px; display: flex; flex-shrink: 0; z-index: 9">
                 <div
-                  style="color: #2c8cf0; cursor: pointer"
+                  style="color: var(--color); cursor: pointer"
                   type="button"
                   class="copy-btn"
                   :data-clipboard-text="baseFormUrl4">
@@ -175,7 +175,7 @@
                         display: flex;
                         align-items: flex-end;
                         margin-bottom: 5px;
-                        color: #2c8cf0;
+                        color: var(--color);
                         cursor: pointer;
                         margin-left: 10px;
                       ">
@@ -217,11 +217,13 @@
                         <label for=""></label>
                       </div>
                       <div class="add_form4_qd_li3 add_form4_qd_li">
-                        <span style="color: blue; cursor: pointer" @click.stop="deletChannels(item, index)">取消</span>
+                        <span style="color: var(--color); cursor: pointer" @click.stop="deletChannels(item, index)">
+                          取消
+                        </span>
                       </div>
                     </div>
                   </div>
-                  <div v-if="ifChannelsName" style="color: #2c8cf0; cursor: pointer" @click.stop="addChannels">
+                  <div v-if="ifChannelsName" style="color: var(--color); cursor: pointer" @click.stop="addChannels">
                     +继续添加
                   </div>
                 </div>
@@ -1483,7 +1485,7 @@ export default {
 
 .sub-des {
   font-size: 12px;
-  font-family: PingFangSC-Regular, PingFang SC;
+
   font-weight: 400;
   color: #999999;
 }
@@ -1491,9 +1493,9 @@ export default {
 .add-continue {
   cursor: pointer;
   font-size: 14px;
-  font-family: PingFangSC-Regular, PingFang SC;
+
   font-weight: 400;
-  color: #3c88f0;
+  color: var(--color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1520,17 +1522,9 @@ export default {
   }
 }
 
-.tab {
-  height: 78px;
-  background: #fff;
-  border-top: 1px solid #f1f1f1;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
-
 .crumb {
   font-size: 12px;
-  font-family: PingFangSC-Regular, PingFang SC;
+
   font-weight: 400;
   color: #666666;
   display: flex;
@@ -1572,7 +1566,7 @@ export default {
     top: 0;
     right: 0;
     font-size: 12px;
-    font-family: PingFangSC-Regular, PingFang SC;
+
     font-weight: 400;
     color: #1785ff;
     display: flex;

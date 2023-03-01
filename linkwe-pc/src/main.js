@@ -27,6 +27,7 @@ import './permission' // permission control
 Vue.component('Pagination', () => import('@/components/Pagination'))
 Vue.component('RightToolbar', () => import('@/components/RightToolbar'))
 Vue.component('Upload', () => import('@/components/Upload'))
+Vue.component('UploadToCos', () => import('@/components/UploadToCos'))
 Vue.component('ButtonSync', () => import('@/components/ButtonSync'))
 Vue.component('TagEllipsis', () => import('@/components/TagEllipsis'))
 Vue.component('SelectUser', () => import('@/components/SelectUser'))
@@ -34,6 +35,9 @@ Vue.component('SelectWeUser', () => import('@/components/SelectWeUser'))
 Vue.component('SelectStaffForm', () => import('@/components/SelectStaffForm'))
 Vue.component('CoRemoteSelect', () => import('@/components/CoRemoteSelect'))
 Vue.component('PhoneTemplate', () => import('@/components/PhoneTemplate'))
+Vue.component('CardGroupIndex', () => import('@/components/CardGroupIndex'))
+// 带 插入 表情/客户昵称 等扩展工具栏的文本内容框
+Vue.component('TextareaExtend', () => import('@/components/TextareaExtend'))
 // 全局方法挂载
 import ClipboardJS from 'clipboard'
 // class ClipboardJS extends clipboard {

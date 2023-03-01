@@ -98,13 +98,8 @@ export default {
 
 <template>
   <el-form label-width="110px" label-position="right">
-    <div class="g-card g-pad20">
-      <el-form-item
-        label="动态内容"
-        required
-        style="width: 50%; margin-bottom: 0"
-        :error="welcomeMsgError"
-      >
+    <div class="g-card">
+      <el-form-item label="动态内容" required style="width: 50%; margin-bottom: 0" :error="welcomeMsgError">
         <el-input
           ref="msgTextarea"
           type="textarea"
@@ -113,34 +108,30 @@ export default {
           show-word-limit
           placeholder="请输入"
           :autosize="{ minRows: 5, maxRows: 20 }"
-          clearable
-        />
+          clearable />
       </el-form-item>
     </div>
 
     <!-- 附件 -->
-    <div class="g-card g-pad20" v-for="(item, index) in form.otherContent" :key="index">
+    <div class="g-card" v-for="(item, index) in form.otherContent" :key="index">
       <!-- 图片上传 -->
       <div class="my-cord" v-if="item.annexType == 'image'">
         <div class="operation">
           <div class="algin" @click="onRemoveMaterial(index)">
-            <i class="el-icon-delete mr5"></i>删除
+            <i class="el-icon-delete mr5"></i>
+            删除
           </div>
         </div>
         <el-form-item label="图片上传" required :error="item.contentError">
-          <upload
-            :maxImgPx="limit"
-            class="image-uploader"
-            :fileUrl.sync="item.annexUrl"
-            type="0"
-          ></upload>
+          <upload :maxImgPx="limit" class="image-uploader" :fileUrl.sync="item.annexUrl" type="0"></upload>
         </el-form-item>
       </div>
       <!-- 图文 -->
       <div class="my-cord" v-else-if="item.annexType == 'link'">
         <div class="operation">
           <div class="algin" @click="onRemoveMaterial(index)">
-            <i class="el-icon-delete mr5"></i>删除
+            <i class="el-icon-delete mr5"></i>
+            删除
           </div>
         </div>
         <el-form-item label="图文链接" style="width: 50%" required :error="item.contentError">
@@ -154,7 +145,8 @@ export default {
       <div class="my-cord" v-else-if="item.annexType == 'video'">
         <div class="operation">
           <div class="algin" @click="onRemoveMaterial(index)">
-            <i class="el-icon-delete mr5"></i>删除
+            <i class="el-icon-delete mr5"></i>
+            删除
           </div>
         </div>
         <el-form-item label="视频上传" required :error="item.contentError">
@@ -164,23 +156,18 @@ export default {
     </div>
     <!-- 添加附件 -->
     <div
-      class="g-card g-pad20 add-continue"
-      v-show="
-        form.otherContent.length <= 8 && form.contentType !== 'video' && form.contentType !== 'link'
-      "
-    >
+      class="g-card add-continue"
+      v-show="form.otherContent.length <= 8 && form.contentType !== 'video' && form.contentType !== 'link'">
       <el-dropdown style="margin-left: 10px" @command="onInsertMaterial">
         <div style="display: flex; align-items: center">
-          <i class="el-icon-circle-plus-outline mr5"></i> 继续添加附件
+          <i class="el-icon-circle-plus-outline mr5"></i>
+          继续添加附件
         </div>
         <el-dropdown-menu slot="dropdown" trigger="click">
           <!-- <el-dropdown-item :command="4">
                   <el-button type="text">文字</el-button>
                 </el-dropdown-item> -->
-          <el-dropdown-item
-            v-if="form.contentType === 'image' || form.otherContent.length === 0"
-            :command="'image'"
-          >
+          <el-dropdown-item v-if="form.contentType === 'image' || form.otherContent.length === 0" :command="'image'">
             <el-button type="text">图片</el-button>
           </el-dropdown-item>
           <el-dropdown-item v-if="form.otherContent.length === 0" :command="'video'">
@@ -210,7 +197,7 @@ export default {
 
 .sub-des {
   font-size: 12px;
-  font-family: PingFangSC-Regular, PingFang SC;
+
   font-weight: 400;
   color: #999999;
 }
@@ -218,9 +205,9 @@ export default {
 .add-continue {
   cursor: pointer;
   font-size: 14px;
-  font-family: PingFangSC-Regular, PingFang SC;
+
   font-weight: 400;
-  color: #3c88f0;
+  color: var(--color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -240,7 +227,7 @@ export default {
     top: 0;
     right: 0;
     font-size: 12px;
-    font-family: PingFangSC-Regular, PingFang SC;
+
     font-weight: 400;
     color: #1785ff;
     display: flex;

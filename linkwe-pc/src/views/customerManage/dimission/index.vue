@@ -10,6 +10,7 @@
       return {
         // 查询参数
         query: {
+          isAllocate: 0,
           pageNum: 1,
           pageSize: 10,
           userName: undefined,
@@ -26,7 +27,8 @@
         list: [],
         currentRow: {},
         dialogVisibleSelectUser: false,
-        dateRange: [] // 离职日期
+        dateRange: [], // 离职日期
+        lastSyncTime: ''
       }
     },
     watch: {},
@@ -36,8 +38,8 @@
       this.$store.dispatch(
         'app/setBusininessDesc',
         `
-        <div>将离职成员的客户和客户群分配给其他成员跟进并继续提供服务。</div>
-      `
+          <div>将离职成员的客户和客户群分配给其他成员跟进并继续提供服务。</div>
+        `
       )
     },
     mounted() {},
@@ -54,11 +56,12 @@
         page && (this.query.pageNum = page)
         this.loading = true
         api
-          .getListNo(this.query)
-          .then(({ rows, total }) => {
+          .getListTable(this.query)
+          .then(({ rows, total, lastSyncTime }) => {
             this.list = rows
             this.total = +total
             this.loading = false
+            this.lastSyncTime = lastSyncTime
           })
           .catch(() => {
             this.loading = false
@@ -69,13 +72,14 @@
         this.$refs['queryForm'].resetFields()
       },
       showSelectDialog() {
-        if (this.currentRow.userId) {
+        if (this.currentRow.weUserId) {
           this.dialogVisibleSelectUser = true
         } else {
           this.$message.warning('请先选择一位员工')
         }
       },
       allocate(userlist) {
+        console.log(userlist)
         if (userlist.length > 1) {
           this.dialogVisibleSelectUser = true
           return
@@ -83,7 +87,7 @@
         let loading = this.$loading()
         api
           .allocate({
-            handoverUserid: this.currentRow.userId,
+            handoverUserid: this.currentRow.weUserId,
             takeoverUserid: userlist[0].userId
           })
           .then(() => {
@@ -109,6 +113,19 @@
           this.$refs.table.clearSelection()
           this.$refs.table.toggleRowSelection(row)
         })
+      },
+      sync() {
+        api
+          .sync()
+          .then(() => {
+            // loading.close()
+            this.getList(1)
+            this.msgSuccess('后台开始同步数据，请稍后关注进度')
+          })
+          .catch((fail) => {
+            // loading.close()
+            console.log(fail)
+          })
       }
     }
   }
@@ -116,7 +133,7 @@
 
 <template>
   <div class="page">
-    <el-form ref="queryForm" :inline="true" :model="query" label-width="100px" class="top-search">
+    <el-form ref="queryForm" :inline="true" :model="query" label-width="" class="top-search">
       <el-form-item label="已离职员工" prop="userName">
         <el-input clearable v-model="query.userName" placeholder="请输入"></el-input>
       </el-form-item>
@@ -137,66 +154,61 @@
       <el-form-item label>
         <!-- v-hasPermi="['customerManage:dimission:query']" -->
         <el-button type="primary" @click="getList(1)">查询</el-button>
-        <el-button type="success" @click="resetForm('queryForm')">重置</el-button>
+        <el-button @click="resetForm('queryForm')">重置</el-button>
         <!-- v-hasPermi="['customerManage:dimission:query']" -->
       </el-form-item>
     </el-form>
 
-    <div class="mid-action">
-      <div></div>
-      <div>
+    <div class="g-card">
+      <div class="mid-action">
         <!-- v-hasPermi="['customerManage:dimission:filter']" -->
         <el-button type="primary" @click="$router.push({ path: 'allocatedStaffList' })">已分配的离职员工</el-button>
-        <el-button type="info" @click="showSelectDialog">分配给其他员工</el-button>
+        <div>
+          <span class="desc">最近同步：{{ lastSyncTime }}</span>
+          <ButtonSync :lastSyncTime="lastSyncTime" @click="sync">同步</ButtonSync>
+          <el-button style="margin-left: 10px;" type="primary" @click="showSelectDialog">分配给其他员工</el-button>
+        </div>
         <!-- v-hasPermi="['customerManage:dimission:allocate']" -->
       </div>
-    </div>
 
-    <el-table
-      v-loading="loading"
-      ref="multipleTable"
-      :data="list"
-      tooltip-effect="dark"
-      style="width: 100%;"
-      highlight-current-row
-      @select="handleSelection"
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column type="selection" align="center" width="55"> </el-table-column>
-      <el-table-column type="index" label="序号" width="55"></el-table-column>
-      <el-table-column prop="userName" label="已离职员工"></el-table-column>
-      <el-table-column prop="department" label="所属部门"></el-table-column>
-      <el-table-column prop="allocateCustomerNum" label="待分配客户数" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="allocateGroupNum" label="待分配群聊数" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="dimissionTime" label="离职时间" show-overflow-tooltip>
-        <template slot-scope="scope">{{ scope.row.dimissionTime }}</template>
-      </el-table-column>
-      <!-- <el-table-column label="操作" width="100">
+      <el-table
+        v-loading="loading"
+        ref="multipleTable"
+        :data="list"
+        tooltip-effect="dark"
+        style="width: 100%;"
+        highlight-current-row
+        @select="handleSelection"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" align="center" width="55"></el-table-column>
+        <el-table-column type="index" label="序号" width="55"></el-table-column>
+        <el-table-column prop="userName" label="已离职员工"></el-table-column>
+        <el-table-column prop="department" label="所属部门"></el-table-column>
+        <el-table-column prop="allocateCustomerNum" label="待分配客户数" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="allocateGroupNum" label="待分配群聊数" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="dimissionTime" label="离职时间" show-overflow-tooltip>
+          <template slot-scope="scope">{{ scope.row.dimissionTime }}</template>
+        </el-table-column>
+        <!-- <el-table-column label="操作" width="100">
         <template slot-scope="scope">
-          <el-button v-hasPermi="['customerManage:dimission:edit']" type="text" size="small">编辑</el-button>
+          <el-button v-hasPermi="['customerManage:dimission:edit']" type="text" >编辑</el-button>
         </template>
       </el-table-column>-->
-    </el-table>
+      </el-table>
 
-    <pagination
-      v-show="total > 0"
-      :total="total"
-      :page.sync="query.pageNum"
-      :limit.sync="query.pageSize"
-      @pagination="getList()"
-    />
+      <pagination
+        v-show="total > 0"
+        :total="total"
+        :page.sync="query.pageNum"
+        :limit.sync="query.pageSize"
+        @pagination="getList()"
+      />
+    </div>
 
     <!-- 选择添加人弹窗 -->
     <SelectWeUser :visible.sync="dialogVisibleSelectUser" title="选择分配人" @success="allocate"></SelectWeUser>
   </div>
 </template>
 
-<style lang="scss" scoped>
-  .page {
-    padding: 24px;
-  }
-  .el-input,
-  .el-select {
-    width: 220px;
-  }
-</style>
+<style lang="scss" scoped></style>

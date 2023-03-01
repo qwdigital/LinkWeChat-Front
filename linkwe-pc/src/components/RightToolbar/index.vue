@@ -13,9 +13,9 @@
 </template>
 <script>
 export default {
-  name: "RightToolbar",
+  name: 'RightToolbar',
   data() {
-    return {};
+    return {}
   },
   props: {
     showSearch: {
@@ -27,12 +27,18 @@ export default {
   methods: {
     //搜索
     toggleSearch() {
-      this.$emit("update:showSearch", !this.showSearch);
+      this.$emit('update:showSearch', !this.showSearch)
     },
     //刷新
     refresh() {
-      this.$emit("queryTable");
+      this.$emit('queryTable')
     },
   },
-};
+}
 </script>
+<style scoped>
+.top-right-btn {
+  position: relative;
+  float: right;
+}
+</style>

@@ -34,7 +34,7 @@ export default {
   overflow-y: auto;
   margin: 20px 0 0;
   padding: 0 20px;
-
+  flex: auto;
   &::-webkit-scrollbar-thumb {
     visibility: hidden;
   }
@@ -44,7 +44,7 @@ export default {
 }
 
 .page {
-  background: #fff;
+  // background: #fff;
   border-radius: var(--border-radius-big);
   overflow: hidden;
 }

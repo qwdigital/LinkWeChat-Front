@@ -30,8 +30,7 @@ const layouts = {
   colFormItem(h, element, index, parent) {
     const { activeItem } = this.$listeners
     console.log('element.formId', element.formId)
-    let className =
-      this.activeId === element.formId ? 'drawing-item active-from-item' : 'drawing-item'
+    let className = this.activeId === element.formId ? 'drawing-item active-from-item' : 'drawing-item'
     //只是用顶部样式
     this.formConf.labelPosition = 'top'
 
@@ -80,8 +79,7 @@ const layouts = {
   },
   rowFormItem(h, element, index, parent) {
     const { activeItem } = this.$listeners
-    const className =
-      this.activeId === element.formId ? 'drawing-row-item active-from-item' : 'drawing-row-item'
+    const className = this.activeId === element.formId ? 'drawing-row-item active-from-item' : 'drawing-row-item'
     let child = renderChildren.apply(this, arguments)
     if (element.type === 'flex') {
       child = (
@@ -100,11 +98,7 @@ const layouts = {
             event.stopPropagation()
           }}>
           <span class='component-name'>{element.componentName}</span>
-          <draggable
-            list={element.children}
-            animation={340}
-            group='componentsGroup'
-            class='drag-wrapper'>
+          <draggable list={element.children} animation={340} group='componentsGroup' class='drag-wrapper'>
             {child}
           </draggable>
           {components.itemBtns.apply(this, arguments)}
@@ -147,7 +141,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 $selectedColor: #f6f7ff;
-$lighterBlue: #409eff;
 
 .drawing-item {
   position: relative;
@@ -180,7 +173,7 @@ $lighterBlue: #409eff;
     min-height: 80px;
   }
   &.active-from-item {
-    border: 1px dashed $lighterBlue;
+    border: 1px dashed var(--color);
   }
   .component-name {
     position: absolute;
@@ -221,11 +214,11 @@ $lighterBlue: #409eff;
   }
   & > .drawing-item-copy {
     right: 56px;
-    border-color: $lighterBlue;
-    color: $lighterBlue;
+    border-color: var(--color);
+    color: var(--color);
     background: #fff;
     &:hover {
-      background: $lighterBlue;
+      background: var(--color);
       color: #fff;
     }
   }
@@ -250,7 +243,7 @@ $lighterBlue: #409eff;
     display: initial;
   }
   & > .component-name {
-    color: $lighterBlue;
+    color: var(--color);
   }
 }
 ::v-deep .no-image {

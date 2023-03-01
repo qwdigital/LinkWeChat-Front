@@ -66,7 +66,7 @@ export default {
           </el-popover>
         </div>
       </div>
-      <div class="mt5 value">{{ row[defaultProps.value] || 0 }}</div>
+      <div class="mt10 value">{{ row[defaultProps.value] || 0 }}</div>
       <div class="mt15" v-if="row[defaultProps.title1] !== undefined || row[defaultProps.value1] !== undefined">
         {{ row[defaultProps.title1] }}
         <span class="fr" :class="row[defaultProps.noArrow] || getClass(row[defaultProps.value1])">
@@ -82,13 +82,20 @@ export default {
 // 指标卡片
 .card-index-li {
   position: relative;
-  width: 200px;
+  flex: auto;
+  // min-width: 200px;
+  max-width: 240px;
   background: #fff;
   border-radius: var(--border-radius-big);
   border: 1px solid #edf2f9;
-  margin: 0 10px 0 0;
   line-height: 1;
   padding: 22px 20px;
+  margin-right: 10px;
+  margin-bottom: var(--card-margin);
+  // // 6个以上的换行 需定宽并使用 media query
+  // &:nth-child(n + 8) {
+  //   margin-top: var(--card-margin);ç
+  // }
   &:last-child {
     margin-right: 0;
   }
@@ -99,7 +106,7 @@ export default {
   }
   .label {
     position: relative;
-    font-size: $font-size;
+    font-size: 14px;
   }
   .value,
   .value2 {
@@ -107,7 +114,7 @@ export default {
     font-weight: bold;
   }
   .value2 {
-    font-size: $font-size-keydata;
+    font-size: 24px;
     line-height: 1.15;
   }
   .el-icon-warning-outline {

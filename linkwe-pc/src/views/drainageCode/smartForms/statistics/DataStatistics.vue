@@ -1,94 +1,79 @@
 <template>
   <div style="padding-bottom: 30px">
-    <div>
-      <div class="g-card g-pad20">
-        <div class="data-content">
-          <div class="search-content">
-            <search-title
-              :id="$route.query.id"
-              :showScene="true"
-              @search="getTableFn"
-            ></search-title>
-            <el-button type="primary" size="mini" @click="exportFn" v-loading="exportLoading"
-              >导出Excel</el-button
-            >
-          </div>
-          <!-- <div v-if="tableList&&tableList.length!=0">
+    <div class="g-card">
+      <div class="mid-action">
+        <search-title :id="$route.query.id" :showScene="true" @search="getTableFn"></search-title>
+        <el-button type="primary" size="mini" @click="exportFn" v-loading="exportLoading">导出Excel</el-button>
+      </div>
+      <!-- <div v-if="tableList&&tableList.length!=0">
               {{tableList[0].answer}}
             </div> -->
-          <div v-if="!tableList[0]">
-            <el-table v-loading="loading1" :data="tableList" style="width: 100%">
-              <el-table-column label="日期" align="center" min-width="100" show-overflow-tooltip>
-                <template slot-scope="{ row }">
-                  <div style="display: flex; justify-content: center">
-                    {{ row.updateTime.substring(0, 10) }}
-                  </div>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-          <div v-if="tableList[0]">
-            <el-table v-loading="loading1" :data="tableList" style="width: 100%">
-              <el-table-column align="center" label="序号" width="50">
-                <template slot-scope="scope">
-                  {{ scope.$index + 1 }}
-                </template>
-              </el-table-column>
+      <template v-if="!tableList[0]">
+        <el-table v-loading="loading1" :data="tableList" style="width: 100%">
+          <el-table-column label="日期" align="center" min-width="100" show-overflow-tooltip>
+            <template slot-scope="{ row }">
+              <div style="display: flex; justify-content: center">
+                {{ row.updateTime.substring(0, 10) }}
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+      </template>
+      <template v-if="tableList[0]">
+        <el-table v-loading="loading1" :data="tableList" style="width: 100%">
+          <el-table-column align="center" label="序号" width="50">
+            <template slot-scope="scope">
+              {{ scope.$index + 1 }}
+            </template>
+          </el-table-column>
 
-              <el-table-column label="日期" align="center" min-width="100" show-overflow-tooltip>
-                <template slot-scope="{ row }">
-                  <div style="display: flex; justify-content: center">
-                    {{ row.updateTime.substring(0, 10) }}
-                  </div>
-                </template>
-              </el-table-column>
-              <template v-if="tableList && tableList[0]">
-                <el-table-column
-                  v-for="(item, index) in tableList[0].answer"
-                  :label="item.label"
-                  align="center"
-                  min-width="100"
-                  show-overflow-tooltip
-                  :key="index"
-                >
-                  <div slot-scope="{ row }" class="toe">
-                    <span v-if="![8, 9, 10].includes(row.answer[index].formCodeId)">
-                      {{ row.answer[index].defaultValue }}
-                    </span>
-                    <span v-else-if="row.answer[index].formCodeId == 8">
-                      {{
-                        row.answer[index].multiple
-                          ? multipleTrans(row.answer[index])
-                          : row.answer[index].defaultValue
-                      }}
-                    </span>
-                    <span v-else-if="row.answer[index].formCodeId == 9">
-                      {{ row.answer[index].ssq }}
-                    </span>
-                    <span v-else-if="row.answer[index].formCodeId == 10">
-                      {{ row.answer[index].timeS }}
-                    </span>
-                  </div>
-                </el-table-column>
-              </template>
-              <!--  <el-table-column label="总访问数" align="center" min-width="100" prop="visitTotalCnt" show-overflow-tooltip />
+          <el-table-column label="日期" align="center" min-width="100" show-overflow-tooltip>
+            <template slot-scope="{ row }">
+              <div style="display: flex; justify-content: center">
+                {{ row.updateTime.substring(0, 10) }}
+              </div>
+            </template>
+          </el-table-column>
+          <template v-if="tableList && tableList[0]">
+            <el-table-column
+              v-for="(item, index) in tableList[0].answer"
+              :label="item.label"
+              align="center"
+              min-width="100"
+              show-overflow-tooltip
+              :key="index">
+              <div slot-scope="{ row }" class="toe">
+                <span v-if="![8, 9, 10].includes(row.answer[index].formCodeId)">
+                  {{ row.answer[index].defaultValue }}
+                </span>
+                <span v-else-if="row.answer[index].formCodeId == 8">
+                  {{ row.answer[index].multiple ? multipleTrans(row.answer[index]) : row.answer[index].defaultValue }}
+                </span>
+                <span v-else-if="row.answer[index].formCodeId == 9">
+                  {{ row.answer[index].ssq }}
+                </span>
+                <span v-else-if="row.answer[index].formCodeId == 10">
+                  {{ row.answer[index].timeS }}
+                </span>
+              </div>
+            </el-table-column>
+          </template>
+          <!--  <el-table-column label="总访问数" align="center" min-width="100" prop="visitTotalCnt" show-overflow-tooltip />
                 <el-table-column label="总访问用户" align="center" prop="consultTotalCnt" min-width="100" show-overflow-tooltip></el-table-column>
                 <el-table-column label="有效收集量" align="center" prop="EffectiveCollectionQuantity" min-width="100" show-overflow-tooltip></el-table-column>
                 <el-table-column label="收集量" align="center" prop="CollectionQuantity" min-width="100" show-overflow-tooltip></el-table-column>
                 <el-table-column label="平均完成时间" align="center" prop="average" min-width="100" show-overflow-tooltip></el-table-column> -->
-            </el-table>
-            <div class="bottom">
-              <pagination
-                :total="total"
-                :page.sync="query.pageNum"
-                :limit.sync="query.pageSize"
-                @pagination="getTableChangeSize(query.pageNum, query.pageSize)"
-              />
-            </div>
-          </div>
+        </el-table>
+        <div class="bottom">
+          <pagination
+            :total="total"
+            :page.sync="query.pageNum"
+            :limit.sync="query.pageSize"
+            @pagination="getTableChangeSize(query.pageNum, query.pageSize)" />
         </div>
-      </div>
+      </template>
     </div>
+
     <div class="dataStatistics_optionGraph_ul">
       <div class="dataStatistics_optionGraph_li" v-for="(item, index) in baseList" :key="index">
         <div style="font-size: 20xp; font-weight: 700">{{ item.label }}</div>
@@ -99,8 +84,7 @@
         <div
           style="margin-left: 30%; font-weight: 700; font-size: 22px; cursor: pointer"
           v-if="item.hidden == 2"
-          @click="toBackMap(item)"
-        >
+          @click="toBackMap(item)">
           返回
         </div>
         <div v-show="item.hidden == 1" @click="btnFparams(item, index)">
@@ -120,12 +104,7 @@ import ChinaMap from '../components/ChinaMap.vue'
 import MarketMap from '../components/MarketMap.vue'
 import { getProvinceCityTree } from '@/utils/index'
 
-import {
-  selectAnswerInfo,
-  areaStatistic,
-  pieChart,
-  answerExport,
-} from '@/api/drainageCode/smartForms.js'
+import { selectAnswerInfo, areaStatistic, pieChart, answerExport } from '@/api/drainageCode/smartForms.js'
 import SearchTitle from '../components/SearchTitle.vue'
 export default {
   props: ['formId'],
@@ -188,8 +167,8 @@ export default {
               {
                 belongId: this.$route.query.id,
               },
-              this.tableSearch
-            )
+              this.tableSearch,
+            ),
           )
         })
         .then((res) => {
@@ -338,35 +317,6 @@ export default {
     width: 49.6%;
     background-color: #fff;
     padding: 30px;
-  }
-}
-
-.data-content {
-  margin-top: 10px;
-
-  .chart-content {
-    margin-top: 10px;
-
-    .my_button {
-      float: right;
-    }
-
-    .column {
-      display: flex;
-
-      .column-item {
-        flex: 1;
-      }
-    }
-  }
-
-  .search-content {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .table-content {
-    margin-top: 10px;
   }
 }
 </style>

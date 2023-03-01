@@ -4,77 +4,81 @@
     name: 'SelectTag',
     components: { SelectTag1 },
     props: {
+      isSingle: {
+        type: Boolean,
+        default: false
+      },
       // 添加标签显隐
       visible: {
         type: Boolean,
-        default: false,
+        default: false
       },
       title: {
         type: String,
-        default: '选择标签',
+        default: '选择标签'
       },
       // "标签分组类型(1:客户标签;2:群标签)"
       type: {
         type: String,
-        default: '1',
+        default: '1'
       },
       destroyOnClose: Boolean,
       // 已选中的标签，一般用于回显
       selected: {
         type: Array,
-        default: () => [],
+        default: () => []
       },
       // 已选中的标签，一般用于回显，(下一主版本弃用)
       defaultValues: {
         type: Array,
-        default: () => [],
-      },
+        default: () => []
+      }
     },
-    data () {
+    data() {
       return {
-        selectedList: [],
+        selectedList: []
       }
     },
     watch: {
       selected: {
-        handler (val = []) {
+        handler(val = []) {
           this.selectedList = [...val]
         },
-        immediate: true,
+        immediate: true
       },
       // 下一主版本弃用
       defaultValues: {
-        handler (val = []) {
+        handler(val = []) {
           this.selectedList = [...val]
         },
-        immediate: true,
-      },
+        immediate: true
+      }
     },
     computed: {
       Pvisible: {
-        get () {
+        get() {
           return this.visible
         },
-        set (val) {
+        set(val) {
           this.$emit('update:visible', val)
-        },
-      },
+        }
+      }
     },
-    created () { },
-    mounted () { },
+    created() {},
+    mounted() {},
     methods: {
-      submit () {
+      submit() {
         this.$emit('success', this.selectedList)
         this.Pvisible = false
-      },
-    },
+      }
+    }
   }
 </script>
 
 <template>
   <el-dialog :title="title" :visible.sync="Pvisible" :destroy-on-close="destroyOnClose">
     <div>
-      <SelectTag1 :type="type" :selected.sync="selectedList"></SelectTag1>
+      <SelectTag1 :type="type" :isSingle="isSingle" :selected.sync="selectedList"></SelectTag1>
       <slot></slot>
     </div>
     <div slot="footer">

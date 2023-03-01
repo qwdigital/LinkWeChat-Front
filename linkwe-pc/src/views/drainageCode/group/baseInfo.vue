@@ -10,19 +10,16 @@
                   v-model="form.activityName"
                   placeholder="请输入名称"
                   show-word-limit
-                  maxlength="15"
-                ></el-input>
+                  maxlength="15"></el-input>
               </el-form-item>
               <el-form-item label="活码客群:" prop="chatIdList">
                 <template v-for="(item, index) in groupList">
-                  <el-tag v-if="item.groupName" size="medium" :key="index">{{
-                    item.groupName
-                  }}</el-tag>
+                  <el-tag v-if="item.groupName" size="medium" :key="index">{{ item.groupName }}</el-tag>
                 </template>
                 <div>
-                  <el-button size="mini" type="primary" icon="el-icon-plus" @click="selectGroupFn"
-                    >{{ '添加' }}客群</el-button
-                  >
+                  <el-button size="mini" type="primary" icon="el-icon-plus" @click="selectGroupFn">
+                    {{ '添加' }}客群
+                  </el-button>
                 </div>
                 <div class="sub-des">最多选择五个客群</div>
               </el-form-item>
@@ -31,22 +28,14 @@
                   <el-tag v-if="item.name" size="medium" :key="index">{{ item.name }}</el-tag>
                 </template>
                 <div>
-                  <el-button
-                    size="mini"
-                    type="primary"
-                    icon="el-icon-plus"
-                    @click="showSelectTag = true"
-                    >{{ tagList.length ? '编辑' : '添加' }}标签</el-button
-                  >
+                  <el-button size="mini" type="primary" icon="el-icon-plus" @click="showSelectTag = true">
+                    {{ tagList.length ? '编辑' : '添加' }}标签
+                  </el-button>
                 </div>
                 <div class="sub-des">设置群活码的标签</div>
               </el-form-item>
               <el-form-item label="群满是否自动建群:">
-                <el-switch
-                  v-model="form.autoCreateRoom"
-                  :active-value="1"
-                  :inactive-value="0"
-                ></el-switch>
+                <el-switch v-model="form.autoCreateRoom" :active-value="1" :inactive-value="0"></el-switch>
                 <div class="sub-des">默认以第一个群的群主作为新建群的群主</div>
               </el-form-item>
               <el-form-item v-if="form.autoCreateRoom" label="">
@@ -56,15 +45,10 @@
                       show-word-limit
                       maxlength="20"
                       v-model="form.roomBaseName"
-                      placeholder="请输入群名前缀"
-                    ></el-input>
+                      placeholder="请输入群名前缀"></el-input>
                   </el-form-item>
                   <el-form-item label="群起始序号:" prop="roomBaseId">
-                    <el-input-number
-                      v-model="form.roomBaseId"
-                      controls-position="right"
-                      :min="1"
-                    ></el-input-number>
+                    <el-input-number v-model="form.roomBaseId" controls-position="right" :min="1"></el-input-number>
                   </el-form-item>
                 </el-card>
               </el-form-item>
@@ -73,17 +57,8 @@
         </el-form>
       </el-col>
     </el-row>
-    <select-group
-      :visible.sync="showSelectModal"
-      :defaults="groupList"
-      @submit="setSelectData"
-    ></select-group>
-    <select-tag
-      :visible.sync="showSelectTag"
-      type="2"
-      :defaultValues="tagList"
-      @success="getSelectTag"
-    ></select-tag>
+    <select-group :visible.sync="showSelectModal" :defaults="groupList" @submit="setSelectData"></select-group>
+    <select-tag :visible.sync="showSelectTag" type="2" :defaultValues="tagList" @success="getSelectTag"></select-tag>
   </div>
 </template>
 
@@ -147,17 +122,17 @@ export default {
           .join(',')
       }
     },
-    handleValidateFn () {
-        let status = null
-        this.$refs['form'].validate((valid) => {
-          if (valid) {
-            status = true
-          } else {
-            status = false
-          }
-        });
-        return status
-      },
+    handleValidateFn() {
+      let status = null
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          status = true
+        } else {
+          status = false
+        }
+      })
+      return status
+    },
     getSelectTag(list) {
       this.tagList = list
       this.form.tagIds = this.tagList
@@ -246,7 +221,7 @@ export default {
 <style scoped lang="scss">
 .sub-des {
   font-size: 12px;
-  font-family: PingFangSC-Regular, PingFang SC;
+
   font-weight: 400;
   color: #999999;
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-form ref="form" label-position="right" :model="form" :rules="rules" size="small" label-width="180px">
-      <div class="g-card g-pad20">
+    <el-form ref="form" label-position="right" :model="form" :rules="rules" label-width="180px">
+      <div class="g-card">
         <div class="my-title">小程序配置</div>
         <div>
           <el-form-item label="微信小程序APPID:" prop="miniAppId">
@@ -76,7 +76,7 @@ export default {
       //     popover: {
       //       title: "<div style='display:none'></div>",
       //       description:
-      //         '<div>1、请于此处填写商户名称，您可前往<微信支付后台—账号中心—个人信息>中获取查看。  <a style="color:#2c8cf0" href="https://pay.weixin.qq.com/index.php/core/account/info" target="_blank">点击前往 >></a></div>',
+      //         '<div>1、请于此处填写商户名称，您可前往<微信支付后台—账号中心—个人信息>中获取查看。  <a style="color:var(--color)" href="https://pay.weixin.qq.com/index.php/core/account/info" target="_blank">点击前往 >></a></div>',
       //       position: 'top-center',
       //       className: 'step_none',
       //     },
@@ -89,7 +89,7 @@ export default {
       //     popover: {
       //       title: "<div style='display:none'></div>",
       //       description:
-      //         '<div>2、请于此处填写商户号，您可前往<微信支付后台—账号中心—个人信息>中获取查看。  <a style="color:#2c8cf0" href="https://pay.weixin.qq.com/index.php/core/account/info" target="_blank">点击前往 >></a></div>',
+      //         '<div>2、请于此处填写商户号，您可前往<微信支付后台—账号中心—个人信息>中获取查看。  <a style="color:var(--color)" href="https://pay.weixin.qq.com/index.php/core/account/info" target="_blank">点击前往 >></a></div>',
       //       position: 'bottom-center',
       //     },
       //   },
@@ -98,7 +98,7 @@ export default {
       //     popover: {
       //       title: "<div style='display:none'></div>",
       //       description:
-      //         '<div>3、请于此处填写商户支付Secret，您可前往<微信支付后台—账号中心—API安全>中获取查看。  <a style="color:#2c8cf0" href="https://pay.weixin.qq.com/index.php/core/cert/api_cert#/" target="_blank">点击前往 >></a></div>',
+      //         '<div>3、请于此处填写商户支付Secret，您可前往<微信支付后台—账号中心—API安全>中获取查看。  <a style="color:var(--color)" href="https://pay.weixin.qq.com/index.php/core/cert/api_cert#/" target="_blank">点击前往 >></a></div>',
       //       position: 'bottom-center',
       //     },
       //   },
@@ -107,7 +107,7 @@ export default {
       //     popover: {
       //       title: "<div style='display:none'></div>",
       //       description:
-      //         '<div>4、请于此处上传API证书文件，您可前往<微信支付后台—账号中心—账户设置—API安全>中获取查看。  <a style="color:#2c8cf0" href="https://pay.weixin.qq.com/index.php/core/cert/api_cert#/" target="_blank">点击前往 >></a></div>',
+      //         '<div>4、请于此处上传API证书文件，您可前往<微信支付后台—账号中心—账户设置—API安全>中获取查看。  <a style="color:var(--color)" href="https://pay.weixin.qq.com/index.php/core/cert/api_cert#/" target="_blank">点击前往 >></a></div>',
       //       position: 'bottom-center',
       //     },
       //   },
@@ -129,7 +129,7 @@ export default {
       //     popover: {
       //       title: '',
       //       description:
-      //         '<div>6、请于此处填写公众号ID，您可前往<公众号后台—设置与开发—基本配置>中获取查看。  <a style="color:#2c8cf0" href="https://mp.weixin.qq.com/advanced/advanced?action=dev&t=advanced/dev&token=603419011&lang=zh_CN" target="_blank">点击前往 >></a></div>',
+      //         '<div>6、请于此处填写公众号ID，您可前往<公众号后台—设置与开发—基本配置>中获取查看。  <a style="color:var(--color)" href="https://mp.weixin.qq.com/advanced/advanced?action=dev&t=advanced/dev&token=603419011&lang=zh_CN" target="_blank">点击前往 >></a></div>',
       //       position: 'bottom-center',
       //     },
       //   },

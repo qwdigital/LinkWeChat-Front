@@ -153,11 +153,9 @@ export default {
         this.query = query
         this.groupForm = {
           taskFissionStaffs: res.data.taskFissionStaffs,
-          sendType:
-            res.data.taskFissionStaffs.length && res.data.taskFissionStaffs[0].staffId ? 1 : 0,
+          sendType: res.data.taskFissionStaffs.length && res.data.taskFissionStaffs[0].staffId ? 1 : 0,
           customerTag: res.data.customerTagId == 'all' ? '' : res.data.customerTag.split(','),
-          customerTagId:
-            res.data.customerTagId == 'all' ? 'all' : res.data.customerTagId.split(','),
+          customerTagId: res.data.customerTagId == 'all' ? 'all' : res.data.customerTagId.split(','),
           tagType: res.data.customerTagId == 'all' ? 0 : 1,
           postersId: res.data.postersId,
           postersUrl: res.data.postersUrl,
@@ -228,25 +226,14 @@ export default {
 
 <template>
   <div class="task-edit-container">
-    <div class="edit-model">
-      <h4 class="title">基本信息设置</h4>
-      <el-form
-        :model="query"
-        :rules="ruleForm"
-        ref="ruleForm"
-        label-width="120px"
-        class="top-search"
-        labelPosition="left"
-      >
+    <div class="g-card">
+      <h4 class="g-card-title">基本信息设置</h4>
+      <el-form :model="query" :rules="ruleForm" ref="ruleForm" label-width="120px" labelPosition="left">
         <el-form-item label="群裂变名称" prop="taskName">
           <el-input v-model="query.taskName" placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item label="裂变引导语" prop="fissInfo">
-          <el-input
-            v-model="query.fissInfo"
-            placeholder="请输入裂变引导语(最多255字)"
-            maxlength="255"
-          ></el-input>
+          <el-input v-model="query.fissInfo" placeholder="请输入裂变引导语(最多255字)" maxlength="255"></el-input>
         </el-form-item>
         <el-form-item label="裂变客户数量" prop="fissNum">
           <el-input v-model="query.fissNum"></el-input>
@@ -259,41 +246,26 @@ export default {
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             align="right"
-            value-format="yyyy-MM-dd HH:mm:ss"
-          ></el-date-picker>
+            value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
         </el-form-item>
       </el-form>
     </div>
-    <div class="edit-model">
-      <h4 class="title">选择客户群</h4>
-      <el-form
-        :model="query"
-        :rules="ruleForm"
-        label-width="120px"
-        ref="fissStaff"
-        class="top-search"
-        labelPosition="left"
-      >
+    <div class="g-card">
+      <h4 class="g-card-title">选择客户群</h4>
+      <el-form :model="query" :rules="ruleForm" label-width="120px" ref="fissStaff" labelPosition="left">
         <el-form-item label="发起成员" prop="taskNames">
           <el-radio-group v-model="groupForm.sendType" @change="changeType">
             <el-radio :label="0">全部</el-radio>
             <el-radio :label="1">选择群主</el-radio>
           </el-radio-group>
           <div v-if="groupForm.sendType">
-            <el-tag v-for="item in groupForm.taskFissionStaffs" :key="item.staffId">{{
-              item.staffName
-            }}</el-tag>
+            <el-tag v-for="item in groupForm.taskFissionStaffs" :key="item.staffId">{{ item.staffName }}</el-tag>
           </div>
         </el-form-item>
         <el-form-item label="" v-if="groupForm.sendType">
-          <el-button
-            type="primary"
-            plain
-            icon="el-icon-plus"
-            size="mini"
-            @click="dialogVisibleSelectUser = true"
-            >选择群主</el-button
-          >
+          <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="dialogVisibleSelectUser = true">
+            选择群主
+          </el-button>
         </el-form-item>
         <!-- <el-form-item label="客户标签" prop="tagType">
           <el-radio-group v-model="groupForm.tagType" @change="changeTagType">
@@ -319,16 +291,9 @@ export default {
         </el-form-item> -->
       </el-form>
     </div>
-    <div class="edit-model">
-      <h4 class="title">裂变海报</h4>
-      <el-form
-        :model="groupForm"
-        :rules="ruleForm"
-        ref="fissTarget"
-        label-width="120px"
-        class="top-search"
-        labelPosition="left"
-      >
+    <div class="g-card">
+      <h4 class="g-card-title">裂变海报</h4>
+      <el-form :model="groupForm" :rules="ruleForm" ref="fissTarget" label-width="120px" labelPosition="left">
         <el-form-item label="选择海报" prop="postersId">
           <el-button
             type="primary"
@@ -336,9 +301,9 @@ export default {
             icon="el-icon-plus"
             size="mini"
             @click="dialogVisibleSelectPoster = true"
-            v-if="!groupForm.postersId"
-            >选择海报</el-button
-          >
+            v-if="!groupForm.postersId">
+            选择海报
+          </el-button>
           <div v-if="groupForm.postersId" class="changePosterBody">
             <img :src="groupForm.postersUrl" class="postersUrl" />
             <span class="changeUrl" @click="dialogVisibleSelectPoster = true">修改</span>
@@ -352,9 +317,9 @@ export default {
             icon="el-icon-plus"
             size="mini"
             v-if="!groupForm.fissionTargetId"
-            @click="dialogVisibleSelectGroupCode = true"
-            >选择群</el-button
-          >
+            @click="dialogVisibleSelectGroupCode = true">
+            选择群
+          </el-button>
           <div v-if="groupForm.fissionTargetId" class="changePosterBody">
             <el-tag>{{ groupForm.fissionTarget }}</el-tag>
             <!-- <img :src="groupForm.fissionTarget" class="postersUrl" /> -->
@@ -363,16 +328,9 @@ export default {
         </el-form-item>
       </el-form>
     </div>
-    <div class="edit-model">
-      <h4 class="title">活动奖励</h4>
-      <el-form
-        :model="groupForm"
-        :rules="ruleForm"
-        ref="reward"
-        label-width="120px"
-        class="top-search"
-        labelPosition="left"
-      >
+    <div class="g-card">
+      <h4 class="g-card-title">活动奖励</h4>
+      <el-form :model="groupForm" :rules="ruleForm" ref="reward" label-width="120px" labelPosition="left">
         <el-form-item label="兑奖链接" prop="rewardUrl">
           <el-input v-model="groupForm.rewardUrl" placeholder="请输入"></el-input>
         </el-form-item>
@@ -384,19 +342,16 @@ export default {
             type="textarea"
             style="border: none; resize: none; width: 364px"
             v-model="groupForm.rewardRule"
-            maxlength="100"
-          >
-          </el-input>
+            maxlength="100"></el-input>
         </el-form-item>
       </el-form>
     </div>
-    <!-- <div class="edit-model">
-      <h4 class="title">新客欢迎语</h4>
+    <!-- <div class="g-card">
+      <h4 class="g-card-title">新客欢迎语</h4>
       <el-form
         :model="groupForm"
         ref="welcomeTips"
         label-width="120px"
-        class="top-search"
         labelPosition="left"
       >
         <div class="welcomeBox">
@@ -409,9 +364,7 @@ export default {
         </div>
       </el-form>
     </div> -->
-    <el-button type="primary" @click="submitForm()">{{
-      pageType == 'edit' ? '立即修改' : '立即创建'
-    }}</el-button>
+    <el-button type="primary" @click="submitForm()">{{ pageType == 'edit' ? '立即修改' : '立即创建' }}</el-button>
 
     <!-- 选择发起员工弹窗 -->
     <SelectUser
@@ -420,8 +373,7 @@ export default {
       title="选择成员"
       :isOnlyLeaf="false"
       :isSigleSelect="false"
-      @success="selectedUser"
-    ></SelectUser>
+      @success="selectedUser"></SelectUser>
     <!-- 选择标签弹窗 -->
     <!-- <SelectTag
       :visible.sync="dialogVisibleSelectTag"
@@ -432,9 +384,7 @@ export default {
     <SelectPoster
       :visible.sync="dialogVisibleSelectPoster"
       :selected="groupForm.toTag"
-      @success="submitSelecPoster"
-    >
-    </SelectPoster>
+      @success="submitSelecPoster"></SelectPoster>
     <!-- <SelectUser
       key="1"
       :visible.sync="dialogVisibleSelectGroupCode"
@@ -452,67 +402,53 @@ export default {
     >
     </SelectQrCode> -->
 
-    <SelectGroup
-      :visible.sync="dialogVisibleSelectGroupCode"
-      @success="setSelectData"
-    ></SelectGroup>
+    <SelectGroup :visible.sync="dialogVisibleSelectGroupCode" @success="setSelectData"></SelectGroup>
   </div>
 </template>
 
 <style lang="scss">
 .task-edit-container {
-  background-color: #efeff4;
-  // height: 100%;
-  .edit-model {
-    background: #fff;
-    margin-bottom: 20px;
-    padding: 20px;
-    .postersUrl {
-      width: 70px;
-      margin-right: 10px;
-    }
-    .changeUrl {
-      color: #409eff;
-      font-size: 14px;
-      cursor: pointer;
-    }
-    .changePosterBody {
-      display: flex;
-      align-items: center;
-    }
-    .targetTips {
-      font-size: 12px;
-      color: #909399;
-    }
-    .welcomeBox {
-      position: relative;
-      width: 464px;
-      border: 1px solid #dcdfe6;
-      border-radius: 4px;
-      padding: 16px 16px 0 16px;
-      margin-bottom: 10px;
-      .el-textarea__inner {
-        border: none;
-        resize: none;
-        height: 120px;
-      }
-      .insertCustomer {
-        background-color: #ebeef5;
-        border: none;
-        color: #606266 !important;
-        position: absolute;
-        right: 55px;
-        bottom: 10px;
-        padding: 9px 15px;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 12px;
-      }
-    }
+  .postersUrl {
+    width: 70px;
+    margin-right: 10px;
   }
-  .title {
-    text-align: left;
-    color: #303133;
+  .changeUrl {
+    color: var(--color);
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .changePosterBody {
+    display: flex;
+    align-items: center;
+  }
+  .targetTips {
+    font-size: 12px;
+    color: #909399;
+  }
+  .welcomeBox {
+    position: relative;
+    width: 464px;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+    padding: 16px 16px 0 16px;
+    margin-bottom: 10px;
+    .el-textarea__inner {
+      border: none;
+      resize: none;
+      height: 120px;
+    }
+    .insertCustomer {
+      background-color: #ebeef5;
+      border: none;
+      color: #606266 !important;
+      position: absolute;
+      right: 55px;
+      bottom: 10px;
+      padding: 9px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 12px;
+    }
   }
 }
 </style>

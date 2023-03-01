@@ -45,9 +45,13 @@
   <div>
     <el-input ref="textarea" v-model="proxyValue" type="textarea" v-bind="$attrs" v-on="$listeners"></el-input>
     <div class="mt10">
-      <el-button>
-        <SelectEmoji v-if="toolbar.includes('emoji')" @select="insertContent" />
-      </el-button>
+      <SelectEmoji v-if="toolbar.includes('emoji')" @select="insertContent">
+        <template v-slot:default="{ emojisArr }">
+          <el-button>
+            {{ emojisArr[0].emoji }}
+          </el-button>
+        </template>
+      </SelectEmoji>
       <el-button v-if="toolbar.includes('insertCustomerNickName')" @click="insertContent('#客户昵称#')" class="ml10">
         插入客户昵称
       </el-button>

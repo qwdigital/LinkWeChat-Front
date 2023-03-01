@@ -12,56 +12,56 @@
 </template>
 
 <script>
-  // import { getCustomerServiceQrUrl } from '@/api/login'
-  export default {
-    data() {
-      return {
-        customerServiceQr: ''
-      }
-    },
-    created() {
-      // getCustomerServiceQrUrl().then((res) => {
-      // this.customerServiceQr = res.data;
-      // localStorage.setItem('customerServiceQr',res.data)
-      // });
+// import { getCustomerServiceQrUrl } from '@/api/login'
+export default {
+  data() {
+    return {
+      customerServiceQr: '',
     }
-  }
+  },
+  created() {
+    // getCustomerServiceQrUrl().then((res) => {
+    // this.customerServiceQr = res.data;
+    // localStorage.setItem('customerServiceQr',res.data)
+    // });
+  },
+}
 </script>
 
 <style lang="scss" scoped>
-  .hover-class {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    span:nth-child(1) {
-      font-size: 18px;
-      font-weight: bold;
-      line-height: 36px;
-      margin-bottom: 10px;
-    }
-    img {
-      width: 160px;
-      height: 160px;
-    }
-    span:nth-child(3) {
-      font-size: 14px;
-      line-height: 16px;
-      margin-top: 20px;
-    }
+.hover-class {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  span:nth-child(1) {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 36px;
+    margin-bottom: 10px;
   }
-  .side-box {
-    width: 50px;
-    height: 50px;
-    background-color: #0079de;
-    border-radius: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .right-icon {
-      font-size: 40px;
-    }
+  img {
+    width: 160px;
+    height: 160px;
   }
-  .side-box:hover {
-    cursor: pointer;
+  span:nth-child(3) {
+    font-size: 14px;
+    line-height: 16px;
+    margin-top: 20px;
   }
+}
+.side-box {
+  width: 50px;
+  height: 50px;
+  background-color: var(--color);
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .right-icon {
+    font-size: 40px;
+  }
+}
+.side-box:hover {
+  cursor: pointer;
+}
 </style>

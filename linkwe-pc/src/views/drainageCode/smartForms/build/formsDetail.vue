@@ -918,8 +918,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$selectedColor: #f6f7ff;
-$lighterBlue: #409eff;
 .form-logo {
   width: 100px;
   height: 100px;
@@ -943,7 +941,7 @@ $lighterBlue: #409eff;
 
 .formDetailPush {
   border-radius: 20px;
-  background-color: #00afff;
+  background-color: var(--color);
   text-align: center;
   padding: 13px 30px;
   color: #fff;

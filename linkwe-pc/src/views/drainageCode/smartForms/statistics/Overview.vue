@@ -1,28 +1,13 @@
 <template>
   <div>
-    <div class="total-list">
-      <CardGroupIndex :data="cardData"></CardGroupIndex>
+    <CardGroupIndex :data="cardData"></CardGroupIndex>
+    <div class="g-card">
+      <div class="g-card-title">数据趋势</div>
+      <search-title :id="$route.query.id" :showScene="true" @search="getLineData"></search-title>
+      <chart-line style="height: 300px" :legend="legend" :xData="xdata" :series="series"></chart-line>
     </div>
-    <div class="g-card g-pad20" style="margin-top: 0">
-      <div class="title">数据趋势</div>
-      <div class="data-content">
-        <div class="chart-content">
-          <search-title
-            :id="$route.query.id"
-            :showScene="true"
-            @search="getLineData"
-          ></search-title>
-          <chart-line
-            style="height: 300px"
-            :legend="legend"
-            :xData="xdata"
-            :series="series"
-          ></chart-line>
-        </div>
-      </div>
-    </div>
-    <!--  <div class="g-card g-pad20" style="margin-top: 20px;">
-      <div class="title">
+    <!--  <div class="g-card">
+      <div class="g-card-title">
         访问场景top5
       </div>
       <div class="data-content" style="margin-top: 20px;">
@@ -39,81 +24,52 @@
         </div>
       </div>
     </div> -->
-    <div class="g-card g-pad20" style="margin-top: 20px">
-      <div class="title">数据报表</div>
-      <div class="data-content" style="margin-top: 20px">
-        <div class="search-content">
-          <search-title :id="$route.query.id" :showScene="true" @search="getTableFn"></search-title>
-          <el-button type="primary" size="mini" @click="exportFn" v-loading="exportLoading"
-            >导出Excel</el-button
-          >
-        </div>
-        <div class="table-content">
-          <el-table v-loading="loading" :data="tableList" style="width: 100%">
-            <el-table-column
-              label="日期"
-              align="center"
-              min-width="100"
-              prop="xtime"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              label="总访问数"
-              align="center"
-              min-width="100"
-              prop="visitTotalCnt"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              label="总访问用户"
-              align="center"
-              prop="consultTotalCnt"
-              min-width="100"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              label="有效收集量"
-              align="center"
-              prop="EffectiveCollectionQuantity"
-              min-width="100"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              label="收集率"
-              align="center"
-              prop="CollectionQuantity"
-              min-width="100"
-              show-overflow-tooltip
-            ></el-table-column>
-            <el-table-column
-              label="平均完成时间"
-              align="center"
-              prop="average"
-              min-width="100"
-              show-overflow-tooltip
-            ></el-table-column>
-          </el-table>
-          <div class="bottom">
-            <pagination
-              :total="total"
-              :page.sync="query.pageNum"
-              :limit.sync="query.pageSize"
-              @pagination="getTableChangeSize(query.pageNum, query.pageSize)"
-            />
-          </div>
-        </div>
+    <div class="g-card">
+      <div class="g-card-title">数据报表</div>
+      <div class="mid-action">
+        <search-title :id="$route.query.id" :showScene="true" @search="getTableFn"></search-title>
+        <el-button type="primary" size="mini" @click="exportFn" v-loading="exportLoading">导出Excel</el-button>
+      </div>
+      <el-table v-loading="loading" :data="tableList" style="width: 100%">
+        <el-table-column label="日期" align="center" min-width="100" prop="xtime" show-overflow-tooltip />
+        <el-table-column label="总访问数" align="center" min-width="100" prop="visitTotalCnt" show-overflow-tooltip />
+        <el-table-column
+          label="总访问用户"
+          align="center"
+          prop="consultTotalCnt"
+          min-width="100"
+          show-overflow-tooltip></el-table-column>
+        <el-table-column
+          label="有效收集量"
+          align="center"
+          prop="EffectiveCollectionQuantity"
+          min-width="100"
+          show-overflow-tooltip></el-table-column>
+        <el-table-column
+          label="收集率"
+          align="center"
+          prop="CollectionQuantity"
+          min-width="100"
+          show-overflow-tooltip></el-table-column>
+        <el-table-column
+          label="平均完成时间"
+          align="center"
+          prop="average"
+          min-width="100"
+          show-overflow-tooltip></el-table-column>
+      </el-table>
+      <div class="bottom">
+        <pagination
+          :total="total"
+          :page.sync="query.pageNum"
+          :limit.sync="query.pageSize"
+          @pagination="getTableChangeSize(query.pageNum, query.pageSize)" />
       </div>
     </div>
   </div>
 </template>
 <script>
-import CardGroupIndex from '@/components/CardGroupIndex.vue'
-import {
-  selectStatistics,
-  lineChart,
-  overviewExport,
-  StatisticsDataList,
-} from '@/api/drainageCode/smartForms.js'
+import { selectStatistics, lineChart, overviewExport, StatisticsDataList } from '@/api/drainageCode/smartForms.js'
 import SearchTitle from '../components/SearchTitle.vue'
 import ChartBar from '@/components/ChartBar.vue'
 import ChartLine from '@/components/ChartLine.vue'
@@ -122,7 +78,6 @@ import { download } from '@/utils/common'
 export default {
   name: 'scene-statistics-scene',
   components: {
-    CardGroupIndex,
     SearchTitle,
     ChartLine,
     ChartBar,
@@ -450,50 +405,4 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-.total-list {
-  .item {
-    padding: 10px;
-    background-color: #fff;
-  }
-}
-
-.title {
-  font-size: 16px;
-  color: #333;
-  font-weight: 600;
-}
-
-.data-content {
-  margin-top: 10px;
-
-  .chart-content {
-    margin-top: 10px;
-
-    .my_button {
-      float: right;
-    }
-
-    .column {
-      display: flex;
-
-      .column-item {
-        flex: 1;
-      }
-    }
-  }
-
-  .search-content {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .table-content {
-    margin-top: 10px;
-  }
-}
-
-::v-deep .card-index-li {
-  width: 100%;
-}
-</style>
+<style lang="scss" scoped></style>

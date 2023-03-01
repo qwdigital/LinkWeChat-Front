@@ -1,21 +1,16 @@
 <template>
   <div>
     <CardGroupIndex :data="cardData"></CardGroupIndex>
-    <div class="g-card g-pad20">
-      <div class="table-header">支出趋势</div>
-      <div class="chart-header">
+    <div class="g-card">
+      <div class="g-card-title">支出趋势</div>
+      <div>
         <el-button-group>
-          <el-button size="small" type="primary" :plain="timeRange != 7" @click="setTime(7)"
-            >近7日</el-button
-          >
-          <el-button size="small" type="primary" :plain="timeRange != 30" @click="setTime(30)"
-            >近30日
-          </el-button>
+          <el-button type="primary" :plain="timeRange != 7" @click="setTime(7)">近7日</el-button>
+          <el-button type="primary" :plain="timeRange != 30" @click="setTime(30)">近30日</el-button>
         </el-button-group>
 
         <el-date-picker
           v-model="dateRange"
-          size="small"
           class="ml20"
           style="width: 260px"
           value-format="yyyy-MM-dd"
@@ -24,21 +19,15 @@
           range-separator="-"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
-          @change="getList"
-        ></el-date-picker>
+          @change="getList"></el-date-picker>
       </div>
       <div v-loading="loadingChart">
         <div id="chart" ref="chart" style="width: 90%; height: 400px"></div>
       </div>
     </div>
-    <div class="g-card g-pad20">
-      <div class="table-header">支出记录</div>
-      <el-table
-        v-loading="loading"
-        :data="list"
-        @selection-change="handleSelectionChange"
-        max-height="600"
-      >
+    <div class="g-card">
+      <div class="g-card-title">支出记录</div>
+      <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange" max-height="600">
         <el-table-column label="员工名称" align="center" prop="userName" show-overflow-tooltip />
         <el-table-column label="发送类型" align="center" prop="receiveType">
           <template slot-scope="{ row }">
@@ -46,15 +35,13 @@
           </template>
         </el-table-column>
         <el-table-column label="发送时间" align="center" prop="createTime"></el-table-column>
-        <el-table-column label="发送金额(元)" align="center" prop="totalMoney" width="180">
-        </el-table-column>
+        <el-table-column label="发送金额(元)" align="center" prop="totalMoney" width="180"></el-table-column>
       </el-table>
       <pagination
         :total="total"
         :page.sync="query.pageNum"
         :limit.sync="query.pageSize"
-        @pagination="getRecordList()"
-      />
+        @pagination="getRecordList()" />
     </div>
   </div>
 </template>
@@ -62,7 +49,7 @@
 <script>
 import * as echarts from 'echarts'
 import { parseTime } from '@/utils/common'
-import CardGroupIndex from '@/components/CardGroupIndex'
+
 // import TabContent from './components/TabContent'
 import { getAnalysis, getChartList, getRecordList } from '@/api/redPacketTool/spendStatistics'
 
@@ -94,7 +81,7 @@ function generateMockData() {
 
 export default {
   name: 'total-data',
-  components: { CardGroupIndex },
+  components: {},
   data() {
     return {
       timeRange: 7,
@@ -116,7 +103,7 @@ export default {
       'app/setBusininessDesc',
       `
         <div>统计分析企业支出金额及笔数情况</div>
-      `
+      `,
     )
 
     // this.mockData = generateMockData()
@@ -221,10 +208,7 @@ export default {
     },
     setEchart(xAxisData, seriesData) {
       setTimeout(() => {
-        this.drawLine('chart', ['支出金额', '支出笔数'], xAxisData, seriesData, [
-          '#5AD2D2',
-          '#637BC0',
-        ])
+        this.drawLine('chart', ['支出金额', '支出笔数'], xAxisData, seriesData, ['#5AD2D2', '#637BC0'])
       }, 0)
     },
     drawLine(id, legend, xAxisData, seriesData, color) {
@@ -310,38 +294,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-// .total-item {
-//   // width: 200px;
-//   padding: 20px;
-//   background: linear-gradient(90deg, #3c89f0 0%, #1364f4 100%);
-//   border-radius: 4px;
-
-//   .name {
-//     font-size: 14px;
-//     font-family: PingFangSC-Regular, PingFang SC;
-//     font-weight: 400;
-//     color: #ffffff;
-//   }
-
-//   .value {
-//     margin-top: 5px;
-//     font-size: 18px;
-//     font-family: JDZhengHT-EN-Regular, JDZhengHT-EN;
-//     font-weight: 400;
-//     color: #ffffff;
-//   }
-// }
-
-.table-header {
-  font-size: 16px;
-  font-family: PingFangSC-Medium, PingFang SC;
-  font-weight: 500;
-  color: #333333;
-  margin-bottom: 20px;
-}
-.chart-header {
-  display: flex;
-  align-items: center;
-}
-</style>
+<style lang="scss" scoped></style>

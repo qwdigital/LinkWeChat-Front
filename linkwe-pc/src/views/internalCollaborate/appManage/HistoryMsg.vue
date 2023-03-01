@@ -102,7 +102,7 @@ export default {
       <el-option v-for="(value, key) in status" :key="key" :label="value" :value="key"></el-option>
     </el-select>
     <el-button type="primary" @click="getList(1)">查询</el-button>
-    <el-button @click="resetQuery" type="info" plain>清空</el-button>
+    <el-button @click="resetQuery">重置</el-button>
 
     <el-table v-loading="loading" :data="list">
       <el-table-column label="消息标题" align="center" prop="msgTitle" />

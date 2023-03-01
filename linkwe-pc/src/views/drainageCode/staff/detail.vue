@@ -3,31 +3,22 @@
     <el-row style="margin-top: 10px" type="flex" :gutter="10">
       <el-col>
         <div class="g-card">
-          <div class="card-title g-pad20">基本信息</div>
-          <div class="my-divider"></div>
+          <div class="g-card-title">基本信息</div>
           <div class="g-pad20">
             <el-form label-position="right" label-width="100px">
-              <el-form-item style="margin-bottom: 10px" label="活码名称">{{
-                form.name
-              }}</el-form-item>
-              <el-form-item style="margin-bottom: 10px" label="活码分组">{{
-                form.qrGroupName
-              }}</el-form-item>
+              <el-form-item style="margin-bottom: 10px" label="活码名称">{{ form.name }}</el-form-item>
+              <el-form-item style="margin-bottom: 10px" label="活码分组">{{ form.qrGroupName }}</el-form-item>
               <el-form-item style="margin-bottom: 10px" label="自动通过标签">
-                <el-switch
-                  :value="form.autoAdd"
-                  :active-value="1"
-                  :inactive-value="0"
-                  disabled
-                ></el-switch>
+                <el-switch :value="form.autoAdd" :active-value="1" :inactive-value="0" disabled></el-switch>
               </el-form-item>
               <el-form-item style="margin-bottom: 10px" label="新客户标签">
                 <el-tag v-for="(data, key) in form.qrTags" :key="key">{{ data.tagName }}</el-tag>
               </el-form-item>
             </el-form>
           </div>
-          <div class="card-title g-pad20">活码员工</div>
-          <div class="my-divider"></div>
+        </div>
+        <div class="g-card">
+          <div class="g-card-title">活码员工</div>
           <!-- <template v-if="form.ruleType === 1">
             <div class="g-pad20">
               <div class="content g-pad20">
@@ -62,9 +53,7 @@
               <div class="content g-pad20">
                 <el-form label-position="right" label-width="100px">
                   <el-form-item style="margin-bottom: 10px" label="排班员工">
-                    <el-tag v-for="(data, key) in unit.weQrUserList" :key="key">{{
-                      data.userName
-                    }}</el-tag>
+                    <el-tag v-for="(data, key) in unit.weQrUserList" :key="key">{{ data.userName }}</el-tag>
                   </el-form-item>
                   <el-form-item style="margin-bottom: 10px" label="工作周期">
                     <el-checkbox-group v-if="unit.type === 0" v-model="checkList">
@@ -86,67 +75,39 @@
                       <el-checkbox label="7" disabled>周日</el-checkbox>
                     </el-checkbox-group>
                   </el-form-item>
-                  <el-form-item
-                    v-if="unit.type === 0"
-                    v-model="checkList"
-                    style="margin-bottom: 10px"
-                    label="在线时间"
-                  >
-                    <el-time-select disabled value="00:00" placeholder="任意时间点">
-                    </el-time-select>
-                    <el-time-select disabled value="23:59" placeholder="任意时间点">
-                    </el-time-select>
+                  <el-form-item v-if="unit.type === 0" v-model="checkList" style="margin-bottom: 10px" label="在线时间">
+                    <el-time-select disabled value="00:00" placeholder="任意时间点"></el-time-select>
+                    <el-time-select disabled value="23:59" placeholder="任意时间点"></el-time-select>
                   </el-form-item>
                   <el-form-item v-else style="margin-bottom: 10px" label="在线时间">
-                    <el-time-select disabled :value="unit.beginTime" placeholder="任意时间点">
-                    </el-time-select>
-                    <el-time-select disabled :value="unit.endTime" placeholder="任意时间点">
-                    </el-time-select>
+                    <el-time-select disabled :value="unit.beginTime" placeholder="任意时间点"></el-time-select>
+                    <el-time-select disabled :value="unit.endTime" placeholder="任意时间点"></el-time-select>
                   </el-form-item>
                 </el-form>
               </div>
             </div>
           </template>
-          <div class="card-title g-pad20">活码统计</div>
-          <div class="my-divider"></div>
-          <div class="g-pad20">
-            <div class="total">
-              <div class="total-item g-pad20">
-                <div class="name">今日扫码次数</div>
-                <div class="value">
-                  {{ currentTotal }}
-                </div>
-              </div>
-              <div class="total-item g-pad20" style="margin-left: 20px">
-                <div class="name">累计扫码次数</div>
-                <div class="value">
-                  {{ total }}
-                </div>
-              </div>
-            </div>
-            <div class="operation">
-              <el-button-group>
-                <el-button size="small" type="primary" :plain="timeRange != 7" @click="setTime(7)"
-                  >近7日</el-button
-                >
-                <el-button size="small" type="primary" :plain="timeRange != 30" @click="setTime(30)"
-                  >近30日
-                </el-button>
-              </el-button-group>
-              <el-date-picker
-                v-model="dateRange"
-                size="small"
-                class="ml20"
-                style="width: 260px"
-                value-format="yyyy-MM-dd"
-                type="daterange"
-                :clearable="false"
-                range-separator="-"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                @change="getList"
-              ></el-date-picker>
-            </div>
+        </div>
+        <div class="g-card">
+          <div class="g-card-title">活码统计</div>
+          <CardGroupIndex :data="cardData"></CardGroupIndex>
+
+          <div class="">
+            <el-button-group>
+              <el-button type="primary" :plain="timeRange != 7" @click="setTime(7)">近7日</el-button>
+              <el-button type="primary" :plain="timeRange != 30" @click="setTime(30)">近30日</el-button>
+            </el-button-group>
+            <el-date-picker
+              v-model="dateRange"
+              class="ml20"
+              style="width: 260px"
+              value-format="yyyy-MM-dd"
+              type="daterange"
+              :clearable="false"
+              range-separator="-"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              @change="getList"></el-date-picker>
           </div>
           <div ref="chart" id="mychart" style="width: 100%; height: 400px"></div>
         </div>
@@ -167,15 +128,14 @@
                   :src="form.qrCode"
                   fit="fit"
                   :preview-src-list="[form.qrCode]"
-                  style="width: 124px; height: 124px"
-                ></el-image>
+                  style="width: 124px; height: 124px"></el-image>
                 <div>
                   <el-button type="text" @click="download()">下载二维码</el-button>
                 </div>
               </div>
             </div>
           </div>
-          <div class="g-card g-pad20" style="flex: 1">
+          <div class="g-card" style="flex: 1">
             <preview-client :list="form"></preview-client>
           </div>
         </div>
@@ -204,9 +164,6 @@ export default {
       loading: false,
       // 选中数组
       ids: [],
-      // 总条数
-      total: 0,
-      currentTotal: 0,
       // 表格数据
       list: [],
       // 日期范围
@@ -225,6 +182,8 @@ export default {
         3: '批量单人',
       },
       timeRange: 7,
+
+      cardData: [],
     }
   },
   created() {
@@ -300,8 +259,16 @@ export default {
       this.query.beginTime = this.dateRange[0]
       this.query.endTime = this.dateRange[1]
       getTotal(this.query).then(({ data }) => {
-        this.total = data.total
-        this.currentTotal = data.today
+        this.cardData = [
+          {
+            title: '今日扫码次数',
+            value: data.total,
+          },
+          {
+            title: '累计扫码次数',
+            value: data.today,
+          },
+        ]
         let option = {
           xAxis: {
             type: 'category',
@@ -387,7 +354,7 @@ export default {
 
 .crumb {
   font-size: 12px;
-  font-family: PingFangSC-Regular, PingFang SC;
+
   font-weight: 400;
   color: #666666;
   display: flex;
@@ -410,20 +377,6 @@ export default {
   }
 }
 
-.card-title {
-  font-size: 16px;
-  font-family: PingFangSC-Medium, PingFang SC;
-  font-weight: 500;
-  color: #333333;
-}
-
-.my-divider {
-  display: block;
-  height: 1px;
-  width: 100%;
-  background-color: #dcdfe6;
-}
-
 .content {
   margin-top: 20px;
   border-radius: 4px;
@@ -433,49 +386,21 @@ export default {
   }
 }
 
-.total {
-  margin-bottom: 20px;
-  display: flex;
-  .total-item {
-    width: 200px;
-    height: 90px;
-    background: linear-gradient(90deg, #f5f8fe 0%, #ebf3fd 100%);
-    border-radius: 4px;
-    font-weight: 400;
-    color: #333333;
-    .value {
-      margin-top: 5px;
-      font-size: 18px;
-      font-family: JDZhengHT-EN-Regular, JDZhengHT-EN;
-    }
-    .name {
-      font-size: 14px;
-      font-family: PingFangSC-Regular, PingFang SC;
-    }
-  }
-}
-
-.operation {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .right-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
   .right-title-name {
     font-size: 16px;
-    font-family: PingFangSC-Medium, PingFang SC;
+
     font-weight: 500;
     color: #333333;
   }
   .right-title-edit {
     font-size: 12px;
-    font-family: PingFangSC-Regular, PingFang SC;
+
     font-weight: 400;
-    color: #3c88f0;
+    color: var(--color);
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -488,9 +413,9 @@ export default {
 .code-show {
   text-align: center; // .download-btn {
   // 	font-size: 12px;
-  // 	font-family: PingFangSC-Regular, PingFang SC;
+  //
   // 	font-weight: 400;
-  // 	color: #3C88F0;
+  // 	color: var(--color);
   // }
 }
 </style>

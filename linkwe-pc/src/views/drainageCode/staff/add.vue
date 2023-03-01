@@ -1,57 +1,53 @@
 <template>
   <div>
-    <div class="tab">
-      <el-steps style="margin-top: 10px" :active="currentActive" align-center>
+    <div class="g-card">
+      <el-steps :active="currentActive" align-center finish-status="success">
         <el-step title="基础信息"></el-step>
         <el-step title="活码员工"></el-step>
         <el-step title="欢迎语"></el-step>
       </el-steps>
     </div>
-    <div class="g-card g-pad20" v-if="currentActive === 1">
+    <div class="g-card" v-if="currentActive === 1">
       <el-row>
-        <div class="g-card">
-          <div class="g-pad20">
-            <el-col :span="10">
-              <el-form ref="baseForm" :rules="baseRules" :model="baseForm" label-position="right" label-width="100px">
-                <el-form-item label="活码名称" prop="qrName">
-                  <el-input v-model.trim="baseForm.qrName" maxlength="15" show-word-limit clearable></el-input>
-                  <div class="sub-des">活码名称创建完成后不可修改</div>
-                </el-form-item>
-                <el-form-item label="活码分组" prop="qrGroupId">
-                  <el-select v-model="baseForm.qrGroupId">
-                    <el-option
-                      v-for="item in codeCategoryList"
-                      :key="item.id"
-                      :label="item.name"
-                      :value="item.id"></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="自动通过好友">
-                  <el-switch v-model="baseForm.qrAutoAdd" :active-value="1" :inactive-value="0"></el-switch>
-                  <div class="sub-des">开启后，客户添加该企业微信时，无需好友验证，将会自动添加成功</div>
-                </el-form-item>
-                <el-form-item label="新客户标签">
-                  <template v-for="(item, index) in baseForm.weEmpleCodeTags">
-                    <el-tag v-if="item.tagName" size="medium" :key="index">{{ item.tagName }}</el-tag>
-                  </template>
-                  <div>
-                    <el-button size="mini" type="primary" icon="el-icon-plus" @click="selectedFn">
-                      {{ baseForm.weEmpleCodeTags.length == 0 ? '添加' : '编辑' }}标签
-                    </el-button>
-                  </div>
-                  <div class="sub-des">添加成功后，该客户将会自动设置以上选择标签</div>
-                </el-form-item>
-                <el-form-item>
-                  <el-button plain @click="cancelFn">取消</el-button>
-                  <el-button type="primary" @click="nextStep(2)">下一步</el-button>
-                </el-form-item>
-              </el-form>
-            </el-col>
-          </div>
-        </div>
+        <el-col :span="10">
+          <el-form ref="baseForm" :rules="baseRules" :model="baseForm" label-position="right" label-width="100px">
+            <el-form-item label="活码名称" prop="qrName">
+              <el-input v-model="baseForm.qrName" maxlength="15" show-word-limit clearable></el-input>
+              <!-- <div class="sub-des">活码名称创建完成后不可修改</div> -->
+            </el-form-item>
+            <el-form-item label="活码分组" prop="qrGroupId">
+              <el-select v-model="baseForm.qrGroupId">
+                <el-option
+                  v-for="item in codeCategoryList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="自动通过好友">
+              <el-switch v-model="baseForm.qrAutoAdd" :active-value="1" :inactive-value="0"></el-switch>
+              <div class="sub-des">开启后，客户添加该企业微信时，无需好友验证，将会自动添加成功</div>
+            </el-form-item>
+            <el-form-item label="新客户标签">
+              <template v-for="(item, index) in baseForm.weEmpleCodeTags">
+                <el-tag v-if="item.tagName" size="medium" :key="index">{{ item.tagName }}</el-tag>
+              </template>
+              <div>
+                <el-button size="mini" type="primary" icon="el-icon-plus" @click="selectedFn">
+                  {{ baseForm.weEmpleCodeTags.length == 0 ? '添加' : '编辑' }}标签
+                </el-button>
+              </div>
+              <div class="sub-des">添加成功后，该客户将会自动设置以上选择标签</div>
+            </el-form-item>
+            <el-form-item>
+              <el-button plain @click="cancelFn">取消</el-button>
+              <el-button type="primary" @click="nextStep(2)">下一步</el-button>
+            </el-form-item>
+          </el-form>
+        </el-col>
       </el-row>
     </div>
-    <div class="g-card g-pad20" v-if="currentActive === 2">
+    <div class="g-card" v-if="currentActive === 2">
       <el-row>
         <el-col :span="15">
           <el-form ref="codeForm" :rules="codeRules" :model="codeForm" label-position="right" label-width="100px">
@@ -150,12 +146,14 @@
       </el-row>
     </div>
     <div v-if="currentActive === 3">
-      <welcome-content
-        v-loading="loading"
-        :showBack="true"
+      <!-- <welcome-content v-loading="loading" :showBack="true" @update="currentActive = 2" :baseData="materialData" @submit="getWelData"></welcome-content> -->
+      <AddMaterial
+        :moduleType="4"
+        :otherType="1"
         @update="currentActive = 2"
+        @submit="getWelData"
         :baseData="materialData"
-        @submit="getWelData"></welcome-content>
+        :showModle="true"></AddMaterial>
     </div>
 
     <!-- 选择标签弹窗 -->
@@ -183,6 +181,7 @@ import SelectUser from '@/components/SelectWeUser'
 import SelectTag from '@/components/SelectTag'
 import SelectMaterial from '@/components/SelectMaterial'
 import WelcomeContent from '@/components/WelcomeContent.vue'
+import AddMaterial from '@/components/ContentCenter/AddMaterial'
 
 export default {
   components: {
@@ -191,13 +190,14 @@ export default {
     SelectUser,
     SelectMaterial,
     WelcomeContent,
+    AddMaterial,
   },
   data() {
     return {
       operationIndex: null,
       formTemp: {}, // 编辑基础数据
       materialData: {
-        welcomeMsg: '',
+        templateInfo: '',
         materialMsgList: [],
       },
       title: '新建',
@@ -549,8 +549,8 @@ export default {
           this.codeForm.empleCodeRosterDto = arr
         }
         this.materialData = {
-          welcomeMsg: base.qrAttachments ? base.qrAttachments[0].content : '',
-          materialMsgList: base.qrAttachments ? this.setEditList(base.qrAttachments) : [],
+          templateInfo: base.qrAttachments ? base.qrAttachments[0].content : '',
+          attachments: base.qrAttachments ? this.setEditList(base.qrAttachments) : [],
         }
         // this.materialData.materialMsgList.forEach(ddd => {
         //   ddd.msgType = Number(ddd.msgType)
@@ -561,28 +561,87 @@ export default {
       let arr = []
       if (list && list.length) {
         list.forEach((dd) => {
-          if (dd.msgType === 'image') {
+          if (dd.realType === 0) {
             let obj = {
-              msgType: '0',
+              id: dd.materialId,
+              mediaType: '0',
               materialUrl: dd.picUrl,
             }
             arr.push(obj)
-          } else if (dd.msgType === 'link') {
+          } else if (dd.realType === 2) {
+            let obj = {
+              id: dd.materialId,
+              mediaType: '2',
+              materialUrl: dd.fileUrl,
+              coverUrl: dd.picUrl,
+              digest: dd.description,
+              materialName: dd.title,
+            }
+            arr.push(obj)
+          } else if (dd.realType === 3) {
+            let obj = {
+              id: dd.materialId,
+              mediaType: '3',
+              materialUrl: dd.fileUrl,
+              digest: dd.description,
+              materialName: dd.title,
+            }
+            arr.push(obj)
+          } else if (dd.realType === 4) {
+            let obj = {
+              id: dd.materialId,
+              mediaType: '4',
+              content: dd.content,
+            }
+            arr.push(obj)
+          } else if (dd.realType === 9) {
+            let obj = {
+              id: dd.materialId,
+              mediaType: '9',
+              content: dd.content,
+              coverUrl: dd.picUrl,
+              materialUrl: dd.linkUrl,
+              materialName: dd.title,
+            }
+            arr.push(obj)
+          } else if (dd.realType === 8) {
             let ob = {
-              msgType: '8',
+              id: dd.materialId,
+              mediaType: '8',
               materialName: dd.title,
               materialUrl: dd.linkUrl,
+              materialName: dd.title,
             }
             arr.push(ob)
-          } else if (dd.msgType === 'miniprogram') {
+          } else if (dd.realType === 11) {
             let ff = {
-              msgType: '9',
+              id: dd.materialId,
+              mediaType: '11',
               digest: dd.appId,
               materialName: dd.title,
               coverUrl: dd.picUrl,
-              materialUrl: dd.linkUrl,
+              materialUrl: dd.fileUrl,
             }
             arr.push(ff)
+          } else if (dd.realType === 12) {
+            let ff = {
+              id: dd.materialId,
+              mediaType: '12',
+              digest: dd.description,
+              materialUrl: dd.fileUrl,
+              coverUrl: dd.picUrl,
+              content: dd.content,
+              materialName: dd.title,
+            }
+            arr.push(ff)
+          } else if (dd.realType === 5) {
+            let obj = {
+              id: dd.materialId,
+              mediaType: '5',
+              materialUrl: dd.fileUrl,
+              materialName: dd.title,
+            }
+            arr.push(obj)
           }
         })
       }
@@ -719,11 +778,11 @@ export default {
     },
     submit(data) {
       this.loading = true
-      let list = this.resetData(data.materialMsgList)
+      let list = data.attachments
       let myObj = {
         attachments: [
           {
-            content: data.welcomeMsg,
+            content: data.templateInfo,
             msgType: 'text',
           },
         ],
@@ -776,7 +835,7 @@ export default {
 <style lang="scss" scoped>
 .sub-des {
   font-size: 12px;
-  font-family: PingFangSC-Regular, PingFang SC;
+
   font-weight: 400;
   color: #999999;
 }
@@ -784,9 +843,9 @@ export default {
 .add-continue {
   cursor: pointer;
   font-size: 14px;
-  font-family: PingFangSC-Regular, PingFang SC;
+
   font-weight: 400;
-  color: #3c88f0;
+  color: var(--color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -812,17 +871,9 @@ export default {
   }
 }
 
-.tab {
-  height: 78px;
-  background: #fff;
-  border-top: 1px solid #f1f1f1;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
-
 .crumb {
   font-size: 12px;
-  font-family: PingFangSC-Regular, PingFang SC;
+
   font-weight: 400;
   color: #666666;
   display: flex;
@@ -862,7 +913,7 @@ export default {
     top: 0;
     right: 0;
     font-size: 12px;
-    font-family: PingFangSC-Regular, PingFang SC;
+
     font-weight: 400;
     color: #1785ff;
     display: flex;

@@ -1,102 +1,76 @@
 <template>
   <div style="padding-bottom: 30px">
     <div>
-      <div class="g-card g-pad20">
-        <div class="data-content">
-          <div class="search-content">
-            <search-title
-              :id="$route.query.id"
-              :showScene="true"
-              @search="getTableFn"
-            ></search-title>
-            <el-button type="primary" size="mini" @click="exportFn" v-loading="exportLoading"
-              >导出Excel</el-button
-            >
-          </div>
-          <!-- <div v-if="tableList&&tableList.length!=0">
+      <div class="g-card">
+        <div class="mid-action">
+          <search-title :id="$route.query.id" :showScene="true" @search="getTableFn"></search-title>
+          <el-button type="primary" size="mini" @click="exportFn" v-loading="exportLoading">导出Excel</el-button>
+        </div>
+        <!-- <div v-if="tableList&&tableList.length!=0">
               {{tableList[0].answer}}
             </div> -->
-          <div v-if="tableList" class="table-content">
-            <el-table v-loading="loading1" :data="tableList" style="width: 100%">
-              <!-- <el-table-column label="日期" align="center" min-width="100"  show-overflow-tooltip >
+        <template v-if="tableList">
+          <el-table v-loading="loading1" :data="tableList" style="width: 100%">
+            <!-- <el-table-column label="日期" align="center" min-width="100"  show-overflow-tooltip >
                   <template slot-scope="{ row }">
                     <div style="display: flex;justify-content:center;">{{row.updateTime.substring(0,10)}}</div>
                   </template>
                 </el-table-column> -->
-              <el-table-column label="序号" width="50" align="center">
-                <template slot-scope="scope">
-                  {{ scope.$index + 1 }}
-                </template>
-              </el-table-column>
-              <el-table-column label="日期" align="center" min-width="100" show-overflow-tooltip>
-                <template slot-scope="{ row }">
-                  {{ row.createTime }}
-                </template>
-              </el-table-column>
-              <el-table-column
-                label="用户姓名"
-                align="center"
-                min-width="100"
-                show-overflow-tooltip
-              >
-                <template slot-scope="{ row }">
-                  {{ row.name }}
-                </template>
-              </el-table-column>
-              <el-table-column label="渠道" align="center" min-width="100" show-overflow-tooltip>
-                <template slot-scope="{ row }">
-                  {{ dataSource }}
-                </template>
-              </el-table-column>
-              <el-table-column
-                label="用户手机号"
-                align="center"
-                min-width="100"
-                show-overflow-tooltip
-              >
-                <template slot-scope="{ row }">
-                  {{ row.mobile }}
-                </template>
-              </el-table-column>
-              <el-table-column label="openId" align="center" min-width="100" show-overflow-tooltip>
-                <template slot-scope="{ row }">
-                  <div v-if="row.openId">{{ row.openId }}</div>
-                  <div v-if="!row.openId">无</div>
-                </template>
-              </el-table-column>
-              <el-table-column label="unionId" align="center" min-width="100" show-overflow-tooltip>
-                <template slot-scope="{ row }">
-                  <div v-if="row.unionId">{{ row.unionId }}</div>
-                  <div v-if="!row.unionId">无</div>
-                </template>
-              </el-table-column>
-              <el-table-column
-                label="是否是企业用户"
-                align="center"
-                min-width="100"
-                show-overflow-tooltip
-              >
-                <template slot-scope="{ row }">
-                  <div v-if="row.isOfficeCustomer">是</div>
-                  <div v-if="!row.isOfficeCustomer">否</div>
-                </template>
-              </el-table-column>
-              <!--  <el-table-column label="总访问数" align="center" min-width="100" prop="visitTotalCnt" show-overflow-tooltip />
+            <el-table-column label="序号" width="50" align="center">
+              <template slot-scope="scope">
+                {{ scope.$index + 1 }}
+              </template>
+            </el-table-column>
+            <el-table-column label="日期" align="center" min-width="100" show-overflow-tooltip>
+              <template slot-scope="{ row }">
+                {{ row.createTime }}
+              </template>
+            </el-table-column>
+            <el-table-column label="用户姓名" align="center" min-width="100" show-overflow-tooltip>
+              <template slot-scope="{ row }">
+                {{ row.name }}
+              </template>
+            </el-table-column>
+            <el-table-column label="渠道" align="center" min-width="100" show-overflow-tooltip>
+              <template slot-scope="{ row }">
+                {{ dataSource }}
+              </template>
+            </el-table-column>
+            <el-table-column label="用户手机号" align="center" min-width="100" show-overflow-tooltip>
+              <template slot-scope="{ row }">
+                {{ row.mobile }}
+              </template>
+            </el-table-column>
+            <el-table-column label="openId" align="center" min-width="100" show-overflow-tooltip>
+              <template slot-scope="{ row }">
+                <div v-if="row.openId">{{ row.openId }}</div>
+                <div v-if="!row.openId">无</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="unionId" align="center" min-width="100" show-overflow-tooltip>
+              <template slot-scope="{ row }">
+                <div v-if="row.unionId">{{ row.unionId }}</div>
+                <div v-if="!row.unionId">无</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="是否是企业用户" align="center" min-width="100" show-overflow-tooltip>
+              <template slot-scope="{ row }">
+                <div v-if="row.isOfficeCustomer">是</div>
+                <div v-if="!row.isOfficeCustomer">否</div>
+              </template>
+            </el-table-column>
+            <!--  <el-table-column label="总访问数" align="center" min-width="100" prop="visitTotalCnt" show-overflow-tooltip />
                 <el-table-column label="总访问用户" align="center" prop="consultTotalCnt" min-width="100" show-overflow-tooltip></el-table-column>
                 <el-table-column label="有效收集量" align="center" prop="EffectiveCollectionQuantity" min-width="100" show-overflow-tooltip></el-table-column>
                 <el-table-column label="收集量" align="center" prop="CollectionQuantity" min-width="100" show-overflow-tooltip></el-table-column>
                 <el-table-column label="平均完成时间" align="center" prop="average" min-width="100" show-overflow-tooltip></el-table-column> -->
-            </el-table>
-            <div class="bottom">
-              <pagination
-                :total="total"
-                :page.sync="query.pageNum"
-                :limit.sync="query.pageSize"
-                @pagination="getTableChangeSize(query.pageNum, query.pageSize)"
-              />
-            </div>
-          </div>
-        </div>
+          </el-table>
+          <pagination
+            :total="total"
+            :page.sync="query.pageNum"
+            :limit.sync="query.pageSize"
+            @pagination="getTableChangeSize(query.pageNum, query.pageSize)" />
+        </template>
       </div>
     </div>
   </div>

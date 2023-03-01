@@ -98,20 +98,15 @@ export default {
 
 <template>
   <el-container v-loading="loading">
-    <el-header class="g-card g-pad20 mb10" height="108px">
-      <el-steps style="margin-top: 10px" :active="currentActive" align-center>
+    <el-header class="g-card mb10" height="108px">
+      <el-steps :active="currentActive" align-center finish-status="success">
         <el-step title="短链类型"></el-step>
         <el-step title="内容设置"></el-step>
         <el-step title="生成短链"></el-step>
       </el-steps>
     </el-header>
 
-    <el-form
-      v-show="currentActive == 0"
-      label-suffix="："
-      label-width=""
-      class="g-card g-pad20"
-      style="padding-right: 18%">
+    <el-form v-show="currentActive == 0" label-suffix="：" label-width="" class="g-card" style="padding-right: 18%">
       <el-form-item label="跳转类型">
         <el-radio-group v-model="form.jumpType">
           <el-radio-button :label="1">跳入微信</el-radio-button>
@@ -141,23 +136,23 @@ export default {
           </template>
         </el-radio-group>
       </el-form-item>
-      <div class="g-card g-pad20" style="background: #eee">
+      <div class="g-card" style="background: #eee">
         <span>{{ touchTypeDict[form.type].tip }}</span>
       </div>
     </el-form>
 
     <div v-show="currentActive == 1" class="fxbw ais mt10" style="overflow: auto">
-      <div class="g-card g-pad20 mr10" style="flex: auto">
+      <div class="g-card mr10" style="flex: auto">
         <Add ref="add" :form.sync="form" />
       </div>
 
       <PhonePreview :data="form" />
     </div>
 
-    <div v-show="currentActive == 2" class="g-card g-pad20 ac">
+    <div v-show="currentActive == 2" class="g-card ac">
       <i class="el-icon-success" style="font-size: 36px; color: #06c160; margin: 10px 0 20px"></i>
       <div style="">短链创建成功</div>
-      <div class="g-card g-pad20" style="background: #eee; width: 50%; margin: 30px auto">
+      <div class="g-card" style="background: #eee; width: 50%; margin: 30px auto">
         <span>{{ data.shortUrl }}</span>
       </div>
       <img ref="qrCode" style="width: 130px; height: 130px" :src="data.qrCode" fit="fit" crossOrigin="anonymous" />

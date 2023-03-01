@@ -132,20 +132,13 @@ export default {
   <div>
     <div class="operation">
       <el-button-group>
-        <el-button size="small" type="primary" :plain="timeRange != 7" @click="setTime(7)"
-          >近一周</el-button
-        >
-        <el-button size="small" type="primary" :plain="timeRange != 30" @click="setTime(30)"
-          >近一月
-        </el-button>
-        <el-button size="small" type="primary" :plain="!!timeRange" @click="setTime()"
-          >自定义
-        </el-button>
+        <el-button type="primary" :plain="timeRange != 7" @click="setTime(7)">近一周</el-button>
+        <el-button type="primary" :plain="timeRange != 30" @click="setTime(30)">近一月</el-button>
+        <el-button type="primary" :plain="!!timeRange" @click="setTime()">自定义</el-button>
       </el-button-group>
       <el-date-picker
         v-if="!timeRange"
         v-model="dateRange"
-        size="small"
         class="ml20"
         style="width: 260px"
         value-format="yyyy-MM-dd"
@@ -157,8 +150,7 @@ export default {
         @change="
           getList('customerGroup')
           getList('customerGroupMember')
-        "
-      ></el-date-picker>
+        "></el-date-picker>
     </div>
     <el-row :gutter="10">
       <el-col :span="12">
@@ -168,47 +160,40 @@ export default {
             :value="selectUsers['customerGroup'].map((e) => e.name) + ''"
             readonly
             @focus="showDialog('customerGroup')"
-            placeholder="请选择群主"
-          />
+            placeholder="请选择群主" />
         </div>
         <ChartLine
           v-loading="loading.customerGroup"
           :xData="customerGroup.xData"
           :legend="legend['customerGroup']"
-          :series="customerGroup.series"
-        ></ChartLine>
+          :series="customerGroup.series"></ChartLine>
       </el-col>
       <el-col :span="12">
         <div>
           <el-input
-            style="width: 180px;"
+            style="width: 180px"
             :value="selectUsers['customerGroupMember'].map((e) => e.name) + ''"
             readonly
             @focus="showDialog('customerGroupMember')"
-            placeholder="请选择群主"
-          />
+            placeholder="请选择群主" />
           <el-select
-            style="margin-left:20px;"
+            style="margin-left: 20px"
             v-model="query.chatIds"
             placeholder="请选择群聊"
             clearable
-            @change="getList('customerGroupMember')"
-          >
+            @change="getList('customerGroupMember')">
             <el-option
               v-for="item in groupChats"
               :key="item.chatId"
               :label="item.groupName"
-              :value="item.chatId"
-            >
-            </el-option>
+              :value="item.chatId"></el-option>
           </el-select>
         </div>
         <ChartLine
           v-loading="loading.customerGroupMember"
           :xData="customerGroupMember.xData"
           :legend="legend['customerGroupMember']"
-          :series="customerGroupMember.series"
-        ></ChartLine>
+          :series="customerGroupMember.series"></ChartLine>
       </el-col>
     </el-row>
 
@@ -217,8 +202,7 @@ export default {
       title="组织架构"
       :defaultValues="selectUsers[dialogType]"
       @success="getSelectUser"
-      :isOnlyLeaf="true"
-    ></SelectWeUser>
+      :isOnlyLeaf="true"></SelectWeUser>
   </div>
 </template>
 

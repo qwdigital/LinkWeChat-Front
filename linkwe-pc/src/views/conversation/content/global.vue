@@ -1,6 +1,6 @@
 <template>
-  <div class="g-card g-pad20">
-    <el-form :inline="true" :model="query">
+  <div>
+    <el-form :inline="true" :model="query" class="top-search">
       <el-form-item label="员工名称">
         <el-input v-model="query.userName" clearable placeholder="客户名称"></el-input>
       </el-form-item>
@@ -22,24 +22,28 @@
           end-placeholder="结束日期"
           align="right"
           :picker-options="pickerOptions"
-        >
-        </el-date-picker>
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="消息状态">
         <el-select v-model="query.action" class="noborder">
-          <el-option v-for="item in displayOptions" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
+          <el-option
+            v-for="item in displayOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getList(1)">查询</el-button>
-        <el-button type="info" @click="resetFn">清空</el-button>
+        <el-button @click="resetFn">重置</el-button>
       </el-form-item>
       <el-form-item style="float: right;">
         <el-button type="primary" @click="exportList()">导出列表</el-button>
       </el-form-item>
     </el-form>
-    <div>
+
+    <div class="g-card">
       <el-table v-loading="loading" :data="fileData">
         <el-table-column prop="date" label="发送者" width="180">
           <template slot-scope="scope">
@@ -54,7 +58,7 @@
         <el-table-column label="消息状态" width="200">
           <template slot-scope="scope">
             <div class="pers">
-              <span v-if="scope.row.action == ''"> </span>
+              <span v-if="scope.row.action == ''"></span>
               <span v-else-if="scope.row.action == 'send'">
                 <span class="green"></span>
                 已发送
@@ -89,6 +93,8 @@
 <script>
   import { getChatList, exportList } from '@/api/conversation/content.js'
   import ChatContent from '@/components/ChatContent'
+  import { dateFormat } from '@/utils/index'
+
   export default {
     components: { ChatContent },
     data() {
@@ -188,8 +194,22 @@
           .then(() => {
             return exportList(this.query)
           })
-          .then((response) => {
-            this.download(response.data)
+          .then((res) => {
+            if (!res) return
+            const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+
+            if (window.navigator.msSaveOrOpenBlob) {
+              //兼容IE10
+              navigator.msSaveBlob(blob, '内容存档')
+            } else {
+              const href = URL.createObjectURL(blob) //创建新的URL表示指定的blob对象
+              const a = document.createElement('a') //创建a标签
+              a.style.display = 'none'
+              a.href = href // 指定下载链接
+              a.download = dateFormat(new Date(), 'yyyy-MM-dd') + '_内容存档.xlsx' //指定下载文件名
+              a.click() //触发下载
+              URL.revokeObjectURL(a.href) //释放URL对象
+            }
           })
           .catch(function () {})
       }

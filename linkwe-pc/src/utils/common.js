@@ -2,7 +2,7 @@
  * 通用js方法封装处理，挂载到 Vue.prototype
  */
 
-const baseURL = window.lwConfig.BASE_API
+const baseURL = window.lwConfig.services.system
 import { getToken } from '@/utils/auth'
 import axios from 'axios'
 
@@ -284,4 +284,20 @@ export function toFormData(val) {
     }
   }
   return formData
+}
+
+// 判断ppt,word,excel
+export function filType(file) {
+  let filecontent = JSON.parse(JSON.stringify(file))
+  filecontent = filecontent.split('.')
+  let type = filecontent[filecontent.length - 1]
+  if (type === 'pdf') {
+    return 'pdf'
+  } else if (['doc', 'docx'].includes(type)) {
+    return 'word'
+  } else if (['ppt', 'pptx', 'pps', 'pptsx'].includes(type)) {
+    return 'ppt'
+  } else {
+    return ''
+  }
 }

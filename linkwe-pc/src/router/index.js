@@ -39,6 +39,38 @@ if (process.env.VUE_APP_ENV === 'development') {
 
 // 公共路由
 export const constantRoutes = [
+  // {
+
+  //   path: '/drainageCode/customerService',
+  //   component: Layout,
+  //   hidden: true,
+  //   meta: {
+  //     title: '客服管理',
+  //   },
+  //   children: [
+  //     {
+  //       path: 'add',
+  //       name: 'service-add',
+  //       component: (resolve) => require(['@/views/customerService/customerServiceManage/add'], resolve),
+  //       meta: {
+  //         title: '新建客服',
+  //         activeMenu: '/drainageCode/customerService/index',
+  //         breadcrumb: true,
+  //       },
+  //     },
+  //     {
+  //       path: 'detail',
+  //       name: 'service-add-detail',
+  //       component: (resolve) => require(['@/views/customerService/customerServiceManage/detail'], resolve),
+  //       meta: {
+  //         title: '客服详情',
+  //         activeMenu: '/drainageCode/customerService/index',
+  //         breadcrumb: true,
+  //       },
+  //     },
+  //   ],
+  // },
+
   {
     path: '/formsDetail', // 智能表单填写
     component: (resolve) => require(['@/views/drainageCode/smartForms/build/formsDetail'], resolve),
@@ -105,6 +137,21 @@ export const constantRoutes = [
       {
         path: '/register',
         component: (resolve) => require(['@/views/register'], resolve),
+      },
+    ],
+  },
+
+  {
+    path: '/user',
+    component: Layout,
+    hidden: true,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'profile',
+        component: (resolve) => require(['@/views/system/user/profile/index'], resolve),
+        name: 'Profile',
+        meta: { title: '个人中心', icon: 'user' },
       },
     ],
   },

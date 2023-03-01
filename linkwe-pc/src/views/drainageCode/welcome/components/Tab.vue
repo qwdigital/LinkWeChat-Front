@@ -5,26 +5,25 @@
 
       <el-form label-position="left" inline label-width="80px">
         <el-form-item label="欢迎语">
-          <el-input clearable placeholder="请输入欢迎语" v-model="query.welcomeMsg" style="width: 260px;"></el-input>
+          <el-input clearable placeholder="请输入欢迎语" v-model="query.welcomeMsg" style="width: 260px"></el-input>
         </el-form-item>
         <el-form-item label-width="0">
-          <!-- <el-button v-hasPermi="['wecom:code:list']" type="cyan" @click="getList(1)">查询</el-button> -->
           <el-button type="primary" @click="getList(0)">查询</el-button>
           <el-button
             @click="
               query.welcomeMsg = ''
               getList(0)
-            "
-            >清空</el-button
-          >
+            ">
+            重置
+          </el-button>
         </el-form-item>
       </el-form>
-      <div style="margin-top: 20px; display: flex; justify-content: space-between;">
+      <div style="margin-top: 20px; display: flex; justify-content: space-between">
         <el-button type="primary" size="mini" @click="goRoute()">新建{{ wel[type] }}欢迎语</el-button>
         <div>
-          <el-button style="align-self: flex-end;" size="mini" type="primary" plain @click="removeMult()"
-            >批量删除</el-button
-          >
+          <el-button style="align-self: flex-end" size="mini" type="primary" plain @click="removeMult()">
+            批量删除
+          </el-button>
         </div>
       </div>
     </div>
@@ -42,10 +41,10 @@
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="scope">
             <el-button size="mini" type="text" @click="showPreview(scope.row)">预览</el-button>
-            <el-divider direction="vertical"></el-divider>
+
             <el-button size="mini" type="text" @click="goRoute(scope.row)">编辑</el-button>
             <!-- v-hasPermi="['wecom:tlp:edit']" -->
-            <el-divider direction="vertical"></el-divider>
+
             <el-button size="mini" type="text" @click="remove(scope.row.id)">删除</el-button>
             <!-- v-hasPermi="['wecom:tlp:remove']" -->
           </template>
@@ -68,167 +67,167 @@
 </template>
 
 <script>
-  import PreviewClient from '@/components/previewInMobileClient.vue'
-  import { getList, remove } from '@/api/drainageCode/welcome'
-  export default {
-    name: 'Tab',
-    components: {
-      PreviewClient
+import PreviewClient from '@/components/previewInMobileClient.vue'
+import { getList, remove } from '@/api/drainageCode/welcome'
+export default {
+  name: 'Tab',
+  components: {
+    PreviewClient,
+  },
+  props: {
+    type: {
+      type: Number | String,
+      default: '1',
     },
-    props: {
-      type: {
-        type: Number | String,
-        default: '1'
-      }
-    },
-    data() {
-      return {
-        ids: [],
-        // 查询参数
-        query: {
-          pageNum: 1,
-          pageSize: 10,
-          welcomeMsg: undefined,
-          tplType: 1,
-          orderByColumn: 'wmt.create_time',
-          isAsc: 'desc'
-        },
-        loading: false,
-        total: 0,
-        list: [],
-        wel: {
-          1: '活码',
-          2: '员工',
-          3: '入群'
-        },
-        showPreviewDialog: false,
-        previewData: {
-          welcomeMsg: '',
-          materialMsgList: []
-        }
-      }
-    },
-    watch: {},
-    computed: {},
-    created() {
-      this.query.tplType = +this.type
-      this.getList()
-    },
-    mounted() {},
-    methods: {
-      handleSelectionChange(selection) {
-        this.ids = selection.map((item) => item.id)
+  },
+  data() {
+    return {
+      ids: [],
+      // 查询参数
+      query: {
+        pageNum: 1,
+        pageSize: 10,
+        welcomeMsg: undefined,
+        tplType: 1,
+        orderByColumn: 'wmt.create_time',
+        isAsc: 'desc',
       },
-      /** 查询 */
-      getList(page) {
-        page && (this.query.pageNum = page)
-        this.loading = true
-        getList(this.query)
-          .then(({ rows, total }) => {
-            this.list = rows
-            this.total = +total
-            this.loading = false
-          })
-          .catch(() => {
-            this.loading = false
-          })
+      loading: false,
+      total: 0,
+      list: [],
+      wel: {
+        1: '活码',
+        2: '员工',
+        3: '入群',
       },
-      /** 删除按钮操作 */
-      remove(id) {
-        // const operIds = id || this.ids + "";
-        this.$confirm('是否确认删除吗?', '警告', {
-          type: 'warning'
-        })
-          .then(() => {
-            return remove(id)
-          })
-          .then(() => {
-            this.getList()
-            this.msgSuccess('删除成功')
-          })
+      showPreviewDialog: false,
+      previewData: {
+        welcomeMsg: '',
+        materialMsgList: [],
       },
-      removeMult() {
-        if (!this.ids.length) {
-          this.msgInfo('请勾选需要删除的项！')
-          return
-        }
-        this.$confirm('是否确认删除吗?', '警告', {
-          type: 'warning'
-        })
-          .then(() => {
-            return remove(this.ids.join(','))
-          })
-          .then(() => {
-            this.getList()
-            this.msgSuccess('删除成功')
-          })
-      },
-      goRoute(data) {
-        let query = {}
-        if (data) {
-          localStorage.setItem('obj', JSON.stringify(data))
-          query.id = data.id
-        } else {
-          query.tplType = this.type
-        }
-        this.$router.push({
-          path: '/content/template/welcomeAdd',
-          query: query
-        })
-      },
-      showPreview(data) {
-        ;(this.previewData.welcomeMsg = data.attachments ? data.attachments[0].content : ''),
-          (this.previewData.materialMsgList = data.attachments ? this.setEditList(data.attachments) : [])
-        this.showPreviewDialog = true
-        // })
-      },
-      setEditList(list) {
-        let arr = []
-        if (list && list.length) {
-          list.forEach((dd) => {
-            if (dd.msgType === 'image') {
-              let obj = {
-                msgType: '0',
-                materialUrl: dd.picUrl
-              }
-              arr.push(obj)
-            } else if (dd.msgType === 'link') {
-              let ob = {
-                msgType: '8',
-                materialName: dd.title,
-                materialUrl: dd.linkUrl
-              }
-              arr.push(ob)
-            } else if (dd.msgType === 'miniprogram') {
-              let ff = {
-                msgType: '9',
-                digest: dd.appId,
-                materialName: dd.title,
-                coverUrl: dd.picUrl,
-                materialUrl: dd.linkUrl
-              }
-              arr.push(ff)
-            }
-          })
-        }
-        return arr
-      }
     }
-  }
+  },
+  watch: {},
+  computed: {},
+  created() {
+    this.query.tplType = +this.type
+    this.getList()
+  },
+  mounted() {},
+  methods: {
+    handleSelectionChange(selection) {
+      this.ids = selection.map((item) => item.id)
+    },
+    /** 查询 */
+    getList(page) {
+      page && (this.query.pageNum = page)
+      this.loading = true
+      getList(this.query)
+        .then(({ rows, total }) => {
+          this.list = rows
+          this.total = +total
+          this.loading = false
+        })
+        .catch(() => {
+          this.loading = false
+        })
+    },
+    /** 删除按钮操作 */
+    remove(id) {
+      // const operIds = id || this.ids + "";
+      this.$confirm('是否确认删除吗?', '警告', {
+        type: 'warning',
+      })
+        .then(() => {
+          return remove(id)
+        })
+        .then(() => {
+          this.getList()
+          this.msgSuccess('删除成功')
+        })
+    },
+    removeMult() {
+      if (!this.ids.length) {
+        this.msgInfo('请勾选需要删除的项！')
+        return
+      }
+      this.$confirm('是否确认删除吗?', '警告', {
+        type: 'warning',
+      })
+        .then(() => {
+          return remove(this.ids.join(','))
+        })
+        .then(() => {
+          this.getList()
+          this.msgSuccess('删除成功')
+        })
+    },
+    goRoute(data) {
+      let query = {}
+      if (data) {
+        localStorage.setItem('obj', JSON.stringify(data))
+        query.id = data.id
+      } else {
+        query.tplType = this.type
+      }
+      this.$router.push({
+        path: '/content/template/welcomeAdd',
+        query: query,
+      })
+    },
+    showPreview(data) {
+      ;(this.previewData.welcomeMsg = data.attachments ? data.attachments[0].content : ''),
+        (this.previewData.materialMsgList = data.attachments ? this.setEditList(data.attachments) : [])
+      this.showPreviewDialog = true
+      // })
+    },
+    setEditList(list) {
+      let arr = []
+      if (list && list.length) {
+        list.forEach((dd) => {
+          if (dd.msgType === 'image') {
+            let obj = {
+              msgType: '0',
+              materialUrl: dd.picUrl,
+            }
+            arr.push(obj)
+          } else if (dd.msgType === 'link') {
+            let ob = {
+              msgType: '8',
+              materialName: dd.title,
+              materialUrl: dd.linkUrl,
+            }
+            arr.push(ob)
+          } else if (dd.msgType === 'miniprogram') {
+            let ff = {
+              msgType: '9',
+              digest: dd.appId,
+              materialName: dd.title,
+              coverUrl: dd.picUrl,
+              materialUrl: dd.linkUrl,
+            }
+            arr.push(ff)
+          }
+        })
+      }
+      return arr
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
-  .header {
-    padding: 0 20px;
-  }
-  .divider-content {
-    width: 100%;
-    height: 10px;
-    background-color: #f5f7fb;
-  }
-  .bottom {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
+.header {
+  padding: 0 20px;
+}
+.divider-content {
+  width: 100%;
+  height: 10px;
+  background-color: #f5f7fb;
+}
+.bottom {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 </style>

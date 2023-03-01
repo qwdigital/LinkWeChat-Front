@@ -9,7 +9,7 @@ export default {
   components: { PhoneDialog, SelectTag, SelectUser, SelectQrCode },
   data() {
     return {
-      selectedUserList:[],
+      selectedUserList: [],
       newGroupId: '',
       dialogVisibleSelectUser: false, // 选择员工会话
       dialogVisibleSelectTag: false, // 选择客户标签会话
@@ -21,7 +21,7 @@ export default {
         welcomeMsg: '', //加群引导语
         groupCodeId: undefined, // 群活码ID
         tagList: [], // 客户标签
-        skipVerify: 0 // 无需确认自动加好友
+        skipVerify: 0, // 无需确认自动加好友
       },
       tags: [],
       users: [],
@@ -32,8 +32,8 @@ export default {
         emplList: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
         tagList: [{ required: true, message: '该项为必填项', trigger: 'change' }],
         groupCodeId: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
-        welcomeMsg: [{ required: true, message: '该项为必填项', trigger: 'blur' }]
-      })
+        welcomeMsg: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
+      }),
     }
   },
   watch: {
@@ -43,12 +43,12 @@ export default {
     users(users) {
       this.form.emplList = users.map((u) => u.businessId)
       this.$refs.form.validateField('emplList')
-    }
+    },
   },
   created() {
     this.newGroupId = this.$route.query.id
     this.newGroupId && this.getDetail(this.newGroupId)
-    this.$route.meta.title = (this.newGroupId ? '编辑' : '新建') + '新客自动拉群'
+    // this.$route.meta.title = (this.newGroupId ? '编辑' : '新建') + '新客自动拉群'
   },
   methods: {
     /** 获取详情 */
@@ -83,30 +83,30 @@ export default {
           businessName: d.name,
           businessIdType: d.userId ? 2 : 1,
           mobile: d.mobile,
-          empleCodeId: d.empleCodeId
+          empleCodeId: d.empleCodeId,
         }
       })
     },
-    onSelectUser () {
-        this.selectedUserList = []
-        let arr = []
-        if (this.users && this.users.length) {
-          arr = this.users.map((dd, index) => {
-            return {
-              userId: dd.businessId,
-              name: dd.businessName
-            }
-          })
-        }
-        this.selectedUserList = arr
-        this.dialogVisibleSelectUser = true
-      },
+    onSelectUser() {
+      this.selectedUserList = []
+      let arr = []
+      if (this.users && this.users.length) {
+        arr = this.users.map((dd, index) => {
+          return {
+            userId: dd.businessId,
+            name: dd.businessName,
+          }
+        })
+      }
+      this.selectedUserList = arr
+      this.dialogVisibleSelectUser = true
+    },
     // 客户标签选择
     submitSelectTag(tags) {
       this.tags = tags.map((t) => {
         return {
           tagId: t.tagId,
-          tagName: t.name
+          tagName: t.name,
         }
       })
     },
@@ -143,64 +143,48 @@ export default {
           }
         }
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
 <template>
-  <div class="wrap" v-loading="loading">
-    <el-form :model="form" ref="form" :rules="rules" label-width="100px">
+  <div class="flex" v-loading="loading">
+    <el-form :model="form" ref="form" :rules="rules" label-width="100px" class="g-card flex1 mr20">
       <el-form-item label="活码名称" prop="codeName">
-        <el-input
-          v-model="form.codeName"
-          maxlength="30"
-          show-word-limit
-          placeholder="请输入"
-          clearable
-        ></el-input>
+        <el-input v-model="form.codeName" maxlength="30" show-word-limit placeholder="请输入" clearable></el-input>
       </el-form-item>
       <el-form-item label="使用员工" prop="emplList">
         <!-- closable -->
-        <el-tag size="medium" v-for="(user, index) in users" :key="index">{{
-          user.businessName
-        }}</el-tag>
+        <el-tag size="medium" v-for="(user, index) in users" :key="index">{{ user.businessName }}</el-tag>
         <el-button
           type="primary"
           plain
           :class="users.length > 0 ? 'ml10' : ''"
           icon="el-icon-plus"
           size="mini"
-          @click="onSelectUser"
-          >{{ users.length ? '修改' : '添加' }}</el-button
-        >
+          @click="onSelectUser">
+          {{ users.length ? '修改' : '添加' }}
+        </el-button>
       </el-form-item>
       <el-form-item label="加群引导语" prop="welcomeMsg">
-        <el-input
-          type="textarea"
+        <TextareaExtend
           v-model="form.welcomeMsg"
           maxlength="220"
           show-word-limit
           :autosize="{ minRows: 5, maxRows: 20 }"
           placeholder="请输入"
-          clearable
-        ></el-input>
+          clearable></TextareaExtend>
       </el-form-item>
       <el-form-item label="选择群活码" prop="groupCodeId">
         <el-image
-          style="width: 160px;height: 160px;"
+          style="width: 160px; height: 160px"
           v-if="groupQrCode && groupQrCode.codeUrl"
           :src="groupQrCode.codeUrl"
-          class="code-image mr10"
-        ></el-image>
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="dialogVisibleSelectQrCode = true"
-          >{{ groupQrCode && groupQrCode.codeUrl ? '修改' : '选择' }}</el-button
-        >
+          class="code-image mr10"></el-image>
+        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="dialogVisibleSelectQrCode = true">
+          {{ groupQrCode && groupQrCode.codeUrl ? '修改' : '选择' }}
+        </el-button>
       </el-form-item>
       <el-form-item label="新客户标签" prop="tags">
         <!-- closable -->
@@ -211,17 +195,17 @@ export default {
           plain
           icon="el-icon-plus"
           size="mini"
-          @click="dialogVisibleSelectTag = true"
-          >添加标签</el-button
-        >
+          @click="dialogVisibleSelectTag = true">
+          添加标签
+        </el-button>
         <!-- <div class="tip">
           根据使用场景做标签记录，扫码添加的客户，可自动打上标签
         </div> -->
       </el-form-item>
       <el-form-item label="添加设置" prop="skipVerify">
-        <el-checkbox :true-label="1" :false-label="0" v-model="form.skipVerify"
-          >客户添加时无需经过确认自动成为好友</el-checkbox
-        >
+        <el-checkbox :true-label="1" :false-label="0" v-model="form.skipVerify">
+          客户添加时无需经过确认自动成为好友
+        </el-checkbox>
       </el-form-item>
       <el-form-item label=" ">
         <el-button type="primary" @click="submit">保存</el-button>
@@ -229,13 +213,11 @@ export default {
       </el-form-item>
     </el-form>
 
-    <div class="preview-wrap">
+    <div class="preview-wrap g-card mt0">
       <!-- 预览 -->
-      <div class="tip">欢迎语样式</div>
       <PhoneDialog
         :message="form.welcomeMsg || '请输入加群引导语'"
-        :isOther="groupQrCode && groupQrCode.codeUrl ? true : false"
-      >
+        :isOther="groupQrCode && groupQrCode.codeUrl ? true : false">
         <el-image class="phone-dialog-image" :src="groupQrCode.codeUrl" fit="fit"></el-image>
       </PhoneDialog>
     </div>
@@ -249,22 +231,16 @@ export default {
       :defaultValues="selectedUserList"
       :isOnlyLeaf="form.codeType !== 2"
       :isSigleSelect="form.codeType == 1"
-      @success="submitSelectUser"
-    ></SelectUser>
+      @success="submitSelectUser"></SelectUser>
 
     <!-- 选择标签弹窗 -->
-    <SelectTag
-      :visible.sync="dialogVisibleSelectTag"
-      :selected="tags"
-      @success="submitSelectTag"
-    ></SelectTag>
+    <SelectTag :visible.sync="dialogVisibleSelectTag" :selected="tags" @success="submitSelectTag"></SelectTag>
 
     <!-- 选择二维码弹窗 -->
     <SelectQrCode
       :visible.sync="dialogVisibleSelectQrCode"
       @success="submitSelectQrCode"
-      :selected="codes"
-    ></SelectQrCode>
+      :selected="codes"></SelectQrCode>
   </div>
 </template>
 

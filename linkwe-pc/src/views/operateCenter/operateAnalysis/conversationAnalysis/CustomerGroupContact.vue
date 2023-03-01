@@ -1,29 +1,29 @@
 <script>
 import TabContent from '../components/TabContent'
-import CardGroupIndex from '@/components/CardGroupIndex'
+
 import * as api from '@/api/operateCenter/conversationAnalysis'
 export default {
   name: '',
-  components: { TabContent, CardGroupIndex },
+  components: { TabContent },
   data() {
     return {
       cardData: [],
       tabs: [
         {
           label: '群聊总数',
-          type: 'groupChatTotalChart'
+          type: 'groupChatTotalChart',
         },
         {
           label: '群聊消息数',
-          type: 'groupChatMessageNumChart'
+          type: 'groupChatMessageNumChart',
         },
         {
           label: '发送消息群成员数',
-          type: 'sendMessageGroupMemberChart'
-        }
+          type: 'sendMessageGroupMemberChart',
+        },
       ],
       active: 0,
-      api
+      api,
     }
   },
   computed: {},
@@ -45,22 +45,22 @@ export default {
               tips: '企业员工的客户群中有过聊天的数量',
               value: data.ydChatTotal,
               title1: '较前日',
-              value1: data.bydChatTotal
+              value1: data.bydChatTotal,
             },
             {
               title: '昨日群聊消息数',
               tips: '企业员工的客户群中的消息数量',
               value: data.ydMsgTotal,
               title1: '较前日',
-              value1: data.bydMsgTotal
+              value1: data.bydMsgTotal,
             },
             {
               title: '昨日发送消息群成员数',
               tips: '在客户群中发过消息的群成员的数量，包含企业员工',
               value: data.ydMemberHasMsg,
               title1: '较前日',
-              value1: data.bydMemberHasMsg
-            }
+              value1: data.bydMemberHasMsg,
+            },
           ]
         })
         .catch((e) => {
@@ -69,8 +69,8 @@ export default {
         .finally(() => {
           this.loading = false
         })
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -78,35 +78,23 @@ export default {
   <div>
     <CardGroupIndex :data="cardData"></CardGroupIndex>
 
-    <div class="g-card g-pad20" style="margin-top: 0;">
-      <div class="title">数据趋势</div>
+    <div class="g-card">
+      <div class="g-card-title">数据趋势</div>
       <el-tabs v-model="active">
         <el-tab-pane v-for="(item, index) of tabs" :key="index" :label="item.label">
-          <TabContent
-            :type="item.type"
-            :legend="[item.label]"
-            :request="api.getTotalCntGroup"
-          ></TabContent>
+          <TabContent :type="item.type" :legend="[item.label]" :request="api.getTotalCntGroup"></TabContent>
         </el-tab-pane>
       </el-tabs>
     </div>
 
-    <div class="g-card g-pad20" style="margin-top: 20px;">
-      <div class="title">数据报表</div>
+    <div class="g-card">
+      <div class="g-card-title">数据报表</div>
       <TabContent
         type="customerGroupContactTable"
         :request="api.getTotalCntGroup"
-        :requestExport="api.realDataExportGroup"
-      ></TabContent>
+        :requestExport="api.realDataExportGroup"></TabContent>
     </div>
   </div>
 </template>
 
-<style lang="scss" scoped>
- .title {
-    font-size: 16px;
-    color: #333;
-    font-weight: 600;
-    margin-bottom: 20px;
-  }
-  </style>
+<style lang="scss" scoped></style>

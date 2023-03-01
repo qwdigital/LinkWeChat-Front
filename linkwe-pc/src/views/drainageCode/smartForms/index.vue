@@ -34,64 +34,61 @@
           </div>
         </el-col>
         <el-col :span="20" class="g-pad20">
-          <div>
-            <el-form :inline="true" label-width="70px" label-position="left" class="top-search">
-              <el-form-item label="表单ID">
-                <el-input
-                  onkeyup="value=value.replace(/[^\d]/g,'')"
-                  v-model="query.id"
-                  placeholder="请输入表单ID"
-                  clearable
-                  @keyup.enter.native="search()" />
-              </el-form-item>
-              <el-form-item label="表单名称">
-                <!-- readonly -->
-                <el-input
-                  v-model="query.surveyName"
-                  clearable
-                  placeholder="请输入表单名称"
-                  @keyup.enter.native="search()" />
-              </el-form-item>
-              <el-form-item label="创建时间">
-                <el-date-picker
-                  v-model="dateRange"
-                  value-format="yyyy-MM-dd"
-                  type="daterange"
-                  :picker-options="pickerOptions"
-                  range-separator="-"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"></el-date-picker>
-                <!-- <el-date-picker
+          <el-form :inline="true" label-width="80px" label-position="left" class="">
+            <el-form-item label="表单ID">
+              <el-input
+                onkeyup="value=value.replace(/[^\d]/g,'')"
+                v-model="query.id"
+                placeholder="请输入表单ID"
+                clearable
+                @keyup.enter.native="search()" />
+            </el-form-item>
+            <el-form-item label="表单名称">
+              <!-- readonly -->
+              <el-input
+                v-model="query.surveyName"
+                clearable
+                placeholder="请输入表单名称"
+                @keyup.enter.native="search()" />
+            </el-form-item>
+            <el-form-item label="创建时间">
+              <el-date-picker
+                v-model="dateRange"
+                value-format="yyyy-MM-dd"
+                type="daterange"
+                :picker-options="pickerOptions"
+                range-separator="-"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"></el-date-picker>
+              <!-- <el-date-picker
                   v-model="query.createTime"
                   type="daterange"
                   default-time="['00:00:00','00:00:00']"
                   value-format="yyyy-MM-dd HH:mm:ss"
                   placeholder="选择时间"></el-date-picker> -->
-              </el-form-item>
-              <el-form-item label="选择状态" prop="addState">
-                <el-select v-model="query.surveyState">
-                  <el-option label="未发布" :value="0"></el-option>
-                  <el-option label="收集中" :value="1"></el-option>
-                  <el-option label="已暂停" :value="2"></el-option>
-                  <el-option label="已结束" :value="3"></el-option>
-                  <!-- <el-option label="待通过" :value="3">
+            </el-form-item>
+            <el-form-item label="选择状态" prop="addState">
+              <el-select v-model="query.surveyState">
+                <el-option label="未发布" :value="0"></el-option>
+                <el-option label="收集中" :value="1"></el-option>
+                <el-option label="已暂停" :value="2"></el-option>
+                <el-option label="已结束" :value="3"></el-option>
+                <!-- <el-option label="待通过" :value="3">
               		</el-option> -->
-                </el-select>
-              </el-form-item>
-              <el-form-item label-width="0">
-                <!-- <el-button v-hasPermi="['wecom:code:list']" type="cyan" @click="getList(1)">查询</el-button> -->
-                <el-button type="primary" @click="search()">查询</el-button>
-                <el-button @click="resetQuery" type="info" plain>清空</el-button>
-              </el-form-item>
-            </el-form>
-            <div style="margin-top: 20px; display: flex; justify-content: space-between">
-              <el-button type="primary" size="mini" @click="goRoute('add')">新建表单</el-button>
-              <div>
-                <el-button type="primary" plain size="mini" @click="removeFn('mult')">删除</el-button>
-                <!-- <el-button type="primary" plain size="mini" @click="downloadBatch()"
+              </el-select>
+            </el-form-item>
+            <el-form-item label-width="0">
+              <el-button type="primary" @click="search()">查询</el-button>
+              <el-button @click="resetQuery">重置</el-button>
+            </el-form-item>
+          </el-form>
+          <div class="mid-action">
+            <el-button type="primary" @click="goRoute('add')">新建表单</el-button>
+            <div>
+              <el-button type="primary" plain @click="removeFn('mult')">删除</el-button>
+              <!-- <el-button type="primary" plain @click="downloadBatch()"
                   >批量下载</el-button
                 > -->
-              </div>
             </div>
           </div>
           <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange" style="width: 100%">
@@ -726,9 +723,9 @@ export default {
 
 .hover-item {
   font-size: 12px;
-  font-family: PingFangSC-Regular, PingFang SC;
+
   font-weight: 400;
-  color: #3c88f0;
+  color: var(--color);
   padding: 6px 15px;
   cursor: pointer;
 
@@ -741,7 +738,7 @@ export default {
   border-right: 1px solid #f1f1f1;
 
   .title {
-    color: #3c88f0;
+    color: var(--color);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -749,7 +746,7 @@ export default {
 
     .title-name {
       font-size: 12px;
-      font-family: PingFangSC-Regular, PingFang SC;
+
       font-weight: 400;
       color: #333333;
       display: flex;
@@ -761,9 +758,9 @@ export default {
       display: flex;
       align-items: center;
       font-size: 12px;
-      font-family: PingFangSC-Regular, PingFang SC;
+
       font-weight: 400;
-      color: #3c88f0;
+      color: var(--color);
 
       &:hover {
         opacity: 0.8;
@@ -808,14 +805,14 @@ export default {
           font-size: 14px;
           font-family: JMT-Font, JMT;
           font-weight: normal;
-          color: #3c88f0;
+          color: var(--color);
           margin-right: 20px;
           margin-left: 5px;
         }
       }
 
       &:hover {
-        color: #3c88f0;
+        color: var(--color);
         background: #f5f8fe;
         opacity: 0.8;
 
@@ -826,8 +823,8 @@ export default {
     }
 
     .active {
-      // border-left: 2px solid #3c88f0;
-      color: #3c88f0;
+      // border-left: 2px solid var(--color);
+      color: var(--color);
       background: #f5f8fe;
     }
   }
