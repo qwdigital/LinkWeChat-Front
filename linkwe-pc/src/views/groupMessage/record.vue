@@ -2,25 +2,20 @@
   <div>
     <el-form :model="query" ref="queryForm" :inline="true" label-position="left" class="top-search" label-width="70px">
       <el-form-item label="群发内容" prop="content">
-        <el-input
-          size="mini"
-          v-model="query.content"
-          placeholder="请输入群发内容"
-          clearable
-          @keyup.enter.native="getList(1)" />
+        <el-input v-model="query.content" placeholder="请输入群发内容" clearable @keyup.enter.native="getList(1)" />
       </el-form-item>
       <el-form-item label="群发类型" prop="chatType">
-        <el-select v-model="query.chatType" placeholder="请选择群发类型" size="mini">
+        <el-select v-model="query.chatType" placeholder="请选择群发类型">
           <el-option v-for="(value, key, index) in pushType" :label="value" :value="key" :key="index"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="发送类型" prop="isTask">
-        <el-select v-model="query.isTask" placeholder="请选择发送类型" size="mini">
+        <el-select v-model="query.isTask" placeholder="请选择发送类型">
           <el-option v-for="(value, key, index) in timedTask" :label="value" :value="key" :key="index"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label-width="0">
-        <el-button type="primary" size="mini" @click="getList(1)">查询</el-button>
+        <el-button type="primary" @click="getList(1)">查询</el-button>
         <el-button @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
@@ -46,22 +41,18 @@
         <el-table-column label="操作" align="center" width="180">
           <template slot-scope="scope">
             <!-- v-hasPermi="['enterpriseWechat:view']" -->
-            <el-button
-              size="mini"
-              type="text"
-              @click="goRoute(scope.row.id, scope.row.isTask, scope.row.status, 'detail')">
+            <el-button type="text" @click="goRoute(scope.row.id, scope.row.isTask, scope.row.status, 'detail')">
               详情
             </el-button>
             <el-button
-              size="mini"
               v-if="scope.row.isTask === 1 && scope.row.status === 0"
               type="text"
               @click="cancelSend(scope.row)">
               取消发送
             </el-button>
-            <!-- <el-button v-hasPermi="['enterpriseWechat:edit']" size="mini" type="text" disabled=""
+            <!-- <el-button v-hasPermi="['enterpriseWechat:edit']"  type="text" disabled=""
 							@click="goRoute(scope.row, 1)">编辑</el-button>
-						<el-button v-hasPermi="['enterpriseWechat:edit']" size="mini" type="text"
+						<el-button v-hasPermi="['enterpriseWechat:edit']"  type="text"
 							@click="syncMsg(scope.row)">同步</el-button> -->
           </template>
         </el-table-column>

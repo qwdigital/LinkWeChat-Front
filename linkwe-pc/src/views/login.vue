@@ -21,7 +21,7 @@
           </el-input>
         </el-form-item>
         <el-form-item prop="code">
-          <div style="display: flex">
+          <div class="fxbw">
             <el-input
               v-model="loginForm.code"
               auto-complete="off"
@@ -29,20 +29,14 @@
               @keyup.enter.native="handleLogin">
               <svg-icon slot="prefix" icon-class="validCode" style="height: 33px" class="el-input__icon input-icon" />
             </el-input>
-            <div class="login-code" style="margin-left: 10px">
-              <img :src="codeUrl" @click="getCode" class="login-code-img" />
-            </div>
+            <img class="login-code-img ml10" :src="codeUrl" @click="getCode" />
           </div>
         </el-form-item>
-        <el-checkbox class="fr" v-model="loginForm.rememberMe">记住密码</el-checkbox>
-        <el-checkbox
-          class="fl"
-          v-model="isDemonstrationLogin"
-          @change="changeDemonAccount"
-          style="margin: 0px 0px 25px 10px">
+        <el-checkbox class="g-margin-b" v-model="isDemonstrationLogin" @change="changeDemonAccount">
           演示账号登录
         </el-checkbox>
-        <el-form-item style="width: 100%">
+        <el-checkbox class="fr" v-model="loginForm.rememberMe">记住密码</el-checkbox>
+        <el-form-item>
           <el-button
             :loading="loading"
             size="medium"
@@ -52,8 +46,8 @@
             <span v-if="!loading">登 录</span>
             <span v-else>登 录 中...</span>
           </el-button>
-          <div class="link" @click="changeLoginType('url')">企微登录</div>
         </el-form-item>
+        <div class="link" @click="changeLoginType('url')">企微登录</div>
       </template>
       <div v-else class="ac">
         <img class="wechat-code" :src="wechatCodeUrl" alt="" />
@@ -62,15 +56,12 @@
         <a :href="authLink">
           <el-button :loading="loading" size="medium" type="primary" style="width: 100%">企业微信登录</el-button>
           <!-- <img
-            src="//wwcdn.weixin.qq.com/node/wwopen/wwopenmng/style/images/independent/brand/300x40_white$4dab5411.png"
- /> -->
+            src="//wwcdn.weixin.qq.com/node/wwopen/wwopenmng/style/images/independent/brand/300x40_white$4dab5411.png" /> -->
         </a>
         <div class="link" @click="changeLoginType('account')">账号密码登录</div>
       </div>
     </el-form>
-    <div>
-      <img src="@/assets/login.png" class="login-img" alt="" />
-    </div>
+    <img src="@/assets/login.png" class="login-img" alt="" />
   </div>
 </template>
 
@@ -198,11 +189,11 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .login {
-  position: relative;
-  max-width: 1234px;
-  max-height: 878px;
+  width: min(80%, 1234px);
+  height: min(80%, 878px);
+  min-height: 700px;
   background: #ffffff;
-  border-radius: 56px 56px 56px 56px;
+  border-radius: 56px;
   .logo {
     position: absolute;
     height: 58px;
@@ -224,13 +215,13 @@ export default {
 .login-form {
   width: 50%;
   padding: 0 calc((50% - 360px) / 2);
-  .el-input {
-    height: 38px;
-    line-height: 38px;
-    input {
-      height: 38px;
-    }
-  }
+  // .el-input {
+  //   height: 38px;
+  //   line-height: 38px;
+  //   input {
+  //     height: 38px;
+  //   }
+  // }
   .desc {
     text-align: center;
     color: #aaa;
@@ -243,19 +234,16 @@ export default {
     margin-left: 2px;
   }
 }
-.login-code {
-  .login-code-img {
-    height: 32px;
-    cursor: pointer;
-    vertical-align: middle;
-  }
+.login-code-img {
+  height: 32px;
+  cursor: pointer;
+  vertical-align: middle;
 }
 
 .link {
   color: var(--color);
   font-size: 14px;
-  // padding-left: 25px;
-  margin-top: 20px;
+  margin-top: var(--card-margin);
   text-align: left;
   cursor: pointer;
 }
@@ -270,6 +258,6 @@ export default {
 }
 .login-img {
   padding: 20px;
-  width: 100%;
+  height: 100%;
 }
 </style>

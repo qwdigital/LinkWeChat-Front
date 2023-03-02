@@ -1,13 +1,51 @@
 html {
-  --color: #07c160; /* 主题色 */
+  --rgb: 7, 193, 96; /* 主题色rgb #07c160*/
+  --color: rgb(var(--rgb)); /* 主题色 #07c160*/
   --color-lighter: #90de45; /* 浅主题色 */
   --color-success: #07c160;
   --color-warning: #faad14;
   --color-danger: #eb5e12;
-  --border-radius: 8px; /* 圆角 */
+  --border-radius: 8px; /* 常规圆角 */
   --border-radius-small: 4px; /* 小圆角 */
   --border-radius-big: 16px; /* 大圆角 */
   --card-margin: 16px; /* 卡片间距 */
   --top-nav-heght: 64px; /* 顶部导航条高度 */
   --font-black: #1d2129; /* 通用字体黑色 */
+}
+
+/* 项目定制原子类 */
+.g-radius {
+  border-radius: 8px;
+}
+.g-radius-small {
+  border-radius: 16px;
+}
+.g-radius-big {
+  border-radius: 16px;
+}
+
+.g-margin {
+  margin: var(--card-margin);
+}
+.g-margin-t {
+  margin-top: var(--card-margin);
+}
+.g-margin-r {
+  margin-right: var(--card-margin);
+}
+.g-margin-b {
+  margin-bottom: var(--card-margin);
+}
+.g-margin-l {
+  margin-left: var(--card-margin);
+}
+
+.g-color {
+  color: var(--color);
+}
+
+/* 渐变背景 */
+.g-bg-lg {
+  background: linear-gradient(to left, var(--color) 0%, var(--color-lighter) 100%);
+  box-shadow: 0px 13px 16px 0px rgba(7, 168, 85, 0.2);
 }

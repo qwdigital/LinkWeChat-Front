@@ -142,7 +142,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <div v-if="currentActive === 2">
+    <div class="g-margin-t" v-if="currentActive === 2">
       <!-- <welcome-detail
         v-loading="loading"
         showBack

@@ -223,7 +223,7 @@
               >
                 <!-- 汇总的场景显示名字 -->
                 <template v-if="!userId">
-                  <div class="name oe bglg">{{ item.userName }}</div>
+                  <div class="name oe .g-bg-lg">{{ item.userName }}</div>
                 </template>
                 <template v-if="item.tagNames">
                   <el-tag v-for="(unit, unique) in item.tagNames.split(',')" :key="unique">{{ unit }}</el-tag>
@@ -240,7 +240,7 @@
               <div v-for="(item, index) of portrayalSum.personTags" :key="index" :class="['flex aic', index && 'mt20']">
                 <!-- 汇总的场景显示名字 -->
                 <template v-if="!userId">
-                  <div class="name oe bglg">{{ item.userName }}</div>
+                  <div class="name oe .g-bg-lg">{{ item.userName }}</div>
                 </template>
                 <template v-if="item.tagNames">
                   <el-tag v-for="(unit, unique) in item.tagNames.split(',')" :key="unique">{{ unit }}</el-tag>
@@ -347,7 +347,7 @@
               <div v-for="(item, index) of trackUsers" :key="index" :class="['flex aic', index && 'mt20']">
                 <!-- 汇总的场景显示名字 -->
                 <template v-if="!userId">
-                  <div class="name oe bglg">{{ item.userName }}</div>
+                  <div class="name oe .g-bg-lg">{{ item.userName }}</div>
                 </template>
                 <template v-if="item.trackState === 1">
                   <el-steps style="flex: auto;" :active="1">

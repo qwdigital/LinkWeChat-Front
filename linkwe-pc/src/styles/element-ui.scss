@@ -11,14 +11,15 @@
   line-height: 30px;
 }
 
-// 页面公用搜索
 .--card {
   padding: 20px 20px;
   border-radius: var(--border-radius-big);
   background: #fff;
 }
+// 页面公用搜索
 .top-search {
   @extend .--card;
+  padding: 10px 20px;
   margin-bottom: 16px;
   .el-form-item {
     margin: 0 !important;
@@ -252,13 +253,12 @@
 
 .el-form:not(.el-form--inline) {
   .el-form-item {
-    margin: 0 !important;
-    padding: 10px;
+    // margin: 0 !important;
+    // padding: 10px 0;
     transition: all 0.2s;
-    // &:hover {
-    //   background: #e5f1fc;
-    //   border-radius: 10px;
-    // }
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   // 统一页面表单输入框宽度 el-form-item__content

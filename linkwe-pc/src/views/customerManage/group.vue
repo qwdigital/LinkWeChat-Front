@@ -218,7 +218,7 @@ export default {
       <div class="g-card-title mid-action">
         <div class="">
           共
-          <span class="fc" style="color: var(--color)">{{ total }}</span>
+          <span class="g-color" style="color: var(--color)">{{ total }}</span>
           个客户群
         </div>
         <div>

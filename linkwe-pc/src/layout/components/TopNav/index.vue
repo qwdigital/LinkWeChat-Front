@@ -1,29 +1,25 @@
 <template>
+  <!-- <el-scrollbar class="nav-scrollbar"> -->
   <el-menu :default-active="activeMenu" mode="horizontal" @select="handleSelect">
-    <el-menu-item v-for="(item, index) in topMenus" :index="item.path" :key="index">{{ item.meta.title }}</el-menu-item>
+    <el-menu-item v-for="(item, index) in topMenus" :index="item.path" :key="index">
+      {{ item.meta.title }}
+    </el-menu-item>
   </el-menu>
+  <!-- </el-scrollbar> -->
 </template>
 
 <script>
-import { constantRoutes } from '@/router'
 import { isExternal } from '@/utils/validate'
 
 export default {
   data() {
     return {
       // name: '',
-      // 顶部栏初始数
-      visibleNumber: 5,
-      // 是否为首次加载
-      isFrist: false,
       // 当前激活菜单的
       currentIndex: '',
     }
   },
   computed: {
-    theme() {
-      return this.$store.state.settings.theme
-    },
     // 顶部显示菜单
     topMenus() {
       let topMenus = []
@@ -50,16 +46,8 @@ export default {
       return activePath
     },
   },
-  beforeMount() {
-    window.addEventListener('resize', this.setVisibleNumber)
-  },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.setVisibleNumber)
-  },
   mounted() {
-    this.setVisibleNumber()
     // this.setName()
-    // this.handleSelect(this.topMenus[0].path)
   },
   methods: {
     // setName() {
@@ -69,19 +57,12 @@ export default {
     //     }
     //   })
     // },
-    // 根据宽度计算设置显示栏数
-    setVisibleNumber() {
-      const width = document.body.getBoundingClientRect().width / 3
-      this.visibleNumber = parseInt(width / 85)
-    },
+
     // 菜单选择事件
     handleSelect(path, keyPath) {
-      this.currentIndex = path
-      let index = ''
       this.topMenus.map((dd, cc) => {
         if (path == dd.path) {
           // this.name = dd.meta.title
-          index = cc
         }
       })
       if (this.ishttp(path)) {
@@ -114,66 +95,74 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.bglg {
+<style lang="scss" scoped>
+.g-bg-lg {
   background: linear-gradient(to left, var(--color) 0%, var(--color-lighter) 100%);
   box-shadow: 0px 13px 16px 0px rgba(7, 168, 85, 0.2);
 }
-.el-menu {
+// .nav-scrollbar {
+//   width: calc(100% - 580px);
+//   ::v-deep.el-scrollbar__view {
+//     white-space: nowrap;
+//   }
+// }
+::v-deep.el-menu--horizontal {
   background-color: transparent !important;
-}
-.el-menu.el-menu--horizontal {
   border: none !important;
-}
-.el-menu--horizontal > .el-menu-item {
-  float: left;
-  height: 38px !important;
-  line-height: 38px !important;
-  color: #1d2129;
-  border-radius: 8px;
-  font-weight: bold;
-  margin: 0 4px !important;
-  border: 0;
-  &::after {
-    content: '';
-    display: block;
-    opacity: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
+  white-space: nowrap;
+  flex: 1 1 1200px;
+  & > .el-menu-item {
+    height: 38px !important;
+    line-height: 38px !important;
+    color: #1d2129;
     border-radius: 8px;
-    transition: opacity 0.3s;
-    @extend .bglg;
-  }
-  &:not(.is-disabled) {
-    &:hover,
-    &:focus {
-      &::after {
-        opacity: 1;
+    font-weight: bold;
+    margin: 0 4px !important;
+    border: 0;
+    padding: 0px min(1.1vw, 20px);
+    float: none;
+    display: inline-block;
+    &::after {
+      content: '';
+      display: block;
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      transition: opacity 0.3s;
+      @extend .g-bg-lg;
+    }
+    &:not(.is-disabled) {
+      &:hover,
+      &:focus {
+        &::after {
+          opacity: 1;
+        }
+        background-color: transparent;
+        color: #fff;
       }
-      background-color: transparent;
-      color: #fff;
     }
   }
-}
 
-.el-menu--horizontal > .el-menu-item.is-active,
-.el-menu--horizontal > .el-submenu.is-active .el-submenu__title {
-  @extend .bglg;
-  color: #fff;
-  border: 0;
-}
+  & > .el-menu-item.is-active,
+  & > .el-submenu.is-active .el-submenu__title {
+    @extend .g-bg-lg;
+    color: #fff;
+    border: 0;
+  }
 
-/* submenu item */
-.el-menu--horizontal > .el-submenu .el-submenu__title {
-  float: left;
-  height: 50px !important;
-  line-height: 50px !important;
-  color: #999093 !important;
-  padding: 0 5px !important;
-  margin: 0 10px !important;
+  // /* submenu item */
+  // & > .el-submenu .el-submenu__title {
+  //   float: left;
+  //   height: 50px !important;
+  //   line-height: 50px !important;
+  //   color: #999093 !important;
+  //   padding: 0 5px !important;
+  //   margin: 0 10px !important;
+  // }
 }
 </style>

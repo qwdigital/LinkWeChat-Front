@@ -11,7 +11,7 @@
             <span>{{ greetings }}，</span>
             <span>{{ $store.state.user.name }}</span>
           </div>
-          <div class="role toe bglg">{{ roleGroup }}管理员</div>
+          <div class="role toe .g-bg-lg">{{ roleGroup || '管理员' }}</div>
         </div>
 
         <div class="g-card data-view">

@@ -14,10 +14,8 @@
         </div>
       </template>
     </el-scrollbar> -->
-    <!-- <el-scrollbar class="nav-scrollar"> -->
-    <top-nav id="topmenu-container" />
-    <!-- </el-scrollbar> -->
-    <div class="right-menu mr20">
+    <top-nav />
+    <div class="right-menu mr10">
       <template v-if="device !== 'mobile'">
         <!-- <search id="header-search" class="right-menu-item" /> -->
         <!-- <el-popover placement="right" width="300" trigger="hover">
@@ -171,14 +169,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .topmenu-container {
-//   margin-left: auto;
-//   display: inline-block;
-//   position: absolute;
-//   right: 100px;
-//   top: 50%;
-//   transform: translateY(-50%);
-// }
 .hover-class {
   display: flex;
   flex-direction: column;
@@ -206,6 +196,7 @@ export default {
 .navbar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -218,8 +209,9 @@ export default {
   }
 
   .right-menu {
-    position: absolute;
-    right: 0;
+    // position: absolute;
+    // right: 0;
+    flex: none;
     background: #fff;
 
     &:focus {
@@ -228,7 +220,7 @@ export default {
 
     .right-menu-item {
       display: inline-block;
-      padding: 0 0 0 15px;
+      padding: 0 0 0 min(2vw - 20px, 15px);
       // color: #5a5e66;
       vertical-align: middle;
 
@@ -276,30 +268,30 @@ export default {
   }
 }
 
-.nav-scrollbar {
-  width: calc(100% - 450px);
-  ::v-deep.el-scrollbar__view {
-    white-space: nowrap;
-    line-height: 58px;
-  }
-  .nav {
-    display: inline-block;
-    margin: 0 20px;
-    flex: none;
-    position: relative;
-    cursor: pointer;
-    &.active::after {
-      content: '';
-      display: inline-block;
-      position: absolute;
-      bottom: 2px;
-      width: 42px;
-      height: 2px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-radius: 6px;
-      background: #fff;
-    }
-  }
-}
+// .nav-scrollbar {
+//   width: calc(100% - 450px);
+//   ::v-deep.el-scrollbar__view {
+//     white-space: nowrap;
+//     line-height: 58px;
+//   }
+//   .nav {
+//     display: inline-block;
+//     margin: 0 20px;
+//     flex: none;
+//     position: relative;
+//     cursor: pointer;
+//     &.active::after {
+//       content: '';
+//       display: inline-block;
+//       position: absolute;
+//       bottom: 2px;
+//       width: 42px;
+//       height: 2px;
+//       left: 50%;
+//       transform: translateX(-50%);
+//       border-radius: 6px;
+//       background: #fff;
+//     }
+//   }
+// }
 </style>

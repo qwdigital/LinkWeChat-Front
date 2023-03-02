@@ -28,7 +28,7 @@
           <!-- default-expand-all -->
           <div class="title mb20">
             <div class="title-name">组织列表</div>
-            <span @click="syncOrganization" class="fc cp">
+            <span @click="syncOrganization" class="g-color cp">
               同步
               <i class="el-icon-refresh"></i>
             </span>

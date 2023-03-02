@@ -41,10 +41,10 @@ export default {
 
 .logo-container {
   position: relative;
-  width: 330px;
-  overflow: hidden;
+  flex: 0 1 300px;
   display: flex;
   align-items: center;
+  padding-right: 10px;
   & .sidebar-logo-link {
     & .sidebar-logo {
       max-height: 44px;
