@@ -11,7 +11,7 @@
             <span>{{ greetings }}，</span>
             <span>{{ $store.state.user.name }}</span>
           </div>
-          <div class="role toe .g-bg-lg">{{ roleGroup || '管理员' }}</div>
+          <div class="role toe g-bg-lg">{{ roleGroup || '管理员' }}</div>
         </div>
 
         <div class="g-card data-view">
@@ -89,7 +89,7 @@
           <template v-if="this.dynamicsOutList.length">
             <div class="dynamics-item" v-for="(item, index) in dynamicsOutList" :key="index">
               <div class="info fcbw bfc-o">
-                <div>
+                <div class="toe">
                   <span :class="[item.operatorType === 1 ? 'customer' : 'staff', 'type lh1']">
                     {{ item.operatorType === 1 ? '客户' : '员工' }}
                   </span>
@@ -551,6 +551,7 @@ export default {
           background: none;
           font-size: 12px;
           border: 1px solid;
+          flex: none;
         }
         .operatorName {
           font-size: 16px;

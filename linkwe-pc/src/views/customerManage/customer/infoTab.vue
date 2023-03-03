@@ -1,211 +1,211 @@
 <script>
-  import { getSummary, getFollowUpRecord, getCustomerInfoByUserId, getRecordList, getFieldFn } from '@/api/customer'
-  import { dictTrackState } from '@/utils/dictionary'
-  import record from './record'
-  import RecordTable from './record-table'
-  export default {
-    name: '',
-    props: {
-      stageList: {
-        type: Array,
-        default: []
+import { getSummary, getFollowUpRecord, getCustomerInfoByUserId, getRecordList, getFieldFn } from '@/api/customer'
+import { dictTrackState } from '@/utils/dictionary'
+import record from './record'
+import RecordTable from './record-table'
+export default {
+  name: '',
+  props: {
+    stageList: {
+      type: Array,
+      default: [],
+    },
+    // 当前跟进人id
+    userId: {
+      type: String,
+      default: '',
+    },
+    trackUsers: {
+      type: Array,
+      default: [],
+    },
+  },
+  components: {
+    record,
+    RecordTable,
+  },
+  data() {
+    return {
+      portrayalSum: { companyTags: [], personTags: [], trackStates: [], trackUsers: [] }, // 客户画像汇总
+      trajectoryType: {
+        0: '全部',
+        1: '客户动态',
+        2: '员工动态',
+        3: '互动动态',
+        4: '商机阶段',
       },
-      // 当前跟进人id
-      userId: {
-        type: String,
-        default: ''
-      },
-      trackUsers: {
-        type: Array,
-        default: []
-      }
-    },
-    components: {
-      record,
-      RecordTable
-    },
-    data() {
-      return {
-        portrayalSum: { companyTags: [], personTags: [], trackStates: [], trackUsers: [] }, // 客户画像汇总
-        trajectoryType: {
-          0: '全部',
-          1: '客户动态',
-          2: '员工动态',
-          3: '互动动态',
-          4: '商机阶段'
-        },
-        recod: [],
-        active: '0',
-        openedTabs: ['0'],
-        openTrack: ['0'],
-        lastSyncTime: null,
-        dictTrackState,
-        fieldList: [],
-        stage: []
-      }
-    },
-    computed: {},
-    watch: {
-      stageList: {
-        immediate: true,
-        handler(val) {
-          if (val) {
-            this.stage = val
-          }
+      recod: [],
+      active: '0',
+      openedTabs: ['0'],
+      openTrack: ['0'],
+      lastSyncTime: null,
+      dictTrackState,
+      fieldList: [],
+      stage: [],
+    }
+  },
+  computed: {},
+  watch: {
+    stageList: {
+      immediate: true,
+      handler(val) {
+        if (val) {
+          this.stage = val
         }
-      }
-    },
-    created() {
-      this.userId ? this.getCustomerInfoByUserId() : this.getSummary()
-    },
-    mounted() {},
-    methods: {
-      setList(key) {
-        let order = 0
-        this.stage.forEach((dd, index) => {
-          if (dd.stageVal == key) {
-            order = index
-          }
-        })
-        return order + 1
       },
-      setActive(key) {
-        let arr = this.stage.map((dd) => {
-          return dd.stageState == 2
-        })
-        return arr.length + 2
-      },
-      /**
-       *客户画像汇总
-       * @param {*}
-       * externalUserid	是	当前客户id
-       */
-      getSummary() {
-        getSummary(this.$route.query).then(({ data }) => {
-          //          {
-          //   'companyTags':[{ //企业标签
-          //      'userName':'',//添加人
-          //      'tagsNames':'',//标签名多个标签使用逗号隔开
-          //      'tagIds':''//多个标签id使用逗号隔开
-          // }],
-          // 'personTags':[{ //个人标签
-          //      'userName':'',//添加人
-          //      'tagsNames':'',//标签名多个标签使用逗号隔开
-          //      'tagIds':''//多个标签id使用逗号隔开
-          // }],
-          // 'trackStates':[{
-          //       'userName':'',//跟进人
-          //       'trackStateList':[{ //跟进状态列表
-          //       'trackState':'',//跟进状态
-          //       'trackTime':''//跟进时间
-          // }]
-          // }]
-          // }
+    },
+  },
+  created() {
+    this.userId ? this.getCustomerInfoByUserId() : this.getSummary()
+  },
+  mounted() {},
+  methods: {
+    setList(key) {
+      let order = 0
+      this.stage.forEach((dd, index) => {
+        if (dd.stageVal == key) {
+          order = index
+        }
+      })
+      return order + 1
+    },
+    setActive(key) {
+      let arr = this.stage.map((dd) => {
+        return dd.stageState == 2
+      })
+      return arr.length + 2
+    },
+    /**
+     *客户画像汇总
+     * @param {*}
+     * externalUserid	是	当前客户id
+     */
+    getSummary() {
+      getSummary(this.$route.query).then(({ data }) => {
+        //          {
+        //   'companyTags':[{ //企业标签
+        //      'userName':'',//添加人
+        //      'tagsNames':'',//标签名多个标签使用逗号隔开
+        //      'tagIds':''//多个标签id使用逗号隔开
+        // }],
+        // 'personTags':[{ //个人标签
+        //      'userName':'',//添加人
+        //      'tagsNames':'',//标签名多个标签使用逗号隔开
+        //      'tagIds':''//多个标签id使用逗号隔开
+        // }],
+        // 'trackStates':[{
+        //       'userName':'',//跟进人
+        //       'trackStateList':[{ //跟进状态列表
+        //       'trackState':'',//跟进状态
+        //       'trackTime':''//跟进时间
+        // }]
+        // }]
+        // }
+        this.portrayalSum = data
+      })
+    },
+    /**
+     *客户画像单个跟进人
+     */
+    getCustomerInfoByUserId() {
+      getCustomerInfoByUserId({ externalUserid: this.$route.query.externalUserid, weUserId: this.userId }).then(
+        ({ data }) => {
           this.portrayalSum = data
-        })
-      },
-      /**
-       *客户画像单个跟进人
-       */
-      getCustomerInfoByUserId() {
-        getCustomerInfoByUserId({ externalUserid: this.$route.query.externalUserid, weUserId: this.userId }).then(
-          ({ data }) => {
-            this.portrayalSum = data
-            getFieldFn({ externalUserId: this.$route.query.externalUserid, weUserId: this.userId }).then((dd) => {
-              // this.fieldList = dd.data
-              this.setData(dd.data)
-            })
-          }
-        )
-      },
-      setData(data) {
-        let arr = data
-        arr.forEach((dd, index) => {
-          if (dd.isDefault == 0) {
-            let obj = this.getEditValue(dd)
-            let ff = { ...dd, ...obj }
-            arr[index] = ff
-          }
-        })
-        this.fieldList = arr
-      },
-      getEditValue(data) {
-        let obj = {
-          value: data.type !== 3 ? '' : data.typeSub == 1 ? '' : []
+          getFieldFn({ externalUserId: this.$route.query.externalUserid, weUserId: this.userId }).then((dd) => {
+            // this.fieldList = dd.data
+            this.setData(dd.data)
+          })
+        },
+      )
+    },
+    setData(data) {
+      let arr = data
+      arr.forEach((dd, index) => {
+        if (dd.isDefault == 0) {
+          let obj = this.getEditValue(dd)
+          let ff = { ...dd, ...obj }
+          arr[index] = ff
         }
-        this.portrayalSum.weCustomerInfoExpands &&
-          this.portrayalSum.weCustomerInfoExpands.forEach((dd, index) => {
-            if (dd.fieldTemplateId === data.id) {
-              // dd.id
-              if (dd.fieldCustomerInfoVal && dd.fieldCustomerInfoVal.length) {
-                if (data.type !== 3) {
-                  obj.value = dd.fieldCustomerInfoVal[0].infoVal
-                } else {
-                  obj.value = dd.fieldCustomerInfoVal.map((item) => {
-                    return item.infoVal
-                  })
-                  if (data.typeSub == 1) {
-                    obj.value = obj.value[0]
-                  }
+      })
+      this.fieldList = arr
+    },
+    getEditValue(data) {
+      let obj = {
+        value: data.type !== 3 ? '' : data.typeSub == 1 ? '' : [],
+      }
+      this.portrayalSum.weCustomerInfoExpands &&
+        this.portrayalSum.weCustomerInfoExpands.forEach((dd, index) => {
+          if (dd.fieldTemplateId === data.id) {
+            // dd.id
+            if (dd.fieldCustomerInfoVal && dd.fieldCustomerInfoVal.length) {
+              if (data.type !== 3) {
+                obj.value = dd.fieldCustomerInfoVal[0].infoVal
+              } else {
+                obj.value = dd.fieldCustomerInfoVal.map((item) => {
+                  return item.infoVal
+                })
+                if (data.typeSub == 1) {
+                  obj.value = obj.value[0]
                 }
               }
             }
-          })
-        return obj
-      },
-      changeTab(tab) {
-        this.openedTabs.includes(tab.index) || this.openedTabs.push(tab.index)
-      },
-      changeTrack(type) {
-        this.openTrack.includes(type) || this.openTrack.push(type)
-        this.active = type
-      },
-      sync() {
-        this.$refs['record'][this.active].sync()
-      },
-      // 根据生日计算年龄
-      jsGetAge(strBirthday) {
-        if (strBirthday === null) {
-          return '无'
-        }
-        let returnAge
-        let strBirthdayArr = strBirthday.split('-')
-        let birthYear = strBirthdayArr[0]
-        let birthMonth = strBirthdayArr[1]
-        let birthDay = strBirthdayArr[2]
-        let d = new Date()
-        let nowYear = d.getFullYear()
-        let nowMonth = d.getMonth() + 1
-        let nowDay = d.getDate()
+          }
+        })
+      return obj
+    },
+    changeTab(tab) {
+      this.openedTabs.includes(tab.index) || this.openedTabs.push(tab.index)
+    },
+    changeTrack(type) {
+      this.openTrack.includes(type) || this.openTrack.push(type)
+      this.active = type
+    },
+    sync() {
+      this.$refs['record'][this.active].sync()
+    },
+    // 根据生日计算年龄
+    jsGetAge(strBirthday) {
+      if (strBirthday === null) {
+        return '无'
+      }
+      let returnAge
+      let strBirthdayArr = strBirthday.split('-')
+      let birthYear = strBirthdayArr[0]
+      let birthMonth = strBirthdayArr[1]
+      let birthDay = strBirthdayArr[2]
+      let d = new Date()
+      let nowYear = d.getFullYear()
+      let nowMonth = d.getMonth() + 1
+      let nowDay = d.getDate()
 
-        if (nowYear == birthYear) {
-          returnAge = 0 //同年 则为0岁
-        } else {
-          let ageDiff = nowYear - birthYear //年之差
-          if (ageDiff > 0) {
-            if (nowMonth == birthMonth) {
-              let dayDiff = nowDay - birthDay //日之差
-              if (dayDiff < 0) {
-                returnAge = ageDiff - 1
-              } else {
-                returnAge = ageDiff
-              }
+      if (nowYear == birthYear) {
+        returnAge = 0 //同年 则为0岁
+      } else {
+        let ageDiff = nowYear - birthYear //年之差
+        if (ageDiff > 0) {
+          if (nowMonth == birthMonth) {
+            let dayDiff = nowDay - birthDay //日之差
+            if (dayDiff < 0) {
+              returnAge = ageDiff - 1
             } else {
-              let monthDiff = nowMonth - birthMonth //月之差
-              if (monthDiff < 0) {
-                returnAge = ageDiff - 1
-              } else {
-                returnAge = ageDiff
-              }
+              returnAge = ageDiff
             }
           } else {
-            returnAge = -1 //返回-1 表示出生日期输入错误 晚于今天
+            let monthDiff = nowMonth - birthMonth //月之差
+            if (monthDiff < 0) {
+              returnAge = ageDiff - 1
+            } else {
+              returnAge = ageDiff
+            }
           }
+        } else {
+          returnAge = -1 //返回-1 表示出生日期输入错误 晚于今天
         }
-        return returnAge //返回周岁年龄
       }
-    }
-  }
+      return returnAge //返回周岁年龄
+    },
+  },
+}
 </script>
 
 <template>
@@ -219,11 +219,10 @@
               <div
                 v-for="(item, index) of portrayalSum.companyTags"
                 :key="index"
-                :class="['flex ait', index && 'mt20']"
-              >
+                :class="['flex ait', index && 'mt20']">
                 <!-- 汇总的场景显示名字 -->
                 <template v-if="!userId">
-                  <div class="name oe .g-bg-lg">{{ item.userName }}</div>
+                  <div class="name oe g-bg-lg">{{ item.userName }}</div>
                 </template>
                 <template v-if="item.tagNames">
                   <el-tag v-for="(unit, unique) in item.tagNames.split(',')" :key="unique">{{ unit }}</el-tag>
@@ -240,7 +239,7 @@
               <div v-for="(item, index) of portrayalSum.personTags" :key="index" :class="['flex aic', index && 'mt20']">
                 <!-- 汇总的场景显示名字 -->
                 <template v-if="!userId">
-                  <div class="name oe .g-bg-lg">{{ item.userName }}</div>
+                  <div class="name oe g-bg-lg">{{ item.userName }}</div>
                 </template>
                 <template v-if="item.tagNames">
                   <el-tag v-for="(unit, unique) in item.tagNames.split(',')" :key="unique">{{ unit }}</el-tag>
@@ -265,7 +264,7 @@
             <el-card class="mb10" shadow="never">
               <div slot="header" class="card-title">详细资料</div>
               <el-row :gutter="20" type="type" class="pad10" justify="space-between">
-                <div style="max-height: 450px; overflow: hidden auto;">
+                <div style="max-height: 450px; overflow: hidden auto">
                   <template v-for="(item, index) in fieldList">
                     <el-col :span="12" v-if="item.isDefault == 1" :key="index">
                       <el-row class="baseinfo-row" v-if="item.labelVal == 'remarkMobiles'">
@@ -347,15 +346,15 @@
               <div v-for="(item, index) of trackUsers" :key="index" :class="['flex aic', index && 'mt20']">
                 <!-- 汇总的场景显示名字 -->
                 <template v-if="!userId">
-                  <div class="name oe .g-bg-lg">{{ item.userName }}</div>
+                  <div class="name oe g-bg-lg">{{ item.userName }}</div>
                 </template>
                 <template v-if="item.trackState === 1">
-                  <el-steps style="flex: auto;" :active="1">
+                  <el-steps style="flex: auto" :active="1">
                     <el-step title="待跟进"></el-step>
                   </el-steps>
                 </template>
                 <template v-else-if="item.trackState === 3 || item.trackState === 4 || item.trackState === 5">
-                  <el-steps style="flex: auto;" :active="setActive(item.trackState)">
+                  <el-steps style="flex: auto" :active="setActive(item.trackState)">
                     <el-step title="待跟进"></el-step>
                     <template v-for="(data, or) in stage">
                       <el-step :title="data.stageKey" :key="or" v-if="data.stageState == 2"></el-step>
@@ -366,13 +365,13 @@
                   </el-steps>
                 </template>
                 <template v-else-if="item.trackState">
-                  <el-steps style="flex: auto;" :active="setList(item.trackState)">
+                  <el-steps style="flex: auto" :active="setList(item.trackState)">
                     <template v-for="(data, or) in stage">
                       <el-step :title="data.stageKey" :key="or" v-if="setList(item.trackState) <= or + 1"></el-step>
                     </template>
                   </el-steps>
                 </template>
-                  <!-- </el-steps> -->
+                <!-- </el-steps> -->
                 <!-- </template> -->
                 <div v-else class="g-tip-color ac">暂无数据</div>
               </div>
@@ -390,8 +389,7 @@
                 <record-table
                   :stageList="stage"
                   v-if="openedTabs.includes(index + '')"
-                  :userId="item.trackUserId"
-                ></record-table>
+                  :userId="item.trackUserId"></record-table>
               </el-tab-pane>
             </el-tabs>
             <div v-else class="g-tip-color ac">暂无数据</div>
@@ -411,8 +409,7 @@
               v-for="(value, type) of trajectoryType"
               :key="type"
               :class="['track-tab', type === active && 'active']"
-              @click="changeTrack(type)"
-            >
+              @click="changeTrack(type)">
               {{ value }}
             </div>
           </div>
@@ -424,8 +421,7 @@
               :userId="userId"
               :userIdAll="trackUsers.map((e) => e.trackUserId).join()"
               :lastSyncTime.sync="lastSyncTime"
-              :trajectoryType="item == 0 ? null : item"
-            ></record>
+              :trajectoryType="item == 0 ? null : item"></record>
           </template>
         </el-card>
       </el-col>
@@ -434,72 +430,72 @@
 </template>
 
 <style lang="scss" scoped>
-  .name {
-    width: 65px;
-    flex: none;
-    text-align: center;
-    line-height: 24px;
-    padding: 0 5px;
-    margin-right: 10px;
-    color: #fff;
-    border-radius: var(--border-radius-small);
+.name {
+  width: 65px;
+  flex: none;
+  text-align: center;
+  line-height: 24px;
+  padding: 0 5px;
+  margin-right: 10px;
+  color: #fff;
+  border-radius: var(--border-radius-small);
+}
+.el-card {
+  .el-tag {
+    margin-bottom: 5px;
   }
   .el-card {
     .el-tag {
       margin-bottom: 5px;
     }
-    .el-card {
-      .el-tag {
-        margin-bottom: 5px;
+  }
+  .track-tab-wrap {
+    .track-tab {
+      background: #ddd;
+      border-radius: 50px;
+      padding: 5px 10px;
+      cursor: pointer;
+      & + .track-tab {
+        margin-left: 10px;
       }
-    }
-    .track-tab-wrap {
-      .track-tab {
-        background: #ddd;
-        border-radius: 50px;
-        padding: 5px 10px;
-        cursor: pointer;
-        & + .track-tab {
-          margin-left: 10px;
-        }
-        &.active {
-          background: var(--color);
-          color: #fff;
-        }
-      }
-    }
-    .btn-sync {
-      position: relative;
-      float: right;
-      top: -11px;
-    }
-    .g-tip-color {
-      flex: auto;
-    }
-
-    .baseinfo-row {
-      position: relative;
-      padding-left: 10px;
-      line-height: 50px;
-      .el-col {
-        box-shadow: 0px 1px 0px 0px #f1f1f1;
-        &:first-child {
-          color: #999;
-        }
-      }
-      &::before {
-        content: '';
-        position: absolute;
-        top: 22.5px;
-        left: 0;
-        width: 5px;
-        height: 5px;
-        background: #76abf4;
-        border-radius: 50%;
-      }
-      > .el-col:last-child {
-        text-align: right;
+      &.active {
+        background: var(--color);
+        color: #fff;
       }
     }
   }
+  .btn-sync {
+    position: relative;
+    float: right;
+    top: -11px;
+  }
+  .g-tip-color {
+    flex: auto;
+  }
+
+  .baseinfo-row {
+    position: relative;
+    padding-left: 10px;
+    line-height: 50px;
+    .el-col {
+      box-shadow: 0px 1px 0px 0px #f1f1f1;
+      &:first-child {
+        color: #999;
+      }
+    }
+    &::before {
+      content: '';
+      position: absolute;
+      top: 22.5px;
+      left: 0;
+      width: 5px;
+      height: 5px;
+      background: #76abf4;
+      border-radius: 50%;
+    }
+    > .el-col:last-child {
+      text-align: right;
+    }
+  }
+}
 </style>
