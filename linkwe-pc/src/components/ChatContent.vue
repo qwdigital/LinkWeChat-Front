@@ -172,6 +172,19 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+.angle {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  transform: rotate(45deg);
+  border: 1px solid #e1edfc;
+  z-index: 888;
+  box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
+}
 .message {
   max-width: 50%;
   background-color: #fff;
@@ -179,57 +192,28 @@ export default {
   padding: 10px;
   line-height: 14px;
   border-radius: 5px;
-  background: #fff;
   box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
   border: 1px solid #e1edfc;
   color: #333;
   display: inline-block;
   word-break: break-all;
+}
+
+.message {
   margin-left: 10px;
   &::before {
-    content: '';
-    display: inline-block;
-    position: absolute;
+    @extend .angle;
     left: -5px;
-    box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
-    border-width: 5px;
-    border-left: 0;
-    width: 0;
-    border-style: solid;
-    border-color: transparent;
-    border-right-color: #fff;
-    top: 8px;
-    z-index: 888;
+    border-width: 0 0 1px 1px;
   }
 }
 .message-right {
-  max-width: 50%;
-  position: relative;
-  background-color: #fff;
-  padding: 10px;
-  line-height: 14px;
-  border-radius: 5px;
-  // background: var(--color);
-  box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
-  border: 1px solid #e1edfc;
-  color: #333;
-  display: inline-block;
-  word-break: break-all;
+  @extend .message;
   margin-right: 10px;
   &::before {
-    content: '';
-    display: inline-block;
-    position: absolute;
+    @extend .angle;
     right: -5px;
-    box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
-    border-width: 5px;
-    border-right: 0;
-    width: 0;
-    border-style: solid;
-    border-color: transparent;
-    border-left-color: #fff;
-    top: 8px;
-    z-index: 888;
+    border-width: 1px 1px 0 0;
   }
 }
 .msgtypefile {

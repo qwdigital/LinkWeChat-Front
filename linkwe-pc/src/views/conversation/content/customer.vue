@@ -6,13 +6,11 @@
           <div class="name pd15">客户列表（{{ customerTotal }}）</div>
           <el-input
             class="mb10"
-            placeholder="搜索客户"
+            placeholder="搜索客户名称"
             clearable
             prefix-icon="el-icon-search"
             v-model="customerQuery.name"
-            @keyup.enter.native="getCustomerList(1)"
-          >
-          </el-input>
+            @keyup.enter.native="getCustomerList(1)"></el-input>
           <div v-loading="customerLoading">
             <ul v-if="init" v-infinite-scroll="getCustomerList" infinite-scroll-distance="1" class="customer-wrap">
               <template v-if="customerList.length">
@@ -25,17 +23,16 @@
                   :class="{ active: index == personIndex }"
                   :gutter="20"
                   type="flex"
-                  align="middle"
-                >
+                  align="middle">
                   <el-col :span="4">
                     <img v-if="item.avatar" :src="item.avatar" alt="头像" />
                   </el-col>
                   <el-col :span="10" v-if="item" class="toe">
-                    <span style="line-height: 40px;">{{ item.customerName }}</span>
+                    <span style="line-height: 40px">{{ item.customerName }}</span>
                   </el-col>
                   <el-col :span="10" class="ar">
-                    <span :style="{ color: item.customerType === 1 ? '#4bde03' : '#f9a90b' }"
-                      >{{ { 1: '@微信', 2: '@企业微信' }[item.customerType] }}
+                    <span :style="{ color: item.customerType === 1 ? '#4bde03' : '#f9a90b' }">
+                      {{ { 1: '@微信', 2: '@企业微信' }[item.customerType] }}
                     </span>
                     <i :class="['el-icon-s-custom', { 1: 'man', 2: 'woman' }[item.gender]]"></i>
                   </el-col>
@@ -58,17 +55,21 @@
               placeholder="搜索联系人"
               prefix-icon="el-icon-search"
               v-model="chatContent"
-              @keyup.enter.native="getChatList()"
-            >
-            </el-input>
+              @keyup.enter.native="getChatList()"></el-input>
             <el-tabs v-model="activeName" @tab-click="getChatList()">
               <el-tab-pane label="单聊" name="0">
-                <userList v-if="activeName == 0" :personList="personList" :loading="loading" @chatFn="chatFn">
-                </userList>
+                <userList
+                  v-if="activeName == 0"
+                  :personList="personList"
+                  :loading="loading"
+                  @chatFn="chatFn"></userList>
               </el-tab-pane>
               <el-tab-pane label="群聊" name="2">
-                <grouplist v-if="activeName == 2" :personList="personList" :loading="loading" @groupFn="groupFn">
-                </grouplist>
+                <grouplist
+                  v-if="activeName == 2"
+                  :personList="personList"
+                  :loading="loading"
+                  @groupFn="groupFn"></grouplist>
               </el-tab-pane>
             </el-tabs>
           </template>
@@ -85,200 +86,200 @@
   </div>
 </template>
 <script>
-  import chatListClass from './component/chatListClass.vue'
-  import userList from './component/userList.vue'
-  import grouplist from './component/groupList.vue'
-  import * as api from '@/api/conversation/content.js'
-  import * as apiCustomer from '@/api/customer/index'
-  export default {
-    components: {
-      userList,
-      grouplist,
-      chatListClass
-    },
-    data() {
-      return {
-        init: true,
-        customerLoading: false,
-        customerQuery: {
-          pageNum: 1,
-          pageSize: 10,
-          name: ''
-        },
-        customerList: [],
-        customerTotal: 0,
+import chatListClass from './component/chatListClass.vue'
+import userList from './component/userList.vue'
+import grouplist from './component/groupList.vue'
+import * as api from '@/api/conversation/content.js'
+import * as apiCustomer from '@/api/customer/index'
+export default {
+  components: {
+    userList,
+    grouplist,
+    chatListClass,
+  },
+  data() {
+    return {
+      init: true,
+      customerLoading: false,
+      customerQuery: {
+        pageNum: 1,
+        pageSize: 10,
+        name: '',
+      },
+      customerList: [],
+      customerTotal: 0,
 
-        talkName: '',
-        chatContent: '',
-        personIndex: undefined,
-        activeName: '0',
-        personList: [],
-        loading: false,
-        fromId: '',
+      talkName: '',
+      chatContent: '',
+      personIndex: undefined,
+      activeName: '0',
+      personList: [],
+      loading: false,
+      fromId: '',
 
-        queryChat: {}
+      queryChat: {},
+    }
+  },
+  created() {
+    // this.customerList()
+  },
+  methods: {
+    chatFn(data) {
+      this.queryChat = {
+        fromId: this.fromId,
+        receiveName: data.name,
+        toList: data.receiver,
       }
     },
-    created() {
-      // this.customerList()
+    groupFn(data) {
+      console.log(data.name)
+      this.queryChat = {
+        // fromId: this.fromId,
+        receiveName: data.name,
+        roomId: data.chatId,
+      }
     },
-    methods: {
-      chatFn(data) {
-        this.queryChat = {
-          fromId: this.fromId,
-          receiveName: data.name,
-          toList: data.receiver
+    choiceCustomer(data, index) {
+      this.personIndex = index
+      this.talkName = data.customerName
+      this.fromId = data.externalUserid
+      this.getChatList()
+    },
+    getChatList(flag) {
+      if (!this.fromId) {
+        return
+      }
+      if (flag) {
+        this.loading = true
+      }
+      this.personList = []
+      if (this.activeName == '0') {
+        api
+          .selectAloneChatList({
+            fromId: this.fromId,
+            contact: this.chatContent,
+          })
+          .then(({ data }) => {
+            this.loading = false
+            this.personList = data
+          })
+          .catch((err) => {
+            this.loading = false
+          })
+      } else {
+        api
+          .getGroupChatList(this.fromId)
+          .then(({ data }) => {
+            this.loading = false
+            this.personList = data
+          })
+          .catch((err) => {
+            this.loading = false
+          })
+      }
+    },
+    getCustomerList(page) {
+      if (!this.customerLoading) {
+        if (page) {
+          this.init = false
+          this.customerQuery.pageNum = page
+          this.customerList = []
+          this.customerTotal = 0
         }
-      },
-      groupFn(data) {
-        console.log(data.name)
-        this.queryChat = {
-          // fromId: this.fromId,
-          receiveName: data.name,
-          roomId: data.chatId
-        }
-      },
-      choiceCustomer(data, index) {
-        this.personIndex = index
-        this.talkName = data.customerName
-        this.fromId = data.externalUserid
-        this.getChatList()
-      },
-      getChatList(flag) {
-        if (!this.fromId) {
-          return
-        }
-        if (flag) {
-          this.loading = true
-        }
-        this.personList = []
-        if (this.activeName == '0') {
-          api
-            .selectAloneChatList({
-              fromId: this.fromId,
-              contact: this.chatContent
-            })
-            .then(({ data }) => {
-              this.loading = false
-              this.personList = data
-            })
-            .catch((err) => {
-              this.loading = false
-            })
+        if (this.customerList.length < this.customerTotal) {
+          this.customerLoading = true
+          this.customerQuery.pageNum++
+          apiCustomer.getListNew(this.customerQuery).then((res) => {
+            this.customerList.push(...res.rows)
+            this.customerTotal = ~~res.total
+            this.customerLoading = false
+          })
         } else {
-          api
-            .getGroupChatList(this.fromId)
-            .then(({ data }) => {
-              this.loading = false
-              this.personList = data
-            })
-            .catch((err) => {
-              this.loading = false
-            })
-        }
-      },
-      getCustomerList(page) {
-        if (!this.customerLoading) {
-          if (page) {
-            this.init = false
-            this.customerQuery.pageNum = page
-            this.customerList = []
-            this.customerTotal = 0
-          }
-          if (this.customerList.length < this.customerTotal) {
+          if (this.customerTotal === 0) {
             this.customerLoading = true
-            this.customerQuery.pageNum++
+            this.customerQuery.pageNum = 1
             apiCustomer.getListNew(this.customerQuery).then((res) => {
-              this.customerList.push(...res.rows)
+              this.init = true
+              this.customerList = res.rows
               this.customerTotal = ~~res.total
               this.customerLoading = false
             })
-          } else {
-            if (this.customerTotal === 0) {
-              this.customerLoading = true
-              this.customerQuery.pageNum = 1
-              apiCustomer.getListNew(this.customerQuery).then((res) => {
-                this.init = true
-                this.customerList = res.rows
-                this.customerTotal = ~~res.total
-                this.customerLoading = false
-              })
-            }
           }
         }
       }
-    }
-  }
+    },
+  },
+}
 </script>
 <style lang="scss" scoped>
-  ::v-deep.el-tabs__nav-scroll {
-    padding-left: 15px;
+::v-deep.el-tabs__nav-scroll {
+  padding-left: 15px;
+}
+
+.customer {
+  // background: #f6f6f9;
+  text-align: center;
+
+  .el-tabs {
+    background: #fff;
+  }
+  ::v-deep .el-tabs__header {
+    margin: 0;
   }
 
-  .customer {
-    // background: #f6f6f9;
+  .name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  .ct_box {
+    height: calc(100vh - 197px);
+    border-radius: 5px;
+    background: white;
+    padding: 20px;
+  }
+
+  .customer-wrap {
+    position: relative;
+    height: calc(100vh - 320px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    color: #999;
     text-align: center;
+    .customer-li {
+      padding: 10px;
+      text-align: left;
+      cursor: pointer;
+      border-bottom: 1px solid #efefef;
 
-    .el-tabs {
-      background: #fff;
-    }
-    ::v-deep .el-tabs__header {
-      margin: 0;
-    }
+      &:hover {
+        background: #efefef;
+      }
 
-    .name {
-      font-size: 18px;
-      font-weight: 600;
-      color: #666;
-      margin-bottom: 20px;
-    }
-    .ct_box {
-      height: calc(100vh - 197px);
-      border-radius: 5px;
-      background: white;
-      padding: 20px;
-    }
-
-    .customer-wrap {
-      position: relative;
-      height: calc(100vh - 320px);
-      overflow-y: auto;
-      overflow-x: hidden;
-      color: #999;
-      text-align: center;
-      .customer-li {
-        padding: 10px;
-        text-align: left;
-        cursor: pointer;
-        border-bottom: 1px solid #efefef;
-
-        &:hover {
-          background: #efefef;
-        }
-
-        img {
-          width: 40px;
-        }
-        &.active {
-          background: #ebf4fc;
-        }
+      img {
+        width: 40px;
+      }
+      &.active {
+        background: #ebf4fc;
       }
     }
   }
+}
 
-  .el-icon-s-custom {
-    font-size: 16px;
-    margin-left: 4px;
-    color: #999;
-    &.man {
-      color: #13a2e8;
-    }
-    &.woman {
-      color: #f753b2;
-    }
+.el-icon-s-custom {
+  font-size: 16px;
+  margin-left: 4px;
+  color: #999;
+  &.man {
+    color: #13a2e8;
   }
+  &.woman {
+    color: #f753b2;
+  }
+}
 
-  .userList {
-    height: calc(100vh - 328px);
-  }
+.userList {
+  height: calc(100vh - 328px);
+}
 </style>

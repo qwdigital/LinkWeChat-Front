@@ -2,14 +2,10 @@
   <div>
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" class="top-search">
       <el-form-item label="菜单名称" prop="menuName">
-        <el-input
-          v-model="queryParams.menuName"
-          placeholder="请输入菜单名称"
-          clearable
-          @keyup.enter.native="handleQuery" />
+        <el-input v-model="queryParams.menuName" placeholder="请输入" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="菜单状态" clearable>
+      <el-form-item label="菜单状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请选择" clearable>
           <el-option
             v-for="dict in statusOptions"
             :key="dict.dictValue"
@@ -35,11 +31,11 @@
         row-key="menuId"
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
         <el-table-column prop="menuName" label="菜单名称" :show-overflow-tooltip="true" width="160"></el-table-column>
-        <el-table-column prop="icon" label="图标" align="center" width="100">
+        <!-- <el-table-column prop="icon" label="图标" align="center" width="100">
           <template slot-scope="scope">
             <svg-icon :icon-class="scope.row.icon" />
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column prop="orderNum" label="排序" width="60"></el-table-column>
         <el-table-column prop="perms" label="权限标识" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column prop="component" label="组件路径" :show-overflow-tooltip="true"></el-table-column>
@@ -86,7 +82,13 @@
             <el-form-item v-if="form.menuType != 'F'" label="菜单图标">
               <el-popover placement="bottom-start" width="460" trigger="click" @show="$refs['iconSelect'].reset()">
                 <IconSelect ref="iconSelect" @selected="selected" />
-                <el-input slot="reference" v-model="form.icon" placeholder="点击选择图标" readonly>
+                <el-select
+                  slot="reference"
+                  v-model="form.icon"
+                  remote
+                  placeholder="点击选择图标"
+                  clearable
+                  @clear="form.icon = '#'">
                   <svg-icon
                     v-if="form.icon"
                     slot="prefix"
@@ -94,7 +96,7 @@
                     class="el-input__icon"
                     style="height: 32px; width: 16px" />
                   <i v-else slot="prefix" class="el-icon-search el-input__icon" />
-                </el-input>
+                </el-select>
               </el-popover>
             </el-form-item>
           </el-col>
@@ -300,7 +302,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd(row) {
       this.reset()
-      this.getTreeselect()
+      // this.getTreeselect()
       if (row != null && row.menuId) {
         this.form.parentId = row.menuId
       } else {
@@ -312,7 +314,7 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset()
-      this.getTreeselect()
+      // this.getTreeselect()
       getMenu(row.menuId).then((response) => {
         this.form = response.data
         this.open = true

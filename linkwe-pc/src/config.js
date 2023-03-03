@@ -76,7 +76,7 @@ window.lwConfig = Object.assign(init, env, common, lwConfig, project)
 //     let target = e.target
 //     let src = target.attributes.getNamedItem('src').value
 //     if (target.tagName.toUpperCase() === 'IMG' && src && !src.includes('http')) {
-//       target.src = window.window.lwConfig.BASE_API + src
+//       target.src = window.lwConfig.BASE_API + src
 //     }
 //   },
 //   true

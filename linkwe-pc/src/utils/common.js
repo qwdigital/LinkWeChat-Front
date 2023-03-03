@@ -2,7 +2,7 @@
  * 通用js方法封装处理，挂载到 Vue.prototype
  */
 
-const baseURL = window.lwConfig.services.system
+const baseURL = window.lwConfig.BASE_API
 import { getToken } from '@/utils/auth'
 import axios from 'axios'
 
