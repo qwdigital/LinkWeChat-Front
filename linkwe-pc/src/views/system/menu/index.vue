@@ -162,7 +162,7 @@
 </template>
 
 <script>
-import { listMenu, getMenu, delMenu, addMenu, updateMenu } from '@/api/system/menu'
+import { listMenu, getMenu, delMenu, addMenu, updateMenu, getDicts } from '@/api/system/menu'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import IconSelect from '@/components/IconSelect'
@@ -214,10 +214,10 @@ export default {
   },
   created() {
     this.getList()
-    // this.getDicts('sys_show_hide').then((response) => {
+    // getDicts('sys_show_hide').then((response) => {
     //   this.visibleOptions = response.data
     // })
-    this.getDicts('sys_normal_disable').then((response) => {
+    getDicts('sys_normal_disable').then((response) => {
       this.statusOptions = response.data
     })
   },

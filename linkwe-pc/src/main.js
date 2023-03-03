@@ -38,6 +38,7 @@ Vue.component('PhoneTemplate', () => import('@/components/PhoneTemplate'))
 Vue.component('CardGroupIndex', () => import('@/components/CardGroupIndex'))
 // 带 插入 表情/客户昵称 等扩展工具栏的文本内容框
 Vue.component('TextareaExtend', () => import('@/components/TextareaExtend'))
+
 // 全局方法挂载
 import ClipboardJS from 'clipboard'
 // class ClipboardJS extends clipboard {
