@@ -97,7 +97,7 @@ export default {
 
 <style lang="scss" scoped>
 .g-bg-lg {
-  background: linear-gradient(to left, var(--color) 0%, var(--color-lighter) 100%);
+  background: linear-gradient(to left, var(--color) 0%, var(--color-sub) 100%);
   box-shadow: 0px 13px 16px 0px rgba(7, 168, 85, 0.2);
 }
 // .nav-scrollbar {

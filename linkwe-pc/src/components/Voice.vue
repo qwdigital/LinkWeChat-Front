@@ -5,12 +5,12 @@ export default {
   props: {
     amrUrl: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   data() {
     return {
-      actived: false
+      actived: false,
       // dialogVisible: false,
       // audioSrc: []
     }
@@ -32,19 +32,17 @@ export default {
         }
         this.__proto__.$playRec = new BenzAMRRecorder()
         this.__proto__.$playRecSymbole = this.amrUrl
-        this.$playRec
-          .initWithUrl(this.amrUrl)
-          .then(() => {
-            this.actived = true
-            this.$playRec.play()
-            this.$playRec.onEnded(() => {
-              this.actived = false
-            })
-            console.log('amr 时长：' + this.$playRec.getDuration())
+        this.$playRec.initWithUrl(this.amrUrl).then(() => {
+          this.actived = true
+          this.$playRec.play()
+          this.$playRec.onEnded(() => {
+            this.actived = false
           })
-          // .catch((e) => {
-          //   this.$message.error('播放录音失败，或文件损坏')
-          // })
+          console.log('amr 时长：' + this.$playRec.getDuration())
+        })
+        // .catch((e) => {
+        //   this.$message.error('播放录音失败，或文件损坏')
+        // })
       }
       // this.audioSrc = [JSON.parse(this.message.contact)[type]]
     },
@@ -57,7 +55,7 @@ export default {
           return true
         }
       }
-    }
+    },
     // close() {
     //   this.dialogVisible = false
     //   const mp3 = this.$refs.AudioPlayer
@@ -66,7 +64,7 @@ export default {
     // onBeforePlay(next) {
     //   next() // 开始播放
     // }
-  }
+  },
 }
 </script>
 
@@ -74,9 +72,8 @@ export default {
   <div>
     <i
       :class="['el-icon-microphone', actived && 'actived']"
-      style=" font-size: 40px; color: #199ed8;"
-      @click.stop="play('attachment')"
-    ></i>
+      style="font-size: 40px; color: var(--color)"
+      @click.stop="play('attachment')"></i>
 
     <!-- <AudioPlayer
           :audio-list="audioSrc"

@@ -2,12 +2,12 @@
 import { getListNew, exportCustomer, lossRemind, getLossRemindStatus } from '@/api/customer'
 // import { getList as getListTag } from '@/api/customer/tag'
 // import { getList as getListOrganization } from '@/api/organization'
-import SelectUser from '@/components/SelectUser'
+
 import SelectTag from '@/components/SelectTag'
 
 export default {
   name: 'LossRemind',
-  components: { SelectUser, SelectTag },
+  components: { SelectTag },
   props: {},
   data() {
     return {

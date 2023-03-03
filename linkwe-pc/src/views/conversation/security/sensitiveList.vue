@@ -80,12 +80,11 @@
 </template>
 <script>
 import * as sensitiveApis from '@/api/conversation/security'
-import SelectUser from '@/components/SelectUser'
+
 import ChatContent from '@/components/ChatContent'
 
 export default {
   components: {
-    SelectUser,
     ChatContent,
   },
   data() {

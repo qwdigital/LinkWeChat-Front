@@ -187,7 +187,7 @@ export default {
   components: {
     PhoneDialog,
     SelectTag,
-    SelectUser,
+
     SelectMaterial,
     WelcomeContent,
     AddMaterial,

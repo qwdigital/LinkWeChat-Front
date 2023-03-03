@@ -8,9 +8,10 @@
             class="mb10"
             placeholder="搜索客户名称"
             clearable
-            prefix-icon="el-icon-search"
             v-model="customerQuery.name"
-            @keyup.enter.native="getCustomerList(1)"></el-input>
+            @keyup.enter.native="getCustomerList(1)">
+            <el-button slot="append" icon="el-icon-search" @click="getCustomerList(1)"></el-button>
+          </el-input>
           <div v-loading="customerLoading">
             <ul v-if="init" v-infinite-scroll="getCustomerList" infinite-scroll-distance="1" class="customer-wrap">
               <template v-if="customerList.length">
@@ -19,8 +20,7 @@
                   :key="index"
                   tag="li"
                   @click.native="choiceCustomer(item, index)"
-                  class="customer-li"
-                  :class="{ active: index == personIndex }"
+                  :class="['customer-li', { active: index == personIndex }]"
                   :gutter="20"
                   type="flex"
                   align="middle">
@@ -261,7 +261,7 @@ export default {
         width: 40px;
       }
       &.active {
-        background: #ebf4fc;
+        background: var(--color-lighter);
       }
     }
   }

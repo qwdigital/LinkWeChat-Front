@@ -1,12 +1,12 @@
 <script>
 import { getDetail, add, update } from '@/api/communityOperating/newCustomer'
 import PhoneDialog from '@/components/PhoneDialog'
-import SelectUser from '@/components/SelectUser'
+
 import SelectTag from '@/components/SelectTag'
 import SelectQrCode from '@/components/SelectQrCode'
 
 export default {
-  components: { PhoneDialog, SelectTag, SelectUser, SelectQrCode },
+  components: { PhoneDialog, SelectTag, SelectQrCode },
   data() {
     return {
       selectedUserList: [],

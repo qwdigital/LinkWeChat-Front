@@ -222,7 +222,7 @@ export default {
   display: inline-block;
   line-height: 30px;
   cursor: pointer;
-  color: #199ed8;
+  color: var(--color);
   // text-indent: 10px;
   // box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2), 0 1px 4px 0 rgba(0, 0, 0, 0.19);
 }

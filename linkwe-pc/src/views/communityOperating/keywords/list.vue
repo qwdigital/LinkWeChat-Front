@@ -1,8 +1,6 @@
 <script>
 import { getList, remove } from '@/api/communityOperating/keywords'
 
-import SelectUser from '@/components/SelectUser'
-
 export default {
   components: { SelectUser },
   props: {},

@@ -279,7 +279,7 @@ import {
 } from '@/api/drainageCode/smartForms.js'
 import FormsDetail from './build/formsDetail.vue'
 import PhoneDialog from '@/components/PhoneDialog'
-import SelectUser from '@/components/SelectUser'
+
 import SelectTag from '@/components/SelectTag'
 import SelectMaterial from '@/components/SelectMaterial'
 import WelcomeContent from '@/components/WelcomeContent.vue'
@@ -289,7 +289,7 @@ export default {
   components: {
     PhoneDialog,
     SelectTag,
-    SelectUser,
+
     SelectMaterial,
     WelcomeContent,
     Build,

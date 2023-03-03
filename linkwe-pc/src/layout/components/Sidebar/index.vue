@@ -141,7 +141,7 @@ export default {
   }
   // 当前激活菜单
   .el-menu-item.is-active {
-    background: linear-gradient(to right, var(--color) 0%, var(--color-lighter) 100%);
+    background: linear-gradient(to right, var(--color) 0%, var(--color-sub) 100%);
     box-shadow: 0px 13px 16px 0px rgba(7, 168, 85, 0.2);
     border-radius: 8px;
     color: #fff !important;

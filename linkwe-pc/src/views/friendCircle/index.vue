@@ -123,14 +123,11 @@
   </div>
 </template>
 <script>
-import SelectUser from '@/components/SelectUser'
 import moment from 'moment'
 import { getEnterpriceList, syncHMoments, getDetail } from '@/api/circle'
 export default {
   name: 'friend-index',
-  components: {
-    SelectUser,
-  },
+  components: {},
   data() {
     return {
       // disable: false,

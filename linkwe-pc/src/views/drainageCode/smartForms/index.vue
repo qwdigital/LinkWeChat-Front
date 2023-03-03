@@ -281,7 +281,6 @@ import {
   updateCodeCategory,
   removeCodeCategory,
 } from '@/api/drainageCode/staff'
-import SelectUser from '@/components/SelectUser'
 
 const groupForm = {
   mediaType: 15,
@@ -290,7 +289,6 @@ const groupForm = {
 export default {
   name: 'CodeStaff',
   components: {
-    SelectUser,
     FormsDetail,
     Channels,
   },

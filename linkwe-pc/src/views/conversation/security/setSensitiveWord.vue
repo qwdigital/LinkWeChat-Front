@@ -98,11 +98,9 @@
 </template>
 <script>
 import * as sensitiveApis from '@/api/conversation/security'
-import SelectUser from '@/components/SelectUser'
+
 export default {
-  components: {
-    SelectUser,
-  },
+  components: {},
   data() {
     return {
       form: {

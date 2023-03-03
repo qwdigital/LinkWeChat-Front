@@ -185,7 +185,7 @@
 import { add, getCustomerList } from '@/api/groupMessage'
 import { getMaterialMediaId } from '@/api/material'
 import PhoneDialog from '@/components/PhoneDialog'
-// import SelectUser from '@/components/SelectUser'
+//
 import SelectTag from '@/components/SelectTag'
 import WelcomeDetail from '@/components/WelcomeContent.vue'
 import SelectCustomerGroup from '@/components/SelectCustomerGroup'
@@ -196,7 +196,7 @@ export default {
   components: {
     PhoneDialog,
     SelectTag,
-    // SelectUser,
+    //
     WelcomeDetail,
     SelectCustomerGroup,
     AddMaterial,

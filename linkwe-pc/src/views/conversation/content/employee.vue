@@ -7,10 +7,23 @@
             class="mb10"
             placeholder="搜索员工名称"
             clearable
-            prefix-icon="el-icon-search"
-            v-model="name"
-            @keyup.enter.native="loadNode(1)"></el-input>
+            v-model.trim="keywords"
+            @keyup.enter.native="getDeptUser">
+            <el-button slot="append" icon="el-icon-search" @click="getDeptUser"></el-button>
+          </el-input>
+
+          <div class="search-list" v-show="keywords">
+            <div
+              v-for="(item, index) in searchResult"
+              :key="index"
+              :class="['customer-li', { active: index == personIndex }]"
+              @click="handleNodeClick(item)">
+              {{ item.name }}
+            </div>
+          </div>
+
           <el-tree
+            v-show="!keywords"
             ref="tree"
             class="filter-tree"
             :props="defaultProps"
@@ -78,7 +91,8 @@ export default {
   },
   data() {
     return {
-      employAmount: 1,
+      keywords: '',
+      searchResult: [],
       fromId: '',
       // employName: '',
       talkName: '',
@@ -123,7 +137,7 @@ export default {
     },
     // getTree() {
     //   apiOrg.getTree().then(({ data }) => {
-    //     let treeData = (this.treeData = this.handleTree(data))
+    //     let treeData = (this.treeData = this.handleDepart(data))
     //     this.handleNodeClick(this.treeData[0], true)
     //   })
     // },
@@ -175,7 +189,7 @@ export default {
     loadNode(node, resolve) {
       if (node.level == 0) {
         apiOrg.getDeptTree().then(({ data }) => {
-          let treeData = this.treeFormat(this.handleTree(data))
+          let treeData = this.treeFormat(this.handleDepart(data))
           // this.handleNodeClick(this.treeData[0], true)
           treeData[0] && (this.defaultExpandedKeys = [treeData[0].id])
           resolve(treeData)
@@ -196,7 +210,7 @@ export default {
             // }
             // data.children.push(...rows)
             // let arr = node.data.children ? node.data.children.concat(rows || []) : rows || []
-            let arr = this.handleName(rows)
+            let arr = this.handleUser(rows)
             node.data.children && arr.push(...node.data.children)
             arr.forEach((element) => {
               element.isLeaf = !!element.userId
@@ -205,6 +219,18 @@ export default {
           })
         }
       }
+    },
+    getDeptUser() {
+      if (!this.keywords) return
+      this.searchResult = []
+      apiOrg
+        .getDeptUser({
+          deptId: this.defaultExpandedKeys[0],
+          userName: this.keywords,
+        })
+        .then((res) => {
+          this.searchResult = this.handleUser(res.rows)
+        })
     },
 
     treeFormat(list) {
@@ -226,7 +252,7 @@ export default {
       })
       return dealOptions
     },
-    handleName(data) {
+    handleUser(data) {
       return data.map((i) => {
         if (i.userName) {
           i.userId = i.weUserId
@@ -235,7 +261,7 @@ export default {
         return i
       })
     },
-    handleTree(data) {
+    handleDepart(data) {
       return data.map((i) => {
         if (i.deptId) {
           // i.userId = i.deptId
@@ -246,7 +272,7 @@ export default {
         return i
       })
     },
-    handleNodeClick(data, add) {
+    handleNodeClick(data) {
       if (!data.userId) {
       } else {
         this.talkName = data.name
@@ -291,6 +317,11 @@ export default {
     ::-webkit-scrollbar {
       display: none;
     }
+  }
+
+  .search-list {
+    margin-top: 20px;
+    padding: 0 10px;
   }
 }
 </style>
