@@ -1,10 +1,8 @@
 <template>
   <div>
-    <div class="top">
-      <div class="name">
-        <span v-if="queryChat">与{{ queryChat.receiveName }}的聊天</span>
-        <span class="fr download" @click="exportList()">下载会话</span>
-      </div>
+    <div class="top mb10">
+      <span class="name" v-if="queryChat">与 {{ queryChat.receiveName }} 的聊天</span>
+      <span class="fr download" @click="exportList()">下载会话</span>
     </div>
     <el-tabs v-model="activeTab" @tab-click="(v) => opened.includes(v.name) || opened.push(v.name)">
       <el-tab-pane v-for="(item, index) of list" :key="index" :label="item.label" :name="item.type">
@@ -102,10 +100,8 @@ export default {
 }
 
 .name {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
-  color: #333;
-  margin-bottom: 10px;
 }
 
 .download {

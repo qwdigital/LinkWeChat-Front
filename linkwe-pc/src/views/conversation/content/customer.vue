@@ -228,9 +228,8 @@ export default {
   }
 
   .name {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
-    color: #666;
     margin-bottom: 20px;
   }
   .ct_box {

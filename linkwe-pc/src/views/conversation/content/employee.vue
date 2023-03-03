@@ -300,9 +300,8 @@ export default {
     background: #fff;
   }
   .name {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
-    color: #333;
     margin-bottom: 10px;
   }
   .ct_box {
@@ -311,7 +310,6 @@ export default {
     height: calc(100vh - 286px);
     padding: 20px;
     overflow-y: auto;
-    color: #999;
     text-align: center;
 
     ::-webkit-scrollbar {
@@ -319,9 +317,22 @@ export default {
     }
   }
 
-  .search-list {
-    margin-top: 20px;
-    padding: 0 10px;
+  .customer-li {
+    padding: 10px;
+    text-align: left;
+    cursor: pointer;
+    border-bottom: 1px solid #efefef;
+
+    &:hover {
+      background: #efefef;
+    }
+
+    img {
+      width: 40px;
+    }
+    &.active {
+      background: var(--color-lighter);
+    }
   }
 }
 </style>

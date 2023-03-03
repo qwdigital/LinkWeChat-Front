@@ -1,7 +1,7 @@
 html {
   --rgb: 7, 193, 96; /* 主题色rgb #07c160*/
   --color: rgb(var(--rgb)); /* 主题色 #07c160*/
-  --color-lighter: rgb(var(--rgb), 0.12); /* #e9f7ee */
+  --color-lighter: rgb(var(--rgb), 0.12); /* 浅主题色 #e9f7ee */
   --color-sub: #90de45; /* 主题辅色 */
   --color-success: #07c160;
   --color-warning: #faad14;
