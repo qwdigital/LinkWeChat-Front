@@ -58,11 +58,8 @@
           </div>
         </div>
 
-        <el-table
-          v-loading="loading"
-          :data="list"
-          @selection-change="handleSelectionChange"
-          height="calc(100vh - 325px)">
+        <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
+          <!-- height="calc(100vh - 325px)" -->
           <el-table-column type="selection" width="55" align="center" />
           <el-table-column label="二维码" align="center" prop="qrCode" min-width="120">
             <template slot-scope="{ row }">
