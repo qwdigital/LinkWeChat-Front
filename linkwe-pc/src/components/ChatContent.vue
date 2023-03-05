@@ -88,7 +88,7 @@ export default {
     </template>
     <template v-else-if="message.msgType === 'revoke'">已撤回</template>
     <template v-else-if="'image,emotion'.includes(message.msgType)">
-      <el-image style="width: 100px; height: 100px" :src="content" fit="fit" :preview-src-list="[content]"></el-image>
+      <el-image style="width: 100px" :src="content" fit="fit" :preview-src-list="[content]"></el-image>
     </template>
     <a v-else-if="'file'.includes(message.msgType)" class="msgtypefile">
       <!-- :href="JSON.parse(this.message.contact).attachment"
@@ -157,7 +157,7 @@ export default {
     <div v-else-if="message.msgType === 'link'" class="msgtypecard">
       <a target="_black" :href="content.link_url">
         <div class="card-content fxbw">
-          <div style="flex: 1">
+          <div style="flex: 1; margin-right: 10px">
             <div class="card--link-title">{{ content.title }}</div>
             <div class="card--link-desc">{{ content.description }}</div>
           </div>
@@ -172,49 +172,54 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-.angle {
-  content: '';
-  display: inline-block;
-  position: absolute;
-  top: 8px;
-  width: 8px;
-  height: 8px;
-  background: #fff;
-  transform: rotate(45deg);
-  border: 1px solid #e1edfc;
-  z-index: 888;
-  box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
-}
-.message {
-  max-width: 50%;
-  background-color: #fff;
+// .angle {
+//   content: '';
+//   display: inline-block;
+//   position: absolute;
+//   top: 8px;
+//   width: 8px;
+//   height: 8px;
+//   background: #fff;
+//   transform: rotate(45deg);
+//   border: 1px solid #e1edfc;
+//   z-index: 888;
+//   box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
+// }
+.mes {
+  max-width: calc(100% - 24px);
   position: relative;
-  padding: 10px;
+  padding: 15px;
   line-height: 14px;
-  border-radius: 5px;
-  box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
-  border: 1px solid #e1edfc;
-  color: #333;
+  border-radius: 12px;
+  // box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
+  // border: 1px solid #e1edfc;
   display: inline-block;
   word-break: break-all;
 }
 
 .message {
+  @extend .mes;
+  color: #333;
   margin-left: 10px;
-  &::before {
-    @extend .angle;
-    left: -5px;
-    border-width: 0 0 1px 1px;
-  }
+  background-color: #fff;
+  border-top-left-radius: 0;
+  // &::before {
+  //   @extend .angle;
+  //   left: -5px;
+  //   border-width: 0 0 1px 1px;
+  // }
 }
 .message-right {
-  @extend .message;
+  @extend .mes;
+  color: #fff;
   margin-right: 10px;
-  &::before {
-    @extend .angle;
-    right: -5px;
-    border-width: 1px 1px 0 0;
-  }
+  background-color: var(--color);
+  border-top-right-radius: 0;
+  // &::before {
+  //   @extend .angle;
+  //   right: -5px !important;
+  //   border-width: 1px 1px 0 0;
+  // }
 }
 .msgtypefile {
   margin: 5px;
@@ -230,7 +235,7 @@ export default {
 .msgtypecard {
   // width: 320px;
   // height: 140px;
-  margin: 10px 5px;
+  // margin: 10px 5px;
   border-radius: 8px;
   -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 8px 0 rgba(0, 0, 0, 0.19);
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 8px 0 rgba(0, 0, 0, 0.19);
@@ -248,7 +253,7 @@ export default {
     // text-indent: 10px;
     color: #333;
     .card--link-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 500;
       margin-bottom: 5px;
       text-overflow: -o-ellipsis-lastline;
@@ -262,16 +267,16 @@ export default {
       -webkit-box-orient: vertical;
     }
     .card--link-desc {
-      font-size: 14px;
-      color: #aaa;
+      font-size: 13px;
+      color: #666;
       text-overflow: -o-ellipsis-lastline;
       overflow: hidden;
       text-overflow: ellipsis;
       word-break: break-all;
       display: -webkit-box;
       white-space: pre-wrap;
-      -webkit-line-clamp: 1;
-      line-clamp: 1;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
       -webkit-box-orient: vertical;
     }
   }

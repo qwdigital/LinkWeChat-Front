@@ -2,22 +2,16 @@
   <div class="takecontent">
     <ul>
       <li v-for="(item, index) in data" :key="index">
-        <div class="mb15 my_header right" v-if="queryChat.fromId === item.fromId">
-          <span :style="{ color: item.action == 'send' ? 'var(--color)' : '#999' }">{{ item.msgTime }}</span>
-          <span class="ml10">{{ item.name }}</span>
-          <img v-if="item.avatar" class="image" style="margin-left: 10px" :src="item.avatar" />
-          <img v-else style="margin-left: 10px" src="../../../../assets/drainageCode/header.png" />
+        <div :class="['mb10', queryChat.fromId === item.fromId && 'ar']">
+          <span :class="['', queryChat.fromId === item.fromId && 'fr']" style="color: #4e5969">{{ item.name }}</span>
+          <span :style="{ color: item.action == 'send' ? '#86909C' : '#999', margin: '0 8px' }">
+            {{ item.msgTime }}
+          </span>
         </div>
-        <div v-else class="mb15 my_header">
-          <img v-if="item.avatar" class="image" :src="item.avatar" />
-          <img v-else style="margin-right: 5px" src="../../../../assets/drainageCode/header.png" />
-          <span class="mr10">{{ item.name }}</span>
-          <span :style="{ color: item.action == 'send' ? 'var(--color)' : '#999' }">{{ item.msgTime }}</span>
-        </div>
-        <div class="right" v-if="queryChat.fromId === item.fromId">
-          <ChatContent :queryChat="queryChat" :message="item"></ChatContent>
-        </div>
-        <div v-else>
+        <div :class="['', queryChat.fromId === item.fromId && 'ar']">
+          <img
+            :class="['image', queryChat.fromId === item.fromId && 'fr']"
+            :src="item.avatar || require('../../../../assets/drainageCode/header.png')" />
           <ChatContent :queryChat="queryChat" :message="item"></ChatContent>
         </div>
       </li>
@@ -49,19 +43,13 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.right {
-  display: flex;
-  justify-content: flex-end;
-}
-.my_header {
-  display: flex;
-  align-items: center;
-}
 .image {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  margin-right: 5px;
+  width: 40px;
+  height: 40px;
+  vertical-align: top;
+  box-shadow: 0px 6px 8px 0px rgba(78, 89, 105, 0.3);
+  border-radius: 8px 8px 8px 8px;
+  border: 1px solid #ffffff;
 }
 .shabowbox {
   position: fixed;
