@@ -11,7 +11,7 @@
         <div :class="['', queryChat.fromId === item.fromId && 'ar']">
           <img
             :class="['image', queryChat.fromId === item.fromId && 'fr']"
-            :src="item.avatar || require('../../../../assets/drainageCode/header.png')" />
+            :src="item.avatar || require('@/assets/image/profile.jpg')" />
           <ChatContent :queryChat="queryChat" :message="item"></ChatContent>
         </div>
       </li>
@@ -49,7 +49,8 @@ export default {
   vertical-align: top;
   box-shadow: 0px 6px 8px 0px rgba(78, 89, 105, 0.3);
   border-radius: 8px 8px 8px 8px;
-  border: 1px solid #ffffff;
+  border: 1px solid #fff;
+  background: #fff;
 }
 .shabowbox {
   position: fixed;
