@@ -1,83 +1,83 @@
 <script>
-import * as api from '@/api/task'
+  import * as api from '@/api/task'
 
-export default {
-  name: 'Group',
-  data() {
-    return {
-      query: {
-        pageNum: 1,
-        pageSize: 10,
-        taskName: '',
-        startTime: '',
-        overTime: '',
-        fissionType: 1,
-      },
-      dateRange: [],
-      tableData: [],
-      total: 0,
-      loading: false,
-    }
-  },
-  created() {
-    this.getList()
-
-    this.$store.dispatch(
-      'app/setBusininessDesc',
-      `
-        <div>是通过管理员统一下发群发消息的任务，将消息推送给员工，员工点击任务按钮进行发送，将任务裂变海报以 H5 网页链接的形式发送给客户。此方式也会消耗一月四次客户群发触达的次数限制。</div>
-      `,
-    )
-  },
-  methods: {
-    setChange(e) {
-      if (e) {
-        this.query.startTime = e[0]
-        this.query.overTime = e[1]
-      } else {
-        this.query.startTime = ''
-        this.query.overTime = ''
+  export default {
+    name: 'Group',
+    data() {
+      return {
+        query: {
+          pageNum: 1,
+          pageSize: 10,
+          taskName: '',
+          startTime: '',
+          overTime: '',
+          fissionType: 1
+        },
+        dateRange: [],
+        tableData: [],
+        total: 0,
+        loading: false
       }
     },
-    resetFn() {
-      this.query = {
-        pageNum: 1,
-        pageSize: 10,
-        taskName: '',
-        startTime: '',
-        overTime: '',
-        fissionType: 1,
-      }
-      this.dateRange = []
+    created() {
       this.getList()
+
+      this.$store.dispatch(
+        'app/setBusininessDesc',
+        `
+        <div>是通过管理员统一下发群发消息的任务，将消息推送给员工，员工点击任务按钮进行发送，将任务裂变海报以 H5 网页链接的形式发送给客户。此方式也会消耗每天四次客户群发触达的次数限制。</div>
+      `
+      )
     },
-    getList(data) {
-      this.loading = true
-      let params = Object.assign({}, this.query, data)
-      api.getList(params).then(({ rows, total }) => {
-        this.tableData = rows
-        this.total = +total
-        this.loading = false
-      })
-    },
-    resetForm() {},
-    toDetail(row) {
-      this.$router.push({
-        path: `detail?id=${row.id}`,
-      })
-    },
-    newAdd() {
-      this.$router.push({
-        path: 'add',
-      })
-    },
-    toEdit(row) {
-      this.$router.push({
-        path: `add?id=${row.id}`,
-      })
-    },
-  },
-}
+    methods: {
+      setChange(e) {
+        if (e) {
+          this.query.startTime = e[0]
+          this.query.overTime = e[1]
+        } else {
+          this.query.startTime = ''
+          this.query.overTime = ''
+        }
+      },
+      resetFn() {
+        this.query = {
+          pageNum: 1,
+          pageSize: 10,
+          taskName: '',
+          startTime: '',
+          overTime: '',
+          fissionType: 1
+        }
+        this.dateRange = []
+        this.getList()
+      },
+      getList(data) {
+        this.loading = true
+        let params = Object.assign({}, this.query, data)
+        api.getList(params).then(({ rows, total }) => {
+          this.tableData = rows
+          this.total = +total
+          this.loading = false
+        })
+      },
+      resetForm() {},
+      toDetail(row) {
+        this.$router.push({
+          path: `detail?id=${row.id}`
+        })
+      },
+      newAdd() {
+        this.$router.push({
+          path: 'add'
+        })
+      },
+      toEdit(row) {
+        this.$router.push({
+          path: `add?id=${row.id}`
+        })
+      }
+    }
+  }
 </script>
 
 <template>
@@ -95,14 +95,16 @@ export default {
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
-          align="right"></el-date-picker>
+          align="right"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="">
         <el-button
           v-hasPermi="['customerManage:customer:query']"
           type="primary"
           :loading="loading"
-          @click="getList({ pageNum: 1 })">
+          @click="getList({ pageNum: 1 })"
+        >
           查询
         </el-button>
         <el-button @click="resetFn">重置</el-button>
@@ -111,7 +113,8 @@ export default {
           v-hasPermi="['customerManage:customer:query']"
           type="primary"
           @click="newAdd()"
-          style="background: #fa7216; color: #ffffff; border-color: #fa7216">
+          style="background: #fa7216; color: #ffffff; border-color: #fa7216;"
+        >
           新增任务
         </el-button>
       </el-form-item>
@@ -162,7 +165,8 @@ export default {
         :total="total"
         :page.sync="query.pageNum"
         :limit.sync="query.pageSize"
-        @pagination="getList()" />
+        @pagination="getList()"
+      />
     </div>
   </div>
 </template>
