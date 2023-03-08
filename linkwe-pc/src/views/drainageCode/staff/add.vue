@@ -7,8 +7,8 @@
         <el-step title="欢迎语"></el-step>
       </el-steps>
     </div>
-    <div class="g-card" v-if="currentActive === 1">
-      <el-row>
+    <div class="g-card">
+      <el-row v-if="currentActive === 1">
         <el-col :span="10">
           <el-form ref="baseForm" :rules="baseRules" :model="baseForm" label-position="right" label-width="100px">
             <el-form-item label="活码名称" prop="qrName">
@@ -46,9 +46,7 @@
           </el-form>
         </el-col>
       </el-row>
-    </div>
-    <div class="g-card" v-if="currentActive === 2">
-      <el-row>
+      <el-row v-if="currentActive === 2">
         <el-col :span="15">
           <el-form ref="codeForm" :rules="codeRules" :model="codeForm" label-position="right" label-width="100px">
             <el-form-item label="活码类型" prop="qrType">
@@ -144,10 +142,9 @@
           </el-form>
         </el-col>
       </el-row>
-    </div>
-    <div v-if="currentActive === 3">
       <!-- <welcome-content v-loading="loading" :showBack="true" @update="currentActive = 2" :baseData="materialData" @submit="getWelData"></welcome-content> -->
       <AddMaterial
+        v-if="currentActive === 3"
         :moduleType="4"
         :otherType="1"
         @update="currentActive = 2"
