@@ -55,8 +55,8 @@
             </el-popover>
           </div>
           <template #default="{ row }">
-            <el-button type="text" size="mini" :disabled="row.isDefault == 1" @click="editFn(row)">编辑</el-button>
-            <el-button type="text" size="mini" :disabled="row.isDefault == 1" @click="deleteFn(row)">删除</el-button>
+            <el-button type="text" :disabled="row.isDefault == 1" @click="editFn(row)">编辑</el-button>
+            <el-button type="text" :disabled="row.isDefault == 1" @click="deleteFn(row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

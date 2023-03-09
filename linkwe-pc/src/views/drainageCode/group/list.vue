@@ -112,8 +112,8 @@
               ">
               统计
             </el-button>
-            <el-button type="text" size="mini" @click="handleDownload(row.id, row.activityName)">下载</el-button>
-            <el-button type="text" size="mini" class="copy-btn" :data-clipboard-text="row.codeUrl">复制</el-button>
+            <el-button type="text" @click="handleDownload(row.id, row.activityName)">下载</el-button>
+            <el-button type="text" class="copy-btn" :data-clipboard-text="row.codeUrl">复制</el-button>
             <el-dropdown style="margin-left: 10px">
               <el-button type="text">
                 <i class="el-icon-more"></i>
@@ -136,7 +136,7 @@
                   </el-button>
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  <el-button type="text" size="mini" @click="handleRemove(row.id)">删除</el-button>
+                  <el-button type="text" @click="handleRemove(row.id)">删除</el-button>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>

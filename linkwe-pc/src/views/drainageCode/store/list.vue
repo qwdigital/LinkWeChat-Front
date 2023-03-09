@@ -18,7 +18,7 @@
                     复制链接
                   </el-button>
                 </div>
-                <el-button type="text" size="mini" @click="goRoute('guideDetail')">详情>></el-button>
+                <el-button type="text" @click="goRoute('guideDetail')">详情>></el-button>
               </div>
             </div>
           </div>
@@ -44,7 +44,7 @@
                     复制链接
                   </el-button>
                 </div>
-                <el-button type="text" size="mini" @click="goRoute('storeDetail')">详情>></el-button>
+                <el-button type="text" @click="goRoute('storeDetail')">详情>></el-button>
               </div>
             </div>
           </div>
