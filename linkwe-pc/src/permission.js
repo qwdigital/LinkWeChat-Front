@@ -74,7 +74,7 @@ router.beforeEach((to, from, next) => {
         //   })
         // })
       } else {
-        nextTo()
+        nextTo(to, next)
       }
     }
   } else if (noLoginList.includes(to.path)) {
