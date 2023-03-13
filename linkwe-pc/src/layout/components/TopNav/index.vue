@@ -40,8 +40,18 @@ export default {
     },
     // 默认激活的一级菜单路径 eg：/drainageCode
     activeMenu() {
-      let activePath = this.$route.path.match(/\/[^\/]+/)
-      activePath = activePath && activePath[0]
+      const path = this.$route.path
+      let activePath = ''
+      // 兼容微服务多级路径匹配eg：/microStore/*
+      if (
+        window.lwConfig.MICRO_APPS &&
+        Object.values(window.lwConfig.MICRO_APPS).some((item) => path.startsWith(item.activeRule.match('/.*')[0]))
+      ) {
+        activePath = path.match('/.+?/.+?/')[0].slice(0, -1)
+      } else {
+        activePath = path.match(/\/[^\/]+/)
+        activePath = activePath && activePath[0]
+      }
       this.activeRoutes(activePath)
       return activePath
     },

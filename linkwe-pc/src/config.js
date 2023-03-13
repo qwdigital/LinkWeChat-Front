@@ -27,6 +27,15 @@ const common = {
   DEFAULT_H5_WORDE: env.DOMAIN + '/static/WORD.png',
   DEFAULT_H5_PPT: env.DOMAIN + '/static/PPT.png',
   PRIVIEW_URL: env.VIEW_URL,
+
+  MICRO_APPS: {
+    store: {
+      name: 'microStore',
+      entry: env.DOMAIN + '/microStore/',
+      container: '#micro-app',
+      activeRule: '#/microStore',
+    },
+  },
 }
 
 // 以下仅用于系统信息展示，不作为项目变量使用，请勿在代码中使用

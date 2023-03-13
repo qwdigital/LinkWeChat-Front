@@ -1,16 +1,24 @@
 <template>
   <!-- <el-scrollbar class="page-scrollbar"> -->
   <div class="app-main">
-    <transition name="fade-transform" mode="out-in">
+    <transition name="fade-transform" mode="out-in" v-if="!isActiveMicroApp">
       <router-view class="page" :key="key" />
       <!-- <keep-alive :include="cachedViews">
       </keep-alive> -->
     </transition>
+    <div v-loading="loading">
+      <div id="micro-app" v-show="isActiveMicroApp">
+        <!-- <div id="app" class="mask" style="position: absolute">
+        <i class="el-icon-loading cc"></i>
+      </div> -->
+      </div>
+    </div>
   </div>
   <!-- </el-scrollbar> -->
 </template>
 
 <script>
+import { registerMicroApps, start, initGlobalState } from 'qiankun'
 export default {
   name: 'AppMain',
   computed: {
@@ -20,6 +28,41 @@ export default {
     key() {
       return this.$route.path
     },
+    isActiveMicroApp() {
+      let microApp = window.lwConfig.MICRO_APPS
+      return (
+        microApp && Object.values(microApp).some((item) => this.$route.path.startsWith(item.activeRule.match('/.*')[0]))
+      )
+    },
+  },
+  mounted() {
+    if (window.lwConfig.MICRO_APPS && window.lwConfig.MICRO_APPS.store) {
+      window.Vue2 = window.Vue
+      delete window.Vue
+      window.lwConfig.MICRO_APPS.store.loader = (loading) => (this.loading = loading)
+      registerMicroApps([window.lwConfig.MICRO_APPS.store])
+      start({
+        sandbox: { experimentalStyleIsolation: true },
+      })
+
+      // 挂在window供下面微服务使用
+      window.lwConfig.$store = this.$store
+
+      // 初始化 state
+      // const actions = initGlobalState({ token: getToken() })
+      // actions.onGlobalStateChange((state, prev) => {
+      //   // state: 变更后的状态; prev 变更前的状态
+      // });
+      // actions.setGlobalState(state)
+    }
+    // if (window.lwConfig.MICRO_APPS) {
+    //   import('qiankun').then(({ registerMicroApps, start }) => {
+    //     registerMicroApps(window.lwConfig.MICRO_APPS)
+    //     start({
+    //       sandbox: { experimentalStyleIsolation: true },
+    //     })
+    //   })
+    // }
   },
 }
 </script>
@@ -61,6 +104,11 @@ export default {
   .fixed-header + .app-main {
     padding-top: 84px;
   }
+}
+
+#micro-app {
+  height: calc(100vh - 130px);
+  position: relative;
 }
 </style>
 

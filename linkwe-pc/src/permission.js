@@ -9,6 +9,20 @@ import { getToken } from '@/utils/auth'
 
 const whiteList = ['/authRedirect', '/bind', '/test'] // 不管有没有token都可直接进入的页面路径
 const noLoginList = ['/login', '/register'] // 没有token才能进入的页面
+
+function nextTo(to, next, isRpelace) {
+  if (isRpelace) {
+    next({ ...to, replace: true })
+  } else if (
+    to.matched.length === 0 &&
+    !Object.values(window.lwConfig.MICRO_APPS).some((item) => to.path.startsWith(item.activeRule.match('/.*')[0]))
+  ) {
+    // 未匹配到路由，且路径不是以微应用路由开头的，跳转至404
+    next('/404')
+  } else {
+    next()
+  }
+}
 router.beforeEach((to, from, next) => {
   // NProgress.start()
   // 无需检测token的， 不管有没有token都可直接进入
@@ -30,7 +44,7 @@ router.beforeEach((to, from, next) => {
             // store.dispatch('permission/generateRoutes', { roles }).then(accessRoutes => {
             // 判断是否有设置企业微信id
             if (res.corpInfo && res.corpInfo.corpId) {
-              next({ ...to, replace: true })
+              nextTo(to, next, true)
             } else {
               // 没有设置企业微信的
               let isEnterpriseWechat = router.getRoutes().some((element) => {
@@ -60,7 +74,7 @@ router.beforeEach((to, from, next) => {
         //   })
         // })
       } else {
-        next()
+        nextTo()
       }
     }
   } else if (noLoginList.includes(to.path)) {
