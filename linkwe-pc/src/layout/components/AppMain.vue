@@ -21,6 +21,11 @@
 import { registerMicroApps, start, initGlobalState } from 'qiankun'
 export default {
   name: 'AppMain',
+  data() {
+    return {
+      loading: false,
+    }
+  },
   computed: {
     cachedViews() {
       return this.$store.state.tagsView.cachedViews
