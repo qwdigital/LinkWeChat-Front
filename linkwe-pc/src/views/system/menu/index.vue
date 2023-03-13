@@ -302,7 +302,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd(row) {
       this.reset()
-      // this.getTreeselect()
+      this.getTreeselect()
       if (row != null && row.menuId) {
         this.form.parentId = row.menuId
       } else {
@@ -314,7 +314,7 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset()
-      // this.getTreeselect()
+      this.getTreeselect()
       getMenu(row.menuId).then((response) => {
         this.form = response.data
         this.open = true
