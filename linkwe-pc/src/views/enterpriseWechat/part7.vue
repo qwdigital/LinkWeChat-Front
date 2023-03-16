@@ -2,49 +2,56 @@
   <div>
     <el-form ref="form" label-position="right" :model="form" :rules="rules" label-width="180px">
       <div class="g-card">
-        <div class="my-title">小程序配置</div>
+        <div class="g-card-title">短链小程序配置</div>
         <div>
           <el-form-item label="微信小程序APPID:" prop="miniAppId">
-            <el-input style="width: 40%" v-model="form.miniAppId" placeholder="请输入APPID"></el-input>
+            <el-input v-model="form.miniAppId" placeholder="请输入APPID"></el-input>
             <!-- <div class="tips">在微信公众号后台->开发管理->开发设置中获取</div> -->
           </el-form-item>
         </div>
         <div id="step2">
           <el-form-item label="微信小程序Secret:" prop="miniSecret">
-            <el-input style="width: 40%" v-model="form.miniSecret" placeholder="请输入小程序Secret"></el-input>
+            <el-input v-model="form.miniSecret" placeholder="请输入小程序Secret"></el-input>
             <!-- <div class="tips">在微信公众号后台->开发管理->开发设置->开发者ID中获取</div> -->
           </el-form-item>
         </div>
 
         <el-form-item label="小程序原始ID:" prop="wxAppletOriginalId">
-          <el-input style="width: 40%" v-model="form.wxAppletOriginalId" placeholder="请输入小程序原始ID"></el-input>
+          <el-input v-model="form.wxAppletOriginalId" placeholder="请输入小程序原始ID"></el-input>
           <!-- <div class="tips">在微信公众号后台->开发管理->开发设置中获取</div> -->
         </el-form-item>
 
-        <!-- <el-form-item label="小程序验证token:" prop="miniMaToken">
-          <el-input style="width: 40%" v-model="form.miniMaToken" placeholder="请输入小程序验证token"></el-input>
+        <div class="g-card-title">商城小程序配置</div>
+        <div>
+          <el-form-item label="微信小程序APPID:" prop="shopAppId">
+            <el-input v-model="form.shopAppId" placeholder="请输入APPID"></el-input>
+            <!-- <div class="tips">在微信公众号后台->开发管理->开发设置中获取</div> -->
+          </el-form-item>
+        </div>
+        <div id="step2">
+          <el-form-item label="微信小程序Secret:" prop="shopsecret">
+            <el-input v-model="form.shopsecret" placeholder="请输入小程序Secret"></el-input>
+            <!-- <div class="tips">在微信公众号后台->开发管理->开发设置->开发者ID中获取</div> -->
+          </el-form-item>
+        </div>
+
+        <el-form-item label="小程序验证token:" prop="shopMaToken">
+          <el-input v-model="form.shopMaToken" placeholder="请输入小程序验证token"></el-input>
           <div class="tips">在微信公众号后台->开发管理->开发设置->消息推送中获取</div>
         </el-form-item>
 
-        <el-form-item label="小程序EncodingAESKey:" prop="miniMaEncodingaeskey">
-          <el-input
-            style="width: 40%"
-            v-model="form.miniMaEncodingaeskey"
-            placeholder="请输入小程序EncodingAESKey"></el-input>
+        <el-form-item label="小程序EncodingAESKey:" prop="shopMaEnsodingeeskey">
+          <el-input v-model="form.shopMaEnsodingeeskey" placeholder="请输入小程序EncodingAESKey"></el-input>
           <div class="tips">在微信公众号后台->开发管理->开发设置->消息推送中获取</div>
         </el-form-item>
 
-        <el-form-item label="URL服务器地址:" prop="miniMaApi">
-          <el-input
-            style="width: 40%"
-            v-model="form.miniMaApi"
-            disabled
-            placeholder="这是一段固定的服务器地址，不可更改"></el-input>
-          <el-button class="copy-btn ml10" type="primary" :data-clipboard-text="form.miniMaApi">复制</el-button>
+        <el-form-item label="URL服务器地址:" prop="shopMaApi">
+          <el-input v-model="form.shopMaApi" disabled placeholder="这是一段固定的服务器地址，不可更改"></el-input>
+          <el-button class="copy-btn ml10" type="primary" :data-clipboard-text="form.shopMaApi">复制</el-button>
           <div class="tips">
             将此段内容复制黏贴至微信公众号后台->开发管理->开发设置->消息推送中的【url服务器地址】处
           </div>
-        </el-form-item> -->
+        </el-form-item>
       </div>
       <el-form-item label="" class="ar">
         <el-button type="primary" @click="submit" id="step5">保存配置</el-button>
@@ -63,12 +70,11 @@ export default {
       form: {},
       // activeNumber: '',
       rules: {
-        miniAppId: [{ required: true, message: '必填项', trigger: 'blur' }],
-        miniSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
-        wxAppletOriginalId: [{ required: true, message: '必填项', trigger: 'blur' }],
-
-        miniMaToken: [{ required: true, message: '必填项', trigger: 'blur' }],
-        miniMaEncodingaeskey: [{ required: true, message: '必填项', trigger: 'blur' }],
+        // miniAppId: [{ required: true, message: '必填项', trigger: 'blur' }],
+        // miniSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
+        // wxAppletOriginalId: [{ required: true, message: '必填项', trigger: 'blur' }],
+        // miniMaToken: [{ required: true, message: '必填项', trigger: 'blur' }],
+        // miniMaEncodingaeskey: [{ required: true, message: '必填项', trigger: 'blur' }],
       },
       // dataList: [
       //   {
@@ -241,8 +247,6 @@ div#driver-highlighted-element-stage {
 }
 </style>
 <style lang="scss" scoped>
-.my-title {
-}
 #step1 {
   width: 100%;
   height: 120px;
