@@ -42,7 +42,7 @@ export default {
     <router-view></router-view>
 
     <!--  底部  -->
-    <div class="el-login-footer">
+    <div class="login-footer">
       <span>
         {{ lwConfig.COPYRIGHT || 'Copyright © 2018-2022 LinkWeChat All Rights Reserved.' }}
       </span>
@@ -80,12 +80,13 @@ export default {
   }
 }
 
-.el-login-footer {
+.login-footer {
   height: 40px;
   line-height: 40px;
   position: fixed;
   bottom: 0;
-  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
   // color: #fff;
   font-family: Arial;
