@@ -29,8 +29,8 @@
           </el-form-item>
         </div>
         <div id="step2">
-          <el-form-item label="微信小程序Secret:" prop="shopsecret">
-            <el-input v-model="form.shopsecret" placeholder="请输入小程序Secret"></el-input>
+          <el-form-item label="微信小程序Secret:" prop="shopSecret">
+            <el-input v-model="form.shopSecret" placeholder="请输入小程序Secret"></el-input>
             <!-- <div class="tips">在微信公众号后台->开发管理->开发设置->开发者ID中获取</div> -->
           </el-form-item>
         </div>
@@ -40,8 +40,8 @@
           <div class="tips">在微信公众号后台->开发管理->开发设置->消息推送中获取</div>
         </el-form-item>
 
-        <el-form-item label="小程序EncodingAESKey:" prop="shopMaEnsodingeeskey">
-          <el-input v-model="form.shopMaEnsodingeeskey" placeholder="请输入小程序EncodingAESKey"></el-input>
+        <el-form-item label="小程序EncodingAESKey:" prop="shopMaEnsodingeskey">
+          <el-input v-model="form.shopMaEnsodingeskey" placeholder="请输入小程序EncodingAESKey"></el-input>
           <div class="tips">在微信公众号后台->开发管理->开发设置->消息推送中获取</div>
         </el-form-item>
 
@@ -204,7 +204,7 @@ export default {
     },
     setData() {
       if (Object.keys(this.data).length) {
-        this.form = this.data
+        this.form = JSON.parse(JSON.stringify(this.data))
       }
     },
   },
