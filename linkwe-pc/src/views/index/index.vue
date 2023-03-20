@@ -53,6 +53,7 @@
         <TabContent
           type="groupMemberChart"
           :legend="['新增成员', '退出成员']"
+          bgLinearGradient
           :request="api.getRealCntMember"></TabContent>
       </div>
     </div>

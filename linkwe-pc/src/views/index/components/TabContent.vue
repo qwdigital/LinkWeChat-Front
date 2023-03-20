@@ -162,11 +162,7 @@ export default {
             // （条形图）
             this.xData = data.map((e) => e.xtime)
 
-            if (
-              'customerTotalChart,customerGroupTotalChart,customerGroupMemberTotalChart'.includes(
-                this.type
-              )
-            ) {
+            if ('customerTotalChart,customerGroupTotalChart,customerGroupMemberTotalChart'.includes(this.type)) {
               // 客户总数 / 客群总数 / 客群成员总数 （条形图）
               this.series = data.map((e) => e.totalCnt)
             } else if (this.type === 'realDataChart') {
@@ -175,13 +171,11 @@ export default {
               this.series.push(data.map((e) => e.lostCnt))
               this.series.push(data.map((e) => e.netCnt))
               this.series.push(data.map((e) => e.gjCnt))
-            } 
-            else if (this.type === 'groupMemberChart') {
+            } else if (this.type === 'groupMemberChart') {
               // 实时数据
               this.series.push(data.map((e) => e.addCnt))
               this.series.push(data.map((e) => e.quitCnt))
-            } 
-            else {
+            } else {
               let dict = {
                 singleChatTotalChart: 'chatCnt', // 单聊总数
                 sendMessageNumChart: 'messageCnt', // 发送消息数
@@ -347,7 +341,7 @@ export default {
         :xData="xData"
         :legend="legend || legendDict[type]"
         :series="series"
-      ></ChartLine>
+        :bgLinearGradient="$attrs.bgLinearGradient"></ChartLine>
 
       <!-- <template v-else-if="type.includes('Table')">
         <el-table :data="list" style="width: 100%">
@@ -368,19 +362,14 @@ export default {
         />
       </template> -->
 
-      <ChartBar
-        v-else-if="'staffCustomerBar'.includes(type)"
-        :xData="xData"
-        :series="series"
-      ></ChartBar>
+      <ChartBar v-else-if="'staffCustomerBar'.includes(type)" :xData="xData" :series="series"></ChartBar>
 
       <ChartLine
         v-else-if="'rowEchart'.includes('vChart')"
         :xData="xData"
         :legend="legend || legendDict[type]"
         :series="series"
-        :option="option"
-      ></ChartLine>
+        :option="option"></ChartLine>
     </div>
 
     <!-- <SelectWeUser
