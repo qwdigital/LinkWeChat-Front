@@ -1,97 +1,97 @@
 <script>
-  import { updateBirthday, getDetail, getSummary, getFollowUpRecord, getCustomerInfoByUserId } from '@/api/customer'
-  import { getList } from '@/api/salesCenter/businessConver.js'
+import { updateBirthday, getDetail, getSummary, getFollowUpRecord, getCustomerInfoByUserId } from '@/api/customer'
+import { getList } from '@/api/salesCenter/businessConver.js'
 
-  import { dictAddType, dictJoinGroupType, dictTrackState } from '@/utils/dictionary'
-  import InfoTab from './customer/infoTab.vue'
+import { dictAddType, dictJoinGroupType, dictTrackState } from '@/utils/dictionary'
+import InfoTab from './customer/infoTab.vue'
 
-  export default {
-    name: 'CustomerDetail',
-    components: { InfoTab },
-    data() {
-      return {
-        datePickerVisible: false,
-        customer: {
-          // weFlowerCustomerRels: [{}]
+export default {
+  name: 'CustomerDetail',
+  components: { InfoTab },
+  data() {
+    return {
+      datePickerVisible: false,
+      customer: {
+        // weFlowerCustomerRels: [{}]
+      },
+      birthday: '',
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now()
         },
-        birthday: '',
-        pickerOptions: {
-          disabledDate(time) {
-            return time.getTime() > Date.now()
-          }
-        },
-        dictAddType,
-        dictJoinGroupType,
-        dictTrackState,
-
-        active: 0,
-        openedTabs: ['0']
-      }
-    },
-    created() {
-      this.getDetail()
-      this.getStage()
-    },
-    methods: {
-      getStage() {
-        getList().then((res) => {
-          this.stageList = res.data
-        })
       },
-      setValue(data) {
-        let str = ''
-        this.stageList.forEach((dd) => {
-          if (dd.stageVal == data) {
-            str = dd.stageKey
-          }
-        })
-        return str
-      },
-      // updateBirthday() {
-      //   if (!this.birthday || this.birthday == this.customer.birthday) {
-      //     return
-      //   }
-      //   let data = {
-      //     externalUserid: this.customer.externalUserid,
-      //     birthday: this.birthday,
-      //     firstUserId: this.customer.firstUserId
-      //   }
-      //   updateBirthday(data).then((response) => {
-      //     this.msgSuccess('操作成功')
-      //     // this.getDetail()
-      //     this.$set(this.customer, 'birthday', this.birthday)
-      //     // this.datePickerVisible = false
-      //   })
-      // },
-      /**
-       *客户详情基础(基础信息+社交关系)
-       * @param {*}
-       * externalUserid	是	当前客户id
-       * userId	是	当前跟进人id
-       */
-      getDetail() {
-        getDetail({ ...this.$route.query, delFlag: this.$route.query.isDelete ? 1 : 0 }).then(({ data }) => {
-          data.companyTags && (data.companyTags = data.companyTags.split(','))
-          this.customer = data
+      dictAddType,
+      dictJoinGroupType,
+      dictTrackState,
 
-          if (data.trackUsers && data.trackUsers.length === 1) {
-            this.openedTabs = [data.trackUsers[0].trackUserId]
-          }
-          this.birthday = data.birthday
-        })
-      },
-      changeTab(tab) {
-        this.openedTabs.includes(tab.$attrs.id) || this.openedTabs.push(tab.$attrs.id)
-      }
-
-      // remark(item) {
-      //   return (
-      //     item.remark ||
-      //     this.customer.customerName + (item.remarkCorpName ? '-' + item.remarkCorpName : '')
-      //   )
-      // }
+      active: 0,
+      openedTabs: ['0'],
     }
-  }
+  },
+  created() {
+    this.getDetail()
+    this.getStage()
+  },
+  methods: {
+    getStage() {
+      getList().then((res) => {
+        this.stageList = res.data
+      })
+    },
+    setValue(data) {
+      let str = ''
+      this.stageList.forEach((dd) => {
+        if (dd.stageVal == data) {
+          str = dd.stageKey
+        }
+      })
+      return str
+    },
+    // updateBirthday() {
+    //   if (!this.birthday || this.birthday == this.customer.birthday) {
+    //     return
+    //   }
+    //   let data = {
+    //     externalUserid: this.customer.externalUserid,
+    //     birthday: this.birthday,
+    //     firstUserId: this.customer.firstUserId
+    //   }
+    //   updateBirthday(data).then((response) => {
+    //     this.msgSuccess('操作成功')
+    //     // this.getDetail()
+    //     this.$set(this.customer, 'birthday', this.birthday)
+    //     // this.datePickerVisible = false
+    //   })
+    // },
+    /**
+     *客户详情基础(基础信息+社交关系)
+     * @param {*}
+     * externalUserid	是	当前客户id
+     * userId	是	当前跟进人id
+     */
+    getDetail() {
+      getDetail({ ...this.$route.query, delFlag: this.$route.query.isDelete ? 1 : 0 }).then(({ data }) => {
+        data.companyTags && (data.companyTags = data.companyTags.split(','))
+        this.customer = data
+
+        if (data.trackUsers && data.trackUsers.length === 1) {
+          this.openedTabs = [data.trackUsers[0].trackUserId]
+        }
+        this.birthday = data.birthday
+      })
+    },
+    changeTab(tab) {
+      this.openedTabs.includes(tab.$attrs.id) || this.openedTabs.push(tab.$attrs.id)
+    },
+
+    // remark(item) {
+    //   return (
+    //     item.remark ||
+    //     this.customer.customerName + (item.remarkCorpName ? '-' + item.remarkCorpName : '')
+    //   )
+    // }
+  },
+}
 </script>
 
 <template>
@@ -166,13 +166,11 @@
           v-for="(item, index) of customer.trackUsers"
           :key="index"
           :label="item.userName"
-          :id="item.trackUserId"
-        >
+          :id="item.trackUserId">
           <info-tab
             v-if="openedTabs.includes(item.trackUserId)"
             :stageList="stageList"
-            :userId="item.trackUserId"
-          ></info-tab>
+            :userId="item.trackUserId"></info-tab>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -180,31 +178,32 @@
 </template>
 
 <style lang="scss" scoped>
-  .avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: var(--border-radius-big);
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--border-radius-big);
+  flex: none;
+}
+.info-wrap {
+  margin-left: 20px;
+  .info {
+    color: #aaa;
+    line-height: 32px;
   }
-  .info-wrap {
-    margin-left: 20px;
-    .info {
-      color: #aaa;
-      line-height: 32px;
-    }
-  }
+}
 
-  .el-icon-s-custom {
-    font-size: 16px;
-    margin-left: 4px;
-    color: #999;
-    &.man {
-      color: #13a2e8;
-    }
-    &.woman {
-      color: #f753b2;
-    }
+.el-icon-s-custom {
+  font-size: 16px;
+  margin-left: 4px;
+  color: #999;
+  &.man {
+    color: #13a2e8;
   }
-  .g-card-title {
-    margin-bottom: 5px;
+  &.woman {
+    color: #f753b2;
   }
+}
+.g-card-title {
+  margin-bottom: 5px;
+}
 </style>

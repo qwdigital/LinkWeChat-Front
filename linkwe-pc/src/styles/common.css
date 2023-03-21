@@ -61,8 +61,8 @@ li {
 .flex {
   display: flex;
 }
-.flex1 {
-  flex: 1;
+.fxat {
+  flex: auto;
 }
 .fxbw {
   display: flex;

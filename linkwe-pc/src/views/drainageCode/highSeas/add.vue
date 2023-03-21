@@ -120,7 +120,7 @@ export default {
 </script>
 <template>
   <div class="flex" v-loading="loading">
-    <el-form :model="form" ref="form" label-width="100px" class="g-card flex1 mr20">
+    <el-form :model="form" ref="form" label-width="100px" class="g-card fxat mr20">
       <el-form-item label="类型" prop="codeType">
         <el-radio-group v-model="form.codeType" @change="codeTypeChange">
           <el-radio v-for="(value, key, index) in type" :key="index" :label="+key">{{ value }}</el-radio>

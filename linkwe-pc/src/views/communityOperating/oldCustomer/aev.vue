@@ -1,6 +1,6 @@
 <template>
   <div class="flex" v-loading="loading">
-    <el-form :model="form" ref="form" :rules="rules" label-width="100px" class="g-card flex1 mr20">
+    <el-form :model="form" ref="form" :rules="rules" label-width="100px" class="g-card fxat mr20">
       <el-form-item label="任务名称" prop="taskName">
         <el-input
           type="textarea"
