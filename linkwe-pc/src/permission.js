@@ -88,4 +88,5 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach(() => {
   // NProgress.done()
+  document.getElementById('loader-wrapper').className = 'loaded'
 })

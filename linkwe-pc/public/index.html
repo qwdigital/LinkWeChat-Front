@@ -36,10 +36,6 @@
       border-radius: 50%;
       border: 3px solid transparent;
       border-top-color: #FFF;
-      -webkit-animation: spin 2s linear infinite;
-      -ms-animation: spin 2s linear infinite;
-      -moz-animation: spin 2s linear infinite;
-      -o-animation: spin 2s linear infinite;
       animation: spin 2s linear infinite;
       z-index: 1001;
     }
@@ -54,10 +50,6 @@
       border-radius: 50%;
       border: 3px solid transparent;
       border-top-color: #FFF;
-      -webkit-animation: spin 3s linear infinite;
-      -moz-animation: spin 3s linear infinite;
-      -o-animation: spin 3s linear infinite;
-      -ms-animation: spin 3s linear infinite;
       animation: spin 3s linear infinite;
     }
 
@@ -71,38 +63,15 @@
       border-radius: 50%;
       border: 3px solid transparent;
       border-top-color: #FFF;
-      -moz-animation: spin 1.5s linear infinite;
-      -o-animation: spin 1.5s linear infinite;
-      -ms-animation: spin 1.5s linear infinite;
-      -webkit-animation: spin 1.5s linear infinite;
       animation: spin 1.5s linear infinite;
-    }
-
-
-    @-webkit-keyframes spin {
-      0% {
-        -webkit-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        transform: rotate(0deg);
-      }
-
-      100% {
-        -webkit-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        transform: rotate(360deg);
-      }
     }
 
     @keyframes spin {
       0% {
-        -webkit-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
         transform: rotate(0deg);
       }
 
       100% {
-        -webkit-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
         transform: rotate(360deg);
       }
     }
@@ -115,8 +84,6 @@
       height: 100%;
       background: #07c160;
       z-index: 1000;
-      -webkit-transform: translateX(0);
-      -ms-transform: translateX(0);
       transform: translateX(0);
     }
 
@@ -129,39 +96,29 @@
     }
 
 
-    .loaded #loader-wrapper .loader-section.section-left {
-      -webkit-transform: translateX(-100%);
-      -ms-transform: translateX(-100%);
+    .loaded#loader-wrapper .loader-section.section-left {
       transform: translateX(-100%);
-      -webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
       transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
     }
 
-    .loaded #loader-wrapper .loader-section.section-right {
-      -webkit-transform: translateX(100%);
-      -ms-transform: translateX(100%);
+    .loaded#loader-wrapper .loader-section.section-right {
       transform: translateX(100%);
-      -webkit-transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
       transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
     }
 
-    .loaded #loader {
+    .loaded#loader-wrapper #loader,
+    .loaded#loader-wrapper .load-title {
       opacity: 0;
-      -webkit-transition: all 0.3s ease-out;
       transition: all 0.3s ease-out;
     }
 
-    .loaded #loader-wrapper {
+    .loaded#loader-wrapper {
       visibility: hidden;
-      -webkit-transform: translateY(-100%);
-      -ms-transform: translateY(-100%);
       transform: translateY(-100%);
-      -webkit-transition: all 0.3s 1s ease-out;
       transition: all 0.3s 1s ease-out;
     }
 
-    #loader-wrapper .load_title {
-      font-family: 'Open Sans';
+    #loader-wrapper .load-title {
       color: #FFF;
       font-size: 19px;
       width: 100%;
@@ -169,7 +126,6 @@
       z-index: 9999999999999;
       position: absolute;
       top: 60%;
-      opacity: 1;
       line-height: 30px;
     }
   </style>
@@ -190,12 +146,12 @@
   </noscript>
 
   <div id="app">
-    <div id="loader-wrapper">
-      <div id="loader"></div>
-      <div class="loader-section section-left"></div>
-      <div class="loader-section section-right"></div>
-      <div class="load_title">正在加载系统资源，请耐心等待</div>
-    </div>
+  </div>
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+    <div class="load-title">正在加载系统资源，请耐心等待</div>
   </div>
 
   <!-- 使用CDN的JS文件 -->
