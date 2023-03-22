@@ -18,7 +18,7 @@ export function dateFormat(dateString, fmt = 'yyyy-MM-dd hh:mm:ss') {
     's+': date.getSeconds(), //秒
     'q+': Math.floor((date.getMonth() + 3) / 3), //季度
     'S+': date.getMilliseconds(), //毫秒
-    'w+': '星期' + '日一二三四五六'.charAt(date.getDay()), //星期
+    'w+': '星期' + '日一二三四五六'.charAt(date.getDay()) //星期
   }
 
   if (/(y+)/.test(fmt)) {
@@ -167,7 +167,7 @@ export function param(json) {
     Object.keys(json).map((key) => {
       if (json[key] === undefined) return ''
       return encodeURIComponent(key) + '=' + encodeURIComponent(json[key])
-    }),
+    })
   ).join('&')
 }
 
@@ -397,7 +397,7 @@ export const beautifierConf = {
     indent_inner_html: true,
     comma_first: false,
     e4x: true,
-    indent_empty_lines: true,
+    indent_empty_lines: true
   },
   js: {
     indent_size: '2',
@@ -416,8 +416,8 @@ export const beautifierConf = {
     indent_inner_html: true,
     comma_first: false,
     e4x: true,
-    indent_empty_lines: true,
-  },
+    indent_empty_lines: true
+  }
 }
 
 // 首字母大小
@@ -447,7 +447,7 @@ export const pickerOptions = {
         const start = new Date()
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
         picker.$emit('pick', [start, end])
-      },
+      }
     },
     {
       text: '最近一个月',
@@ -456,7 +456,7 @@ export const pickerOptions = {
         const start = new Date()
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
         picker.$emit('pick', [start, end])
-      },
+      }
     },
     {
       text: '最近三个月',
@@ -465,9 +465,9 @@ export const pickerOptions = {
         const start = new Date()
         start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
         picker.$emit('pick', [start, end])
-      },
-    },
-  ],
+      }
+    }
+  ]
 }
 
 // echart图表配色规范
@@ -489,7 +489,7 @@ export const echartColors = [
   '#AAAFB7',
   '#DCD7B0',
   '#749E84',
-  '#B0BBDC',
+  '#B0BBDC'
 ]
 
 export function uuid(before = '', after = '') {
@@ -609,7 +609,7 @@ export const emotion = [
   '[街舞]',
   '[献吻]',
   '[左太极]',
-  '[右太极]',
+  '[右太极]'
 ]
 
 // 获取微信用户授权登录用户信息
@@ -640,7 +640,7 @@ export async function getWechatAuthUserInfo(appId) {
     let url = ''
     if (appId) {
       url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${encodeURIComponent(
-        local,
+        local
       )}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
     } else {
       url = (await getWxRedirect()).data
@@ -721,7 +721,7 @@ export function getIP() {
   // })
 
   return axios({
-    url: 'https://api.ipify.org/?format=json',
+    url: 'https://api.ipify.org/?format=json'
   }).then(({ data }) => data.ip || Promise.reject())
 }
 
@@ -742,7 +742,81 @@ export async function getProvinceCityTree() {
 // 判断是否为移动端
 export function isMobile() {
   let flag = navigator.userAgent.match(
-    /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i,
+    /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
   )
   return flag
+}
+
+export function setAttachments(list) {
+  let arr = []
+  if (list && list.length) {
+    list.forEach((dd) => {
+      if (dd.msgType === 'image') {
+        let obj = {
+          mediaType: '0',
+          materialUrl: dd.picUrl
+        }
+        arr.push(obj)
+      } else if (dd.msgType === 'video') {
+        let obj = {
+          mediaType: '2',
+          materialUrl: dd.fileUrl,
+          coverUrl: dd.picUrl,
+          digest: dd.description,
+          materialName: dd.title
+        }
+        arr.push(obj)
+      } else if (dd.msgType === 'file') {
+        let obj = {
+          mediaType: '3',
+          materialUrl: dd.fileUrl,
+          digest: dd.description,
+          materialName: dd.title
+        }
+        arr.push(obj)
+      } else if (dd.msgType === 'text') {
+        let obj = {
+          mediaType: '4',
+          content: dd.content
+        }
+        arr.push(obj)
+      } else if (dd.msgType === 'link') {
+        let obj = {
+          mediaType: '9',
+          content: dd.content,
+          coverUrl: dd.picUrl,
+          materialUrl: dd.linkUrl,
+          materialName: dd.title
+        }
+        arr.push(obj)
+      } else if (dd.msgType === 'miniprogram') {
+        let ff = {
+          mediaType: '11',
+          digest: dd.appId,
+          materialName: dd.title,
+          coverUrl: dd.picUrl,
+          materialUrl: dd.fileUrl
+        }
+        arr.push(ff)
+      } else if (dd.msgType === 'news') {
+        let ff = {
+          mediaType: '12',
+          digest: dd.description,
+          materialUrl: dd.fileUrl,
+          coverUrl: dd.picUrl,
+          content: dd.content,
+          materialName: dd.title
+        }
+        arr.push(ff)
+      } else if (dd.msgType === 'posters') {
+        let obj = {
+          mediaType: '5',
+          materialUrl: dd.fileUrl,
+          materialName: dd.title
+        }
+        arr.push(obj)
+      }
+    })
+  }
+  return arr
 }

@@ -109,14 +109,15 @@
                 <el-tag v-for="item in form.sendClientTagList" :key="item.tagId">{{ item.name }}</el-tag>
               </div>
               <div class="item-magin">
-                <div class="item-name">跟进状态</div>
+                <div class="item-name">商机阶段</div>
                 <el-select v-model="form.trackState">
                   <el-option label="全部" value=""></el-option>
-                  <el-option label="跟进中" :value="2"></el-option>
-                  <el-option label="待跟进" :value="1"></el-option>
-                  <el-option label="无意向" :value="4"></el-option>
-                  <el-option label="已成交" :value="3"></el-option>
-                  <el-option label="已流失" :value="5"></el-option>
+                  <el-option
+                    v-for="(item, index) in stageList"
+                    :key="index"
+                    :label="item.stageKey"
+                    :value="item.stageVal"
+                  ></el-option>
                 </el-select>
               </div>
             </div>
@@ -193,7 +194,8 @@
   import { add, getCustomerList } from '@/api/groupMessage'
   import { getMaterialMediaId } from '@/api/material'
   import PhoneDialog from '@/components/PhoneDialog'
-  //
+  import { getList } from '@/api/salesCenter/businessConver.js'
+
   import SelectTag from '@/components/SelectTag'
   import WelcomeDetail from '@/components/WelcomeContent.vue'
   import SelectCustomerGroup from '@/components/SelectCustomerGroup'
@@ -212,6 +214,7 @@
     props: {},
     data() {
       return {
+        stageList: [],
         currentActive: 1,
         loading: false,
         // 表单参数
@@ -327,8 +330,15 @@
         `
       )
     },
-    mounted() {},
+    mounted() {
+      this.getStage()
+    },
     methods: {
+      getStage() {
+        getList().then((res) => {
+          this.stageList = res.data
+        })
+      },
       parseTime(time, cFormat) {
         if (arguments.length === 0) {
           return null
