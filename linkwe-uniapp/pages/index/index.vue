@@ -54,15 +54,17 @@ export default {
       data: {},
       touchTypeDict,
       id: '',
+      promotionId: '',
       // qrCodeUrl: '',
     }
   },
   onLoad(options) {
     console.log('onLoad options', options)
     this.id = options.id
+    this.promotionId = options.promotionId
   },
   onReady() {
-    this.getDetail(this.id)
+    this.getDetail(this.id + (this.promotionId ? '/' + this.promotionId : ''))
   },
   created() {
     // let id = this.$route.query.id
