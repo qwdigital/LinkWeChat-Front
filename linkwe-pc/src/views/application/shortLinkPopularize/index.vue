@@ -53,12 +53,12 @@
             }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="taskStartTime" label="任务开始时间" align="center" width="145">
+        <el-table-column prop="taskStartTime" label="任务开始时间" align="center" width="150">
           <template #default="{ row }">
             {{ row.taskStartTime || '-' }}
           </template>
         </el-table-column>
-        <el-table-column prop="taskEndTime" label="任务结束时间" align="center" width="145">
+        <el-table-column prop="taskEndTime" label="任务结束时间" align="center" width="150">
           <template #default="{ row }">
             {{ row.taskEndTime || '-' }}
           </template>
@@ -106,7 +106,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="createBy" label="创建人" align="center"></el-table-column>
-        <el-table-column prop="updateTime" label="最近操作时间" align="center" width="145"></el-table-column>
+        <el-table-column prop="updateTime" label="最近操作时间" align="center" width="150"></el-table-column>
         <el-table-column label="操作" align="center" width="180" fixed="right">
           <template #default="{ row }">
             <el-button type="text" size="mini" @click="$router.push({ path: './detail', query: { id: row.id } })">
