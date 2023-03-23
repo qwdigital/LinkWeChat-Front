@@ -7,7 +7,7 @@
       <TextareaExtend
         :disabled="isDetail"
         v-model="talkForm.templateInfo"
-        :toolbar="['emoji', 'insertCustomerNickName']"
+        :toolbar="['emoji']"
         maxlength="2000"
         show-word-limit
         placeholder="请输入"
@@ -300,6 +300,9 @@
       baseData(val) {
         if (val.templateInfo) {
           this.form.templateInfo = val.templateInfo
+          console.log(222222)
+          console.log(val)
+          console.log(3333333)
           this.form.attachments = val.attachments
           if (this.form.templateInfo) {
             // this.form.templateInfo = this.baseData.templateInfo

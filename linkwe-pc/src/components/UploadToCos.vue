@@ -192,7 +192,7 @@
           this.aliOss()
         }
       },
-      aliOss() {
+      async aliOss() {
         this.loading = true
         let file = undefined
         if (!this.multiple || this.limit == 1) {
@@ -210,47 +210,44 @@
           return
         }
         let name = `/${dateFormat(date, 'yyyy-MM-dd')}/t${date.getTime()}-${uuid()}${format}`
-        this.ossObj
-          .multipartUpload(name, file, {
+        try {
+          const data = await this.ossObj.multipartUpload(name, file, {
             progress: (progressData) => {
               console.log(progressData)
               this.percentage = progressData.percent * 100
               this.speed = (progressData.speed / 1024 / 1024).toFixed(2)
             }
           })
-          .then((err1, data) => {
+          if (data) {
+            console.log(data)
             this.percentage = this.speed = 0
-            if (err1) {
-              this.loading = false
-              this.$message.error('上传失败，请稍后再试')
+            let location = 'https://' + data.Location
+            this.$emit('upSuccess', location)
+            this.type == 2
+              ? //获取视频第一帧画面
+                getVideoPic({ url: location }).then((res) => {
+                  this.loading = false
+                  this.$emit('getPicUrl', res.data.url)
+                })
+              : (this.loading = false)
+
+            // 使用本地链接提供预览，避免上传后下载的问题
+            let url = window.URL.createObjectURL(file)
+
+            let name = file.name
+            if (!this.multiple) {
+              this.fileUrlWatch = url
+              this.$emit('update:fileUrl', location)
+              this.$emit('update:fileName', (this.fileNameWatch = name))
             } else {
-              let location = 'https://' + data.Location
-              this.$emit('upSuccess', location)
-              this.type == 2
-                ? //获取视频第一帧画面
-                  getVideoPic({ url: location }).then((res) => {
-                    this.loading = false
-                    this.$emit('getPicUrl', res.data.url)
-                  })
-                : (this.loading = false)
-
-              // 使用本地链接提供预览，避免上传后下载的问题
-              let url = window.URL.createObjectURL(file)
-
-              let name = file.name
-              if (!this.multiple) {
-                this.fileUrlWatch = url
-                this.$emit('update:fileUrl', location)
-                this.$emit('update:fileName', (this.fileNameWatch = name))
-              } else {
-                this.fileListWatch = this.fileListWatch.concat({ name, url })
-                this.$emit('update:fileList', this.fileList.concat({ name, url: location }))
-              }
+              this.fileListWatch = this.fileListWatch.concat({ name, url })
+              this.$emit('update:fileList', this.fileList.concat({ name, url: location }))
             }
-          })
-          .catch((err) => {
-            console.log(err)
-          })
+          }
+        } catch (e) {
+          this.loading = false
+          this.$message.error('上传失败，请稍后再试')
+        }
       },
       tencentFn() {
         this.loading = true
@@ -290,7 +287,6 @@
           },
           (err1, data) => {
             this.percentage = this.speed = 0
-            console.log(data)
             if (err1) {
               this.loading = false
               this.$message.error('上传失败，请稍后再试')
