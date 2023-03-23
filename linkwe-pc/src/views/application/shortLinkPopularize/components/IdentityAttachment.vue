@@ -13,7 +13,7 @@
         placeholder="请输入"
         :autosize="{ minRows: 5, maxRows: 20 }"
         clearable
-        :autofocus="true"
+        :autofocus="false"
         @input="changeInfo"
       />
     </el-form-item>
@@ -300,9 +300,6 @@
       baseData(val) {
         if (val.templateInfo) {
           this.form.templateInfo = val.templateInfo
-          console.log(222222)
-          console.log(val)
-          console.log(3333333)
           this.form.attachments = val.attachments
           if (this.form.templateInfo) {
             // this.form.templateInfo = this.baseData.templateInfo

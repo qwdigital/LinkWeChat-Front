@@ -77,6 +77,7 @@
         form: {
           type: 0,
           group: {
+            contnet: '',
             type: 0,
             userIds: '',
             sendType: 0,
@@ -93,22 +94,22 @@
         if (this.form.attachments) {
           let arr = []
           this.form.attachments.forEach((dd) => {
-            if (dd.msgType == 'text') {
-              this.attachmentsData.templateInfo = dd.content
-            } else {
+            if (dd.msgType !== 'text') {
               arr.push(dd)
             }
           })
+          this.attachmentsData.templateInfo = this.form.client.content
           let data = setAttachments(arr)
           this.attachmentsData.attachments = data
           this.$emit('preview', {
-            templateInfo: this.attachmentsData.templateInfo,
             previewData: JSON.parse(JSON.stringify(this.attachmentsData.attachments))
           })
+          this.$emit('previewText', { templateInfo: JSON.parse(JSON.stringify(this.attachmentsData.templateInfo)) })
         }
         if (!this.form.group) {
           this.form.group = {
             type: 0,
+            content: '',
             userIds: '',
             sendType: 0,
             taskSendTime: '',

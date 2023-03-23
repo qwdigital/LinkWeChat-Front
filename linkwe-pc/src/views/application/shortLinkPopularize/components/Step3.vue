@@ -97,6 +97,7 @@
         baseData: {
           type: 0,
           client: {
+            content: '',
             type: 0,
             sex: null,
             trackState: null,
@@ -149,6 +150,7 @@
     methods: {
       getPreviewInfoText(data) {
         this.preview.templateInfo = data.templateInfo
+        this.$forceUpdate()
       },
       getPreviewInfo(data) {
         this.preview.previewData = JSON.parse(JSON.stringify(data.previewData))
@@ -350,7 +352,6 @@
         this.$emit('steps', step)
       },
       getData(data) {
-        console.log(data)
         this.baseData = data
         this.$emit('update', this.baseData)
       }
