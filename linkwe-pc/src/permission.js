@@ -1,11 +1,11 @@
 import router from './router'
 import store from './store'
 import { Message } from 'element-ui'
-// import NProgress from 'nprogress'
-// import 'nprogress/nprogress.css'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/auth'
 
-// NProgress.configure({ showSpinner: false })
+NProgress.configure({ showSpinner: true })
 
 const whiteList = ['/authRedirect', '/bind', '/test'] // 不管有没有token都可直接进入的页面路径
 const noLoginList = ['/login', '/register'] // 没有token才能进入的页面
@@ -24,7 +24,7 @@ function nextTo(to, next, isRpelace) {
   }
 }
 router.beforeEach((to, from, next) => {
-  // NProgress.start()
+  NProgress.start()
   // 无需检测token的， 不管有没有token都可直接进入
   if (whiteList.includes(to.path) || to.meta.isNoLogin) {
     next()
@@ -87,6 +87,6 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach(() => {
-  // NProgress.done()
+  NProgress.done()
   document.getElementById('loader-wrapper').className = 'loaded'
 })
