@@ -131,7 +131,6 @@
     created() {
       getCosConfig().then((res) => {
         this.cosConfig = res
-        console.log(this.cosConfig)
         if (this.cosConfig.fileObject == 'tencentOss') {
           this.cosInstance = new Cos({
             SecretId: res.secretId,
@@ -209,19 +208,17 @@
           this.$message.error('存储空间正忙，请稍后再试')
           return
         }
-        let name = `/${dateFormat(date, 'yyyy-MM-dd')}/t${date.getTime()}-${uuid()}${format}`
+        let name = `${dateFormat(date, 'yyyy-MM-dd')}/t${date.getTime()}-${uuid()}${format}`
         try {
           const data = await this.ossObj.multipartUpload(name, file, {
             progress: (progressData) => {
-              console.log(progressData)
-              this.percentage = progressData.percent * 100
-              this.speed = (progressData.speed / 1024 / 1024).toFixed(2)
+              this.percentage = progressData * 100
+              // this.speed = (progressData.speed / 1024 / 1024).toFixed(2)
             }
           })
           if (data) {
-            console.log(data)
             this.percentage = this.speed = 0
-            let location = 'https://' + data.Location
+            let location = this.cosConfig.cosImgUrlPrefix + data.name
             this.$emit('upSuccess', location)
             this.type == 2
               ? //获取视频第一帧画面
@@ -556,7 +553,7 @@
                 <circle cx="50" cy="50" r="20" fill="none" class="path"></circle>
               </svg>
             </div>
-            <div class="cc" style="margin-top: 35px;">
+            <div class="cc" style="margin-top: 35px;" v-if="speed">
               {{ speed + 'M/s' }}
             </div>
           </div>
