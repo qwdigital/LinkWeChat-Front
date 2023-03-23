@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@riophae/vue-treeselect": "0.4.0",
+    "ali-oss": "^6.17.1",
     "awesome-qr": "^2.0.1-rc.0",
     "axios": "^0.26.0",
     "benz-amr-recorder": "^1.1.3",
