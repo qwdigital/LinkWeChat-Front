@@ -12,7 +12,7 @@
         <TextareaExtend
           :disabled="isDetail"
           v-model="templateInfo"
-          :toolbar="isDetail ? '' : ['emoji']"
+          :toolbar="isDetail ? [] : ['emoji']"
           maxlength="2000"
           show-word-limit
           placeholder="请输入"

@@ -97,6 +97,7 @@
         baseData: {
           type: 0,
           client: {
+            content: '',
             type: 0,
             sex: null,
             trackState: null,
@@ -108,7 +109,7 @@
             taskSendTime: '',
             taskEndTime: ''
           },
-          attachmentsList: [],
+          attachments: [],
           senderList: []
         },
         submitLoading: false,
@@ -125,11 +126,11 @@
       },
       data: {
         type: Object,
-        default: () => []
+        default: {}
       },
       posterObj: {
         type: Object,
-        default: () => []
+        default: {}
       }
     },
     watch: {
@@ -149,9 +150,10 @@
     methods: {
       getPreviewInfoText(data) {
         this.preview.templateInfo = data.templateInfo
+        this.$forceUpdate()
       },
       getPreviewInfo(data) {
-        this.preview = data
+        this.preview.previewData = JSON.parse(JSON.stringify(data.previewData))
         if (this.baseData.style == 1) {
           this.preview.previewData.unshift({
             mediaType: '5',

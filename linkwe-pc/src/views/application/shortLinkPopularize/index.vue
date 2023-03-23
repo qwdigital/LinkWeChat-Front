@@ -258,6 +258,12 @@
     },
     created() {
       this.getList()
+      this.$store.dispatch(
+        'app/setBusininessDesc',
+        `
+        <div>通过群发、朋友圈、应用消息等多种推广形式快捷推广智能短链，触达客户</div>
+      `
+      )
     }
   }
 </script>

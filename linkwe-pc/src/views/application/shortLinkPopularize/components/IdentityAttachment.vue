@@ -7,7 +7,7 @@
       <TextareaExtend
         :disabled="isDetail"
         v-model="talkForm.templateInfo"
-        :toolbar="['emoji', 'insertCustomerNickName']"
+        :toolbar="isDetail ? [] : ['emoji']"
         maxlength="2000"
         show-word-limit
         placeholder="请输入"

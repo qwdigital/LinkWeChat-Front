@@ -73,11 +73,11 @@
           templateInfo: '',
           attachments: []
         },
-        previewData: [],
         form: {
           type: 0,
           client: {
             type: 0,
+            content: '',
             sex: null,
             trackState: null,
             addBeginTime: '',
@@ -98,23 +98,23 @@
         if (this.form.attachments) {
           let arr = []
           this.form.attachments.forEach((dd) => {
-            if (dd.msgType == 'text') {
-              this.attachmentsData.templateInfo = dd.content
-            } else {
+            if (dd.msgType !== 'text') {
               arr.push(dd)
             }
           })
+          this.attachmentsData.templateInfo = this.form.client.content
           let data = setAttachments(arr)
           this.attachmentsData.attachments = data
           this.$emit('preview', {
-            templateInfo: this.attachmentsData.templateInfo,
             previewData: JSON.parse(JSON.stringify(this.attachmentsData.attachments))
           })
+          this.$emit('previewText', { templateInfo: JSON.parse(JSON.stringify(this.attachmentsData.templateInfo)) })
         }
         if (!this.form.client) {
           this.form.client = {
             type: 0,
             sex: '',
+            content: '',
             trackState: '',
             addBeginTime: '',
             addEndTime: '',
@@ -132,12 +132,12 @@
       },
       changeInfo(data) {
         this.form.client.content = data
+        this.$forceUpdate()
         this.$emit('update', this.form)
-        this.$emit('previewText', { templateInfo: data, previewData: this.previewData })
+        this.$emit('previewText', { templateInfo: data })
       },
       getPhoneData(data) {
-        this.previewData = data
-        this.$emit('preview', { templateInfo: this.attachmentsData.templateInfo, previewData: data })
+        this.$emit('preview', { previewData: data })
       },
       getAttentment(data) {
         this.form.attachments = data
