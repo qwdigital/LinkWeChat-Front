@@ -7,13 +7,13 @@
       <TextareaExtend
         :disabled="isDetail"
         v-model="talkForm.templateInfo"
-        :toolbar="['emoji']"
+        :toolbar="isDetail ? [] : ['emoji']"
         maxlength="2000"
         show-word-limit
         placeholder="请输入"
         :autosize="{ minRows: 5, maxRows: 20 }"
         clearable
-        :autofocus="false"
+        :autofocus="true"
         @input="changeInfo"
       />
     </el-form-item>

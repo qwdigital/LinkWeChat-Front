@@ -108,7 +108,7 @@
             taskSendTime: '',
             taskEndTime: ''
           },
-          attachmentsList: [],
+          attachments: [],
           senderList: []
         },
         submitLoading: false,
@@ -125,11 +125,11 @@
       },
       data: {
         type: Object,
-        default: () => []
+        default: {}
       },
       posterObj: {
         type: Object,
-        default: () => []
+        default: {}
       }
     },
     watch: {
@@ -151,7 +151,7 @@
         this.preview.templateInfo = data.templateInfo
       },
       getPreviewInfo(data) {
-        this.preview = data
+        this.preview.previewData = JSON.parse(JSON.stringify(data.previewData))
         if (this.baseData.style == 1) {
           this.preview.previewData.unshift({
             mediaType: '5',
@@ -350,6 +350,7 @@
         this.$emit('steps', step)
       },
       getData(data) {
+        console.log(data)
         this.baseData = data
         this.$emit('update', this.baseData)
       }

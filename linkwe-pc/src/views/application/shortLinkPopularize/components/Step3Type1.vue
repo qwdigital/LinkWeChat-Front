@@ -73,7 +73,6 @@
           templateInfo: '',
           attachments: []
         },
-        previewData: [],
         form: {
           type: 0,
           client: {
@@ -100,6 +99,7 @@
           this.form.attachments.forEach((dd) => {
             if (dd.msgType == 'text') {
               this.attachmentsData.templateInfo = dd.content
+              this.$forceUpdate()
             } else {
               arr.push(dd)
             }
@@ -133,11 +133,10 @@
       changeInfo(data) {
         this.form.client.content = data
         this.$emit('update', this.form)
-        this.$emit('previewText', { templateInfo: data, previewData: this.previewData })
+        this.$emit('previewText', { templateInfo: data })
       },
       getPhoneData(data) {
-        this.previewData = data
-        this.$emit('preview', { templateInfo: this.attachmentsData.templateInfo, previewData: data })
+        this.$emit('preview', { previewData: data })
       },
       getAttentment(data) {
         this.form.attachments = data
