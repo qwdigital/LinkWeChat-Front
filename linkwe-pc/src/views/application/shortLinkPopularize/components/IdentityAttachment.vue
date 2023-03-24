@@ -301,11 +301,11 @@
         if (val.templateInfo) {
           this.form.templateInfo = val.templateInfo
           this.form.attachments = val.attachments
-          if (this.form.templateInfo) {
-            // this.form.templateInfo = this.baseData.templateInfo
-            this.talkForm = this.form
-            this.talkList = this.form.attachments
-          }
+          // if (this.form.templateInfo) {
+          // this.form.templateInfo = this.baseData.templateInfo
+          this.talkForm = this.form
+          this.talkList = this.form.attachments
+          // }
           this.$forceUpdate()
         }
       },
@@ -342,6 +342,9 @@
         let arr = []
         this.talkList.forEach((item) => {
           let attachments = {}
+          attachments.title = item.materialName
+          attachments.realType = +item.mediaType
+          attachments.materialId = item.id //素材
           switch (item.mediaType) {
             case '0':
               // 图片
@@ -353,7 +356,6 @@
               attachments.picUrl = item.coverUrl
               attachments.fileUrl = item.materialUrl
               attachments.description = item.digest
-              attachments.title = item.materialName
               attachments.msgType = 'video'
               break
             case '3':
@@ -361,7 +363,6 @@
               attachments.picUrl = this.filPicType(item.materialUrl)
               attachments.fileUrl = item.materialUrl
               attachments.description = item.digest
-              attachments.title = item.materialName
               attachments.msgType = 'file'
               break
             case '4':
@@ -379,15 +380,16 @@
               attachments.content = item.content
               attachments.picUrl = item.coverUrl
               attachments.linkUrl = item.materialUrl
-              attachments.title = item.materialName
               attachments.msgType = 'link'
+              if (this.otherType === 3) {
+                attachments.materialName = item.materialName
+              }
               break
             case '11':
               // 小程序
               attachments.picUrl = item.coverUrl
               attachments.fileUrl = item.materialUrl
               attachments.appId = item.digest
-              attachments.title = item.materialName
               attachments.msgType = 'miniprogram'
               break
             case '12':
@@ -396,7 +398,6 @@
               attachments.description = item.digest
               attachments.content = item.content
               attachments.picUrl = item.coverUrl
-              attachments.title = item.materialName
               attachments.msgType = 'news'
               break
           }
