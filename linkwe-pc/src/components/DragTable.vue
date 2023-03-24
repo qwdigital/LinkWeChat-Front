@@ -154,7 +154,7 @@
           <el-button type="text" @click="edit(scope.row)" v-if="scope.row.moduleType != 1"
             >编辑</el-button
           >
-          <el-button type="text" @click="remove(scope.row.id)">移除</el-button>
+          <el-button type="text" @click="remove(scope.row.delId)">移除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -184,6 +184,9 @@ export default {
     tableData2: {
       handler(val) {
         this.tableData = JSON.parse(JSON.stringify(val))
+        this.tableData.forEach((item, index) => {
+          item.delId = index
+        })
       },
       immediate: true,
     },
@@ -235,9 +238,9 @@ export default {
     edit(row) {
       this.$emit('getEdit', row)
     },
-    remove(id) {
+    remove(delId) {
       this.tableData = this.tableData.filter((item) => {
-        return item.id != id
+        return item.delId != delId
       })
       this.$emit('setData', this.tableData)
     },

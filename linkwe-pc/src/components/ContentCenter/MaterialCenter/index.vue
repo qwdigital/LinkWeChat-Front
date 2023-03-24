@@ -9,30 +9,45 @@
       width="80%"
       append-to-body
       :close-on-click-modal="false"
-      @close="dialogClose">
+      @close="dialogClose"
+    >
       <el-tabs v-model="activeName" @tab-click="tabClick">
         <el-tab-pane
           v-for="(item, index) in paneList"
           :key="index"
           :label="item.label + '(' + item.list.length + ')'"
-          :name="item.name">
+          :name="item.name"
+        >
           <MaPage ref="page" :type="item.type" v-slot="{ list }">
             <div v-if="item.type === '0'">
               <div v-if="list && list.length">
                 <el-checkbox-group v-model="paneList[picindex].list" class="imgStyle">
-                  <div class="imgItem" v-for="(item, index) in list" :key="index">
+                  <div
+                    class="imgItem"
+                    v-for="(item, index) in list"
+                    :key="index"
+                    @click="changeBox($event, item)"
+                  >
                     <div class="checkboxStyle">
-                      <el-checkbox :label="item" @change="changeBox" style="width: 20px"></el-checkbox>
+                      <el-checkbox
+                        :label="item"
+                        style="width: 20px"
+                        :checked="item.isCheck"
+                      ></el-checkbox>
                       <el-tooltip
                         :content="item.materialName"
                         placement="top"
-                        :disabled="item.materialName ? item.materialName.length < 6 : true">
+                        :disabled="item.materialName ? item.materialName.length < 6 : true"
+                      >
                         <div class="title ml10">
                           {{ coverContent(item.materialName, 6) }}
                         </div>
                       </el-tooltip>
                     </div>
-                    <div class="img" :style="{ 'background-image': 'url(' + item.materialUrl + ')' }"></div>
+                    <div
+                      class="img"
+                      :style="{ 'background-image': 'url(' + item.materialUrl + ')' }"
+                    ></div>
                   </div>
                 </el-checkbox-group>
               </div>
@@ -40,7 +55,14 @@
                 <span>暂无数据</span>
               </div>
             </div>
-            <el-table :data="list" @selection-change="handleSelectionChange" ref="multipleTable" v-else>
+            <el-table
+              :data="list"
+              @selection-change="handleSelectionChange"
+              ref="multipleTable"
+              @select="handleSelect"
+              @select-all="selectAll"
+              v-else
+            >
               <el-table-column type="selection" width="50" align="center" />
               <el-table-column label="素材" align="left">
                 <template slot-scope="{ row }">
@@ -123,6 +145,7 @@ export default {
       opened: ['text'],
       ids: [], // 选中数组
       itemArry: [], // 选中数组
+      inx: 0,
     }
   },
   methods: {
@@ -164,7 +187,8 @@ export default {
         item.list = []
       })
     },
-    changeBox() {
+    changeBox(event, obj) {
+      event.preventDefault()
       this.ids = []
       this.paneList.forEach((item) => {
         if (item.list && item.list.length) {
@@ -173,9 +197,32 @@ export default {
           })
         }
       })
-      if (this.ids.length + this.talkListLength > this.maxlength) {
-        this.$message.error('最多新建或选择' + this.maxlength + '个素材')
+      if (
+        (this.ids.length + this.talkListLength > this.maxlength ||
+          this.ids.length + this.talkListLength === this.maxlength) &&
+        !obj.isCheck
+      ) {
+        this.$message.error(
+          '最多新建或选择' + this.maxlength + '个素材,已新建' + this.talkListLength + '个素材'
+        )
+        return
       }
+      obj.isCheck = !obj.isCheck
+      if (obj.isCheck) {
+        this.paneList[this.picindex].list.push(obj)
+      } else {
+        this.paneList[this.picindex].list = this.paneList[this.picindex].list.filter((list) => {
+          return list.id !== obj.id
+        })
+      }
+      this.ids = []
+      this.paneList.forEach((item) => {
+        if (item.list && item.list.length) {
+          item.list.forEach((item1) => {
+            this.ids.push(item1)
+          })
+        }
+      })
     },
     centerCancel() {
       this.dialogVisibel = false
@@ -210,13 +257,29 @@ export default {
         this.clearPaneList()
       }
     },
+    handleSelect(select, row) {
+      if (1 + this.ids.length + this.talkListLength > this.maxlength) {
+        this.$nextTick(() => {
+          if (this.index) this.$refs.multipleTable[this.inx].toggleRowSelection(row, false)
+        })
+        this.$message.error(
+          '最多新建或选择' + this.maxlength + '个素材,已新建' + this.talkListLength + '个素材'
+        )
+      }
+    },
+    selectAll(select) {
+      if (select.length + this.ids.length + this.talkListLength > this.maxlength) {
+        select.forEach((item) => {
+          this.$refs.multipleTable[this.inx].toggleAllSelection(item, false)
+        })
+        this.$message.error(
+          '最多新建或选择' + this.maxlength + '个素材,已新建' + this.talkListLength + '个素材'
+        )
+      }
+    },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      // this.ids = selection.map((item) => item.id)
-      // this.paneList[this.index].ids = selection.map((item) => item.id)
-      if (selection.length + this.talkListLength > this.maxlength) {
-        this.$message.error('最多新建或选择' + this.maxlength + '个素材')
-      }
+      let list = JSON.parse(JSON.stringify(this.paneList[this.index].list))
       this.paneList[this.index].list = selection
       this.ids = []
       this.paneList.forEach((item) => {
@@ -226,6 +289,17 @@ export default {
           })
         }
       })
+      if (this.ids.length + this.talkListLength > this.maxlength) {
+        this.paneList[this.index].list = list
+        this.ids = []
+        this.paneList.forEach((item) => {
+          if (item.list && item.list.length) {
+            item.list.forEach((item1) => {
+              this.ids.push(item1)
+            })
+          }
+        })
+      }
     },
     // 处理文件类型
     filType(file) {
@@ -244,6 +318,18 @@ export default {
     },
     tabClick(v) {
       this.index = v.index
+      if (this.index !== 0) {
+        this.inx = this.index - 1
+      } else {
+        this.inx = this.index
+      }
+      // if (this.picindex === 0) {
+      //   // 不包含文本
+      //   this.inx = this.index - 1
+      // } else if (this.picindex === 1) {
+      //   // 包含文本
+
+      // }
     },
   },
 }

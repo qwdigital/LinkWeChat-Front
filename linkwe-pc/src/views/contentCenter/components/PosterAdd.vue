@@ -801,7 +801,7 @@ export default {
         case 'qrcode':
           if (type === 'qrcode') {
             options.type = 'image'
-          } else  {
+          } else {
             options.type = type
           }
 
@@ -922,6 +922,20 @@ export default {
             i++
           }
           form.moduleType = this.moduleType
+          if (this.activeLiveCodeType) {
+            let customType = {
+              text: 1,
+              image: 2,
+              qrcode: 3,
+              ygcode: 4,
+              kqcode: 5,
+              mdcoed: 6,
+              skcode: 7,
+              lxcode: 8,
+            }[this.activeLiveCodeType]
+            form.posterQrType = customType
+          }
+
           ;(form.id ? updatePoster : addPoster)(
             Object.assign(
               {

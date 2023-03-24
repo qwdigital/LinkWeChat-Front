@@ -1,14 +1,31 @@
 <template>
   <div>
-    <el-form inline label-position="right" :model="query" label-width="170px" ref="queryForm" class="top-search">
+    <el-form
+      inline
+      label-position="right"
+      :model="query"
+      label-width="170px"
+      ref="queryForm"
+      class="top-search"
+    >
       <el-form-item label="红包状态" prop="status">
         <el-select clearable v-model="query.status" placeholder="请选择">
-          <el-option v-for="(item, key) in dictStatusType" :key="key" :label="item" :value="key"></el-option>
+          <el-option
+            v-for="(item, key) in dictStatusType"
+            :key="key"
+            :label="item"
+            :value="key"
+          ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="发送场景" prop="sceneType">
         <el-select clearable v-model="query.sceneType" placeholder="请选择">
-          <el-option v-for="(item, key) in dictSendSence" :key="key" :label="item" :value="key"></el-option>
+          <el-option
+            v-for="(item, key) in dictSendSence"
+            :key="key"
+            :label="item"
+            :value="key"
+          ></el-option>
         </el-select>
       </el-form-item>
       <!-- <el-form-item label="创建人" prop="createBy">
@@ -39,7 +56,9 @@
       <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column fixed width="200" label="红包" align="center" prop="name">
-          <div class="red-packet-message" slot-scope="{ row }">{{ row.name }}</div>
+          <div class="red-packet-message" slot-scope="{ row }">
+            <div class="red-packet-text">{{ row.name }}</div>
+          </div>
         </el-table-column>
         <el-table-column label="红包金额(元)" align="center" prop="money" />
         <el-table-column label="发送次数" align="center" prop="sendTimes" />
@@ -53,8 +72,19 @@
             <div>{{ dictStatusType[row.status] }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="最近更新时间" align="center" width="180" prop="createTime"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="180" class-name="small-padding fixed-width">
+        <el-table-column
+          label="最近更新时间"
+          align="center"
+          width="180"
+          prop="createTime"
+        ></el-table-column>
+        <el-table-column
+          fixed="right"
+          label="操作"
+          align="center"
+          width="180"
+          class-name="small-padding fixed-width"
+        >
           <template slot-scope="{ row }">
             <el-button type="text" @click="edit(row)">编辑</el-button>
             <el-button type="text" @click="startOrStop(row)">
@@ -66,17 +96,34 @@
       </el-table>
       <div class="bottom">
         <div style="align-self: flex-end">
-          <el-button type="primary" :disabled="selectedIds.length == 0" plain size="mini" @click="remove(null)">
+          <el-button
+            type="primary"
+            :disabled="selectedIds.length == 0"
+            plain
+            size="mini"
+            @click="remove(null)"
+          >
             批量删除
           </el-button>
         </div>
-        <pagination :total="total" :page.sync="query.pageNum" :limit.sync="query.pageSize" @pagination="getList()" />
+        <pagination
+          :total="total"
+          :page.sync="query.pageNum"
+          :limit.sync="query.pageSize"
+          @pagination="getList()"
+        />
       </div>
     </div>
 
     <!-- 新建红包 -->
     <el-dialog title="新建红包" :visible.sync="addDialogVisible" :close-on-click-modal="false">
-      <el-form ref="addForm" :model="addForm" :rules="addRules" label-position="right" label-width="120px">
+      <el-form
+        ref="addForm"
+        :model="addForm"
+        :rules="addRules"
+        label-position="right"
+        label-width="120px"
+      >
         <el-form-item label="红包金额(元)" prop="money">
           <el-input-number
             placeholder="请输入"
@@ -84,7 +131,8 @@
             :precision="2"
             :step="0.1"
             :max="200"
-            :min="1"></el-input-number>
+            :min="1"
+          ></el-input-number>
           <div class="sub-des">精确到小数点后两位，可输入1~200</div>
         </el-form-item>
         <el-form-item label="发送场景" prop="sceneType">
@@ -96,10 +144,19 @@
           <div class="sub-des">发送客户群时支持选择拼手气红包或普通金额相同红包</div>
         </el-form-item>
         <el-form-item label="红包名称" prop="name">
-          <el-input type="text" placeholder="请输入红包名称" v-model="addForm.name" maxlength="16"></el-input>
+          <el-input
+            type="text"
+            placeholder="请输入红包名称"
+            v-model="addForm.name"
+            maxlength="16"
+          ></el-input>
         </el-form-item>
         <el-form-item label="预览">
-          <div class="red-packet-message">{{ addForm.name || '红包名称' }}</div>
+          <div class="red-packet-message">
+            <div class="red-packet-text">
+              {{ addForm.name || '红包名称' }}
+            </div>
+          </div>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -110,7 +167,13 @@
 
     <!-- 限额设置 -->
     <el-dialog title="限额设置" :visible.sync="limitDialogVisible" :close-on-click-modal="false">
-      <el-form ref="limitForm" :model="limitForm" :rules="limitRules" label-position="right" label-width="180px">
+      <el-form
+        ref="limitForm"
+        :model="limitForm"
+        :rules="limitRules"
+        label-position="right"
+        label-width="180px"
+      >
         <el-form-item label="单日付款总额(元)" prop="singleDayPay">
           <el-input-number
             v-model="limitForm.singleDayPay"
@@ -118,12 +181,16 @@
             :precision="2"
             :step="0.1"
             :min="0"
-            :max="1000000"></el-input-number>
+            :max="1000000"
+          ></el-input-number>
           <!-- <el-input v-model="limitForm.singleDayPay" placeholder="请输入金额"></el-input> -->
           <div class="sub-des">精确到小数点后两位，不超过100万元</div>
         </el-form-item>
         <el-form-item label="单日每客户收红包次数" prop="singleCustomerReceiveNum">
-          <el-input v-model="limitForm.singleCustomerReceiveNum" placeholder="请输入次数"></el-input>
+          <el-input
+            v-model="limitForm.singleCustomerReceiveNum"
+            placeholder="请输入次数"
+          ></el-input>
           <div class="sub-des">输入 1-10 的正整数</div>
         </el-form-item>
         <el-form-item label="单日每客户收红包总额" prop="singleCustomerReceiveMoney">
@@ -132,7 +199,8 @@
             :precision="2"
             :step="0.1"
             :min="0"
-            :max="1000"></el-input-number>
+            :max="1000"
+          ></el-input-number>
           <!-- <el-input v-model="limitForm.singleCustomerReceiveMoney" placeholder="请输入金额"></el-input> -->
           <div class="sub-des">精确到小数点后两位，不超过1000元</div>
         </el-form-item>
@@ -146,7 +214,14 @@
 </template>
 
 <script>
-import { getList, startOrStop, addOrUpdate, remove, getLimit, setLimit } from '@/api/redPacketTool/enterprisePacket'
+import {
+  getList,
+  startOrStop,
+  addOrUpdate,
+  remove,
+  getLimit,
+  setLimit,
+} from '@/api/redPacketTool/enterprisePacket'
 import col from '@/utils/calculation'
 function validateAmount(rule, value, callback) {
   if (value == '') {
@@ -155,7 +230,12 @@ function validateAmount(rule, value, callback) {
   }
 
   value = Number(value)
-  if (Number.isNaN(value) || value < 0.01 || value > 1e6 || !Number.isInteger(col.accMul(value, 100))) {
+  if (
+    Number.isNaN(value) ||
+    value < 0.01 ||
+    value > 1e6 ||
+    !Number.isInteger(col.accMul(value, 100))
+  ) {
     callback('请输入0.01-1000000的数字，精确到小数点后两位')
   } else {
     callback()
@@ -169,7 +249,12 @@ function validateAmount1(rule, value, callback) {
 
   value = Number(value)
   console.log(col.accMul(value, 100))
-  if (Number.isNaN(value) || value < 0.01 || value > 200 || !Number.isInteger(col.accMul(value, 100))) {
+  if (
+    Number.isNaN(value) ||
+    value < 0.01 ||
+    value > 200 ||
+    !Number.isInteger(col.accMul(value, 100))
+  ) {
     callback('请输入0.01-200.00的数字，精确到小数点后两位')
   } else {
     callback()
@@ -182,7 +267,12 @@ function validateClientReceiveNum(rule, value, callback) {
   }
 
   // value = Number(value)
-  if (Number.isNaN(Number(value)) || Number(value) < 1 || Number(value) > 10 || value.toString().indexOf('.') > -1) {
+  if (
+    Number.isNaN(Number(value)) ||
+    Number(value) < 1 ||
+    Number(value) > 10 ||
+    value.toString().indexOf('.') > -1
+  ) {
     callback('请输入 1-10 的正整数')
   } else {
     callback()
@@ -244,7 +334,7 @@ export default {
       'app/setBusininessDesc',
       `
         <div>用于快捷创建企业红包模板，便于员工通过侧边栏快捷发送红包</div>
-      `,
+      `
     )
   },
   methods: {
@@ -354,11 +444,18 @@ export default {
   text-align: left;
   width: 175px;
   height: 75px;
-  padding: 12px 0 0 50px;
+  padding: 20px 10px 0 54px;
   color: #fff;
   line-height: 1.15;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 500;
-  background: url('../../assets/image/red-packet-1.png') 0 0/100% 100% no-repeat;
+  background: url('../../assets/image/newred1.png') 0 0/100% 100% no-repeat;
+  .red-packet-text {
+    width: 100%;
+    height: 30px;
+    overflow: hidden;
+    white-space: nowrap; // 强制一行
+    text-overflow: ellipsis; // 文字溢出显示省略号
+  }
 }
 </style>

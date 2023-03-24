@@ -104,7 +104,8 @@
                 <svg-icon
                   class="icon-style"
                   :iconClass="data.materialUrl ? filType(data.materialUrl) : ''"
-                  v-if="data.materialUrl"></svg-icon>
+                  v-if="data.materialUrl"
+                ></svg-icon>
               </div>
             </div>
           </div>
@@ -122,6 +123,32 @@
               <div>
                 <img :src="data.materialUrl" v-if="data.materialUrl && data.materialUrl != ''" />
                 <svg-icon class="icon-style" iconClass="pic" v-else></svg-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 拉新 -->
+      <div class="item" v-if="pullnewsInfo">
+        <div class="avatar222"><img src="../../assets/drainageCode/header.png" /></div>
+        <!-- 红包 -->
+        <div class="redBox" v-if="pullnewsInfo.qrType === 1">
+          <div class="red-box">
+            <div class="red-text">
+              {{ pullnewsInfo.materialName }}
+            </div>
+          </div>
+        </div>
+        <!-- 卡券 -->
+        <div class="msg" v-else-if="pullnewsInfo.qrType === 2">
+          <div class="function">
+            <div class="function-item">
+              <svg-icon class="card-style" iconClass="card"></svg-icon>
+              <div>
+                <div class="card-name">{{ pullnewsInfo.materialName }}</div>
+                <div class="item-text">
+                  {{ pullnewsInfo.digest }}
+                </div>
               </div>
             </div>
           </div>
@@ -161,6 +188,11 @@ export default {
       type: String,
       default: null,
     },
+    // 新客拉新
+    pullnewsInfo: {
+      type: Object,
+      default: null,
+    },
   },
   watch: {
     list: {
@@ -196,6 +228,65 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.redBox {
+  min-height: 26px;
+  display: inline-block;
+  box-sizing: border-box;
+  word-break: break-all;
+  margin-left: 5px;
+  .red-box {
+    width: 165px;
+    height: 68px;
+    background-image: url('../../assets/image/newred.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    padding-top: 20px;
+    border-radius: 4px;
+    .red-text {
+      font-size: 14px;
+      color: #fff;
+      margin-left: 56px;
+      width: 98px;
+      white-space: nowrap; // 强制一行
+      text-overflow: ellipsis; // 文字溢出显示省略号
+      overflow: hidden; // 溢出隐藏
+    }
+  }
+}
+.function {
+  width: 160px;
+  .function-item {
+    width: 160px;
+    min-height: 76px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(242, 242, 242, 1);
+    border-radius: 5px;
+    display: flex;
+    padding: 10px;
+    padding-top: 6px;
+    cursor: pointer;
+    .card-style {
+      margin-right: 10px;
+      margin-top: 8px;
+      font-size: 32px;
+    }
+    .card-name {
+      font-size: 14px;
+      line-height: 26px;
+      width: 98px;
+      white-space: nowrap; // 强制一行
+      text-overflow: ellipsis; // 文字溢出显示省略号
+      overflow: hidden; // 溢出隐藏
+    }
+    .item-text {
+      font-size: 12px;
+      color: #aaaaaa;
+      line-height: 14px;
+      width: 98px;
+    }
+  }
+}
 .icon-style {
   width: 40px;
   height: 40px;
@@ -216,7 +307,6 @@ export default {
     left: 50%;
     transform: translateX(-50%);
     font-size: 14px;
-
     font-weight: 400;
     width: 60%;
     color: #333333;
