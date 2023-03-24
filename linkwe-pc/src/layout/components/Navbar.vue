@@ -29,14 +29,13 @@
            </div>
        </el-popover> -->
 
-        <el-tooltip content="企业微信-管理后台" effect="dark" placement="bottom">
+        <!-- <el-tooltip content="企业微信-管理后台" effect="dark" placement="bottom">
           <div class="right-menu-item hover-effect">
             <svg-icon
               class="right-icon"
               iconClass="qiyeweixin"
               style="color: #0082f0"
               @click="goto('https://work.weixin.qq.com/wework_admin/loginpage_wx?from=myhome_baidu')"></svg-icon>
-            <!-- <img @click="goto()" style="height:20px;width:24px;margin-top:4px;" src="@/assets/image/wechat-logo.png"></img> -->
           </div>
         </el-tooltip>
         <el-tooltip content="源码地址" effect="dark" placement="bottom">
@@ -71,7 +70,7 @@
               class="el-icon-data-board right-icon"
               @click="goto('https://docs.qq.com/sheet/DZWxGU0JGVFRVdWZV?tab=BB08J2')"></i>
           </div>
-        </el-tooltip>
+        </el-tooltip> -->
 
         <!-- <screenfull id="screenfull" class="right-menu-item hover-effect" /> -->
       </template>
@@ -95,6 +94,19 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+
+    <el-popover placement="left" title="" trigger="hover">
+      <div slot="reference" class="contact-us">
+        <svg-icon
+          class="contact-us-icon cc"
+          icon-class="wechat"
+          @click="goto('https://gitee.com/LinkWeChat/link-wechat')" />
+      </div>
+      <div class="ac">
+        <img :src="lwConfig.QRCODE_CONTACT_US" class="contact-code" alt="" />
+        <div class="nav-li">微信扫码咨询</div>
+      </div>
+    </el-popover>
   </div>
 </template>
 
@@ -294,4 +306,33 @@ export default {
 //     }
 //   }
 // }
+
+.contact-us {
+  position: fixed;
+  top: 60%;
+  width: 100px;
+  height: 100px;
+  z-index: 9;
+  right: 28px;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(225deg, var(--color-sub) 0%, var(--color) 100%);
+  box-shadow: 0px 4px 20px 0px rgba(28, 49, 111, 0.1);
+  border-radius: 50%;
+  // background: #fff;
+  // color: var(--color);
+  .contact-us-icon {
+    color: #fff;
+    // color: inherit;
+    font-size: 30px;
+  }
+  // &:hover {
+  //   color: #fff;
+  //   background: linear-gradient(225deg, var(--color-sub) 0%, var(--color) 100%);
+  //   transition: all 0.3s;
+  // }
+}
+.contact-code {
+  width: 118px;
+}
 </style>

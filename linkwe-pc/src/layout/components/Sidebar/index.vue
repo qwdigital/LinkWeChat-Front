@@ -17,17 +17,53 @@
     </el-scrollbar>
 
     <div class="card">
-      <div class="">{{ lwConfig.SYSTEM_NAME }}</div>
-      <div class="info mt10 mb5">版本: 全功能v4最新版</div>
-      <!-- <div class="info">期限: 本世纪末</div> -->
-      <div class="mt10 mb10">欢迎您登陆本系统</div>
-      <el-popover placement="top" title="" width="80" trigger="hover">
-        <el-button slot="reference" type="default" plain>联系客服</el-button>
-        <div class="ac">
-          <img :src="lwConfig.QRCODE_CONTACT_US" class="contact-code" alt="" />
-          <div class="nav-li">微信扫码咨询</div>
+      <el-tooltip content="文档手册" effect="dark" placement="top">
+        <div class="card-item">
+          <svg-icon
+            class="right-icon"
+            iconClass="custom-document"
+            @click="goto('https://www.yuque.com/linkwechat/help')"></svg-icon>
         </div>
-      </el-popover>
+      </el-tooltip>
+
+      <el-tooltip content="功能清单" effect="dark" placement="top">
+        <div class="card-item">
+          <svg-icon
+            class="right-icon"
+            iconClass="custom-read"
+            @click="goto('https://docs.qq.com/sheet/DZW9HSHpHdWlOYWh2?tab=BB08J3')"></svg-icon>
+        </div>
+      </el-tooltip>
+
+      <el-tooltip content="需求墙" effect="dark" placement="top">
+        <div class="card-item">
+          <svg-icon
+            class="right-icon"
+            iconClass="custom-tickets"
+            @click="goto('https://docs.qq.com/sheet/DZWxGU0JGVFRVdWZV?tab=BB08J2')"></svg-icon>
+        </div>
+      </el-tooltip>
+
+      <el-tooltip content="企业微信-管理后台" effect="dark" placement="top">
+        <div class="card-item">
+          <svg-icon
+            class="right-icon"
+            iconClass="custom-qiyeweixin"
+            @click="goto('https://work.weixin.qq.com/wework_admin/loginpage_wx?from=myhome_baidu')"></svg-icon>
+        </div>
+      </el-tooltip>
+
+      <el-tooltip content="LinkWeChat官网" effect="dark" placement="top">
+        <div class="card-item">
+          <svg-icon class="right-icon" icon-class="custom-linkWeChat" @click="goto('https://www.linkwechat.net/')" />
+        </div>
+      </el-tooltip>
+
+      <el-tooltip content="源码地址" effect="dark" placement="top">
+        <div class="card-item">
+          <svg-icon class="right-icon" icon-class="gitee" @click="goto('https://gitee.com/LinkWeChat/link-wechat')" />
+        </div>
+      </el-tooltip>
     </div>
   </div>
 </template>
@@ -101,9 +137,9 @@ export default {
     display: none;
   }
 
-  .svg-icon {
-    margin-right: 16px;
-  }
+  // .svg-icon {
+  //   margin-right: 16px;
+  // }
 
   .el-menu {
     border: none;
@@ -208,22 +244,28 @@ export default {
 }
 
 .card {
-  color: #fff;
-  margin: 0 20px 30px;
-  padding: 20px;
-  background: linear-gradient(315deg, #07c160 0%, #90de45 100%);
-  box-shadow: 0px 15px 20px 0px rgba(64, 64, 64, 0.12);
-  border-radius: var(--border-radius);
-
-  .info {
-    font-size: 12px;
+  // color: #fff;
+  // padding: 20px;
+  // background: linear-gradient(315deg, #07c160 0%, #90de45 100%);
+  // box-shadow: 0px 15px 20px 0px rgba(64, 64, 64, 0.12);
+  // border-radius: var(--border-radius);
+  margin: 0 0 30px;
+  display: grid;
+  grid: auto/auto auto auto;
+  justify-content: space-evenly;
+  row-gap: 24px;
+  .card-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--border-radius);
+    box-shadow: inset 4px 8px 16px 0px rgba(134, 144, 156, 0.18);
+    border: 1px solid #e2e8f0;
+    .right-icon {
+      font-size: 20px;
+    }
   }
-  .el-button {
-    width: 100%;
-    color: #333;
-  }
-}
-.contact-code {
-  width: 80px;
 }
 </style>
