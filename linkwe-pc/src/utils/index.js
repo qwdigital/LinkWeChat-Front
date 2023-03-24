@@ -753,12 +753,16 @@ export function setAttachments(list) {
     list.forEach((dd) => {
       if (dd.msgType === 'image') {
         let obj = {
+          materialName: dd.title,
+          id: dd.materialId,
           mediaType: '0',
           materialUrl: dd.picUrl
         }
         arr.push(obj)
       } else if (dd.msgType === 'video') {
         let obj = {
+          materialName: dd.title,
+          id: dd.materialId,
           mediaType: '2',
           materialUrl: dd.fileUrl,
           coverUrl: dd.picUrl,
@@ -768,6 +772,8 @@ export function setAttachments(list) {
         arr.push(obj)
       } else if (dd.msgType === 'file') {
         let obj = {
+          materialName: dd.title,
+          id: dd.materialId,
           mediaType: '3',
           materialUrl: dd.fileUrl,
           digest: dd.description,
@@ -776,12 +782,16 @@ export function setAttachments(list) {
         arr.push(obj)
       } else if (dd.msgType === 'text') {
         let obj = {
+          materialName: dd.title,
+          id: dd.materialId,
           mediaType: '4',
           content: dd.content
         }
         arr.push(obj)
       } else if (dd.msgType === 'link') {
         let obj = {
+          materialName: dd.title,
+          id: dd.materialId,
           mediaType: '9',
           content: dd.content,
           coverUrl: dd.picUrl,
@@ -792,6 +802,8 @@ export function setAttachments(list) {
       } else if (dd.msgType === 'miniprogram') {
         let ff = {
           mediaType: '11',
+          materialName: dd.title,
+          id: dd.materialId,
           digest: dd.appId,
           materialName: dd.title,
           coverUrl: dd.picUrl,
@@ -800,6 +812,8 @@ export function setAttachments(list) {
         arr.push(ff)
       } else if (dd.msgType === 'news') {
         let ff = {
+          materialName: dd.title,
+          id: dd.materialId,
           mediaType: '12',
           digest: dd.description,
           materialUrl: dd.fileUrl,
@@ -810,6 +824,8 @@ export function setAttachments(list) {
         arr.push(ff)
       } else if (dd.msgType === 'posters') {
         let obj = {
+          materialName: dd.title,
+          id: dd.materialId,
           mediaType: '5',
           materialUrl: dd.fileUrl,
           materialName: dd.title
