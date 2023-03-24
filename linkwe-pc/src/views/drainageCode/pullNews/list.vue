@@ -22,7 +22,6 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label-width="0"> </el-form-item>
       <el-form-item label="">
         <el-button type="primary" @click="handleSearch">查询</el-button>
         <el-button type="" @click="resetQuery">重置</el-button>

@@ -225,80 +225,55 @@
           </template>
           <!-- 拉新活码 -->
           <template v-else-if="type === 'lxcode'">
-            <el-table-column prop="codeName" label="活码名称" align="center"></el-table-column>
-            <el-table-column label="活码" align="center" width="130">
+            <el-table-column prop="name" label="活码名称" align="center"></el-table-column>
+            <el-table-column prop="type" label="拉新方式" align="center">
+              <template #default="{ row }">
+                {{ row.type === 1 ? '红包拉新' : '卡券拉新' }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="imageUrl" label="二维码" align="center" width="130">
               <template #default="{ row }">
                 <el-popover placement="bottom" trigger="hover">
                   <el-image
                     slot="reference"
-                    :src="row.emplCodeUrl"
+                    :src="row.imageUrl"
                     class="code-image--small"
                   ></el-image>
-                  <el-image :src="row.emplCodeUrl" class="code-image"></el-image>
+                  <el-image :src="row.imageUrl" class="code-image"></el-image>
                 </el-popover>
               </template>
             </el-table-column>
-            <el-table-column prop="emplList" label="使用员工" align="center">
-              <template #default="{ row }">
-                <el-popover
-                  v-if="row.emplList"
-                  placement="bottom"
-                  trigger="hover"
-                  :content="row.emplList.map((d) => d.businessName).join()"
-                >
-                  <div slot="reference" class="table-desc toe">
-                    <!-- {{ getDisplayRealGroups(row) }} -->
-                    {{ row.emplList.map((d) => d.businessName).join() }}
-                  </div>
-                </el-popover>
-              </template>
-            </el-table-column>
-            <el-table-column label="客户标签" align="center">
-              <div v-if="row.tagList" slot-scope="{ row }">
-                <TagEllipsis :list="row.tagList" defaultProps="tagName"></TagEllipsis>
-              </div>
-              <span v-else>无标签</span>
-            </el-table-column>
-            <el-table-column label="实际群聊" align="center">
-              <div v-if="row.actualGroupName" slot-scope="{ row }">
-                <el-popover placement="bottom" trigger="hover" :disabled="row.tagList.length < 3">
-                  <div>
-                    <el-tag
-                      type="primary"
-                      v-for="(unit, unique) in row.actualGroupName.split(',')"
-                      :key="unique"
-                    >
-                      {{ unit }}
-                    </el-tag>
-                  </div>
+            <el-table-column prop="scanNum" width="160px" label="新增客户总数" align="center">
+              <template slot="header">
+                <el-popover placement="top" trigger="hover">
                   <div slot="reference">
-                    <el-tag
-                      type="primary"
-                      v-for="(unit, unique) in row.actualGroupName.split(',').slice(0, 2)"
-                      :key="unique"
-                    >
-                      {{ unit }}
-                    </el-tag>
-                    <el-tag type="primary" key="a" v-if="row.tagList.length > 2">...</el-tag>
+                    新增客户总数
+                    <i class="el-icon-question"></i>
                   </div>
+                  <div>通过当前活码新增的客户总数</div>
                 </el-popover>
-              </div>
-              <span v-else>无群聊</span>
+              </template>
             </el-table-column>
+            <el-table-column prop="receiveNum" width="160px" label="新客领取总数" align="center">
+              <template slot="header">
+                <el-popover placement="top" trigger="hover">
+                  <div slot="reference">
+                    新客领取总数
+                    <i class="el-icon-question"></i>
+                  </div>
+                  <div>新增客户领取的红包/卡券总数</div>
+                </el-popover>
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="createBy" label="创建人" align="center"></el-table-column>
             <el-table-column
-              label="添加好友数"
+              prop="updateTime"
+              label="最近操作时间"
               align="center"
-              prop="cusNumber"
-              width="100"
-            ></el-table-column>
-            <el-table-column label="创建人" align="center" prop="createBy"></el-table-column>
-            <el-table-column
-              label="创建时间"
-              align="center"
-              prop="createTime"
-              width="160"
-            ></el-table-column>
-          </template>
+              width="200"
+            ></el-table-column
+          ></template>
         </el-table>
         <pagination
           :total="total"
@@ -384,7 +359,7 @@
 import { getList as getEmployeeList } from '@/api/drainageCode/staff'
 import { getList, getTableTotal } from '@/api/drainageCode/group'
 import { getList as identificationList } from '@/api/drainageCode/identity'
-import { getList as pullNewList } from '@/api/communityOperating/newCustomer'
+import { getList as pullNewList } from '@/api/drainageCode/pullNews'
 
 export default {
   props: {
@@ -481,21 +456,11 @@ export default {
         lxcode: pullNewList,
       }
       if (this.type === 'ygcode') {
-        // this.query = {
-        //   pageNum: 1,
-        //   pageSize: 10,
-        //   orderByColumn: 'wqc.update_time',
-        //   isAsc: 'desc',
-        // }
         this.query.orderByColumn = 'wqc.update_time'
         this.query.isAsc = 'desc'
       } else {
         delete this.query.orderByColumn
         delete this.query.isAsc
-        // this.query = {
-        //   pageNum: 1,
-        //   pageSize: 10,
-        // }
       }
       obj[this.type](this.query)
         .then(({ rows, total }) => {
@@ -535,7 +500,7 @@ export default {
         kqcode: 'codeUrl',
         // mdcoed:'',
         skcode: 'knowCustomerQr',
-        lxcode: 'emplCodeUrl',
+        lxcode: 'imageUrl',
       }
       this.liveCodeUrl = row.checked ? row[obj[this.type]] : null
     },

@@ -162,6 +162,42 @@
                 <li
                   class="menu-item"
                   id="btn-qrCode"
+                  @click="addLiveCode('skcode')"
+                  :class="['skcode', null].includes(activeLiveCodeType) ? '' : 'disableClass'"
+                >
+                  <div class="menu-item-content">
+                    <svg-icon
+                      class="icon-style"
+                      :iconClass="
+                        ['skcode', null].includes(activeLiveCodeType)
+                          ? 'identification'
+                          : 'identification2'
+                      "
+                    ></svg-icon>
+                    <span>识客活码</span>
+                  </div>
+                </li>
+                <li
+                  class="menu-item"
+                  id="btn-qrCode"
+                  @click="addLiveCode('lxcode')"
+                  :class="['lxcode', null].includes(activeLiveCodeType) ? '' : 'disableClass'"
+                >
+                  <div class="menu-item-content">
+                    <svg-icon
+                      class="icon-style"
+                      :iconClass="
+                        ['lxcode', null].includes(activeLiveCodeType) ? 'pullNew' : 'pullNew2'
+                      "
+                    ></svg-icon>
+                    <span>拉新活码</span>
+                  </div>
+                </li>
+              </ul>
+              <ul class="menu menu-content">
+                <li
+                  class="menu-item"
+                  id="btn-qrCode"
                   @click="addLiveCode('kqcode')"
                   :class="['kqcode', null].includes(activeLiveCodeType) ? '' : 'disableClass'"
                 >
@@ -193,61 +229,7 @@
                     <span>门店活码</span>
                   </div>
                 </li> -->
-                <li
-                  class="menu-item"
-                  id="btn-qrCode"
-                  @click="addLiveCode('skcode')"
-                  :class="['skcode', null].includes(activeLiveCodeType) ? '' : 'disableClass'"
-                >
-                  <div class="menu-item-content">
-                    <svg-icon
-                      class="icon-style"
-                      :iconClass="
-                        ['skcode', null].includes(activeLiveCodeType)
-                          ? 'identification'
-                          : 'identification2'
-                      "
-                    ></svg-icon>
-                    <span>识客活码</span>
-                  </div>
-                </li>
               </ul>
-              <!-- <ul class="menu menu-content"> -->
-              <!-- <li
-                  class="menu-item"
-                  id="btn-qrCode"
-                  @click="addLiveCode('skcode')"
-                  :class="['skcode', null].includes(activeLiveCodeType) ? '' : 'disableClass'"
-                >
-                  <div class="menu-item-content">
-                    <svg-icon
-                      class="icon-style"
-                      :iconClass="
-                        ['skcode', null].includes(activeLiveCodeType)
-                          ? 'identification'
-                          : 'identification2'
-                      "
-                    ></svg-icon>
-                    <span>识客活码</span>
-                  </div>
-                </li>
-                <li
-                  class="menu-item"
-                  id="btn-qrCode"
-                  @click="addLiveCode('lxcode')"
-                  :class="['lxcode', null].includes(activeLiveCodeType) ? '' : 'disableClass'"
-                >
-                  <div class="menu-item-content">
-                    <svg-icon
-                      class="icon-style"
-                      :iconClass="
-                        ['lxcode', null].includes(activeLiveCodeType) ? 'pullNew' : 'pullNew2'
-                      "
-                    ></svg-icon>
-                    <span>拉新活码</span>
-                  </div>
-                </li> -->
-              <!-- </ul> -->
             </div>
           </div>
           <div id="canvas-wrap">
