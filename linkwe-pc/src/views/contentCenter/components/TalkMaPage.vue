@@ -438,7 +438,7 @@ export default {
               @keyup.enter.native="search()"
               v-else />
 
-            <el-button class="ml10" @click="getList(1)">查询</el-button>
+            <el-button class="ml10" type="primary" @click="getList(1)">查询</el-button>
             <!-- v-hasPermi="['wecom:material:list']" -->
             <el-button @click="resetQuery">重置</el-button>
           </div>

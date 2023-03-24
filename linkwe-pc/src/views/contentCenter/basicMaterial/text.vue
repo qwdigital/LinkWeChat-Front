@@ -58,7 +58,7 @@ export default {
           {{ row.sendNum }}
         </template>
       </el-table-column>
-      <el-table-column label="最近更新时间" align="center" prop="updateTime">
+      <el-table-column label="最近更新时间" align="center" width="180px" prop="updateTime">
         <template slot-scope="scope">
           <div>{{ scope.row.updateBy }}</div>
           <span>{{ parseTime(scope.row.updateTime) }}</span>

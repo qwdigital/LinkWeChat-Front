@@ -106,13 +106,13 @@ export default {
           {{ row.viewByTotalNum }}
         </template>
       </el-table-column>
-      <el-table-column label="最近更新" align="center">
+      <el-table-column label="最近更新" align="center" width="160px">
         <template slot-scope="scope">
           <div>{{ scope.row.updateBy }}</div>
           <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="160px">
         <template slot-scope="scope">
           <el-button type="text" @click="$refs.page.detail(scope.row.id)" v-hasPermi="['wechat:material:detail']">
             详情|统计

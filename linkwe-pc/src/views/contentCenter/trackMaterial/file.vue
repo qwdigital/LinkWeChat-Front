@@ -114,7 +114,7 @@ export default {
           {{ row.viewByNum }}
         </template>
       </el-table-column>
-      <el-table-column label="最近更新" align="center">
+      <el-table-column label="最近更新" align="center" width="160px">
         <template slot-scope="scope">
           <div>{{ scope.row.updateBy }}</div>
           <span>{{ parseTime(scope.row.updateTime) }}</span>
@@ -124,6 +124,7 @@ export default {
         label="操作"
         align="center"
         class-name="small-padding fixed-width"
+        width="160px"
         fixed="right"
       >
         <template slot-scope="scope">

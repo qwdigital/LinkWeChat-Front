@@ -90,13 +90,18 @@ export default {
           {{ row.viewByNum }}
         </template>
       </el-table-column>
-      <el-table-column label="最近更新" align="center">
+      <el-table-column label="最近更新" width="160px" align="center">
         <template slot-scope="scope">
           <div>{{ scope.row.updateBy }}</div>
           <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        label="操作"
+        align="center"
+        width="160px"
+        class-name="small-padding fixed-width"
+      >
         <template slot-scope="scope">
           <el-button
             type="text"

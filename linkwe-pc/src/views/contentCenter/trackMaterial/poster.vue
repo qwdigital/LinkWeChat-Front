@@ -62,6 +62,7 @@ export default {
         align="center"
         prop="sendNum"
         :show-overflow-tooltip="true"
+         width="120px"
       >
         <template slot="header">
           <el-popover placement="top" trigger="hover">
@@ -81,6 +82,7 @@ export default {
         align="center"
         prop="viewNum"
         :show-overflow-tooltip="true"
+         width="120px"
       >
         <template slot="header">
           <el-popover placement="top" trigger="hover">
@@ -100,6 +102,7 @@ export default {
         align="center"
         prop="viewByNum"
         :show-overflow-tooltip="true"
+        width="120px"
       >
         <template slot="header">
           <el-popover placement="top" trigger="hover">
@@ -114,13 +117,18 @@ export default {
           {{ row.viewByNum }}
         </template>
       </el-table-column>
-      <el-table-column label="最近更新" align="center">
+      <el-table-column label="最近更新" align="center" width="160px">
         <template slot-scope="scope">
           <div>{{ scope.row.updateBy }}</div>
           <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        label="操作"
+        align="center"
+        width="160px"
+        class-name="small-padding fixed-width"
+      >
         <template slot-scope="scope">
           <el-button
             type="text"

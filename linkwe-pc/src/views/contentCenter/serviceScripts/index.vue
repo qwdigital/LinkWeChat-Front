@@ -18,7 +18,7 @@ export default {
       'app/setBusininessDesc',
       `
       <div>创建微信客服咨询话术，通过聊天工具栏一键发送，提升沟通效率</div>
-    `,
+    `
     )
   },
   methods: {
@@ -52,7 +52,12 @@ export default {
   <TalkMaPage ref="page" type="14" @listChange="listChange" :selected="ids" v-slot="{ list }">
     <el-table :data="list" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50" align="center" />
-      <el-table-column label="话术标题" align="center" prop="materialName" :show-overflow-tooltip="true">
+      <el-table-column
+        label="话术标题"
+        align="center"
+        prop="materialName"
+        :show-overflow-tooltip="true"
+      >
         <template slot-scope="{ row }">
           {{ row.talkTitle }}
         </template>
@@ -64,7 +69,12 @@ export default {
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="发送总次数" align="center" prop="sendTotalNum" :show-overflow-tooltip="true">
+      <el-table-column
+        label="发送总次数"
+        align="center"
+        prop="sendTotalNum"
+        :show-overflow-tooltip="true"
+      >
         <template slot="header">
           <el-popover placement="top" trigger="hover">
             <div slot="reference">
@@ -78,7 +88,12 @@ export default {
           {{ row.sendTotalNum }}
         </template>
       </el-table-column>
-      <el-table-column label="查看总次数" align="center" prop="viewTotalNum" :show-overflow-tooltip="true">
+      <el-table-column
+        label="查看总次数"
+        align="center"
+        prop="viewTotalNum"
+        :show-overflow-tooltip="true"
+      >
         <template slot="header">
           <el-popover placement="top" trigger="hover">
             <div slot="reference">
@@ -92,7 +107,12 @@ export default {
           {{ row.viewTotalNum }}
         </template>
       </el-table-column>
-      <el-table-column label="查看总人数" align="center" prop="viewByTotalNum" :show-overflow-tooltip="true">
+      <el-table-column
+        label="查看总人数"
+        align="center"
+        prop="viewByTotalNum"
+        :show-overflow-tooltip="true"
+      >
         <template slot="header">
           <el-popover placement="top" trigger="hover">
             <div slot="reference">
@@ -106,15 +126,24 @@ export default {
           {{ row.viewByTotalNum }}
         </template>
       </el-table-column>
-      <el-table-column label="最近更新" align="center">
+      <el-table-column label="最近更新" align="center" width="160px">
         <template slot-scope="scope">
           <div>{{ scope.row.updateBy }}</div>
           <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        label="操作"
+        align="center"
+        class-name="small-padding fixed-width"
+        width="160px"
+      >
         <template slot-scope="scope">
-          <el-button type="text" @click="$refs.page.detail(scope.row.id)" v-hasPermi="['wechat:material:detail']">
+          <el-button
+            type="text"
+            @click="$refs.page.detail(scope.row.id)"
+            v-hasPermi="['wechat:material:detail']"
+          >
             详情|统计
           </el-button>
           <el-button type="text" @click="$refs.page.edit(scope.row.id, 13)">编辑</el-button>
@@ -128,7 +157,8 @@ export default {
       talkType="1"
       resourceType="3"
       :visible="dialogVisible"
-      @visibleChange="visibleChange" />
+      @visibleChange="visibleChange"
+    />
   </TalkMaPage>
 </template>
 

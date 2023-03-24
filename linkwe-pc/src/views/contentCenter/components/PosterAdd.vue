@@ -62,7 +62,7 @@
                     size="mini"
                     type="text"
                     style="margin-left: 10px"
-                    @click="isBackgroundImage = dialogVisibleSelectMaterial = true"
+                    @click="flage = isBackgroundImage = dialogVisibleSelectMaterial = true"
                     >从素材库中选取</el-button
                   >
                 </div>
@@ -362,6 +362,7 @@ export default {
         emitPath: false,
       },
       dialogVisible: false,
+      flage:false, // 判断是否点击上传海报按钮
     }
   },
   props: {
@@ -396,6 +397,7 @@ export default {
   },
   methods: {
     radioChange(val) {
+      this.flage = true
       if (val === '2' && this.form.backgroundImgPath) {
         let items = this.canvas.getObjects()
         items.forEach((item, i) => {
@@ -456,6 +458,7 @@ export default {
       }
     },
     upSuccess(val) {
+      this.flage = true
       this.form.backgroundImgPath = val
       this.setPosterBackgroundImage()
     },
@@ -557,14 +560,11 @@ export default {
 
         if (this.form.posterJSON) {
           // 加载画布信息
-          this.setPosterBackgroundImage()
-          console.log(this.form.posterJSON)
           canvas.loadFromJSON(this.form.posterJSON, () => {
             canvas.renderAll()
           })
-        } else {
-          this.setPosterBackgroundImage()
         }
+        this.setPosterBackgroundImage()
 
         // 删除某个图层
         let deleteBtn = document.getElementById('deleteBtn')
@@ -724,7 +724,7 @@ export default {
         canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas))
         canvas.renderAll()
         this.imgWidth = img.width
-        if (this.form.type === '2') {
+        if (this.form.type === '2' && this.flage) {
           // 裂变海报
           var items = canvas.getObjects()
           if (items.length) {

@@ -92,10 +92,8 @@ export default {
         style="width: 160px; height: 200px"
       ></el-image>
       <div class="code-actions">
-        <el-button id="copyUrl" type="text" :data-clipboard-text="query.linkPath"
-          >复制链接</el-button
-        >
-        <el-button type="text" @click="handleDownload(query.imageUrl, query.qrName)"
+        <el-button id="copyUrl" :data-clipboard-text="query.linkPath">复制链接</el-button>
+        <el-button type="primary" @click="handleDownload(query.imageUrl, query.qrName)"
           >下载二维码</el-button
         >
       </div>
