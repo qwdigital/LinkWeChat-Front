@@ -269,7 +269,7 @@
       // 是否显示模板库
       showModle: {
         type: Boolean,
-        default: true
+        default: false
       },
       // 1.员工活码;2:企微营销;3:企业动态;4:门店活码
       otherType: {
