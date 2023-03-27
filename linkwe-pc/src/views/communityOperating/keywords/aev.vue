@@ -1,6 +1,6 @@
 <template>
   <div class="flex" v-loading="loading">
-    <el-form :model="form" ref="form" :rules="rules" label-width="100px" class="g-card fxat mr20">
+    <el-form :model="form" ref="form" :rules="rules" label-width="100px" class="g-card fxauto mr20">
       <el-form-item label="活码名称" prop="taskName">
         <el-input v-model="form.taskName" maxlength="30" show-word-limit placeholder="请输入名称" clearable />
       </el-form-item>

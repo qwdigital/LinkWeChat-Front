@@ -97,14 +97,14 @@ export default {
 </script>
 
 <template>
-  <el-container v-loading="loading">
-    <el-header class="g-card mb10" height="108px">
+  <el-container direction="vertical" v-loading="loading">
+    <div class="g-card fxnone">
       <el-steps :active="currentActive" align-center finish-status="success">
         <el-step title="短链类型"></el-step>
         <el-step title="内容设置"></el-step>
         <el-step title="生成短链"></el-step>
       </el-steps>
-    </el-header>
+    </div>
 
     <el-form v-show="currentActive == 0" label-suffix="：" label-width="" class="g-card" style="padding-right: 18%">
       <el-form-item label="跳转类型">
@@ -170,7 +170,7 @@ export default {
       </div>
     </div>
 
-    <el-footer class="mt20 ar" style="padding: 0" height="">
+    <div class="g-footer-sticky">
       <template v-if="currentActive == 0">
         <el-button plain @click="$router.back()">取消</el-button>
         <el-button type="primary" @click="goStep(currentActive++)">下一步</el-button>
@@ -182,7 +182,7 @@ export default {
       <template v-else-if="currentActive == 2">
         <el-button type="primary" @click="$router.back()">完成</el-button>
       </template>
-    </el-footer>
+    </div>
   </el-container>
 </template>
 

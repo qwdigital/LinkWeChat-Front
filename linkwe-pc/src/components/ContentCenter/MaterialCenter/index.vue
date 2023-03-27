@@ -57,7 +57,6 @@
             </div>
             <el-table
               :data="list"
-              @selection-change="handleSelectionChange"
               ref="multipleTable"
               @select="handleSelect"
               @select-all="selectAll"
@@ -258,29 +257,58 @@ export default {
       }
     },
     handleSelect(select, row) {
-      if (1 + this.ids.length + this.talkListLength > this.maxlength) {
+      let list = this.paneList[this.index].list
+      let falg = false
+      if (list.length) {
+        list.forEach((obj) => {
+          if (obj.id === row.id) {
+            // 取消勾选
+            falg = true
+          }
+        })
+      }
+      if (!falg) {
+        this.paneList[this.index].list.push(row)
+      } else {
+        this.paneList[this.index].list = this.paneList[this.index].list.filter((item) => {
+          return item.id != row.id
+        })
+      }
+      this.getIds()
+      if (this.ids.length + this.talkListLength > this.maxlength) {
         this.$nextTick(() => {
           if (this.index) this.$refs.multipleTable[this.inx].toggleRowSelection(row, false)
         })
         this.$message.error(
           '最多新建或选择' + this.maxlength + '个素材,已新建' + this.talkListLength + '个素材'
         )
+        this.paneList[this.index].list = this.paneList[this.index].list.filter((item) => {
+          return item.id != row.id
+        })
+        this.getIds()
       }
     },
     selectAll(select) {
-      if (select.length + this.ids.length + this.talkListLength > this.maxlength) {
+      if (select.length) {
+        // 全选
+        this.paneList[this.index].list = select
+      } else {
+        // 取消全选
+        this.paneList[this.index].list = []
+      }
+      this.getIds()
+      if (this.ids.length + this.talkListLength > this.maxlength) {
         select.forEach((item) => {
           this.$refs.multipleTable[this.inx].toggleAllSelection(item, false)
         })
         this.$message.error(
           '最多新建或选择' + this.maxlength + '个素材,已新建' + this.talkListLength + '个素材'
         )
+        this.paneList[this.index].list = []
+        this.getIds()
       }
     },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      let list = JSON.parse(JSON.stringify(this.paneList[this.index].list))
-      this.paneList[this.index].list = selection
+    getIds() {
       this.ids = []
       this.paneList.forEach((item) => {
         if (item.list && item.list.length) {
@@ -289,18 +317,31 @@ export default {
           })
         }
       })
-      if (this.ids.length + this.talkListLength > this.maxlength) {
-        this.paneList[this.index].list = list
-        this.ids = []
-        this.paneList.forEach((item) => {
-          if (item.list && item.list.length) {
-            item.list.forEach((item1) => {
-              this.ids.push(item1)
-            })
-          }
-        })
-      }
     },
+    // 多选框选中数据
+    // handleSelectionChange(selection) {
+    //   let list = JSON.parse(JSON.stringify(this.paneList[this.index].list))
+    //   this.paneList[this.index].list = selection
+    //   this.ids = []
+    //   this.paneList.forEach((item) => {
+    //     if (item.list && item.list.length) {
+    //       item.list.forEach((item1) => {
+    //         this.ids.push(item1)
+    //       })
+    //     }
+    //   })
+    //   if (this.ids.length + this.talkListLength > this.maxlength) {
+    //     this.paneList[this.index].list = list
+    //     this.ids = []
+    //     this.paneList.forEach((item) => {
+    //       if (item.list && item.list.length) {
+    //         item.list.forEach((item1) => {
+    //           this.ids.push(item1)
+    //         })
+    //       }
+    //     })
+    //   }
+    // },
     // 处理文件类型
     filType(file) {
       let filecontent = JSON.parse(JSON.stringify(file))
@@ -318,10 +359,11 @@ export default {
     },
     tabClick(v) {
       this.index = v.index
-      if (this.index !== 0) {
-        this.inx = this.index - 1
+      let index = +this.index
+      if (index !== 0) {
+        this.inx = index - 1
       } else {
-        this.inx = this.index
+        this.inx = index
       }
       // if (this.picindex === 0) {
       //   // 不包含文本

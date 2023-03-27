@@ -150,7 +150,7 @@ export default {
 
 <template>
   <div class="flex" v-loading="loading">
-    <el-form :model="form" ref="form" :rules="rules" label-width="100px" class="g-card fxat mr20">
+    <el-form :model="form" ref="form" :rules="rules" label-width="100px" class="g-card fxauto mr20">
       <el-form-item label="活码名称" prop="codeName">
         <el-input v-model="form.codeName" maxlength="30" show-word-limit placeholder="请输入" clearable></el-input>
       </el-form-item>

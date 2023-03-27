@@ -215,6 +215,19 @@ div:focus {
   &tip-color {
     color: #999;
   }
+  // 粘性底部
+  &footer-sticky {
+    position: sticky;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    bottom: 0;
+    background: #fff;
+    box-shadow: 0px -4px 20px 0px rgba(28, 49, 111, 0.1);
+    border-radius: var(--border-radius-big);
+    margin-top: var(--card-margin);
+  }
 
   &pad20 {
     padding: 20px;
