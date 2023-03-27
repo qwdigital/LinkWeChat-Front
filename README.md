@@ -53,8 +53,6 @@
 
 _（注意：演示环境已屏蔽管理权限和相关操作）_
 
-SAAS体验地址：https://saas.pardigital.cn/#/probation
-
 
 # 前端技术栈
 
