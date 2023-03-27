@@ -1,162 +1,106 @@
-<script>
-  import * as api from '@/api/task'
-
-  export default {
-    name: 'Group',
-    data() {
-      return {
-        query: {
-          pageNum: 1,
-          pageSize: 10,
-          taskName: '',
-          startTime: '',
-          overTime: '',
-          fissionType: 1
-        },
-        dateRange: [],
-        tableData: [],
-        total: 0,
-        loading: false
-      }
-    },
-    created() {
-      this.getList()
-
-      this.$store.dispatch(
-        'app/setBusininessDesc',
-        `
-        <div>是通过管理员统一下发群发消息的任务，将消息推送给员工，员工点击任务按钮进行发送，将任务裂变海报以 H5 网页链接的形式发送给客户。此方式也会消耗每天四次客户群发触达的次数限制。</div>
-      `
-      )
-    },
-    methods: {
-      setChange(e) {
-        if (e) {
-          this.query.startTime = e[0]
-          this.query.overTime = e[1]
-        } else {
-          this.query.startTime = ''
-          this.query.overTime = ''
-        }
-      },
-      resetFn() {
-        this.query = {
-          pageNum: 1,
-          pageSize: 10,
-          taskName: '',
-          startTime: '',
-          overTime: '',
-          fissionType: 1
-        }
-        this.dateRange = []
-        this.getList()
-      },
-      getList(data) {
-        this.loading = true
-        let params = Object.assign({}, this.query, data)
-        api.getList(params).then(({ rows, total }) => {
-          this.tableData = rows
-          this.total = +total
-          this.loading = false
-        })
-      },
-      resetForm() {},
-      toDetail(row) {
-        this.$router.push({
-          path: `detail?id=${row.id}`
-        })
-      },
-      newAdd() {
-        this.$router.push({
-          path: 'add'
-        })
-      },
-      toEdit(row) {
-        this.$router.push({
-          path: `add?id=${row.id}`
-        })
-      }
-    }
-  }
-</script>
-
 <template>
   <div>
-    <el-form ref="queryForm" :inline="true" :model="query" class="top-search">
-      <el-form-item label="任务名" prop="taskName">
-        <el-input clearable v-model="query.taskName" placeholder="请输入"></el-input>
+    <el-form ref="queryForm" :model="query" inline class="top-search" label-position="left" label-width="">
+      <el-form-item label="" prop="fassionName">
+        <el-input clearable v-model="query.fassionName" placeholder="请输入任务名称"></el-input>
       </el-form-item>
-      <el-form-item label="添加日期">
-        <el-date-picker
-          clearable
-          v-model="dateRange"
-          @change="setChange"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          align="right"
-        ></el-date-picker>
+      <el-form-item label="" prop="fassionState">
+        <el-select :popper-append-to-body="false" v-model="query.fassionState" placeholder="请选择任务状态">
+          <el-option label="全部" value=""></el-option>
+          <el-option v-for="(item, index) in statusType" :key="index" :label="item.name" :value="item.key"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="">
-        <el-button
-          v-hasPermi="['customerManage:customer:query']"
-          type="primary"
-          :loading="loading"
-          @click="getList({ pageNum: 1 })"
-        >
-          查询
-        </el-button>
-        <el-button @click="resetFn">重置</el-button>
-
-        <el-button
-          v-hasPermi="['customerManage:customer:query']"
-          type="primary"
-          @click="newAdd()"
-          style="background: #fa7216; color: #ffffff; border-color: #fa7216;"
-        >
-          新增任务
-        </el-button>
+        <el-button type="primary" @click="handleSearch">查询</el-button>
+        <el-button @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
-
     <div class="g-card">
-      <el-table :data="tableData">
-        <el-table-column prop="taskName" label="任务活动名称"></el-table-column>
-        <el-table-column prop="fissNum" label="裂变客户数量"></el-table-column>
-        <el-table-column prop="fissStatus" label="活动状态">
-          <template slot-scope="scope">
-            <!-- -1-发送失败 0-待发送 1-进行中 2-已结束 -->
-            <p>
-              {{
-                scope.row.fissStatus === 1
-                  ? '进行中'
-                  : scope.row.fissStatus === -1
-                  ? '发送失败'
-                  : scope.row.fissStatus === 0
-                  ? '待发送'
-                  : '已结束'
-              }}
-            </p>
+      <div class="mid-action">
+        <el-button type="primary" @click="$router.push('./add')">新建任务</el-button>
+        <div>
+          <el-button type="primary" plain :disabled="selectList.length == 0" @click="deleteMult">
+            批量删除
+          </el-button>
+        </div>
+      </div>
+      <el-table :data="list" v-loading="loading" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55" align="center" fixed="left"></el-table-column>
+        <el-table-column prop="fassionName" label="任务名称" align="center" width="120" fixed="left"></el-table-column>
+        <el-table-column prop="statusType" label="任务状态" align="center" width="100">
+          <template #default="{ row }">
+            <el-tag :type="(row.fassionState == 1 ? 'info' : (row.fassionState == 3 ? 'danger' : ''))">{{
+              setStatus(row)
+            }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="startTime" label="活动时间">
-          <template slot-scope="scope">
-            <p>{{ scope.row.startTime }}-{{ scope.row.overTime }}</p>
+        <el-table-column prop="fassionStartTime" label="任务开始时间" align="center" width="150">
+          <template #default="{ row }">
+            {{ row.fassionStartTime || '-' }}
           </template>
         </el-table-column>
-        <el-table-column prop="operation" label="操作" width="120">
-          <template slot-scope="scope">
-            <el-button @click="toDetail(scope.row)" v-hasPermi="['enterpriseWechat:view']" type="text">详情</el-button>
-            <!-- <el-button
-            v-if="scope.row.fissStatus != 2"
-            @click="toEdit(scope.row)"
-            v-hasPermi="['enterpriseWechat:edit']"
-            size="medium"
-            type="text"
-            icon="el-icon-edit-outline"
-            style="color: #e74e59"
-          ></el-button> -->
+        <el-table-column prop="fassionEndTime" label="任务结束时间" align="center" width="150">
+          <template #default="{ row }">
+            {{ row.fassionEndTime || '-' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="pvNum" label="员工邀请老客总数" align="center" width="150">
+          <template slot="header">
+            <el-popover placement="top" trigger="hover">
+              <div slot="reference">
+                员工邀请老客总数
+                <i class="el-icon-question"></i>
+              </div>
+              <div>在当前任务中员工已送达的客户总数</div>
+            </el-popover>
+          </template>
+          <template #default="{ row }">
+            {{ row.pvNum || '-' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="uvNum" label="完成任务老客总数" align="center" width="150">
+          <template slot="header">
+            <el-popover placement="top" trigger="hover">
+              <div slot="reference">
+                完成任务老客总数
+                <i class="el-icon-question"></i>
+              </div>
+              <div>在当前任务中完成裂变任务的老客总数</div>
+            </el-popover>
+          </template>
+          <template #default="{ row }">
+            {{ row.uvNum || '-' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="openNum" label="裂变新客总数" align="center" width="140">
+          <template slot="header">
+            <el-popover placement="top" trigger="hover">
+              <div slot="reference">
+                裂变新客总数
+                <i class="el-icon-question"></i>
+              </div>
+              <div>在当前任务中成功添加员工的新客总数</div>
+            </el-popover>
+          </template>
+          <template #default="{ row }">
+            {{ row.openNum || '-' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="createBy" label="创建人" align="center"></el-table-column>
+        <el-table-column prop="updateTime" label="最近操作时间" align="center" width="150"></el-table-column>
+        <el-table-column label="操作" align="center" width="150" fixed="right">
+          <template #default="{ row }">
+            <el-button type="text" size="mini" @click="$router.push({ path: './detail', query: { id: row.id } })">
+              详情|统计</el-button
+            >
+            <el-button
+              type="text"
+              size="mini"
+              v-if="row.fassionState == 1"
+              @click="$router.push({ path: './add', query: { id: row.id } })"
+              >编辑</el-button
+            >
+            <el-button type="text" v-if="row.fassionState !== 2" size="mini" @click="deleteFn(row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -165,10 +109,134 @@
         :total="total"
         :page.sync="query.pageNum"
         :limit.sync="query.pageSize"
-        @pagination="getList()"
+        @pagination="getList"
       />
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped></style>
+<script>
+  import { getList, deleteFassion, deleteMultFa } from './api'
+  export default {
+    name: 'task-group-list',
+    data() {
+      return {
+        statusType: [
+          { name: '待开始', key: 1 },
+          { name: '进行中', key: 2 },
+          { name: '已结束', key: 3 }
+        ],
+        query: {
+          fassionType: 1, //1 任务宝 2 群裂变
+          pageSize: 10,
+          pageNum: 1,
+          fassionName: '',
+          fassionState: ''
+        },
+        total: 0,
+        loading: false,
+        list: [],
+        selectList: []
+      }
+    },
+    methods: {
+      gotoShortLinkDetail(id) {
+        this.$router.push({
+          path: '/drainageCode/publicCustomer/IntelligentShortLink/detail',
+          query: {
+            id
+          }
+        })
+      },
+      setType(data) {
+        let str = ''
+        this.infoType.forEach((dd) => {
+          if (dd.key == data.type) {
+            str = dd.name
+          }
+        })
+        return str
+      },
+      setStatus(data) {
+        let str = ''
+        this.statusType.forEach((dd) => {
+          if (dd.key == data.fassionState) {
+            str = dd.name
+          }
+        })
+        return str
+      },
+      getList() {
+        this.loading = true
+        getList(this.query).then((res) => {
+          this.total = Number(res.total)
+          this.list = res.rows
+          this.loading = false
+        })
+      },
+      handleSearch() {
+        this.query.pageNum = 1
+        this.getList()
+      },
+      resetQuery() {
+        this.query.pageNum = 1
+        this.$refs['queryForm'].resetFields()
+        this.getList()
+      },
+      handleSelectionChange(e) {
+        this.selectList = e.map((dd) => dd.id)
+      },
+      deleteFn(data) {
+        this.$confirm('是否确认删除当前裂变任务？删除后不可撤销，请谨慎操作。', '删除', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(() => {
+            return deletePomotion(data.id)
+          })
+          .then(() => {
+            this.handleSearch()
+            this.msgSuccess('删除成功')
+          })
+      },
+      deleteMult() {
+        if (!this.selectList.length) {
+          this.msgInfo('请选择要删除项！')
+          return
+        }
+        const ids = this.selectList.join(',')
+        this.$confirm('是否确认删除当前裂变任务？删除后不可撤销，请谨慎操作。', '警告', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(() => {
+            return deleteMultPo(ids)
+          })
+          .then(() => {
+            this.search()
+            this.msgSuccess('删除成功')
+          })
+          .catch(function () {})
+      }
+    },
+    created() {
+      this.getList()
+      this.$store.dispatch(
+        'app/setBusininessDesc',
+        `
+        <div>通过任务形式，引导老客裂变新客，实现客户增长</div>
+      `
+      )
+    }
+  }
+</script>
+<style lang="scss" scoped>
+  .self_a {
+    color: #07c160;
+    text-decoration: underline;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+</style>
