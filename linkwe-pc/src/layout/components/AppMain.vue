@@ -2,12 +2,12 @@
   <!-- <el-scrollbar class="page-scrollbar"> -->
   <div class="app-main">
     <transition name="fade-transform" mode="out-in" v-if="!isActiveMicroApp">
-      <router-view class="page" :key="key" />
+      <router-view class="page container" :key="key" />
       <!-- <keep-alive :include="cachedViews">
       </keep-alive> -->
     </transition>
-    <div v-loading="loading">
-      <div id="micro-app" v-show="isActiveMicroApp">
+    <div v-loading="loading" class="height100">
+      <div id="micro-app" class="container" v-show="isActiveMicroApp">
         <!-- <div id="app" class="mask" style="position: absolute">
         <i class="el-icon-loading cc"></i>
       </div> -->
@@ -79,18 +79,19 @@ export default {
 // }
 .app-main {
   position: relative;
-  overflow-y: hidden;
+  overflow: hidden;
   flex: auto;
 }
-
+.container {
+  max-height: calc(100% - 20px);
+  margin: 20px 0 0;
+  padding: 0 20px;
+}
 .page {
   // background: #fff;
   // border-radius: var(--border-radius-big);
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: calc(100% - 20px);
-  margin: 20px 0 0;
-  padding: 0 20px;
   &::-webkit-scrollbar-thumb {
     visibility: hidden;
   }
@@ -114,8 +115,10 @@ export default {
 }
 
 #micro-app {
-  height: calc(100vh - 130px);
+  height: calc(100% - 20px);
   position: relative;
+  margin: 20px 0 0;
+  padding: 0 20px;
 }
 </style>
 
