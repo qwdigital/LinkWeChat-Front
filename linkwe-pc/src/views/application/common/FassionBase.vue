@@ -23,7 +23,7 @@
             <template v-if="form.fassionType == 1">
               <SelectFassionCustomerVue :dataObj="form.executeUserOrGroup" @update="getData"></SelectFassionCustomerVue>
             </template>
-            <template>
+            <template v-if="form.fassionType == 2">
               <SelectFassionGroup :dataObj="form.executeUserOrGroup" @update="getData"></SelectFassionGroup>
             </template>
           </el-form>
@@ -31,7 +31,7 @@
       </el-row>
     </div>
     <div class="g-footer-sticky" style="text-align: center;" v-if="!isDetail">
-      <el-button plain>取消</el-button>
+      <el-button plain @click="$router.go(-1)">取消</el-button>
       <el-button type="primary">下一步</el-button>
     </div>
   </div>

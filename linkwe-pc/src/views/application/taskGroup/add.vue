@@ -10,25 +10,46 @@
     <template v-if="currentActive == 0">
       <FassionBase :baseData="form"></FassionBase>
     </template>
+    <template v-if="currentActive == 1">
+      <FassionSettingVue :baseData="form"></FassionSettingVue>
+    </template>
   </div>
 </template>
 
 <script>
   import FassionBase from '../common/FassionBase.vue'
+  import FassionSettingVue from '../common/FassionSetting.vue'
   export default {
     name: 'task-group-add',
     components: {
-      FassionBase
+      FassionBase,
+      FassionSettingVue
     },
     data() {
       return {
-        currentActive: 0,
+        currentActive: 1,
         form: {
           fassionType: 1,
           fassionName: '',
           fassionStartTime: '',
           fassionEndTime: '',
-          executeUserOrGroup: null
+          executeUserOrGroup: null,
+          posterId: '',
+          posterUrl: '',
+          addWeUserOrGroupCode: {
+            addWeUser: {
+              executeUserCondit: {
+                change: false,
+                weUserIds: []
+              },
+              executeDeptCondit: {
+                change: false,
+                deptIds: [],
+                posts: []
+              }
+            }
+          },
+          content: ''
         }
       }
     },

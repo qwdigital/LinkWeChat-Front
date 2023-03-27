@@ -1,12 +1,12 @@
 <template>
   <div>
     <el-form-item label="选择客群" required prop="type">
-      <el-radio-group v-model="form.type" @change="clearData" :disabled="isDetail">
+      <el-radio-group v-model="currentType" @change="clearData" :disabled="isDetail">
         <el-radio :label="0">全部</el-radio>
         <el-radio :label="1">选择群主</el-radio>
       </el-radio-group>
     </el-form-item>
-    <el-form-item v-if="form.type == 1">
+    <el-form-item v-if="currentType == 1">
       <div>
         <div class="item-magin aic">
           <!-- <div class="item-name" v-if="!isDetail">
@@ -21,7 +21,7 @@
             plain
             @click="onSelectCustomerGroup"
           >
-            {{ form.userIds ? '编辑' : '选择' }}群主
+            {{ form.weUserIds ? '编辑' : '选择' }}群主
           </el-button>
           <el-tag v-for="item in selectCustomerGroupList" :key="item.userId">{{ item.name }}</el-tag>
         </div>
@@ -43,7 +43,8 @@
     data() {
       return {
         form: {
-          type: 0
+          weUserIds: '', //群主id，多个使用逗号隔开
+          weUserName: ''
         },
         selectCustomerGroupList: [],
         dialogVisibleSelectCustomerGroup: false
@@ -63,7 +64,6 @@
       dataObj: {
         handler(val, old) {
           if (val) {
-            this.form = val
             this.setData()
           }
         },
@@ -73,45 +73,55 @@
     },
     methods: {
       setData() {
-        if (this.form.userIds) {
+        if (!data) {
+          this.currentType = 0
+          this.form = {
+            weUserIds: '',
+            weUserName: ''
+          }
+          return
+        } else {
+          this.form = data
+          this.currentType = 1
+        }
+        if (this.form.weUserIds) {
           this.selectCustomerGroupList = []
-          let arr = this.form.userIds.split(',')
+          let arr = this.form.weUserIds.split(',')
           let obj = {}
-          arr.forEach((dd) => {
+          arr.forEach((dd, index) => {
             obj = {
               userId: dd,
-              name: this.form.users[dd]
+              name: this.form.weUserName.split(',')[index]
             }
             this.selectCustomerGroupList.push(obj)
           })
         }
       },
       clearData(type) {
-        if (type == 0) {
-          this.selectCustomerGroupList = []
-          this.form.userIds = ''
-          this.changeFn()
-        }
+        this.selectCustomerGroupList = []
+        this.form.weUserIds = ''
+        this.form.weUserName = ''
+        this.changeFn()
       },
       onSelectCustomerGroup() {
         this.dialogVisibleSelectCustomerGroup = true
       },
       submitSelectCustomerGroup(users) {
         this.selectCustomerGroupList = users
-        this.form.userIds = users
+        this.form.weUserIds = users
           .map((dd) => {
             return dd.userId
           })
           .join(',')
-        let obj = {}
-        users.forEach((ff) => {
-          obj[ff.userId] = ff.name
-        })
-        this.form.users = obj
+        this.form.weUserName = users
+          .map((dd) => {
+            return dd.name
+          })
+          .join(',')
         this.changeFn()
       },
       changeFn() {
-        this.$emit('update', this.form)
+        this.$emit('update', this.currentType == 1 ? this.form : null)
       }
     }
   }

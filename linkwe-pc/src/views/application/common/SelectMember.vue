@@ -35,7 +35,7 @@
         <div slot="reference">
           <i class="el-icon-question"></i>
         </div>
-        <div>可根据地域行政管理规划/组织架构部门，与岗位的组合条件来筛选执行成员。</div>
+        <div>可根据地域行政管理规划/组织架构部门，与岗位的组合条件来筛选。</div>
       </el-popover>
       <div class="select_unit" v-if="form.executeDeptCondit.change">
         <div v-if="selectedDeptList.length > 0">
