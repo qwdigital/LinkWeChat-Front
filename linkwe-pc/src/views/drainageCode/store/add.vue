@@ -109,11 +109,11 @@
           </template>
         </el-form-item>
       </div>
-      <el-form-item style="text-align: right" v-if="!isDetail">
-        <el-button plain @click="cancelFn">取消</el-button>
-        <el-button type="primary" @click="submitFn" :loading="submitLoading" :disabled="submitLoading">确定</el-button>
-      </el-form-item>
     </el-form>
+    <div class="g-footer-sticky" v-if="!isDetail">
+      <el-button plain @click="cancelFn">取消</el-button>
+      <el-button type="primary" @click="submitFn" :loading="submitLoading" :disabled="submitLoading">确定</el-button>
+    </div>
     <!-- <SelectWeUser
       key="123"
       :visible.sync="dialogVisibleSelectUser"

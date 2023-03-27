@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="tab flex">
-      <div class="g-card mr20 fxat">
+      <div class="g-card mr20 fxauto">
         <div class="g-card-title">
           门店导购码
           <span class="desc mr10">根据客户最近位置，引导添加最近门店的导购</span>
@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-      <div class="g-card mt0 fxat">
+      <div class="g-card mt0 fxauto">
         <div class="g-card-title">
           门店群活码
           <span class="desc mr10">根据客户最近位置，引导添加最近门店的客户群</span>

@@ -249,7 +249,7 @@ export default {
   // background: linear-gradient(315deg, #07c160 0%, #90de45 100%);
   // box-shadow: 0px 15px 20px 0px rgba(64, 64, 64, 0.12);
   // border-radius: var(--border-radius);
-  margin: 0 0 30px;
+  margin: 0 0 5vh;
   display: grid;
   grid: auto/auto auto auto;
   justify-content: space-evenly;

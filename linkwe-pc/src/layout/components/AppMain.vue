@@ -79,22 +79,24 @@ export default {
 // }
 .app-main {
   position: relative;
+  overflow-y: hidden;
+  flex: auto;
+}
+
+.page {
+  // background: #fff;
+  // border-radius: var(--border-radius-big);
   overflow-y: auto;
+  overflow-x: hidden;
+  max-height: calc(100% - 20px);
   margin: 20px 0 0;
   padding: 0 20px;
-  flex: auto;
   &::-webkit-scrollbar-thumb {
     visibility: hidden;
   }
   &:hover::-webkit-scrollbar-thumb {
     visibility: visible;
   }
-}
-
-.page {
-  // background: #fff;
-  border-radius: var(--border-radius-big);
-  overflow: hidden;
 }
 .fixed-header + .app-main {
   padding-top: 50px;
