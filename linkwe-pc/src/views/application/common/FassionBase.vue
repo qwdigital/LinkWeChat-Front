@@ -2,7 +2,7 @@
   <div>
     <div class="g-card" style="margin-top: 20px;">
       <el-row>
-        <el-col :offset="8" :span="8">
+        <el-col :offset="2" :span="8">
           <el-form :model="form" :rules="ruleForm" ref="ruleForm" label-width="120px" labelPosition="right">
             <el-form-item label="任务名称" prop="taskName">
               <el-input v-model="form.fassionName" placeholder="请输入名称" maxlength="15" show-word-limit clearable>
@@ -20,12 +20,17 @@
                 value-format="yyyy-MM-dd HH:mm"
               ></el-date-picker>
             </el-form-item>
-            <SelectFassionCustomerVue :dataObj="form.executeUserOrGroup" @update="getData"></SelectFassionCustomerVue>
+            <template v-if="form.fassionType == 1">
+              <SelectFassionCustomerVue :dataObj="form.executeUserOrGroup" @update="getData"></SelectFassionCustomerVue>
+            </template>
+            <template>
+              <SelectFassionGroup :dataObj="form.executeUserOrGroup" @update="getData"></SelectFassionGroup>
+            </template>
           </el-form>
         </el-col>
       </el-row>
     </div>
-    <div class="g-card" style="text-align: center;" v-if="!isDetail">
+    <div class="g-footer-sticky" style="text-align: center;" v-if="!isDetail">
       <el-button plain>取消</el-button>
       <el-button type="primary">下一步</el-button>
     </div>
@@ -34,10 +39,12 @@
 <script>
   import { dateFormat } from '@/utils/index'
   import SelectFassionCustomerVue from './SelectFassionCustomer.vue'
+  import SelectFassionGroup from './SelectFassionGroup.vue'
   export default {
     name: 'task-steps-base',
     components: {
-      SelectFassionCustomerVue
+      SelectFassionCustomerVue,
+      SelectFassionGroup
     },
     data() {
       return {
