@@ -93,6 +93,11 @@ export default {
       return false
     },
   },
+  methods: {
+    goto(url) {
+      window.open(url)
+    },
+  },
 }
 </script>
 
