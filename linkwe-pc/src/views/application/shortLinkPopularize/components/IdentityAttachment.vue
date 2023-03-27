@@ -806,6 +806,16 @@
       }
     }
   }
+  ::v-deep .el-button.is-disabled {
+  color: #fff;
+  background-color: #cccccc;
+  border-color: #cccccc;
+}
+::v-deep.el-dropdown [disabled] {
+  color: #fff;
+  background-color: #cccccc;
+  border-color: #cccccc;
+}
   .footer {
     display: flex;
     justify-content: space-between;
