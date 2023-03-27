@@ -64,8 +64,7 @@ export function deletePomotion(id) {
 // 列表批量删除
 export function deleteMultPo(ids) {
   return request({
-    url: wecom + '/promotion/batch/delete',
-    data: ids,
+    url: wecom + '/promotion/batch/delete/' + ids,
     method: 'delete'
   })
 }

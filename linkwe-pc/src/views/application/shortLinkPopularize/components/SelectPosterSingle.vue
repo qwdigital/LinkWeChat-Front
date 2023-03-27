@@ -1,16 +1,16 @@
 <template>
   <div>
     <el-dialog :title="title" :visible.sync="Pvisible" width="800px" append-to-body :close-on-click-modal="false">
-      <template v-if="list.length">
+      <template v-if="list.length || !isInit">
         <el-row type="flex" justify="space-between" style="max-height: 500px;">
           <el-col style="margin-top: 0px;">
             <div>
               <el-form ref="queryForm" :model="query" :inline="true" label-width="">
-                <el-form-item label="海报标题" prop="shortLinkName">
+                <el-form-item label="海报标题" prop="title">
                   <el-input clearable v-model="query.title" placeholder="请输入"></el-input>
                 </el-form-item>
                 <el-form-item label="">
-                  <el-button type="primary" @click="getList(1)">查询</el-button>
+                  <el-button type="primary" @click="search()">查询</el-button>
                   <el-button @click="resetForm()">重置</el-button>
                 </el-form-item>
               </el-form>
@@ -41,10 +41,10 @@
           <el-button type="primary" @click="submit">确 定</el-button>
         </div>
       </template>
-      <template v-else>
+      <template v-if="!list.length && isInit">
         <div class="empty">
           <div>
-            暂无短链，点击下方按钮立即创建
+            暂无海报，点击下方按钮立即创建
             <div style="margin-top: 30px;">
               <el-button size="mini" type="primary" @click="$router.push('/content/martial/trackMaterial/list')">
                 去新建
@@ -80,6 +80,7 @@
     },
     data() {
       return {
+        isInit: true,
         loading: true, // 遮罩层
         query: {
           pageNum: 1,
@@ -117,9 +118,11 @@
     methods: {
       resetForm() {
         this.$refs['queryForm'].resetFields()
+        this.isInit = true
         this.getList(1)
       },
       search() {
+        this.isInit = false
         this.query.pageNum = 1
         this.getList()
       },
@@ -130,6 +133,7 @@
         getPosterList(this.query)
           .then(({ rows, total }) => {
             this.list = rows
+            this.radio = ''
             this.list.forEach((dd) => {
               dd.coverUrl = dd.materialUrl
             })
@@ -141,6 +145,10 @@
           })
       },
       submit() {
+        if (!this.radio) {
+          this.msgError('请选择一项！')
+          return
+        }
         this.Pvisible = false
         this.$emit('success', this.radio)
       },

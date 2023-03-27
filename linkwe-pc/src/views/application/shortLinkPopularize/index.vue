@@ -250,7 +250,7 @@
             return deleteMultPo(ids)
           })
           .then(() => {
-            this.search()
+            this.handleSearch()
             this.msgSuccess('删除成功')
           })
           .catch(function () {})
