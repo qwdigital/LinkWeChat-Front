@@ -47,6 +47,12 @@
                 deptIds: [],
                 posts: []
               }
+            },
+            addGroupCode: {
+              autoCreateRoom: 0,
+              roomBaseName: '',
+              roomBaseId: null,
+              chatIdList: ''
             }
           },
           content: ''
