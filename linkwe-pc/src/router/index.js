@@ -30,11 +30,12 @@ import visitor from '@/layout/visitor'
   }
  */
 
-export let devRoutes = []
+// 固定业务菜单路由
+export let fixedRoutes = []
 
 // 开发环境路由，总后台配置完菜单务必删除或注释，只在开发环境生效
 if (process.env.VUE_APP_ENV === 'development') {
-  devRoutes = devRoutes.concat()
+  fixedRoutes = fixedRoutes.concat()
 }
 
 // 公共路由
@@ -176,5 +177,5 @@ export default new VueRouter({
   // mode: process.env.VUE_APP_ENV === 'test' ? 'hash' : 'history', // history 下 element ui 存在bug
   // base: window.lwConfig.BASE_URL,
   scrollBehavior: () => ({ y: 0 }),
-  routes: process.env.NODE_ENV !== 'development' ? constantRoutes : constantRoutes.concat(devRoutes),
+  routes: constantRoutes.concat(fixedRoutes),
 })

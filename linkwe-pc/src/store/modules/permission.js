@@ -1,4 +1,4 @@
-import router, { constantRoutes, devRoutes } from '@/router'
+import router, { constantRoutes, fixedRoutes } from '@/router'
 import { getRouters } from '@/api/menu'
 import Layout from '@/layout/index'
 import View from '@/layout/components/View'
@@ -19,7 +19,7 @@ const permission = {
       routes.forEach((e) => router.addRoute(e))
     },
     SET_TOPBAR_ROUTES: (state, routes) => {
-      state.topbarRouters = routes.concat(devRoutes)
+      state.topbarRouters = routes.concat(fixedRoutes)
     },
     SET_SIDEBAR_ROUTERS: (state, routes) => {
       state.sidebarRouters = routes
