@@ -26,3 +26,28 @@ export function deleteMultFa(ids) {
     method: 'delete'
   })
 }
+
+// 新建
+export function addFassion(data) {
+  return request({
+    url: wecom + '/add',
+    method: 'post',
+    data
+  })
+}
+
+// 编辑
+export function editFassion(data) {
+  return request({
+    url: wecom + '/update',
+    method: 'put',
+    data
+  })
+}
+
+// 获取任务详情
+export function getFassionDetail(id) {
+  return request({
+    url: wecom + '/getWeFissionDetail/' + id
+  })
+}

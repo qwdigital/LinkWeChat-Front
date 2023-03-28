@@ -26,7 +26,7 @@
                 <SelectMemberVue
                   ref="selectMember"
                   :isDetail="isDetail"
-                  title="发送范围"
+                  title="添加员工"
                   :initData="form.addWeUserOrGroupCode.addWeUser"
                   @update="getMember"
                 ></SelectMemberVue>
@@ -75,7 +75,7 @@
                 </el-card>
               </el-form-item>
             </template>
-            <el-form-item label="任务文案" required style="margin-right: 200px !important;">
+            <el-form-item label="任务文案" prop="content" style="margin-right: 200px !important;">
               <div v-if="!isDetail" style="margin-bottom: 10px;">
                 <el-button type="primary" @click="welcomVisible = true">从模板库中选择</el-button>
               </div>
@@ -94,8 +94,8 @@
           </el-form>
         </div>
         <div class="g-footer-sticky">
-          <el-button plain>上一步</el-button>
-          <el-button type="primary">下一步</el-button>
+          <el-button plain @click="gotoPre">上一步</el-button>
+          <el-button type="primary" @click="gotoNext">下一步</el-button>
         </div>
       </el-col>
       <el-col style="width: 370px;">
@@ -131,7 +131,7 @@
   import SelectPoster from '@/views/drainageCode/components/IdentitySelect'
   import SelectMemberVue from './SelectMember.vue'
   import TemplateLibrary from '@/components/ContentCenter/TemplateLibrary'
-
+  import { getPosterInfo } from '@/api/material/poster'
   export default {
     name: 'task-steps-setting',
     components: {
@@ -157,7 +157,7 @@
         form: {
           posterId: '',
           posterUrl: '',
-          fassionType: 2,
+          fassionType: 1,
           addWeUserOrGroupCode: {
             addWeUser: {
               executeUserCondit: {
@@ -174,20 +174,22 @@
               autoCreateRoom: 0, //当群满了后，是否自动新建群。0-否；1-是。 默认为0
               roomBaseName: '', //自动建群的群名前缀，当auto_create_room为1时有效
               roomBaseId: null, //自动建群的群起始序号，当auto_create_room为1时有效
-              chatIdList: ''
-              // groupNames: ''
+              chatIdList: '',
+              groupNames: ''
             }
           },
           content: ''
         },
         rules: {
-          chatIdList: [{ required: true, message: '请添加活码客群', trigger: 'blur' }],
+          posterId: [{ required: true, message: '请选择海报', trigger: 'blur' }],
+          chatIdList: [{ required: true, message: '请添加客群', trigger: 'blur' }],
           'addWeUserOrGroupCode.addGroupCode.roomBaseName': [
             { required: true, message: '请输入群名前缀', trigger: 'blur' }
           ],
           'addWeUserOrGroupCode.addGroupCode.roomBaseId': [
             { required: true, message: '请输入群起始序号', trigger: 'blur' }
-          ]
+          ],
+          content: [{ required: true, message: '请输入任务文案', trigger: 'blur' }]
         },
         posterObj: {},
         groupList: [],
@@ -201,13 +203,62 @@
           this.setData()
         },
         immediate: true
-      },
-      'form.content': {
-        handler(val) {}
       }
     },
     methods: {
-      setData() {},
+      setData() {
+        if (this.form.posterId) {
+          getPosterInfo(this.form.posterId).then((res) => {
+            this.posterObj = res.data
+          })
+        }
+        if (!this.form.addWeUserOrGroupCode) {
+          this.form.addWeUserOrGroupCode = {
+            addWeUser: {
+              executeUserCondit: {
+                change: false,
+                weUserIds: []
+              },
+              executeDeptCondit: {
+                change: false,
+                deptIds: [],
+                posts: []
+              }
+            },
+            addGroupCode: {
+              autoCreateRoom: 0, //当群满了后，是否自动新建群。0-否；1-是。 默认为0
+              roomBaseName: '', //自动建群的群名前缀，当auto_create_room为1时有效
+              roomBaseId: null, //自动建群的群起始序号，当auto_create_room为1时有效
+              chatIdList: '',
+              groupNames: ''
+            }
+          }
+        }
+      },
+      gotoNext() {
+        this.$refs.baseForm.validate((validate) => {
+          if (validate) {
+            if (this.form.fassionType == 1) {
+              if (this.$refs.selectMember.validateFn()) {
+                this.$refs.selectMember.changeFn()
+                this.updateData()
+                this.$emit('next', 2)
+              }
+            } else {
+              this.updateData()
+              this.$emit('next', 2)
+            }
+          }
+        })
+      },
+      gotoPre() {
+        this.$refs.selectMember.changeFn()
+        this.updateData()
+        this.$emit('next', 0)
+      },
+      updateData() {
+        this.$emit('update', this.form)
+      },
       selectGroupFn() {
         this.showSelectModal = true
       },
@@ -219,7 +270,17 @@
               return dd.chatId
             })
             .join(',')
+          this.form.addWeUserOrGroupCode.addGroupCode.groupNames = this.groupList
+            .map((dd) => {
+              return dd.groupName
+            })
+            .join(',')
+        } else {
+          this.groupList = []
+          this.form.addWeUserOrGroupCode.addGroupCode.chatIdList = ''
+          this.form.addWeUserOrGroupCode.addGroupCode.groupNames = ''
         }
+        this.updateData()
       },
       changeObj(id) {
         if (id) {

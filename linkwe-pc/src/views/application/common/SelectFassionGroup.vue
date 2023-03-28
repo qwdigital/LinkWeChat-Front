@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form-item label="选择客群" required prop="type">
+    <el-form-item label="选择客群" required>
       <el-radio-group v-model="currentType" @change="clearData" :disabled="isDetail">
         <el-radio :label="0">全部</el-radio>
         <el-radio :label="1">选择群主</el-radio>
@@ -47,7 +47,8 @@
           weUserName: ''
         },
         selectCustomerGroupList: [],
-        dialogVisibleSelectCustomerGroup: false
+        dialogVisibleSelectCustomerGroup: false,
+        currentType: 0
       }
     },
     props: {
@@ -64,7 +65,7 @@
       dataObj: {
         handler(val, old) {
           if (val) {
-            this.setData()
+            this.setData(data)
           }
         },
         deep: true,
@@ -72,7 +73,7 @@
       }
     },
     methods: {
-      setData() {
+      setData(data) {
         if (!data) {
           this.currentType = 0
           this.form = {
@@ -119,6 +120,14 @@
           })
           .join(',')
         this.changeFn()
+      },
+      checkData() {
+        if (this.currentType == 1 && !this.form.weUserIds) {
+          this.msgError('请选择群主！')
+          return false
+        } else {
+          return true
+        }
       },
       changeFn() {
         this.$emit('update', this.currentType == 1 ? this.form : null)

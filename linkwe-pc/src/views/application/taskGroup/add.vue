@@ -8,10 +8,13 @@
       </el-steps>
     </div>
     <template v-if="currentActive == 0">
-      <FassionBase :baseData="form"></FassionBase>
+      <FassionBase :baseData="form" @update="getData" @next="getNext"></FassionBase>
     </template>
     <template v-if="currentActive == 1">
-      <FassionSettingVue :baseData="form"></FassionSettingVue>
+      <FassionSettingVue :baseData="form" @update="getData" @next="getNext"></FassionSettingVue>
+    </template>
+    <template v-if="currentActive == 2">
+      <FassionRules :baseData="form" @update="getData" @next="getNext"></FassionRules>
     </template>
   </div>
 </template>
@@ -19,15 +22,18 @@
 <script>
   import FassionBase from '../common/FassionBase.vue'
   import FassionSettingVue from '../common/FassionSetting.vue'
+  import FassionRules from '../common/FassionRules.vue'
+  import { getFassionDetail } from './api'
   export default {
     name: 'task-group-add',
     components: {
       FassionBase,
-      FassionSettingVue
+      FassionSettingVue,
+      FassionRules
     },
     data() {
       return {
-        currentActive: 1,
+        currentActive: 0,
         form: {
           fassionType: 1,
           fassionName: '',
@@ -52,14 +58,37 @@
               autoCreateRoom: 0,
               roomBaseName: '',
               roomBaseId: null,
-              chatIdList: ''
+              chatIdList: '',
+              groupNames: ''
             }
           },
-          content: ''
+          content: '',
+          exchangeTip: null,
+          exchangeType: 1,
+          exchangeContent: {
+            redemptionLink: '',
+            redemptionRule: '',
+            weUserId: '',
+            userName: ''
+          }
         }
       }
     },
-    methods: {}
+    methods: {
+      getData(data) {
+        this.form = data
+      },
+      getNext(data) {
+        this.currentActive = data
+      }
+    },
+    created() {
+      if (this.$route.query.id) {
+        getFassionDetail(this.$route.query.id).then((res) => {
+          this.form = res.data
+        })
+      }
+    }
   }
 </script>
 

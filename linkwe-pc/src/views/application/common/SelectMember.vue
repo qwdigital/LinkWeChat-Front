@@ -166,7 +166,7 @@
     methods: {
       validateFn() {
         if (!this.form.executeUserCondit.change && !this.form.executeDeptCondit.change) {
-          this.msgError('请选择' + tilte + '!')
+          this.msgError('请选择' + this.title + '!')
           return false
         }
         if (this.form.executeUserCondit.change) {
@@ -257,7 +257,7 @@
 <style lang="scss" scoped>
   .select_content {
     background-color: #ecf5ff;
-    padding: 0 20px;
+    padding: 20px;
     border-radius: 5px;
     .select_unit {
       padding: 10px 25px;
