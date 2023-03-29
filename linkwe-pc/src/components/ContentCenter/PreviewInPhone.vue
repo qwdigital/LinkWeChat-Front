@@ -7,8 +7,8 @@
         <div class="avatar222"><img src="../../assets/drainageCode/header.png" /></div>
         <div class="msg">
           <div class="word">
-            {{ templateInfo }}
-            <div v-if="liveUrl" style="margin-top: 10px">
+            <p style="line-height: 18px;" v-html="templateInfo.replace(/\n|\r\n/g, '<br>').replace(/ /g, ' &nbsp')"></p>
+            <div v-if="liveUrl" style="margin-top: 10px;">
               <p>直播链接:</p>
               {{ liveUrl }}
             </div>
@@ -19,7 +19,7 @@
         <div class="avatar222"><img src="../../assets/drainageCode/header.png" /></div>
         <div class="msg" v-if="data.mediaType === '4'">
           <div class="word">
-            <p style="white-space: pre-line">{{ data.content }}</p>
+            <p style="white-space: pre-line;">{{ data.content }}</p>
           </div>
         </div>
         <div class="msg" v-if="data.mediaType === '0'">
@@ -161,275 +161,275 @@
   </div>
 </template>
 <script>
-export default {
-  name: 'preview-client',
-  components: {},
-  props: {
-    name: {
-      type: String,
-      default: '客户',
-    },
-    // 文章详情展示
-    article: {
-      type: String,
-      default: null,
-    },
-    // 内容
-    templateInfo: {
-      type: String,
-      default: null,
-    },
-    list: {
-      type: Array,
-      default: () => [],
-    },
-    // 直播链接
-    liveUrl: {
-      type: String,
-      default: null,
-    },
-    // 新客拉新
-    pullnewsInfo: {
-      type: Object,
-      default: null,
-    },
-  },
-  watch: {
-    list: {
-      handler(val) {
-        // console.log(144, val)
+  export default {
+    name: 'preview-client',
+    components: {},
+    props: {
+      name: {
+        type: String,
+        default: '客户'
       },
-      immediate: true,
-    },
-  },
-  data() {
-    return {}
-  },
-  computed: {},
-  created() {},
-  mounted() {},
-  methods: {
-    // 处理文件类型
-    filType(file) {
-      let filecontent = JSON.parse(JSON.stringify(file))
-      filecontent = filecontent.split('.')
-      let type = filecontent[filecontent.length - 1]
-      if (type === 'pdf') {
-        return 'pdf'
-      } else if (['doc', 'docx'].includes(type)) {
-        return 'word'
-      } else if (['ppt', 'pptx', 'pps', 'pptsx'].includes(type)) {
-        return 'ppt'
-      } else {
-        return ''
+      // 文章详情展示
+      article: {
+        type: String,
+        default: null
+      },
+      // 内容
+      templateInfo: {
+        type: String,
+        default: null
+      },
+      list: {
+        type: Array,
+        default: () => []
+      },
+      // 直播链接
+      liveUrl: {
+        type: String,
+        default: null
+      },
+      // 新客拉新
+      pullnewsInfo: {
+        type: Object,
+        default: null
       }
     },
-  },
-}
+    watch: {
+      list: {
+        handler(val) {
+          // console.log(144, val)
+        },
+        immediate: true
+      }
+    },
+    data() {
+      return {}
+    },
+    computed: {},
+    created() {},
+    mounted() {},
+    methods: {
+      // 处理文件类型
+      filType(file) {
+        let filecontent = JSON.parse(JSON.stringify(file))
+        filecontent = filecontent.split('.')
+        let type = filecontent[filecontent.length - 1]
+        if (type === 'pdf') {
+          return 'pdf'
+        } else if (['doc', 'docx'].includes(type)) {
+          return 'word'
+        } else if (['ppt', 'pptx', 'pps', 'pptsx'].includes(type)) {
+          return 'ppt'
+        } else {
+          return ''
+        }
+      }
+    }
+  }
 </script>
 <style lang="scss" scoped>
-.redBox {
-  min-height: 26px;
-  display: inline-block;
-  box-sizing: border-box;
-  word-break: break-all;
-  margin-left: 5px;
-  .red-box {
-    width: 165px;
-    height: 68px;
-    background-image: url('../../assets/image/newred.png');
-    background-size: 100%;
-    background-repeat: no-repeat;
-    padding-top: 20px;
-    border-radius: 4px;
-    .red-text {
-      font-size: 14px;
-      color: #fff;
-      margin-left: 56px;
-      width: 98px;
-      white-space: nowrap; // 强制一行
-      text-overflow: ellipsis; // 文字溢出显示省略号
-      overflow: hidden; // 溢出隐藏
+  .redBox {
+    min-height: 26px;
+    display: inline-block;
+    box-sizing: border-box;
+    word-break: break-all;
+    margin-left: 5px;
+    .red-box {
+      width: 165px;
+      height: 68px;
+      background-image: url('../../assets/image/newred.png');
+      background-size: 100%;
+      background-repeat: no-repeat;
+      padding-top: 20px;
+      border-radius: 4px;
+      .red-text {
+        font-size: 14px;
+        color: #fff;
+        margin-left: 56px;
+        width: 98px;
+        white-space: nowrap; // 强制一行
+        text-overflow: ellipsis; // 文字溢出显示省略号
+        overflow: hidden; // 溢出隐藏
+      }
     }
   }
-}
-.function {
-  width: 160px;
-  .function-item {
+  .function {
     width: 160px;
-    min-height: 76px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: rgba(242, 242, 242, 1);
-    border-radius: 5px;
-    display: flex;
-    padding: 10px;
-    padding-top: 6px;
-    cursor: pointer;
-    .card-style {
-      margin-right: 10px;
-      margin-top: 8px;
-      font-size: 32px;
-    }
-    .card-name {
-      font-size: 14px;
-      line-height: 26px;
-      width: 98px;
-      white-space: nowrap; // 强制一行
-      text-overflow: ellipsis; // 文字溢出显示省略号
-      overflow: hidden; // 溢出隐藏
-    }
-    .item-text {
-      font-size: 12px;
-      color: #aaaaaa;
-      line-height: 14px;
-      width: 98px;
-    }
-  }
-}
-.icon-style {
-  width: 40px;
-  height: 40px;
-}
-.preview {
-  margin: 0 auto;
-  position: relative;
-  width: 300px;
-  height: 640px;
-  background: url(../../assets/drainageCode/preview-bg.png);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  // margin-top: 20px;
-
-  .title {
-    position: absolute;
-    top: 37px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 14px;
-    font-weight: 400;
-    width: 60%;
-    color: #333333;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    text-align: center;
-  }
-
-  .content {
-    position: absolute;
-    height: 545px;
-    width: 280px;
-    overflow-y: auto;
-    top: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 20px;
-
-    .item {
-      font-size: 12px;
-
-      font-weight: 400;
-      color: #666666;
+    .function-item {
+      width: 160px;
+      min-height: 76px;
+      border-width: 1px;
+      border-style: solid;
+      border-color: rgba(242, 242, 242, 1);
+      border-radius: 5px;
       display: flex;
-      margin-top: 20px;
-
-      &:first-child {
-        margin-top: 0;
+      padding: 10px;
+      padding-top: 6px;
+      cursor: pointer;
+      .card-style {
+        margin-right: 10px;
+        margin-top: 8px;
+        font-size: 32px;
       }
-
-      .avatar222 {
-        // align-self: center;
-        margin-right: 5px;
+      .card-name {
+        font-size: 14px;
+        line-height: 26px;
+        width: 98px;
+        white-space: nowrap; // 强制一行
+        text-overflow: ellipsis; // 文字溢出显示省略号
+        overflow: hidden; // 溢出隐藏
       }
+      .item-text {
+        font-size: 12px;
+        color: #aaaaaa;
+        line-height: 14px;
+        width: 98px;
+      }
+    }
+  }
+  .icon-style {
+    width: 40px;
+    height: 40px;
+  }
+  .preview {
+    margin: 0 auto;
+    position: relative;
+    width: 300px;
+    height: 640px;
+    background: url(../../assets/drainageCode/preview-bg.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    // margin-top: 20px;
 
-      .msg {
-        position: relative;
-        min-height: 26px;
-        background: #ffffff;
-        box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
-        border: 1px solid #e1edfc;
-        display: inline-block;
-        border-radius: 4px;
-        box-sizing: border-box;
-        word-break: break-all;
-        margin-left: 5px;
+    .title {
+      position: absolute;
+      top: 37px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      font-weight: 400;
+      width: 60%;
+      color: #333333;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      text-align: center;
+    }
 
-        &:before {
-          content: ' ';
-          display: block;
-          position: absolute;
-          left: -5px;
+    .content {
+      position: absolute;
+      height: 545px;
+      width: 280px;
+      overflow-y: auto;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      padding: 20px;
+
+      .item {
+        font-size: 12px;
+
+        font-weight: 400;
+        color: #666666;
+        display: flex;
+        margin-top: 20px;
+
+        &:first-child {
+          margin-top: 0;
+        }
+
+        .avatar222 {
+          // align-self: center;
+          margin-right: 5px;
+        }
+
+        .msg {
+          position: relative;
+          min-height: 26px;
+          background: #ffffff;
           box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
-          border-width: 5px;
-          border-left: 0;
-          width: 0;
-          border-style: solid;
-          border-color: transparent;
-          border-right-color: #fff;
-          top: 8px;
-          z-index: 888;
-        }
+          border: 1px solid #e1edfc;
+          display: inline-block;
+          border-radius: 4px;
+          box-sizing: border-box;
+          word-break: break-all;
+          margin-left: 5px;
 
-        .word {
-          padding: 5px 12px;
-        }
-
-        .image {
-          padding: 12px;
-
-          img {
-            width: 94px;
-            height: 90px;
+          &:before {
+            content: ' ';
+            display: block;
+            position: absolute;
+            left: -5px;
+            box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
+            border-width: 5px;
+            border-left: 0;
+            width: 0;
+            border-style: solid;
+            border-color: transparent;
+            border-right-color: #fff;
+            top: 8px;
+            z-index: 888;
           }
-        }
 
-        .word-and-image {
-          padding: 12px;
-          .sub-content {
-            margin-top: 10px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
+          .word {
+            padding: 5px 12px;
+          }
 
-            font-weight: 400;
-            color: #999999;
+          .image {
+            padding: 12px;
+
             img {
-              height: 40px;
-              width: 40px;
+              width: 94px;
+              height: 90px;
             }
           }
-        }
-        .miniprogram {
-          padding: 12px;
-          .mini-header {
-            display: flex;
-            align-items: center;
-            img {
-              height: 18px;
-              width: 18px;
-              margin-right: 5px;
+
+          .word-and-image {
+            padding: 12px;
+            .sub-content {
+              margin-top: 10px;
+              display: flex;
+              justify-content: space-between;
+              font-size: 12px;
+
+              font-weight: 400;
+              color: #999999;
+              img {
+                height: 40px;
+                width: 40px;
+              }
             }
           }
-          .mini-img {
-            margin: 10px 0;
-            width: 143px;
-            height: 120px;
-          }
-          .mini-footer {
-            display: flex;
-            align-items: center;
-            img {
-              height: 14px;
-              width: 14px;
-              margin-right: 5px;
+          .miniprogram {
+            padding: 12px;
+            .mini-header {
+              display: flex;
+              align-items: center;
+              img {
+                height: 18px;
+                width: 18px;
+                margin-right: 5px;
+              }
+            }
+            .mini-img {
+              margin: 10px 0;
+              width: 143px;
+              height: 120px;
+            }
+            .mini-footer {
+              display: flex;
+              align-items: center;
+              img {
+                height: 14px;
+                width: 14px;
+                margin-right: 5px;
+              }
             }
           }
         }
       }
     }
   }
-}
 </style>
