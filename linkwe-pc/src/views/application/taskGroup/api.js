@@ -51,3 +51,10 @@ export function getFassionDetail(id) {
     url: wecom + '/getWeFissionDetail/' + id
   })
 }
+
+// 统计 头部
+export function getTotal(id) {
+  return request({
+    url: wecom + '/findWeFissionTab/' + id
+  })
+}

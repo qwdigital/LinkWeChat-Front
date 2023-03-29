@@ -1,15 +1,24 @@
 <template>
   <div>
-    <div class="g-card" style="margin-top: 20px;">
+    <div class="g-card" :style="isDetail ? '' : 'margin-top: 20px;'">
       <el-row>
-        <el-col :offset="2" :span="8">
+        <el-col :span="8">
           <el-form :model="form" :rules="ruleForm" ref="ruleForm" label-width="120px" labelPosition="right">
             <el-form-item label="任务名称" prop="fassionName">
-              <el-input v-model="form.fassionName" placeholder="请输入名称" maxlength="15" show-word-limit clearable>
+              <el-input
+                :disabled="isDetail"
+                v-model="form.fassionName"
+                placeholder="请输入名称"
+                maxlength="15"
+                show-word-limit
+                clearable
+              >
               </el-input>
             </el-form-item>
+            <slot></slot>
             <el-form-item label="任务时间" prop="fassionStartTime">
               <el-date-picker
+                :disabled="isDetail"
                 @change="setChange"
                 v-model.trim="dateRange"
                 :picker-options="pickerOptions"
@@ -22,10 +31,15 @@
               ></el-date-picker>
             </el-form-item>
             <template v-if="form.fassionType == 1">
-              <SelectFassionCustomerVue :dataObj="form.executeUserOrGroup" @update="getData"></SelectFassionCustomerVue>
+              <SelectFassionCustomerVue
+                :isDetail="isDetail"
+                :dataObj="form.executeUserOrGroup"
+                @update="getData"
+              ></SelectFassionCustomerVue>
             </template>
             <template v-if="form.fassionType == 2">
               <SelectFassionGroup
+                :isDetail="isDetail"
                 ref="fassionGroup"
                 :dataObj="form.executeUserOrGroup"
                 @update="getData"

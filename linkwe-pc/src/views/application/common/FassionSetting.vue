@@ -3,16 +3,16 @@
     <el-row :gutter="20" type="flex" style="margin-top: 20px;">
       <el-col>
         <div class="g-card">
-          <el-form ref="baseForm" :rules="rules" :model="form" label-position="right" label-width="150px">
+          <el-form ref="baseForm" :rules="rules" :model="form" label-position="right" label-width="120px">
             <el-form-item label="选择海报:" prop="posterId">
-              <el-button size="mini" type="primary" icon="el-icon-plus" @click="choseDialog = true">
+              <el-button v-if="!isDetail" size="mini" type="primary" icon="el-icon-plus" @click="choseDialog = true">
                 {{ form.posterId ? '编辑' : '选择' }}海报
               </el-button>
               <div style="margin-top: 10px;" v-if="form.posterUrl">
                 <ul class="el-upload-list el-upload-list--picture-card">
                   <li class="el-upload-list__item is-success">
                     <img style="width: 100%; height: 100%;" :src="form.posterUrl" />
-                    <span class="el-upload-list__item-actions">
+                    <span class="el-upload-list__item-actions" v-if="!isDetail">
                       <span class="el-upload-list__item-delete">
                         <i class="el-icon-delete" @click="handleRemove"></i>
                       </span>
@@ -94,12 +94,12 @@
             </el-form-item>
           </el-form>
         </div>
-        <div class="g-footer-sticky">
+        <div class="g-footer-sticky" v-if="!isDetail">
           <el-button plain @click="gotoPre">上一步</el-button>
           <el-button type="primary" @click="gotoNext">下一步</el-button>
         </div>
       </el-col>
-      <el-col style="width: 370px;">
+      <el-col style="width: 370px;" v-if="!isDetail">
         <div class="g-card" style="height: 100%;">
           <div class="info_title">消息预览</div>
           <!-- <Preview :value="posterUrl"></Preview> -->

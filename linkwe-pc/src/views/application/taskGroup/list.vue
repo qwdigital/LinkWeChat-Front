@@ -123,7 +123,7 @@
 <script>
   import { getList, deleteFassion, deleteMultFa } from './api'
   export default {
-    name: 'task-group-list',
+    name: 'task-customer-list',
     data() {
       return {
         statusType: [
@@ -149,14 +149,6 @@
         if (row.fassionState !== 2) {
           return true
         }
-      },
-      gotoShortLinkDetail(id) {
-        this.$router.push({
-          path: '/drainageCode/publicCustomer/IntelligentShortLink/detail',
-          query: {
-            id
-          }
-        })
       },
       setType(data) {
         let str = ''

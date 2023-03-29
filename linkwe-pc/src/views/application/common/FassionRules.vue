@@ -2,16 +2,14 @@
   <div>
     <div class="g-card" style="margin-top: 20px;">
       <el-row>
-        <el-col :offset="2" :span="15">
+        <el-col :span="15">
           <el-form :model="form" :rules="ruleForm" ref="ruleForm" label-width="120px" labelPosition="right">
             <el-form-item label="兑奖条件" prop="exchangeTip">
-              客户成功邀请<el-input style="width: 100px;" v-model="form.exchangeTip"></el-input>人<span
-                v-if="form.fassionType == 2"
-                >入群</span
-              >，可参与兑奖
+              客户成功邀请<el-input :disabled="isDetail" style="width: 100px;" v-model="form.exchangeTip"></el-input
+              >人<span v-if="form.fassionType == 2">入群</span>，可参与兑奖
             </el-form-item>
             <el-form-item label="兑奖方式" required prop="exchangeType">
-              <el-radio-group v-model="form.exchangeType" @change="changeType">
+              <el-radio-group v-model="form.exchangeType" @change="changeType" :disabled="isDetail">
                 <el-radio :label="1">跳转链接兑奖</el-radio>
                 <el-radio :label="2">添加客服兑奖</el-radio>
               </el-radio-group>
@@ -19,11 +17,16 @@
             <template v-if="form.exchangeType == 1">
               <div class="select_content">
                 <el-form-item label-width="80px" label="兑奖链接" prop="exchangeContent.redemptionLink">
-                  <el-input v-model="form.exchangeContent.redemptionLink" placeholder="请输入兑奖链接"></el-input>
+                  <el-input
+                    :disabled="isDetail"
+                    v-model="form.exchangeContent.redemptionLink"
+                    placeholder="请输入兑奖链接"
+                  ></el-input>
                   <div class="sub-des">仅做链接的跳转，不做具体兑奖的逻辑处理</div>
                 </el-form-item>
                 <el-form-item label-width="80px" label="兑奖规则" prop="exchangeContent.redemptionRule">
                   <el-input
+                    :disabled="isDetail"
                     type="textarea"
                     style="border: none; resize: none; width: 364px;"
                     v-model="form.exchangeContent.redemptionRule"

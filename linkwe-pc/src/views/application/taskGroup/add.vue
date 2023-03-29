@@ -25,7 +25,7 @@
   import FassionRules from '../common/FassionRules.vue'
   import { getFassionDetail } from './api'
   export default {
-    name: 'task-group-add',
+    name: 'task-customer-add',
     components: {
       FassionBase,
       FassionSettingVue,
