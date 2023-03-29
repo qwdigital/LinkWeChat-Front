@@ -36,9 +36,9 @@
       <el-table :data="list" v-loading="loading" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" fixed="left"></el-table-column>
         <el-table-column prop="taskName" label="任务名称" align="center" width="120" fixed="left"></el-table-column>
-        <el-table-column prop="shortLinkUrl" label="推广短链" align="center" width="180">
+        <el-table-column prop="shortLinkName" label="推广短链" align="center" width="180">
           <template #default="{ row }">
-            <a @click="gotoShortLinkDetail(row.shortLinkId)" class="self_a">{{ row.shortLinkUrl }}</a>
+            <a @click="gotoShortLinkDetail(row.shortLinkId)" class="self_a">{{ row.shortLinkName }}</a>
           </template>
         </el-table-column>
         <el-table-column prop="type" label="推广方式" align="center" width="100">
