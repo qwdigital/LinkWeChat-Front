@@ -65,7 +65,7 @@
       dataObj: {
         handler(val, old) {
           if (val) {
-            this.setData(data)
+            this.setData(val)
           }
         },
         deep: true,

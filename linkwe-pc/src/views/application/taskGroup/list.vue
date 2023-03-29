@@ -25,7 +25,13 @@
         </div>
       </div>
       <el-table :data="list" v-loading="loading" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" align="center" fixed="left"></el-table-column>
+        <el-table-column
+          type="selection"
+          width="55"
+          align="center"
+          fixed="left"
+          :selectable="selectable"
+        ></el-table-column>
         <el-table-column prop="fassionName" label="任务名称" align="center" width="120" fixed="left"></el-table-column>
         <el-table-column prop="statusType" label="任务状态" align="center" width="100">
           <template #default="{ row }">
@@ -34,12 +40,12 @@
             }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="fassionStartTime" label="任务开始时间" align="center" width="150">
+        <el-table-column prop="fassionStartTime" label="任务开始时间" align="center" width="180">
           <template #default="{ row }">
             {{ row.fassionStartTime || '-' }}
           </template>
         </el-table-column>
-        <el-table-column prop="fassionEndTime" label="任务结束时间" align="center" width="150">
+        <el-table-column prop="fassionEndTime" label="任务结束时间" align="center" width="180">
           <template #default="{ row }">
             {{ row.fassionEndTime || '-' }}
           </template>
@@ -87,7 +93,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="createBy" label="创建人" align="center"></el-table-column>
-        <el-table-column prop="updateTime" label="最近操作时间" align="center" width="150"></el-table-column>
+        <el-table-column prop="updateTime" label="最近操作时间" align="center" width="180"></el-table-column>
         <el-table-column label="操作" align="center" width="150" fixed="right">
           <template #default="{ row }">
             <el-button type="text" size="mini" @click="$router.push({ path: './detail', query: { id: row.id } })">
@@ -126,7 +132,7 @@
           { name: '已结束', key: 3 }
         ],
         query: {
-          fassionType: 1, //1 任务宝 2 群裂变
+          fassionType: 1, //1 任务宝  2群裂变
           pageSize: 10,
           pageNum: 1,
           fassionName: '',
@@ -139,6 +145,11 @@
       }
     },
     methods: {
+      selectable(row, index) {
+        if (row.fassionState !== 2) {
+          return true
+        }
+      },
       gotoShortLinkDetail(id) {
         this.$router.push({
           path: '/drainageCode/publicCustomer/IntelligentShortLink/detail',
@@ -192,7 +203,7 @@
           type: 'warning'
         })
           .then(() => {
-            return deletePomotion(data.id)
+            return deleteFassion(data.id)
           })
           .then(() => {
             this.handleSearch()
@@ -211,7 +222,7 @@
           type: 'warning'
         })
           .then(() => {
-            return deleteMultPo(ids)
+            return deleteMultFa(ids)
           })
           .then(() => {
             this.search()

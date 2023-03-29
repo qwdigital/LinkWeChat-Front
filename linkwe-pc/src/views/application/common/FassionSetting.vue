@@ -36,7 +36,7 @@
               </el-form-item>
             </template>
             <template v-if="form.fassionType == 2">
-              <el-form-item label="添加客群:" prop="chatIdList">
+              <el-form-item label="添加客群:" prop="addWeUserOrGroupCode.addGroupCode.chatIdList">
                 <template v-for="(item, index) in groupList">
                   <el-tag v-if="item.groupName" size="medium" :key="index">{{ item.groupName }}</el-tag>
                 </template>
@@ -52,6 +52,7 @@
                   v-model="form.addWeUserOrGroupCode.addGroupCode.autoCreateRoom"
                   :active-value="1"
                   :inactive-value="0"
+                  @change="setChange"
                 ></el-switch>
                 <div class="sub-des">默认以第一个群的群主作为新建群的群主</div>
               </el-form-item>
@@ -182,7 +183,7 @@
         },
         rules: {
           posterId: [{ required: true, message: '请选择海报', trigger: 'blur' }],
-          chatIdList: [{ required: true, message: '请添加客群', trigger: 'blur' }],
+          'addWeUserOrGroupCode.addGroupCode.chatIdList': [{ required: true, message: '请添加客群', trigger: 'blur' }],
           'addWeUserOrGroupCode.addGroupCode.roomBaseName': [
             { required: true, message: '请输入群名前缀', trigger: 'blur' }
           ],
@@ -234,6 +235,26 @@
             }
           }
         }
+        if (this.form.fassionType == 2) {
+          if (this.form.addWeUserOrGroupCode.addGroupCode && this.form.addWeUserOrGroupCode.addGroupCode.chatIdList) {
+            this.groupList = []
+            let arr1 = this.form.addWeUserOrGroupCode.addGroupCode.chatIdList.split(',')
+            let arr2 = this.form.addWeUserOrGroupCode.addGroupCode.groupNames.split(',')
+            arr1.forEach((dd, index) => {
+              let obj = {
+                chatId: dd,
+                groupName: arr2[index]
+              }
+              this.groupList.push(obj)
+            })
+          }
+        }
+      },
+      setChange(data) {
+        if (data == 0) {
+          this.form.addWeUserOrGroupCode.addGroupCode.roomBaseName = ''
+          this.form.addWeUserOrGroupCode.addGroupCode.roomBaseId = ''
+        }
       },
       gotoNext() {
         this.$refs.baseForm.validate((validate) => {
@@ -252,7 +273,9 @@
         })
       },
       gotoPre() {
-        this.$refs.selectMember.changeFn()
+        if (this.form.fassionType == 1) {
+          this.$refs.selectMember.changeFn()
+        }
         this.updateData()
         this.$emit('next', 0)
       },
@@ -275,6 +298,7 @@
               return dd.groupName
             })
             .join(',')
+          console.log(this.form.addWeUserOrGroupCode.addGroupCode)
         } else {
           this.groupList = []
           this.form.addWeUserOrGroupCode.addGroupCode.chatIdList = ''
