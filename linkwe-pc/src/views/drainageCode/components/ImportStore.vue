@@ -1,11 +1,11 @@
 <template>
   <div>
     <el-dialog
+      width="auto"
       :close-on-click-modal="false"
       :show-close="false"
       title="批量导入"
       :visible.sync="dialogVisible"
-      width="500px"
     >
       <div class="download_template">
         <span>请下载门店模板，按格式修改后导入</span>
