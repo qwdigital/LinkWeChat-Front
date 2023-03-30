@@ -40,6 +40,7 @@
       <el-tab-pane label="任务统计" name="second">
         <Statistics :fissionType="form.fissionType"></Statistics>
       </el-tab-pane>
+      <el-tab-pane label="裂变明细" name="third"> </el-tab-pane>
     </el-tabs>
   </div>
 </template>
