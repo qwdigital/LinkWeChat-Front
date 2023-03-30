@@ -1,166 +1,166 @@
 <script>
-import { getListNew, exportCustomer, lossRemind, getLossRemindStatus } from '@/api/customer'
-// import { getList as getListTag } from '@/api/customer/tag'
-// import { getList as getListOrganization } from '@/api/organization'
+  import { getListNew, exportCustomer, lossRemind, getLossRemindStatus } from '@/api/customer'
+  // import { getList as getListTag } from '@/api/customer/tag'
+  // import { getList as getListOrganization } from '@/api/organization'
 
-import SelectTag from '@/components/SelectTag'
+  import SelectTag from '@/components/SelectTag'
 
-export default {
-  name: 'LossRemind',
-  components: { SelectTag },
-  props: {},
-  data() {
-    return {
-      query: {
-        pageNum: 1,
-        pageSize: 10,
-        name: '', // "客户名称",
-        userIds: '', // "添加人id",
-        tagIds: '', // "标签id,多个标签，id使用逗号隔开",
-        beginTime: '', // "开始时间",
-        endTime: '', // "结束时间"
-        trackState: 5,
-      },
-      queryTag: [], // 搜索框选择的标签
-      queryUser: [], // 搜索框选择的添加人
-      dateRange: [], // 添加日期
-      loading: false,
-      isMoreFilter: false,
-      total: 0,
-      // 添加标签表单
-      form: {
-        gourpName: '',
-        weTags: [],
-      },
-      list: [], // 客户列表
-      listOrganization: [], // 组织架构列表
-      multipleSelection: [], // 多选数组
-      dialogVisible: false, // 选择标签弹窗显隐
-      dialogVisibleSelectUser: false, // 选择添加人弹窗显隐
-      selectedGroup: '', // 选择的标签分组
-      selectedTag: [], // 选择的标签
-      removeTag: [], // 可移除的标签
-      tagDialogType: {
-        title: '', // 选择标签弹窗标题
-        type: '', // 弹窗类型
-      },
-      isNotice: '0',
-    }
-  },
-  watch: {},
-  computed: {},
-  created() {
-    this.getList()
-    // this.getListTag()
-    // this.getListOrganization()
-    this.getLossRemindStatus()
+  export default {
+    name: 'LossRemind',
+    components: { SelectTag },
+    props: {},
+    data() {
+      return {
+        query: {
+          pageNum: 1,
+          pageSize: 10,
+          name: '', // "客户名称",
+          userIds: '', // "添加人id",
+          tagIds: '', // "标签id,多个标签，id使用逗号隔开",
+          beginTime: '', // "开始时间",
+          endTime: '', // "结束时间"
+          trackState: 5
+        },
+        queryTag: [], // 搜索框选择的标签
+        queryUser: [], // 搜索框选择的添加人
+        dateRange: [], // 添加日期
+        loading: false,
+        isMoreFilter: false,
+        total: 0,
+        // 添加标签表单
+        form: {
+          gourpName: '',
+          weTags: []
+        },
+        list: [], // 客户列表
+        listOrganization: [], // 组织架构列表
+        multipleSelection: [], // 多选数组
+        dialogVisible: false, // 选择标签弹窗显隐
+        dialogVisibleSelectUser: false, // 选择添加人弹窗显隐
+        selectedGroup: '', // 选择的标签分组
+        selectedTag: [], // 选择的标签
+        removeTag: [], // 可移除的标签
+        tagDialogType: {
+          title: '', // 选择标签弹窗标题
+          type: '' // 弹窗类型
+        },
+        isNotice: '0'
+      }
+    },
+    watch: {},
+    computed: {},
+    created() {
+      this.getList()
+      // this.getListTag()
+      // this.getListOrganization()
+      this.getLossRemindStatus()
 
-    this.$store.dispatch(
-      'app/setBusininessDesc',
-      `
+      this.$store.dispatch(
+        'app/setBusininessDesc',
+        `
         <div>当企业成员被客户删除时，会在流失列表中产生一条记录，开启删除通知后，被删除的成员会收到一条推送</div>
-      `,
-    )
-  },
-  mounted() {},
-  methods: {
-    getList(page) {
-      // console.log(this.dateRange);
-      if (this.dateRange) {
-        this.query.beginTime = this.dateRange[0]
-        this.query.endTime = this.dateRange[1]
-      } else {
-        this.query.beginTime = ''
-        this.query.endTime = ''
-      }
-      page && (this.query.pageNum = page)
-      this.loading = true
-      getListNew(this.query)
-        .then(({ rows, total }) => {
-          this.list = rows
-          this.total = +total
-          this.loading = false
-          this.multipleSelection = []
+      `
+      )
+    },
+    mounted() {},
+    methods: {
+      getList(page) {
+        // console.log(this.dateRange);
+        if (this.dateRange) {
+          this.query.beginTime = this.dateRange[0]
+          this.query.endTime = this.dateRange[1]
+        } else {
+          this.query.beginTime = ''
+          this.query.endTime = ''
+        }
+        page && (this.query.pageNum = page)
+        this.loading = true
+        getListNew(this.query)
+          .then(({ rows, total }) => {
+            this.list = rows
+            this.total = +total
+            this.loading = false
+            this.multipleSelection = []
+          })
+          .catch(() => {
+            this.loading = false
+          })
+      },
+      // getListTag() {
+      //   getListTag().then(({ rows }) => {
+      //     this.listTagOneArray = []
+      //     rows.forEach((element) => {
+      //       element.weTags.forEach((d) => {
+      //         this.listTagOneArray.push(d)
+      //       })
+      //     })
+      //   })
+      // },
+      // getListOrganization() {
+      //   getListOrganization().then(({ rows }) => {
+      //     this.listOrganization = Object.freeze(rows)
+      //   })
+      // },
+      getLossRemindStatus() {
+        getLossRemindStatus().then(({ data }) => {
+          this.isNotice = data
         })
-        .catch(() => {
-          this.loading = false
+      },
+      showTagDialog() {
+        this.selectedTag = this.queryTag
+        this.tagDialogType = {
+          title: '选择标签',
+          type: '1'
+        }
+        this.dialogVisible = true
+      },
+      // /** 导出按钮操作 */
+      // exportCustomer() {
+      //   const queryParams = this.query
+      //   this.$confirm('是否确认导出所有客户数据项?', '警告', {
+      //     confirmButtonText: '确定',
+      //     cancelButtonText: '取消',
+      //     type: 'warning'
+      //   })
+      //     .then(function() {
+      //       return exportCustomer(queryParams)
+      //     })
+      //     .then((response) => {
+      //       this.download(response.msg)
+      //     })
+      //     .catch(function() {})
+      // },
+      selectedUser(list) {
+        this.queryUser = list
+        this.query.userIds = list.map((d) => d.userId) + ''
+      },
+      submitSelectTag(selected) {
+        if (this.tagDialogType.type === '1') {
+          this.query.tagIds = selected.map((d) => d.tagId) + ''
+          // debugger;
+          this.queryTag = selected
+          this.dialogVisible = false
+        }
+      },
+      resetForm() {
+        this.dateRange = []
+        this.queryTag = []
+        this.queryUser = []
+        this.$refs['queryForm'].resetFields()
+        this.getList(1)
+      },
+      // 多选框选中数据
+      handleSelectionChange(selection) {
+        this.multipleSelection = selection
+      },
+      // 流失提醒开关事件
+      remindSwitch(val) {
+        lossRemind(val).then(() => {
+          this.msgSuccess('操作成功')
         })
-    },
-    // getListTag() {
-    //   getListTag().then(({ rows }) => {
-    //     this.listTagOneArray = []
-    //     rows.forEach((element) => {
-    //       element.weTags.forEach((d) => {
-    //         this.listTagOneArray.push(d)
-    //       })
-    //     })
-    //   })
-    // },
-    // getListOrganization() {
-    //   getListOrganization().then(({ rows }) => {
-    //     this.listOrganization = Object.freeze(rows)
-    //   })
-    // },
-    getLossRemindStatus() {
-      getLossRemindStatus().then(({ data }) => {
-        this.isNotice = data
-      })
-    },
-    showTagDialog() {
-      this.selectedTag = this.queryTag
-      this.tagDialogType = {
-        title: '选择标签',
-        type: '1',
       }
-      this.dialogVisible = true
-    },
-    // /** 导出按钮操作 */
-    // exportCustomer() {
-    //   const queryParams = this.query
-    //   this.$confirm('是否确认导出所有客户数据项?', '警告', {
-    //     confirmButtonText: '确定',
-    //     cancelButtonText: '取消',
-    //     type: 'warning'
-    //   })
-    //     .then(function() {
-    //       return exportCustomer(queryParams)
-    //     })
-    //     .then((response) => {
-    //       this.download(response.msg)
-    //     })
-    //     .catch(function() {})
-    // },
-    selectedUser(list) {
-      this.queryUser = list
-      this.query.userIds = list.map((d) => d.userId) + ''
-    },
-    submitSelectTag(selected) {
-      if (this.tagDialogType.type === '1') {
-        this.query.tagIds = selected.map((d) => d.tagId) + ''
-        // debugger;
-        this.queryTag = selected
-        this.dialogVisible = false
-      }
-    },
-    resetForm() {
-      this.dateRange = []
-      this.queryTag = []
-      this.queryUser = []
-      this.$refs['queryForm'].resetFields()
-      this.getList(1)
-    },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.multipleSelection = selection
-    },
-    // 流失提醒开关事件
-    remindSwitch(val) {
-      lossRemind(val).then(() => {
-        this.msgSuccess('操作成功')
-      })
-    },
-  },
-}
+    }
+  }
 </script>
 
 <template>
@@ -187,7 +187,8 @@ export default {
           range-separator="-"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
-          align="right"></el-date-picker>
+          align="right"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="标签">
         <div class="tag-input" @click="showTagDialog">
@@ -222,7 +223,8 @@ export default {
             inactive-value="0"
             active-color="#07c160"
             inactive-color="#ff4949"
-            @change="remindSwitch"></el-switch>
+            @change="remindSwitch"
+          ></el-switch>
         </div>
         <!-- v-hasPermi="['customerManage/customer:makeTag']" -->
       </div>
@@ -232,8 +234,9 @@ export default {
         ref="multipleTable"
         :data="list"
         tooltip-effect="dark"
-        style="width: 100%"
-        @selection-change="handleSelectionChange">
+        style="width: 100%;"
+        @selection-change="handleSelectionChange"
+      >
         <!-- <el-table-column type="selection" align="center" width="55"></el-table-column> -->
         <el-table-column label="客户" prop="name" align="center">
           <template slot-scope="scope">
@@ -251,6 +254,7 @@ export default {
         <el-table-column prop="firstAddTime" label="添加时间" align="center">
           <!-- <template slot-scope="scope">{{ scope.row.weFlowerCustomerRels[0].createTime }}</template> -->
         </el-table-column>
+        <el-table-column label="留存天数" prop="retentionDays" align="center"> </el-table-column>
         <el-table-column prop="updateTime" label="流失时间" align="center">
           <!-- <template slot-scope="scope">{{ scope.row.weFlowerCustomerRels[0].createTime }}</template> -->
         </el-table-column>
@@ -275,11 +279,12 @@ export default {
                   path: '/customerManage/customerManage/customer/customerDetail',
                   query: {
                     externalUserid: row.externalUserid,
-                    userId: row.firstUserId,
-                  },
+                    userId: row.firstUserId
+                  }
                 })
               "
-              type="text">
+              type="text"
+            >
               查看
             </el-button>
             <!-- <el-button type="text" >编辑</el-button> -->
@@ -292,7 +297,8 @@ export default {
         :total="total"
         :page.sync="query.pageNum"
         :limit.sync="query.pageSize"
-        @pagination="getList()" />
+        @pagination="getList()"
+      />
     </div>
 
     <!-- 选择标签弹窗 -->
@@ -301,7 +307,8 @@ export default {
       :title="tagDialogType.title"
       :selected="selectedTag"
       :type="tagDialogType.type"
-      @success="submitSelectTag"></SelectTag>
+      @success="submitSelectTag"
+    ></SelectTag>
 
     <!-- 选择添加人弹窗 -->
     <SelectUser :visible.sync="dialogVisibleSelectUser" title="选择添加人" @success="selectedUser"></SelectUser>
@@ -309,18 +316,18 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-.el-icon-s-custom {
-  font-size: 16px;
-  margin-left: 4px;
-  color: #999;
-  &.man {
-    color: #13a2e8;
+  .el-icon-s-custom {
+    font-size: 16px;
+    margin-left: 4px;
+    color: #999;
+    &.man {
+      color: #13a2e8;
+    }
+    &.woman {
+      color: #f753b2;
+    }
   }
-  &.woman {
-    color: #f753b2;
+  .bfc-d + .bfc-d .el-checkbox:first-child {
+    margin-left: 10px;
   }
-}
-.bfc-d + .bfc-d .el-checkbox:first-child {
-  margin-left: 10px;
-}
 </style>
