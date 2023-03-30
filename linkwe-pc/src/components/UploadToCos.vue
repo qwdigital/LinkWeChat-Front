@@ -1,5 +1,5 @@
 <script>
-  import { getCosConfig, getVideoPic } from '@/api/common'
+  import { getCosConfig, getVideoPic, upload } from '@/api/common'
   import { dateFormat, uuid } from '@/utils/index'
   // import Video from 'video.js'
   import Cos from 'cos-js-sdk-v5'
@@ -131,11 +131,13 @@
     created() {
       getCosConfig().then((res) => {
         this.cosConfig = res
+        console.log(this.cosConfig)
         if (this.cosConfig.fileObject == 'tencentOss') {
           this.cosInstance = new Cos({
             SecretId: res.secretId,
             SecretKey: res.secretKey
           })
+        } else if (this.cosConfig.fileObject == 'local') {
         } else {
           let region = this.cosConfig.region.split('//')[1]
           this.ossObj = new OSS({
@@ -187,9 +189,52 @@
       upload() {
         if (this.cosConfig.fileObject == 'tencentOss') {
           this.tencentFn()
-        } else {
+        } else if (this.cosConfig.fileObject == 'local') {
+          this.localFn()
+        } else if (this.cosConfig.fileObject == 'aliOss') {
           this.aliOss()
         }
+      },
+      localFn() {
+        this.loading = true
+        let file = undefined
+        if (!this.multiple || this.limit == 1) {
+          file = this.file
+        } else {
+          // 多选上传是多次调用单传的
+          file = this.file.shift()
+        }
+        let formData = new FormData()
+        formData.append('file', file)
+        upload(formData).then((dd) => {
+          if (dd.code == 200) {
+            let location = dd.data.url
+            this.$emit('upSuccess', location)
+            this.type == 2
+              ? //获取视频第一帧画面
+                getVideoPic({ url: location }).then((res) => {
+                  this.loading = false
+                  this.$emit('getPicUrl', res.data.url)
+                })
+              : (this.loading = false)
+
+            // 使用本地链接提供预览，避免上传后下载的问题
+            let url = window.URL.createObjectURL(file)
+
+            let name = file.name
+            if (!this.multiple) {
+              this.fileUrlWatch = url
+              this.$emit('update:fileUrl', location)
+              this.$emit('update:fileName', (this.fileNameWatch = name))
+            } else {
+              this.fileListWatch = this.fileListWatch.concat({ name, url })
+              this.$emit('update:fileList', this.fileList.concat({ name, url: location }))
+            }
+          } else {
+            this.loading = false
+            this.$message.error('上传失败，请稍后再试')
+          }
+        })
       },
       async aliOss() {
         this.loading = true
