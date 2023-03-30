@@ -10,7 +10,7 @@
                 <el-button
                   v-if="form.fassionState == 1"
                   type="primary"
-                  @click="$router.push({ path: './add', query: { id: id } })"
+                  @click="$router.push({ path: './add', query: { id: $route.query.id } })"
                 >
                   编辑
                 </el-button>

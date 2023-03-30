@@ -58,3 +58,28 @@ export function getTotal(id) {
     url: wecom + '/findWeFissionTab/' + id
   })
 }
+
+// 统计 折线图
+export function getLineData(data) {
+  return request({
+    url: wecom + '/findWeFissionTrend',
+    params: data
+  })
+}
+
+// 统计 表格
+export function getTableData(data) {
+  return request({
+    url: wecom + '/findWeFissionDataReport',
+    params: data
+  })
+}
+
+// 统计 导出
+export function getTableExport(data) {
+  return request({
+    url: wecom + '/exportWeFissionDataReport',
+    params: data,
+    responseType: 'blob'
+  })
+}
