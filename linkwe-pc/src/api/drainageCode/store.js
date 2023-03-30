@@ -4,7 +4,7 @@ const service = window.lwConfig.services.system + window.lwConfig.services.wecom
 // 门店活码类型 storeCodeType 1:门店导购码  2:门店群活码
 export function getCode(type) {
   return request({
-    url: service + '/config/' + type,
+    url: service + '/config/' + type
   })
 }
 
@@ -12,7 +12,7 @@ export function getCode(type) {
 export function getTableList(params) {
   return request({
     url: service + '/storeCodes',
-    params,
+    params
   })
 }
 
@@ -20,7 +20,7 @@ export function getTableList(params) {
 export function deleteStore(ids) {
   return request({
     url: service + '/' + ids,
-    method: 'delete',
+    method: 'delete'
   })
 }
 
@@ -29,7 +29,7 @@ export function updateState(ids, params) {
   return request({
     url: service + '/batchStartOrStop/' + ids,
     method: 'put',
-    data: params,
+    data: params
   })
 }
 
@@ -37,6 +37,7 @@ export function updateState(ids, params) {
 export function downloadTemplate() {
   return request({
     url: service + '/importTemplate',
+    responseType: 'blob'
   })
 }
 
@@ -46,7 +47,7 @@ export function uploadStore(params) {
   return request({
     url: service + '/importData',
     method: 'post',
-    data: params,
+    data: params
   })
 }
 
@@ -55,14 +56,14 @@ export function addOrUpdateStore(params) {
   return request({
     url: service + '/code/createOrUpdateStoreCode',
     method: 'post',
-    data: params,
+    data: params
   })
 }
 
 // 门店详情
 export function storeDetail(id) {
   return request({
-    url: service + '/getWeStoreCodeById/' + id,
+    url: service + '/getWeStoreCodeById/' + id
   })
 }
 
@@ -71,14 +72,14 @@ export function addOrUpdateCodeInStore(params) {
   return request({
     url: service + '/config/createOrUpdate',
     method: 'post',
-    data: params,
+    data: params
   })
 }
 
 // 门店详情统计 头部
 export function getTabTotalInStore(id) {
   return request({
-    url: service + '/countWeStoreTab/' + id,
+    url: service + '/countWeStoreTab/' + id
   })
 }
 
@@ -86,7 +87,7 @@ export function getTabTotalInStore(id) {
 export function getLineDataGuideCode(params) {
   return request({
     url: service + '/countStoreShopGuideTrend',
-    params,
+    params
   })
 }
 
@@ -94,7 +95,7 @@ export function getLineDataGuideCode(params) {
 export function getLineDataStoreCode(params) {
   return request({
     url: service + '/countStoreGroupTrend',
-    params,
+    params
   })
 }
 
@@ -103,7 +104,7 @@ export function downloadUrl(params) {
   return request({
     url: service + '/downloadStoreCodeConfigUrl',
     params,
-    responseType: 'blob',
+    responseType: 'blob'
   })
 }
 
@@ -111,7 +112,7 @@ export function downloadUrl(params) {
 export function getGuideCodeTab(params) {
   return request({
     url: service + '/countWeStoreShopGuideTab',
-    params,
+    params
   })
 }
 
@@ -119,7 +120,7 @@ export function getGuideCodeTab(params) {
 export function getStoreCodeTab(params) {
   return request({
     url: service + '/countWeStoreGroupTab',
-    params,
+    params
   })
 }
 
@@ -127,7 +128,7 @@ export function getStoreCodeTab(params) {
 export function getBarTop10GuideCode(params) {
   return request({
     url: service + '/countStoreShopGuideDrum',
-    params,
+    params
   })
 }
 
@@ -135,7 +136,7 @@ export function getBarTop10GuideCode(params) {
 export function getBarTop10StoreCode(params) {
   return request({
     url: service + '/countStoreShopGroupDrum',
-    params,
+    params
   })
 }
 
@@ -143,7 +144,7 @@ export function getBarTop10StoreCode(params) {
 export function getTableInGuideCode(params) {
   return request({
     url: service + '/countShopGuideReport',
-    params,
+    params
   })
 }
 
@@ -151,7 +152,7 @@ export function getTableInGuideCode(params) {
 export function getTableGuideCodeExport(params) {
   return request({
     url: service + '/exportCountShopGuideReport',
-    params,
+    params
   })
 }
 
@@ -159,7 +160,7 @@ export function getTableGuideCodeExport(params) {
 export function getTableInStoreCode(params) {
   return request({
     url: service + '/countStoreGroupReport',
-    params,
+    params
   })
 }
 
@@ -167,6 +168,6 @@ export function getTableInStoreCode(params) {
 export function getTableStoreCodeExport(params) {
   return request({
     url: service + '/exportCountStoreGroupReport',
-    params,
+    params
   })
 }
