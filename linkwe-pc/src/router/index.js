@@ -81,6 +81,11 @@ export const constantRoutes = [
       isNoLogin: true,
     },
   },
+  {
+    path: '/preview',
+    component: (resolve) => require(['@/views/contentCenter/components/preview'], resolve),
+    hidden: true,
+  },
   // {
   //   path: '',
   //   component: Layout,

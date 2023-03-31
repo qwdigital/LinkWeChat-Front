@@ -591,7 +591,7 @@ export default {
                 :label="item.label"
                 :value="item.value"></el-option>
             </el-select>
-            <el-button class="ml10" type="primary" @click="getList(1)">查询</el-button>
+            <el-button style="margin-left:10px" type="primary" @click="getList(1)">查询</el-button>
             <el-button @click="resetQuery">重置</el-button>
           </div>
           <div class="mt20 g-card pad20">
@@ -612,7 +612,7 @@ export default {
                       <el-button size="mini" @click="groupDialogVisible = false">取消</el-button>
                       <el-button type="primary" size="mini" @click="moveGroup">确定</el-button>
                     </div>
-                    <el-button slot="reference" class="mr10" :disabled="selected.length === 0" type="primary">
+                    <el-button slot="reference" style="margin-right:10px" :disabled="selected.length === 0" type="primary">
                       批量分组
                     </el-button>
                   </el-popover>
