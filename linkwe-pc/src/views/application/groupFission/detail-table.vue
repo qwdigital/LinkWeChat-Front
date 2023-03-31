@@ -2,7 +2,10 @@
   <div>
     <el-form ref="queryForm" :model="query" inline class="top-search" label-position="left" label-width="">
       <el-form-item label="" prop="customerName">
-        <el-input clearable v-model="query.customerName" placeholder="请输入老客名称"></el-input>
+        <el-input clearable v-model="query.customerName" placeholder="请输入客户名称"></el-input>
+      </el-form-item>
+      <el-form-item label="">
+        <el-input :value="groupNames" readonly @focus="showSelectModal = true" placeholder="请选择客群" />
       </el-form-item>
       <el-form-item label="">
         <el-input :value="qrUserName" readonly @focus="dialogVisible = true" placeholder="请选择发送员工" />
@@ -22,7 +25,8 @@
         </div>
       </div>
       <el-table :data="list" v-loading="loading">
-        <el-table-column prop="oldCustomerName" label="老客" align="center"></el-table-column>
+        <el-table-column prop="customerName" label="客户" align="center"></el-table-column>
+        <el-table-column prop="chatName" label="所在客群" align="center"></el-table-column>
         <el-table-column prop="sendWeUserName" label="发送员工" align="center"></el-table-column>
         <el-table-column prop="inviterState" label="裂变状态" align="center"> </el-table-column>
         <el-table-column prop="inviterNumber" label="裂变新客数" align="center">
@@ -46,20 +50,27 @@
       @success="getSelectUser"
     ></SelectWeUser>
     <SubDetailVue :visible.sync="detailVisible" :fissionInviterRecordId="detailId"></SubDetailVue>
+    <select-group :visible.sync="showSelectModal" :defaults="groupList" @submit="setSelectData"></select-group>
   </div>
 </template>
 
 <script>
-  import { getFissionCustomerTable, exportCustomerTable } from './api'
+  import { getFissionGroupTable, exportGroupTable } from '../taskGroup/api'
   import SubDetailVue from '../common/SubDetail.vue'
   import { dateFormat } from '@/utils/index'
+  import SelectGroup from '@/views/drainageCode/components/SelectGroup.vue'
+
   export default {
-    name: 'task-customer-detail-table',
+    name: 'task-group-detail-table',
     components: {
-      SubDetailVue
+      SubDetailVue,
+      SelectGroup
     },
     data() {
       return {
+        groupNames: '',
+        groupList: [],
+        showSelectModal: false,
         loading: false,
         list: [],
         total: 0,
@@ -68,7 +79,8 @@
           customerName: '',
           pageNum: 1,
           pageSize: 10,
-          weUserId: ''
+          weUserId: '',
+          chatId: ''
         },
         dialogVisible: false,
         userArray: [], // 选择人员
@@ -79,6 +91,25 @@
       }
     },
     methods: {
+      setSelectData(data) {
+        if (data && data.length) {
+          this.groupList = data
+          this.query.chatId = this.groupList
+            .map((dd) => {
+              return dd.chatId
+            })
+            .join(',')
+          this.groupNames = this.groupList
+            .map((dd) => {
+              return dd.groupName
+            })
+            .join(',')
+        } else {
+          this.groupList = []
+          this.query.chatId = ''
+          this.groupNames = ''
+        }
+      },
       exportFn() {
         this.$confirm('确认导出吗？', '提示', {
           confirmButtonText: '确定',
@@ -87,7 +118,7 @@
         })
           .then(() => {
             this.exportLoading = true
-            return exportCustomerTable(this.query)
+            return exportGroupTable(this.query)
           })
           .then((res) => {
             if (res != null) {
@@ -114,7 +145,7 @@
       getList() {
         this.loading = true
         this.query.id = this.$route.query.id
-        getFissionCustomerTable(this.query).then((res) => {
+        getFissionGroupTable(this.query).then((res) => {
           this.loading = false
           this.list = res.rows
           this.total = Number(res.total)
@@ -128,6 +159,9 @@
         this.query.weUserId = ''
         this.query.customerName = ''
         this.userArray = []
+        this.groupList = []
+        this.query.chatId = ''
+        this.groupNames = ''
         this.qrUserName = ''
         this.search()
       },

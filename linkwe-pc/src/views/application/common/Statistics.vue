@@ -15,7 +15,7 @@
       <el-table v-loading="loading" :data="tableList" style="width: 100%;">
         <el-table-column label="日期" align="center" min-width="100" prop="dateTime" show-overflow-tooltip />
         <el-table-column
-          label="完成任务老客总数"
+          :label="fassionType == 1 ? '完成任务老客总数' : '完成任务客户总数'"
           align="center"
           prop="completeTaskOldCustomerNum"
           min-width="100"
@@ -29,7 +29,7 @@
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-          label="今日完成任务老客数"
+          :label="fassionType == 1 ? '今日完成任务老客数' : '今日完成任务客户数'"
           align="center"
           prop="tdCompleteTaskOldCustomerNum"
           min-width="120"
@@ -64,19 +64,21 @@
       ChartLine
     },
     props: {
-      fissionType: {
+      fassionType: {
         type: Number,
         default: 1
       }
     },
     watch: {
-      fissionType(val) {
-        if (val == 1) {
-          this.legend = ['完成任务老客数', '裂变新客数']
-        } else {
-          this.legend = ['完成任务客户数', '裂变新客数']
-        }
-        this.$forceUpdate()
+      fassionType: {
+        handler(val) {
+          if (val == 1) {
+            this.legend = ['完成任务老客数', '裂变新客数']
+          } else {
+            this.legend = ['完成任务客户数', '裂变新客数']
+          }
+        },
+        immediate: true
       }
     },
     data() {
@@ -86,24 +88,24 @@
         series: [],
         cardData: [
           {
-            title: this.fissionType == 1 ? '员工邀请老客总数' : '员工触达客群总数',
-            tips: this.fissionType == 1 ? '在当前任务中员工已送达的客户总数' : '在当前任务中员工已送达的客群总数',
+            title: this.fassionType == 1 ? '员工邀请老客总数' : '员工触达客群总数',
+            tips: this.fassionType == 1 ? '在当前任务中员工已送达的客户总数' : '在当前任务中员工已送达的客群总数',
             value: 0
           },
           {
-            title: this.fissionType == 1 ? '完成任务老客总数' : '完成任务客户总数',
-            tips: this.fissionType == 1 ? '在当前任务中完成裂变任务的老客总数' : '在当前任务中完成裂变任务的客户总数',
+            title: this.fassionType == 1 ? '完成任务老客总数' : '完成任务客户总数',
+            tips: this.fassionType == 1 ? '在当前任务中完成裂变任务的老客总数' : '在当前任务中完成裂变任务的客户总数',
             value: 0
           },
           {
             title: '裂变新客总数',
-            tips: this.fissionType == 1 ? '在当前任务中成功添加员工的新客总数' : '在当前任务中成功添加客群的新客总数',
+            tips: this.fassionType == 1 ? '在当前任务中成功添加员工的新客总数' : '在当前任务中成功添加客群的新客总数',
             value: 0
           },
           {
-            title: this.fissionType == 1 ? '今日完成任务老客数' : '今日完成任务客户数',
+            title: this.fassionType == 1 ? '今日完成任务老客数' : '今日完成任务客户数',
             tips:
-              this.fissionType == 1 ? '在当前任务中今日完成裂变任务的老客数' : '在当前任务中今日完成裂变任务的客户数',
+              this.fassionType == 1 ? '在当前任务中今日完成裂变任务的老客数' : '在当前任务中今日完成裂变任务的客户数',
             value: 0,
             title1: '较昨日',
             value1: 0
@@ -111,7 +113,7 @@
           {
             title: '今日裂变新客数',
             tips:
-              this.fissionType == 1 ? '在当前任务中今日成功添加员工的新客数' : '在当前任务中今日成功添加客群的新客总数',
+              this.fassionType == 1 ? '在当前任务中今日成功添加员工的新客数' : '在当前任务中今日成功添加客群的新客总数',
             value: 0,
             title1: '较昨日',
             value1: 0

@@ -1,252 +1,142 @@
-<script>
-import * as api from '@/api/task'
-import * as echarts from 'echarts'
-export default {
-  name: 'taskDetail',
-  data() {
-    return {
-      query: {
-        pageNum: 1,
-        pageSize: 10,
-        name: '', // "客户名称",
-        beginTime: '', // "开始时间",
-        endTime: '', // "结束时间"
-      },
-      dateRange: [],
-      tableData: [],
-      dateSelect: 7,
-      taskDetail: {},
-      statData: [],
-    }
-  },
-  created() {
-    this.getList(this.$route.query.id)
-    this.setTime(7)
-  },
-  mounted() {},
-  watch: {
-    statData: {
-      handler(newVal, oldVal) {
-        let xData = [],
-          attends = [],
-          completes = [],
-          increases = []
-        for (let i = 0; i < newVal.length; i++) {
-          xData.push(newVal[i].day)
-          attends.push(newVal[i].attend)
-          completes.push(newVal[i].complete)
-          increases.push(newVal[i].increase)
-        }
-        // 指定图表的配置项和数据
-        let option = {
-          tooltip: {
-            //设置tip提示
-            trigger: 'axis',
-          },
-
-          legend: {
-            //设置区分（哪条线属于什么）
-            data: ['日新增客户数', '活动参与客户数', '完成任务的客户数'],
-          },
-          color: ['#8AE09F', '#FA6F53', '#1890ff'], //设置区分（每条线是什么颜色，和 legend 一一对应）
-          xAxis: {
-            //设置x轴
-            type: 'category',
-            boundaryGap: false, //坐标轴两边不留白
-            data: xData,
-            // name: '日期',           //X轴 name
-            nameTextStyle: {
-              //坐标轴名称的文字样式
-              fontSize: 16,
-              // padding: [0, 0, 0, 20]
-            },
-            // axisLine: {             //坐标轴轴线相关设置。
-            //     lineStyle: {
-            //         color: '#FA6F53',
-            //     }
-            // }
-          },
-          yAxis: {
-            nameTextStyle: {
-              color: '#FA6F53',
-              fontSize: 16,
-              padding: [0, 0, 10, 0],
-            },
-            // axisLine: {
-            //     lineStyle: {
-            //         color: '#FA6F53',
-            //     }
-            // },
-            type: 'value',
-          },
-          series: [
-            {
-              name: '日新增客户数',
-              data: increases,
-              type: 'line', // 类型为折线图
-              lineStyle: {
-                // 线条样式 => 必须使用normal属性
-                normal: {
-                  color: '#8AE09F',
-                },
-              },
-            },
-            {
-              name: '活动参与客户数',
-              data: attends,
-              type: 'line',
-              lineStyle: {
-                normal: {
-                  color: '#FA6F53',
-                },
-              },
-            },
-            {
-              name: '完成任务的客户数',
-              data: completes,
-              type: 'line',
-              lineStyle: {
-                normal: {
-                  color: '#FA6F53',
-                },
-              },
-            },
-          ],
-        }
-        this.initChart(option)
-      },
-    },
-  },
-  methods: {
-    getList(id) {
-      api.getTaskDetail(id).then((res) => {
-        this.taskDetail = res.data
-      })
-    },
-    getChartsData() {
-      let params = {
-        beginTime: this.dateRange[0],
-        endTime: this.dateRange[1],
-        taskFissionId: this.$route.query.id,
-      }
-      api.getStat(params).then((res) => {
-        this.statData = res.data ? res.data.data : []
-      })
-    },
-    resetForm() {},
-    exportCustomer() {},
-    dateChange(day) {
-      this.setTime(day)
-    },
-    initChart(option) {
-      if (!this.chartLine) {
-        this.chartLine = echarts.init(document.getElementById('chartLineBox'))
-      }
-      this.chartLine.setOption(option)
-    },
-    getHandledValue(num) {
-      return num < 10 ? '0' + num : num
-    },
-    getTime(datePar) {
-      const d = datePar ? new Date(datePar) : new Date()
-      const year = d.getFullYear()
-      const month = this.getHandledValue(d.getMonth() + 1)
-      const date = this.getHandledValue(d.getDate())
-      return year + '-' + month + '-' + date
-    },
-    setTime(days) {
-      this.timeRange = days
-      let date = new Date()
-      date.setDate(date.getDate() - days)
-      this.dateRange = [this.getTime(date), this.getTime()]
-      this.getChartsData()
-    },
-  },
-}
-</script>
-
 <template>
-  <div class="task-detail-container">
-    <div class="task-detail-model task-detail-left">
-      <el-descriptions title="任务活动信息" :column="1" size="medium" border>
-        <el-descriptions-item label="创建人">{{ taskDetail.createBy }}</el-descriptions-item>
-        <el-descriptions-item label="活动名称">{{ taskDetail.taskName }}</el-descriptions-item>
-        <el-descriptions-item label="裂变引导语">{{ taskDetail.fissInfo }}</el-descriptions-item>
-        <el-descriptions-item label="裂变客户数量">{{ taskDetail.fissNum }}</el-descriptions-item>
-        <el-descriptions-item label="活动时间"
-          >{{ taskDetail.startTime }} 至 {{ taskDetail.overTime }}</el-descriptions-item
-        >
-        <el-descriptions-item label="裂变海报"
-          ><img style="width: 120px" :src="taskDetail.postersUrl"
-        /></el-descriptions-item>
-        <el-descriptions-item label="群活码"
-          ><img style="width: 120px" :src="taskDetail.fissionTarget"
-        /></el-descriptions-item>
-        <el-descriptions-item label="群活码">{{ taskDetail.fissionTarget }}</el-descriptions-item>
-        <el-descriptions-item label="兑奖链接">{{ taskDetail.rewardUrl }}</el-descriptions-item>
-        <el-descriptions-item label="兑奖图片"
-          ><img style="width: 120px" :src="taskDetail.rewardImageUrl"
-        /></el-descriptions-item>
-        <el-descriptions-item label="新客欢迎语">{{ taskDetail.welcomeMsg }}</el-descriptions-item>
-      </el-descriptions>
-    </div>
-
-    <div class="task-detail-model task-detail-right">
-      <div class="title">关键数据</div>
-      <div class="dateRang">
-        <el-radio-group @change="dateChange" v-model="dateSelect">
-          <el-radio-button :label="7">近7日</el-radio-button>
-          <el-radio-button :label="30">近30日</el-radio-button>
-        </el-radio-group>
-        <el-date-picker
-          v-model="dateRange"
-          type="daterange"
-          range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          align="right"
-          value-format="yyyy-MM-dd"
-          :clearable="false"
-          @change="getChartsData"
-        ></el-date-picker>
-      </div>
-      <div id="chartLineBox" style="width: 100%; height: 354px"></div>
-    </div>
+  <div>
+    <el-tabs v-model="activeName">
+      <el-tab-pane label="任务信息" name="first">
+        <el-row :gutter="20" type="flex">
+          <el-col>
+            <div class="g-card">
+              <div style="display: flex; justify-content: space-between;">
+                <div class="info_title">基本信息</div>
+                <el-button
+                  v-if="form.fassionState == 1"
+                  type="primary"
+                  @click="$router.push({ path: './add', query: { id: $route.query.id } })"
+                >
+                  编辑
+                </el-button>
+              </div>
+              <FassionBase :baseData="form" :isDetail="true">
+                <div slot>
+                  <el-form-item label="任务状态" prop="fassionState">
+                    <el-tag :type="(form.fassionState == 1 ? 'info' : (form.fassionState == 3 ? 'danger' : ''))">{{
+                      setStatus(form)
+                    }}</el-tag>
+                  </el-form-item>
+                </div>
+              </FassionBase>
+            </div>
+            <div class="g-card">
+              <div class="info_title">任务设置</div>
+              <FassionSettingVue :baseData="form" :isDetail="true"></FassionSettingVue>
+            </div>
+            <div class="g-card">
+              <div class="info_title">兑奖规则</div>
+              <FassionRules :baseData="form" :isDetail="true"></FassionRules>
+            </div>
+          </el-col>
+          <el-col style="width: 370px;"> </el-col>
+        </el-row>
+      </el-tab-pane>
+      <el-tab-pane label="任务统计" name="second">
+        <Statistics v-if="form.id" :fassionType="form.fassionType"></Statistics>
+      </el-tab-pane>
+      <el-tab-pane label="裂变明细" name="third">
+        <DetailTable></DetailTable>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
-<style lang="scss" scoped>
-.task-detail-container {
-  display: flex;
-  justify-content: space-between;
-  background: #efeff4;
-  height: calc(100vh - 84px);
-  box-sizing: border-box;
-  padding: 20px 10px;
-  .task-detail-model {
-    width: 48%;
-    height: 100%;
-    box-sizing: border-box;
-    background: #fff;
-    padding: 10px 20px;
-    overflow: auto;
-    ::v-deep .el-descriptions-item__label.is-bordered-label {
-      width: 120px;
-    }
-
-    .title {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
-    .dateRang {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-    #chartLineBox {
-      margin-top: 10px;
+<script>
+  import { getFassionDetail } from '../taskGroup/api'
+  import FassionBase from '../common/FassionBase.vue'
+  import FassionSettingVue from '../common/FassionSetting.vue'
+  import FassionRules from '../common/FassionRules.vue'
+  import Statistics from '../common/Statistics.vue'
+  import DetailTable from './detail-table.vue'
+  export default {
+    name: 'task-group-detail',
+    components: {
+      FassionBase,
+      FassionSettingVue,
+      FassionRules,
+      Statistics,
+      DetailTable
+    },
+    data() {
+      return {
+        activeName: 'first',
+        form: {
+          fassionType: 1,
+          fassionName: '',
+          fassionStartTime: '',
+          fassionEndTime: '',
+          executeUserOrGroup: null,
+          posterId: '',
+          posterUrl: '',
+          addWeUserOrGroupCode: {
+            addWeUser: {
+              executeUserCondit: {
+                change: false,
+                weUserIds: []
+              },
+              executeDeptCondit: {
+                change: false,
+                deptIds: [],
+                posts: []
+              }
+            },
+            addGroupCode: {
+              autoCreateRoom: 0,
+              roomBaseName: '',
+              roomBaseId: null,
+              chatIdList: '',
+              groupNames: ''
+            }
+          },
+          content: '',
+          exchangeTip: null,
+          exchangeType: 1,
+          exchangeContent: {
+            redemptionLink: '',
+            redemptionRule: '',
+            weUserId: '',
+            userName: ''
+          }
+        },
+        statusType: [
+          { name: '待开始', key: 1 },
+          { name: '进行中', key: 2 },
+          { name: '已结束', key: 3 }
+        ]
+      }
+    },
+    methods: {
+      setStatus(data) {
+        let str = ''
+        this.statusType.forEach((dd) => {
+          if (dd.key == data.fassionState) {
+            str = dd.name
+          }
+        })
+        return str
+      }
+    },
+    created() {
+      if (this.$route.query.id) {
+        getFassionDetail(this.$route.query.id).then((res) => {
+          this.form = res.data
+        })
+      }
     }
   }
-}
+</script>
+
+<style lang="scss" scoped>
+  .info_title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1d2129;
+    margin-bottom: 10px;
+  }
 </style>

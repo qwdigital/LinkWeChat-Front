@@ -3,7 +3,7 @@
     <el-row :gutter="20" type="flex" style="margin-top: 20px;">
       <el-col>
         <div class="g-card">
-          <el-form ref="baseForm" :rules="rules" :model="form" label-position="right" label-width="120px">
+          <el-form ref="baseForm" :rules="rules" :model="form" label-position="right" label-width="140px">
             <el-form-item label="选择海报:" prop="posterId">
               <el-button v-if="!isDetail" size="mini" type="primary" icon="el-icon-plus" @click="choseDialog = true">
                 {{ form.posterId ? '编辑' : '选择' }}海报
@@ -40,7 +40,7 @@
                 <template v-for="(item, index) in groupList">
                   <el-tag v-if="item.groupName" size="medium" :key="index">{{ item.groupName }}</el-tag>
                 </template>
-                <div>
+                <div v-if="!isDetail">
                   <el-button size="mini" type="primary" icon="el-icon-plus" @click="selectGroupFn">
                     {{ '添加' }}客群
                   </el-button>

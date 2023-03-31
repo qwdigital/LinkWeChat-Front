@@ -3,7 +3,7 @@
     <div class="g-card" style="margin-top: 20px;">
       <el-row>
         <el-col :span="15">
-          <el-form :model="form" :rules="ruleForm" ref="ruleForm" label-width="120px" labelPosition="right">
+          <el-form :model="form" :rules="ruleForm" ref="ruleForm" label-width="140px" labelPosition="right">
             <el-form-item label="兑奖条件" prop="exchangeTip">
               客户成功邀请<el-input :disabled="isDetail" style="width: 100px;" v-model="form.exchangeTip"></el-input
               >人<span v-if="form.fassionType == 2">入群</span>，可参与兑奖
