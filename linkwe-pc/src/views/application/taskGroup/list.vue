@@ -6,7 +6,7 @@
       </el-form-item>
       <el-form-item label="" prop="fassionState">
         <el-select :popper-append-to-body="false" v-model="query.fassionState" placeholder="请选择任务状态">
-          <el-option label="全部" value=""></el-option>
+          <el-option label="全部任务状态" value=""></el-option>
           <el-option v-for="(item, index) in statusType" :key="index" :label="item.name" :value="item.key"></el-option>
         </el-select>
       </el-form-item>
