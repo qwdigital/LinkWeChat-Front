@@ -27,11 +27,17 @@
       <el-table :data="list" v-loading="loading">
         <el-table-column prop="customerName" label="客户" align="center"></el-table-column>
         <el-table-column prop="chatName" label="所在客群" align="center"></el-table-column>
-        <el-table-column prop="sendWeUserName" label="发送员工" align="center"></el-table-column>
-        <el-table-column prop="inviterState" label="裂变状态" align="center"> </el-table-column>
+        <el-table-column prop="sendUserName" label="发送员工" align="center"></el-table-column>
+        <el-table-column prop="inviterState" label="裂变状态" align="center">
+          <template slot-scope="{ row }">
+            {{ row.inviterState == 1 ? '已完成' : row.inviterState == 2 ? '未完成' : '' }}
+          </template>
+        </el-table-column>
         <el-table-column prop="inviterNumber" label="裂变新客数" align="center">
           <template slot-scope="{ row }">
-            <a class="self_a" @click="getDetailTable(row.fissionInviterRecordId)">{{ row.inviterNumber }}</a>
+            <a :class="{ self_a: row.inviterNumber }" @click="getDetailTable(row.fissionInviterRecordId)">{{
+              row.inviterNumber || '-'
+            }}</a>
           </template>
         </el-table-column>
       </el-table>
