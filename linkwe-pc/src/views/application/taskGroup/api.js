@@ -83,3 +83,45 @@ export function getTableExport(data) {
     responseType: 'blob'
   })
 }
+
+// 裂变明细 - 客户
+export function getFissionCustomerTable(data) {
+  return request({
+    url: wecom + '/findWeTaskFissionDetail',
+    params: data
+  })
+}
+
+// 裂变明细 - 客群
+export function getFissionGroupTable(data) {
+  return request({
+    url: wecom + '/findWeGroupFissionDetail',
+    params: data
+  })
+}
+
+// 裂变明细 - sub table
+export function getFissionSubTable(data) {
+  return request({
+    url: wecom + '/findWeFissionDetailSub',
+    params: data
+  })
+}
+
+// 裂变明细 导出 - 任务裂变
+export function exportCustomerTable(data) {
+  return request({
+    url: wecom + '/exportWeTaskFissionDetail',
+    params: data,
+    responseType: 'blob'
+  })
+}
+
+// 裂变明细 导出 - 客群裂变
+export function exportGroupTable(data) {
+  return request({
+    url: wecom + '/exportWeGroupFissionDetail',
+    params: data,
+    responseType: 'blob'
+  })
+}

@@ -40,7 +40,9 @@
       <el-tab-pane label="任务统计" name="second">
         <Statistics :fissionType="form.fissionType"></Statistics>
       </el-tab-pane>
-      <el-tab-pane label="裂变明细" name="third"> </el-tab-pane>
+      <el-tab-pane label="裂变明细" name="third">
+        <DetailTable></DetailTable>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -51,13 +53,15 @@
   import FassionSettingVue from '../common/FassionSetting.vue'
   import FassionRules from '../common/FassionRules.vue'
   import Statistics from '../common/Statistics.vue'
+  import DetailTable from './detail-table.vue'
   export default {
     name: 'task-customer-detail',
     components: {
       FassionBase,
       FassionSettingVue,
       FassionRules,
-      Statistics
+      Statistics,
+      DetailTable
     },
     data() {
       return {

@@ -4,22 +4,30 @@
       <el-form-item label="" prop="customerName">
         <el-input clearable v-model="query.customerName" placeholder="请输入老客名称"></el-input>
       </el-form-item>
-      <el-form-item label="" prop="qrUserName">
+      <el-form-item label="">
         <el-input :value="qrUserName" readonly @focus="dialogVisible = true" placeholder="请选择发送员工" />
       </el-form-item>
       <el-form-item label="">
-        <el-button type="primary" @click="handleSearch">查询</el-button>
+        <el-button type="primary" @click="search">查询</el-button>
         <el-button @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
     <div class="g-card">
+      <div class="mid-action">
+        <div></div>
+        <div>
+          <el-button type="primary" v-loading="exportLoading" @click="exportFn">
+            导出Excel
+          </el-button>
+        </div>
+      </div>
       <el-table :data="list" v-loading="loading">
         <el-table-column prop="oldCustomerName" label="老客" align="center"></el-table-column>
         <el-table-column prop="sendWeUserName" label="发送员工" align="center"></el-table-column>
         <el-table-column prop="inviterState" label="裂变状态" align="center"> </el-table-column>
-        <el-table-column prop="createBy" label="裂变新客数" align="center">
+        <el-table-column prop="inviterNumber" label="裂变新客数" align="center">
           <template slot-scope="{ row }">
-            <a class="self_a">{{ row.inviterNumber }}</a>
+            <a class="self_a" @click="getDetailTable(row.fissionInviterRecordId)">{{ row.inviterNumber || 3333 }}</a>
           </template>
         </el-table-column>
       </el-table>
@@ -37,35 +45,88 @@
       :defaultValues="userArray"
       @success="getSelectUser"
     ></SelectWeUser>
+    <SubDetailVue :visible.sync="detailVisible" :fissionInviterRecordId="detailId"></SubDetailVue>
   </div>
 </template>
 
 <script>
+  import { getFissionCustomerTable, exportCustomerTable } from './api'
+  import SubDetailVue from '../common/SubDetail.vue'
+  import { dateFormat } from '@/utils/index'
   export default {
     name: 'task-customer-detail-table',
+    components: {
+      SubDetailVue
+    },
     data() {
       return {
         loading: false,
         list: [],
+        total: 0,
+        qrUserName: '',
         query: {
           customerName: '',
-          pageNum: '',
-          pageSize: '',
+          pageNum: 1,
+          pageSize: 10,
           weUserId: ''
         },
         dialogVisible: false,
         userArray: [], // 选择人员
-        userArrayStr: ''
+        userArrayStr: '',
+        detailVisible: false,
+        detailId: '',
+        exportLoading: false
       }
     },
     methods: {
-      getList() {},
+      exportFn() {
+        this.$confirm('确认导出吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(() => {
+            this.exportLoading = true
+            return exportCustomerTable(this.query)
+          })
+          .then((res) => {
+            if (res != null) {
+              let blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+              let url = window.URL.createObjectURL(blob)
+              const link = document.createElement('a') // 创建a标签
+              link.href = url
+              link.download = '裂变明细' + dateFormat(new Date()) + '.xlsx' //指定下载文件名
+              link.click()
+              URL.revokeObjectURL(url) // 释放内存
+            }
+          })
+          .catch((error) => {
+            console.error(error)
+          })
+          .finally(() => {
+            this.exportLoading = false
+          })
+      },
+      getDetailTable(id) {
+        this.detailId = id
+        this.detailVisible = true
+      },
+      getList() {
+        this.loading = true
+        this.query.id = this.$route.query.id
+        getFissionCustomerTable(this.query).then((res) => {
+          this.loading = false
+          this.list = res.rows
+          this.total = Number(res.total)
+        })
+      },
       search() {
-        this.query.pageSize = 1
+        this.query.pageNum = 1
         this.getList()
       },
       resetQuery() {
         this.query.weUserId = ''
+        this.query.customerName = ''
         this.userArray = []
         this.qrUserName = ''
         this.search()
@@ -83,6 +144,9 @@
           })
           .join(',')
       }
+    },
+    created() {
+      this.search()
     }
   }
 </script>
