@@ -365,13 +365,15 @@
     font-weight: 500;
   }
   .el-dialog__header,
-  .el-dialog__footer {
+  .el-dialog__footer,
+  .el-dialog__body {
     padding: 0;
   }
   .el-dialog__body {
     flex: 1;
-    overflow: auto;
-    padding: 20px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 20px 0;
   }
   .el-dialog__headerbtn {
     top: 18px;
