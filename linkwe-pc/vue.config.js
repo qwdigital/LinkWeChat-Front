@@ -162,6 +162,10 @@ module.exports = {
           //   priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
           //   test: /[\\/]node_modules[\\/]_?element-ui(.*)/, // in order to adapt to cnpm
           // },
+          elementUI: {
+            name: 'element-ui',
+            test: /element-variables\.scss$/, // can customize your rules
+          },
           commons: {
             name: 'chunk-commons',
             test: resolve('src/components'), // can customize your rules
