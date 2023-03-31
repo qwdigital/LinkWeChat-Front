@@ -10,7 +10,7 @@ import 'vue-super-flow/lib/index.css'
 Vue.use(SuperFlow)
 
 import Element from 'element-ui'
-import './styles/element-variables.scss'
+import '@/styles/element-variables.scss'
 Vue.use(Element, {
   size: Cookies.get('size') || 'small', // set element-ui default size
 })
