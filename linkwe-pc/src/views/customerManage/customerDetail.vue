@@ -110,7 +110,7 @@ export default {
             {{ { 1: '@微信', 2: '@企业微信' }[customer.customerType] }}
           </span>
         </div>
-        <div class="mt10">
+        <div class="mt10 gap10">
           <template v-if="customer.tagNames">
             <el-tag v-for="(unit, unique) in customer.tagNames.split(',')" :key="unique">
               {{ unit }}

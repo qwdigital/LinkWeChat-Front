@@ -67,6 +67,18 @@ li {
 .fxnone {
   flex: none !important;
 }
+.ais {
+  align-items: stretch !important;
+}
+.ait {
+  align-items: flex-start !important;
+}
+.aic {
+  align-items: center !important;
+}
+.flwrap {
+  flex-flow: wrap !important;
+}
 .fxbw {
   display: flex;
   align-items: flex-start;
@@ -77,14 +89,19 @@ li {
   align-items: center;
   justify-content: space-between;
 }
-.ais {
-  align-items: stretch !important;
+.gap10 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
-.ait {
-  align-items: flex-start !important;
+.gap5 {
+  gap: 5px;
 }
-.aic {
-  align-items: center !important;
+.gap15 {
+  gap: 15px;
+}
+.gap20 {
+  gap: 20px;
 }
 
 /* align */
@@ -97,13 +114,13 @@ li {
   position: relative;
 }
 .al {
-  text-align: left;
+  text-align: left !important;
 }
 .ac {
-  text-align: center;
+  text-align: center !important;
 }
 .ar {
-  text-align: right;
+  text-align: right !important;
 }
 
 /* padding 5px series */

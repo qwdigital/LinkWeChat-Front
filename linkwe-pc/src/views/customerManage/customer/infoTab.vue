@@ -219,14 +219,14 @@ export default {
               <div
                 v-for="(item, index) of portrayalSum.companyTags"
                 :key="index"
-                :class="['flex ait', index && 'mt20']">
+                :class="['flex  ait', index && 'mt20']">
                 <!-- 汇总的场景显示名字 -->
                 <template v-if="!userId">
                   <div class="name oe g-bg-lg">{{ item.userName }}</div>
                 </template>
-                <template v-if="item.tagNames">
+                <div v-if="item.tagNames" class="gap10">
                   <el-tag v-for="(unit, unique) in item.tagNames.split(',')" :key="unique">{{ unit }}</el-tag>
-                </template>
+                </div>
                 <div v-else class="g-tip-color ac">暂无标签</div>
               </div>
             </template>
@@ -241,9 +241,9 @@ export default {
                 <template v-if="!userId">
                   <div class="name oe g-bg-lg">{{ item.userName }}</div>
                 </template>
-                <template v-if="item.tagNames">
+                <div v-if="item.tagNames" class="gap10">
                   <el-tag v-for="(unit, unique) in item.tagNames.split(',')" :key="unique">{{ unit }}</el-tag>
-                </template>
+                </div>
                 <div v-else class="g-tip-color ac">暂无标签</div>
               </div>
             </template>
@@ -441,14 +441,14 @@ export default {
   border-radius: var(--border-radius-small);
 }
 .el-card {
-  .el-tag {
-    margin-bottom: 5px;
-  }
-  .el-card {
-    .el-tag {
-      margin-bottom: 5px;
-    }
-  }
+  // .el-tag {
+  //   margin-bottom: 5px;
+  // }
+  // .el-card {
+  //   .el-tag {
+  //     margin-bottom: 5px;
+  //   }
+  // }
   .track-tab-wrap {
     .track-tab {
       background: #ddd;
@@ -464,11 +464,11 @@ export default {
       }
     }
   }
-  .btn-sync {
-    position: relative;
-    float: right;
-    top: -11px;
-  }
+  // .btn-sync {
+  //   position: relative;
+  //   float: right;
+  //   top: -11px;
+  // }
   .g-tip-color {
     flex: auto;
   }
