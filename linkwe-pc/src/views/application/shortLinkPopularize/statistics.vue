@@ -70,13 +70,13 @@
     methods: {
       getTabTotalFn() {
         getTotal(this.id).then((res) => {
-          this.cardData[0].value = res.data.uv
-          this.cardData[1].value = res.data.pv
+          this.cardData[0].value = res.data.pv
+          this.cardData[1].value = res.data.uv
           this.cardData[2].value = res.data.open
-          this.cardData[3].value = res.data.todayUv
-          this.cardData[3].value1 = res.data.comparedYesterdayUv
-          this.cardData[4].value = res.data.todayPv
-          this.cardData[4].value1 = res.data.comparedYesterdayPv
+          this.cardData[3].value = res.data.todayPv
+          this.cardData[3].value1 = res.data.comparedYesterdayPv
+          this.cardData[4].value = res.data.todayUv
+          this.cardData[4].value1 = res.data.comparedYesterdayUv
           this.cardData[5].value = res.data.todayOpen
           this.cardData[5].value1 = res.data.comparedYesterdayOpen
         })
