@@ -34,7 +34,11 @@
               <FassionRules :baseData="form" :isDetail="true"></FassionRules>
             </div>
           </el-col>
-          <el-col style="width: 370px;"> </el-col>
+          <el-col style="width: 370px;">
+            <div class="g-card">
+              <PreviewInPhone name="客群" :list="[form.wematerial]" :templateInfo="form.content"></PreviewInPhone>
+            </div>
+          </el-col>
         </el-row>
       </el-tab-pane>
       <el-tab-pane label="任务统计" name="second">
@@ -54,6 +58,7 @@
   import FassionRules from '../common/FassionRules.vue'
   import Statistics from '../common/Statistics.vue'
   import DetailTable from './detail-table.vue'
+  import PreviewInPhone from '@/components/ContentCenter/PreviewInPhone'
   export default {
     name: 'task-group-detail',
     components: {
@@ -61,7 +66,8 @@
       FassionSettingVue,
       FassionRules,
       Statistics,
-      DetailTable
+      DetailTable,
+      PreviewInPhone
     },
     data() {
       return {

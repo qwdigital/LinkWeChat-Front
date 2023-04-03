@@ -102,7 +102,11 @@
       <el-col style="width: 370px;" v-if="!isDetail">
         <div class="g-card" style="height: 100%;">
           <div class="info_title">消息预览</div>
-          <!-- <Preview :value="posterUrl"></Preview> -->
+          <PreviewInPhone
+            :name="form.fassionType == 1 ? '客户' : '客群'"
+            :list="[posterObj]"
+            :templateInfo="form.content"
+          ></PreviewInPhone>
         </div>
       </el-col>
     </el-row>
@@ -127,6 +131,7 @@
 </template>
 
 <script>
+  import PreviewInPhone from '@/components/ContentCenter/PreviewInPhone'
   import SelectGroup from '@/views/drainageCode/components/SelectGroup.vue'
   import { templateDetail } from '@/api/contentCenter/modleCenter'
   import SelectPoster from '@/views/drainageCode/components/IdentitySelect'
@@ -139,7 +144,8 @@
       SelectPoster,
       SelectMemberVue,
       TemplateLibrary,
-      SelectGroup
+      SelectGroup,
+      PreviewInPhone
     },
     props: {
       isDetail: {
@@ -201,6 +207,7 @@
       baseData: {
         handler(val) {
           this.form = val
+          this.$forceUpdate()
           this.setData()
         },
         immediate: true
@@ -342,5 +349,11 @@
     font-size: 12px;
     font-weight: 400;
     color: #999999;
+  }
+  .info_title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1d2129;
+    margin-bottom: 10px;
   }
 </style>
