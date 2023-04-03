@@ -42,9 +42,11 @@ export default {
     </template>
 
     <el-popover v-else placement="bottom" trigger="hover">
-      <el-tag v-for="(item, unique) in _list" :key="unique">
-        {{ item[defaultProps] || item }}
-      </el-tag>
+      <div class="gap10">
+        <el-tag v-for="(item, unique) in _list" :key="unique">
+          {{ item[defaultProps] || item }}
+        </el-tag>
+      </div>
       <div slot="reference">
         <el-tag v-for="(item, unique) in _list.slice(0, +limit)" :key="unique">
           {{ item[defaultProps] || item }}

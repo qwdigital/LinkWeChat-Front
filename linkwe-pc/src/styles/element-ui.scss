@@ -389,6 +389,11 @@
     }
   }
 
+  .el-popover {
+    // max-width: 99%;
+    margin-right: 5px;
+  }
+
   // 按钮
   .el-button--default {
     border-color: var(--color);
