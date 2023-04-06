@@ -31,7 +31,9 @@
                     style="border: none; resize: none; width: 364px;"
                     v-model="form.exchangeContent.redemptionRule"
                     placeholder="请输入兑奖规则"
-                    maxlength="100"
+                    maxlength="2000"
+                    show-word-limit
+                    autosize
                   ></el-input>
                 </el-form-item>
               </div>
@@ -203,6 +205,9 @@
 </script>
 
 <style lang="scss" scoped>
+  textarea {
+    white-space: pre-wrap; //保留所有空格
+  }
   .select_content {
     background-color: #ecf5ff;
     padding: 20px;
