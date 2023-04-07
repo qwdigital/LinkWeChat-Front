@@ -28,12 +28,12 @@
                   <el-input
                     :disabled="isDetail"
                     type="textarea"
-                    style="border: none; resize: none; width: 364px;"
+                    style="border: none; width: 364px;"
                     v-model="form.exchangeContent.redemptionRule"
+                    rows="5"
                     placeholder="请输入兑奖规则"
                     maxlength="2000"
                     show-word-limit
-                    autosize
                   ></el-input>
                 </el-form-item>
               </div>
