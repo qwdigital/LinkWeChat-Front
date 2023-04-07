@@ -6,8 +6,8 @@
       <!-- <keep-alive :include="cachedViews">
       </keep-alive> -->
     </transition>
-    <div v-loading="loading" class="height100">
-      <div id="micro-app" class="container" v-show="isActiveMicroApp">
+    <div v-loading="loading" class="height100 micro-app-wrap container">
+      <div id="micro-app" class="height100" v-show="isActiveMicroApp">
         <!-- <div id="app" class="mask" style="position: absolute">
         <i class="el-icon-loading cc"></i>
       </div> -->
@@ -81,12 +81,12 @@ export default {
   position: relative;
   overflow: hidden;
   flex: auto;
+  margin-top: 20px;
 }
 .container {
   position: relative;
-  max-height: calc(100% - 20px);
-  margin: 20px 0 0;
-  padding: 0 20px;
+  max-height: 100%;
+
   overflow-y: auto;
   overflow-x: hidden;
   &::-webkit-scrollbar-thumb {
@@ -97,8 +97,12 @@ export default {
   }
 }
 .page {
+  padding: 0 20px;
   // background: #fff;
   // border-radius: var(--border-radius-big);
+}
+.micro-app-wrap {
+  margin: 0 20px;
 }
 .fixed-header + .app-main {
   padding-top: 50px;
@@ -114,9 +118,6 @@ export default {
     padding-top: 84px;
   }
 }
-
-#micro-app {
-}
 </style>
 
 <style lang="scss">
@@ -125,5 +126,8 @@ export default {
   .fixed-header {
     padding-right: 15px;
   }
+}
+#micro-app > div {
+  height: 100%;
 }
 </style>
