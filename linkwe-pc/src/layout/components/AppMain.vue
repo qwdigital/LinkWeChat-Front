@@ -83,13 +83,10 @@ export default {
   flex: auto;
 }
 .container {
+  position: relative;
   max-height: calc(100% - 20px);
   margin: 20px 0 0;
   padding: 0 20px;
-}
-.page {
-  // background: #fff;
-  // border-radius: var(--border-radius-big);
   overflow-y: auto;
   overflow-x: hidden;
   &::-webkit-scrollbar-thumb {
@@ -98,6 +95,10 @@ export default {
   &:hover::-webkit-scrollbar-thumb {
     visibility: visible;
   }
+}
+.page {
+  // background: #fff;
+  // border-radius: var(--border-radius-big);
 }
 .fixed-header + .app-main {
   padding-top: 50px;
@@ -115,10 +116,6 @@ export default {
 }
 
 #micro-app {
-  height: calc(100% - 20px);
-  position: relative;
-  margin: 20px 0 0;
-  padding: 0 20px;
 }
 </style>
 
