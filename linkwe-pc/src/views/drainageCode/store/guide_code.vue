@@ -57,7 +57,7 @@
                 <div class="sub-des">添加成功后，该客户将会自动设置以上选择标签</div>
               </el-form-item>
             </div>
-            <div class="g-card mt20 g-pad20">
+            <div class="g-card mt20 pad20">
               <el-button plain @click="cancelFn">取消</el-button>
               <el-button type="primary" @click="nextStep()">下一步</el-button>
             </div>

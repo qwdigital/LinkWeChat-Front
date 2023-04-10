@@ -1,5 +1,5 @@
 <template>
-  <div class="left g-pad20" style="border-radius: 4px; background: #fff">
+  <div class="left pad20" style="border-radius: 4px; background: #fff">
     <!--模板库  -->
     <div>
       <!-- v-hasPermi="['wecom:tlp:add']" -->

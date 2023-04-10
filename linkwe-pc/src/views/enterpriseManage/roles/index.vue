@@ -2,7 +2,7 @@
   <div>
     <div class="g-card">
       <el-row type="flex" justify="space-between">
-        <el-col :span="5" class="left g-pad20">
+        <el-col :span="5" class="left pad20">
           <div class="title">
             <div class="title-name">角色列表</div>
             <div class="title-btn" @click="addFn">新建</div>
@@ -21,7 +21,7 @@
             </div>
           </div>
         </el-col>
-        <el-col :span="19" class="g-pad20">
+        <el-col :span="19" class="pad20">
           <div class="title-name">
             {{ currentStatus === 'detail' ? '角色详情' : currentStatus === 'add' ? '新建角色' : '编辑角色' }}
           </div>

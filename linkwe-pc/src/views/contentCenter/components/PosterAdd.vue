@@ -2,7 +2,7 @@
   <div>
     <!-- 新建海报 -->
     <el-row type="flex" justify="space-between">
-      <el-col :span="10" class="left g-pad20" style="border-radius: 4px">
+      <el-col :span="10" class="left pad20" style="border-radius: 4px">
         <div class="g-card fxbw">
           <div style="width: 100%">
             <el-form ref="form" :rules="rules" :model="form" label-width="100px">
@@ -10,16 +10,10 @@
                 <el-cascader
                   v-model="form.categoryId"
                   :options="treeData[0].children"
-                  :props="groupProps"
-                ></el-cascader>
+                  :props="groupProps"></el-cascader>
               </el-form-item>
               <el-form-item label="海报标题：" prop="materialName">
-                <el-input
-                  v-model="form.materialName"
-                  placeholder="海报标题"
-                  :maxlength="60"
-                  show-word-limit
-                ></el-input>
+                <el-input v-model="form.materialName" placeholder="海报标题" :maxlength="60" show-word-limit></el-input>
               </el-form-item>
               <el-form-item label="海报描述：">
                 <el-input
@@ -27,8 +21,7 @@
                   type="textarea"
                   placeholder="请输入海报描述"
                   :maxlength="100"
-                  show-word-limit
-                ></el-input>
+                  show-word-limit></el-input>
               </el-form-item>
               <el-form-item label="海报类型：" prop="type" v-if="!moduleType">
                 <el-radio-group v-model="form.type" @change="radioChange">
@@ -55,16 +48,14 @@
                     :fileUrl.sync="form.backgroundImgPath"
                     :maxSize="20"
                     type="0"
-                    @upSuccess="upSuccess"
-                  >
-                  </UploadToCos>
+                    @upSuccess="upSuccess"></UploadToCos>
                   <el-button
                     size="mini"
                     type="text"
                     style="margin-left: 10px"
-                    @click="flage = isBackgroundImage = dialogVisibleSelectMaterial = true"
-                    >从素材库中选取</el-button
-                  >
+                    @click="flage = isBackgroundImage = dialogVisibleSelectMaterial = true">
+                    从素材库中选取
+                  </el-button>
                 </div>
                 <div class="tips">支持jpg/jpeg/png格式，图片大小不超过20M</div>
               </el-form-item>
@@ -102,15 +93,9 @@
                     </div> -->
                     <!-- <div> -->
                     <div>
-                      <button class="btn-text-style" @click="setAttr('textAlign', 'left')">
-                        左对齐
-                      </button>
-                      <button class="btn-text-style" @click="setAttr('textAlign', 'center')">
-                        居中
-                      </button>
-                      <button class="btn-text-style" @click="setAttr('textAlign', 'right')">
-                        右对齐
-                      </button>
+                      <button class="btn-text-style" @click="setAttr('textAlign', 'left')">左对齐</button>
+                      <button class="btn-text-style" @click="setAttr('textAlign', 'center')">居中</button>
+                      <button class="btn-text-style" @click="setAttr('textAlign', 'right')">右对齐</button>
                     </div>
                   </li>
                   <li class="menu-item">
@@ -126,17 +111,13 @@
                   class="menu-item"
                   :class="['qrcode', null].includes(activeLiveCodeType) ? '' : 'disableClass'"
                   id="btn-qrCode"
-                  @click="addObj('qrcode')"
-                >
+                  @click="addObj('qrcode')">
                   <div class="menu-item-content">
                     <svg-icon
                       class="icon-style"
                       :iconClass="
-                        ['qrcode', null].includes(activeLiveCodeType)
-                          ? 'placeholder'
-                          : 'placeholder2'
-                      "
-                    ></svg-icon>
+                        ['qrcode', null].includes(activeLiveCodeType) ? 'placeholder' : 'placeholder2'
+                      "></svg-icon>
                     <span>占位码</span>
                   </div>
                 </li>
@@ -144,15 +125,11 @@
                   class="menu-item"
                   :class="['ygcode', null].includes(activeLiveCodeType) ? '' : 'disableClass'"
                   id="btn-qrCode"
-                  @click="addLiveCode('ygcode')"
-                >
+                  @click="addLiveCode('ygcode')">
                   <div class="menu-item-content">
                     <svg-icon
                       class="icon-style"
-                      :iconClass="
-                        ['ygcode', null].includes(activeLiveCodeType) ? 'employee' : 'employee2'
-                      "
-                    ></svg-icon>
+                      :iconClass="['ygcode', null].includes(activeLiveCodeType) ? 'employee' : 'employee2'"></svg-icon>
                     <span>员工活码</span>
                   </div>
                 </li>
@@ -163,17 +140,13 @@
                   class="menu-item"
                   id="btn-qrCode"
                   @click="addLiveCode('skcode')"
-                  :class="['skcode', null].includes(activeLiveCodeType) ? '' : 'disableClass'"
-                >
+                  :class="['skcode', null].includes(activeLiveCodeType) ? '' : 'disableClass'">
                   <div class="menu-item-content">
                     <svg-icon
                       class="icon-style"
                       :iconClass="
-                        ['skcode', null].includes(activeLiveCodeType)
-                          ? 'identification'
-                          : 'identification2'
-                      "
-                    ></svg-icon>
+                        ['skcode', null].includes(activeLiveCodeType) ? 'identification' : 'identification2'
+                      "></svg-icon>
                     <span>识客活码</span>
                   </div>
                 </li>
@@ -181,15 +154,11 @@
                   class="menu-item"
                   id="btn-qrCode"
                   @click="addLiveCode('lxcode')"
-                  :class="['lxcode', null].includes(activeLiveCodeType) ? '' : 'disableClass'"
-                >
+                  :class="['lxcode', null].includes(activeLiveCodeType) ? '' : 'disableClass'">
                   <div class="menu-item-content">
                     <svg-icon
                       class="icon-style"
-                      :iconClass="
-                        ['lxcode', null].includes(activeLiveCodeType) ? 'pullNew' : 'pullNew2'
-                      "
-                    ></svg-icon>
+                      :iconClass="['lxcode', null].includes(activeLiveCodeType) ? 'pullNew' : 'pullNew2'"></svg-icon>
                     <span>拉新活码</span>
                   </div>
                 </li>
@@ -199,17 +168,13 @@
                   class="menu-item"
                   id="btn-qrCode"
                   @click="addLiveCode('kqcode')"
-                  :class="['kqcode', null].includes(activeLiveCodeType) ? '' : 'disableClass'"
-                >
+                  :class="['kqcode', null].includes(activeLiveCodeType) ? '' : 'disableClass'">
                   <div class="menu-item-content">
                     <svg-icon
                       class="icon-style"
                       :iconClass="
-                        ['kqcode', null].includes(activeLiveCodeType)
-                          ? 'customerGroup'
-                          : 'customerGroup2'
-                      "
-                    ></svg-icon>
+                        ['kqcode', null].includes(activeLiveCodeType) ? 'customerGroup' : 'customerGroup2'
+                      "></svg-icon>
                     <span>客群活码</span>
                   </div>
                 </li>
@@ -247,9 +212,7 @@
     <SelectMaterial
       :visible.sync="dialogVisibleSelectMaterial"
       type="0"
-      @success="submitSelectMaterial"
-    >
-    </SelectMaterial>
+      @success="submitSelectMaterial"></SelectMaterial>
     <!-- 点击图片按钮弹出弹框 -->
     <el-dialog title="添加图片" :visible.sync="dialogVisible" width="30%" :before-close="imgCancel">
       <el-form :model="formDate" ref="picValidateForm" label-width="120px">
@@ -258,19 +221,13 @@
             <el-image
               style="width: 100px; height: 100px; cursor: pointer; border-radius: 6px"
               :src="formDate.imgUrl"
-              fit="fit"
-            >
-            </el-image>
+              fit="fit"></el-image>
           </div>
           <div class="up-style" v-else>
-            <UploadToCos :fileUrl.sync="formDate.imgUrl" :maxSize="20" type="0"> </UploadToCos>
-            <el-button
-              size="mini"
-              type="text"
-              style="margin-left: 10px"
-              @click="addObj('imageShow')"
-              >从素材库中选取</el-button
-            >
+            <UploadToCos :fileUrl.sync="formDate.imgUrl" :maxSize="20" type="0"></UploadToCos>
+            <el-button size="mini" type="text" style="margin-left: 10px" @click="addObj('imageShow')">
+              从素材库中选取
+            </el-button>
           </div>
         </el-form-item>
         <div class="tips" style="margin-left: 120px">支持jpg/jpeg/png格式，图片大小不超过20M</div>
@@ -286,8 +243,7 @@
       v-if="dialogVisibleLiveCode"
       :type="liveCodeType"
       :twoVisible.sync="dialogVisibleLiveCode"
-      @selectLiveCode="selectLiveCode"
-    />
+      @selectLiveCode="selectLiveCode" />
   </div>
 </template>
 
@@ -362,7 +318,7 @@ export default {
         emitPath: false,
       },
       dialogVisible: false,
-      flage:false, // 判断是否点击上传海报按钮
+      flage: false, // 判断是否点击上传海报按钮
     }
   },
   props: {
@@ -787,11 +743,7 @@ export default {
             options.type = type
           }
 
-          if (
-            type == 'qrcode' &&
-            this.activeLiveCodeType !== 'qrcode' &&
-            this.activeLiveCodeType !== null
-          ) {
+          if (type == 'qrcode' && this.activeLiveCodeType !== 'qrcode' && this.activeLiveCodeType !== null) {
             this.msgError('仅可添加一种二维码组件')
             return
           } else if (type == 'qrcode') {
@@ -875,9 +827,7 @@ export default {
             vo = list[i]
 
             let isText = vo.type == 'textbox'
-            let align =
-              (vo.textAlign && (vo.textAlign === 'left' ? 1 : vo.textAlign === 'center' ? 2 : 3)) ||
-              1
+            let align = (vo.textAlign && (vo.textAlign === 'left' ? 1 : vo.textAlign === 'center' ? 2 : 3)) || 1
             let posData = {
               id: null, // 修改的时候后端默认没增删，沟通后让先传null
               content: vo.text || '', // 文本内容
@@ -923,8 +873,8 @@ export default {
               {
                 posterSubassemblyList: posterSubList,
               },
-              form
-            )
+              form,
+            ),
           )
             .then((res) => {
               laoding.close()

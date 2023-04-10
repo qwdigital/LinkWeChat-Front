@@ -228,32 +228,6 @@ div:focus {
     border-radius: var(--border-radius-big);
     margin-top: var(--card-margin);
   }
-
-  &pad20 {
-    padding: 20px;
-  }
-  &m20 {
-    margin: 20px;
-  }
-  &p20t0 {
-    padding: 0 20px 20px;
-  }
-  &p20b0 {
-    padding: 20px 20px 0;
-  }
-
-  &bb1 {
-    border-bottom: 1px solid #f1f1f1;
-  }
-  &bt1 {
-    border-top: 1px solid #f1f1f1;
-  }
-  &bl1 {
-    border-left: 1px solid #f1f1f1;
-  }
-  &br1 {
-    border-right: 1px solid #f1f1f1;
-  }
 }
 
 .card-group-index + .g-card {

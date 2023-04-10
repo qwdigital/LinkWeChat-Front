@@ -26,7 +26,7 @@ export default {
 <template>
   <div class="g-card mt0">
     <div class="g-title">预览</div>
-    <div class="g-pad20">
+    <div class="pad20">
       <PhoneTemplate v-if="touchTypeDict[data.type]" :title="touchTypeDict[data.type].previewMobileTitle">
         <template v-if="data.type == 0">
           <div class="mask" style="position: absolute">

@@ -9,7 +9,7 @@
     <div class="g-card" v-if="currentActive === 1">
       <el-row>
         <div class="g-card">
-          <div class="g-pad20">
+          <div class="pad20">
             <el-col :span="10">
               <el-form ref="liveForm" :rules="liveRules" :model="liveForm" label-position="right" label-width="100px">
                 <el-form-item label="直播标题" label-width="120px" prop="liveTitle">

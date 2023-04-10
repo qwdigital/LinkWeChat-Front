@@ -392,7 +392,7 @@ export default {
   <div class="page">
     <div style="margin-top: 16px">
       <el-row type="flex" justify="space-between">
-        <el-col :span="5" class="left g-pad20" style="border-radius: 4px; background: #fff">
+        <el-col :span="5" class="left pad20" style="border-radius: 4px; background: #fff">
           <div class="title">
             <div class="title-name">{{ typeTitle[type] }}分组</div>
             <div class="title-btn" @click="addGroup">添加</div>
@@ -445,11 +445,11 @@ export default {
           <div class="mt20 g-card pad20">
             <div v-loading="loading">
               <div style="height: 80px">
-                <div class="fl g-pad20">
+                <div class="fl pad20">
                   <!-- v-hasPermi="['wechat:material:add']" -->
                   <el-button type="primary" @click="edit(1, ~~type)">新建{{ typeTitle[type] }}</el-button>
                 </div>
-                <div class="fr g-pad20">
+                <div class="fr pad20">
                   <el-popover placement="top" width="260" v-model="groupDialogVisible">
                     <div>选择分组</div>
                     <div style="position: relative; margin: 10px 0">

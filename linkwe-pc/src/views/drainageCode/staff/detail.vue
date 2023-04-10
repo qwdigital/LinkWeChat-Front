@@ -4,7 +4,7 @@
       <el-col>
         <div class="g-card">
           <div class="g-card-title">基本信息</div>
-          <div class="g-pad20">
+          <div class="pad20">
             <el-form label-position="right" label-width="100px">
               <el-form-item style="margin-bottom: 10px" label="活码名称">{{ form.name }}</el-form-item>
               <el-form-item style="margin-bottom: 10px" label="活码分组">{{ form.qrGroupName }}</el-form-item>
@@ -20,8 +20,8 @@
         <div class="g-card">
           <div class="g-card-title">活码员工</div>
           <!-- <template v-if="form.ruleType === 1">
-            <div class="g-pad20">
-              <div class="content g-pad20">
+            <div class="pad20">
+              <div class="content pad20">
                 <el-form label-position="right" label-width="100px">
                   <el-form-item style="margin-bottom: 10px" label="排班员工">
                     <el-tag v-for="(data, key) in form.qrUserInfos" :key="key">{{data.businessName}}</el-tag>
@@ -49,8 +49,8 @@
           </template>-->
 
           <template>
-            <div class="g-pad20" v-for="(unit, index) in form.qrUserInfos" :key="index">
-              <div class="content g-pad20">
+            <div class="pad20" v-for="(unit, index) in form.qrUserInfos" :key="index">
+              <div class="content pad20">
                 <el-form label-position="right" label-width="100px">
                   <el-form-item style="margin-bottom: 10px" label="排班员工">
                     <el-tag v-for="(data, key) in unit.weQrUserList" :key="key">{{ data.userName }}</el-tag>
@@ -115,14 +115,14 @@
       <el-col style="width: 350px">
         <div style="height: 100%; display: flex; flex-direction: column">
           <div class="g-card">
-            <div class="right-title g-pad20">
+            <div class="right-title pad20">
               <div class="right-title-name">员工活码</div>
               <div class="right-title-edit" @click="editFn">
                 <!-- <img style="margin-right:5px;height: 12px;width: 12px;" :src="require('@/assets/drainageCode/code-add.png')" alt=""> -->
                 编辑
               </div>
             </div>
-            <div class="g-pad20">
+            <div class="pad20">
               <div class="code-show">
                 <el-image
                   :src="form.qrCode"

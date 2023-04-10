@@ -544,7 +544,7 @@ export default {
   <div class="page">
     <div style="margin-top: 16px">
       <el-row type="flex" justify="space-between">
-        <el-col :span="5" class="left g-pad20" style="border-radius: 4px; background: #fff">
+        <el-col :span="5" class="left pad20" style="border-radius: 4px; background: #fff">
           <!-- <div> -->
           <!-- v-hasPermi="['wechat:category:add']" -->
           <!-- <el-button slot="reference" type="primary" @click="treeEdit({}, 0)">添加分类</el-button> -->
@@ -591,7 +591,7 @@ export default {
                 :label="item.label"
                 :value="item.value"></el-option>
             </el-select>
-            <el-button style="margin-left:10px" type="primary" @click="getList(1)">查询</el-button>
+            <el-button style="margin-left: 10px" type="primary" @click="getList(1)">查询</el-button>
             <el-button @click="resetQuery">重置</el-button>
           </div>
           <div class="mt20 g-card pad20">
@@ -612,7 +612,11 @@ export default {
                       <el-button size="mini" @click="groupDialogVisible = false">取消</el-button>
                       <el-button type="primary" size="mini" @click="moveGroup">确定</el-button>
                     </div>
-                    <el-button slot="reference" style="margin-right:10px" :disabled="selected.length === 0" type="primary">
+                    <el-button
+                      slot="reference"
+                      style="margin-right: 10px"
+                      :disabled="selected.length === 0"
+                      type="primary">
                       批量分组
                     </el-button>
                   </el-popover>

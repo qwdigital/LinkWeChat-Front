@@ -177,6 +177,7 @@
       :choseDialog.sync="choseDialog"
       :talkListLength="talkList.length"
       @itemArry="getItemArry"
+      pad20
       :templateType="templateType"
       :tplType="tplType"
       :moduleType="moduleType"

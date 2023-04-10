@@ -2,7 +2,7 @@
   <div>
     <div class="g-card">
       <el-row type="flex" justify="space-between">
-        <el-col :span="4" class="left g-pad20">
+        <el-col :span="4" class="left pad20">
           <div class="title">
             <div class="title-name">表单分组</div>
             <div class="title-btn" @click="addGroup">添加</div>
@@ -33,7 +33,7 @@
             </div>
           </div>
         </el-col>
-        <el-col :span="20" class="g-pad20">
+        <el-col :span="20" class="pad20">
           <el-form :inline="true" label-width="80px" label-position="left" class="">
             <el-form-item label="表单ID">
               <el-input
