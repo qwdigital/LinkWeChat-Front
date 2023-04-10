@@ -42,7 +42,7 @@
           </div>
           <el-date-picker
             :disabled="isDetail"
-            value-format="yyyy-MM-DD"
+            value-format="yyyy-MM-dd"
             v-model="rangeTime"
             @change="setDateChange"
             type="daterange"

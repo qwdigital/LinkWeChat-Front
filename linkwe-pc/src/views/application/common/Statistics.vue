@@ -13,7 +13,7 @@
         <el-button type="primary" size="mini" @click="exportFn" v-loading="exportLoading">导出Excel</el-button>
       </div>
       <el-table v-loading="loading" :data="tableList" style="width: 100%;">
-        <el-table-column label="日期" align="center" min-width="100" prop="dateTime" show-overflow-tooltip />
+        <el-table-column label="日期" align="center" min-width="100" prop="date" show-overflow-tooltip />
         <el-table-column
           :label="fassionType == 1 ? '完成任务老客总数' : '完成任务客户总数'"
           align="center"

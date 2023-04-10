@@ -6,9 +6,9 @@
           <el-col style="margin-top: 0px;">
             <div>
               <el-table :data="list" v-loading="loading">
-                <el-table-column label="新客" align="center" prop="shortLinkName" show-overflow-tooltip />
-                <el-table-column label="添加员工" align="center" prop="shortLinkName" show-overflow-tooltip />
-                <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180"></el-table-column>
+                <el-table-column label="新客" align="center" prop="inviterUserName" show-overflow-tooltip />
+                <el-table-column label="添加员工" align="center" prop="targetName" show-overflow-tooltip />
+                <el-table-column label="最近更新时间" align="center" prop="createTime" width="180"></el-table-column>
               </el-table>
               <pagination
                 v-show="total > 0"
