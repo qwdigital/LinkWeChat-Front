@@ -150,12 +150,13 @@ module.exports = {
 
       config.optimization.splitChunks({
         chunks: 'all',
+        minSize: 200000,
+        maxSize: 2000000,
         cacheGroups: {
           libs: {
             name: 'chunk-libs',
             test: /[\\/]node_modules[\\/]/,
             priority: 10,
-            chunks: 'initial', // only package third parties that are initially dependent
           },
           // elementUI: {
           //   name: 'chunk-elementUI', // split elementUI into a single package
