@@ -159,7 +159,7 @@
         @update="currentActive = 1"
         @submit="save"
       ></welcome-detail> -->
-      <AddMaterial :moduleType="4" :otherType="2" @update="currentActive = 1" @submit="save"></AddMaterial>
+      <AddMaterial :showModle="true" :moduleType="4" :otherType="2" @update="currentActive = 1" @submit="save"></AddMaterial>
     </div>
     <!-- 选择添加人弹窗 -->
     <SelectWeUser
