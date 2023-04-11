@@ -63,7 +63,7 @@
       fissionInviterRecordId: {
         handler(val) {
           if (val) {
-            this.getList()
+            this.getList(1)
           }
         },
         immediate: true
