@@ -50,7 +50,7 @@
             {{ row.fassionEndTime || '-' }}
           </template>
         </el-table-column>
-        <el-table-column prop="pvNum" label="员工邀请老客总数" align="center" width="150">
+        <el-table-column prop="inviterOldCustomerNum" label="员工邀请老客总数" align="center" width="150">
           <template slot="header">
             <el-popover placement="top" trigger="hover">
               <div slot="reference">
@@ -61,10 +61,10 @@
             </el-popover>
           </template>
           <template #default="{ row }">
-            {{ row.pvNum || '-' }}
+            {{ row.inviterOldCustomerNum == null ? '-' : row.inviterOldCustomerNum }}
           </template>
         </el-table-column>
-        <el-table-column prop="uvNum" label="完成任务老客总数" align="center" width="150">
+        <el-table-column prop="completeTaskOldCustomerNum" label="完成任务老客总数" align="center" width="150">
           <template slot="header">
             <el-popover placement="top" trigger="hover">
               <div slot="reference">
@@ -75,10 +75,10 @@
             </el-popover>
           </template>
           <template #default="{ row }">
-            {{ row.uvNum || '-' }}
+            {{ row.completeTaskOldCustomerNum == null ? '-' : row.completeTaskOldCustomerNum }}
           </template>
         </el-table-column>
-        <el-table-column prop="openNum" label="裂变新客总数" align="center" width="140">
+        <el-table-column prop="fissionCustomerNum" label="裂变新客总数" align="center" width="140">
           <template slot="header">
             <el-popover placement="top" trigger="hover">
               <div slot="reference">
@@ -89,7 +89,7 @@
             </el-popover>
           </template>
           <template #default="{ row }">
-            {{ row.openNum || '-' }}
+            {{ row.fissionCustomerNum == null ? '-' : row.fissionCustomerNum }}
           </template>
         </el-table-column>
         <el-table-column prop="createBy" label="创建人" align="center"></el-table-column>
