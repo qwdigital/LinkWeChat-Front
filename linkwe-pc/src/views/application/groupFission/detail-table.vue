@@ -55,7 +55,7 @@
       :defaultValues="userArray"
       @success="getSelectUser"
     ></SelectWeUser>
-    <SubDetailVue :visible.sync="detailVisible" :fissionInviterRecordId="detailId"></SubDetailVue>
+    <SubDetailVue :visible.sync="detailVisible" :fissionInviterRecordId="detailId" fissionType="group"></SubDetailVue>
     <select-group :visible.sync="showSelectModal" :defaults="groupList" @submit="setSelectData"></select-group>
   </div>
 </template>
@@ -86,7 +86,8 @@
           pageNum: 1,
           pageSize: 10,
           weUserId: '',
-          chatId: ''
+          chatId: '',
+          fissionId: ''
         },
         dialogVisible: false,
         userArray: [], // 选择人员
@@ -150,7 +151,7 @@
       },
       getList() {
         this.loading = true
-        this.query.id = this.$route.query.id
+        this.query.fissionId = this.$route.query.id
         getFissionGroupTable(this.query).then((res) => {
           this.loading = false
           this.list = res.rows

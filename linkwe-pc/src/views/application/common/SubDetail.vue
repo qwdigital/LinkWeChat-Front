@@ -7,7 +7,12 @@
             <div>
               <el-table :data="list" v-loading="loading">
                 <el-table-column label="新客" align="center" prop="inviterUserName" show-overflow-tooltip />
-                <el-table-column label="添加员工" align="center" prop="targetName" show-overflow-tooltip />
+                <el-table-column
+                  :label="fissionType == 'customer' ? '添加员工' : '添加客群'"
+                  align="center"
+                  prop="targetName"
+                  show-overflow-tooltip
+                />
                 <el-table-column label="最近更新时间" align="center" prop="createTime" width="180"></el-table-column>
               </el-table>
               <pagination
@@ -34,6 +39,10 @@
   export default {
     components: {},
     props: {
+      fissionType: {
+        type: String,
+        default: 'customer'
+      },
       //显隐
       visible: {
         type: Boolean,

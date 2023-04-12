@@ -117,7 +117,7 @@
       },
       getList() {
         this.loading = true
-        this.query.id = this.$route.query.id
+        this.query.fissionId = this.$route.query.id
         getFissionCustomerTable(this.query).then((res) => {
           this.loading = false
           this.list = res.rows
