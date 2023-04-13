@@ -9,21 +9,20 @@
     <el-form-item v-if="currentType == 1">
       <div>
         <div class="item-magin aic">
-          <!-- <div class="item-name" v-if="!isDetail">
-            选择群主：
-          </div> -->
+          <div>
+            <el-tag v-for="item in selectCustomerGroupList" :key="item.userId">{{ item.name }}</el-tag>
+          </div>
           <el-button
             v-if="!isDetail"
+            icon="el-icon-plus"
             type="primary"
             size="mini"
             class="mr10"
-            icon="el-icon-circle-plus-outline"
             plain
             @click="onSelectCustomerGroup"
           >
             {{ form.weUserIds ? '编辑' : '选择' }}群主
           </el-button>
-          <el-tag v-for="item in selectCustomerGroupList" :key="item.userId">{{ item.name }}</el-tag>
         </div>
       </div>
     </el-form-item>

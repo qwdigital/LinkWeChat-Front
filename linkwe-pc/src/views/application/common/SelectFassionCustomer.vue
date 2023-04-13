@@ -17,7 +17,7 @@
             v-if="!isDetail"
             class="mr10"
             size="mini"
-            icon="el-icon-circle-plus-outline"
+            icon="el-icon-plus"
             type="primary"
             plain
             @click="onSelectUser(2)"
@@ -57,7 +57,7 @@
             v-if="!isDetail"
             class="mr10"
             size="mini"
-            icon="el-icon-circle-plus-outline"
+            icon="el-icon-plus"
             type="primary"
             plain
             @click="onSelectTag"
