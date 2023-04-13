@@ -89,7 +89,6 @@ export default {
       },
       addTotal: 0,
       cardData: [],
-      totalData: {},
     }
   },
   created() {
@@ -106,7 +105,6 @@ export default {
   mounted() {},
   methods: {
     getTotalFn() {
-      console.log(222)
       getTotal().then(({ data }) => {
         this.cardData = [
           {

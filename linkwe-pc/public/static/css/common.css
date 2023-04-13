@@ -89,6 +89,10 @@ li {
   align-items: center;
   justify-content: space-between;
 }
+.fxclo {
+  display: flex;
+  flex-direction: column;
+}
 .gap10 {
   display: flex;
   flex-wrap: wrap;

@@ -1,29 +1,31 @@
 <template>
   <div>
-    <div class="g-card" style="padding: 20px">
-      <el-form ref="queryForm" :inline="true" :form="query" label-width="70px">
-        <el-form-item label="选择员工" prop="userId">
-          <div class="tag-input" @click="selectUser(1)">
-            <span class="tag-place" v-if="!queryUser.length">请选择员工</span>
-            <template v-else>
-              <el-tag v-for="(unit, unique) in queryUser" :key="unique">{{ unit.name }}</el-tag>
-            </template>
-          </div>
-        </el-form-item>
-        <el-form-item label-width="0">
-          <el-button type="primary" @click="getList(1)">查询</el-button>
-          <el-button @click="resetQuery">重置</el-button>
-        </el-form-item>
-      </el-form>
-      <el-button
-        type="primary"
-        @click="
-          batchUpdate = false
-          edit()
-        ">
-        新建员工限额
-      </el-button>
-      <!-- <el-button
+    <el-form ref="queryForm" :inline="true" :model="query" label-width="70px" class="top-search">
+      <el-form-item label="选择员工" prop="userId">
+        <div class="tag-input" @click="selectUser(1)">
+          <span class="tag-place" v-if="!queryUser.length">请选择员工</span>
+          <template v-else>
+            <el-tag v-for="(unit, unique) in queryUser" :key="unique">{{ unit.name }}</el-tag>
+          </template>
+        </div>
+      </el-form-item>
+      <el-form-item label-width="">
+        <el-button type="primary" @click="getList(1)">查询</el-button>
+        <el-button @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
+
+    <div class="g-card">
+      <div class="mid-action">
+        <el-button
+          type="primary"
+          @click="
+            batchUpdate = false
+            edit()
+          ">
+          新建员工限额
+        </el-button>
+        <!-- <el-button
         type="primary"
         plain
         :disabled="!selectedIds.length"
@@ -33,9 +35,8 @@
         "
         >批量编辑</el-button
       > -->
-    </div>
+      </div>
 
-    <div class="g-card">
       <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column prop="userName" label="员工姓名" align="center" />
