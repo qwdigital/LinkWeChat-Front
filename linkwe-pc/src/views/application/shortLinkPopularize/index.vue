@@ -9,13 +9,13 @@
       </el-form-item>
       <el-form-item label="" prop="type">
         <el-select :popper-append-to-body="false" v-model="query.type" placeholder="请选择推广方式">
-          <el-option label="全部" value=""></el-option>
+          <el-option label="全部推广方式" value=""></el-option>
           <el-option v-for="(item, index) in infoType" :key="index" :label="item.name" :value="item.key"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="" prop="taskStatus">
         <el-select :popper-append-to-body="false" v-model="query.taskStatus" placeholder="请选择任务状态">
-          <el-option label="全部" value=""></el-option>
+          <el-option label="全部任务状态" value=""></el-option>
           <el-option v-for="(item, index) in statusType" :key="index" :label="item.name" :value="item.key"></el-option>
         </el-select>
       </el-form-item>

@@ -30,7 +30,7 @@
   import { dateFormat } from '@/utils/index'
   import SelectEndDateVue from './SelectEndDate.vue'
   import SelectSendTypeVue from './SelectSendType.vue'
-  import SelectMemberVue from './SelectMember.vue'
+  import SelectMemberVue from '../../common/SelectMember.vue'
   export default {
     name: 'step3-type-4',
     components: {
