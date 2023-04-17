@@ -2,7 +2,7 @@
   <div>
     <div class="g-card" :style="isDetail ? '' : 'margin-top: 20px;'">
       <el-row>
-        <el-col :span="8">
+        <el-col>
           <el-form :model="form" :rules="ruleForm" ref="ruleForm" label-width="140px" labelPosition="right">
             <el-form-item label="任务名称" prop="fassionName">
               <el-input

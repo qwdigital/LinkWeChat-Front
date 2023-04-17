@@ -256,7 +256,7 @@
 </script>
 <style lang="scss" scoped>
   .select_content {
-    background-color: #ecf5ff;
+    // background-color: #ecf5ff;
     padding: 20px;
     border-radius: 5px;
     .select_unit {
