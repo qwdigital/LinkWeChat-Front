@@ -228,7 +228,7 @@
       this.$store.dispatch(
         'app/setBusininessDesc',
         `
-        <div>通过任务形式，引导老客裂变新客，实现客户增长</div>
+        <div>通过任务形式，引导老客裂变新客加群，实现客群增长</div>
       `
       )
     }
