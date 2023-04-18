@@ -1,16 +1,13 @@
 <template>
   <div style="height: 100%">
-    <el-row style="height: 100%" class="g-card" type="flex" justify="space-between">
-      <el-col :span="5" class="left">
+    <div class="g-left-right">
+      <div class="left g-card">
         <div class="title">
           <div class="title-name">
             <i class="el-icon-arrow-up mr5"></i>
             全部
           </div>
-          <div class="title-btn" @click="addGroup">
-            <i class="el-icon-circle-plus-outline mr5"></i>
-            添加
-          </div>
+          <div class="title-btn" @click="addGroup">添加</div>
         </div>
         <el-scrollbar class="item-list">
           <div
@@ -35,9 +32,9 @@
             </el-dropdown>
           </div>
         </el-scrollbar>
-      </el-col>
-      <el-col :span="19" class="">
-        <el-form :inline="true" label-width="" label-position="left">
+      </div>
+      <div class="right">
+        <el-form :inline="true" label-width="" label-position="left" class="top-search fxnone">
           <el-form-item label="活码名称">
             <el-input v-model="query.qrName" placeholder="请输入活码名称" clearable @keyup.enter.native="search()" />
           </el-form-item>
@@ -49,84 +46,87 @@
             <el-button @click="resetQuery">重置</el-button>
           </el-form-item>
         </el-form>
-
-        <div style="display: flex; justify-content: space-between">
-          <el-button type="primary" @click="goRoute('staffAdd')">新建员工活码</el-button>
-          <div>
-            <el-button type="primary" plain @click="removeFn('mult')">删除</el-button>
-            <el-button type="primary" plain @click="downloadBatch()">批量下载</el-button>
+        <div class="g-card">
+          <div class="mid-action">
+            <el-button type="primary" @click="goRoute('staffAdd')">新建员工活码</el-button>
+            <div>
+              <el-button type="primary" plain @click="removeFn('mult')">删除</el-button>
+              <el-button type="primary" plain @click="downloadBatch()">批量下载</el-button>
+            </div>
           </div>
-        </div>
 
-        <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
-          <!-- height="calc(100vh - 325px)" -->
-          <el-table-column type="selection" width="55" align="center" />
-          <el-table-column label="二维码" align="center" prop="qrCode" min-width="120">
-            <template slot-scope="{ row }">
-              <el-image
-                :src="row.qrCode"
-                fit="fit"
-                :preview-src-list="[row.qrCode]"
-                style="width: 100px; height: 100px"></el-image>
-            </template>
-          </el-table-column>
-          <el-table-column label="活码名称" align="center" min-width="100" prop="name" show-overflow-tooltip />
-          <el-table-column label="活码分组" align="center" min-width="100" prop="qrGroupName" show-overflow-tooltip />
-          <el-table-column label="使用员工" align="center" min-width="140" prop="qrUserInfos" show-overflow-tooltip>
-            <template slot-scope="{ row }">
-              <!-- <template v-if="row.status === 1">
+          <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
+            <!-- height="calc(100vh - 325px)" -->
+            <el-table-column type="selection" width="55" align="center" />
+            <el-table-column label="二维码" align="center" prop="qrCode" min-width="120">
+              <template slot-scope="{ row }">
+                <el-image
+                  :src="row.qrCode"
+                  fit="fit"
+                  :preview-src-list="[row.qrCode]"
+                  style="width: 100px; height: 100px"></el-image>
+              </template>
+            </el-table-column>
+            <el-table-column label="活码名称" align="center" min-width="100" prop="name" show-overflow-tooltip />
+            <el-table-column label="活码分组" align="center" min-width="100" prop="qrGroupName" show-overflow-tooltip />
+            <el-table-column label="使用员工" align="center" min-width="140" prop="qrUserInfos" show-overflow-tooltip>
+              <template slot-scope="{ row }">
+                <!-- <template v-if="row.status === 1">
                   <template v-for="(data, key) in row.weEmpleCodeUseScops" >
                     <span :key="key">{{data.businessName}}</span>  <span :key="key" v-if="key >0">','</span>
                   </template>
                 </template> -->
-              <template>
-                <div v-for="(unit, key) in row.qrUserInfos" :key="key" style="display: inline">
-                  <template v-for="(item, index) in unit.weQrUserList">
-                    <span :key="index">{{ item.userName + ' ' }}</span>
-                  </template>
-                </div>
+                <template>
+                  <div v-for="(unit, key) in row.qrUserInfos" :key="key" style="display: inline">
+                    <template v-for="(item, index) in unit.weQrUserList">
+                      <span :key="index">{{ item.userName + ' ' }}</span>
+                    </template>
+                  </div>
+                </template>
               </template>
-            </template>
-          </el-table-column>
-          <el-table-column label="标签" align="center" prop="qrTags" min-width="160px">
-            <template slot-scope="{ row }">
-              <TagEllipsis :list="row.qrTags" defaultProps="tagName" />
-            </template>
-          </el-table-column>
-          <!-- <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180">
+            </el-table-column>
+            <el-table-column label="标签" align="center" prop="qrTags" min-width="160px">
+              <template slot-scope="{ row }">
+                <TagEllipsis :list="row.qrTags" defaultProps="tagName" />
+              </template>
+            </el-table-column>
+            <!-- <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180">
             </el-table-column> -->
-          <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180"></el-table-column>
-          <el-table-column label="操作" align="center" fixed="right" width="180" class-name="small-padding fixed-width">
-            <template slot-scope="{ row }">
-              <!-- <el-button type="text" @click="download(row.id, row.useUserName, row.scenario)" v-hasPermi="['wecom:code:download']">下载</el-button>
-                  <el-button type="text" class="copy-btn" :data-clipboard-text="row.qrCode" v-hasPermi="['monitor:operlog:query']">复制链接</el-button>
-                  <el-button type="text" @click="goRoute('staffDetail', row.id)" v-hasPermi="['drainageCode:staff:detail']">查看详情</el-button>
-                  <el-button type="text" @click="goRoute('staffAdd', row.id)" v-hasPermi="['wecom:code:edit']">编辑</el-button>
-                  <el-button type="text" @click="remove(row.id)" v-hasPermi="['wecom:code:remove']">删除</el-button> -->
-              <el-button type="text" @click="goRoute('staffDetail', row.id)">详情|统计</el-button>
-              <el-button type="text" @click="goRoute('staffAdd', row.id)">编辑</el-button>
-              <el-dropdown style="margin-left: 10px">
-                <el-button type="text">
-                  <i class="el-icon-more"></i>
-                </el-button>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>
-                    <el-button type="text" @click="download(row.qrCode, row.name)">下载</el-button>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                    <el-button type="text" @click="removeFn('single', row.id)">删除</el-button>
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </template>
-          </el-table-column>
-        </el-table>
-        <!-- <div class="bottom"> -->
+            <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180"></el-table-column>
+            <el-table-column
+              label="操作"
+              align="center"
+              fixed="right"
+              width="180"
+              class-name="small-padding fixed-width">
+              <template slot-scope="{ row }">
+                <el-button type="text" @click="goRoute('staffDetail', row.id)">详情|统计</el-button>
+                <el-button type="text" @click="goRoute('staffAdd', row.id)">编辑</el-button>
+                <el-button type="text" @click="download(row.qrCode, row.name)">下载</el-button>
+                <el-button type="text" @click="removeFn('single', row.id)">删除</el-button>
+                <!-- <el-dropdown style="margin-left: 10px">
+                  <el-button type="text">
+                    <i class="el-icon-more"></i>
+                  </el-button>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item>
+                      <el-button type="text" @click="download(row.qrCode, row.name)">下载</el-button>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
+                      <el-button type="text" @click="removeFn('single', row.id)">删除</el-button>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown> -->
+              </template>
+            </el-table-column>
+          </el-table>
+          <!-- <div class="bottom"> -->
 
-        <pagination :total="total" :page.sync="query.pageNum" :limit.sync="query.pageSize" @pagination="getList()" />
-        <!-- </div> -->
-      </el-col>
-    </el-row>
+          <pagination :total="total" :page.sync="query.pageNum" :limit.sync="query.pageSize" @pagination="getList()" />
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
 
     <!-- 批量新建弹窗 -->
     <SelectWeUser
@@ -476,102 +476,6 @@ export default {
 
   &:hover {
     background-color: #f5f8fe;
-  }
-}
-
-.left {
-  border-right: 1px solid #f1f1f1;
-  padding-right: 20px;
-  margin-right: 20px;
-  .title {
-    color: var(--color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    // padding-right: 20px;
-
-    .title-name {
-      font-size: 12px;
-
-      font-weight: 400;
-      color: #333333;
-      display: flex;
-      align-items: center;
-    }
-
-    .title-btn {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      font-size: 12px;
-
-      font-weight: 400;
-      color: var(--color);
-
-      &:hover {
-        opacity: 0.8;
-      }
-    }
-  }
-
-  .item-list {
-    margin-top: 15px;
-    display: flex;
-    flex-direction: column;
-    height: calc(100% - 30px);
-    overflow-x: hidden;
-    overflow-y: auto;
-
-    .item {
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      color: #333333;
-      height: 40px;
-      line-height: 40px;
-      width: 100%;
-      padding-left: 20px;
-
-      .name {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
-
-      .dropdown {
-        // display: none;
-        .dot {
-          cursor: pointer;
-          width: 14px;
-          height: 14px;
-          line-height: 14px;
-          font-size: 14px;
-          font-family: JMT-Font, JMT;
-          font-weight: normal;
-          color: var(--color);
-          margin-right: 20px;
-          margin-left: 5px;
-        }
-      }
-
-      &:hover {
-        color: var(--color);
-        background: #f5f8fe;
-        opacity: 0.8;
-
-        .dropdown {
-          // display: block;
-        }
-      }
-    }
-
-    .active {
-      // border-left: 2px solid var(--color);
-      color: var(--color);
-      background: #f5f8fe;
-    }
   }
 }
 </style>

@@ -1,87 +1,87 @@
 <template>
   <div>
-    <div class="g-card">
-      <el-row type="flex" justify="space-between">
-        <el-col :span="4" class="left pad20">
-          <div class="title">
-            <div class="title-name">表单分组</div>
-            <div class="title-btn" @click="addGroup">添加</div>
+    <div class="g-left-right">
+      <div class="left g-card">
+        <div class="title">
+          <div class="title-name">表单分组</div>
+          <div class="title-btn" @click="addGroup">添加</div>
+        </div>
+        <div class="item-list">
+          <div
+            class="item"
+            v-for="(group, key) in groupList"
+            :class="{ active: groupIndex == key }"
+            :key="group.id"
+            @click="switchGroup(key, group)">
+            <div class="name">{{ group.name }}</div>
+            <el-dropdown
+              v-if="groupIndex == key && group.flag === 0"
+              class="dropdown"
+              @command="onGroupCommand($event, group)">
+              <div v-if="group">
+                <span class="dot" v-if="group.name != '默认分组'">
+                  <!-- <img :src="require('@/assets/drainageCode/more.png')" alt=""> -->
+                  <i class="el-icon-more"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item command="edit">修改分组</el-dropdown-item>
+                  <el-dropdown-item command="remove">删除分组</el-dropdown-item>
+                </el-dropdown-menu>
+              </div>
+            </el-dropdown>
           </div>
-          <div class="item-list">
-            <div
-              class="item"
-              v-for="(group, key) in groupList"
-              :class="{ active: groupIndex == key }"
-              :key="group.id"
-              @click="switchGroup(key, group)">
-              <div class="name">{{ group.name }}</div>
-              <el-dropdown
-                v-if="groupIndex == key && group.flag === 0"
-                class="dropdown"
-                @command="onGroupCommand($event, group)">
-                <div v-if="group">
-                  <span class="dot" v-if="group.name != '默认分组'">
-                    <!-- <img :src="require('@/assets/drainageCode/more.png')" alt=""> -->
-                    <i class="el-icon-more"></i>
-                  </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="edit">修改分组</el-dropdown-item>
-                    <el-dropdown-item command="remove">删除分组</el-dropdown-item>
-                  </el-dropdown-menu>
-                </div>
-              </el-dropdown>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="20" class="pad20">
-          <el-form :inline="true" label-width="80px" label-position="left" class="">
-            <el-form-item label="表单ID">
-              <el-input
-                onkeyup="value=value.replace(/[^\d]/g,'')"
-                v-model="query.id"
-                placeholder="请输入表单ID"
-                clearable
-                @keyup.enter.native="search()" />
-            </el-form-item>
-            <el-form-item label="表单名称">
-              <!-- readonly -->
-              <el-input
-                v-model="query.surveyName"
-                clearable
-                placeholder="请输入表单名称"
-                @keyup.enter.native="search()" />
-            </el-form-item>
-            <el-form-item label="创建时间">
-              <el-date-picker
-                v-model="dateRange"
-                value-format="yyyy-MM-dd"
-                type="daterange"
-                :picker-options="pickerOptions"
-                range-separator="-"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"></el-date-picker>
-              <!-- <el-date-picker
+        </div>
+      </div>
+      <div class="right">
+        <el-form :inline="true" label-width="" label-position="left" class="top-search">
+          <el-form-item label="表单ID">
+            <el-input
+              onkeyup="value=value.replace(/[^\d]/g,'')"
+              v-model="query.id"
+              placeholder="请输入表单ID"
+              clearable
+              @keyup.enter.native="search()" />
+          </el-form-item>
+          <el-form-item label="表单名称">
+            <!-- readonly -->
+            <el-input
+              v-model="query.surveyName"
+              clearable
+              placeholder="请输入表单名称"
+              @keyup.enter.native="search()" />
+          </el-form-item>
+          <el-form-item label="创建时间">
+            <el-date-picker
+              v-model="dateRange"
+              value-format="yyyy-MM-dd"
+              type="daterange"
+              :picker-options="pickerOptions"
+              range-separator="-"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"></el-date-picker>
+            <!-- <el-date-picker
                   v-model="query.createTime"
                   type="daterange"
                   default-time="['00:00:00','00:00:00']"
                   value-format="yyyy-MM-dd HH:mm:ss"
                   placeholder="选择时间"></el-date-picker> -->
-            </el-form-item>
-            <el-form-item label="选择状态" prop="addState">
-              <el-select v-model="query.surveyState">
-                <el-option label="未发布" :value="0"></el-option>
-                <el-option label="收集中" :value="1"></el-option>
-                <el-option label="已暂停" :value="2"></el-option>
-                <el-option label="已结束" :value="3"></el-option>
-                <!-- <el-option label="待通过" :value="3">
+          </el-form-item>
+          <el-form-item label="选择状态" prop="addState">
+            <el-select v-model="query.surveyState">
+              <el-option label="未发布" :value="0"></el-option>
+              <el-option label="收集中" :value="1"></el-option>
+              <el-option label="已暂停" :value="2"></el-option>
+              <el-option label="已结束" :value="3"></el-option>
+              <!-- <el-option label="待通过" :value="3">
               		</el-option> -->
-              </el-select>
-            </el-form-item>
-            <el-form-item label-width="0">
-              <el-button type="primary" @click="search()">查询</el-button>
-              <el-button @click="resetQuery">重置</el-button>
-            </el-form-item>
-          </el-form>
+            </el-select>
+          </el-form-item>
+          <el-form-item label-width="0">
+            <el-button type="primary" @click="search()">查询</el-button>
+            <el-button @click="resetQuery">重置</el-button>
+          </el-form-item>
+        </el-form>
+        <div class="g-card">
           <div class="mid-action">
             <el-button type="primary" @click="goRoute('add')">新建表单</el-button>
             <div>
@@ -228,8 +228,8 @@
 
           <pagination :total="total" :page.sync="query.pageNum" :limit.sync="query.pageSize" @pagination="getList()" />
           <!-- </div> -->
-        </el-col>
-      </el-row>
+        </div>
+      </div>
     </div>
 
     <!-- 批量新建弹窗 -->
@@ -729,102 +729,6 @@ export default {
 
   &:hover {
     background-color: #f5f8fe;
-  }
-}
-
-.left {
-  border-right: 1px solid #f1f1f1;
-
-  .title {
-    color: var(--color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    // padding-right: 20px;
-
-    .title-name {
-      font-size: 12px;
-
-      font-weight: 400;
-      color: #333333;
-      display: flex;
-      align-items: center;
-    }
-
-    .title-btn {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      font-size: 12px;
-
-      font-weight: 400;
-      color: var(--color);
-
-      &:hover {
-        opacity: 0.8;
-      }
-    }
-  }
-
-  .item-list {
-    max-height: 800px;
-    padding-top: 15px;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-
-    .item {
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      color: #333333;
-      height: 40px;
-      line-height: 40px;
-      width: 100%;
-      padding-left: 20px;
-
-      .name {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
-
-      .dropdown {
-        // display: none;
-        .dot {
-          cursor: pointer;
-          width: 14px;
-          height: 14px;
-          line-height: 14px;
-          font-size: 14px;
-          font-family: JMT-Font, JMT;
-          font-weight: normal;
-          color: var(--color);
-          margin-right: 20px;
-          margin-left: 5px;
-        }
-      }
-
-      &:hover {
-        color: var(--color);
-        background: #f5f8fe;
-        opacity: 0.8;
-
-        .dropdown {
-          // display: block;
-        }
-      }
-    }
-
-    .active {
-      // border-left: 2px solid var(--color);
-      color: var(--color);
-      background: #f5f8fe;
-    }
   }
 }
 </style>

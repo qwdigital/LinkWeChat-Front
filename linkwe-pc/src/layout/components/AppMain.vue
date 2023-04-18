@@ -6,8 +6,8 @@
       <!-- <keep-alive :include="cachedViews">
       </keep-alive> -->
     </transition>
-    <div v-loading="loading" class="micro-app-wrap container">
-      <div id="micro-app" class="height100" v-show="isActiveMicroApp">
+    <div v-loading="loading" class="micro-app-wrap container" v-show="isActiveMicroApp">
+      <div id="micro-app" class="height100">
         <!-- <div id="app" class="mask" style="position: absolute">
         <i class="el-icon-loading cc"></i>
       </div> -->
@@ -79,16 +79,23 @@ export default {
 // }
 .app-main {
   position: relative;
-  overflow: hidden;
   flex: auto;
+  // overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   margin-top: 20px;
+  padding: 0 15px 0 20px;
+  &::-webkit-scrollbar-thumb {
+    visibility: hidden;
+  }
+  &:hover::-webkit-scrollbar-thumb {
+    visibility: visible;
+  }
 }
 .container {
   position: relative;
   height: 100%;
 
-  overflow-y: auto;
-  overflow-x: hidden;
   &::-webkit-scrollbar-thumb {
     visibility: hidden;
   }
@@ -97,12 +104,10 @@ export default {
   }
 }
 .page {
-  padding: 0 15px 0 20px;
   // background: #fff;
   // border-radius: var(--border-radius-big);
 }
 .micro-app-wrap {
-  margin: 0 20px;
 }
 .fixed-header + .app-main {
   padding-top: 50px;
