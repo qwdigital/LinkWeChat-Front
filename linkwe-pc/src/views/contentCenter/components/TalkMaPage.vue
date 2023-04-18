@@ -390,95 +390,93 @@ export default {
 
 <template>
   <div class="page">
-    <div style="margin-top: 16px">
-      <el-row type="flex" justify="space-between">
-        <el-col :span="5" class="left pad20" style="border-radius: 4px; background: #fff">
-          <div class="title">
-            <div class="title-name">{{ typeTitle[type] }}分组</div>
-            <div class="title-btn" @click="addGroup">添加</div>
+    <div class="g-left-right">
+      <div class="left g-card">
+        <div class="title">
+          <div class="title-name">{{ typeTitle[type] }}分组</div>
+          <div class="title-btn" @click="addGroup">添加</div>
+        </div>
+        <div class="item-list">
+          <div
+            class="item"
+            :class="{ active: groupIndex == key }"
+            v-for="(group, key) in groupList"
+            :key="group.id"
+            @click="switchGroup(key, group)">
+            <div class="name">{{ group.name + ' (' + group.number + ')' }}</div>
+            <el-dropdown v-if="group.flag === 0" class="dropdown" @command="onGroupCommand($event, group)">
+              <span class="dot">
+                <!-- <img style="height: 15px;width: 15px;" :src="require('@/assets/drainageCode/more.png')" alt=""> -->
+                <i class="el-icon-more content-icon"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="groupEdit">修改分组</el-dropdown-item>
+                <el-dropdown-item command="groupRemove">删除分组</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </div>
-          <div class="item-list">
-            <div
-              class="item"
-              :class="{ active: groupIndex == key }"
-              v-for="(group, key) in groupList"
-              :key="group.id"
-              @click="switchGroup(key, group)">
-              <div class="name">{{ group.name + ' (' + group.number + ')' }}</div>
-              <el-dropdown v-if="group.flag === 0" class="dropdown" @command="onGroupCommand($event, group)">
-                <span class="dot">
-                  <!-- <img style="height: 15px;width: 15px;" :src="require('@/assets/drainageCode/more.png')" alt=""> -->
-                  <i class="el-icon-more content-icon"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="groupEdit">修改分组</el-dropdown-item>
-                  <el-dropdown-item command="groupRemove">删除分组</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-          </div>
-        </el-col>
+        </div>
+      </div>
 
-        <el-col :span="19" style="margin-top: 0px">
-          <div class="g-card">
-            <el-input
-              v-model="query.talkTitle"
-              :placeholder="'请输入' + typeTitle[type] + '标题'"
-              clearable
-              prefix-icon="el-icon-search"
-              style="width: 300px"
-              @keyup.enter.native="search()"
-              v-if="['13', '14'].includes(type)" />
-            <el-input
-              v-model="query.templateInfo"
-              :placeholder="'请输入' + typeTitle[type] + '标题'"
-              clearable
-              prefix-icon="el-icon-search"
-              style="width: 300px"
-              @keyup.enter.native="search()"
-              v-else />
+      <div class="right">
+        <div class="g-card fxnone">
+          <el-input
+            v-model="query.talkTitle"
+            :placeholder="'请输入' + typeTitle[type] + '标题'"
+            clearable
+            prefix-icon="el-icon-search"
+            style="width: 300px"
+            @keyup.enter.native="search()"
+            v-if="['13', '14'].includes(type)" />
+          <el-input
+            v-model="query.templateInfo"
+            :placeholder="'请输入' + typeTitle[type] + '标题'"
+            clearable
+            prefix-icon="el-icon-search"
+            style="width: 300px"
+            @keyup.enter.native="search()"
+            v-else />
 
-            <el-button class="ml10" type="primary" @click="getList(1)">查询</el-button>
-            <!-- v-hasPermi="['wecom:material:list']" -->
-            <el-button @click="resetQuery">重置</el-button>
-          </div>
-          <div class="mt20 g-card pad20">
-            <div v-loading="loading">
-              <div style="height: 80px">
-                <div class="fl pad20">
-                  <!-- v-hasPermi="['wechat:material:add']" -->
-                  <el-button type="primary" @click="edit(1, ~~type)">新建{{ typeTitle[type] }}</el-button>
-                </div>
-                <div class="fr pad20">
-                  <el-popover placement="top" width="260" v-model="groupDialogVisible">
-                    <div>选择分组</div>
-                    <div style="position: relative; margin: 10px 0">
-                      <el-cascader v-model="group" :options="treeData[0].children" :props="groupProps"></el-cascader>
-                    </div>
-                    <div style="text-align: right">
-                      <el-button size="mini" @click="groupDialogVisible = false">取消</el-button>
-                      <el-button type="primary" size="mini" @click="moveGroup">确定</el-button>
-                    </div>
-                    <!-- v-hasPermi="['wechat:material:resetCategory']" -->
-                    <el-button slot="reference" class="mr10" :disabled="selected.length === 0" type="primary">
-                      批量分组
-                    </el-button>
-                  </el-popover>
-                  <el-button @click="remove()" :disabled="selected.length === 0">批量删除</el-button>
-                  <!-- v-hasPermi="['wechat:material:remove']" -->
-                </div>
+          <el-button class="ml10" type="primary" @click="getList(1)">查询</el-button>
+          <!-- v-hasPermi="['wecom:material:list']" -->
+          <el-button @click="resetQuery">重置</el-button>
+        </div>
+        <div class="mt20 g-card pad20">
+          <div v-loading="loading">
+            <div style="height: 80px">
+              <div class="fl pad20">
+                <!-- v-hasPermi="['wechat:material:add']" -->
+                <el-button type="primary" @click="edit(1, ~~type)">新建{{ typeTitle[type] }}</el-button>
               </div>
-              <slot v-bind:list="list"></slot>
+              <div class="fr pad20">
+                <el-popover placement="top" width="260" v-model="groupDialogVisible">
+                  <div>选择分组</div>
+                  <div style="position: relative; margin: 10px 0">
+                    <el-cascader v-model="group" :options="treeData[0].children" :props="groupProps"></el-cascader>
+                  </div>
+                  <div style="text-align: right">
+                    <el-button size="mini" @click="groupDialogVisible = false">取消</el-button>
+                    <el-button type="primary" size="mini" @click="moveGroup">确定</el-button>
+                  </div>
+                  <!-- v-hasPermi="['wechat:material:resetCategory']" -->
+                  <el-button slot="reference" class="mr10" :disabled="selected.length === 0" type="primary">
+                    批量分组
+                  </el-button>
+                </el-popover>
+                <el-button @click="remove()" :disabled="selected.length === 0">批量删除</el-button>
+                <!-- v-hasPermi="['wechat:material:remove']" -->
+              </div>
             </div>
-            <pagination
-              v-show="total > 0"
-              :total="total"
-              :page.sync="query.pageNum"
-              :limit.sync="query.pageSize"
-              @pagination="getList()" />
+            <slot v-bind:list="list"></slot>
           </div>
-        </el-col>
-      </el-row>
+          <pagination
+            v-show="total > 0"
+            :total="total"
+            :page.sync="query.pageNum"
+            :limit.sync="query.pageSize"
+            @pagination="getList()" />
+        </div>
+      </div>
     </div>
     <!-- 分组弹框 -->
     <el-dialog
@@ -509,99 +507,6 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-.left {
-  margin-right: 16px;
-  .title {
-    color: var(--color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .title-name {
-      color: rgba(0, 0, 0, 0.9);
-      font-size: 16px;
-      font-weight: 600;
-      // color: #333333;
-      display: flex;
-      align-items: center;
-    }
-    .title-btn {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      font-size: 14px;
-      font-weight: normal;
-      color: var(--color);
-      &:hover {
-        opacity: 0.8;
-      }
-    }
-  }
-
-  .item-list {
-    max-height: 700px;
-    padding-top: 15px;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    .item {
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 14px;
-      color: rgba(0, 0, 0, 0.6);
-      height: 40px;
-      line-height: 40px;
-      width: 100%;
-      padding-left: 20px;
-      .name {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
-      .dropdown {
-        // display: none;
-        .dot {
-          cursor: pointer;
-          width: 15px;
-          height: 15px;
-          line-height: 15px;
-          font-size: 14px;
-          font-family: JMT-Font, JMT;
-          font-weight: normal;
-          color: rgba(0, 0, 0, 0.6);
-          margin-right: 10px;
-          margin-left: 5px;
-          font-weight: 500;
-          .content-icon {
-            color: rgba(0, 0, 0, 0.6);
-            font-size: 12px;
-            transform: rotate(90deg);
-          }
-        }
-      }
-      &:hover {
-        color: rgba(0, 0, 0, 0.9);
-        background: #f5f8fe;
-        opacity: 0.8;
-        border-radius: 2px;
-        .dropdown {
-          // display: block;
-        }
-      }
-    }
-
-    .active {
-      // border-left: 2px solid var(--color);
-      color: rgba(0, 0, 0, 0.9);
-      background: #f5f8fe;
-      border-radius: 2px;
-    }
-  }
-}
-
 .custom-tree-node {
   overflow: hidden;
   flex-shrink: 1;

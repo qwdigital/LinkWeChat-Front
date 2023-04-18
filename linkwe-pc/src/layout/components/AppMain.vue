@@ -6,7 +6,7 @@
       <!-- <keep-alive :include="cachedViews">
       </keep-alive> -->
     </transition>
-    <div v-loading="loading" class="height100 micro-app-wrap container">
+    <div v-loading="loading" class="micro-app-wrap container">
       <div id="micro-app" class="height100" v-show="isActiveMicroApp">
         <!-- <div id="app" class="mask" style="position: absolute">
         <i class="el-icon-loading cc"></i>
@@ -85,7 +85,7 @@ export default {
 }
 .container {
   position: relative;
-  max-height: 100%;
+  height: 100%;
 
   overflow-y: auto;
   overflow-x: hidden;
@@ -97,7 +97,7 @@ export default {
   }
 }
 .page {
-  padding: 0 20px;
+  padding: 0 15px 0 20px;
   // background: #fff;
   // border-radius: var(--border-radius-big);
 }

@@ -228,6 +228,111 @@ div:focus {
     border-radius: var(--border-radius-big);
     margin-top: var(--card-margin);
   }
+
+  // 左右分类列表
+  &left-right {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    .left {
+      flex: auto;
+      display: flex;
+      flex-direction: column;
+      margin-right: var(--border-radius-big);
+      .title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .title-name {
+          color: rgba(0, 0, 0, 0.9);
+          font-size: 14px;
+          font-weight: 600;
+          // color: #333333;
+          display: flex;
+          align-items: center;
+        }
+        .title-btn {
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          font-size: 14px;
+          font-weight: normal;
+          color: var(--color);
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+      }
+
+      .item-list {
+        margin-top: 15px;
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+        overflow-y: auto;
+        .item {
+          cursor: pointer;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 14px;
+          color: rgba(0, 0, 0, 0.6);
+          height: 40px;
+          line-height: 40px;
+          width: 100%;
+          padding-left: 20px;
+          .name {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          .dropdown {
+            // display: none;
+            .dot {
+              cursor: pointer;
+              width: 15px;
+              height: 15px;
+              line-height: 15px;
+              font-size: 14px;
+              font-family: JMT-Font, JMT;
+              font-weight: normal;
+              color: rgba(0, 0, 0, 0.6);
+              margin-right: 10px;
+              margin-left: 5px;
+              font-weight: 500;
+              .content-icon {
+                color: rgba(0, 0, 0, 0.6);
+                font-size: 12px;
+                transform: rotate(90deg);
+              }
+            }
+          }
+          &:hover {
+            color: rgba(0, 0, 0, 0.9);
+            background: #f5f8fe;
+            opacity: 0.8;
+            border-radius: 2px;
+            .dropdown {
+              // display: block;
+            }
+          }
+        }
+
+        .active {
+          // border-left: 2px solid #3c88f0;
+          color: rgba(0, 0, 0, 0.9);
+          background: #f5f8fe;
+          border-radius: 2px;
+        }
+      }
+    }
+    .right {
+      width: 78%;
+      display: flex;
+      flex-direction: column;
+      flex: none;
+    }
+  }
 }
 
 .card-group-index + .g-card {

@@ -1,78 +1,74 @@
 <template>
-  <div>
-    <div class="g-card">
-      <el-row type="flex" justify="space-between">
-        <el-col :span="5" class="left pad20">
-          <div class="title">
-            <div class="title-name">角色列表</div>
-            <div class="title-btn" @click="addFn">新建</div>
+  <div class="g-left-right">
+    <div class="left g-card">
+      <div class="title">
+        <div class="title-name">角色列表</div>
+        <div class="title-btn" @click="addFn">新建</div>
+      </div>
+      <div class="item-list">
+        <div
+          class="item"
+          :class="{ active: activeIndex == key }"
+          v-for="(role, key) in roles"
+          :key="role.id"
+          @click="switchRole(key, role)">
+          <div class="name">
+            {{ role.roleName }}
+            <span style="margin-left: 10px">({{ role.userCount }})</span>
           </div>
-          <div class="item-list">
-            <div
-              class="item"
-              :class="{ active: activeIndex == key }"
-              v-for="(role, key) in roles"
-              :key="role.id"
-              @click="switchRole(key, role)">
-              <div class="name">
-                {{ role.roleName }}
-                <span style="margin-left: 10px">({{ role.userCount }})</span>
-              </div>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="19" class="pad20">
-          <div class="title-name">
-            {{ currentStatus === 'detail' ? '角色详情' : currentStatus === 'add' ? '新建角色' : '编辑角色' }}
-          </div>
-          <div v-if="currentStatus === 'detail'">
-            <div style="margin-top: 20px">
-              <el-form ref="codeForm" label-position="right" label-width="80px">
-                <el-form-item label="角色员工">
-                  <template v-for="(item, index) in roleObj.users">
-                    <el-tag v-if="item.userName" size="medium" :key="index">{{ item.userName }}</el-tag>
-                  </template>
-                </el-form-item>
-                <el-form-item label="管理范围">
-                  <template v-if="roleObj.dataScope != 2">
-                    {{ setName() }}
-                  </template>
+        </div>
+      </div>
+    </div>
+    <div class="right g-card mt0">
+      <div class="title-name">
+        {{ currentStatus === 'detail' ? '角色详情' : currentStatus === 'add' ? '新建角色' : '编辑角色' }}
+      </div>
+      <div v-if="currentStatus === 'detail'">
+        <div style="margin-top: 20px">
+          <el-form ref="codeForm" label-position="right" label-width="80px">
+            <el-form-item label="角色员工">
+              <template v-for="(item, index) in roleObj.users">
+                <el-tag v-if="item.userName" size="medium" :key="index">{{ item.userName }}</el-tag>
+              </template>
+            </el-form-item>
+            <el-form-item label="管理范围">
+              <template v-if="roleObj.dataScope != 2">
+                {{ setName() }}
+              </template>
 
-                  <template v-for="(item, index) in roleObj.depts">
-                    <el-tag v-if="item.deptName" size="medium" :key="index">{{ item.deptName }}</el-tag>
-                  </template>
-                </el-form-item>
-                <el-form-item label="功能权限">
-                  <el-tree
-                    :data="menuOptions"
-                    show-checkbox
-                    ref="menu"
-                    node-key="id"
-                    disabled
-                    empty-text="加载中，请稍后"
-                    :props="defaultProps"></el-tree>
-                </el-form-item>
-              </el-form>
-            </div>
-            <div class="bottom" v-if="roles[activeIndex]">
-              <el-button plain type="danger">删除</el-button>
-              <el-button type="primary" @click="edtiFn">编辑</el-button>
-            </div>
-          </div>
-          <div v-else-if="currentStatus === 'add'">
-            <add-or-edit key="1" :status="currentStatus" @update="updateFn" @cancel="cancel" :list="menuOptions" />
-          </div>
-          <div v-else>
-            <add-or-edit
-              key="2"
-              :status="currentStatus"
-              :data="roleObj"
-              @update="updateFn"
-              @cancel="cancel"
-              :list="menuOptions" />
-          </div>
-        </el-col>
-      </el-row>
+              <template v-for="(item, index) in roleObj.depts">
+                <el-tag v-if="item.deptName" size="medium" :key="index">{{ item.deptName }}</el-tag>
+              </template>
+            </el-form-item>
+            <el-form-item label="功能权限">
+              <el-tree
+                :data="menuOptions"
+                show-checkbox
+                ref="menu"
+                node-key="id"
+                disabled
+                empty-text="加载中，请稍后"
+                :props="defaultProps"></el-tree>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="g-footer-sticky bottom" v-if="roles[activeIndex]">
+          <el-button plain type="danger">删除</el-button>
+          <el-button type="primary" @click="edtiFn">编辑</el-button>
+        </div>
+      </div>
+      <div v-else-if="currentStatus === 'add'">
+        <add-or-edit key="1" :status="currentStatus" @update="updateFn" @cancel="cancel" :list="menuOptions" />
+      </div>
+      <div v-else>
+        <add-or-edit
+          key="2"
+          :status="currentStatus"
+          :data="roleObj"
+          @update="updateFn"
+          @cancel="cancel"
+          :list="menuOptions" />
+      </div>
     </div>
   </div>
 </template>
@@ -251,11 +247,8 @@ export default {
   align-items: center;
 }
 .bottom {
-  display: flex;
   justify-content: flex-end;
-  border-radius: 5px;
   padding: 20px;
-  background-color: #f5f5f5;
 }
 .left {
   border-right: 1px solid #f1f1f1;

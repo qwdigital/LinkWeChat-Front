@@ -1,95 +1,100 @@
 <template>
   <div>
-    <el-form class="top-search" :model="query" ref="queryForm" label-position="left" :inline="true" label-width="80px">
-      <el-form-item label="员工姓名" prop="title">
-        <el-input v-model="query.userName" placeholder="请输入" clearable />
-      </el-form-item>
-      <el-form-item label="角色">
-        <el-select v-model="query.roleId">
-          <el-option label="全部" value=""></el-option>
-          <el-option
-            v-for="(data, key) in roleList"
-            :key="data.roleId"
-            :label="data.roleName"
-            :value="data.roleId"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label>
-        <el-button type="primary" @click="getList(1)">查询</el-button>
-        <el-button @click="resetFn()">重置</el-button>
-      </el-form-item>
-    </el-form>
-    <el-row type="flex" justify="space-between" class="g-card">
+    <div class="g-left-right">
       <!--部门数据-->
-      <el-col :span="4">
-        <div class="head-container">
-          <!-- <div>部门架构</div> -->
-          <!-- :filter-node-method="filterNode" -->
-          <!-- default-expand-all -->
-          <div class="title mb20">
-            <div class="title-name">组织列表</div>
-            <span @click="syncOrganization" class="g-color cp">
-              同步
-              <i class="el-icon-refresh"></i>
+      <div class="left g-card head-container">
+        <!-- <div>部门架构</div> -->
+        <!-- :filter-node-method="filterNode" -->
+        <!-- default-expand-all -->
+        <div class="title mb20">
+          <div class="title-name">组织列表</div>
+          <span @click="syncOrganization" class="g-color cp">
+            同步
+            <i class="el-icon-refresh"></i>
+          </span>
+        </div>
+        <el-tree
+          node-key="deptId"
+          :default-expanded-keys="defaultShowNodes"
+          highlight-current
+          accordion
+          class="left-tree"
+          :data="treeData"
+          :props="defaultProps"
+          :expand-on-click-node="false"
+          ref="tree"
+          @node-click="handleNodeClick">
+          <div class="custom-tree-node" slot-scope="{ node, data }">
+            <span>
+              <i class="el-icon-folder-opened" style="color: var(--color)" />
+              {{ node.label }}
             </span>
           </div>
-          <el-tree
-            node-key="deptId"
-            :default-expanded-keys="defaultShowNodes"
-            highlight-current
-            accordion
-            class="left-tree"
-            :data="treeData"
-            :props="defaultProps"
-            :expand-on-click-node="false"
-            ref="tree"
-            @node-click="handleNodeClick">
-            <div class="custom-tree-node" slot-scope="{ node, data }">
-              <span>
-                <i class="el-icon-folder-opened" style="color: var(--color)" />
-                {{ node.label }}
-              </span>
-            </div>
-          </el-tree>
-        </div>
-      </el-col>
+        </el-tree>
+      </div>
       <!--用户数据-->
-      <el-col :span="19">
-        <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="50" align="center" />
-          <el-table-column label="员工姓名" align="center" prop="userName" :show-overflow-tooltip="true" />
-          <el-table-column label="所属部门" align="center" prop="userDepts" width="150">
-            <template slot-scope="{ row }" v-if="row.userDepts">
-              <show-tag :list="row.userDepts" keyStr="deptName" />
-            </template>
-          </el-table-column>
-          <el-table-column label="职务" align="center" prop="position" />
-          <el-table-column label="手机" align="center" prop="phoneNumber" />
-          <el-table-column label="所属角色" align="center" prop="role" width="250">
-            <template slot-scope="{ row }" v-if="row.roles">
-              <show-tag :list="row.roles" keyStr="roleName" />
-            </template>
-          </el-table-column>
-          <el-table-column label="管理范围" align="center" prop="roleDepts" width="150">
-            <template slot-scope="{ row }" v-if="row.rolesDepts">
-              <show-tag :list="row.rolesDepts" keyStr="roleName" />
-            </template>
-          </el-table-column>
-          <el-table-column label="操作" align="center" fixed="right" width="100" class-name="small-padding fixed-width">
-            <template slot-scope="{ row }">
-              <!-- v-hasPermi="['contacts:organization:view']" -->
-              <el-button type="text" @click="editRoles(row)" :disabled="setDisabled(row)">修改角色</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <pagination
-          v-show="total > 0"
-          :total="total"
-          :page.sync="query.pageNum"
-          :limit.sync="query.pageSize"
-          @pagination="getList()" />
-      </el-col>
-    </el-row>
+      <div class="right">
+        <el-form class="top-search" :model="query" ref="queryForm" label-position="left" :inline="true" label-width="">
+          <el-form-item label="员工姓名" prop="title">
+            <el-input v-model="query.userName" placeholder="请输入" clearable />
+          </el-form-item>
+          <el-form-item label="角色">
+            <el-select v-model="query.roleId">
+              <el-option label="全部" value=""></el-option>
+              <el-option
+                v-for="(data, key) in roleList"
+                :key="data.roleId"
+                :label="data.roleName"
+                :value="data.roleId"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label>
+            <el-button type="primary" @click="getList(1)">查询</el-button>
+            <el-button @click="resetFn()">重置</el-button>
+          </el-form-item>
+        </el-form>
+        <div class="g-card">
+          <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
+            <el-table-column type="selection" width="50" align="center" />
+            <el-table-column label="员工姓名" align="center" prop="userName" :show-overflow-tooltip="true" />
+            <el-table-column label="所属部门" align="center" prop="userDepts" width="150">
+              <template slot-scope="{ row }" v-if="row.userDepts">
+                <show-tag :list="row.userDepts" keyStr="deptName" />
+              </template>
+            </el-table-column>
+            <el-table-column label="职务" align="center" prop="position" />
+            <el-table-column label="手机" align="center" prop="phoneNumber" />
+            <el-table-column label="所属角色" align="center" prop="role" width="250">
+              <template slot-scope="{ row }" v-if="row.roles">
+                <show-tag :list="row.roles" keyStr="roleName" />
+              </template>
+            </el-table-column>
+            <el-table-column label="管理范围" align="center" prop="roleDepts" width="150">
+              <template slot-scope="{ row }" v-if="row.rolesDepts">
+                <show-tag :list="row.rolesDepts" keyStr="roleName" />
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="操作"
+              align="center"
+              fixed="right"
+              width="100"
+              class-name="small-padding fixed-width">
+              <template slot-scope="{ row }">
+                <!-- v-hasPermi="['contacts:organization:view']" -->
+                <el-button type="text" @click="editRoles(row)" :disabled="setDisabled(row)">修改角色</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <pagination
+            v-show="total > 0"
+            :total="total"
+            :page.sync="query.pageNum"
+            :limit.sync="query.pageSize"
+            @pagination="getList()" />
+        </div>
+      </div>
+    </div>
 
     <el-dialog title="设置角色" :visible.sync="modalStatus" append-to-body width="400px">
       <el-form class="" inline="" label-position="" label-width="">
