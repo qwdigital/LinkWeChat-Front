@@ -97,10 +97,7 @@
 
     <el-popover placement="left" title="" trigger="hover">
       <div slot="reference" class="contact-us">
-        <svg-icon
-          class="contact-us-icon cc"
-          icon-class="wechat"
-          @click="goto('https://gitee.com/LinkWeChat/link-wechat')" />
+        <svg-icon class="contact-us-icon cc" icon-class="wechat" />
       </div>
       <div class="ac">
         <img :src="lwConfig.QRCODE_CONTACT_US" class="contact-code" alt="" />
