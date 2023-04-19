@@ -396,15 +396,15 @@
 }
 
 // 按钮
-.el-button--default {
+[class^='el-button el-button--default']:not(.el-button--primary) {
   border-color: var(--color);
   color: var(--color);
 }
-.el-message-box__btns {
-  .el-button--default.el-button--primary {
-    color: #fff;
-  }
-}
+// .el-message-box__btns {
+//   .el-button--default.el-button--primary {
+//     color: #fff;
+//   }
+// }
 .el-button--small:not(.el-button--text) {
   padding: 9px 19px;
   border-radius: var(--border-radius-small);
