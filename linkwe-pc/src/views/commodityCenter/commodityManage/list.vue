@@ -158,7 +158,7 @@ export default {
       </el-form-item>
       <el-form-item label="">
         <el-button type="primary" @click="getList(1)">查询</el-button>
-        <el-button  @click="resetForm()">重置</el-button>
+        <el-button @click="resetForm()">重置</el-button>
       </el-form-item>
     </el-form>
     <div class="g-card">
@@ -201,11 +201,7 @@ export default {
     </div>
 
     <!-- 弹窗 -->
-    <el-dialog
-      :title="form.id ? '修改' : '新建'"
-      :visible.sync="dialogVisible"
-      width="830px"
-      :close-on-click-modal="false">
+    <el-dialog :title="form.id ? '修改' : '新建'" :visible.sync="dialogVisible" :close-on-click-modal="false">
       <el-row>
         <el-col :span="12">
           <el-form ref="form" :model="form" :rules="rules" label-width="130px">

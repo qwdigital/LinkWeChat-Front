@@ -173,7 +173,6 @@
 
 <script>
 import { getDetail, add, update, getCodeCategoryList } from '@/api/drainageCode/staff'
-import PhoneDialog from '@/components/PhoneDialog'
 import SelectUser from '@/components/SelectWeUser'
 import SelectTag from '@/components/SelectTag'
 import SelectMaterial from '@/components/SelectMaterial'
@@ -182,7 +181,6 @@ import AddMaterial from '@/components/ContentCenter/AddMaterial'
 
 export default {
   components: {
-    PhoneDialog,
     SelectTag,
 
     SelectMaterial,

@@ -278,7 +278,6 @@ import {
   // uploadFile,
 } from '@/api/drainageCode/smartForms.js'
 import FormsDetail from './build/formsDetail.vue'
-import PhoneDialog from '@/components/PhoneDialog'
 
 import SelectTag from '@/components/SelectTag'
 import SelectMaterial from '@/components/SelectMaterial'
@@ -287,7 +286,6 @@ import Build from './build/index'
 import { dateFormat } from '@/utils/index'
 export default {
   components: {
-    PhoneDialog,
     SelectTag,
 
     SelectMaterial,
