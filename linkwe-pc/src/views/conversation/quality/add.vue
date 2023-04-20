@@ -82,11 +82,11 @@
             {{ form.weEmpleCodeUseScops.length ? '修改' : '选择' }}成员
           </el-button>
         </el-form-item>
-        <el-form-item>
-          <el-button @click="currentActive = 1">上一步</el-button>
-          <el-button type="primary" @click="nextStep(3)">下一步</el-button>
-        </el-form-item>
       </el-form>
+    </div>
+    <div class="g-footer-sticky">
+      <el-button @click="currentActive = 1">上一步</el-button>
+      <el-button type="primary" @click="nextStep(3)">下一步</el-button>
     </div>
   </div>
 </template>
