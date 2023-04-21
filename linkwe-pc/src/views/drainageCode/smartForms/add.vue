@@ -9,52 +9,56 @@
       </el-steps>
     </div>
     <div class="g-card tab-content form1" v-show="currentActive === 1">
-      <el-row>
-        <el-col :span="10">
-          <el-form ref="baseForm" :rules="baseRules" :model="baseForm" label-position="left" label-width="150px">
-            <el-form-item label="表单名称" prop="surveyName">
-              <el-input v-model="baseForm.surveyName" maxlength="15" show-word-limit clearable></el-input>
-            </el-form-item>
-            <el-form-item label="表单分组" prop="groupId">
-              <el-select v-model="baseForm.groupId">
-                <el-option
-                  v-for="item in codeCategoryList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="表单说明">
-              <el-switch v-model="ifFormDescription" :active-value="1" :inactive-value="0"></el-switch>
-              <div v-if="ifFormDescription == 1">
-                <div class="sub-des">开启后，表单首页或表单顶部会有说明文案</div>
-                <el-input
-                  ref="msgTextarea"
-                  type="textarea"
-                  v-model="baseForm.formDescription"
-                  maxlength="200"
-                  show-word-limit
-                  placeholder="请填写表单说明"
-                  :autosize="{ minRows: 5, maxRows: 20 }"
-                  clearable />
-              </div>
-            </el-form-item>
-            <el-form-item label="表单logo">
-              <el-switch v-model="ifFormLogo" :active-value="1" :inactive-value="0"></el-switch>
-              <div v-if="ifFormLogo == 1">
-                <div class="sub-des">开启后，表单首页或表单顶部会有logo图</div>
-                <upload :fileUrl.sync="baseForm.formLogo" class="image-uploader" @update:file="handleUploadedHeadImage">
-                  <div slot="tip">建议大小2M以内，仅支持png/jpg等图片类型</div>
-                </upload>
-              </div>
-            </el-form-item>
-            <el-form-item>
-              <el-button plain @click.stop="CancelTheNewOne">取消</el-button>
-              <el-button type="primary" @click.stop="nextStep(2)">下一步</el-button>
-            </el-form-item>
-          </el-form>
-        </el-col>
-        <el-col :span="7">
+      <div class="fxbw">
+        <el-form
+          style="width: 30%"
+          ref="baseForm"
+          :rules="baseRules"
+          :model="baseForm"
+          label-position="left"
+          label-width="80px">
+          <el-form-item label="表单名称" prop="surveyName">
+            <el-input v-model="baseForm.surveyName" maxlength="15" show-word-limit clearable></el-input>
+          </el-form-item>
+          <el-form-item label="表单分组" prop="groupId">
+            <el-select v-model="baseForm.groupId">
+              <el-option
+                v-for="item in codeCategoryList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="表单说明">
+            <el-switch v-model="ifFormDescription" :active-value="1" :inactive-value="0"></el-switch>
+            <div v-if="ifFormDescription == 1">
+              <div class="sub-des">开启后，表单首页或表单顶部会有说明文案</div>
+              <el-input
+                ref="msgTextarea"
+                type="textarea"
+                v-model="baseForm.formDescription"
+                maxlength="200"
+                show-word-limit
+                placeholder="请填写表单说明"
+                :autosize="{ minRows: 5, maxRows: 20 }"
+                clearable />
+            </div>
+          </el-form-item>
+          <el-form-item label="表单logo">
+            <el-switch v-model="ifFormLogo" :active-value="1" :inactive-value="0"></el-switch>
+            <div v-if="ifFormLogo == 1">
+              <div class="sub-des">开启后，表单首页或表单顶部会有logo图</div>
+              <upload :fileUrl.sync="baseForm.formLogo" class="image-uploader" @update:file="handleUploadedHeadImage">
+                <div slot="tip">建议大小2M以内，仅支持png/jpg等图片类型</div>
+              </upload>
+            </div>
+          </el-form-item>
+          <el-form-item>
+            <el-button plain @click.stop="CancelTheNewOne">取消</el-button>
+            <el-button type="primary" @click.stop="nextStep(2)">下一步</el-button>
+          </el-form-item>
+        </el-form>
+        <div>
           <FormsDetail
             :type="1"
             :index="1"
@@ -68,8 +72,8 @@
           <div style="display: flex; justify-content: center">
             <el-radio v-model="visibility" label="0">独立首页</el-radio>
           </div>
-        </el-col>
-        <el-col :span="7">
+        </div>
+        <div>
           <FormsDetail
             :type="1"
             :index="2"
@@ -84,8 +88,8 @@
           <div style="display: flex; justify-content: center">
             <el-radio v-model="visibility" label="1">表单首页</el-radio>
           </div>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
     </div>
     <div class="g-card tab-content" style="height: calc(100vh - 216px)" v-show="currentActive === 2">
       <!-- <el-form
@@ -1535,10 +1539,6 @@ export default {
   .el-form {
     margin-right: 10%;
   }
-}
-
-.preview-wrap {
-  line-height: 26px;
 }
 
 .tip {

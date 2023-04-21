@@ -12,6 +12,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
+  visibility: hidden;
   /*滚动条里面小方块*/
   border-radius: 5px;
   /*深色模式*/
@@ -23,6 +24,10 @@
   background: rgb(245, 245, 245);
   border: 1px solid #333;
   border-bottom-width: 2px;*/
+}
+
+:hover::-webkit-scrollbar-thumb {
+  visibility: visible;
 }
 
 // ::-webkit-scrollbar-track {
