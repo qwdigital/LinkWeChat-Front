@@ -47,7 +47,7 @@ export default {
   width: var(--phone-width);
   max-width: 375px;
   min-width: 320px;
-  height: 820px;
+  height: 750px;
   border: 15px solid #ddd;
   border-radius: 40px;
   box-sizing: content-box;
