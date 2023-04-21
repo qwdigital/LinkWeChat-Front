@@ -9,14 +9,14 @@ const base = window.lwConfig.services.system + '/auth'
 export function setOragnize() {
   return request({
     url: service + '/system/user/sync',
-    method: 'post',
+    method: 'post'
   })
 }
 
 // 获取组织部门
 export function getDeptTree() {
   return request({
-    url: service + '/system/dept/list',
+    url: service + '/system/dept/list'
   })
 }
 
@@ -24,13 +24,13 @@ export function getDeptTree() {
 export function getDeptUser(params) {
   return request({
     url: service + '/system/user/list',
-    params,
+    params
   })
 }
 export function getDeptUserAll(params) {
   return request({
     url: service + '/system/user/listAll',
-    params,
+    params
   })
 }
 
@@ -39,7 +39,7 @@ export function editUserRoles(params) {
   return request({
     url: service + '/system/user/editUserRole',
     data: params,
-    method: 'put',
+    method: 'put'
   })
 }
 
@@ -48,20 +48,20 @@ export function editUserRoles(params) {
 // 角色列表
 export function getRolesList(params) {
   return request({
-    url: service + '/system/role/list',
+    url: service + '/system/role/list'
   })
 }
 
 export function getRoleDetail(roleId) {
   return request({
-    url: service + '/system/role/' + roleId,
+    url: service + '/system/role/' + roleId
   })
 }
 
 // 选择角色下拉
 export function getRoleOption() {
   return request({
-    url: service + '/system/role/optionselect',
+    url: service + '/system/role/optionselect'
   })
 }
 
@@ -69,7 +69,7 @@ export function getRoleOption() {
 export function treeselect() {
   return request({
     url: service + '/system/menu/allTreeselect',
-    method: 'get',
+    method: 'get'
   })
 }
 
@@ -78,7 +78,7 @@ export function addRole(params) {
   return request({
     url: service + '/system/role',
     method: 'post',
-    data: params,
+    data: params
   })
 }
 
@@ -87,7 +87,7 @@ export function editRole(params) {
   return request({
     url: service + '/system/role',
     method: 'put',
-    data: params,
+    data: params
   })
 }
 
@@ -95,7 +95,7 @@ export function editRole(params) {
 export function deleteRole(id) {
   return request({
     url: service + '/system/role/' + id,
-    method: 'delete',
+    method: 'delete'
   })
 }
 
@@ -111,7 +111,7 @@ export function deleteRole(id) {
 export function getTree(params) {
   return request({
     url: service + '/list',
-    params,
+    params
   })
 }
 
@@ -128,7 +128,7 @@ export function updateDepart(data) {
   return request({
     url: service,
     method: 'put',
-    data,
+    data
   })
 }
 
@@ -144,14 +144,14 @@ export function addDepart(data) {
   return request({
     url: service,
     method: 'post',
-    data,
+    data
   })
 }
 
 export function removeDepart(ids) {
   return request({
     url: service + '/' + ids,
-    method: 'DELETE',
+    method: 'DELETE'
   })
 }
 
@@ -173,7 +173,7 @@ export function removeDepart(ids) {
 export function getList(params) {
   return request({
     url: serviceUser + '/list',
-    params,
+    params
   })
 }
 
@@ -190,8 +190,8 @@ export function getAllStaff(params) {
     url: serviceUser + '/findAllWeUser',
     params: {
       isActivate: 1, //1=已激活，2=已禁用，4=未激活，5=退出企业,
-      isConfigCustomerContact: 0, //1:是;0:否
-    },
+      isConfigCustomerContact: 0 //1:是;0:否
+    }
   })
 }
 
@@ -201,7 +201,7 @@ export function getAllStaff(params) {
  */
 export function getUserDetail(id) {
   return request({
-    url: serviceUser + '/' + id,
+    url: serviceUser + '/' + id
   })
 }
 
@@ -213,7 +213,7 @@ export function addUser(data) {
   return request({
     url: serviceUser,
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -247,7 +247,7 @@ export function updateUser(data) {
   return request({
     url: serviceUser,
     method: 'put',
-    data,
+    data
   })
 }
 
@@ -263,7 +263,7 @@ export function startOrStop(data) {
   return request({
     url: serviceUser + '/startOrStop',
     method: 'put',
-    data,
+    data
   })
 }
 
@@ -274,7 +274,7 @@ export function startOrStop(data) {
 export function remove(userId) {
   return request({
     url: serviceUser + '/' + userId,
-    method: 'DELETE',
+    method: 'DELETE'
   })
 }
 
@@ -283,6 +283,15 @@ export function remove(userId) {
  */
 export function syncUser() {
   return request({
-    url: serviceUser + '/synchWeUser',
+    url: serviceUser + '/synchWeUser'
+  })
+}
+
+// 人员绑定权限
+export function bindDepts(data) {
+  return request({
+    url: service + '/system/user/editDataScop',
+    method: 'post',
+    data
   })
 }
