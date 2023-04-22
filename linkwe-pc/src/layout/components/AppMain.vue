@@ -85,23 +85,12 @@ export default {
   overflow-x: hidden;
   margin-top: 20px;
   padding: 0 15px 0 20px;
-  &::-webkit-scrollbar-thumb {
-    visibility: hidden;
-  }
-  &:hover::-webkit-scrollbar-thumb {
-    visibility: visible;
-  }
 }
 .container {
   position: relative;
   height: 100%;
-
-  &::-webkit-scrollbar-thumb {
-    visibility: hidden;
-  }
-  &:hover::-webkit-scrollbar-thumb {
-    visibility: visible;
-  }
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .page {
   // background: #fff;
