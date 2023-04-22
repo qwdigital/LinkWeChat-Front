@@ -91,6 +91,7 @@ export default {
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 .page {
   // background: #fff;

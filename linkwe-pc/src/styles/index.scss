@@ -177,6 +177,7 @@ div:focus {
     background: #fff;
     overflow: auto;
     padding: 20px;
+    scroll-behavior: smooth;
     &:not(:first-child) {
       margin-top: var(--card-margin);
     }

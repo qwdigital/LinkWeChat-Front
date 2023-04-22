@@ -1,5 +1,5 @@
 <template>
-  <div class="pagination-container">
+  <div class="pagination-container" ref="pagination">
     <el-pagination
       :background="background"
       :current-page.sync="currentPage"
@@ -67,14 +67,20 @@ export default {
     handleSizeChange(val) {
       this.$emit('pagination', { page: this.currentPage, limit: val })
       if (this.autoScroll) {
-        scrollTo(0, 800)
+        this.scrollTo()
       }
     },
     handleCurrentChange(val) {
       this.$emit('pagination', { page: val, limit: this.pageSize })
       if (this.autoScroll) {
-        scrollTo(0, 800)
+        this.scrollTo()
       }
+    },
+    scrollTo() {
+      setTimeout(() => {
+        this.$refs.pagination.parentNode.scrollTop = 0
+        document.querySelector('.page.container').scrollTop = 0
+      }, 200)
     },
   },
 }
@@ -82,7 +88,13 @@ export default {
 
 <style scoped>
 .pagination-container {
-  padding: 15px 5px 0;
+  position: sticky;
+  bottom: -20px;
+  margin-bottom: -20px;
+  z-index: 9;
+  background: #fff;
+  border-top: 1px solid #f8f8f8;
+  padding: 15px 5px 20px;
   text-align: right;
 }
 .pagination-container.hidden {
