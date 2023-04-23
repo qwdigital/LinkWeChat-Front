@@ -87,17 +87,18 @@ export default {
   padding: 0 15px 0 20px;
 }
 .container {
-  position: initial !important; // 用以解决加载遮罩层随内容滚动问题
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
 .page {
+  position: initial !important; // 用以解决加载遮罩层随内容滚动问题
   // background: #fff;
   // border-radius: var(--border-radius-big);
 }
 .micro-app-wrap {
+  position: relative;
 }
 .fixed-header + .app-main {
   padding-top: 50px;
