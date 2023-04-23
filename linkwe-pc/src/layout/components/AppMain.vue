@@ -87,7 +87,7 @@ export default {
   padding: 0 15px 0 20px;
 }
 .container {
-  position: relative;
+  position: initial !important; // 用以解决加载遮罩层随内容滚动问题
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;

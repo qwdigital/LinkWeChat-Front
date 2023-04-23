@@ -124,14 +124,6 @@ export default {
               @focus="showSelectTag = true"
               placeholder="请选择客群标签" />
             <el-button icon="el-icon-search" circle @click="getList(1)"></el-button>
-
-            <el-pagination
-              class="fr"
-              @current-change="getList"
-              :current-page="query.pageNum"
-              :page-size="query.pageSize"
-              layout="prev, pager, next"
-              :total="total"></el-pagination>
           </el-form-item>
         </el-form>
         <el-table :data="list" v-loading="loading">
@@ -160,6 +152,12 @@ export default {
           <el-table-column label="活码客群数" align="center" prop="chatGroupNum"></el-table-column>
           <el-table-column prop="chatGroupMemberTotalNum" label="群总人数" align="center"></el-table-column>
         </el-table>
+        <pagination
+          :total="total"
+          :page.sync="query.pageNum"
+          :limit.sync="query.pageSize"
+          layout="total,prev, pager, next, jumper"
+          @pagination="getList()" />
       </div>
       <div slot="footer">
         <el-button @click="Pvisible = false">取 消</el-button>

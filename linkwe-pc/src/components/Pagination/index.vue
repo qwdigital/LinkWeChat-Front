@@ -44,6 +44,9 @@ export default {
       type: Boolean,
       default: true,
     },
+    scrollElement: {
+      type: Object,
+    },
   },
   computed: {
     currentPage: {
@@ -89,13 +92,13 @@ export default {
 <style scoped>
 .pagination-container {
   position: sticky;
-  bottom: -20px;
-  margin-bottom: -20px;
+  bottom: 0;
   z-index: 9;
-  background: #fff;
-  border-top: 1px solid #f8f8f8;
-  padding: 15px 5px 20px;
   text-align: right;
+  background: #fff;
+  margin-bottom: -20px;
+  padding: 15px 5px 20px;
+  border-top: 1px solid #f8f8f8;
 }
 .pagination-container.hidden {
   display: none;

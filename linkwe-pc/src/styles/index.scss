@@ -337,10 +337,24 @@ div:focus {
       display: flex;
       flex-direction: column;
       flex: none;
+      .g-card {
+        .pagination-container {
+          bottom: -20px;
+        }
+      }
     }
   }
 }
 
 .card-group-index + .g-card {
   margin-top: 0;
+}
+.page.container > .g-card {
+  overflow: initial;
+}
+
+.el-dialog__body {
+  .pagination-container {
+    padding-bottom: 0 !important;
+  }
 }

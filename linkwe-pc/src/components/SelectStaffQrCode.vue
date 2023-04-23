@@ -211,6 +211,7 @@ export default {
               :total="total"
               :page.sync="query.pageNum"
               :limit.sync="query.pageSize"
+              layout="total,prev, pager, next, jumper"
               @pagination="getList()" />
           </div>
         </el-col>
