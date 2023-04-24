@@ -1,16 +1,14 @@
 <template>
   <!-- <el-scrollbar class="page-scrollbar"> -->
   <div class="app-main">
-    <transition name="fade-transform" mode="out-in" v-if="!isActiveMicroApp">
-      <router-view class="page container" :key="key" />
-      <!-- <keep-alive :include="cachedViews">
+    <div class="page-wrap">
+      <transition name="fade-transform" mode="out-in" v-if="!isActiveMicroApp">
+        <router-view class="page container" id="page-container" :key="key" />
+        <!-- <keep-alive :include="cachedViews">
       </keep-alive> -->
-    </transition>
-    <div v-loading="loading" class="micro-app-wrap container" v-show="isActiveMicroApp">
-      <div id="micro-app" class="height100">
-        <!-- <div id="app" class="mask" style="position: absolute">
-        <i class="el-icon-loading cc"></i>
-      </div> -->
+      </transition>
+      <div v-loading="loading" class="micro-app-wrap height100" v-show="isActiveMicroApp">
+        <div id="micro-app" class="height100"></div>
       </div>
     </div>
   </div>
@@ -84,18 +82,17 @@ export default {
   overflow-y: auto;
   overflow-x: hidden;
   margin-top: 20px;
-  padding: 0 15px 0 20px;
 }
-.container {
+.page-wrap {
+  position: initial !important; // 用以解决加载遮罩层随内容滚动问题
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
+  padding: 0 15px 0 20px;
 }
 .page {
   position: initial !important; // 用以解决加载遮罩层随内容滚动问题
-  // background: #fff;
-  // border-radius: var(--border-radius-big);
 }
 .micro-app-wrap {
   position: relative;

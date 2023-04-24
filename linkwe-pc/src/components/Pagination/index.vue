@@ -82,7 +82,7 @@ export default {
     scrollTo() {
       setTimeout(() => {
         this.$refs.pagination.parentNode.scrollTop = 0
-        document.querySelector('.page.container').scrollTop = 0
+        document.querySelector('#page-container').scrollTop = 0
       }, 200)
     },
   },
