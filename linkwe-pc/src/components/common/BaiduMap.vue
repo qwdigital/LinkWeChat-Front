@@ -63,6 +63,10 @@
     watch: {
       initData: {
         handler(value) {
+          if (this.initData.area && !this.initData.address) {
+            this.getPoint(this.initData.area)
+            this.initMap()
+          }
           if (this.initData.address) {
             this.form.address = this.initData.address
             if (this.initData.longitude && this.initData.latitude) {
@@ -75,7 +79,7 @@
             this.initMap()
           }
         },
-        immediate: true
+        deep: true
       }
     },
     async mounted() {
