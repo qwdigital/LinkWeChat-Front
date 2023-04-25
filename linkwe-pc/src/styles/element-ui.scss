@@ -426,10 +426,12 @@
   top: 1px;
   left: calc(50% + 30px);
 }
-.el-step.is-center .el-step__line {
+.el-step.is-horizontal .el-step__line {
+  top: 20px;
   height: 1px;
   background: #e8e9ed;
-  top: 20px;
+}
+.el-step.is-center .el-step__line {
   left: calc(50% + 30px + 80px);
   right: calc(-50% + 30px);
 }

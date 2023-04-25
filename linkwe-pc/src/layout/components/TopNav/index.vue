@@ -116,9 +116,9 @@ export default {
 //     white-space: nowrap;
 //   }
 // }
-::v-deep.el-menu--horizontal {
-  background-color: transparent !important;
-  border: none !important;
+.el-menu--horizontal {
+  background-color: transparent;
+  border: none;
   white-space: nowrap;
   flex: 1 1 1200px;
   & > .el-menu-item {

@@ -48,7 +48,7 @@ export default {
   max-width: 375px;
   min-width: 320px;
   height: 750px;
-  border: 15px solid #ddd;
+  border: 15px solid #edf2f9;
   border-radius: 40px;
   box-sizing: content-box;
   overflow: hidden;
@@ -102,7 +102,7 @@ export default {
     // left: 50%;
     // transform: translateX(-50%);
     border-radius: 0 0 20px 20px;
-    background: #f8f8f8;
+    background: #f6f8ff;
   }
 
   ::v-deep {
