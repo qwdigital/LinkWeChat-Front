@@ -1,11 +1,14 @@
 // 手机端背景框组件
 <template>
   <div class="preview">
+    <!-- <div class="preview-status">
+      <div>13:14</div>
+    </div> -->
     <div class="line"></div>
     <div class="preview-bar" v-if="isTab">
-      <i class="el-icon-arrow-left"></i>
+      <i class="icon el-icon-arrow-left"></i>
       {{ title }}
-      <i class="el-icon-more"></i>
+      <i class="icon el-icon-more"></i>
     </div>
     <el-scrollbar class="preview-content" wrap-class="scrollbar-wrapper">
       <template>
@@ -20,6 +23,7 @@
 export default {
   components: {},
   props: {
+    // 是否显示顶部tab标题栏
     isTab: {
       type: Boolean,
       default: true,
@@ -44,25 +48,34 @@ export default {
   flex-direction: column;
   margin: 0 auto;
   position: relative;
-  width: var(--phone-width);
+  width: var(--phone-width, 350px);
   max-width: 375px;
   min-width: 320px;
-  height: 750px;
-  border: 15px solid #edf2f9;
+  height: 720px;
+  border: 12px solid #edf2f9;
   border-radius: 40px;
   box-sizing: content-box;
   overflow: hidden;
   background: #fff;
+  // .preview-status {
+  //   display: flex;
+  //   justify-content: space-between;
+  //   align-items: center;
+  //   padding: 0 10px;
+  // }
+  .icon {
+    font-size: 16px;
+  }
   .line {
     flex: none;
-    width: 65px;
-    height: 6px;
-    margin: 0 auto 6px;
-    border-radius: 0 0 50px 50px;
-    background: #eee;
-    border: 10px solid #333;
-    box-sizing: content-box;
-    border-width: 13px 62px;
+    width: 100px;
+    height: 25px;
+    margin: 6px auto;
+    border-radius: 50px;
+    background: #bbb;
+    // border: 10px solid #bbb;
+    // box-sizing: content-box;
+    // border-width: 13px 62px;
   }
   .line2 {
     position: absolute;
@@ -103,6 +116,9 @@ export default {
     // transform: translateX(-50%);
     border-radius: 0 0 20px 20px;
     background: #f6f8ff;
+    ::v-deep img {
+      max-width: 100%;
+    }
   }
 
   ::v-deep {
