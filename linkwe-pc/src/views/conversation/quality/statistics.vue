@@ -56,7 +56,7 @@
   import { dateFormat } from '@/utils/index'
   import ChartLine from '@/components/ChartLine.vue'
   import SearchTitle from '@/components/SearchTitle.vue'
-  import { getTotal, getLineData, getTableData, getTableExport } from '../taskGroup/api'
+  import { getTotal, getLineData, getTableData, getTableExport } from '@/api/common'
   export default {
     name: 'fission-statistics',
     components: {

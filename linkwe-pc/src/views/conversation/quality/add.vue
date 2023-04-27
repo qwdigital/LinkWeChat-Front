@@ -8,7 +8,6 @@
         <el-form-item label="超时时间标准:">
           <el-input style="width: 150px;" placeholder="请输入"></el-input>分钟
         </el-form-item>
-
         <el-form-item label="质检时间范围:" prop="empleCodeRosterDto">
           <div class="sub-des">
             <span>可根据不同成员的上班时间灵活调整配置</span>
@@ -85,8 +84,8 @@
       </el-form>
     </div>
     <div class="g-footer-sticky">
-      <el-button @click="currentActive = 1">上一步</el-button>
-      <el-button type="primary" @click="nextStep(3)">下一步</el-button>
+      <el-button>取消</el-button>
+      <el-button type="primary">确定</el-button>
     </div>
   </div>
 </template>
