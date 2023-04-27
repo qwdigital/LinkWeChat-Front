@@ -42,7 +42,7 @@ export default {
     </template>
 
     <el-popover v-else placement="bottom" trigger="hover">
-      <div class="gap10">
+      <div class="tag-all">
         <el-tag v-for="(item, unique) in _list" :key="unique">
           {{ item[defaultProps] || item }}
         </el-tag>
@@ -63,6 +63,14 @@ export default {
   line-height: 34px;
   .el-tag {
     vertical-align: middle;
+  }
+  .tag-all {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    .el-tag {
+      margin: 0;
+    }
   }
 }
 </style>

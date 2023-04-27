@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { scrollTo } from '@/utils/scroll-to'
+// import { scrollTo } from '@/utils/scroll-to'
 
 export default {
   name: 'Pagination',
@@ -100,7 +100,7 @@ export default {
   padding: 15px 5px 20px;
   border-top: 1px solid #f8f8f8;
 }
-.pagination-container.hidden {
+/* .pagination-container.hidden {
   display: none;
-}
+} */
 </style>

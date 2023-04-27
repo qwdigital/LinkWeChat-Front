@@ -20,11 +20,11 @@
 .top-search {
   position: sticky;
   top: 0;
+  z-index: 9;
+  box-shadow: 0px 4px 20px 0px #edf2f9;
   display: flex;
   flex-wrap: wrap;
   gap: 18px;
-  z-index: 9;
-  box-shadow: 0px 4px 20px 0px #edf2f9;
 
   @extend .--card;
   // margin-bottom: 16px;
