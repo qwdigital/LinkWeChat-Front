@@ -6,7 +6,7 @@
           <el-input maxlength="20" show-word-limit clearable></el-input>
         </el-form-item>
         <el-form-item label="超时时间标准:">
-          <el-input style="width: 150px;" placeholder="请输入"></el-input>分钟
+          <el-input style="width: 120px;" placeholder="请输入"></el-input>分钟
         </el-form-item>
         <el-form-item label="质检时间范围:" prop="empleCodeRosterDto">
           <div class="sub-des">
@@ -23,7 +23,13 @@
                 <el-tag size="medium" v-for="(tag, key) in item.weEmpleCodeUseScops" :key="key">
                   {{ tag.businessName }}
                 </el-tag>
-                <el-button style="margin-left: 10px;" size="mini" type="primary" plain @click="onSelectUser(index)">
+                <el-button
+                  icon="el-icon-plus"
+                  style="margin-left: 10px;"
+                  size="mini"
+                  type="primary"
+                  @click="onSelectUser(index)"
+                >
                   {{ item.weEmpleCodeUseScops.length ? '修改' : '选择' }}员工
                 </el-button>
               </el-form-item>
@@ -68,7 +74,7 @@
             </el-card>
           </template>
           <div class="mt20">
-            <el-button size="mini" type="primary" plain @click="onAddRoster">添加工作周期</el-button>
+            <el-button size="mini" type="primary" icon="el-icon-plus" @click="onAddRoster">添加工作周期</el-button>
           </div>
         </el-form-item>
         <el-form-item label="质检督导:" prop="weEmpleCodeUseScops">
@@ -77,7 +83,7 @@
               {{ item.businessName }}
             </el-tag>
           </div>
-          <el-button type="primary" plain size="mini" @click="onSelectUser">
+          <el-button icon="el-icon-plus" type="primary" size="mini" @click="onSelectUser">
             {{ form.weEmpleCodeUseScops.length ? '修改' : '选择' }}成员
           </el-button>
         </el-form-item>
