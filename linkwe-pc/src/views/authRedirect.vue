@@ -23,6 +23,7 @@ export default {
       this.$router.replace('/')
       // location.href = window.lwConfig.BASE_URL
     } catch (error) {
+      document.getElementById('loader-wrapper').classList.add('loaded')
       console.log(error)
     }
   },
