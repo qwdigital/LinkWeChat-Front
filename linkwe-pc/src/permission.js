@@ -7,7 +7,7 @@ import { getToken } from '@/utils/auth'
 
 NProgress.configure({ showSpinner: true })
 
-const whiteList = ['/authRedirect', '/bind', '/test'] // 不管有没有token都可直接进入的页面路径
+const whiteList = ['/authRedirect', '/bind', '/test', '/404', '/401'] // 不管有没有token都可直接进入的页面路径
 const noLoginList = ['/login', '/register'] // 没有token才能进入的页面
 
 function nextTo(to, next, isRpelace) {
