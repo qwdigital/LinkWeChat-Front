@@ -152,7 +152,8 @@ export function getTableInGuideCode(params) {
 export function getTableGuideCodeExport(params) {
   return request({
     url: service + '/exportCountShopGuideReport',
-    params
+    params,
+    responseType: 'blob'
   })
 }
 
@@ -168,6 +169,7 @@ export function getTableInStoreCode(params) {
 export function getTableStoreCodeExport(params) {
   return request({
     url: service + '/exportCountStoreGroupReport',
-    params
+    params,
+    responseType: 'blob'
   })
 }
