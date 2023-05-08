@@ -4,8 +4,13 @@
       <el-form-item label="规则名称" prop="name">
         <el-input clearable v-model="query.name" placeholder="请输入规则名称"></el-input>
       </el-form-item>
-      <el-form-item label="适用成员" prop="userName">
+      <el-form-item label="适用成员" prop="userIds">
         <el-input :value="userName" readonly @focus="dialogVisible = true" placeholder="请选择适用成员" />
+      </el-form-item>
+      <el-form-item label="会话类型" label-width="40px">
+        <el-select v-model="query.chatType" :popper-append-to-body="false">
+          <el-option :label="data.value" :value="data.key" v-for="(data, key) in chatTypeArray" :key="key"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="操作时间">
         <el-date-picker
@@ -33,15 +38,15 @@
       </div>
       <el-table v-loading="loading" :data="list">
         <el-table-column label="规则名称" align="center" min-width="100" prop="name" show-overflow-tooltip />
-        <el-table-column label="适用成员范围" align="center" prop="qrTags" min-width="160px">
+        <el-table-column label="适用成员范围" align="center" prop="qiRuleScope" min-width="160px">
           <template slot-scope="{ row }">
-            <TagEllipsis :list="row.qrTags" defaultProps="tagName" />
+            <TagEllipsis :list="row.qiRuleScope" defaultProps="userName" />
           </template>
         </el-table-column>
-        <el-table-column label="超时时间标准" align="center" min-width="100" prop="qrGroupName" show-overflow-tooltip />
-        <el-table-column label="质检督导" align="center" prop="qrTags" min-width="160px">
+        <el-table-column label="超时时间标准" align="center" min-width="100" prop="timeOut" show-overflow-tooltip />
+        <el-table-column label="质检督导" align="center" prop="manageUser" min-width="160px">
           <template slot-scope="{ row }">
-            <TagEllipsis :list="row.qrTags" defaultProps="tagName" />
+            <TagEllipsis :list="row.manageUser" />
           </template>
         </el-table-column>
         <el-table-column label="操作时间" align="center" prop="updateTime" width="180"></el-table-column>
@@ -66,13 +71,19 @@
 </template>
 
 <script>
+  import { getList } from './api.js'
   export default {
     name: 'quality',
     data() {
       return {
         query: {
           pageSize: 10,
-          pageNum: 1
+          pageNum: 1,
+          name: '',
+          userIds: '',
+          startTime: '',
+          endTime: '',
+          chatType: 1
         },
         total: 0,
         dialogVisible: false,
@@ -80,7 +91,21 @@
         userArray: [],
         searchDate: [],
         list: [],
-        loading: false
+        loading: false,
+        chatTypeArray: [
+          {
+            key: 1,
+            value: '全部'
+          },
+          {
+            key: 2,
+            value: '客户会话'
+          },
+          {
+            key: 3,
+            value: '客群会话'
+          }
+        ]
       }
     },
     methods: {
@@ -99,22 +124,38 @@
       },
       setDateChange(data) {
         if (data && data[0]) {
-          this.query.startDate = data[0]
+          this.query.beginTime = data[0]
         } else {
-          this.query.startDate = ''
+          this.query.beginTime = ''
         }
         if (data && data[1]) {
-          this.query.endDate = data[1]
+          this.query.endTime = data[1]
         } else {
-          this.query.endDate = ''
+          this.query.endTime = ''
         }
       },
       handleSearch() {
         this.query.pageNum = 1
         this.getList()
       },
-      getList() {},
+      getList() {
+        getList(this.query).then((res) => {
+          this.total = res.total
+          this.list = res.rows
+        })
+      },
       resetQuery() {
+        this.query = {
+          pageSize: 10,
+          pageNum: 1,
+          name: '',
+          userIds: '',
+          startTime: '',
+          endTime: '',
+          chatType: 1
+        }
+        this.userName = ''
+        this.userArray = []
         this.getList()
       },
       goRoute(path, id) {
