@@ -100,6 +100,12 @@
       <el-button>取消</el-button>
       <el-button type="primary">确定</el-button>
     </div>
+    <SelectWeUser
+      :visible.sync="dialogVisible"
+      title="组织架构"
+      :defaultValues="userArray"
+      @success="getSelectUser"
+    ></SelectWeUser>
   </div>
 </template>
 
