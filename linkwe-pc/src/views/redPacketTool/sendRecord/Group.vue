@@ -1,142 +1,150 @@
 <script>
-import { getListGroup, getListGroupUser, exportGroup } from '@/api/redPacketTool/sendRecord'
+  import { getListGroup, getListGroupUser, exportGroup } from '@/api/redPacketTool/sendRecord'
 
-export default {
-  components: {},
-  data() {
-    return {
-      query: {
-        pageNum: 1,
-        pageSize: 10,
-        userId: '', // 员工id
-        groupName: '', // 客户群名
-        redEnvelopeType: '', // 1: 普通红包2:拼手气红包
-        beginTime: '', // 创建开始时间
-        endTime: '', // 创建结束时间
-      },
-      dateRange: [], // 添加日期
-      total: 0, //
-      list: [], //
-      multiSelect: [], // 多选数据
-      loading: false,
-      dictStatusType: Object.freeze({
-        0: '全部类型',
-        1: '普通红包',
-        2: '拼手气红包',
-      }),
-
-      dialogVisible: false,
-      cardData: [],
-      dialog: {
+  export default {
+    components: {},
+    data() {
+      return {
         query: {
           pageNum: 1,
           pageSize: 10,
-          chatId: '', // 群id
+          userId: '', // 员工id
+          groupName: '', // 客户群名
+          redEnvelopeType: '', // 1: 普通红包2:拼手气红包
+          beginTime: '', // 创建开始时间
+          endTime: '' // 创建结束时间
         },
-        loading: false,
+        dateRange: [], // 添加日期
         total: 0, //
         list: [], //
-      },
+        multiSelect: [], // 多选数据
+        loading: false,
+        dictStatusType: Object.freeze({
+          0: '全部类型',
+          1: '普通红包',
+          2: '拼手气红包'
+        }),
 
-      dialogVisibleSelectUser: false, // 选择添加人弹窗显隐
-      queryUser: [], // 搜索框选择的添加人
-    }
-  },
-  watch: {},
-  created() {
-    this.getList()
-  },
-  methods: {
-    getList(page) {
-      if (this.dateRange) {
-        ;[this.query.beginTime, this.query.endTime] = this.dateRange
-      } else {
-        this.query.beginTime = ''
-        this.query.endTime = ''
+        dialogVisible: false,
+        cardData: [],
+        dialog: {
+          query: {
+            pageNum: 1,
+            pageSize: 10,
+            chatId: '' // 群id
+          },
+          loading: false,
+          total: 0, //
+          list: [] //
+        },
+
+        dialogVisibleSelectUser: false, // 选择添加人弹窗显隐
+        queryUser: [] // 搜索框选择的添加人
       }
-      page && (this.query.pageNum = page)
-      this.loading = true
-      getListGroup(this.query)
-        .then(({ rows, total }) => {
-          this.list = rows
-          this.total = +total
-          this.loading = false
-        })
-        .catch(() => {
-          this.loading = false
-        })
     },
-    // 重置查询参数
-    resetQuery() {
-      this.dateRange = []
-      this.queryUser = []
-      this.$refs['queryForm'].resetFields()
-      this.getList(1)
+    watch: {},
+    created() {
+      this.getList()
     },
-    exportData() {
-      this.$confirm('确认导出吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          this.loading = true
-          return exportGroup(this.query)
+    methods: {
+      getList(page) {
+        if (this.dateRange) {
+          ;[this.query.beginTime, this.query.endTime] = this.dateRange
+        } else {
+          this.query.beginTime = ''
+          this.query.endTime = ''
+        }
+        page && (this.query.pageNum = page)
+        this.loading = true
+        getListGroup(this.query)
+          .then(({ rows, total }) => {
+            this.list = rows
+            this.total = +total
+            this.loading = false
+          })
+          .catch(() => {
+            this.loading = false
+          })
+      },
+      // 重置查询参数
+      resetQuery() {
+        this.dateRange = []
+        this.queryUser = []
+        this.$refs['queryForm'].resetFields()
+        this.getList(1)
+      },
+      exportData() {
+        this.$confirm('确认导出吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         })
-        .then((res) => {
-          this.download(res.msg)
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-        .finally(() => {
-          this.loading = false
-        })
-    },
-    // 处理多选
-    handleSelectionChange(val) {
-      this.multiSelect = val
-    },
-    view(row) {
-      let cardData = [
-        {
-          title: '群主',
-          value: row.groupLeaderName,
-          noArrow: true,
-        },
-        {
-          title: '领取人数',
-          value: row.receiveNum,
-          noArrow: true,
-        },
-        {
-          title: '剩余红包个数',
-          value: row.surplusNum,
-          noArrow: true,
-        },
-      ]
-      this.cardData = cardData
-      this.dialogVisible = true
-      this.dialog.query.chatId = row.chatId
-      this.dialog.query.orderNo = row.orderNo
-      this.getListGroupUser(1)
-    },
-    // 获取领取详情
-    getListGroupUser(page) {
-      page && (this.dialog.query.pageNum = page)
-      this.dialog.loading = true
-      getListGroupUser(this.dialog.query)
-        .then(({ rows, total }) => {
-          this.dialog.list = rows
-          this.dialog.total = +total
-          this.dialog.loading = false
-        })
-        .catch(() => {
-          this.dialog.loading = false
-        })
-    },
-  },
-}
+          .then(() => {
+            this.loading = true
+            return exportGroup(this.query)
+          })
+          .then((res) => {
+            if (res != null) {
+              let blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+              let url = window.URL.createObjectURL(blob)
+              const link = document.createElement('a') // 创建a标签
+              link.href = url
+              link.download = '发放客群.xlsx' //指定下载文件名
+              link.click()
+              URL.revokeObjectURL(url) // 释放内存
+            }
+          })
+          .catch((error) => {
+            console.error(error)
+          })
+          .finally(() => {
+            this.loading = false
+          })
+      },
+      // 处理多选
+      handleSelectionChange(val) {
+        this.multiSelect = val
+      },
+      view(row) {
+        let cardData = [
+          {
+            title: '群主',
+            value: row.groupLeaderName,
+            noArrow: true
+          },
+          {
+            title: '领取人数',
+            value: row.receiveNum,
+            noArrow: true
+          },
+          {
+            title: '剩余红包个数',
+            value: row.surplusNum,
+            noArrow: true
+          }
+        ]
+        this.cardData = cardData
+        this.dialogVisible = true
+        this.dialog.query.chatId = row.chatId
+        this.dialog.query.orderNo = row.orderNo
+        this.getListGroupUser(1)
+      },
+      // 获取领取详情
+      getListGroupUser(page) {
+        page && (this.dialog.query.pageNum = page)
+        this.dialog.loading = true
+        getListGroupUser(this.dialog.query)
+          .then(({ rows, total }) => {
+            this.dialog.list = rows
+            this.dialog.total = +total
+            this.dialog.loading = false
+          })
+          .catch(() => {
+            this.dialog.loading = false
+          })
+      }
+    }
+  }
 </script>
 
 <template>
@@ -168,7 +176,8 @@ export default {
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
-          align="right"></el-date-picker>
+          align="right"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="">
         <!-- v-hasPermi="['customerManage:customer:query']" -->
@@ -179,7 +188,7 @@ export default {
 
         <el-button @click="resetQuery()">重置</el-button>
       </el-form-item>
-      <el-form-item style="float: right">
+      <el-form-item style="float: right;">
         <el-button type="primary" @click="exportData()">导出Excel</el-button>
       </el-form-item>
     </el-form>
@@ -202,7 +211,8 @@ export default {
           label="发放员工"
           align="center"
           prop="userName"
-          :show-overflow-tooltip="true"></el-table-column>
+          :show-overflow-tooltip="true"
+        ></el-table-column>
         <el-table-column label="领取客户群" align="center" prop="groupName" width="120"></el-table-column>
 
         <el-table-column label="红包类型" align="center" prop="redEnvelopeType">
@@ -229,7 +239,8 @@ export default {
         :total="total"
         :page.sync="query.pageNum"
         :limit.sync="query.pageSize"
-        @pagination="getList()" />
+        @pagination="getList()"
+      />
     </div>
 
     <!-- 选择使用员工弹窗 -->
@@ -242,7 +253,8 @@ export default {
           queryUser = list
           query.userId = list.map((i) => i.userId).join()
         }
-      "></SelectUser>
+      "
+    ></SelectUser>
 
     <el-dialog title="领取详情" :visible.sync="dialogVisible" width="width">
       <div>
@@ -259,7 +271,8 @@ export default {
           :total="dialog.total"
           :page.sync="dialog.query.pageNum"
           :limit.sync="dialog.query.pageSize"
-          @pagination="getListGroupUser()" />
+          @pagination="getListGroupUser()"
+        />
       </div>
       <div slot="footer">
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -269,13 +282,13 @@ export default {
 </template>
 
 <style scoped lang="scss">
-.overflow-ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  .overflow-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-.table-desc {
-  max-width: 120px;
-}
+  .table-desc {
+    max-width: 120px;
+  }
 </style>

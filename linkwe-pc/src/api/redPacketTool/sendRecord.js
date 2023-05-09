@@ -17,7 +17,7 @@ const service = window.lwConfig.services.system + window.lwConfig.services.wecom
 export function getList(params) {
   return request({
     url: service + '/findRedEnveForUser',
-    params,
+    params
   })
 }
 
@@ -35,6 +35,7 @@ export function exportCustomer(params) {
   return request({
     url: service + '/exportRedEnveForUser',
     params,
+    responseType: 'blob'
   })
 }
 
@@ -54,7 +55,7 @@ export function exportCustomer(params) {
 export function getListGroup(params) {
   return request({
     url: service + '/findRedEnveForGroup',
-    params,
+    params
   })
 }
 
@@ -71,7 +72,7 @@ export function getListGroup(params) {
 export function getListGroupUser(params) {
   return request({
     url: service + '/findRedEnveForGroupUser',
-    params,
+    params
   })
 }
 
@@ -89,5 +90,6 @@ export function exportGroup(params) {
   return request({
     url: service + '/exportRedEnveForGroup',
     params,
+    responseType: 'blob'
   })
 }
