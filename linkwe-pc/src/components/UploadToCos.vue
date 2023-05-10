@@ -131,7 +131,6 @@
     created() {
       getCosConfig().then((res) => {
         this.cosConfig = res
-        console.log(this.cosConfig)
         if (this.cosConfig.fileObject == 'tencentOss') {
           this.cosInstance = new Cos({
             SecretId: res.secretId,
@@ -139,7 +138,8 @@
           })
         } else if (this.cosConfig.fileObject == 'local') {
         } else {
-          let region = this.cosConfig.region.split('//')[1]
+          let region =
+            this.cosConfig.region.indexOf('//') != -1 ? this.cosConfig.region.split('//')[1] : this.cosConfig.region
           this.ossObj = new OSS({
             // yourRegion填写Bucket所在地域。Region填写为oss-cn-hangzhou。
             region: region.split('.')[0],
