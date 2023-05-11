@@ -1,10 +1,12 @@
 <script>
-import { getCosConfig, getVideoPic } from '@/api/common'
+import { getCosConfig, getVideoPic, upload } from '@/api/common'
 import { dateFormat, uuid } from '@/utils/index'
 // import Video from 'video.js'
 import Cos from 'cos-js-sdk-v5'
 import BenzAMRRecorder from 'benz-amr-recorder'
 import MP4Box from 'mp4box'
+
+import OSS from 'ali-oss'
 
 export default {
   components: {},
@@ -42,7 +44,7 @@ export default {
     // 图片的宽高像素限制 [width(number), height(number)],默认null不限制
     maxImgPx: {
       type: Array,
-      default: () => [1440, 1080], // () => [100, 100]
+      default: null, // () => [100, 100]
     },
     // 允许上传的文件格式后缀名 eg:["jpg", "png"]，['*']为不限制，各类型有默认限制 参见: formatDefault
     format: {
@@ -97,6 +99,7 @@ export default {
       // cos配置信息
       cosConfig: { bucketName: '', cosImgUrlPrefix: '', region: '' },
       cosInstance: undefined, // cos实例
+      ossObj: undefined,
     }
   },
   watch: {
@@ -128,10 +131,25 @@ export default {
   created() {
     getCosConfig().then((res) => {
       this.cosConfig = res
-      this.cosInstance = new Cos({
-        SecretId: res.secretId,
-        SecretKey: res.secretKey,
-      })
+      if (this.cosConfig.fileObject == 'tencentOss') {
+        this.cosInstance = new Cos({
+          SecretId: res.secretId,
+          SecretKey: res.secretKey,
+        })
+      } else if (this.cosConfig.fileObject == 'local') {
+      } else {
+        let region =
+          this.cosConfig.region.indexOf('//') != -1 ? this.cosConfig.region.split('//')[1] : this.cosConfig.region
+        this.ossObj = new OSS({
+          // yourRegion填写Bucket所在地域。Region填写为oss-cn-hangzhou。
+          region: region.split('.')[0],
+          // 从STS服务获取的临时访问密钥（AccessKey ID和AccessKey Secret）。
+          accessKeyId: this.cosConfig.secretId,
+          accessKeySecret: this.cosConfig.secretKey,
+          // 填写Bucket名称。
+          bucket: this.cosConfig.bucketName,
+        })
+      }
     })
   },
   mounted() {
@@ -169,6 +187,111 @@ export default {
   },
   methods: {
     upload() {
+      if (this.cosConfig.fileObject == 'tencentOss') {
+        this.tencentFn()
+      } else if (this.cosConfig.fileObject == 'local') {
+        this.localFn()
+      } else if (this.cosConfig.fileObject == 'aliOss') {
+        this.aliOss()
+      }
+    },
+    localFn() {
+      this.loading = true
+      let file = undefined
+      if (!this.multiple || this.limit == 1) {
+        file = this.file
+      } else {
+        // 多选上传是多次调用单传的
+        file = this.file.shift()
+      }
+      let formData = new FormData()
+      formData.append('file', file)
+      upload(formData).then((dd) => {
+        if (dd.code == 200) {
+          let location = dd.data.url
+          this.$emit('upSuccess', location)
+          this.type == 2
+            ? //获取视频第一帧画面
+              getVideoPic({ url: location }).then((res) => {
+                this.loading = false
+                this.$emit('getPicUrl', res.data.url)
+              })
+            : (this.loading = false)
+
+          // 使用本地链接提供预览，避免上传后下载的问题
+          let url = window.URL.createObjectURL(file)
+
+          let name = file.name
+          if (!this.multiple) {
+            this.fileUrlWatch = url
+            this.$emit('update:fileUrl', location)
+            this.$emit('update:fileName', (this.fileNameWatch = name))
+          } else {
+            this.fileListWatch = this.fileListWatch.concat({ name, url })
+            this.$emit('update:fileList', this.fileList.concat({ name, url: location }))
+          }
+        } else {
+          this.loading = false
+          this.$message.error('上传失败，请稍后再试')
+        }
+      })
+    },
+    async aliOss() {
+      this.loading = true
+      let file = undefined
+      if (!this.multiple || this.limit == 1) {
+        file = this.file
+      } else {
+        // 多选上传是多次调用单传的
+        file = this.file.shift()
+      }
+      let date = new Date()
+      let format = file.name.match(/\.(\w+)$/g)
+      format = format && format[0]
+      // 实例可能未初始化完成
+      if (!this.ossObj) {
+        this.$message.error('存储空间正忙，请稍后再试')
+        return
+      }
+      let name = `${dateFormat(date, 'yyyy-MM-dd')}/t${date.getTime()}-${uuid()}${format}`
+      try {
+        const data = await this.ossObj.multipartUpload(name, file, {
+          progress: (progressData) => {
+            this.percentage = progressData * 100
+            // this.speed = (progressData.speed / 1024 / 1024).toFixed(2)
+          },
+        })
+        if (data) {
+          this.percentage = this.speed = 0
+          let location = this.cosConfig.cosImgUrlPrefix + data.name
+          this.$emit('upSuccess', location)
+          this.type == 2
+            ? //获取视频第一帧画面
+              getVideoPic({ url: location }).then((res) => {
+                this.loading = false
+                this.$emit('getPicUrl', res.data.url)
+              })
+            : (this.loading = false)
+
+          // 使用本地链接提供预览，避免上传后下载的问题
+          let url = window.URL.createObjectURL(file)
+
+          let name = file.name
+          if (!this.multiple) {
+            this.fileUrlWatch = url
+            this.$emit('update:fileUrl', location)
+            this.$emit('update:fileName', (this.fileNameWatch = name))
+          } else {
+            this.fileListWatch = this.fileListWatch.concat({ name, url })
+            this.$emit('update:fileList', this.fileList.concat({ name, url: location }))
+          }
+        }
+      } catch (e) {
+        this.loading = false
+        this.$message.error('上传失败，请稍后再试')
+      }
+    },
+    tencentFn() {
       this.loading = true
       let file = undefined
       if (!this.multiple || this.limit == 1) {
@@ -206,13 +329,12 @@ export default {
         },
         (err1, data) => {
           this.percentage = this.speed = 0
-
           if (err1) {
             this.loading = false
             this.$message.error('上传失败，请稍后再试')
           } else {
             let location = 'https://' + data.Location
-
+            this.$emit('upSuccess', location)
             this.type == 2
               ? //获取视频第一帧画面
                 getVideoPic({ url: location }).then((res) => {
@@ -474,7 +596,7 @@ export default {
                 <circle cx="50" cy="50" r="20" fill="none" class="path"></circle>
               </svg>
             </div>
-            <div class="cc" style="margin-top: 35px">
+            <div class="cc" style="margin-top: 35px" v-if="speed">
               {{ speed + 'M/s' }}
             </div>
           </div>
