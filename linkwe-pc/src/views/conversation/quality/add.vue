@@ -119,7 +119,14 @@
           chatType: 1,
           timeOut: '',
           manageUserInfo: [],
-          qiRuleScope: [{ weQiRuleUserList: [] }]
+          qiRuleScope: [
+            {
+              beginTime: '',
+              endTime: '',
+              weQiRuleUserList: [],
+              workCycle: ''
+            }
+          ]
         },
         rules: []
       }
