@@ -8,14 +8,19 @@
         <el-form-item label="超时时间标准:" prop="timeOut">
           <el-input v-model="form.timeOut" style="width: 120px;" placeholder="请输入"></el-input>分钟
         </el-form-item>
-        <el-form-item label="质检时间范围:" prop="qiRuleScope">
+        <el-form-item label="质检时间范围:" prop="qiRuleScope" style="width: 60%;">
           <div class="sub-des">
             <span>可根据不同成员的上班时间灵活调整配置</span>
           </div>
           <template v-for="(item, index) in form.qiRuleScope">
             <el-card class="box-card roster-card" :key="item.id">
               <div style="display: flex; justify-content: flex-end;">
-                <el-button v-if="index !== 0" type="text" icon="el-icon-delete" @click="onRemoveRoster(index)">
+                <el-button
+                  v-if="form.qiRuleScope.length !== 1"
+                  type="text"
+                  icon="el-icon-delete"
+                  @click="onRemoveRoster(index)"
+                >
                   删除
                 </el-button>
               </div>
@@ -74,14 +79,14 @@
             </el-card>
           </template>
           <div class="mt20">
-            <el-button size="mini" type="primary" icon="el-icon-plus" @click="onAddRoster">添加工作周期</el-button>
+            <el-button size="mini" type="primary" icon="el-icon-plus" @click="onAddCircle">添加工作周期</el-button>
           </div>
         </el-form-item>
         <el-form-item label="质检会话类型" prop="chatType">
           <el-radio-group v-model="form.chatType">
             <el-radio :label="1">全部</el-radio>
             <el-radio :label="2">客户会话</el-radio>
-            <el-radio :label="2">客群会话</el-radio>
+            <el-radio :label="3">客群会话</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="质检督导:" prop="manageUserInfo">
@@ -90,7 +95,7 @@
               {{ item.userName }}
             </el-tag>
           </div>
-          <el-button icon="el-icon-plus" type="primary" size="mini" @click="onSelectUser">
+          <el-button icon="el-icon-plus" type="primary" size="mini" @click="dialogVisible = true">
             {{ form.manageUserInfo.length ? '修改' : '选择' }}成员
           </el-button>
         </el-form-item>
@@ -103,7 +108,7 @@
     <SelectWeUser
       :visible.sync="dialogVisible"
       title="组织架构"
-      :defaultValues="userArray"
+      :defaultValues="form.manageUserInfo"
       @success="getSelectUser"
     ></SelectWeUser>
   </div>
@@ -114,6 +119,7 @@
     name: 'quality-add',
     data() {
       return {
+        dialogVisible: false,
         form: {
           name: '',
           chatType: 1,
@@ -124,14 +130,25 @@
               beginTime: '',
               endTime: '',
               weQiRuleUserList: [],
-              workCycle: ''
+              workCycle: []
             }
           ]
         },
         rules: []
       }
     },
-    methods: {}
+    methods: {
+      checkStartEnd() {},
+      getSelectUser(data) {
+        this.form.manageUserInfo = data
+      },
+      onAddCircle() {
+        this.form.qiRuleScope.push({ beginTime: '', endTime: '', weQiRuleUserList: [], workCycle: [] })
+      },
+      onRemoveRoster(index) {
+        this.form.qiRuleScope.splice(index, 1)
+      }
+    }
   }
 </script>
 
@@ -140,5 +157,12 @@
     font-size: 12px;
     font-weight: 400;
     color: #999999;
+  }
+  .roster-btn-delete {
+    margin-top: -16%;
+    margin-right: -8%;
+  }
+  .roster-card:not(:first-child) {
+    margin-top: 20px;
   }
 </style>
