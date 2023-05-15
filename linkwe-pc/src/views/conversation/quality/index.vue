@@ -43,7 +43,14 @@
             <TagEllipsis :list="row.qiRuleScope" defaultProps="userName" />
           </template>
         </el-table-column>
-        <el-table-column label="超时时间标准" align="center" min-width="100" prop="timeOut" show-overflow-tooltip />
+        <el-table-column label="超时时间标准" align="center" min-width="100" prop="timeOut" show-overflow-tooltip>
+          <template slot-scope="{ row }"> {{ row.timeOut }}分钟 </template>
+        </el-table-column>
+        <el-table-column label="质检会话类型" align="center" prop="chatType" min-width="160px">
+          <template slot-scope="{ row }">
+            {{ row.chatType == 1 ? '全部' : rew.chatType == 2 ? '客户会话' : '客群会话' }}
+          </template>
+        </el-table-column>
         <el-table-column label="质检督导" align="center" prop="manageUser" min-width="160px">
           <template slot-scope="{ row }">
             <TagEllipsis :list="row.manageUserInfo" defaultProps="userName" />
