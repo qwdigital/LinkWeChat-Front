@@ -23,8 +23,8 @@
     </el-form>
     <div class="g-card">
       <el-table v-loading="loading" :data="list">
-        <el-table-column label="规则名称" align="center" min-width="100" prop="name" show-overflow-tooltip />
-        <el-table-column label="适用成员范围" align="center" prop="qiRuleScope" min-width="160px">
+        <el-table-column label="质检周期" align="center" min-width="100" prop="name" show-overflow-tooltip />
+        <el-table-column label="目标发送成员" align="center" prop="qiRuleScope" min-width="160px">
           <template slot-scope="{ row }">
             <TagEllipsis :list="row.qiRuleScope" defaultProps="userName" />
           </template>
@@ -33,8 +33,6 @@
         <el-table-column label="操作" align="center" fixed="right" width="180" class-name="small-padding fixed-width">
           <template slot-scope="{ row }">
             <el-button type="text" @click="goRoute('detail', row.id)">统计</el-button>
-            <el-button type="text" @click="goRoute('add', row.id)">编辑</el-button>
-            <el-button type="text" @click="removeFn(row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
