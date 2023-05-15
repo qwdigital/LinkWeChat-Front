@@ -80,7 +80,6 @@
   import { dateFormat } from '@/utils/index'
   import ChartLine from '@/components/ChartLine.vue'
   import SearchTitle from '@/components/SearchTitle.vue'
-  import { getTotal, getLineData, getTableData, getTableExport } from '@/api/common'
   import { statisticData, statisticTable, statisticRecordList } from './api.js'
   import SelectDept from '@/components/SelectDept'
 

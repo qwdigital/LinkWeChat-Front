@@ -46,8 +46,8 @@
         <el-table-column label="超时时间标准" align="center" min-width="100" prop="timeOut" show-overflow-tooltip />
         <el-table-column label="质检督导" align="center" prop="manageUser" min-width="160px">
           <template slot-scope="{ row }">
-            <!-- <TagEllipsis :list="row.manageUser" /> -->
-            {{ row.manageUser }}
+            <TagEllipsis :list="row.manageUserInfo" defaultProps="userName" />
+            <!-- {{ row.manageUser }} -->
           </template>
         </el-table-column>
         <el-table-column label="操作时间" align="center" prop="updateTime" width="180"></el-table-column>
