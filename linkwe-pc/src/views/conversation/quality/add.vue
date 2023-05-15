@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="g-card">
-      <el-form ref="codeForm" :rules="rules" :model="form" label-position="right" label-width="140px">
+      <el-form ref="form" :rules="rules" :model="form" label-position="right" label-width="140px">
         <el-form-item label="质检规则名称:" prop="name">
           <el-input v-model="form.name" maxlength="20" show-word-limit clearable></el-input>
         </el-form-item>
         <el-form-item label="超时时间标准:" prop="timeOut">
           <el-input v-model="form.timeOut" style="width: 120px;" placeholder="请输入"></el-input>分钟
         </el-form-item>
-        <el-form-item label="质检时间范围:" prop="qiRuleScope" style="width: 60%;">
+        <el-form-item label="质检时间范围:" required prop="qiRuleScope" style="width: 60%;">
           <div class="sub-des">
             <span>可根据不同成员的上班时间灵活调整配置</span>
           </div>
@@ -56,9 +56,9 @@
                   :picker-options="{
                     start: '00:00',
                     end: '23:59',
-                    step: '00:30'
+                    step: '00:30',
+                    maxTime: item.endTime
                   }"
-                  :end="item.endTime"
                   @change="checkStartEnd($event, index)"
                   placeholder="任意时间点"
                 ></el-time-select>
@@ -68,9 +68,9 @@
                   :picker-options="{
                     start: '00:00',
                     end: '23:59',
-                    step: '00:30'
+                    step: '00:30',
+                    minTime: item.beginTime
                   }"
-                  :start="item.beginTime"
                   @change="checkStartEnd($event, index)"
                   v-model="item.endTime"
                   placeholder="任意时间点"
@@ -79,10 +79,10 @@
             </el-card>
           </template>
           <div class="mt20">
-            <el-button size="mini" type="primary" icon="el-icon-plus" @click="onAddCircle">添加工作周期</el-button>
+            <el-button size="mini" type="primary" icon="el-icon-plus" @click="onAddCircle">新增时间</el-button>
           </div>
         </el-form-item>
-        <el-form-item label="质检会话类型" prop="chatType">
+        <el-form-item label="质检会话类型" required prop="chatType">
           <el-radio-group v-model="form.chatType">
             <el-radio :label="1">全部</el-radio>
             <el-radio :label="2">客户会话</el-radio>
@@ -160,9 +160,22 @@
               required: true,
               message: '请输入超时时间标准',
               trigger: 'blur'
+            },
+            {
+              pattern: /^[1-9][0-9]*$/,
+              message: '超时时间标准必须为正整数',
+              trigger: 'blur'
+            }
+          ],
+          manageUserInfo: [
+            {
+              required: true,
+              message: '请选择质检督导',
+              trigger: 'blur'
             }
           ]
-        }
+        },
+        timeConflict: false
       }
     },
     methods: {
@@ -174,34 +187,184 @@
         this.singleSelect = this.form.qiRuleScope[index].weQiRuleUserList
         this.singleSelectVisible = true
       },
-      submit() {
-        this.loading = true
-        let obj = {
-          name: this.form.name,
-          chatType: this.form.chatType,
-          timeOut: this.form.timeOut,
-          manageUser: this.form.manageUserInfo.map((dd) => dd.userId).join(',')
-        }
-        let arr = []
-        this.form.qiRuleScope.forEach((res) => {
-          let dd = {
-            beginTime: res.beginTime,
-            endTime: res.endTime,
-            workCycle: res.workCycle,
-            userIds: res.weQiRuleUserList.map((ff) => ff.userId)
+      checkData() {
+        let pass = true
+        this.$refs['form'].validate((validate) => {
+          if (!validate) {
+            pass = false
+          } else {
+            let go = true
+            let week = true
+            let time = true
+            this.form.qiRuleScope.forEach((ddd) => {
+              if (!ddd.weQiRuleUserList.length) {
+                go = false
+              }
+              if (!ddd.workCycle.length) {
+                week = false
+              }
+              if (!ddd.beginTime || !ddd.endTime) {
+                time = false
+              }
+            })
+            if (go) {
+              if (week) {
+                if (time) {
+                  if (this.timeConflict) {
+                    pass = false
+                    this.msgError('排班存在冲突！')
+                  }
+                } else {
+                  pass = false
+                  this.msgError('请选择排班每项的在线时间！')
+                }
+              } else {
+                pass = false
+                this.msgError('排班每项工作周期至少勾选一项！')
+              }
+            } else {
+              pass = false
+              this.msgError('排班每项至少选择一名员工！')
+            }
           }
-          arr.push(dd)
         })
-        obj.qiUserInfos = arr
-        ;(this.form.id ? editQuality(this.$route.query.id, obj) : addQuality(obj)).then((res) => {
-          if (res.code == 200) {
-            this.msgSuccess('操作成功')
-            this.loading = false
-            this.$router.back()
-          }
-        })
+        return pass
       },
-      checkStartEnd() {},
+      submit() {
+        if (this.checkData()) {
+          this.loading = true
+          let obj = {
+            name: this.form.name,
+            chatType: this.form.chatType,
+            timeOut: this.form.timeOut,
+            manageUser: this.form.manageUserInfo.map((dd) => dd.userId).join(',')
+          }
+          let arr = []
+          this.form.qiRuleScope.forEach((res) => {
+            let dd = {
+              beginTime: res.beginTime,
+              endTime: res.endTime,
+              workCycle: res.workCycle,
+              userIds: res.weQiRuleUserList.map((ff) => ff.userId)
+            }
+            arr.push(dd)
+          })
+          obj.qiUserInfos = arr
+          ;(this.form.id ? editQuality(this.$route.query.id, obj) : addQuality(obj)).then((res) => {
+            if (res.code == 200) {
+              this.msgSuccess('操作成功')
+              this.loading = false
+              this.$router.back()
+            }
+          })
+        }
+      },
+      checkStartEnd(e, index) {
+        this.timeConflict = false
+        this.operationIndex = index
+        if (
+          this.form.qiRuleScope[this.operationIndex].workCycle.length &&
+          (this.form.qiRuleScope[this.operationIndex].beginTime || this.form.qiRuleScope[this.operationIndex].endTime)
+        ) {
+          this.someTimeConflict()
+        }
+      },
+      someTimeConflict() {
+        let userList = [] // 当前重复人员
+        let passList = []
+        let current = this.form.qiRuleScope[this.operationIndex].weQiRuleUserList.map((i) => {
+          return { userId: i.userId, name: i.userName }
+        })
+        this.form.qiRuleScope.forEach((data, key) => {
+          data.weQiRuleUserList.map((i, index) => {
+            if (key != this.operationIndex) {
+              passList.push({
+                userId: i.userId,
+                name: i.userName,
+                index: key,
+                week: [],
+                goto1: true,
+                goto2: true
+              })
+            }
+          })
+        })
+        current.map((dd) => {
+          passList.map((ff) => {
+            if (dd.userId === ff.userId) {
+              userList.push(ff)
+            }
+          })
+        })
+        // 重复人员下的时间校验
+        let repeatWeek = []
+        let currentWeekday = this.form.qiRuleScope[this.operationIndex].workCycle
+        userList.forEach((user) => {
+          const arr = this.form.qiRuleScope[user.index].workCycle
+          for (var i = 0; i < arr.length; i++) {
+            if (currentWeekday.indexOf(arr[i]) != -1) {
+              user.week.push(arr[i])
+            }
+          }
+        })
+        userList.forEach((ddd) => {
+          if (ddd.week.length) {
+            let start = this.form.qiRuleScope[ddd.index].beginTime
+            let end = this.form.qiRuleScope[ddd.index].endTime
+            if (start && end) {
+              if (this.form.qiRuleScope[this.operationIndex].beginTime) {
+                ddd.goto1 = this.checkAuditTime(start, end, this.form.qiRuleScope[this.operationIndex].beginTime)
+              }
+              if (this.form.qiRuleScope[this.operationIndex].endTime) {
+                ddd.goto2 = this.checkAuditTime(start, end, this.form.qiRuleScope[this.operationIndex].endTime)
+              }
+            }
+          }
+        })
+        let str = ''
+        userList.forEach((fdfd) => {
+          if (!fdfd.goto1 || !fdfd.goto2) {
+            let ss = fdfd.week.map((data) => {
+              return data === 7 ? '日' : data
+            })
+            str += '员工' + fdfd.name + '在周' + ss.join('、') + '时间存在冲突;'
+          }
+        })
+        if (str) {
+          this.timeConflict = true
+          this.msgError(str)
+        } else {
+          this.timeConflict = false
+        }
+      },
+      checkAuditTime(beginTime, endTime, current) {
+        let strb = beginTime.split(':')
+        if (strb.length != 2) {
+          return false
+        }
+        let stre = endTime.split(':')
+        if (stre.length != 2) {
+          return false
+        }
+        let cur = current.split(':')
+        if (cur.length != 2) {
+          return false
+        }
+        let b = new Date()
+        let e = new Date()
+        let n = new Date()
+        b.setHours(strb[0])
+        b.setMinutes(strb[1])
+        e.setHours(stre[0])
+        e.setMinutes(stre[1])
+        n.setHours(cur[0])
+        n.setMinutes(cur[1])
+        if (n.getTime() - b.getTime() >= 0 && n.getTime() - e.getTime() <= 0) {
+          return false
+        } else {
+          return true
+        }
+      },
       getSelectUser(data) {
         this.form.manageUserInfo = data
       },

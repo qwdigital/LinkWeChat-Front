@@ -158,7 +158,7 @@
         }
         this.userArray = []
         this.userName = ''
-        this.deptArray = ''
+        this.deptArray = []
         this.deptName = ''
         this.getTableChangeSize()
       },
