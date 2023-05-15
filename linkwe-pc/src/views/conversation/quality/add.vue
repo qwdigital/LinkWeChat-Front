@@ -33,26 +33,26 @@
                   style="margin-left: 10px;"
                   size="mini"
                   type="primary"
-                  @click="onSelectUser(index)"
+                  @click="onSelectSingleUser(index)"
                 >
                   {{ item.weQiRuleUserList.length ? '修改' : '选择' }}员工
                 </el-button>
               </el-form-item>
               <el-form-item label-width="100px" label="工作周期:">
                 <el-checkbox-group v-model="item.workCycle" @change="checkStartEnd($event, index)">
-                  <el-checkbox :label="1">周一</el-checkbox>
-                  <el-checkbox :label="2">周二</el-checkbox>
-                  <el-checkbox :label="3">周三</el-checkbox>
-                  <el-checkbox :label="4">周四</el-checkbox>
-                  <el-checkbox :label="5">周五</el-checkbox>
-                  <el-checkbox :label="6">周六</el-checkbox>
-                  <el-checkbox :label="7">周日</el-checkbox>
+                  <el-checkbox label="1">周一</el-checkbox>
+                  <el-checkbox label="2">周二</el-checkbox>
+                  <el-checkbox label="3">周三</el-checkbox>
+                  <el-checkbox label="4">周四</el-checkbox>
+                  <el-checkbox label="5">周五</el-checkbox>
+                  <el-checkbox label="6">周六</el-checkbox>
+                  <el-checkbox label="7">周日</el-checkbox>
                 </el-checkbox-group>
               </el-form-item>
               <el-form-item label-width="100px" label="在线时间:">
                 <el-time-select
                   style="width: 130px;"
-                  v-model="item.startTime"
+                  v-model="item.beginTime"
                   :picker-options="{
                     start: '00:00',
                     end: '23:59',
@@ -70,7 +70,7 @@
                     end: '23:59',
                     step: '00:30'
                   }"
-                  :start="item.startTime"
+                  :start="item.beginTime"
                   @change="checkStartEnd($event, index)"
                   v-model="item.endTime"
                   placeholder="任意时间点"
@@ -102,28 +102,41 @@
       </el-form>
     </div>
     <div class="g-footer-sticky">
-      <el-button>取消</el-button>
-      <el-button type="primary">确定</el-button>
+      <el-button @click="$router.back()">取消</el-button>
+      <el-button type="primary" @click="submit">确定</el-button>
     </div>
     <SelectWeUser
+      key="1"
       :visible.sync="dialogVisible"
       title="组织架构"
       :defaultValues="form.manageUserInfo"
       @success="getSelectUser"
     ></SelectWeUser>
+    <SelectWeUser
+      key="2"
+      :visible.sync="singleSelectVisible"
+      title="组织架构"
+      :defaultValues="singleSelect"
+      @success="getSingleUser"
+    ></SelectWeUser>
   </div>
 </template>
 
 <script>
+  import { addQuality, editQuality, detailQuality } from './api.js'
   export default {
     name: 'quality-add',
     data() {
       return {
+        loading: false,
         dialogVisible: false,
+        singleSelect: [],
+        singleSelectVisible: false,
+        orderIndex: null,
         form: {
           name: '',
           chatType: 1,
-          timeOut: '',
+          timeOut: 10,
           manageUserInfo: [],
           qiRuleScope: [
             {
@@ -134,10 +147,60 @@
             }
           ]
         },
-        rules: []
+        rules: {
+          name: [
+            {
+              required: true,
+              message: '请输入质检规则名称',
+              trigger: 'blur'
+            }
+          ],
+          timeOut: [
+            {
+              required: true,
+              message: '请输入超时时间标准',
+              trigger: 'blur'
+            }
+          ]
+        }
       }
     },
     methods: {
+      getSingleUser(data) {
+        this.form.qiRuleScope[this.orderIndex].weQiRuleUserList = data
+      },
+      onSelectSingleUser(index) {
+        this.orderIndex = index
+        this.singleSelect = this.form.qiRuleScope[index].weQiRuleUserList
+        this.singleSelectVisible = true
+      },
+      submit() {
+        this.loading = true
+        let obj = {
+          name: this.form.name,
+          chatType: this.form.chatType,
+          timeOut: this.form.timeOut,
+          manageUser: this.form.manageUserInfo.map((dd) => dd.userId).join(',')
+        }
+        let arr = []
+        this.form.qiRuleScope.forEach((res) => {
+          let dd = {
+            beginTime: res.beginTime,
+            endTime: res.endTime,
+            workCycle: res.workCycle,
+            userIds: res.weQiRuleUserList.map((ff) => ff.userId)
+          }
+          arr.push(dd)
+        })
+        obj.qiUserInfos = arr
+        ;(this.form.id ? editQuality(this.$route.query.id, obj) : addQuality(obj)).then((res) => {
+          if (res.code == 200) {
+            this.msgSuccess('操作成功')
+            this.loading = false
+            this.$router.back()
+          }
+        })
+      },
       checkStartEnd() {},
       getSelectUser(data) {
         this.form.manageUserInfo = data
@@ -147,6 +210,16 @@
       },
       onRemoveRoster(index) {
         this.form.qiRuleScope.splice(index, 1)
+      }
+    },
+    created() {
+      if (this.$route.query.id) {
+        detailQuality(this.$route.query.id).then((res) => {
+          this.form = res.data
+          this.form.qiRuleScope.forEach((dd) => {
+            dd.workCycle = dd.workCycle.split(',')
+          })
+        })
       }
     }
   }

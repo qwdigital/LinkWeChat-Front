@@ -7,7 +7,7 @@
       <el-form-item label="适用成员" prop="userIds">
         <el-input :value="userName" readonly @focus="dialogVisible = true" placeholder="请选择适用成员" />
       </el-form-item>
-      <el-form-item label="会话类型" label-width="40px">
+      <el-form-item label="会话类型">
         <el-select v-model="query.chatType" :popper-append-to-body="false">
           <el-option :label="data.value" :value="data.key" v-for="(data, key) in chatTypeArray" :key="key"></el-option>
         </el-select>
@@ -46,13 +46,14 @@
         <el-table-column label="超时时间标准" align="center" min-width="100" prop="timeOut" show-overflow-tooltip />
         <el-table-column label="质检督导" align="center" prop="manageUser" min-width="160px">
           <template slot-scope="{ row }">
-            <TagEllipsis :list="row.manageUser" />
+            <!-- <TagEllipsis :list="row.manageUser" /> -->
+            {{ row.manageUser }}
           </template>
         </el-table-column>
         <el-table-column label="操作时间" align="center" prop="updateTime" width="180"></el-table-column>
         <el-table-column label="操作" align="center" fixed="right" width="180" class-name="small-padding fixed-width">
           <template slot-scope="{ row }">
-            <el-button type="text" @click="goRoute('detail', row.id)">统计</el-button>
+            <el-button type="text" @click="goRoute('statistic', row.id)">统计</el-button>
             <el-button type="text" @click="goRoute('add', row.id)">编辑</el-button>
             <el-button type="text" @click="removeFn(row.id)">删除</el-button>
           </template>
@@ -71,7 +72,7 @@
 </template>
 
 <script>
-  import { getList } from './api.js'
+  import { getList, deleteQuality } from './api.js'
   export default {
     name: 'quality',
     data() {
@@ -108,6 +109,9 @@
         ]
       }
     },
+    created() {
+      this.getList()
+    },
     methods: {
       getSelectUser(data) {
         this.userArray = data
@@ -140,7 +144,7 @@
       },
       getList() {
         getList(this.query).then((res) => {
-          this.total = res.total
+          this.total = Number(res.total)
           this.list = res.rows
         })
       },
@@ -168,10 +172,10 @@
           type: 'warning'
         })
           .then(() => {
-            return remove(id)
+            return deleteQuality(id)
           })
           .then(() => {
-            this.search()
+            this.handleSearch()
             this.msgSuccess('删除成功')
           })
           .catch(function () {})
