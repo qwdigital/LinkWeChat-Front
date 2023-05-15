@@ -199,16 +199,16 @@
       },
       getTableChangeSize() {
         this.loading = true
-        // statisticTable(this.id, Object.assign({}, this.query)).then((res) => {
-        //   this.tableList = res.rows
-        //   this.total = Number(res.total)
-        this.loading = false
-        // })
+        statisticTable(this.id, Object.assign({}, this.query)).then((res) => {
+          this.tableList = res.rows
+          this.total = Number(res.total)
+          this.loading = false
+        })
       },
       getTableFn(data) {
         this.tableSearch = data
         this.loading = true
-        this.query.id = this.id
+        // this.query.id = this.id
         this.query.beginTime = data.beginTime
         this.query.endTime = data.endTime
         this.getTableChangeSize()
