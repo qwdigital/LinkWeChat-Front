@@ -61,7 +61,12 @@
           <div class="tips">用于同步企微会话，在企微后台->管理工具->会话存档中获取</div>
         </el-form-item>
         <el-form-item label="消息加密私钥:" prop="financePrivateKey">
-          <el-input style="width: 40%;" v-model="form.financePrivateKey" placeholder="请输入消息加密私钥"></el-input>
+          <el-input
+            type="textarea"
+            style="width: 40%;"
+            v-model="form.financePrivateKey"
+            placeholder="请输入消息加密私钥"
+          ></el-input>
           <div class="tips">用于同步企微会话，在企微后台->管理工具->会话存档中获取</div>
         </el-form-item>
       </div>
