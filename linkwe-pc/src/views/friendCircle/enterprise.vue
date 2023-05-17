@@ -90,7 +90,7 @@
         <el-table-column show-overflow-tooltip prop="createTime" width="170px" label="创建时间"></el-table-column>
         <el-table-column label="操作" align="center" width="100">
           <template slot-scope="{ row }">
-            <el-button type="text" @click="detailFn(row.momentId)">详情</el-button>
+            <el-button type="text" @click="detailFn(row.id)">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -227,6 +227,7 @@
         getDetail(id).then((dd) => {
           if (dd.code === 200) {
             this.detail = dd.data
+            this.detail.otherContent = this.detail.otherContent ? this.detail.otherContent : []
           }
         })
       },
