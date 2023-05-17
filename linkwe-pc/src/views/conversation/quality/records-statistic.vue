@@ -79,11 +79,11 @@
 <script>
   import ChartLine from '@/components/ChartLine.vue'
   import SearchTitle from '@/components/SearchTitle.vue'
-  import { statisticData, statisticTable, statisticRecordList } from './api.js'
+  import { qualityWeeklyDetailTotal, statisticTable, statisticRecordList } from './api.js'
   import SelectDept from '@/components/SelectDept'
 
   export default {
-    name: 'quality-statistics',
+    name: 'records-statistic',
     components: {
       SearchTitle,
       ChartLine,
@@ -187,7 +187,7 @@
           .join(',')
       },
       getTabTotalFn() {
-        statisticData(this.id).then((res) => {
+        qualityWeeklyDetailTotal(this.id).then((res) => {
           this.cardData[0].value = res.data.timeOutTotalNum
           this.cardData[1].value = res.data.timeOutTotalRate
           this.cardData[2].value = res.data.todayTimeOutUserNum

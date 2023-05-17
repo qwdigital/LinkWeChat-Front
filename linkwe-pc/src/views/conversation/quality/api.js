@@ -74,3 +74,18 @@ export function statisticRecordList(data) {
     params: data
   })
 }
+
+// 质检周报 列表
+export function qualityWeekly(data) {
+  return request({
+    url: service + '/qi/weekly/list',
+    params: data
+  })
+}
+
+// 质检周报 详情汇总卡片
+export function qualityWeeklyDetailTotal(id) {
+  return request({
+    url: service + '/qi/weekly/getDetail/' + id
+  })
+}
