@@ -18,7 +18,7 @@
           :label="item.label + '(' + item.list.length + ')'"
           :name="item.name"
         >
-          <MaPage ref="page" :type="item.type" v-slot="{ list }">
+          <MaPage ref="page" :type="item.type" v-slot="{ list }" @listChange="listChange">
             <div v-if="item.type === '0'">
               <div v-if="list && list.length">
                 <el-checkbox-group v-model="paneList[picindex].list" class="imgStyle">
@@ -148,6 +148,19 @@ export default {
     }
   },
   methods: {
+    listChange(list, type) {
+      this.paneList = this.paneList.map((item) => {
+        if (type === item.type) {
+          item.list.forEach((one) => {
+            this.ids = this.ids.filter((two) => {
+              return two.id !== one.id
+            })
+          })
+          item.list = []
+        }
+        return item
+      })
+    },
     // 超过num个。。。展示
     coverContent(str, num) {
       if (str && str.length > num) {
@@ -318,30 +331,6 @@ export default {
         }
       })
     },
-    // 多选框选中数据
-    // handleSelectionChange(selection) {
-    //   let list = JSON.parse(JSON.stringify(this.paneList[this.index].list))
-    //   this.paneList[this.index].list = selection
-    //   this.ids = []
-    //   this.paneList.forEach((item) => {
-    //     if (item.list && item.list.length) {
-    //       item.list.forEach((item1) => {
-    //         this.ids.push(item1)
-    //       })
-    //     }
-    //   })
-    //   if (this.ids.length + this.talkListLength > this.maxlength) {
-    //     this.paneList[this.index].list = list
-    //     this.ids = []
-    //     this.paneList.forEach((item) => {
-    //       if (item.list && item.list.length) {
-    //         item.list.forEach((item1) => {
-    //           this.ids.push(item1)
-    //         })
-    //       }
-    //     })
-    //   }
-    // },
     // 处理文件类型
     filType(file) {
       let filecontent = JSON.parse(JSON.stringify(file))
@@ -365,13 +354,6 @@ export default {
       } else {
         this.inx = index
       }
-      // if (this.picindex === 0) {
-      //   // 不包含文本
-      //   this.inx = this.index - 1
-      // } else if (this.picindex === 1) {
-      //   // 包含文本
-
-      // }
     },
   },
 }

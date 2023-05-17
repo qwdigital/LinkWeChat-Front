@@ -3,7 +3,6 @@ import { getTree, getList } from '@/api/material'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
-
 import { getCodeCategoryList } from '@/api/drainageCode/staff'
 import PreviewInPhone from '@/components/ContentCenter/PreviewInPhone'
 export default {
@@ -62,15 +61,8 @@ export default {
       },
       list: [], // 列表
       total: 0, // 总条数
-      treeData: [{}], // 树
-      // 树props
-      treeProps: {
-        children: 'children',
-        label: 'name',
-      },
       treeForm: {}, // 树表格
       treeDialogVisible: false, // 树表格对话框显隐
-
       group: '', // 选择的分组
       groupDialogVisible: false, // 移动分组对话框
       // 分组props
@@ -107,8 +99,7 @@ export default {
   computed: {},
   created() {
     this.query.mediaType = this.type
-    this.getTree()
-    // this.getList()
+    // this.getTree()
     // 开始
     this.getCodeCategoryListFn()
     // 结束
@@ -146,23 +137,6 @@ export default {
     resetQuery() {
       this.query.materialName = ''
       this.search()
-      // this.query.categoryId = 1
-    },
-    // 结束
-    // 获取类目树
-    getTree() {
-      getTree(this.type).then(({ data }) => {
-        this.treeData = [
-          {
-            id: '',
-            name: '全部',
-            parentId: '0',
-            hasParent: false,
-            hasChildren: true,
-            children: data || [],
-          },
-        ]
-      })
     },
     // 获取素材列表
     getList(page) {
@@ -173,7 +147,7 @@ export default {
           this.list = rows.sort((a, b) => +new Date(b.updateTime) - +new Date(a.updateTime))
           this.total = +total
           this.loading = false
-          this.$emit('listChange', this.list)
+          this.$emit('listChange', this.list, this.type)
         })
         .catch(() => {
           this.loading = false
@@ -197,7 +171,8 @@ export default {
               :class="{ active: groupIndex == key }"
               v-for="(group, key) in groupList"
               :key="group.id"
-              @click="switchGroup(key, group)">
+              @click="switchGroup(key, group)"
+            >
               <div class="name">{{ group.name + ' (' + group.number + ')' }}</div>
             </div>
           </div>
@@ -211,7 +186,8 @@ export default {
               clearable
               prefix-icon="el-icon-search"
               style="width: 300px"
-              @keyup.enter.native="search()" />
+              @keyup.enter.native="search()"
+            />
             <el-button class="ml10" @click="getList(1)" type="primary">查询</el-button>
             <!-- v-hasPermi="['wecom:material:list']" -->
             <el-button @click="resetQuery">重置</el-button>
@@ -225,7 +201,8 @@ export default {
               :total="total"
               :page.sync="query.pageNum"
               :limit.sync="query.pageSize"
-              @pagination="getList()" />
+              @pagination="getList"
+            />
           </div>
         </el-col>
       </el-row>
