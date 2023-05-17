@@ -67,10 +67,9 @@
         </el-table-column>
         <el-table-column show-overflow-tooltip prop="noAddUserName" min-width="140px" label="未发送员工">
           <template slot-scope="{ row }">
-            <div v-if="row.noAddUserName">
+            <div>
               <TagEllipsis :list="row.noAddUserName.split(',')" />
             </div>
-            <div v-else>全部</div>
           </template>
         </el-table-column>
         <el-table-column label="任务状态" prop="status">
