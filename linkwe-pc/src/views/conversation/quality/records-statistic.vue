@@ -3,26 +3,29 @@
     <CardGroupIndex :data="cardData"></CardGroupIndex>
     <div class="g-card">
       <div class="g-card-title">数据报表</div>
-      <div style="display: flex; align-items: center;">
-        <search-title :showMore="true" @search="getTableFn"> </search-title>
-        <el-input
-          style="width: 150px;"
-          :value="userName"
-          readonly
-          size="mini"
-          @focus="dialogVisible = true"
-          placeholder="请选择成员"
-        />
-        <el-input
-          style="width: 150px; margin: 0 20px;"
-          :value="deptName"
-          readonly
-          size="mini"
-          @focus="dialogDeptVisible = true"
-          placeholder="请选择部门"
-        />
-        <el-button size="mini" type="primary" @click="handleSearch">查询</el-button>
-        <el-button size="mini" @click="resetQuery">重置</el-button>
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center;">
+          <search-title :showMore="true" @search="getTableFn"> </search-title>
+          <el-input
+            style="width: 150px;"
+            :value="userName"
+            readonly
+            size="mini"
+            @focus="dialogVisible = true"
+            placeholder="请选择成员"
+          />
+          <el-input
+            style="width: 150px; margin: 0 20px;"
+            :value="deptName"
+            readonly
+            size="mini"
+            @focus="dialogDeptVisible = true"
+            placeholder="请选择部门"
+          />
+          <el-button size="mini" type="primary" @click="handleSearch">查询</el-button>
+          <el-button size="mini" @click="resetQuery">重置</el-button>
+        </div>
+        <el-button type="primary" size="mini" @click="exportFn" v-loading="exportLoading">导出Excel</el-button>
       </div>
       <el-table v-loading="loading" :data="tableList" style="width: 100%;">
         <el-table-column
@@ -142,6 +145,39 @@
       }
     },
     methods: {
+      exportFn() {
+        this.$confirm('确认导出吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(() => {
+            this.exportLoading = true
+            return getTableExport(Object.assign({}, this.tableSearch))
+          })
+          .then((res) => {
+            if (!res) return
+            const blob = new Blob([res], { type: 'application/vnd.ms-excel' }) // 构造一个blob对象来处理数据，并设置文件类型
+            if (window.navigator.msSaveOrOpenBlob) {
+              //兼容IE10
+              navigator.msSaveBlob(blob, '商品分析')
+            } else {
+              const href = URL.createObjectURL(blob) //创建新的URL表示指定的blob对象
+              const a = document.createElement('a') //创建a标签
+              a.style.display = 'none'
+              a.href = href // 指定下载链接
+              a.download = dateFormat(new Date(), 'yyyy-MM-dd') + '_商品分析.xlsx' //指定下载文件名
+              a.click() //触发下载
+              URL.revokeObjectURL(a.href) //释放URL对象
+            }
+          })
+          .catch((error) => {
+            console.error(error)
+          })
+          .finally(() => {
+            this.exportLoading = false
+          })
+      },
       handleSearch() {
         this.getTableChangeSize()
       },
