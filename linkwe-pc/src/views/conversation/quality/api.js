@@ -43,15 +43,6 @@ export function detailQuality(id) {
   })
 }
 
-// 周报列表 待调
-export function qualityWeeklyTatble(data) {
-  return request({
-    url: service + '/qi/list',
-    method: 'get',
-    params: data
-  })
-}
-
 // 质检统计 看板
 export function statisticData(id) {
   return request({
@@ -87,5 +78,13 @@ export function qualityWeekly(data) {
 export function qualityWeeklyDetailTotal(id) {
   return request({
     url: service + '/qi/weekly/getDetail/' + id
+  })
+}
+
+// 质检周报 详情列表
+export function qualityWeeklyTable(id, data) {
+  return request({
+    url: service + '/qi/weekly/detail/list/' + id,
+    params: data
   })
 }

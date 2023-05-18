@@ -74,6 +74,7 @@
               this.list = res.rows
               this.total = Number(res.total)
             }
+            this.loading = false
           })
           .catch(() => {
             this.loading = false

@@ -33,27 +33,20 @@
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column label="所属部门" align="center" prop="deptName" show-overflow-tooltip></el-table-column>
-        <el-table-column label="所属会话" align="center" prop="chatName" show-overflow-tooltip></el-table-column>
-        <el-table-column label="会话类型" align="center" prop="chatType" show-overflow-tooltip>
-          <template slot-scope="{ row }">
-            <div>
-              {{ row.chatType == 1 ? '客户会话' : '客群会话' }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="超时时长" align="center" prop="timeout" show-overflow-tooltip></el-table-column>
+        <el-table-column label="超时次数" align="center" prop="timeOutNum" show-overflow-tooltip></el-table-column>
+        <el-table-column label="超时率" align="center" prop="timeOutRate" show-overflow-tooltip></el-table-column>
         <el-table-column
-          label="触发时间"
+          label="客户会话超时率"
           align="center"
-          prop="createTime"
-          width="180"
+          prop="chatTimeOutRate"
           show-overflow-tooltip
         ></el-table-column>
-        <el-table-column label="操作" align="center" fixed="right" width="180" class-name="small-padding fixed-width">
-          <template slot-scope="{ row }">
-            <el-button type="text">查看</el-button>
-          </template>
-        </el-table-column>
+        <el-table-column
+          label="客群会话超时率"
+          align="center"
+          prop="groupChatTimeOutRate"
+          show-overflow-tooltip
+        ></el-table-column>
       </el-table>
       <pagination
         :total="total"
@@ -79,7 +72,7 @@
 <script>
   import ChartLine from '@/components/ChartLine.vue'
   import SearchTitle from '@/components/SearchTitle.vue'
-  import { qualityWeeklyDetailTotal, statisticTable, statisticRecordList } from './api.js'
+  import { qualityWeeklyDetailTotal, qualityWeeklyTable } from './api.js'
   import SelectDept from '@/components/SelectDept'
 
   export default {
@@ -99,28 +92,35 @@
         userName: '',
         cardData: [
           {
-            title: '总超时次数',
-            tips: '成员在会话中未能及时回复的次数，仅计算产生双方参与的会话次数',
+            title: '本周督导成员数',
             value: 0
           },
           {
-            title: '总超时率',
-            tips: '成员在会话中未能及时回复的次数/双方共产生会话的次数',
+            title: '客户会话数',
             value: 0
           },
           {
-            title: '今日超时人数',
-            tips: '今日未能及时回复用户会话的成员人数',
+            title: '客群会话数',
             value: 0
           },
           {
-            title: '今日超时次数',
-            tips: '今日成员在会话中未能及时回复的次数',
+            title: '成员回复次数',
             value: 0
           },
           {
-            title: '今日超时率',
-            tips: '今日成员在会话中未能及时回复的次数/今日双方共产生会话的次数',
+            title: '成员超时次数',
+            value: 0
+          },
+          {
+            title: '成员超时率',
+            value: 0
+          },
+          {
+            title: '客户会话超时率',
+            value: 0
+          },
+          {
+            title: '客群会话超时率',
             value: 0
           }
         ],
@@ -188,16 +188,19 @@
       },
       getTabTotalFn() {
         qualityWeeklyDetailTotal(this.id).then((res) => {
-          this.cardData[0].value = res.data.timeOutTotalNum
-          this.cardData[1].value = res.data.timeOutTotalRate
-          this.cardData[2].value = res.data.todayTimeOutUserNum
-          this.cardData[3].value = res.data.todayTimeOutNum
-          this.cardData[4].value = res.data.todayTimeOutRate
+          this.cardData[0].value = res.data.staffNum
+          this.cardData[1].value = res.data.chatNum
+          this.cardData[2].value = res.data.groupChatNum
+          this.cardData[3].value = res.data.replyNum
+          this.cardData[4].value = res.data.timeOutNum
+          this.cardData[5].value = res.data.timeOutRate
+          this.cardData[6].value = res.data.chatTimeOutRate
+          this.cardData[7].value = res.data.chatTimeOutRate
         })
       },
       getTableChangeSize() {
         this.loading = true
-        statisticTable(this.id, Object.assign({}, this.query)).then((res) => {
+        qualityWeeklyTable(this.id, Object.assign({}, this.query)).then((res) => {
           this.tableList = res.rows
           this.total = Number(res.total)
           this.loading = false
