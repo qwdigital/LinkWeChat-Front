@@ -88,3 +88,11 @@ export function qualityWeeklyTable(id, data) {
     params: data
   })
 }
+
+// 质检周报 详情列表导出
+export function getTableExport(data) {
+  return request({
+    url: service + '/qi/weekly/detail/list/export/' + id,
+    params: data
+  })
+}
