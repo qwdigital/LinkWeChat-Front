@@ -16,7 +16,7 @@
         <el-date-picker
           v-model="searchDate"
           format="yyyy-MM-dd"
-          value-format="yyyyMMdd"
+          value-format="yyyy-MM-dd"
           type="daterange"
           range-separator="-"
           @change="setDateChange"
