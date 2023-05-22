@@ -76,7 +76,7 @@
 
         <el-tooltip content="点击前往linwechat-vue3版本 v5.0.0.alpha.1" effect="light" placement="bottom">
           <div class="right-menu-item hover-effect">
-            <i class="el-icon-message-solid right-icon" @click="goto('/vue3')"></i>
+            <i class="right-icon" @click="goto('/vue3')">v5</i>
           </div>
         </el-tooltip>
       </template>
