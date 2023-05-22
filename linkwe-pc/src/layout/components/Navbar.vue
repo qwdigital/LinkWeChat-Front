@@ -73,6 +73,12 @@
         </el-tooltip> -->
 
         <!-- <screenfull id="screenfull" class="right-menu-item hover-effect" /> -->
+
+        <el-tooltip content="点击前往linwechat-vue3版本 v5.0.0.alpha.1" effect="light" placement="bottom">
+          <div class="right-menu-item hover-effect">
+            <i class="el-icon-message-solid right-icon" @click="goto('/vue3')"></i>
+          </div>
+        </el-tooltip>
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
@@ -199,7 +205,7 @@ export default {
   }
 }
 .right-icon {
-  font-size: 22px;
+  font-size: 20px;
 }
 //
 .navbar {
