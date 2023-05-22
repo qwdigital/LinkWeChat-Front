@@ -27,7 +27,6 @@ import './permission' // permission control
 Vue.component('Pagination', () => import('@/components/Pagination'))
 Vue.component('RightToolbar', () => import('@/components/RightToolbar'))
 Vue.component('Upload', () => import('@/components/Upload'))
-Vue.component('UploadToCos', () => import('@/components/UploadToCos'))
 Vue.component('ButtonSync', () => import('@/components/ButtonSync'))
 Vue.component('TagEllipsis', () => import('@/components/TagEllipsis'))
 Vue.component('SelectUser', () => import('@/components/SelectUser'))

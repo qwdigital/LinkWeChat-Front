@@ -1,11 +1,6 @@
 <template>
   <div>
-    <el-form-item
-      :label="lableOne"
-      required
-      style="margin-right: 200px !important"
-      :error="templateInfo"
-    >
+    <el-form-item :label="lableOne" required style="margin-right: 200px !important" :error="templateInfo">
       <div v-if="showModle" style="margin-bottom: 10px">
         <el-button type="primary" @click="welcomVisible = true">从模板库中选择</el-button>
       </div>
@@ -18,17 +13,12 @@
         :autosize="{ minRows: 5, maxRows: 20 }"
         clearable
         :autofocus="true"
-        @input="changeInfo"
-      />
+        @input="changeInfo" />
     </el-form-item>
     <el-form-item>
       <div slot="label" class="title" v-if="otherType !== 3">
         {{ titleTwo }}
-        <el-popover
-          trigger="hover"
-          :content="'最多添加' + maxlength + '个素材'"
-          placement="top-start"
-        >
+        <el-popover trigger="hover" :content="'最多添加' + maxlength + '个素材'" placement="top-start">
           <i slot="reference" class="el-icon-question"></i>
         </el-popover>
       </div>
@@ -37,23 +27,13 @@
           <div style="text-align: left" class="flex">
             <el-popover
               trigger="hover"
-              :content="
-                '最多添加' +
-                maxlength +
-                '个' +
-                fontType +
-                '，如需修改请删除已有' +
-                fontType +
-                '后重新尝试'
-              "
+              :content="'最多添加' + maxlength + '个' + fontType + '，如需修改请删除已有' + fontType + '后重新尝试'"
               placement="top-start"
-              :disabled="talkList.length < maxlength"
-            >
+              :disabled="talkList.length < maxlength">
               <el-dropdown
                 slot="reference"
                 @command="moveGroup"
-                :disabled="talkList.length > maxlength || talkList.length === maxlength"
-              >
+                :disabled="talkList.length > maxlength || talkList.length === maxlength">
                 <el-button type="primary">+ {{ '新建' + fontType }}</el-button>
                 <el-dropdown-menu slot="dropdown" trigger="click">
                   <!-- <el-dropdown-item :command="'4'" v-if="!this.templateType && this.moduleType !== 4">
@@ -85,23 +65,13 @@
             </el-popover>
             <el-popover
               trigger="hover"
-              :content="
-                '最多添加' +
-                maxlength +
-                '个' +
-                fontType +
-                '，如需修改请删除已有' +
-                fontType +
-                '后重新尝试'
-              "
+              :content="'最多添加' + maxlength + '个' + fontType + '，如需修改请删除已有' + fontType + '后重新尝试'"
               placement="top-start"
-              :disabled="talkList.length < maxlength"
-            >
+              :disabled="talkList.length < maxlength">
               <div slot="reference" class="ml20">
                 <el-button
                   @click="choseCenter"
-                  :disabled="talkList.length > maxlength || talkList.length === maxlength"
-                >
+                  :disabled="talkList.length > maxlength || talkList.length === maxlength">
                   从素材中心选择
                 </el-button>
               </div>
@@ -112,12 +82,7 @@
     </el-form-item>
 
     <div style="margin-top: 10px; margin-left: 150px" v-show="talkList.length">
-      <DragTable
-        :tableData2="talkList"
-        @setData="setData"
-        @getEdit="getEdit"
-        :dargAble="[2].includes(moduleType)"
-      />
+      <DragTable :tableData2="talkList" @setData="setData" @getEdit="getEdit" :dargAble="[2].includes(moduleType)" />
     </div>
     <!-- <el-col :span="8" class="g-card" style="margin-top: 20px; padding: 20px;" v-if="showPhone">
         <PreviewInPhone :list="talkList" :templateInfo="talkForm.templateInfo" :liveUrl="liveUrl" />
@@ -131,8 +96,7 @@
       @dialogClose="dialogClose"
       :materialTalkList="talkList"
       :moduleType="moduleType"
-      :maxlength="maxlength"
-    />
+      :maxlength="maxlength" />
     <!-- 模板库 -->
     <el-dialog
       :title="otherType === 2 ? '选择群发模板' : '选择欢迎语模板'"
@@ -140,8 +104,7 @@
       width="60%"
       append-to-body
       :close-on-click-modal="false"
-      v-if="welcomVisible"
-    >
+      v-if="welcomVisible">
       <TemplateLibrary @changeObj="changeObj" :isGroup="otherType === 2" />
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="selectModle" :loading="libraryLoading">确 定</el-button>
@@ -156,14 +119,12 @@
       :tplType="tplType"
       :moduleType="moduleType"
       :maxlength="maxlength"
-      :noApplets="otherType === 3"
-    />
+      :noApplets="otherType === 3" />
     <SelectUser
       :defaultValues="selectedUserList"
       :visible.sync="dialogVisibleSelectUser"
       title="选择使用员工"
-      @success="selectedUser"
-    ></SelectUser>
+      @success="selectedUser"></SelectUser>
   </div>
 </template>
 
@@ -175,7 +136,6 @@ import { templateAdd, templateDetail } from '@/api/contentCenter/modleCenter'
 import DragTable from '@/components/DragTable'
 import MaterialCenter from '@/components/ContentCenter/MaterialCenter'
 import { string } from 'clipboard'
-import UploadToCos from '@/components/UploadToCos'
 import { getPosterInfo } from '@/api/material/poster'
 import TemplateLibrary from '@/components/ContentCenter/TemplateLibrary'
 import MessageContentForm from '@/components/MessageContentForm'
@@ -185,7 +145,6 @@ export default {
     PreviewInPhone,
     DragTable,
     MaterialCenter,
-    UploadToCos,
     getPosterInfo,
     TemplateLibrary,
     MessageContentForm,

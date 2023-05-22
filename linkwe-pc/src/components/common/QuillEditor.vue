@@ -1,11 +1,7 @@
 <template>
   <div class="quill-wrap" v-loading="uploadLoading">
     <quill-editor v-model="content" ref="quill" @change="onEditorChange($event)" :options="editorOption"></quill-editor>
-    <UploadToCos
-      v-show="false"
-      :fileUrl.sync="imgUrl"
-      type="0"
-      @loadingChange="(val) => (uploadLoading = val)"></UploadToCos>
+    <Upload v-show="false" :fileUrl.sync="imgUrl" type="0" @loadingChange="(val) => (uploadLoading = val)"></Upload>
     <SelectEmoji ref="emoji" @select="insertContent" />
   </div>
 </template>

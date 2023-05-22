@@ -51,7 +51,7 @@
             <div v-if="type === '0'">
               <div v-if="!disabled">
                 <!-- <el-form-item label="图片">
-                  <UploadToCos
+                  <Upload
                     :fileUrl.sync="form.materialUrl"
                     :fileName.sync="form.materialName"
                     :maxSize="20"
@@ -60,7 +60,7 @@
                     <div slot="tip">
                       支持jpg/jpeg/png格式，图片大小不超过20M，支持最多10张批量上传
                     </div>
-                  </UploadToCos>
+                  </Upload>
                 </el-form-item> -->
               </div>
               <div v-else>
@@ -76,9 +76,9 @@
             <div v-if="type === '9'">
               <div v-if="!disabled">
                 <el-form-item label="图文封面">
-                  <UploadToCos :fileUrl.sync="form.coverUrl" type="0">
+                  <Upload :fileUrl.sync="form.coverUrl" type="0">
                     <div slot="tip">支持jpg/jpeg/png格式，建议200*200</div>
-                  </UploadToCos>
+                  </Upload>
                 </el-form-item>
                 <el-form-item label="图文描述">
                   <el-input
@@ -119,9 +119,9 @@
             <div v-if="type === '11'">
               <div v-if="!disabled">
                 <el-form-item label="封面" prop="coverUrl">
-                  <UploadToCos :fileUrl.sync="form.coverUrl" type="0">
+                  <Upload :fileUrl.sync="form.coverUrl" type="0">
                     <div slot="tip">支持jpg/jpeg/png格式，建议520*416</div>
-                  </UploadToCos>
+                  </Upload>
                 </el-form-item>
                 <el-form-item label="小程序ID" prop="digest">
                   <el-input v-model="form.digest" placeholder="小程序AppID"></el-input>

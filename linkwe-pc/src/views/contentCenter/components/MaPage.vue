@@ -12,7 +12,6 @@ import { delAndRemoves } from '@/api/contentCenter/common'
 import { importTemplate, importData } from '@/api/contentCenter/basicMaterials'
 import PreviewInPhone from '@/components/ContentCenter/PreviewInPhone'
 import { download, toFormData } from '@/utils/common'
-import UploadToCos from '@/components/UploadToCos'
 import { dateFormat } from '@/utils/index'
 
 var validateHtml = (rule, value, callback) => {
@@ -35,7 +34,6 @@ export default {
     quillEditor,
     Voice,
     PreviewInPhone,
-    UploadToCos,
   },
   props: {
     // 0 图片（image）、1 语音（voice）、2 视频（video），3 普通文件(file)， 4 文本， 5 海报， 6 活码， 7 人群， 8 旅程，9 图文，10 链接，11 小程序
@@ -686,7 +684,7 @@ export default {
             <!-- 图片 -->
             <template v-else-if="type === '0'">
               <el-form-item label="图片" prop="weMaterialImgAoList" v-if="!form.id">
-                <UploadToCos
+                <Upload
                   v-if="dialogVisible"
                   :fileList.sync="form.weMaterialImgAoList"
                   :maxSize="20"
@@ -694,7 +692,7 @@ export default {
                   :multiple="true"
                   :limit="10">
                   <div slot="tip">支持jpg/jpeg/png格式，图片大小不超过20M，支持最多10张批量上传</div>
-                </UploadToCos>
+                </Upload>
               </el-form-item>
               <el-form-item label="图片标题" prop="materialName" v-else>
                 <el-input
@@ -732,9 +730,9 @@ export default {
                   placeholder="请输入图文描述"></el-input>
               </el-form-item>
               <el-form-item label="图文封面">
-                <UploadToCos :fileUrl.sync="form.coverUrl" type="0" v-if="dialogVisible">
+                <Upload :fileUrl.sync="form.coverUrl" type="0" v-if="dialogVisible">
                   <div slot="tip">支持jpg/jpeg/png格式，建议200*200</div>
-                </UploadToCos>
+                </Upload>
               </el-form-item>
               <!-- <el-form-item label="内容">
                 富文本content
@@ -782,22 +780,22 @@ export default {
                 </div>
               </el-form-item>
               <el-form-item label="封面" prop="coverUrl">
-                <UploadToCos :fileUrl.sync="form.coverUrl" type="0" v-if="dialogVisible">
+                <Upload :fileUrl.sync="form.coverUrl" type="0" v-if="dialogVisible">
                   <div slot="tip">支持jpg/jpeg/png格式，建议520*416</div>
-                </UploadToCos>
+                </Upload>
               </el-form-item>
             </template>
 
             <template v-else-if="type === '1'">
               <el-form-item label="语音" prop="materialUrl">
                 <Voice v-if="form.materialUrl" :amrUrl="form.materialUrl"></Voice>
-                <UploadToCos
+                <Upload
                   :fileUrl.sync="form.materialUrl"
                   :fileName.sync="form.materialName || '点击上传'"
                   :type="type"
                   :format="audioType">
                   <div slot="tip">只能上传amr格式的语音文件。单个文件大小不超过2M，时长不超过1分钟</div>
-                </UploadToCos>
+                </Upload>
               </el-form-item>
               <el-form-item label="名称" prop="materialName">
                 <el-input v-model="form.materialName" placeholder="请输入"></el-input>
@@ -822,7 +820,7 @@ export default {
                   show-word-limit></el-input>
               </el-form-item>
               <el-form-item label="上传视频" prop="materialUrl" v-if="!form.id">
-                <UploadToCos
+                <Upload
                   v-if="dialogVisible"
                   :fileUrl.sync="form.materialUrl"
                   :fileName.sync="form.materialName"
@@ -830,7 +828,7 @@ export default {
                   @getPicUrl="getPicUrl"
                   :type="type">
                   <div slot="tip">支持mp4/mov格式，视频大小不超过100M</div>
-                </UploadToCos>
+                </Upload>
               </el-form-item>
               <!-- <el-form-item label="封面">
                 <upload :fileUrl.sync="form.coverUrl" type="0">
@@ -858,14 +856,14 @@ export default {
                   :autosize="{ minRows: 3, maxRows: 10 }"></el-input>
               </el-form-item>
               <el-form-item label="上传文件" prop="materialUrl" v-if="!form.id">
-                <UploadToCos
+                <Upload
                   v-if="dialogVisible"
                   :fileUrl.sync="form.materialUrl"
                   :fileName.sync="form.materialName"
                   :type="type"
                   :format="['doc', 'docx', 'pdf', 'ppt', 'pptx', 'pps', 'pptsx']">
                   <div slot="tip">支持pdf/ppt/word文件，单个文件大小不超过50M</div>
-                </UploadToCos>
+                </Upload>
               </el-form-item>
             </template>
           </el-form>

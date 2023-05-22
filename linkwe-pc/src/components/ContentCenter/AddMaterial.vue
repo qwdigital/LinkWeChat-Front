@@ -199,7 +199,6 @@ import { templateAdd, templateDetail } from '@/api/contentCenter/modleCenter'
 import DragTable from '@/components/DragTable'
 import MaterialCenter from '@/components/ContentCenter/MaterialCenter'
 import { string } from 'clipboard'
-import UploadToCos from '@/components/UploadToCos'
 import { getPosterInfo } from '@/api/material/poster'
 import TemplateLibrary from '@/components/ContentCenter/TemplateLibrary'
 import MessageContentForm from '@/components/MessageContentForm'
@@ -209,7 +208,6 @@ export default {
     PreviewInPhone,
     DragTable,
     MaterialCenter,
-    UploadToCos,
     getPosterInfo,
     TemplateLibrary,
     MessageContentForm,

@@ -44,11 +44,7 @@
                   <!-- <div class="tips upload">
                     <i class="el-icon-plus"></i><span> 本地上传</span>
                   </div> -->
-                  <UploadToCos
-                    :fileUrl.sync="form.backgroundImgPath"
-                    :maxSize="20"
-                    type="0"
-                    @upSuccess="upSuccess"></UploadToCos>
+                  <Upload :fileUrl.sync="form.backgroundImgPath" :maxSize="20" type="0" @upSuccess="upSuccess"></Upload>
                   <el-button
                     size="mini"
                     type="text"
@@ -224,7 +220,7 @@
               fit="fit"></el-image>
           </div>
           <div class="up-style" v-else>
-            <UploadToCos :fileUrl.sync="formDate.imgUrl" :maxSize="20" type="0"></UploadToCos>
+            <Upload :fileUrl.sync="formDate.imgUrl" :maxSize="20" type="0"></Upload>
             <el-button size="mini" type="text" style="margin-left: 10px" @click="addObj('imageShow')">
               从素材库中选取
             </el-button>
@@ -436,6 +432,8 @@ export default {
             materialName: data.materialName,
             digest: data.digest,
             backgroundImgPath: data.backgroundImgPath,
+            width: data.width,
+            height: data.height,
             posterJSON: JSON.parse(data.otherField),
           }
           this.posterSubassemblyList = data.posterSubassemblyList || []
@@ -671,10 +669,15 @@ export default {
             scaleY: canvas.width / img.width,
           })
           canvas.setWidth(375)
-          canvas.setHeight(img.height * (canvas.width / img.width))
+          let height = img.height * (canvas.width / img.width)
+          canvas.setHeight(height)
+          this.form.width = 375
+          this.form.height = height
         } else {
           canvas.setWidth(img.width)
           canvas.setHeight(img.height)
+          this.form.width = img.width
+          this.form.height = img.height
         }
 
         canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas))

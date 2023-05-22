@@ -38,13 +38,13 @@
             <div v-if="type === '2'">
               <div v-if="!disabled">
                 <!-- <el-form-item label="上传视频" prop="materialUrl">
-                  <UploadToCos
+                  <Upload
                     :fileUrl.sync="form.materialUrl"
                     :fileName.sync="form.materialName"
                     :type="type"
                   >
                     <div slot="tip">支持mp4/mov格式，视频大小不超过100M</div>
-                  </UploadToCos>
+                  </Upload>
                 </el-form-item> -->
                 <el-form-item label="视频描述">
                   <el-input
@@ -74,13 +74,13 @@
             <div v-if="type === '3'">
               <div v-if="!disabled">
                 <!-- <el-form-item label="上传文件" prop="materialUrl">
-                  <UploadToCos
+                  <Upload
                     :fileUrl.sync="form.materialUrl"
                     :fileName.sync="form.materialName"
                     :type="type"
                   >
                     <div slot="tip">支持pdf/ppt/word文件，单个文件大小不超过50M</div>
-                  </UploadToCos>
+                  </Upload>
                 </el-form-item> -->
                 <el-form-item label="文件描述">
                   <el-input
@@ -138,9 +138,9 @@
             <div v-if="type === '5'">
               <div v-if="!disabled">
                 <el-form-item label="封面" prop="materialUrl">
-                  <UploadToCos :fileUrl.sync="form.materialUrl" :fileName.sync="form.materialName" :type="type">
+                  <Upload :fileUrl.sync="form.materialUrl" :fileName.sync="form.materialName" :type="type">
                     <div slot="tip">支持pdf/ppt/word文件，单个文件大小不超过50M</div>
-                  </UploadToCos>
+                  </Upload>
                 </el-form-item>
                 <el-form-item label="文件描述">
                   <el-input

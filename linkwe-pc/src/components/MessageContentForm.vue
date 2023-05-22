@@ -38,7 +38,7 @@
         <!-- 图片 -->
         <template v-else-if="type === '0'">
           <el-form-item label="图片" prop="weMaterialImgAoList" v-if="!isedit">
-            <UploadToCos
+            <Upload
               v-if="dialogVisible"
               :fileList.sync="form.weMaterialImgAoList"
               :maxSize="20"
@@ -46,17 +46,17 @@
               :multiple="true"
               :limit="picMaxlength">
               <div slot="tip">支持jpg/jpeg/png格式，图片大小不超过20M，支持最多{{ picMaxlength }}张批量上传</div>
-            </UploadToCos>
+            </Upload>
           </el-form-item>
           <el-form-item label="图片" prop="materialUrl" v-else>
-            <UploadToCos
+            <Upload
               :fileUrl.sync="form.materialUrl"
               :fileName.sync="form.materialName"
               :maxSize="20"
               type="0"
               v-if="dialogVisible">
               <div slot="tip">支持jpg/jpeg/png格式，图片大小不超过20M</div>
-            </UploadToCos>
+            </Upload>
           </el-form-item>
         </template>
 
@@ -86,9 +86,9 @@
               placeholder="请输入图文描述"></el-input>
           </el-form-item>
           <el-form-item label="图文封面">
-            <UploadToCos :fileUrl.sync="form.coverUrl" type="0" v-if="dialogVisible">
+            <Upload :fileUrl.sync="form.coverUrl" type="0" v-if="dialogVisible">
               <div slot="tip">支持jpg/jpeg/png格式，建议200*200</div>
-            </UploadToCos>
+            </Upload>
           </el-form-item>
         </template>
 
@@ -130,22 +130,22 @@
             </div>
           </el-form-item>
           <el-form-item label="封面" prop="coverUrl">
-            <UploadToCos :fileUrl.sync="form.coverUrl" type="0" v-if="dialogVisible">
+            <Upload :fileUrl.sync="form.coverUrl" type="0" v-if="dialogVisible">
               <div slot="tip">支持jpg/jpeg/png格式，建议520*416</div>
-            </UploadToCos>
+            </Upload>
           </el-form-item>
         </template>
 
         <template v-else-if="type === '1'">
           <el-form-item label="语音" prop="materialUrl">
             <Voice v-if="form.materialUrl" :amrUrl="form.materialUrl"></Voice>
-            <UploadToCos
+            <Upload
               :fileUrl.sync="form.materialUrl"
               :fileName.sync="form.materialName || '点击上传'"
               :type="type"
               :format="audioType">
               <div slot="tip">只能上传amr格式的语音文件。单个文件大小不超过2M，时长不超过1分钟</div>
-            </UploadToCos>
+            </Upload>
           </el-form-item>
           <el-form-item label="名称" prop="materialName">
             <el-input v-model="form.materialName" placeholder="请输入"></el-input>
@@ -170,14 +170,14 @@
               show-word-limit></el-input>
           </el-form-item>
           <el-form-item label="上传视频" prop="materialUrl">
-            <UploadToCos
+            <Upload
               :fileUrl.sync="form.materialUrl"
               :fileName.sync="form.materialName"
               :type="type"
               @getPicUrl="getPicUrl"
               v-if="dialogVisible">
               <div slot="tip">支持mp4/mov格式，视频大小不超过100M</div>
-            </UploadToCos>
+            </Upload>
           </el-form-item>
         </template>
 
@@ -200,13 +200,13 @@
               :autosize="{ minRows: 2, maxRows: 10 }"></el-input>
           </el-form-item>
           <el-form-item label="上传文件" prop="materialUrl">
-            <UploadToCos
+            <Upload
               :fileUrl.sync="form.materialUrl"
               :fileName.sync="form.materialName"
               :type="type"
               v-if="dialogVisible">
               <div slot="tip">支持pdf/ppt/word文件，单个文件大小不超过50M</div>
-            </UploadToCos>
+            </Upload>
           </el-form-item>
         </template>
         <!-- 文章 -->
