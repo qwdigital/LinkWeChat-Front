@@ -16,4 +16,5 @@
 //   // BASE_URL: '/', // 路由基础路径
 //   BASE_API: 'http://saas.linkwechat.cn/prod-api',
 //   SYSTEM_API: '/saas-prod-api',
+//   V5_VERSION: '点击前往linwechat-vue3版本 v5.0.0.alpha.2',
 // }

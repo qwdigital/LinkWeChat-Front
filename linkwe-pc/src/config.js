@@ -27,6 +27,7 @@ const common = {
   DEFAULT_H5_WORDE: env.DOMAIN + '/static/WORD.png',
   DEFAULT_H5_PPT: env.DOMAIN + '/static/PPT.png',
   PRIVIEW_URL: env.VIEW_URL,
+  V5_VERSION: '点击前往linwechat-vue3版本 v5.0.0.alpha.2',
 
   MICRO_APPS: {
     store: {

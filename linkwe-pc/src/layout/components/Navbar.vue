@@ -74,7 +74,7 @@
 
         <!-- <screenfull id="screenfull" class="right-menu-item hover-effect" /> -->
 
-        <el-tooltip content="点击前往linwechat-vue3版本 v5.0.0.alpha.1" effect="light" placement="bottom">
+        <el-tooltip :content="lwConfig.V5_VERSION" effect="light" placement="bottom">
           <div class="right-menu-item hover-effect">
             <i class="right-icon" @click="goto('/vue3')">v5</i>
           </div>
