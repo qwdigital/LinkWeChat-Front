@@ -62,7 +62,8 @@ export function statisticTable(id, data) {
 export function statisticRecordList(data) {
   return request({
     url: service + '/qi/statistics/table/msg',
-    params: data
+    method: 'post',
+    data
   })
 }
 
