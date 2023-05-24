@@ -51,7 +51,7 @@
         ></el-table-column>
         <el-table-column label="操作" align="center" fixed="right" width="180" class-name="small-padding fixed-width">
           <template slot-scope="{ row }">
-            <el-button type="text">查看</el-button>
+            <el-button type="text" @click="showChatList(row)">查看</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -74,20 +74,22 @@
       title="选择部门"
       @success="selectedDept"
     ></SelectDept>
+    <ChatList v-if="showChat" :visible.sync="showChat" :queryChat="queryChat"></ChatList>
   </div>
 </template>
 <script>
   import ChartLine from '@/components/ChartLine.vue'
   import SearchTitle from '@/components/SearchTitle.vue'
-  import { statisticData, statisticTable, statisticRecordList } from './api.js'
+  import { statisticData, statisticTable } from './api.js'
   import SelectDept from '@/components/SelectDept'
-
+  import ChatList from './chatList.vue'
   export default {
     name: 'quality-statistics',
     components: {
       SearchTitle,
       ChartLine,
-      SelectDept
+      SelectDept,
+      ChatList
     },
     data() {
       return {
@@ -138,10 +140,28 @@
           deptIds: '',
           userIds: ''
         },
-        tableSearch: {}
+        tableSearch: {},
+        showChat: false,
+        queryChat: {
+          formId: '',
+          msgId: '',
+          pageType: 0,
+          receiveId: '',
+          roomId: ''
+        }
       }
     },
     methods: {
+      showChatList(data) {
+        this.queryChat = {
+          fromId: data.fromId,
+          msgId: data.msgId,
+          pageType: 0,
+          receiveId: data.receiveId,
+          roomId: data.roomId
+        }
+        this.showChat = true
+      },
       handleSearch() {
         this.getTableChangeSize()
       },
