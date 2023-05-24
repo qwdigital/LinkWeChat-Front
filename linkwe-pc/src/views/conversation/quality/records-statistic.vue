@@ -37,19 +37,21 @@
         ></el-table-column>
         <el-table-column label="所属部门" align="center" prop="deptName" show-overflow-tooltip></el-table-column>
         <el-table-column label="超时次数" align="center" prop="timeOutNum" show-overflow-tooltip></el-table-column>
-        <el-table-column label="超时率" align="center" prop="timeOutRate" show-overflow-tooltip></el-table-column>
-        <el-table-column
-          label="客户会话超时率"
-          align="center"
-          prop="chatTimeOutRate"
-          show-overflow-tooltip
-        ></el-table-column>
-        <el-table-column
-          label="客群会话超时率"
-          align="center"
-          prop="groupChatTimeOutRate"
-          show-overflow-tooltip
-        ></el-table-column>
+        <el-table-column label="超时率" align="center" prop="timeOutRate" show-overflow-tooltip>
+          <template slot-scope="{ row }">
+            <div>{{ Number(row.timeOutRate) * 100 + '%' }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="客户会话超时率" align="center" prop="chatTimeOutRate" show-overflow-tooltip>
+          <template slot-scope="{ row }">
+            <div>{{ Number(row.chatTimeOutRate) * 100 + '%' }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="客群会话超时率" align="center" prop="groupChatTimeOutRate" show-overflow-tooltip>
+          <template slot-scope="{ row }">
+            <div>{{ Number(row.groupChatTimeOutRate) * 100 + '%' }}</div>
+          </template>
+        </el-table-column>
       </el-table>
       <pagination
         :total="total"
@@ -229,9 +231,9 @@
           this.cardData[2].value = res.data.groupChatNum
           this.cardData[3].value = res.data.replyNum
           this.cardData[4].value = res.data.timeOutNum
-          this.cardData[5].value = res.data.timeOutRate
-          this.cardData[6].value = res.data.chatTimeOutRate
-          this.cardData[7].value = res.data.chatTimeOutRate
+          this.cardData[5].value = Number(res.data.timeOutRate) * 100 + '%'
+          this.cardData[6].value = Number(res.data.chatTimeOutRate) * 100 + '%'
+          this.cardData[7].value = Number(res.data.chatTimeOutRate) * 100 + '%'
         })
       },
       getTableChangeSize() {

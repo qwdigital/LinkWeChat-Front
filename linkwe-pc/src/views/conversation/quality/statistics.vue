@@ -209,10 +209,10 @@
       getTabTotalFn() {
         statisticData(this.id).then((res) => {
           this.cardData[0].value = res.data.timeOutTotalNum
-          this.cardData[1].value = res.data.timeOutTotalRate
+          this.cardData[1].value = Number(res.data.timeOutTotalRate) * 100 + '%'
           this.cardData[2].value = res.data.todayTimeOutUserNum
           this.cardData[3].value = res.data.todayTimeOutNum
-          this.cardData[4].value = res.data.todayTimeOutRate
+          this.cardData[4].value = Number(res.data.todayTimeOutRate) * 100 + '%'
         })
       },
       getTableChangeSize() {
