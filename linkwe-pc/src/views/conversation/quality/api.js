@@ -91,9 +91,10 @@ export function qualityWeeklyTable(id, data) {
 }
 
 // 质检周报 详情列表导出
-export function getTableExport(data) {
+export function getTableExport(id, data) {
   return request({
     url: service + '/qi/weekly/detail/list/export/' + id,
-    params: data
+    params: data,
+    responseType: 'blob'
   })
 }

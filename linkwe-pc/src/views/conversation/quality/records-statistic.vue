@@ -77,7 +77,7 @@
 <script>
   import ChartLine from '@/components/ChartLine.vue'
   import SearchTitle from '@/components/SearchTitle.vue'
-  import { qualityWeeklyDetailTotal, qualityWeeklyTable } from './api.js'
+  import { qualityWeeklyDetailTotal, qualityWeeklyTable, getTableExport } from './api.js'
   import SelectDept from '@/components/SelectDept'
 
   export default {
