@@ -79,6 +79,7 @@
   import SearchTitle from '@/components/SearchTitle.vue'
   import { qualityWeeklyDetailTotal, qualityWeeklyTable, getTableExport } from './api.js'
   import SelectDept from '@/components/SelectDept'
+  import { dateFormat } from '@/utils/index'
 
   export default {
     name: 'records-statistic',
