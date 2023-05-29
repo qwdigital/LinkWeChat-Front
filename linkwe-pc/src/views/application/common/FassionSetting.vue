@@ -218,6 +218,7 @@
         if (this.form.posterId) {
           getPosterInfo(this.form.posterId).then((res) => {
             this.posterObj = res.data
+            this.posterObj.materialName = this.form.fassionName
           })
         }
         if (!this.form.addWeUserOrGroupCode) {
@@ -333,9 +334,11 @@
         this.form.posterUrl = ''
       },
       getItemArry(data) {
+        console.log(data)
         this.form.posterUrl = data[0].materialUrl
         this.form.posterId = data[0].id
         this.posterObj = data[0]
+        this.posterObj.materialName = this.form.fassionName
       },
       getMember(data) {
         this.form.addWeUserOrGroupCode.addWeUser = data
