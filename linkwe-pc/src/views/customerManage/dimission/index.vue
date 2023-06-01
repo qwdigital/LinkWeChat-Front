@@ -1,7 +1,7 @@
 <script>
   import * as api from '@/api/customer/dimission'
   import SelectWeUser from '@/components/SelectWeUser'
-
+  import { dateFormat } from '@/utils/index'
   export default {
     name: 'Dimission',
     components: { SelectWeUser },
@@ -44,6 +44,9 @@
     },
     mounted() {},
     methods: {
+      setDate(date) {
+        return dateFormat(new Date(date))
+      },
       /** 查询 */
       getList(page) {
         if (this.dateRange) {
@@ -188,7 +191,7 @@
         <el-table-column prop="allocateCustomerNum" label="待分配客户数" show-overflow-tooltip></el-table-column>
         <el-table-column prop="allocateGroupNum" label="待分配群聊数" show-overflow-tooltip></el-table-column>
         <el-table-column prop="dimissionTime" label="离职时间" show-overflow-tooltip>
-          <template slot-scope="scope">{{ scope.row.dimissionTime }}</template>
+          <template slot-scope="scope">{{ setDate(scope.row.dimissionTime) }}</template>
         </el-table-column>
         <!-- <el-table-column label="操作" width="100">
         <template slot-scope="scope">

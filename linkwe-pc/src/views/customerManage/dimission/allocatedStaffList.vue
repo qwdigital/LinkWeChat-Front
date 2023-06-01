@@ -1,5 +1,6 @@
 <script>
   import { getListTable } from '@/api/customer/dimission'
+  import { dateFormat } from '@/utils/index'
 
   export default {
     name: 'AllocatedStaffList',
@@ -30,6 +31,9 @@
     },
     mounted() {},
     methods: {
+      setDate(date) {
+        return dateFormat(new Date(date))
+      },
       /** 查询 */
       getList(page) {
         if (this.dateRange) {
@@ -94,7 +98,7 @@
         <el-table-column prop="allocateCustomerNum" label="已分配客户数" show-overflow-tooltip></el-table-column>
         <el-table-column prop="allocateGroupNum" label="已分配群聊数" show-overflow-tooltip></el-table-column>
         <el-table-column prop="dimissionTime" label="离职时间" show-overflow-tooltip>
-          <template slot-scope="scope">{{ scope.row.dimissionTime }}</template>
+          <template slot-scope="scope">{{ setDate(scope.row.dimissionTime) }}</template>
         </el-table-column>
         <el-table-column label="操作" width="100">
           <template slot-scope="scope">
