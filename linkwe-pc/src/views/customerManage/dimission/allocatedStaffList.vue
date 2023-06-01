@@ -1,63 +1,63 @@
 <script>
-import { getListTable } from '@/api/customer/dimission'
+  import { getListTable } from '@/api/customer/dimission'
 
-export default {
-  name: 'AllocatedStaffList',
-  components: {},
-  props: {},
-  data() {
-    return {
-      // 查询参数
-      query: {
-        isAllocate: 1,
-        pageNum: 1,
-        pageSize: 10,
-        userName: undefined,
-        beginTime: undefined,
-        endTime: undefined,
-      },
-      loading: false,
-      total: 0,
-      list: [],
-      dialogVisibleSelectUser: false,
-      dateRange: [], // 离职日期
-    }
-  },
-  watch: {},
-  computed: {},
-  created() {
-    this.getList()
-  },
-  mounted() {},
-  methods: {
-    /** 查询 */
-    getList(page) {
-      if (this.dateRange) {
-        this.query.beginTime = this.dateRange[0]
-        this.query.endTime = this.dateRange[1]
-      } else {
-        this.query.beginTime = ''
-        this.query.endTime = ''
+  export default {
+    name: 'AllocatedStaffList',
+    components: {},
+    props: {},
+    data() {
+      return {
+        // 查询参数
+        query: {
+          isAllocate: 1,
+          pageNum: 1,
+          pageSize: 10,
+          userName: undefined,
+          beginTime: undefined,
+          endTime: undefined
+        },
+        loading: false,
+        total: 0,
+        list: [],
+        dialogVisibleSelectUser: false,
+        dateRange: [] // 离职日期
       }
-      page && (this.query.pageNum = page)
-      this.loading = true
-      getListTable(this.query)
-        .then(({ rows, total }) => {
-          this.list = rows
-          this.total = +total
-          this.loading = false
-        })
-        .catch(() => {
-          this.loading = false
-        })
     },
-    resetForm() {
-      this.dateRange = []
-      this.$refs['queryForm'].resetFields()
-      this.getList(1)
+    watch: {},
+    computed: {},
+    created() {
+      this.getList()
     },
-  },
-}
+    mounted() {},
+    methods: {
+      /** 查询 */
+      getList(page) {
+        if (this.dateRange) {
+          this.query.beginTime = this.dateRange[0]
+          this.query.endTime = this.dateRange[1]
+        } else {
+          this.query.beginTime = ''
+          this.query.endTime = ''
+        }
+        page && (this.query.pageNum = page)
+        this.loading = true
+        getListTable(this.query)
+          .then(({ rows, total }) => {
+            this.list = rows
+            this.total = +total
+            this.loading = false
+          })
+          .catch(() => {
+            this.loading = false
+          })
+      },
+      resetForm() {
+        this.dateRange = []
+        this.$refs['queryForm'].resetFields()
+        this.getList(1)
+      }
+    }
+  }
 </script>
 
 <template>
@@ -77,7 +77,8 @@ export default {
           range-separator="-"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
-          align="right"></el-date-picker>
+          align="right"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label>
         <el-button v-hasPermi="['customerManage:dimission:query']" type="primary" @click="getList(1)">查询</el-button>
@@ -86,10 +87,10 @@ export default {
     </el-form>
 
     <div class="g-card">
-      <el-table ref="multipleTable" :data="list" tooltip-effect="dark" style="width: 100%">
+      <el-table ref="multipleTable" :data="list" tooltip-effect="dark" style="width: 100%;">
         <el-table-column type="index" label="序号" width="55"></el-table-column>
         <el-table-column prop="userName" label="已离职员工"></el-table-column>
-        <el-table-column prop="department" label="所属部门"></el-table-column>
+        <el-table-column prop="deptNames" label="所属部门"></el-table-column>
         <el-table-column prop="allocateCustomerNum" label="已分配客户数" show-overflow-tooltip></el-table-column>
         <el-table-column prop="allocateGroupNum" label="已分配群聊数" show-overflow-tooltip></el-table-column>
         <el-table-column prop="dimissionTime" label="离职时间" show-overflow-tooltip>
@@ -102,10 +103,11 @@ export default {
               @click="
                 $router.push({
                   path: 'allocatedStaffDetail',
-                  query: { userId: scope.row.userId },
+                  query: { userId: scope.row.userId }
                 })
               "
-              type="text">
+              type="text"
+            >
               查看
             </el-button>
           </template>
@@ -117,7 +119,8 @@ export default {
         :total="total"
         :page.sync="query.pageNum"
         :limit.sync="query.pageSize"
-        @pagination="getList()" />
+        @pagination="getList()"
+      />
     </div>
   </div>
 </template>

@@ -184,7 +184,7 @@
         <el-table-column type="selection" align="center" width="55"></el-table-column>
         <el-table-column type="index" label="序号" width="55"></el-table-column>
         <el-table-column prop="userName" label="已离职员工"></el-table-column>
-        <el-table-column prop="department" label="所属部门"></el-table-column>
+        <el-table-column prop="deptNames" label="所属部门"></el-table-column>
         <el-table-column prop="allocateCustomerNum" label="待分配客户数" show-overflow-tooltip></el-table-column>
         <el-table-column prop="allocateGroupNum" label="待分配群聊数" show-overflow-tooltip></el-table-column>
         <el-table-column prop="dimissionTime" label="离职时间" show-overflow-tooltip>
