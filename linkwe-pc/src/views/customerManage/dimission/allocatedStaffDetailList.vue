@@ -75,7 +75,7 @@ export default {
             v-hasPermi="['customerManage:dimission:edit']"
             @click="
               $router.push({
-                name: 'customerDetail',
+                name: 'CustomerDetail',
                 query: { externalUserid: row.externalUserid, userId: row.firstUserId, isDelete: true },
               })
             "
