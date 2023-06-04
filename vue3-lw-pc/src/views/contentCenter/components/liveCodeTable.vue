@@ -400,11 +400,11 @@ export default {
     },
     goAdd() {
       let router = {
-        ygcode: 'Staff',
-        kqcode: 'CustomerGroup',
-        mdcoed: 'Store',
-        skcode: 'Identity',
-        lxcode: 'NewCustomer',
+        ygcode: 'staffCode',
+        kqcode: 'customerGroupCode',
+        mdcoed: 'storeCode',
+        skcode: 'identityCode',
+        lxcode: 'pullNewsCode',
       }
       this.$router.push({ name: router[this.type] })
     },

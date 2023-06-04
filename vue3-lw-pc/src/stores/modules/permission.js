@@ -66,6 +66,8 @@ function filterAsyncRouter(asyncRouterMap, parentPath) {
     route.meta = route.meta || {}
     route.meta.hidden = route.hidden
 
+    // 默认返回的name为大驼峰式的组件名
+    // 删除name，避免vue router自动删除重名的路由
     delete route.name
 
     if (parentPath) {
@@ -88,7 +90,7 @@ function filterAsyncRouter(asyncRouterMap, parentPath) {
           route.component = Layout
         }
       } else {
-        route.component = loadView(route.component)
+        route.component = loadView(route)
       }
     }
     let children = route.children
@@ -103,12 +105,25 @@ function filterAsyncRouter(asyncRouterMap, parentPath) {
 
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('./../../views/**/*.vue')
-export const loadView = (view) => {
+export const loadView = (route) => {
   let res
   for (const path in modules) {
     const dir = path.split('views/')[1].split('.vue')[0]
-    if (dir === view) {
+    if (dir === route.component) {
       res = modules[path]
+
+      // 为需要单独使用的路由命名，避免使用绝对路径跳转
+      let routeNames = {
+        'customerManage/customerDetail': 'customerDetail', //  客户详情
+        'drainageCode/staff/list': 'staffCode', //  员工活码
+        'drainageCode/group/list': 'customerGroupCode', // 群活码
+        'drainageCode/store/list': 'storeCode', //门店活码
+        'drainageCode/identity/list': 'identityCode', //识客码
+        'drainageCode/pullNews/list': 'pullNewsCode', //拉新活码
+        'enterpriseWechat/list': window.lwConfig.WORKWEIXINPAGENAME, //企微配置
+      }
+      routeNames[route.component] && (route.name = routeNames[route.component])
+
       break
     }
   }
