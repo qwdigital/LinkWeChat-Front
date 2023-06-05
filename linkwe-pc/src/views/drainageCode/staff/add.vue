@@ -70,33 +70,68 @@
             </el-form-item>
             <el-form-item label="排班方式" prop="qrRuleMode" v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
               <el-radio-group v-model="codeForm.qrRuleMode">
-                <el-radio :label="1">轮询</el-radio>
-                <el-radio :label="2">顺序</el-radio>
-                <el-radio :label="3">随机</el-radio>
+                <el-radio :label="1">
+                  <el-popover placement="top" trigger="hover">
+                    <span slot="reference">
+                      轮询
+                      <i class="el-icon-question"></i>
+                    </span>
+                    <div>根据二维码的优先级顺序，平均展示给访问用户。</div>
+                  </el-popover>
+                </el-radio>
+                <el-radio :label="2">
+                  <el-popover placement="top" trigger="hover">
+                    <span slot="reference">
+                      顺序
+                      <i class="el-icon-question"></i>
+                    </span>
+                    <div>二维码访问人数达到访问上限后，自动切换至下一个二维码。</div>
+                  </el-popover>
+                </el-radio>
+                <el-radio :label="3">
+                  <el-popover placement="top" trigger="hover">
+                    <span slot="reference">
+                      随机
+                      <i class="el-icon-question"></i>
+                    </span>
+                    <div>用户扫描二维码后，将在上线的员工中随机一个进行展示。</div>
+                  </el-popover>
+                </el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="活码员工" prop="weEmpleCodeUseScops" v-if="codeForm.qrRuleType == 1">
               <div v-if="codeForm.weEmpleCodeUseScops.length > 0 && codeForm.qrType == 1">
-                  <el-tag size="medium" v-for="(item, index) in codeForm.weEmpleCodeUseScops" :key="index">
-                    {{ item.businessName }}
-                  </el-tag>
-              </div>
-              <div v-if="codeForm.weEmpleCodeUseScops.length > 0 && codeForm.qrType == 2">
-                  <el-tag class="user-el-tag" size="medium" v-for="(item, index) in codeForm.weEmpleCodeUseScops" :key="index">
-                    {{ item.businessName }}
-                    <el-input-number
-                      size="mini"
-                      v-model="codeForm.weEmpleCodeUseScops[index].businessNumber"
-                      :min="0"
-                      :max="100"></el-input-number>
-                  </el-tag>
+                <el-tag size="medium" v-for="(item, index) in codeForm.weEmpleCodeUseScops" :key="index">
+                  {{ item.businessName }}
+                </el-tag>
               </div>
               <el-button type="primary" plain size="mini" @click="onSelectUser">
                 {{ codeForm.weEmpleCodeUseScops.length ? '修改' : '选择' }}员工
               </el-button>
               <div class="sub-des">单人活码只能选择一个员工，多人活码支持选择多个员工</div>
+              <div v-if="codeForm.weEmpleCodeUseScops.length > 0 && codeForm.qrType == 2">
+                <MemeberList :list="codeForm.weEmpleCodeUseScops" @update="getList"></MemeberList>
+                <!-- <el-tag
+                  class="user-el-tag"
+                  size="medium"
+                  v-for="(item, index) in codeForm.weEmpleCodeUseScops"
+                  :key="index"
+                >
+                  {{ item.businessName }}
+                  <el-input-number
+                    size="mini"
+                    v-model="codeForm.weEmpleCodeUseScops[index].businessNumber"
+                    :min="0"
+                    :max="100"
+                  ></el-input-number>
+                </el-tag> -->
+              </div>
             </el-form-item>
-            <el-form-item label="备用员工" prop="weSpareUseScops" v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
+            <el-form-item
+              label="备用员工"
+              prop="weSpareUseScops"
+              v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1"
+            >
               <div v-if="codeForm.weSpareUseScops.length > 0">
                 <el-tag size="medium" v-for="(item, index) in codeForm.weSpareUseScops" :key="index">
                   {{ item.businessName }}
@@ -106,9 +141,21 @@
                 {{ codeForm.weSpareUseScops.length ? '修改' : '选择' }}备用员工
               </el-button>
             </el-form-item>
-            <el-form-item label="开启备用员工" prop="openSpareUser" v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
+            <el-form-item
+              label="开启备用员工"
+              prop="openSpareUser"
+              v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1"
+            >
               <el-switch v-model="codeForm.openSpareUser" :active-value="1" :inactive-value="0"></el-switch>
               <div class="sub-des">员工当日添加用户数达每日上限后添加至备用员工。若如关闭，则自动循环下一个上限</div>
+            </el-form-item>
+            <el-form-item
+              label="添加同一员工"
+              prop="openSpareUser"
+              v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1"
+            >
+              <el-switch v-model="codeForm.isExclusive" :active-value="1" :inactive-value="0"></el-switch>
+              <div class="sub-des">开启后，同一个企业的客户会优先添加到同一个员工。</div>
             </el-form-item>
             <el-form-item v-if="codeForm.qrRuleType == 2" label="活码排班" prop="empleCodeRosterDto">
               <template v-for="(item, index) in codeForm.empleCodeRosterDto">
@@ -196,7 +243,7 @@
     ></SelectTag>
 
     <!-- 选择使用员工弹窗 -->
-    <SelectUser
+    <SelectWeUser
       :key="codeForm.qrType"
       :defaultValues="selectedUserList"
       :visible.sync="dialogVisibleSelectUser"
@@ -204,10 +251,10 @@
       :isOnlyLeaf="true"
       :isSigleSelect="codeForm.qrType == 1"
       @success="selectedUser"
-    ></SelectUser>
+    ></SelectWeUser>
 
     <!-- 选择使用备用员工弹窗 -->
-    <SelectUser
+    <SelectWeUser
       :key="codeForm.qrType + '-only'"
       :defaultValues="selectedSpareUserList"
       :visible.sync="dialogVisibleSelectSpareUser"
@@ -215,22 +262,21 @@
       :isOnlyLeaf="true"
       :isSigleSelect="codeForm.qrType == 1"
       @success="selectedSpareUser"
-    ></SelectUser>
+    ></SelectWeUser>
   </div>
 </template>
 
 <script>
   import { getDetail, add, update, getCodeCategoryList } from '@/api/drainageCode/staff'
-  import SelectUser from '@/components/SelectWeUser'
   import SelectTag from '@/components/SelectTag'
   import SelectMaterial from '@/components/SelectMaterial'
   import WelcomeContent from '@/components/WelcomeContent.vue'
   import AddMaterial from '@/components/ContentCenter/AddMaterial'
-
+  import MemeberList from './memberList.vue'
   export default {
     components: {
       SelectTag,
-
+      MemeberList,
       SelectMaterial,
       WelcomeContent,
       AddMaterial
@@ -272,6 +318,7 @@
           qrRuleType: 1,
           qrRuleMode: 1,
           openSpareUser: 0,
+          isExclusive: 0,
           weEmpleCodeUseScops: [],
           weSpareUseScops: [],
           empleCodeRosterDto: [
@@ -334,7 +381,7 @@
               required: false,
               trigger: 'blur'
             }
-          ],
+          ]
         },
         isInsertClientName: true,
         dialogVisibleSelectUser: false,
@@ -363,6 +410,9 @@
       }
     },
     methods: {
+      getList(data) {
+        this.codeForm.weEmpleCodeUseScops = data
+      },
       checkStartEnd(e, index) {
         this.timeConflict = false
         this.operationIndex = index
@@ -536,6 +586,8 @@
         } else if (nextStep == 3) {
           form = 'codeForm'
         }
+        console.log(form)
+        console.log(this.codeForm.weEmpleCodeUseScops)
         this.$refs[form].validate((validate) => {
           if (validate) {
             if (nextStep === 3) {
@@ -604,14 +656,14 @@
                   scopeId: base.qrUserInfos[0].scopeId,
                   businessId: dd.userId,
                   businessName: dd.userName,
-                  businessNumber: dd.schedulingNum,
+                  businessNumber: dd.schedulingNum
                 }
                 arr.push(obj)
               } else {
                 let obj = {
                   scopeId: base.qrUserInfos[0].scopeId,
                   businessId: dd.userId,
-                  businessName: dd.userName,
+                  businessName: dd.userName
                 }
                 spareArr.push(obj)
               }
@@ -753,7 +805,7 @@
             businessId: d.userId || d.id,
             businessName: d.name,
             businessIdType: d.userId ? 2 : 1,
-            businessNumber: 0
+            businessNumber: 1
           }
         })
         params.userIds += ''
