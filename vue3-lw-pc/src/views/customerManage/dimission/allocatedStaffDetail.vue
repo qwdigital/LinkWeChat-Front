@@ -51,14 +51,16 @@ export default {
       </el-form-item>
     </el-form>
 
-    <el-tabs v-model="active">
-      <el-tab-pane label="已分配客户" name="customer">
-        <AllocatedStaffDetailList ref="customer" :dateRange="dateRange"></AllocatedStaffDetailList>
-      </el-tab-pane>
-      <el-tab-pane label="已分配群聊" name="group">
-        <AllocatedStaffDetailList ref="group" :dateRange="dateRange" type="group"></AllocatedStaffDetailList>
-      </el-tab-pane>
-    </el-tabs>
+    <div class="g-card pt0">
+      <el-tabs v-model="active">
+        <el-tab-pane label="已分配客户" name="customer">
+          <AllocatedStaffDetailList ref="customer" :dateRange="dateRange"></AllocatedStaffDetailList>
+        </el-tab-pane>
+        <el-tab-pane label="已分配群聊" name="group">
+          <AllocatedStaffDetailList ref="group" :dateRange="dateRange" type="group"></AllocatedStaffDetailList>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
   </div>
 </template>
 

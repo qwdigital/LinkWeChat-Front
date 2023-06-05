@@ -99,11 +99,13 @@ export default {
   z-index: 9;
   text-align: right;
   background: #fff;
-  margin-bottom: -20px;
   padding: 15px 5px 20px;
   border-top: 1px solid #f8f8f8;
 }
 /* .pagination-container.hidden {
   display: none;
 } */
+.g-card > .pagination-container {
+  margin-bottom: -20px;
+}
 </style>
