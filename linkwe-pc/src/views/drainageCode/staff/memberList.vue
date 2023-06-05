@@ -7,7 +7,7 @@
         plain
         @click="removeMultFn()"
         :disabled="!deleteList.length"
-        >批量删除
+        >批量移除
       </el-button>
       <el-table :data="dataList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
