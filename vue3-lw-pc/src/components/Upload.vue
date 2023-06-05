@@ -10,6 +10,7 @@ import OSS from 'ali-oss'
 
 export default {
   components: {},
+  emits: ['update:fileUrl', 'update:fileName', 'update:fileList', 'upSuccess', 'getPicUrl', 'loadingChange'],
   props: {
     // 单文件上传时使用
     fileUrl: {
