@@ -35,7 +35,6 @@ export default defineConfig(async ({ command, mode }) => {
     // 例如 https://www.admin.vip/。如果应用被部署在一个子路径上，你就需要用这个选项指定这个子路径。例如，如果你的应用被部署在 https://www.admin.vip/admin/，则设置 baseUrl 为 /admin/。
     // base: ENV === 'production' ? '/' : '/',
     base: env.BASE_URL || '/',
-    // base:'/xdy/',
     build: {
       outDir: 'pc',
       minify: 'terser',

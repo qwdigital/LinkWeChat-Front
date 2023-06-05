@@ -189,9 +189,7 @@
   </div>
 </template>
 <script>
-import { Dialog, Toast } from 'vant'
-// import 'vant/lib/dialog/style'
-// import 'vant/lib/toast/style'
+import { showDialog, showFailToast } from 'vant'
 import { getWechatAuthUserInfo, getIP } from '@/utils/index'
 import {
   selectInfoToSurvey,
@@ -725,7 +723,7 @@ export default {
         } else {
           // this.toast(response.data)
           this.fromList = ''
-          Dialog.alert({
+          showDialog({
             title: '提示',
             message: '当前问卷您已填写完毕，暂时无法填写。',
             confirmButtonText: '我知道了',
@@ -785,7 +783,7 @@ export default {
               // this.$alert('当前问卷暂未开放回收，暂时无法填写。', '提示', {
               //           confirmButtonText: '我知道了',
               //         });
-              Dialog.alert({
+              showDialog({
                 title: '提示',
                 message: '当前问卷暂未开放回收，暂时无法填写。',
                 confirmButtonText: '我知道了',
@@ -797,7 +795,7 @@ export default {
               // this.$alert('当前问卷已暂停回收，暂时无法填写。', '提示', {
               //           confirmButtonText: '我知道了',
               //         });
-              Dialog.alert({
+              showDialog({
                 title: '提示',
                 message: '当前问卷已暂停回收，暂时无法填写。',
                 confirmButtonText: '我知道了',
@@ -809,7 +807,7 @@ export default {
               // this.$alert('当前问卷已结束回收，无法填写。', '提示', {
               //           confirmButtonText: '我知道了',
               //         });
-              Dialog.alert({
+              showDialog({
                 title: '提示',
                 message: '当前问卷已结束回收，无法填写。',
                 confirmButtonText: '我知道了',
@@ -858,7 +856,7 @@ export default {
           }
           return
         } else {
-          Dialog.alert(response.msg)
+          showDialog(response.msg)
         }
       })
     },
@@ -900,9 +898,9 @@ export default {
       that.$forceUpdate()
     },
     toast(message) {
-      Toast.fail({
+      showFailToast({
         message,
-        getContainer: '#' + this.cpUnionDomId,
+        teleport: '#' + this.cpUnionDomId,
       })
     },
   },
