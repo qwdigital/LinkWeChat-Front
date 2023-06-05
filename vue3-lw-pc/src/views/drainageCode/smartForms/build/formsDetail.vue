@@ -190,6 +190,8 @@
 </template>
 <script>
 import { showDialog, showFailToast } from 'vant'
+import 'vant/es/dialog/style'
+import 'vant/es/toast/style'
 import { getWechatAuthUserInfo, getIP } from '@/utils/index'
 import {
   selectInfoToSurvey,
