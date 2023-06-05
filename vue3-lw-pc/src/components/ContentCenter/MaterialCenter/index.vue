@@ -16,7 +16,7 @@
           :key="index"
           :label="item.label + '(' + item.list.length + ')'"
           :name="item.name">
-          <MaPage ref="page" :type="item.type" v-slot="{ list }">
+          <MaPage ref="page" :type="item.type" v-slot="{ list }" @listChange="listChange">
             <div v-if="item.type === '0'">
               <div v-if="list && list.length">
                 <el-checkbox-group v-model="paneList[picindex].list" class="imgStyle">
@@ -135,6 +135,19 @@ export default {
         str = str.substr(0, num) + '...'
       }
       return str
+    },
+        listChange(list, type) {
+      this.paneList = this.paneList.map((item) => {
+        if (type === item.type) {
+          item.list.forEach((one) => {
+            this.ids = this.ids.filter((two) => {
+              return two.id !== one.id
+            })
+          })
+          item.list = []
+        }
+        return item
+      })
     },
     dealList() {
       this.paneList = [
