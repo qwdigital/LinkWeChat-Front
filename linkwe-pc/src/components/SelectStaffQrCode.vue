@@ -1,131 +1,131 @@
 <script>
-import { getList } from '@/api/drainageCode/staff'
-import { getCodeCategoryList } from '@/api/drainageCode/staff'
+  import { getList } from '@/api/drainageCode/staff'
+  import { getCodeCategoryList } from '@/api/drainageCode/staff'
 
-export default {
-  components: {},
-  props: {
-    // 添加标签显隐
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-    title: {
-      type: String,
-      default: '选择员工活码',
-    },
-    selected: {
-      type: Array,
-      default: () => [],
-    },
-  },
-  data() {
-    return {
-      groupList: [],
-      groupIndex: 0,
-      loading: true, // 遮罩层
-      query: {
-        pageNum: 1,
-        pageSize: 10,
-        categoryId: '',
-        // createBy: '',
-        // beginTime: '',
-        // endTime: ''
-        orderByColumn: 'wqc.update_time',
-        isAsc: 'desc',
+  export default {
+    components: {},
+    props: {
+      // 添加标签显隐
+      visible: {
+        type: Boolean,
+        default: false
       },
-      list: [], // 列表
-      userArray: [], //
-      total: 0, // 总条数
-      radio: '',
-      qrUserName: '',
-      dialogVisible: false,
+      title: {
+        type: String,
+        default: '选择员工活码'
+      },
+      selected: {
+        type: Array,
+        default: () => []
+      }
+    },
+    data() {
+      return {
+        groupList: [],
+        groupIndex: 0,
+        loading: true, // 遮罩层
+        query: {
+          pageNum: 1,
+          pageSize: 10,
+          groupId: '',
+          // createBy: '',
+          // beginTime: '',
+          // endTime: ''
+          orderByColumn: 'wqc.update_time',
+          isAsc: 'desc'
+        },
+        list: [], // 列表
+        userArray: [], //
+        total: 0, // 总条数
+        radio: '',
+        qrUserName: '',
+        dialogVisible: false
+      }
+    },
+    watch: {
+      selected(val) {
+        this.setSelected()
+      },
+      list(val) {
+        this.setSelected()
+      }
+    },
+    computed: {
+      Pvisible: {
+        get() {
+          return this.visible
+        },
+        set(val) {
+          this.$emit('update:visible', val)
+        }
+      }
+    },
+    created() {
+      this.getCodeCategoryListFn()
+    },
+    mounted() {},
+    methods: {
+      switchGroup(index, data) {
+        this.groupIndex = index
+        this.query.groupId = data.id
+        this.search()
+      },
+      search() {
+        this.query.pageNum = 1
+        this.getList()
+      },
+      getCodeCategoryListFn() {
+        getCodeCategoryList({ mediaType: '6' }).then((res) => {
+          if (res.code == 200) {
+            this.groupList = res.data
+            this.query.groupId = this.groupList[0].id
+            this.groupIndex = 0
+            this.query.pageNum = 1
+            this.getList()
+          }
+        })
+      },
+      // 获取列表
+      getList(page) {
+        page && (this.query.pageNum = page)
+        this.loading = true
+        getList(this.query)
+          .then(({ rows, total }) => {
+            this.list = rows
+            this.total = +total
+            this.loading = false
+          })
+          .catch(() => {
+            this.loading = false
+          })
+      },
+      getSelectUser(data) {
+        this.userArray = data
+        this.qrUserName = data.map((e) => e.name) + ''
+        this.query.qrUserIds = data.map((e) => e.userId) + ''
+      },
+      submit() {
+        this.Pvisible = false
+        this.$emit('success', this.radio)
+      },
+      setSelected() {
+        if (!this.selected.length) return
+
+        this.list.forEach((code) => {
+          if (code.id == this.selected[0].id) {
+            this.radio = code
+          }
+        })
+      }
     }
-  },
-  watch: {
-    selected(val) {
-      this.setSelected()
-    },
-    list(val) {
-      this.setSelected()
-    },
-  },
-  computed: {
-    Pvisible: {
-      get() {
-        return this.visible
-      },
-      set(val) {
-        this.$emit('update:visible', val)
-      },
-    },
-  },
-  created() {
-    this.getCodeCategoryListFn()
-  },
-  mounted() {},
-  methods: {
-    switchGroup(index, data) {
-      this.groupIndex = index
-      this.query.categoryId = data.id
-      this.search()
-    },
-    search() {
-      this.query.pageNum = 1
-      this.getList()
-    },
-    getCodeCategoryListFn() {
-      getCodeCategoryList({ mediaType: '6' }).then((res) => {
-        if (res.code == 200) {
-          this.groupList = res.data
-          this.query.categoryId = this.groupList[0].id
-          this.groupIndex = 0
-          this.query.pageNum = 1
-          this.getList()
-        }
-      })
-    },
-    // 获取列表
-    getList(page) {
-      page && (this.query.pageNum = page)
-      this.loading = true
-      getList(this.query)
-        .then(({ rows, total }) => {
-          this.list = rows
-          this.total = +total
-          this.loading = false
-        })
-        .catch(() => {
-          this.loading = false
-        })
-    },
-    getSelectUser(data) {
-      this.userArray = data
-      this.qrUserName = data.map((e) => e.name) + ''
-      this.query.qrUserIds = data.map((e) => e.userId) + ''
-    },
-    submit() {
-      this.Pvisible = false
-      this.$emit('success', this.radio)
-    },
-    setSelected() {
-      if (!this.selected.length) return
-
-      this.list.forEach((code) => {
-        if (code.id == this.selected[0].id) {
-          this.radio = code
-        }
-      })
-    },
-  },
-}
+  }
 </script>
 
 <template>
   <div>
     <el-dialog :title="title" :visible.sync="Pvisible" width="900px" append-to-body :close-on-click-modal="false">
       <el-row type="flex" justify="space-between">
-        <el-col :span="5" class="left pad20" style="border-radius: 4px; background: #fff">
+        <el-col :span="5" class="left pad20" style="border-radius: 4px; background: #fff;">
           <div class="title">
             <div class="title-name">活码分组</div>
           </div>
@@ -135,14 +135,15 @@ export default {
               :class="{ active: groupIndex == key }"
               v-for="(group, key) in groupList"
               :key="group.id"
-              @click="switchGroup(key, group)">
+              @click="switchGroup(key, group)"
+            >
               <!-- <div class="name">{{ group.name + ' (' + group.number + ')' }}</div> -->
               <div class="name">{{ group.name }}</div>
             </div>
           </div>
         </el-col>
 
-        <el-col :span="19" style="margin-top: 0px">
+        <el-col :span="19" style="margin-top: 0px;">
           <div>
             <el-form ref="form" :model="query" label-width="">
               <el-form-item label="">
@@ -150,9 +151,10 @@ export default {
                   v-model="query.qrName"
                   class="mr10"
                   clearable
-                  style="width: 150px"
+                  style="width: 150px;"
                   placeholder="请输入活码名称"
-                  @keydown.enter="getList(1)"></el-input>
+                  @keydown.enter="getList(1)"
+                ></el-input>
 
                 <el-input
                   :value="userArray.map((e) => e.name) + ''"
@@ -160,8 +162,9 @@ export default {
                   @clear="userArray = []"
                   @focus="dialogVisible = true"
                   class="mr10"
-                  style="width: 150px"
-                  placeholder="请选择员工" />
+                  style="width: 150px;"
+                  placeholder="请选择员工"
+                />
 
                 <el-button icon="el-icon-search" circle @click="getList(1)"></el-button>
                 <!-- <el-pagination
@@ -197,7 +200,7 @@ export default {
               </el-table-column>
               <el-table-column label="使用员工" align="center" min-width="140" prop="qrUserInfos" show-overflow-tooltip>
                 <template slot-scope="{ row }">
-                  <div v-for="(unit, key) in row.qrUserInfos" :key="key" style="display: inline">
+                  <div v-for="(unit, key) in row.qrUserInfos" :key="key" style="display: inline;">
                     <template v-for="(item, index) in unit.weQrUserList">
                       <span :key="index">{{ item.userName + ' ' }}</span>
                     </template>
@@ -212,7 +215,8 @@ export default {
               :page.sync="query.pageNum"
               :limit.sync="query.pageSize"
               layout="total,prev, pager, next, jumper"
-              @pagination="getList()" />
+              @pagination="getList()"
+            />
           </div>
         </el-col>
       </el-row>
@@ -221,122 +225,123 @@ export default {
         <el-button @click="Pvisible = false">取 消</el-button>
         <el-button type="primary" @click="submit">确 定</el-button>
       </div>
-      <div style="z-index: 9999999"></div>
+      <div style="z-index: 9999999;"></div>
     </el-dialog>
 
     <SelectWeUser
       :visible.sync="dialogVisible"
       title="组织架构"
       :defaultValues="userArray"
-      @success="getSelectUser"></SelectWeUser>
+      @success="getSelectUser"
+    ></SelectWeUser>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.code-image {
-  width: 200px;
-  height: 200px;
-}
-
-.code-image--small {
-  width: 50px;
-  height: 50px;
-}
-
-.expire-icon {
-  color: red;
-}
-
-.left {
-  margin-right: 16px;
-  .title {
-    color: var(--color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .title-name {
-      color: rgba(0, 0, 0, 0.9);
-      font-size: 16px;
-      font-weight: 600;
-      // color: #333333;
-      display: flex;
-      align-items: center;
-    }
-    .title-btn {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      font-size: 14px;
-      font-weight: normal;
-      color: var(--color);
-      &:hover {
-        opacity: 0.8;
-      }
-    }
+  .code-image {
+    width: 200px;
+    height: 200px;
   }
 
-  .item-list {
-    max-height: 700px;
-    padding-top: 15px;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    .item {
-      cursor: pointer;
+  .code-image--small {
+    width: 50px;
+    height: 50px;
+  }
+
+  .expire-icon {
+    color: red;
+  }
+
+  .left {
+    margin-right: 16px;
+    .title {
+      color: var(--color);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 14px;
-      color: rgba(0, 0, 0, 0.6);
-      height: 40px;
-      line-height: 40px;
-      width: 100%;
-      padding-left: 20px;
-      .name {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
-      .dropdown {
-        // display: none;
-        .dot {
-          cursor: pointer;
-          width: 15px;
-          height: 15px;
-          line-height: 15px;
-          font-size: 14px;
-          font-family: JMT-Font, JMT;
-          font-weight: normal;
-          color: rgba(0, 0, 0, 0.6);
-          margin-right: 10px;
-          margin-left: 5px;
-          font-weight: 500;
-          .content-icon {
-            color: rgba(0, 0, 0, 0.6);
-            font-size: 12px;
-            transform: rotate(90deg);
-          }
-        }
-      }
-      &:hover {
+      .title-name {
         color: rgba(0, 0, 0, 0.9);
-        background: #f5f8fe;
-        opacity: 0.8;
-        border-radius: 2px;
-        .dropdown {
-          // display: block;
+        font-size: 16px;
+        font-weight: 600;
+        // color: #333333;
+        display: flex;
+        align-items: center;
+      }
+      .title-btn {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        font-weight: normal;
+        color: var(--color);
+        &:hover {
+          opacity: 0.8;
         }
       }
     }
 
-    .active {
-      // border-left: 2px solid var(--color);
-      color: rgba(0, 0, 0, 0.9);
-      background: #f5f8fe;
-      border-radius: 2px;
+    .item-list {
+      max-height: 700px;
+      padding-top: 15px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      .item {
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.6);
+        height: 40px;
+        line-height: 40px;
+        width: 100%;
+        padding-left: 20px;
+        .name {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        .dropdown {
+          // display: none;
+          .dot {
+            cursor: pointer;
+            width: 15px;
+            height: 15px;
+            line-height: 15px;
+            font-size: 14px;
+            font-family: JMT-Font, JMT;
+            font-weight: normal;
+            color: rgba(0, 0, 0, 0.6);
+            margin-right: 10px;
+            margin-left: 5px;
+            font-weight: 500;
+            .content-icon {
+              color: rgba(0, 0, 0, 0.6);
+              font-size: 12px;
+              transform: rotate(90deg);
+            }
+          }
+        }
+        &:hover {
+          color: rgba(0, 0, 0, 0.9);
+          background: #f5f8fe;
+          opacity: 0.8;
+          border-radius: 2px;
+          .dropdown {
+            // display: block;
+          }
+        }
+      }
+
+      .active {
+        // border-left: 2px solid var(--color);
+        color: rgba(0, 0, 0, 0.9);
+        background: #f5f8fe;
+        border-radius: 2px;
+      }
     }
   }
-}
 </style>
