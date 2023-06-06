@@ -68,39 +68,8 @@
                 </span>
               </div>
             </el-form-item>
-            <el-form-item label="排班方式" prop="qrRuleMode" v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
-              <el-radio-group v-model="codeForm.qrRuleMode">
-                <el-radio :label="1">
-                  <el-popover placement="top" trigger="hover">
-                    <span slot="reference">
-                      轮询
-                      <i class="el-icon-question"></i>
-                    </span>
-                    <div>根据二维码的优先级顺序，平均展示给访问用户。</div>
-                  </el-popover>
-                </el-radio>
-                <el-radio :label="2">
-                  <el-popover placement="top" trigger="hover">
-                    <span slot="reference">
-                      顺序
-                      <i class="el-icon-question"></i>
-                    </span>
-                    <div>二维码访问人数达到访问上限后，自动切换至下一个二维码。</div>
-                  </el-popover>
-                </el-radio>
-                <el-radio :label="3">
-                  <el-popover placement="top" trigger="hover">
-                    <span slot="reference">
-                      随机
-                      <i class="el-icon-question"></i>
-                    </span>
-                    <div>用户扫描二维码后，将在上线的员工中随机一个进行展示。</div>
-                  </el-popover>
-                </el-radio>
-              </el-radio-group>
-            </el-form-item>
             <el-form-item label="活码员工" prop="weEmpleCodeUseScops" v-if="codeForm.qrRuleType == 1">
-              <div v-if="codeForm.weEmpleCodeUseScops.length > 0 && codeForm.qrType == 1">
+              <div v-if="codeForm.weEmpleCodeUseScops.length > 0">
                 <el-tag size="medium" v-for="(item, index) in codeForm.weEmpleCodeUseScops" :key="index">
                   {{ item.businessName }}
                 </el-tag>
@@ -109,53 +78,6 @@
                 {{ codeForm.weEmpleCodeUseScops.length ? '修改' : '选择' }}员工
               </el-button>
               <div class="sub-des">单人活码只能选择一个员工，多人活码支持选择多个员工</div>
-              <div v-if="codeForm.weEmpleCodeUseScops.length > 0 && codeForm.qrType == 2">
-                <MemeberList :list="codeForm.weEmpleCodeUseScops" @update="getList"></MemeberList>
-                <!-- <el-tag
-                  class="user-el-tag"
-                  size="medium"
-                  v-for="(item, index) in codeForm.weEmpleCodeUseScops"
-                  :key="index"
-                >
-                  {{ item.businessName }}
-                  <el-input-number
-                    size="mini"
-                    v-model="codeForm.weEmpleCodeUseScops[index].businessNumber"
-                    :min="0"
-                    :max="100"
-                  ></el-input-number>
-                </el-tag> -->
-              </div>
-            </el-form-item>
-            <el-form-item
-              label="备用员工"
-              prop="weSpareUseScops"
-              v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1"
-            >
-              <div v-if="codeForm.weSpareUseScops.length > 0">
-                <el-tag size="medium" v-for="(item, index) in codeForm.weSpareUseScops" :key="index">
-                  {{ item.businessName }}
-                </el-tag>
-              </div>
-              <el-button type="primary" plain size="mini" @click="onSelectSpareUser">
-                {{ codeForm.weSpareUseScops.length ? '修改' : '选择' }}备用员工
-              </el-button>
-            </el-form-item>
-            <el-form-item
-              label="开启备用员工"
-              prop="openSpareUser"
-              v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1"
-            >
-              <el-switch v-model="codeForm.openSpareUser" :active-value="1" :inactive-value="0"></el-switch>
-              <div class="sub-des">员工当日添加用户数达每日上限后添加至备用员工。若如关闭，则自动循环下一个上限</div>
-            </el-form-item>
-            <el-form-item
-              label="添加同一员工"
-              prop="openSpareUser"
-              v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1"
-            >
-              <el-switch v-model="codeForm.isExclusive" :active-value="1" :inactive-value="0"></el-switch>
-              <div class="sub-des">开启后，同一个企业的客户会优先添加到同一个员工。</div>
             </el-form-item>
             <el-form-item v-if="codeForm.qrRuleType == 2" label="活码排班" prop="empleCodeRosterDto">
               <template v-for="(item, index) in codeForm.empleCodeRosterDto">
@@ -243,7 +165,7 @@
     ></SelectTag>
 
     <!-- 选择使用员工弹窗 -->
-    <SelectWeUser
+    <SelectUser
       :key="codeForm.qrType"
       :defaultValues="selectedUserList"
       :visible.sync="dialogVisibleSelectUser"
@@ -251,32 +173,22 @@
       :isOnlyLeaf="true"
       :isSigleSelect="codeForm.qrType == 1"
       @success="selectedUser"
-    ></SelectWeUser>
-
-    <!-- 选择使用备用员工弹窗 -->
-    <SelectWeUser
-      :key="codeForm.qrType + '-only'"
-      :defaultValues="selectedSpareUserList"
-      :visible.sync="dialogVisibleSelectSpareUser"
-      title="选择使用备用员工"
-      :isOnlyLeaf="true"
-      :isSigleSelect="codeForm.qrType == 1"
-      @success="selectedSpareUser"
-    ></SelectWeUser>
+    ></SelectUser>
   </div>
 </template>
 
 <script>
   import { getDetail, add, update, getCodeCategoryList } from '@/api/drainageCode/staff'
+  import SelectUser from '@/components/SelectWeUser'
   import SelectTag from '@/components/SelectTag'
   import SelectMaterial from '@/components/SelectMaterial'
   import WelcomeContent from '@/components/WelcomeContent.vue'
   import AddMaterial from '@/components/ContentCenter/AddMaterial'
-  import MemeberList from './memberList.vue'
+
   export default {
     components: {
       SelectTag,
-      MemeberList,
+
       SelectMaterial,
       WelcomeContent,
       AddMaterial
@@ -316,16 +228,11 @@
         codeForm: {
           qrType: 1,
           qrRuleType: 1,
-          qrRuleMode: 1,
-          openSpareUser: 0,
-          isExclusive: 0,
           weEmpleCodeUseScops: [],
-          weSpareUseScops: [],
           empleCodeRosterDto: [
             {
               type: 0,
               weEmpleCodeUseScops: [], // 员工
-              weSpareUseScops: [], // 备用员工
               weekday: [1, 2, 3, 4, 5, 6, 7], // 周期
               qrRuleType: 2,
               startDate: '00:00', // 开始时间
@@ -348,20 +255,6 @@
               trigger: 'blur'
             }
           ],
-          qrRuleMode: [
-            {
-              required: true,
-              message: '请选择',
-              trigger: 'blur'
-            }
-          ],
-          openSpareUser: [
-            {
-              required: false,
-              message: '请选择',
-              trigger: 'blur'
-            }
-          ],
           weEmpleCodeUseScops: [
             {
               required: true,
@@ -375,24 +268,16 @@
                 }
               }
             }
-          ],
-          weSpareUseScops: [
-            {
-              required: false,
-              trigger: 'blur'
-            }
           ]
         },
         isInsertClientName: true,
         dialogVisibleSelectUser: false,
-        dialogVisibleSelectSpareUser: false,
         dialogVisibleSelectTag: false,
         dialogVisibleSelectMaterial: false,
         dialogVisibleSelectWel: false,
         loading: false,
         codeCategoryList: [], // 活码分组
         selectedUserList: [], // 需要回显的选中员工
-        selectedSpareUserList: [], // 需要回显的选中备用员工
         selectedTagList: [],
         timeConflict: false
       }
@@ -410,9 +295,6 @@
       }
     },
     methods: {
-      getList(data) {
-        this.codeForm.weEmpleCodeUseScops = data
-      },
       checkStartEnd(e, index) {
         this.timeConflict = false
         this.operationIndex = index
@@ -586,8 +468,6 @@
         } else if (nextStep == 3) {
           form = 'codeForm'
         }
-        console.log(form)
-        console.log(this.codeForm.weEmpleCodeUseScops)
         this.$refs[form].validate((validate) => {
           if (validate) {
             if (nextStep === 3) {
@@ -645,31 +525,17 @@
           }
           this.codeForm.qrType = base.type
           this.codeForm.qrRuleType = base.ruleType
-          this.codeForm.qrRuleMode = base.ruleMode
-          this.codeForm.openSpareUser = base.openSpareUser
           if (base.ruleType === 1) {
             let arr = []
-            let spareArr = []
             base.qrUserInfos[0].weQrUserList.forEach((dd) => {
-              if (dd.isSpareUser === 0) {
-                let obj = {
-                  scopeId: base.qrUserInfos[0].scopeId,
-                  businessId: dd.userId,
-                  businessName: dd.userName,
-                  businessNumber: dd.schedulingNum
-                }
-                arr.push(obj)
-              } else {
-                let obj = {
-                  scopeId: base.qrUserInfos[0].scopeId,
-                  businessId: dd.userId,
-                  businessName: dd.userName
-                }
-                spareArr.push(obj)
+              let obj = {
+                scopeId: base.qrUserInfos[0].scopeId,
+                businessId: dd.userId,
+                businessName: dd.userName
               }
+              arr.push(obj)
             })
             this.codeForm.weEmpleCodeUseScops = arr
-            this.codeForm.weSpareUseScops = spareArr
           } else {
             let arr = []
             base.qrUserInfos.forEach((dd) => {
@@ -804,8 +670,7 @@
           return {
             businessId: d.userId || d.id,
             businessName: d.name,
-            businessIdType: d.userId ? 2 : 1,
-            businessNumber: 1
+            businessIdType: d.userId ? 2 : 1
           }
         })
         params.userIds += ''
@@ -816,32 +681,6 @@
         } else {
           // 自动排班
           this.codeForm.empleCodeRosterDto[this.selectedRosterIndex].weEmpleCodeUseScops = selectedUserList
-          this.checkStartEnd(null, this.selectedRosterIndex)
-        }
-      },
-      // 选择备用人员变化事件
-      selectedSpareUser(users) {
-        let params = {
-          spareUserIds: [],
-          departmentIds: []
-        }
-        const selectedSpareUserList = users.map((d) => {
-          d.userId && params.spareUserIds.push(d.userId)
-          d.id && params.departmentIds.push(d.id)
-          return {
-            businessId: d.userId || d.id,
-            businessName: d.name,
-            businessIdType: d.userId ? 2 : 1
-          }
-        })
-        params.spareUserIds += ''
-        params.departmentIds += ''
-        // 全天排班
-        if (this.codeForm.qrRuleType == 1) {
-          this.codeForm.weSpareUseScops = selectedSpareUserList
-        } else {
-          // 自动排班
-          this.codeForm.empleCodeRosterDto[this.selectedRosterIndex].weSpareUseScops = selectedSpareUserList
           this.checkStartEnd(null, this.selectedRosterIndex)
         }
       },
@@ -874,36 +713,6 @@
           this.selectedUserList = arr
         }
         this.dialogVisibleSelectUser = true
-      },
-      // 自动排班-选择备用员工
-      onSelectSpareUser(index) {
-        // 设置回显数据
-        this.selectedSpareUserList = []
-        if (this.codeForm.qrRuleType == 2) {
-          this.selectedRosterIndex = index
-          let arr = []
-          arr = this.codeForm.empleCodeRosterDto[this.selectedRosterIndex].weSpareUseScops.map((dd) => {
-            return {
-              userId: dd.businessId,
-              // id: dd.businessIdType === 1 ? dd.businessId:'',
-              name: dd.businessName
-            }
-          })
-          this.selectedSpareUserList = arr
-          // this.selectedSpareUserList = [...this.codeForm.weSpareUseScops[index]]
-        } else {
-          // this.selectedSpareUserList = [...this.codeForm.weSpareUseScops]
-          let arr = []
-          arr = this.codeForm.weSpareUseScops.map((dd) => {
-            return {
-              userId: dd.businessId,
-              // id: dd.businessIdType === 1 ? dd.businessId:'',
-              name: dd.businessName
-            }
-          })
-          this.selectedSpareUserList = arr
-        }
-        this.dialogVisibleSelectSpareUser = true
       },
       // 添加工作周期
       onAddRoster() {
@@ -986,20 +795,10 @@
         }
         myObj.attachments.push(...list)
         if (this.codeForm.qrRuleType === 1) {
-          let qrUserInfosDetail = []
-          this.codeForm.weEmpleCodeUseScops.forEach((uu) => {
-            let objDetail = {
-              userId: uu.businessId,
-              schedulingNum: uu.businessNumber
-            }
-            qrUserInfosDetail.push(objDetail)
-          })
           let obj = {
             type: 0,
             scopeId: this.codeForm.weEmpleCodeUseScops[0].scopeId ? this.codeForm.weEmpleCodeUseScops[0].scopeId : '',
-            userIds: this.codeForm.weEmpleCodeUseScops.map((dd) => dd.businessId),
-            spareUserIds: this.codeForm.weSpareUseScops.map((ss) => ss.businessId),
-            qrUserInfosDetail: qrUserInfosDetail
+            userIds: this.codeForm.weEmpleCodeUseScops.map((dd) => dd.businessId)
           }
           this.codeForm.qrUserInfos = [obj]
         } else {
@@ -1136,10 +935,5 @@
   }
   .roster-card:not(:first-child) {
     margin-top: 20px;
-  }
-  .user-el-tag {
-    margin-right: 50px;
-    width: 160px;
-    margin-left: 0px;
   }
 </style>
