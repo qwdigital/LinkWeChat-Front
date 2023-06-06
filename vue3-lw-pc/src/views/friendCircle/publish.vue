@@ -6,22 +6,24 @@
           <div class="g-card">
             <el-form-item label="可见客户" required>
               <el-radio-group v-model="form.scopeType">
-                <el-radio :label="1">全部可见</el-radio>
-                <el-radio :label="0">部分可见</el-radio>
+                <el-radio :label="1">全部客户</el-radio>
+                <el-radio :label="0">按条件筛选</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="客户标签" v-if="form.scopeType === 0">
-              <el-tag sizi="mini" v-for="(unit, key) in selectedTagList" :key="key">{{ unit.name }}</el-tag>
+            <el-form-item label="选择客户标签" v-if="form.scopeType === 0">
+              <el-tag sizi="mini" v-for="(unit, key) in selectedTagList" :key="key">{{
+                unit.name
+              }}</el-tag>
               <div>
-                <el-button type="primary" plain @click="selectedFn">选择客户标签</el-button>
+                <el-button type="primary" plain @click="selectedFn">选择标签</el-button>
               </div>
             </el-form-item>
-            <el-form-item label="添加人" v-if="form.scopeType === 0">
+            <!-- <el-form-item label="添加人" v-if="form.scopeType === 0">
               <el-tag sizi="mini" v-for="(unit, key) in selectedUserList" :key="key">{{ unit.name }}</el-tag>
               <div>
                 <el-button type="primary" plain @click="onSelectUser">选择添加人</el-button>
               </div>
-            </el-form-item>
+            </el-form-item> -->
           </div>
           <!-- <FriendCircleContent ref="friendCircleContent" :data="form"></FriendCircleContent> -->
           <AddMaterial
@@ -29,7 +31,40 @@
             @update="onBackStep"
             @submit="submit"
             :otherType="3"
-            :showPhone="false"></AddMaterial>
+            :showPhone="false"
+          ></AddMaterial>
+
+          <div class="g-card">
+            <el-form-item label="执行时间：">
+              <div class="tips">
+                可自由设定该朋友圈任务下发通知的开始时间，如未设置则默认创建时间即开始执行时间
+              </div>
+              <el-date-picker
+                v-model="form.time1"
+                type="datetime"
+                placeholder="选择年月日时分"
+                format="YYYY-MM-DD hh-mm"
+              >
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="结束时间：" required>
+              <div class="tips">
+                朋友圈任务可设置截止时间，则未完成的成员不允许再执行本条任务
+              </div>
+              <el-date-picker
+                v-model="form.time2"
+                type="datetime"
+                placeholder="选择年月日时分"
+                format="YYYY-MM-DD hh-mm"
+              >
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="自动标签：" >
+              <div class="tips">
+                可根据客户的点赞或评论行为分别打上对应标签
+              </div>
+            </el-form-item>
+          </div>
           <!-- <el-form-item label-width="0" style="margin-top: 20px; margin-bottom: 0">
             <el-button @click="onBackStep">取消</el-button>
             <el-button type="primary" @click="submit">保存</el-button>
@@ -41,12 +76,14 @@
     <SelectTag
       v-model:visible="dialogVisibleSelectTag"
       :defaultValues="selectedTagList"
-      @success="submitSelectTag"></SelectTag>
+      @success="submitSelectTag"
+    ></SelectTag>
     <SelectUser
       :defaultValues="selectedUserList"
       v-model:visible="dialogVisibleSelectUser"
       title="选择使用员工"
-      @success="selectedUser"></SelectUser>
+      @success="selectedUser"
+    ></SelectUser>
   </div>
 </template>
 
@@ -163,7 +200,8 @@ export default {
     dealType(data) {
       this.form.otherContent = []
       let arr = {}
-      let linkUrl = window.document.location.origin + '/mobile/#/metrialDetail?materiaId=' + data.materialId
+      let linkUrl =
+        window.document.location.origin + '/mobile/#/metrialDetail?materiaId=' + data.materialId
       switch (data.realType) {
         case 0:
           arr = {
@@ -233,4 +271,10 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.tips {
+  color: #aaa;
+  font-size: 12px;
+  line-height: 34px;
+}
+</style>

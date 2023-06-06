@@ -1,0 +1,349 @@
+<template>
+  <div>
+    <el-form
+      :model="query"
+      label-position="left"
+      ref="queryForm"
+      :inline="true"
+      label-width="70px"
+      class="top-search"
+    >
+      <el-form-item prop="creator">
+        <el-input v-model="query" placeholder="请输入任务名称"></el-input>
+      </el-form-item>
+      <el-form-item prop="creator">
+        <el-input v-model="query" placeholder="请输入创建人"></el-input>
+      </el-form-item>
+      <el-form-item prop="creator">
+        <!-- <el-input v-model="query" placeholder="请输入创建人"></el-input> -->
+        <el-select clearable v-model="query.type" placeholder="请选择发送方式">
+          <el-option
+            v-for="(item, index) in sendType"
+            :key="index"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item prop="creator">
+        <el-select clearable v-model="query.type" placeholder="请选择任务状态">
+          <el-option
+            v-for="(item, index) in taskStatus"
+            :key="index"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-date-picker
+          clearable
+          v-model="value1"
+          format="YYYY-MM-DD hh-mm"
+          @change="setTimeChange"
+          type="datetimerange"
+          range-separator="—"
+          start-placeholder="执行开始时间"
+          end-placeholder="执行结束时间"
+        ></el-date-picker>
+      </el-form-item>
+      <el-form-item>
+        <!-- v-hasPermi="['wecom:code:list']" -->
+        <el-button type="primary" @click="getList(1)">查询</el-button>
+        <el-button @click="resetQuery">清空</el-button>
+      </el-form-item>
+    </el-form>
+    <div class="g-card">
+      <div class="mid-action">
+        <div>
+          <!-- <span class="desc" v-if="lastSyncTime">最近同步：{{ lastSyncTime }}</span>
+          <span class="desc" v-else>暂无记录，请手动点击同步</span> -->
+          <ButtonSync :lastSyncTime="lastSyncTime" @click="syncFn">同步</ButtonSync>
+        </div>
+        <div>
+          <el-popover placement="top" trigger="hover">
+            <template #reference>
+              <el-icon-QuestionFilled class="el-icon-QuestionFilled mr5"></el-icon-QuestionFilled>
+            </template>
+            <div>企业每分钟创建朋友圈的频率：10条/分钟</div>
+          </el-popover>
+          <el-button type="primary" @click="gotoRoute" style="margin-right: 10px"
+            >新建朋友圈</el-button
+          >
+        </div>
+      </div>
+      <el-table ref="table" v-loading="loading" :data="tableData">
+        <el-table-column show-overflow-tooltip prop="creator" label="任务名称"></el-table-column>
+        <el-table-column show-overflow-tooltip prop="creator" label="发送方式"></el-table-column>
+        <el-table-column show-overflow-tooltip prop="creator" label="创建人"></el-table-column>
+        <el-table-column show-overflow-tooltip prop="creator" label="执行时间"></el-table-column>
+        <el-table-column show-overflow-tooltip prop="contentType" label="任务状态">
+          <template #default="{ row }">
+            <!-- image:图片；text:文本;video:视频；link:图文 -->
+            <div>
+              {{ dealType(row.realType) }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip prop="creator" label="完成率"></el-table-column>
+
+        <el-table-column
+          show-overflow-tooltip
+          prop="createTime"
+          width="170px"
+          label="操作时间"
+        ></el-table-column>
+        <el-table-column label="操作" align="center" width="100">
+          <template #default="{ row }">
+            <el-button text @click="detailFn(row.id)">提醒执行</el-button>
+            <el-button text @click="detailFn(row.id)">统计</el-button>
+            <el-button text @click="detailFn(row.id)">查看</el-button>
+            <el-button text @click="detailFn(row.id)">停止</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <pagination
+        :total="total"
+        v-model:page="query.pageNum"
+        v-model:limit="query.pageSize"
+        @pagination="getList()"
+      />
+    </div>
+
+    <SelectUser
+      v-model:visible="dialogVisible"
+      title="组织架构"
+      :defaultValues="userArray"
+      @success="getSelectUser"
+    ></SelectUser>
+    <el-dialog title="详情" v-model="detailDialogVisible" width="40%">
+      <el-form label-position="right" label-width="100px">
+        <span style="margin-left: 40px; font-size: 16px">内容：</span>
+        <template v-for="(data, index) in detail.otherContent" :key="index">
+          <el-form-item label=" " v-if="data.annexType === 'text'">
+            {{ data.other }}
+          </el-form-item>
+          <el-form-item label=" " v-if="data.annexType === 'video'">
+            <div style="display: inline-block; margin-right: 10px">
+              <video style="width: 200px; height: 200px" :src="data.annexUrl" controls></video>
+            </div>
+          </el-form-item>
+          <el-form-item label=" " v-if="data.annexType === 'link'">
+            <div style="display: inline-block; margin-right: 10px">
+              <span style="width: 100px; height: 100px">{{ data.annexUrl }}</span>
+            </div>
+          </el-form-item>
+        </template>
+        <el-form-item label=" ">
+          <div class="img_list">
+            <div v-for="(data, index) in detail.otherContent">
+              <el-image
+                class="item"
+                style="width: 100px; height: 100px"
+                :preview-src-list="[data.annexUrl]"
+                v-if="data.annexType === 'image'"
+                :src="data.annexUrl"
+              ></el-image>
+            </div>
+          </div>
+        </el-form-item>
+        <el-form-item label="已发送员工" v-if="detail.addUserName">
+          <el-tag v-for="(data, key) in detail.addUserName.split(',')" :key="key">{{
+            data
+          }}</el-tag>
+        </el-form-item>
+        <el-form-item label="未发送员工" v-if="detail.noAddUserName">
+          <el-tag v-for="(data, key) in detail.noAddUserName.split(',')" :key="key">{{
+            data
+          }}</el-tag>
+        </el-form-item>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="detailDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="detailDialogVisible = false">确 定</el-button>
+          </span>
+        </template>
+      </el-form>
+    </el-dialog>
+  </div>
+</template>
+<script>
+import moment from 'moment'
+import { getEnterpriceList, syncHMoments, getDetail } from '@/api/circle'
+export default {
+  name: 'enterprise',
+  components: {},
+  data() {
+    return {
+      disable: false,
+      value1: [],
+      dialogVisible: false,
+      userArray: [],
+      query: {
+        pageSize: 10,
+        pageNum: 1,
+        beginTime: '',
+        endTime: '',
+        creator: '',
+        type: 0,
+      },
+      loading: false,
+      tableData: [],
+      total: 0,
+      lastSyncTime: '',
+      detailDialogVisible: false,
+      detail: {},
+      sendType: [
+        { label: '企微群发', value: 0 },
+        { label: '成员群发', value: 1 },
+        { label: '自主发送', value: 2 },
+      ], // 发送方式
+      taskStatus: [
+        { label: '未开始', value: 0 },
+        { label: '进行中', value: 1 },
+        { label: '已结束', value: 2 },
+        { label: '已停止', value: 3 },
+      ], // 任务状态
+    }
+  },
+  methods: {
+    dealType(type) {
+      switch (type) {
+        case 4:
+          return '文本'
+          break
+        case 0:
+          return '图片'
+          break
+        case 9:
+          return '图文'
+          break
+        case 11:
+          return '小程序'
+          break
+        case 12:
+          return '文章'
+          break
+        case 2:
+          return '视频'
+          break
+        case 3:
+          return '文件'
+          break
+        case 5:
+          return '海报'
+          break
+        default:
+          return '文本'
+          break
+      }
+    },
+    gotoRoute() {
+      this.$router.push({
+        path: '/customerMaintain/friendCircle/publish',
+      })
+    },
+    setTimeChange(e) {
+      if (e) {
+        this.query.beginTime = moment(e[0]).format('YYYY-MM-DD')
+        this.query.endTime = moment(e[1]).format('YYYY-MM-DD')
+      } else {
+        this.query.beginTime = ''
+        this.query.endTime = ''
+      }
+    },
+    detailFn(id) {
+      this.detailDialogVisible = true
+      getDetail(id).then((dd) => {
+        if (dd.code === 200) {
+          this.detail = dd.data
+        }
+      })
+    },
+    syncFn() {
+      syncHMoments({ filterType: 0 }).then((res) => {
+        if (res.code === 200) {
+          this.msgSuccess(res.msg)
+          this.getList()
+        }
+      })
+    },
+    getSelectUser(data) {
+      this.userArray = data
+      this.query.creator = this.userArray
+        .map(function (obj, index) {
+          return obj.name
+        })
+        .join(',')
+    },
+    resetQuery() {
+      ;(this.query = {
+        pageSize: 10,
+        pageNum: 1,
+        beginTime: '',
+        endTime: '',
+        creator: '',
+        type: 0,
+      }),
+        (this.userArray = [])
+      this.value1 = []
+      this.getList()
+    },
+    getList(type) {
+      type && (this.query.pageNum = type)
+      this.loading = true
+      getEnterpriceList(this.query)
+        .then((res) => {
+          this.tableData = res.rows
+          this.lastSyncTime = res.lastSyncTime
+          this.setTimeDiff()
+          this.total = Number(res.total)
+          this.loading = false
+        })
+        .catch(() => {
+          this.loading = false
+        })
+    },
+    setTimeDiff() {
+      if (this.lastSyncTime) {
+        let date1 = moment(this.lastSyncTime)
+        let date2 = moment()
+        let date3 = date2.diff(date1, 'minute')
+        const h = Math.floor(date3 / 60)
+        console.log(h)
+        if (h >= 2) {
+          this.disable = false
+        } else {
+          this.disable = true
+        }
+      }
+    },
+  },
+  mounted() {},
+  created() {
+    this.value1[1] = moment(new Date()).format('YYYY-MM-DD')
+    this.value1[0] = moment(new Date()).subtract(1, 'months').format('YYYY-MM-DD')
+    this.query.beginTime = moment(this.value1[0]).format('YYYY-MM-DD')
+    this.query.endTime = moment(this.value1[1]).format('YYYY-MM-DD')
+    this.getList()
+    this.$store.setBusininessDesc(
+      `
+        <div>可对企业的朋友圈资源进行统一运营，联动互动功能进行自动打标签，统计成员朋友圈执行效率功能等等</div>
+      `
+    )
+  },
+}
+</script>
+<style lang="scss" scoped>
+.img_list {
+  display: flex;
+  flex-wrap: wrap;
+  width: 330px;
+  .item {
+    flex: 1;
+    width: 110px;
+    height: 100px;
+    margin-right: 5px;
+  }
+}
+</style>
