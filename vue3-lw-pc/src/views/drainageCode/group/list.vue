@@ -246,13 +246,16 @@ export default {
     }
   },
   watch: {
-    searchDate(dateRange) {
-      if (!dateRange || dateRange.length !== 2) {
-        this.query.beginTime = ''
-        this.query.endTime = ''
-      } else {
-        ;[this.query.beginTime, this.query.endTime] = dateRange
-      }
+    searchDate: {
+      deep: true,
+      handler(dateRange) {
+        if (!dateRange || dateRange.length !== 2) {
+          this.query.beginTime = ''
+          this.query.endTime = ''
+        } else {
+          ;[this.query.beginTime, this.query.endTime] = dateRange
+        }
+      },
     },
     // 如果实际群码弹出框关闭,刷新数据
     realCodeDialog(val) {

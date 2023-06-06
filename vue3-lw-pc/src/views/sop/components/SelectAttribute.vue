@@ -86,10 +86,13 @@ export default {
     },
   },
   watch: {
-    init() {
-      this.dataList = this.init
-      this.setEnableList()
-      this.setDisableList()
+    init: {
+      deep: true,
+      handler() {
+        this.dataList = this.init
+        this.setEnableList()
+        this.setDisableList()
+      },
     },
   },
   data() {

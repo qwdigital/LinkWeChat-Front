@@ -26,13 +26,16 @@ export default {
     }
   },
   watch: {
-    searchDate(dateRange) {
-      if (!dateRange || dateRange.length !== 2) {
-        this.query.beginTime = ''
-        this.query.endTime = ''
-      } else {
-        ;[this.query.beginTime, this.query.endTime] = dateRange
-      }
+    searchDate: {
+      deep: true,
+      handler(dateRange) {
+        if (!dateRange || dateRange.length !== 2) {
+          this.query.beginTime = ''
+          this.query.endTime = ''
+        } else {
+          ;[this.query.beginTime, this.query.endTime] = dateRange
+        }
+      },
     },
   },
   created() {

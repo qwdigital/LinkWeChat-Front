@@ -36,8 +36,11 @@ export default {
   },
   computed: {},
   watch: {
-    series() {
-      this.drawChart()
+    series: {
+      deep: true,
+      handler() {
+        this.drawChart()
+      },
     },
   },
   created() {},

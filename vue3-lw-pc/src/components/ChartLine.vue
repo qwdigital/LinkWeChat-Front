@@ -49,10 +49,13 @@ export default {
   },
   computed: {},
   watch: {
-    series() {
-      this.$nextTick(() => {
-        this.drawChart()
-      })
+    series: {
+      deep: true,
+      handler() {
+        this.$nextTick(() => {
+          this.drawChart()
+        })
+      },
     },
   },
   created() {},

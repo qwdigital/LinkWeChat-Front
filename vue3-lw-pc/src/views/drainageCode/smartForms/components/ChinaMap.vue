@@ -14,8 +14,11 @@ export default {
     })
   },
   watch: {
-    Datas() {
-      this.initEchart()
+    Datas: {
+      deep: true,
+      handler() {
+        this.initEchart()
+      },
     },
   },
   props: ['Datas'],

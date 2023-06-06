@@ -117,11 +117,17 @@ export default {
     }
   },
   watch: {
-    selected(val) {
-      this.setSelected()
+    selected: {
+      deep: true,
+      handler(val) {
+        this.setSelected()
+      },
     },
-    list(val) {
-      this.setSelected()
+    list: {
+      deep: true,
+      handler(val) {
+        this.setSelected()
+      },
     },
   },
   computed: {
