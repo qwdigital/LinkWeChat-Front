@@ -25,12 +25,13 @@ export default {
       type: String,
     },
   },
+  emits: ['change'],
   watch: {
     value(val) {
       this.content = val
     },
     imgUrl(val) {
-      let quill = this.$refs.quill.quill
+      let quill = this.$refs.quill.getQuill()
       let length = quill.getSelection().index //光标位置
       // 插入图片  图片地址
       quill.insertEmbed(length, 'image', val)
@@ -96,11 +97,11 @@ export default {
       this.uploadLoading = percent > 0 && percent < 100
     },
     insertContent(emoji) {
-      let quill = this.$refs.quill
+      let quill = this.$refs.quill.getQuill()
       quill.focus()
-      let length = 0 //quill.getSelection().index //光标位置
-      quill.setHTML(length, emoji)
-      // quill.setSelection(length + 2) //光标后移，表情占2位。所以+2
+      let length = quill.getSelection().index //光标位置
+      quill.insertText(length, emoji)
+      quill.setSelection(length + 2) //光标后移，表情占2位。所以+2
     },
   },
 }
