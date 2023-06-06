@@ -72,6 +72,7 @@ export default {
         }
       },
       immediate: true,
+      deep: true,
     },
     Pvisible(val) {
       val && this.$refs.tree && this.$refs.tree.setCheckedKeys(this.defaultValues.map((e) => e.userId || e.id))
