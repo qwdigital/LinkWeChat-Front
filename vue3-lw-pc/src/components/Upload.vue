@@ -490,7 +490,7 @@ export default {
       // if (beforeUpload) {
       //   return beforeUpload(file)
       // }
-      if (!this.multiple || this.limit == 1) {
+      else if (!this.multiple || this.limit == 1) {
         this.file = file
       } else {
         Array.isArray(this.file) || (this.file = []) // 多选
