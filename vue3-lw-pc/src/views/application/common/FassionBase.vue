@@ -90,6 +90,7 @@ export default {
   },
   watch: {
     dateRange: {
+      deep: true,
       handler(newValue, oldValue) {
         if (newValue && newValue[0]) {
           let date = new Date()

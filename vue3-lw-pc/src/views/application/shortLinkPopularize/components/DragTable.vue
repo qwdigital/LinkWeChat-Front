@@ -146,6 +146,7 @@ export default {
         this.tableData = JSON.parse(JSON.stringify(val))
       },
       immediate: true,
+      deep: true,
     },
   },
 

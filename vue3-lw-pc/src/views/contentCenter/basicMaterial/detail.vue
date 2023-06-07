@@ -511,6 +511,7 @@ export default {
         // console.log(669, this.mobForm)
       },
       immediate: true,
+      deep: true,
     },
   },
 }

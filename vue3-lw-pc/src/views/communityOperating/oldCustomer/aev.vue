@@ -193,25 +193,34 @@ export default {
   },
   watch: {
     // 日期选择器数据同步至查询参数
-    dateRange(dateRange) {
-      if (!dateRange || dateRange.length !== 2) {
-        this.form.cusBeginTime = ''
-        this.form.cusEndTime = ''
-      } else {
-        ;[this.form.cusBeginTime, this.form.cusEndTime] = dateRange
-      }
+    dateRange: {
+      deep: true,
+      handler(val) {
+        if (!val || val.length !== 2) {
+          this.form.cusBeginTime = ''
+          this.form.cusEndTime = ''
+        } else {
+          ;[this.form.cusBeginTime, this.form.cusEndTime] = val
+        }
+      },
     },
-    users(users) {
-      this.form.scopeList = users.map((user) => {
-        return user.userId
-      })
-      this.$refs.form.validateField('scopeList')
+    users: {
+      deep: true,
+      handler(val) {
+        this.form.scopeList = val.map((user) => {
+          return user.userId
+        })
+        this.$refs.form.validateField('scopeList')
+      },
     },
-    tags(tags) {
-      this.form.tagList = tags.map((tag) => {
-        return tag.tagId
-      })
-      this.$refs.form.validateField('tagList')
+    tags: {
+      deep: true,
+      handler(val) {
+        this.form.tagList = val.map((tag) => {
+          return tag.tagId
+        })
+        this.$refs.form.validateField('tagList')
+      },
     },
   },
   created() {

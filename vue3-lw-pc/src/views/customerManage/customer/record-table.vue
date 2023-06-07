@@ -47,6 +47,7 @@ export default {
   computed: {},
   watch: {
     stageList: {
+      deep: true,
       immediate: true,
       handler(val) {
         if (val) {
