@@ -647,6 +647,7 @@
           this.codeForm.qrRuleType = base.ruleType
           this.codeForm.qrRuleMode = base.ruleMode
           this.codeForm.openSpareUser = base.openSpareUser
+          this.codeForm.isExclusive = base.isExclusive
           if (base.ruleType === 1) {
             let arr = []
             let spareArr = []
