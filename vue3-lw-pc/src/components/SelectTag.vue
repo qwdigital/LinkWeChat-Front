@@ -45,6 +45,7 @@ export default {
         this.selectedList = [...val]
       },
       immediate: true,
+      deep: true,
     },
     // 下一主版本弃用
     defaultValues: {
@@ -52,6 +53,7 @@ export default {
         this.selectedList = [...val]
       },
       immediate: true,
+      deep: true,
     },
   },
   computed: {

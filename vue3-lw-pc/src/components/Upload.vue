@@ -118,6 +118,7 @@ export default {
       handler(value) {
         this.fileListWatch = value
       },
+      deep: true,
     },
     loading(val) {
       this.$emit('loadingChange', val)

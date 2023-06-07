@@ -43,6 +43,7 @@ export default {
         this.selectedList = [...val]
       },
       immediate: true,
+      deep: true,
     },
   },
   computed: {

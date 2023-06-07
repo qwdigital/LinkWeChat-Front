@@ -46,8 +46,11 @@ export default {
       },
     },
 
-    searchPool(list) {
-      this.initFuse(list)
+    searchPool: {
+      deep: true,
+      handler(list) {
+        this.initFuse(list)
+      },
     },
     show(value) {
       if (value) {
