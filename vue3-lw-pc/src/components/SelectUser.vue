@@ -42,6 +42,11 @@ export default {
       default: () => [],
     },
     destroyOnClose: Boolean,
+    // 选中部门时，是否用部门代替显示该部门下所有人员
+    departReplaceUser: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -81,6 +86,19 @@ export default {
           this.$refs.tree && this.$refs.tree.setCheckedKeys(this.defaultValues.map((e) => e.userId || e.id))
         }, 300)
       }
+    },
+    dealedUserList() {
+      if (!this.departReplaceUser) {
+        return this.userList
+      }
+      // 提取所有部门
+      let arr = this.userList.filter((e) => e.isParty)
+      // 提取所有非选中部门的人员
+      let userList = this.userList.filter((e) => !e.isParty && !arr.some((e2) => e.userDepts[0]?.deptId == e2.deptId))
+      // 提取无父级部门
+      arr = arr.filter((e) => !arr.some((e2) => e.parentId == e2.id))
+      arr.push(...userList)
+      return arr
     },
   },
   computed: {
@@ -184,6 +202,14 @@ export default {
         getDeptUser({ deptId: node.data.id }).then(({ rows }) => {
           let arr = this.handleUser(rows)
           node.data.children && arr.push(...node.data.children)
+          // 懒加载选中状态的子节点不会触发子节点的选中事件，需要手动触发
+          if (node.checked) {
+            setTimeout(() => {
+              arr.forEach((e) => {
+                this.handleCheckChange(e, true)
+              })
+            }, 200)
+          }
           resolve(arr)
         })
       }
@@ -243,7 +269,7 @@ export default {
     // 确 定
     submit() {
       this.Pvisible = false
-      this.$emit('success', [...this.userList])
+      this.$emit('success', [...this.dealedUserList])
     },
     // 取消选择
     cancle(key) {
@@ -304,7 +330,7 @@ export default {
       </div>
       <div class="right user-list">
         <div>选择人员列表</div>
-        <div v-for="(item, index) in userList" :key="index" class="flex aic">
+        <div v-for="(item, index) in dealedUserList" :key="index" class="flex aic">
           <el-icon-UserFilled class="el-icon-UserFilled"></el-icon-UserFilled>
           <span class="user-name">{{ item.name }}</span>
           <el-icon-minus class="el-icon-minus cp" title="取消选择" @click="cancle(item.userId)"></el-icon-minus>
