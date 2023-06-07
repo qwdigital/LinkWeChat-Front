@@ -87,19 +87,6 @@ export default {
         }, 300)
       }
     },
-    dealedUserList() {
-      if (!this.departReplaceUser) {
-        return this.userList
-      }
-      // 提取所有部门
-      let arr = this.userList.filter((e) => e.isParty)
-      // 提取所有非选中部门的人员
-      let userList = this.userList.filter((e) => !e.isParty && !arr.some((e2) => e.userDepts[0]?.deptId == e2.deptId))
-      // 提取无父级部门
-      arr = arr.filter((e) => !arr.some((e2) => e.parentId == e2.id))
-      arr.push(...userList)
-      return arr
-    },
   },
   computed: {
     Pvisible: {
@@ -122,6 +109,19 @@ export default {
           return !data.id
         },
       }
+    },
+    dealedUserList() {
+      if (!this.departReplaceUser) {
+        return this.userList
+      }
+      // 提取所有部门
+      let arr = this.userList.filter((e) => e.isParty)
+      // 提取所有非选中部门的人员
+      let userList = this.userList.filter((e) => !e.isParty && !arr.some((e2) => e.userDepts[0]?.deptId == e2.deptId))
+      // 提取无父级部门
+      arr = arr.filter((e) => !arr.some((e2) => e.parentId == e2.id))
+      arr.push(...userList)
+      return arr
     },
   },
   created() {},
