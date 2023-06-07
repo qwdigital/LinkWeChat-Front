@@ -8,14 +8,14 @@
   </div>
 </template>
 <script>
-import Staff from './compoments/Staff.vue'
-import Custom from './compoments/Custom.vue'
-import Interaction from './compoments/Interaction.vue'
+import Staff from './components/Staff.vue'
+import Custom from './components/Custom.vue'
+import Interaction from './components/Interaction.vue'
 export default {
-  compoments: { Staff, Custom, Interaction },
+  components: { Staff, Custom, Interaction },
   data() {
     return {
-      activeName: 'second',
+      activeName: 'first',
     }
   },
   methods: {
