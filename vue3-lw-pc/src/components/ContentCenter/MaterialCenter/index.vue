@@ -22,7 +22,10 @@
                 <el-checkbox-group v-model="paneList[picindex].list" class="imgStyle">
                   <div class="imgItem" v-for="(item, index) in list" :key="index" @click="changeBox($event, item)">
                     <div class="checkboxStyle">
-                      <el-checkbox :label="item" style="width: 20px" :checked="item.isCheck"></el-checkbox>
+                      <el-checkbox
+                        :label="item"
+                        style="width: 20px; height: 20px"
+                        :checked="item.isCheck"></el-checkbox>
                       <el-tooltip
                         :content="item.materialName"
                         placement="top"
@@ -136,7 +139,7 @@ export default {
       }
       return str
     },
-        listChange(list, type) {
+    listChange(list, type) {
       this.paneList = this.paneList.map((item) => {
         if (type === item.type) {
           item.list.forEach((one) => {

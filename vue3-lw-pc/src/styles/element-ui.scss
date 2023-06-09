@@ -582,6 +582,9 @@
     // border-top: 1px solid #dfe6ec;
     padding: 15px 0;
   }
+  .cell {
+    padding: 0 10px;
+  }
   th.el-table__cell.is-leaf {
     border-bottom: 0;
   }
@@ -635,6 +638,10 @@
 // 滚动条宽度
 .el-scrollbar__bar.is-vertical {
   width: 5px;
+}
+
+.el-checkbox-group {
+  line-height: initial;
 }
 
 // }

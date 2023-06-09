@@ -38,7 +38,6 @@
                     <el-form-item prop="liveStartDate">
                       <el-date-picker
                         v-model="liveForm.liveStartDate"
-                        :default-time="defaultTime"
                         v-bind="pickerOptions"
                         type="date"
                         placeholder="选择年月日"
@@ -68,7 +67,6 @@
                     <el-form-item prop="liveEndDate">
                       <el-date-picker
                         v-model="liveForm.liveEndDate"
-                        :default-time="defaultTime"
                         v-bind="pickerOptions"
                         type="date"
                         placeholder="选择年月日"
@@ -360,11 +358,11 @@ export default {
     // disabled() {
     //   return this.$route.query.type == "view";
     // },
-    defaultTime() {
-      let date = new Date()
-      date.setMinutes(date.getMinutes() - date.getTimezoneOffset() + 60)
-      return date.toJSON().substring(11, 19)
-    },
+    // defaultTime() {
+    //   let date = new Date()
+    //   date.setMinutes(date.getMinutes() - date.getTimezoneOffset() + 60)
+    //   return date.toJSON().substring(11, 19)
+    // },
   },
   watch: {},
   created() {
