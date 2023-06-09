@@ -2,7 +2,7 @@
 import { updateBirthday, getDetail, getSummary, getFollowUpRecord, getCustomerInfoByUserId } from '@/api/customer'
 import { getList } from '@/api/salesCenter/businessConver.js'
 
-import { dictAddType, dictJoinGroupType, dictTrackState } from '@/utils/dictionary'
+import { dictJoinGroupType, dictTrackState } from '@/utils/dictionary'
 import InfoTab from './customer/infoTab.vue'
 
 export default {
@@ -20,7 +20,7 @@ export default {
           return time.getTime() > Date.now()
         },
       },
-      dictAddType,
+      dictAddType: {},
       dictJoinGroupType,
       dictTrackState,
 
@@ -29,10 +29,18 @@ export default {
     }
   },
   created() {
+    this.findCustomerAddWay()
     this.getDetail()
     this.getStage()
   },
   methods: {
+    findCustomerAddWay() {
+      findCustomerAddWay().then(({ data }) => {
+        data.forEach((element) => {
+          this.dictAddType[element.code] = element.value
+        })
+      })
+    },
     getStage() {
       getList().then((res) => {
         this.stageList = res.data
