@@ -19,7 +19,7 @@
               content="仅统计话术中轨迹素材被查看情况统计，排行权重：查看总人数 > 查看总次数 > 发送总次数"
               placement="top-start"
             >
-              <i slot="reference" class="el-icon-QuestionFilled"></i>
+              <el-icon-QuestionFilled  slot="reference" class="el-icon-QuestionFilled"/>
             </el-popover> -->
       </div>
       <div>

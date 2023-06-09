@@ -20,10 +20,10 @@
       <el-table v-loading="loading" :data="list" @current-change="currentChange">
         <el-table-column width="60">
           <template #default="{ row }">
-            <i
+            <el-icon-check
               v-if="welSelected ? welSelected.id === row.id : false"
               class="el-icon-check"
-              style="color: rgb(65, 133, 244); font-size: 25px"></i>
+              style="color: rgb(65, 133, 244); font-size: 25px"></el-icon-check>
           </template>
         </el-table-column>
         <el-table-column :label="isGroup ? '群发内容' : '欢迎语'" align="center" min-width="250" show-overflow-tooltip>

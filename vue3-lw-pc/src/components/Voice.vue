@@ -70,10 +70,10 @@ export default {
 
 <template>
   <div>
-    <i
+    <el-icon-microphone
       :class="['el-icon-microphone', actived && 'actived']"
       style="font-size: 40px; color: var(--color)"
-      @click.stop="play('attachment')"></i>
+      @click.stop="play('attachment')" />
 
     <!-- <AudioPlayer
           :audio-list="audioSrc"

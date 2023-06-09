@@ -103,7 +103,7 @@ export default {
         <div>
           {{ customer.customerName + (customer.corpName ? '-' + customer.corpName : '') }}
 
-          <i :class="['el-icon-s-custom', { 1: 'man', 2: 'woman' }[customer.gender]]"></i>
+          <el-icon-Avatar :class="['el-icon-Avatar', { 1: 'man', 2: 'woman' }[customer.gender]]" />
         </div>
         <div class="mt10">
           <span :style="{ color: customer.customerType === 1 ? '#4bde03' : '#f9a90b' }">

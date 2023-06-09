@@ -14,7 +14,7 @@
       </template>
       <ul class="icon-ul">
         <li v-for="icon in iconList" :key="icon" :class="active === icon ? 'active-item' : ''" @click="onSelect(icon)">
-          <i :class="icon" />
+          <components :is="icon" :class="icon" />
           <div>{{ icon }}</div>
         </li>
       </ul>

@@ -155,7 +155,7 @@ export default {
               <el-image style="width: 50px; height: 50px; flex: none" :src="row.avatar" fit="fill"></el-image>
               <div class="ml10">
                 <p>{{ row.customerName }}</p>
-                <i :class="['el-icon-s-custom', { 1: 'man', 2: 'woman' }[row.gender]]"></i>
+                <el-icon-Avatar :class="['el-icon-Avatar', { 1: 'man', 2: 'woman' }[row.gender]]" />
                 <span :style="{ color: row.customerType == 1 ? '#4bde03' : '#f9a90b' }">
                   {{ { 1: '@微信', 2: '@企业微信' }[row.customerType] }}
                 </span>
