@@ -103,6 +103,8 @@ export default {
       // const operIds = id || this.ids + ''
       this.$confirm('是否确认删除？该操作不可撤销，请谨慎操作。', {
         title: '警告',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         type: 'warning',
       })
         .then(function () {

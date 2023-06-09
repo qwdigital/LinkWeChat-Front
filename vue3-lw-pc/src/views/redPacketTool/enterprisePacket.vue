@@ -325,6 +325,8 @@ export default {
     },
     startOrStop({ id, status }) {
       this.$confirm(`确认${{ 0: '停用', 1: '启用' }[status]}吗?`, '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
         startOrStop({
@@ -338,6 +340,8 @@ export default {
     },
     remove(id) {
       this.$confirm('是否确认删除吗?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
         id = id || this.selectedIds.join(',')

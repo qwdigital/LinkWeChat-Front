@@ -346,6 +346,8 @@ export default {
       const Ids = id || this.selected + ''
       let _this = this
       this.$confirm('是否确认删除当前' + this.typeTitle[this.type] + '？该操作不可撤销，请谨慎操作。', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         type: 'warning',
       })
         .then(function () {

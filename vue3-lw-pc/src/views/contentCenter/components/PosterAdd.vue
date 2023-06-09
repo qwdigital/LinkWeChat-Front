@@ -637,6 +637,8 @@ export default {
           let activeObject = canvas.getActiveObject()
           if (activeObject) {
             this.$confirm('是否确认删除吗?', '警告', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
               type: 'warning',
             }).then(() => {
               canvas.remove(activeObject)
