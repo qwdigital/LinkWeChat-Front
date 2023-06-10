@@ -70,6 +70,7 @@ export default {
   watch: {},
   computed: {},
   created() {
+    dictAddType.then((res) => (this.dictAddType = res))
     this.getStage()
     this.getList()
     this.getListTag()
