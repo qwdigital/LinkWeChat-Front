@@ -36,7 +36,7 @@
         </el-descriptions>
       </div>
       <div class="g-card mt20">
-        <el-tabs v-model="activeName" @tab-click="tabClick">
+        <el-tabs v-model="activeName" @tab-change="tabClick">
           <el-tab-pane label="客户列表" name="first">
             <div v-if="activeName === 'first'">
               <el-form label-position="left" inline label-width="80px">

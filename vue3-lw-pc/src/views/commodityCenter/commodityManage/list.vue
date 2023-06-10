@@ -198,9 +198,9 @@ export default {
     </div>
 
     <!-- 弹窗 -->
-    <el-dialog :title="form.id ? '修改' : '新建'" v-model="dialogVisible" :close-on-click-modal="false">
-      <el-row>
-        <el-col :span="12">
+    <el-dialog :title="form.id ? '修改' : '新建'" v-model="dialogVisible" :close-on-click-modal="false" width="auto">
+      <div class="flex">
+        <div :span="12">
           <el-form ref="form" :model="form" :rules="rules" label-width="130px">
             <el-form-item label="商品封面" prop="picture">
               <upload v-model:fileUrl="form.picture" type="0" :maxSize="10" :format="['jpg', 'png']">
@@ -232,8 +232,8 @@ export default {
               </upload>
             </el-form-item>
           </el-form>
-        </el-col>
-        <el-col :span="12">
+        </div>
+        <div :span="12">
           <PhoneTemplate>
             <div class="phone-content">
               <el-image
@@ -247,8 +247,8 @@ export default {
               <el-image v-for="(item, index) in fileList" class="commodity-img" :src="item.url" :key="index"></el-image>
             </div>
           </PhoneTemplate>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
       <template #footer>
         <div class="dialog-footer ar">
           <el-button type="primary" v-loading="submitLoading" @click="submit">确 定</el-button>

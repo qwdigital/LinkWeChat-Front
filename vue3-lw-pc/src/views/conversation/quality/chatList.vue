@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog title="查看详情" :close-on-click-modal="false" :show-close="false" v-model="Pvisible">
-      <el-tabs v-model="activeTab" @tab-click="(v) => opened.includes(v.name) || opened.push(v.name)">
+      <el-tabs v-model="activeTab" @tab-click="(v) => opened.includes(v.paneName) || opened.push(v.paneName)">
         <el-tab-pane v-for="(item, index) of list" :key="index" :label="item.label" :name="item.type">
           <chatListClassTab
             v-if="opened.includes(item.type)"

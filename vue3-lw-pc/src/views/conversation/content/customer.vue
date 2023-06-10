@@ -56,7 +56,7 @@
               prefix-icon="el-icon-search"
               v-model="chatContent"
               @keyup.enter="getChatList()"></el-input>
-            <el-tabs v-model="activeName" @tab-click="getChatList()">
+            <el-tabs v-model="activeName" @tab-change="getChatList()">
               <el-tab-pane label="单聊" name="0">
                 <userList
                   v-if="activeName == 0"

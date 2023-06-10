@@ -1,7 +1,7 @@
 <!-- 敏感行为警告页面 -->
 <template>
   <div class="alarming">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName" @tab-change="handleClick">
       <el-tab-pane label="敏感记录" name="1">
         <el-table :data="recordSensitive" stripe style="width: 100%" :header-cell-style="{ background: '#fff' }">
           <el-table-column prop="createBy" label="操作员工"></el-table-column>
