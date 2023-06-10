@@ -169,7 +169,7 @@ export default {
       this.$router.push({ path: path, query: { id } })
     },
     removeFn(id) {
-      this.$confirm('是否确认删除当前质检规则？?', '提示', {
+      this.$confirm('是否确认删除当前质检规则？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
