@@ -35,7 +35,10 @@
           </el-col>
           <el-col style="flex-basis: 370px">
             <div class="g-card">
-              <PreviewInPhone name="客群" :list="[form.wematerial]" :templateInfo="form.content"></PreviewInPhone>
+              <PreviewInPhone
+                name="客群"
+                :list="form.wematerial && [form.wematerial]"
+                :templateInfo="form.content"></PreviewInPhone>
             </div>
           </el-col>
         </el-row>

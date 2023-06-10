@@ -410,6 +410,10 @@
 .el-pagination.is-background .el-pager li:disabled {
   background-color: transparent;
 }
+// 分页大小选择框
+.el-pagination .el-select .el-input {
+  width: 115px;
+}
 // to fixed https://github.com/ElemeFE/element/issues/2461
 // .el-dialog {
 //   transform: none;

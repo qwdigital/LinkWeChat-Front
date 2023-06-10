@@ -50,6 +50,9 @@ export default {
   mounted() {
     this.clipboard = new this.ClipboardJS('.copy-btn')
   },
+  unmounted() {
+    this.clipboard.destroy()
+  },
   methods: {},
 }
 </script>
