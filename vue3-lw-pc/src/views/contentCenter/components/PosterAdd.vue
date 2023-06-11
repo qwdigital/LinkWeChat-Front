@@ -639,6 +639,7 @@ export default {
         // })
 
         deleteBtn.addEventListener('click', () => {
+          let activeObject = canvas.getActiveObject()
           if (activeObject) {
             this.$confirm('是否确认删除吗?', '警告', {
               confirmButtonText: '确定',
