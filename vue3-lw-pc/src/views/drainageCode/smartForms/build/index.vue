@@ -398,7 +398,7 @@ export default {
     activeFormItem(element) {
       this.activeData = element
       this.activeId = element.formId
-      // this.$forceUpdate()
+      this.$forceUpdate()
     },
     onEnd(obj, a) {
       if (obj.from !== obj.to) {
@@ -412,6 +412,7 @@ export default {
       this.activeFormItem(clone)
     },
     cloneComponent(origin) {
+      debugger
       const clone = JSON.parse(JSON.stringify(origin))
       clone.formId = this.idGlobal = uuid()
       clone.span = formConf.span
@@ -460,8 +461,11 @@ export default {
       document.getElementById('copyNode').click()
     },
     empty() {
-      this.$confirm('确定要清空所有组件吗？', '提示', {confirmButtonText: '确定',
-        cancelButtonText: '取消', type: 'warning' }).then(() => {
+      this.$confirm('确定要清空所有组件吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
         this.drawingList = []
       })
     },

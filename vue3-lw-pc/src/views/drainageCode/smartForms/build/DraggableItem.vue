@@ -3,14 +3,14 @@ import draggable from 'vuedraggable'
 import render from './generator/render'
 const components = {
   itemBtns(element, index, parent) {
-    const { copyItem, deleteItem } = this.$attrs
+    const { onCopyItem, onDeleteItem } = this.$attrs
     return (
       <>
         <span
           class='drawing-item-copy ssc'
           title='复制'
           onClick={(event) => {
-            copyItem(element, parent)
+            onCopyItem(element, parent)
             event.stopPropagation()
           }}>
           <el-icon-CopyDocument class='el-icon-CopyDocument' />
@@ -19,7 +19,7 @@ const components = {
           class='drawing-item-delete ssc'
           title='删除'
           onClick={(event) => {
-            deleteItem(index, parent)
+            onDeleteItem(index, parent)
             event.stopPropagation()
           }}>
           <el-icon-delete class='el-icon-delete' />
@@ -30,7 +30,7 @@ const components = {
 }
 const layouts = {
   colFormItem(element, index, parent) {
-    const { activeItem } = this.$attrs
+    const { onActiveItem } = this.$attrs
     console.log('element.formId', element.formId)
     let className = this.activeId === element.formId ? 'drawing-item active-from-item' : 'drawing-item'
     //只是用顶部样式
@@ -42,7 +42,7 @@ const layouts = {
         span={element.span}
         class={className}
         onClick={(event) => {
-          activeItem && activeItem(element)
+          onActiveItem && onActiveItem(element)
           event.stopPropagation()
         }}>
         <el-form-item
@@ -80,7 +80,7 @@ const layouts = {
     )
   },
   rowFormItem(element, index, parent) {
-    const { activeItem } = this.$attrs
+    const { onActiveItem } = this.$attrs
     const className = this.activeId === element.formId ? 'drawing-row-item active-from-item' : 'drawing-row-item'
     let child = renderChildren.apply(this, arguments)
     if (element.type === 'flex') {
@@ -97,7 +97,7 @@ const layouts = {
           gutter={element.gutter}
           class={className}
           onClick={(event) => {
-            activeItem && activeItem(element)
+            onActiveItem && onActiveItem(element)
             event.stopPropagation()
           }}>
           <span class='component-name'>{element.componentName}</span>
