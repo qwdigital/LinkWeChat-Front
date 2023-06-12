@@ -1,5 +1,11 @@
 <script>
-import { updateBirthday, getDetail, getSummary, getFollowUpRecord, getCustomerInfoByUserId } from '@/api/customer'
+import {
+  updateBirthday,
+  getDetail,
+  findCustomerAddWay,
+  getFollowUpRecord,
+  getCustomerInfoByUserId,
+} from '@/api/customer'
 import { getList } from '@/api/salesCenter/businessConver.js'
 
 import { dictJoinGroupType, dictTrackState } from '@/utils/dictionary'
