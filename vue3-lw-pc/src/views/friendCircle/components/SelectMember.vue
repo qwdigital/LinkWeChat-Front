@@ -1,49 +1,67 @@
 <template>
   <div class="select_content">
-    <div>
-      <el-checkbox
-        v-model="form.executeUserCondit.change"
-        @change="clearUserData"
-        label="选择成员"
-      ></el-checkbox>
-      <div class="select_unit" v-if="form.executeUserCondit.change">
-        <div v-if="selectedUserList.length > 0">
-          <el-tag v-for="(item, index) in selectedUserList" :key="index">{{ item.name }}</el-tag>
+    <!-- 部门与岗位开始 -->
+    <div class="flex">
+      <div class="lable_text">选择成员来源：</div>
+      <div>
+        <div class="select_unit">
+          <el-button @click="dialogVisibleSelectDept = true" :disabled="isDetail"
+            >{{ selectedDeptList.length ? '修改' : '选择' }}部门范围</el-button
+          >
+          <!-- <el-popover
+            style="display: inline-block; margin-left: 10px"
+            placement="top"
+            trigger="hover"
+          >
+            <div slot="reference">
+              <i class="el-icon-question"></i>
+            </div>
+            <div>可根据地域行政管理规划/组织架构部门，与岗位的组合条件来筛选执行成员。</div>
+          </el-popover>-->
+          <div v-if="selectedDeptList.length > 0">
+            <el-tag size="small" v-for="(item, index) in selectedDeptList" :key="index">
+              {{ item.deptName }}
+            </el-tag>
+          </div>
         </div>
-        <el-button icon="el-icon-plus" type="primary" plain @click="dialogVisibleSelectUser = true">
-          {{ selectedUserList.length ? '修改' : '选择' }}员工
-        </el-button>
+        <div class="select_unit">
+          <el-button @click="dialogVisibleSelectPost = true" :disabled="isDetail">
+            {{ selectedPostList.length ? '修改' : '选择' }}岗位
+          </el-button>
+          <div v-if="selectedPostList.length > 0">
+            <el-tag size="small" v-for="(item, index) in selectedPostList" :key="index">{{
+              item
+            }}</el-tag>
+          </div>
+        </div>
       </div>
     </div>
-    <div>
-      <el-checkbox
-        v-model="form.executeDeptCondit.change"
-        @change="clearDeptsData"
-        label="选择部门范围与岗位"
-      ></el-checkbox>
-      <el-popover placement="top" trigger="hover">
-        <template #reference>
-          <el-icon-QuestionFilled class="el-icon-QuestionFilled ml5"></el-icon-QuestionFilled>
-        </template>
-        <div>可根据地域行政管理规划/组织架构部门，与岗位的组合条件来筛选执行成员。</div>
-      </el-popover>
-      <div class="select_unit" v-if="form.executeDeptCondit.change">
-        <div v-if="selectedDeptList.length > 0">
-          <el-tag v-for="(item, index) in selectedDeptList" :key="index">{{
-            item.deptName
+    <!-- 部门与岗位结束 -->
+    <div class="flex">
+      <div class="lable_text"></div>
+      <div class="select_unit">
+        <el-button @click="dialogVisibleSelectUser = true" :disabled="isDetail"
+          >{{ selectedUserList.length ? '修改' : '选择' }}员工</el-button
+        >
+        <div v-if="selectedUserList.length > 0">
+          <el-tag size="small" v-for="(item, index) in selectedUserList" :key="index">
+            {{ item.name }}
+          </el-tag>
+        </div>
+      </div>
+    </div>
+    <!-- 选择客户标签 -->
+    <div class="flex mt10">
+      <div class="lable_text">选择客户标签：</div>
+      <div class="select_unit">
+        <el-button plain @click="dialogVisibleSelectTag = true" :disabled="isDetail"
+          >{{ selectedTagList.length ? '修改' : '选择' }}标签</el-button
+        >
+        <div v-if="selectedTagList.length > 0">
+          <el-tag sizi="mini" v-for="(unit, key) in selectedTagList" :key="key">{{
+            unit.name
           }}</el-tag>
         </div>
-        <el-button icon="el-icon-plus" type="primary" plain @click="dialogVisibleSelectDept = true">
-          {{ selectedDeptList.length ? '修改' : '选择' }}部门
-        </el-button>
-      </div>
-      <div class="select_unit" v-if="form.executeDeptCondit.change">
-        <div v-if="selectedPostList.length > 0">
-          <el-tag v-for="(item, index) in selectedPostList" :key="index">{{ item }}</el-tag>
-        </div>
-        <el-button icon="el-icon-plus" type="primary" plain @click="dialogVisibleSelectPost = true">
-          {{ selectedPostList.length ? '修改' : '选择' }}岗位
-        </el-button>
       </div>
     </div>
     <SelectDept
@@ -58,43 +76,56 @@
       title="选择岗位"
       @success="selectedPost"
     ></SelectPost>
-    <SelectUser
+    <SelectWeUser
       :defaultValues="selectedUserList"
       v-model:visible="dialogVisibleSelectUser"
       title="选择使用员工"
       :isOnlyLeaf="true"
       @success="selectedUser"
-    ></SelectUser>
+    ></SelectWeUser>
+    <SelectTag
+      v-model:visible="dialogVisibleSelectTag"
+      :defaultValues="selectedTagList"
+      @success="submitSelectTag"
+    ></SelectTag>
   </div>
 </template>
 <script>
 import { getDeptTree, getDeptUserAll } from '@/api/organization'
-import SelectDept from '@/components/SelectDept'
-import SelectPost from '@/components/SelectPost'
+import { getList } from '@/api/customer/tag'
 export default {
   name: 'select-member',
   components: {
-    SelectDept,
-    SelectPost,
+    SelectDept: defineAsyncComponent(() => import('@/components/SelectDept')),
+    SelectWeUser: defineAsyncComponent(() => import('@/components/SelectUser')),
+    SelectPost: defineAsyncComponent(() => import('@/components/SelectPost')),
+    SelectTag: defineAsyncComponent(() => import('@/components/SelectTag')),
   },
   props: {
     initData: {
       type: Object,
       default: {
-        executeUserCondit: {
-          change: false,
-          weUserIds: [],
-        },
-        executeDeptCondit: {
-          change: false,
-          deptIds: [],
-          posts: [],
-        },
+        userIds: [],
+        deptIds: [],
+        posts: [],
+        customerTag: [],
       },
     },
+    // 是否显示标题（选择成员来源：）
+    // show: {
+    //   type: Boolean,
+    //   default: false,
+    // },
+    userWithout: {
+      type: Boolean,
+      default: false,
+    },
+    // 查询账号类型：null:企微，非企微  1:企微  0:非企微
+    accountType: { type: [String, Number], default: 1 },
   },
   data() {
     return {
+      isDetail: false,
       selectMember: false,
       selectDept: false,
       selectedUserList: [],
@@ -102,17 +133,14 @@ export default {
       selectedDeptList: [],
       dialogVisibleSelectDept: false,
       dialogVisibleSelectPost: false,
+      dialogVisibleSelectTag: false,
+      selectedTagList: [],
       selectedPostList: [],
       form: {
-        executeUserCondit: {
-          change: false,
-          weUserIds: [],
-        },
-        executeDeptCondit: {
-          change: false,
-          deptIds: [],
-          posts: [],
-        },
+        userIds: [],
+        deptIds: [],
+        posts: [],
+        customerTag: [],
       },
     }
   },
@@ -123,11 +151,10 @@ export default {
       handler(newData, old) {
         if (this.initData) {
           this.form = JSON.parse(JSON.stringify(this.initData))
-          if (this.form && this.form.executeUserCondit.change) {
+          if (this.form) {
             this.setEditUser()
-          }
-          if (this.form && this.form.executeDeptCondit.change) {
             this.setEditDept()
+            this.setEditTag()
           }
         }
       },
@@ -135,73 +162,55 @@ export default {
   },
   methods: {
     validateFn() {
-      if (!this.form.executeUserCondit.change && !this.form.executeDeptCondit.change) {
-        this.msgError('请选择添加成员！')
+      // if (!this.form.executeUserCondit.change && !this.form.executeDeptCondit.change) {
+      //   this.msgError('请选择添加成员！')
+      //   return false
+      // }
+      if (
+        !(this.form.userIds && this.form.userIds.length) &&
+        !(this.form.posts && this.form.posts.length) &&
+        !(this.form.deptIds && this.form.deptIds.length)
+      ) {
+        this.msgError('请选择发送范围的条件！')
         return false
+      } else {
+        return true
       }
-      if (this.form.executeUserCondit.change) {
-        if (
-          !this.form.executeUserCondit.weUserIds ||
-          !this.form.executeUserCondit.weUserIds.length
-        ) {
-          this.msgError('请选择成员！')
-          return false
-        }
-      }
-      if (this.form.executeDeptCondit.change) {
-        if (
-          !this.form.executeDeptCondit.posts.length &&
-          !this.form.executeDeptCondit.deptIds.length
-        ) {
-          this.msgError('请选择部门范围与岗位！')
-          return false
-        }
-      }
-      return true
     },
     selectedPost(data) {
       this.selectedPostList = data
-      this.form.executeDeptCondit.posts = data
+      this.form.posts = data
       this.changeFn()
     },
     selectedUser(data) {
       this.selectedUserList = data
-      this.form.executeUserCondit.weUserIds = data.map((dd) => {
+      this.form.userIds = data.map((dd) => {
         return dd.userId
       })
       this.changeFn()
     },
     selectedDept(data) {
       this.selectedDeptList = data
-      this.form.executeDeptCondit.deptIds = data.map((dd) => {
+      this.form.deptIds = data.map((dd) => {
         return dd.deptId
       })
       this.changeFn()
     },
-    clearUserData(data) {
-      if (!data) {
-        this.selectedUserList = []
-        this.form.executeUserCondit.weUserIds = []
-        this.changeFn()
-      }
-    },
-    clearDeptsData(data) {
-      if (!data) {
-        this.selectedDeptList = []
-        this.form.executeDeptCondit.deptIds = []
-        this.selectedPostList = []
-        this.form.executeDeptCondit.posts = []
-        this.changeFn()
-      }
+    submitSelectTag(data) {
+      this.selectedTagList = data
+      this.form.customerTag = data.map((dd) => {
+        return dd.tagId
+      })
+      this.changeFn()
     },
     changeFn() {
       this.$emit('update', this.form)
     },
     setEditUser() {
-      if (this.form.executeUserCondit.weUserIds) {
+      if (this.form.userIds && this.form.userIds.length) {
         this.selectedUserList = []
         getDeptUserAll().then(({ data }) => {
-          this.form.executeUserCondit.weUserIds.forEach((dd) => {
+          this.form.userIds.forEach((dd) => {
             let index = data.findIndex((item) => item.weUserId === dd)
             if (index != -1) {
               data[index].userId = dd
@@ -213,17 +222,29 @@ export default {
       }
     },
     setEditDept() {
-      if (this.form.executeDeptCondit.deptIds.length) {
+      if (this.form.deptIds && this.form.deptIds.length) {
         this.selectedDeptList = []
         getDeptTree().then(({ data }) => {
-          this.form.executeDeptCondit.deptIds.forEach((dd) => {
+          this.form.deptIds.forEach((dd) => {
             let index = data.findIndex((item) => item.deptId === dd)
             this.selectedDeptList.push(data[index])
           })
         })
       }
-      if (this.form.executeDeptCondit.posts.length) {
-        this.selectedPostList = this.form.executeDeptCondit.posts
+      if (this.form.posts && this.form.posts.length) {
+        this.selectedPostList = this.form.posts
+      }
+    },
+    setEditTag() {
+      if (this.form.customerTag && this.form.customerTag.length) {
+        getList({ groupTagType: 1 }).then(({ rows }) => {
+          this.form.customerTag.forEach((dd) => {
+            let index = rows.findIndex((item) => item.tagId === dd)
+            if (rows[index] !== undefined) {
+              this.selectedTagList.push(rows[index])
+            }
+          })
+        })
       }
     },
   },
@@ -232,11 +253,26 @@ export default {
 </script>
 <style lang="scss" scoped>
 .select_content {
-  background-color: #ecf5ff;
-  padding: 20px;
-  border-radius: 5px;
   .select_unit {
-    padding: 10px 25px;
+    padding-bottom: 16px;
+    padding-top: 6px;
+    max-width: 400px;
+    .el-icon-question {
+      color: #86909c;
+    }
+  }
+}
+.lable_text {
+  width: 116px;
+  text-align: right;
+  // line-height: 52px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #1d2129;
+  span {
+    color: #eb5e12;
+    line-height: 30px;
+    padding: 4px;
   }
 }
 </style>
