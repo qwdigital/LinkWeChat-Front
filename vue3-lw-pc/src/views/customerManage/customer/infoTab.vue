@@ -267,57 +267,61 @@ export default {
               <div style="max-height: 450px; overflow: hidden auto">
                 <el-row :gutter="20" type="type" class="pad10" justify="space-between" style="flex-wrap: wrap">
                   <template v-for="(item, index) in fieldList" :key="index">
-                    <el-col :span="12" v-if="item.isDefault == 1">
-                      <el-row class="baseinfo-row" v-if="item.labelVal == 'remarkMobiles'">
-                        <el-col :span="6">手机号</el-col>
-                        <el-col :span="18">{{ portrayalSum.phone || '无' }}</el-col>
-                      </el-row>
-                      <el-row class="baseinfo-row" v-if="item.labelVal == 'age'">
-                        <el-col :span="6">年龄</el-col>
-                        <el-col :span="18">{{ jsGetAge(portrayalSum.birthday) }}</el-col>
-                      </el-row>
-                      <el-row class="baseinfo-row" v-if="item.labelVal == 'birthday'">
-                        <el-col :span="6">生日</el-col>
-                        <el-col :span="18">{{ portrayalSum.birthday || '无' }}</el-col>
-                      </el-row>
-                      <el-row class="baseinfo-row" v-if="item.labelVal == 'email'">
-                        <el-col :span="6">邮箱</el-col>
-                        <el-col :span="18">{{ portrayalSum.email || '无' }}</el-col>
-                      </el-row>
-                      <el-row class="baseinfo-row" v-if="item.labelVal == 'area'">
-                        <el-col :span="6">地址</el-col>
-                        <el-col :span="18">{{ portrayalSum.address || '无' }}</el-col>
-                      </el-row>
-                      <el-row class="baseinfo-row" v-if="item.labelVal == 'qq'">
-                        <el-col :span="6">QQ</el-col>
-                        <el-col :span="18">{{ portrayalSum.qq || '无' }}</el-col>
-                      </el-row>
-                      <el-row class="baseinfo-row" v-if="item.labelVal == 'position'">
-                        <el-col :span="6">职业</el-col>
-                        <el-col :span="18">{{ portrayalSum.position || '无' }}</el-col>
-                      </el-row>
-                      <el-row class="baseinfo-row" v-if="item.labelVal == 'remarkCorpName'">
-                        <el-col :span="6">公司</el-col>
-                        <el-col :span="18">{{ portrayalSum.corpName || '无' }}</el-col>
-                      </el-row>
-                      <el-row class="baseinfo-row" v-if="item.labelVal == 'otherDescr'">
-                        <el-col :span="6">其他描述</el-col>
-                        <el-col :span="18">
-                          {{ portrayalSum.otherDescr || '无' }}
-                        </el-col>
-                      </el-row>
-                    </el-col>
-                    <el-col :span="12" v-else>
-                      <template v-if="item.type !== 3">
-                        <el-row class="baseinfo-row">
+                    <template v-if="!['address', 'customerFullName'].includes(item.labelVal)">
+                      <el-col :span="12" v-if="item.isDefault == 1">
+                        <!-- <el-row class="baseinfo-row" v-if="item.labelVal == 'customerFullName'">
+                          <!- 姓名 ->
                           <el-col :span="6">{{ item.labelName }}</el-col>
-                          <el-col :span="18">
-                            {{ item.value || '无' }}
-                          </el-col>
+                          <el-col :span="18">{{ portrayalSum.customerFullName || '无' }}</el-col>
+                        </el-row> -->
+                        <el-row class="baseinfo-row" v-if="item.labelVal == 'remarkMobiles'">
+                          <!-- 手机号 -->
+                          <el-col :span="6">{{ item.labelName }}</el-col>
+                          <el-col :span="18">{{ portrayalSum.phone || '无' }}</el-col>
                         </el-row>
-                      </template>
-                      <template v-else>
-                        <template v-if="item.typeSub == 1">
+                        <el-row class="baseinfo-row" v-else-if="item.labelVal == 'age'">
+                          <!-- 年龄 -->
+                          <el-col :span="6">{{ item.labelName }}</el-col>
+                          <el-col :span="18">{{ jsGetAge(portrayalSum.bkirthday) }}</el-col>
+                        </el-row>
+                        <el-row class="baseinfo-row" v-else-if="item.labelVal == 'birthday'">
+                          <!-- 生日 -->
+                          <el-col :span="6">{{ item.labelName }}</el-col>
+                          <el-col :span="18">{{ portrayalSum.birthday || '无' }}</el-col>
+                        </el-row>
+                        <el-row class="baseinfo-row" v-else-if="item.labelVal == 'email'">
+                          <!-- 邮箱 -->
+                          <el-col :span="6">{{ item.labelName }}</el-col>
+                          <el-col :span="18">{{ portrayalSum.email || '无' }}</el-col>
+                        </el-row>
+                        <el-row class="baseinfo-row" v-else-if="item.labelVal == 'area'">
+                          <!-- 地址 -->
+                          <el-col :span="6">{{ item.labelName }}</el-col>
+                          <el-col :span="18">{{ portrayalSum.address || '无' }}</el-col>
+                        </el-row>
+                        <el-row class="baseinfo-row" v-else-if="item.labelVal == 'qq'">
+                          <!-- QQ -->
+                          <el-col :span="6">{{ item.labelName }}</el-col>
+                          <el-col :span="18">{{ portrayalSum.qq || '无' }}</el-col>
+                        </el-row>
+                        <el-row class="baseinfo-row" v-else-if="item.labelVal == 'position'">
+                          <!-- 职业 -->
+                          <el-col :span="6">{{ item.labelName }}</el-col>
+                          <el-col :span="18">{{ portrayalSum.position || '无' }}</el-col>
+                        </el-row>
+                        <el-row class="baseinfo-row" v-else-if="item.labelVal == 'remarkCorpName'">
+                          <!-- 公司 -->
+                          <el-col :span="6">{{ item.labelName }}</el-col>
+                          <el-col :span="18">{{ portrayalSum.corpName || '无' }}</el-col>
+                        </el-row>
+                        <el-row class="baseinfo-row" v-else-if="item.labelVal == 'otherDescr'">
+                          <!-- 其他描述 -->
+                          <el-col :span="6">{{ item.labelName }}</el-col>
+                          <el-col :span="18">{{ portrayalSum.otherDescr || '无' }}</el-col>
+                        </el-row>
+                      </el-col>
+                      <el-col :span="12" v-else>
+                        <template v-if="item.type !== 3">
                           <el-row class="baseinfo-row">
                             <el-col :span="6">{{ item.labelName }}</el-col>
                             <el-col :span="18">
@@ -326,15 +330,25 @@ export default {
                           </el-row>
                         </template>
                         <template v-else>
-                          <el-row class="baseinfo-row">
-                            <el-col :span="6">{{ item.labelName }}</el-col>
-                            <el-col :span="18">
-                              {{ item.value.join(',') || '无' }}
-                            </el-col>
-                          </el-row>
+                          <template v-if="item.typeSub == 1">
+                            <el-row class="baseinfo-row">
+                              <el-col :span="6">{{ item.labelName }}</el-col>
+                              <el-col :span="18">
+                                {{ item.value || '无' }}
+                              </el-col>
+                            </el-row>
+                          </template>
+                          <template v-else>
+                            <el-row class="baseinfo-row">
+                              <el-col :span="6">{{ item.labelName }}</el-col>
+                              <el-col :span="18">
+                                {{ item.value.join(',') || '无' }}
+                              </el-col>
+                            </el-row>
+                          </template>
                         </template>
-                      </template>
-                    </el-col>
+                      </el-col>
+                    </template>
                   </template>
                 </el-row>
               </div>

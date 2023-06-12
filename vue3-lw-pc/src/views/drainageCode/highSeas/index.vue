@@ -59,14 +59,12 @@
           </template>
         </el-table-column>
       </el-table>
-      <div>
-        <pagination
-          v-show="total > 0"
-          :total="total"
-          v-model:page="query.pageNum"
-          v-model:limit="query.pageSize"
-          @pagination="getList()" />
-      </div>
+      <pagination
+        v-show="total > 0"
+        :total="total"
+        v-model:page="query.pageNum"
+        v-model:limit="query.pageSize"
+        @pagination="getList()" />
     </div>
 
     <!-- <div v-if="dialogVisible"> -->

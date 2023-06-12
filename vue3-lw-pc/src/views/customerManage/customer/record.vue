@@ -73,7 +73,6 @@ export default {
     },
     /** 查询 */
     getList(page) {
-      debugger
       Object.assign(this.query, {
         externalUserid: this.$route.query.externalUserid,
         weUserId: this.userId,
