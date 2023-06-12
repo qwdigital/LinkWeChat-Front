@@ -41,7 +41,7 @@
     },
     methods: {
       findCustomerAddWay() {
-        api.findCustomerAddWay().then(({ data }) => {
+        findCustomerAddWay().then(({ data }) => {
           data.forEach((element) => {
             this.dictAddType[element.code] = element.value
           })
