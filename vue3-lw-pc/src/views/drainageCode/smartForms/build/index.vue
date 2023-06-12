@@ -412,7 +412,6 @@ export default {
       this.activeFormItem(clone)
     },
     cloneComponent(origin) {
-      debugger
       const clone = JSON.parse(JSON.stringify(origin))
       clone.formId = this.idGlobal = uuid()
       clone.span = formConf.span

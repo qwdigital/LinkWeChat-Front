@@ -145,33 +145,8 @@ const componentChild = {
 
 export default {
   props: ['conf'],
-  data() {
-   return {props:{
-        value: 'id',
-        label: 'name',
-        lazy: true,
-        lazyLoad(node, resolve) {
-          debugger
-          if (node.level == 0) {
-            getProvinceCityTree().then((data) => {
-              resolve(data)
-            })
-          } else {
-            if (node.level == 2) {
-              node.data.children.forEach((e) => (e.leaf = true))
-            }
-            resolve([])
-          }
-        },
-      }}
-  },
   render() {
-    const dataObject = {
-      // attrs: {},
-      // props: {},
-      // on: {},
-      // style: {},
-    }
+    const dataObject = {}
     const confClone = JSON.parse(JSON.stringify(this.conf))
     const children = []
 
@@ -201,14 +176,13 @@ export default {
       // }
     // })
 
-    debugger
-
-    // 配置省市区数据首次懒加载
-    if (confClone.formCodeId == 9) {
-          debugger
-          dataObject.props = this.props
+    // 配置省市区数据首次加载
+    if (confClone.formCodeId == 9 && !this.conf.options?.length) {
+      getProvinceCityTree().then((data) => {
+        this.conf.options= data
+        })
     }
 
-    return h(resolveComponent(this.conf.tag), dataObject, children)
+    return h(resolveComponent(this.conf.tag), dataObject, children?.length ? children : undefined)
   },
 }

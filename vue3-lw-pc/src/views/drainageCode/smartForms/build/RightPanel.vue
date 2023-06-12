@@ -526,9 +526,9 @@
       </el-scrollbar>
     </div>
 
-    <treeNode-dialog v-model:visible="dialogVisible" title="添加选项" @commit="addNode" />
-    <treeNode-dialog v-model:visible="ifEditor" title="修改选项名" @commit="EditorNode" />
-    <icons-dialog v-model:visible="iconsVisible" :current="activeData[currentIconModel]" @select="setIcon" />
+    <treeNode-dialog v-model="dialogVisible" title="添加选项" @commit="addNode" />
+    <treeNode-dialog v-model="ifEditor" title="修改选项名" @commit="EditorNode" />
+    <icons-dialog v-model="iconsVisible" :current="activeData[currentIconModel]" @select="setIcon" />
   </div>
 </template>
 
@@ -789,11 +789,11 @@ export default {
 
     addNode(data) {
       this.currentNode.push(data)
-      console.log('this.currentNode', this.currentNode)
+      // console.log('this.currentNode', this.currentNode)
     },
     EditorNode(data) {
-      console.log('currentNode', this.currentNode)
-      console.log('data', data)
+      // console.log('currentNode', this.currentNode)
+      // console.log('data', data)
       this.currentNode.label = data.label
       this.currentNode.value = data.value
     },
