@@ -273,3 +273,10 @@ export function getFieldFn(params) {
     params
   })
 }
+
+export function findCustomerAddWay(params) {
+  return request({
+    url: service + '/findCustomerAddWay',
+    params
+  })
+}
