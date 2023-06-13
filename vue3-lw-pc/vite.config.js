@@ -10,6 +10,10 @@ import AutoImport from 'unplugin-auto-import/vite' // 自动导入ref等api
 // import Components from 'unplugin-vue-components/vite'
 // import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
+import rollupPluginVisualizer from 'rollup-plugin-visualizer'
+import vitePluginCompression from 'vite-plugin-compression'
+import vitePluginCdnImport from 'vite-plugin-cdn-import'
+
 // https://vitejs.dev/config/
 export default defineConfig(async ({ command, mode }) => {
   // 根据当前工作目录中的 `mode` 加载 .env 文件
@@ -35,17 +39,7 @@ export default defineConfig(async ({ command, mode }) => {
     // 例如 https://www.admin.vip/。如果应用被部署在一个子路径上，你就需要用这个选项指定这个子路径。例如，如果你的应用被部署在 https://www.admin.vip/admin/，则设置 baseUrl 为 /admin/。
     // base: ENV === 'production' ? '/' : '/',
     base: env.BASE_URL || '/',
-    build: {
-      outDir: 'pc',
-      minify: 'terser',
-      terserOptions: {
-        compress: {
-          //生产环境时移除console
-          drop_console: true,
-          drop_debugger: true,
-        },
-      },
-    },
+
     resolve: {
       // https://cn.vitejs.dev/config/#resolve-alias
       alias: {
@@ -77,6 +71,46 @@ export default defineConfig(async ({ command, mode }) => {
     //   include: 'render.js',
     //   exclude: '**/**.vue',
     // },
+    build: {
+      outDir: 'pc',
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          //生产环境时移除console
+          drop_console: true,
+          drop_debugger: true,
+        },
+      },
+      rollupOptions: {
+        // vite打包是通过rollup来打包的
+        output: {
+          manualChunks: (id) => {
+            // 可以在这里打印看一下id的值，这里将node_modules中的包打包为 chunk-libs 文件
+            // console.log(id)
+            if (id.includes('benz-amr-recorder')) {
+              return 'benz-amr-recorder'
+            } else if (id.includes('aliyun-oss-sdk')) {
+              return 'aliyun-oss-sdk'
+            } else if (id.includes('echarts')) {
+              return 'echarts'
+            } else if (id.includes('element-plus')) {
+              return 'element-plus'
+            } else if (id.includes('node_modules')) {
+              return 'chunk-libs'
+            } else if (id.includes('src/components')) {
+              return 'chunk-components'
+            }
+            // else if (id.includes('views/')) {
+            //   let first = id.split('views/')[1]
+            //   if (first.includes('/')) {
+            //     return first.match(/(\w+)\/(\w+)/)[0].replace('/', '-') // a/b/c...  a-b
+            //   }
+            //   return first.split('.')[0] //  a.vue  a
+            // }
+          },
+        },
+      },
+    },
     plugins: [
       // '@vue/babel-plugin-jsx',
       vue({
@@ -110,6 +144,37 @@ export default defineConfig(async ({ command, mode }) => {
       // }),
       vueJsx({
         // include: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.vue'],
+      }),
+      vitePluginCompression({
+        disable: !env._ISGZIP, // 是否禁用压缩，默认为 false
+        threshold: 100000, // 启用压缩的文件大小限制，单位是字节，默认为 0, 对大于 100kb 的文件进行压缩
+        // filter：过滤器，对哪些类型的文件进行压缩，默认为 ‘/.(js|mjs|json|css|html)$/i’
+        // verbose: true：是否在控制台输出压缩结果，默认为 true
+        // deleteOriginFile：压缩后是否删除原文件，默认为 false
+        // algorithm：采用的压缩算法，默认是 gzip
+        // ext：生成的压缩包后缀
+      }),
+      env._ISCDN &&
+        vitePluginCdnImport({
+          modules: [
+            {
+              name: 'axios', // 包名
+              var: 'axios', // 对应cdn包导出的变量，如jQuery导出的是$
+              path: '//cdn.bootcdn.net/ajax/libs/axios/1.4.0/axios.min.js',
+            },
+            // {
+            //   name: 'ali-oss',
+            //   var: 'OSS',
+            //   path: 'http://gosspublic.alicdn.com/aliyun-oss-sdk-6.17.1.min.js',
+            // },
+          ],
+        }),
+      rollupPluginVisualizer({
+        emitFile: false, //使用 emitFile 生成文件。 属性为 true，打包后的分析文件会出现在打包好的文件包下；设置为 false ，则会出现在项目根目录下
+        filename: 'analysis.html', //生成分析网页文件名
+        open: true, //在默认用户代理中打开生成的文件
+        gzipSize: true, //从源代码中收集 gzip 大小并将其显示在图表中
+        // brotliSize: true, //从源代码中收集 brotli 大小并将其显示在图表中
       }),
     ],
     // optimizedeps: {
