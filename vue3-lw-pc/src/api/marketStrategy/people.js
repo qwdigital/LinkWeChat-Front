@@ -84,3 +84,10 @@ export function crowdAnalyse(data) {
     params: data,
   })
 }
+
+export function deleteCategory(ids) {
+  return request({
+    url: base + '/strategic/crowd/categoryDel/' + ids,
+    method: 'delete',
+  })
+}
