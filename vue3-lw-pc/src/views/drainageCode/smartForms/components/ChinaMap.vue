@@ -4,9 +4,7 @@ import chinaJson from './jsonData/china.json'
 export default {
   render: function (createElement) {
     return createElement('div', {
-      attrs: {
-        id: 'main',
-      },
+      id: 'main',
       style: {
         height: '550px',
         width: '800px',
