@@ -45,6 +45,9 @@
                 <el-radio :label="0">全部客户</el-radio>
                 <el-radio :label="1">按条件筛选</el-radio>
               </el-radio-group>
+              <div class="customer-num">
+                <span>朋友圈预计可见客户数（不去重）：</span><span>{{ form.customerNum }}</span>
+              </div>
               <SelectMember
                 ref="selectMember"
                 :initData="addWeUser"
@@ -143,7 +146,7 @@
 </template>
 
 <script>
-import { gotoPublish } from '@/api/circle'
+import { addMoments, numMoments } from '@/api/circle'
 import AddMaterial from '@/components/ContentCenter/AddMaterial'
 import SelectMember from './components/SelectMember.vue'
 
@@ -193,9 +196,26 @@ export default {
       },
     }
   },
-  mounted() {},
+  mounted() {
+    let form = {}
+    form.scopeType = 0
+    this.getNumMoments(form)
+  },
   methods: {
+    // 获取可见客户数
+    getNumMoments(data) {
+      numMoments(data)
+        .then((res) => {
+          if (res.code === 200) {
+            this.form.customerNum = res.data
+          }
+        })
+        .catch()
+    },
     getExecuteData(data) {
+      let form = data
+      form.scopeType = 1
+      this.getNumMoments(form)
       console.log(174, data)
       this.addWeUser = data
     },
@@ -245,31 +265,35 @@ export default {
     },
 
     submit(data) {
-      console.log(data)
-      this.form.content = data.templateInfo
-      if (data.attachments.length !== 0) {
-        this.form.contentType = 'link'
-        this.form.realType = data.attachments[0].realType
-        this.form.materialId = data.attachments[0].materialId
-        this.dealType(data.attachments[0])
-      } else {
-        this.form.otherContent = []
-        this.form.contentType = 'text'
-      }
-      // if (this.$refs.friendCircleContent.validate()) {
-      if (this.form.scopeType === 0) {
-        this.form.customerTag = this.selectedTagList
-          .map((dd) => {
-            return dd.tagId
-          })
-          .join(',')
-        this.form.noAddUser = this.selectedUserList
-          .map((dd) => {
-            return dd.userId
-          })
-          .join(',')
-      }
-      gotoPublish(this.form).then((res) => {
+      this.form.materialIds = []
+      data.attachments.forEach((item) => {
+        this.form.materialIds.push(item.materialId)
+      })
+      // this.form.content = data.templateInfo
+      // if (data.attachments.length !== 0) {
+      //   this.form.contentType = 'link'
+      //   this.form.realType = data.attachments[0].realType
+      //   this.form.materialId = data.attachments[0].materialId
+      //   this.dealType(data.attachments[0])
+      // } else {
+      //   this.form.otherContent = []
+      //   this.form.contentType = 'text'
+      // }
+      // // if (this.$refs.friendCircleContent.validate()) {
+      // if (this.form.scopeType === 0) {
+      //   this.form.customerTag = this.selectedTagList
+      //     .map((dd) => {
+      //       return dd.tagId
+      //     })
+      //     .join(',')
+      //   this.form.noAddUser = this.selectedUserList
+      //     .map((dd) => {
+      //       return dd.userId
+      //     })
+      //     .join(',')
+      // }
+      console.log(this.form)
+      addMoments(this.form).then((res) => {
         if (res.code === 200) {
           this.msgSuccess('操作成功')
           this.$router.go(-1)
@@ -370,6 +394,18 @@ export default {
   color: #aaa;
   font-size: 12px;
   line-height: 34px;
+}
+.customer-num {
+  span {
+    font-size: 12px;
+    line-height: 30px;
+  }
+  span:nth-child(1) {
+    color: #aaa;
+  }
+  span:nth-child(2) {
+    color: #07c160;
+  }
 }
 .question {
   display: inline-block;

@@ -9,33 +9,45 @@
       width="80%"
       append-to-body
       :close-on-click-modal="false"
-      @close="dialogClose">
+      @close="dialogClose"
+    >
       <el-tabs v-model="activeName" @tab-click="tabClick">
         <el-tab-pane
           v-for="(item, index) in paneList"
           :key="index"
           :label="item.label + '(' + item.list.length + ')'"
-          :name="item.name">
+          :name="item.name"
+        >
           <MaPage ref="page" :type="item.type" v-slot="{ list }" @listChange="listChange">
             <div v-if="item.type === '0'">
               <div v-if="list && list.length">
                 <el-checkbox-group v-model="paneList[picindex].list" class="imgStyle">
-                  <div class="imgItem" v-for="(item, index) in list" :key="index" @click="changeBox($event, item)">
+                  <div
+                    class="imgItem"
+                    v-for="(item, index) in list"
+                    :key="index"
+                    @click="changeBox($event, item)"
+                  >
                     <div class="checkboxStyle">
                       <el-checkbox
                         :label="item"
                         style="width: 20px; height: 20px"
-                        :checked="item.isCheck"></el-checkbox>
+                        :checked="item.isCheck"
+                      ></el-checkbox>
                       <el-tooltip
                         :content="item.materialName"
                         placement="top"
-                        :disabled="item.materialName ? item.materialName.length < 6 : true">
+                        :disabled="item.materialName ? item.materialName.length < 6 : true"
+                      >
                         <div class="title ml10">
                           {{ coverContent(item.materialName, 6) }}
                         </div>
                       </el-tooltip>
                     </div>
-                    <div class="img" :style="{ 'background-image': 'url(' + item.materialUrl + ')' }"></div>
+                    <div
+                      class="img"
+                      :style="{ 'background-image': 'url(' + item.materialUrl + ')' }"
+                    ></div>
                   </div>
                 </el-checkbox-group>
               </div>
@@ -43,7 +55,13 @@
                 <span>暂无数据</span>
               </div>
             </div>
-            <el-table :data="list" ref="multipleTable" @select="handleSelect" @select-all="selectAll" v-else>
+            <el-table
+              :data="list"
+              ref="multipleTable"
+              @select="handleSelect"
+              @select-all="selectAll"
+              v-else
+            >
               <el-table-column type="selection" width="50" align="center" />
               <el-table-column label="素材" align="left">
                 <template #default="{ row }">
@@ -98,6 +116,11 @@ export default {
     },
     // 没有小程序
     noApplets: {
+      type: Boolean,
+      default: false,
+    },
+    // 朋友圈
+    isFriends: {
       type: Boolean,
       default: false,
     },
@@ -198,7 +221,9 @@ export default {
           this.ids.length + this.talkListLength === this.maxlength) &&
         !obj.isCheck
       ) {
-        this.$message.error('最多新建或选择' + this.maxlength + '个素材,已新建' + this.talkListLength + '个素材')
+        this.$message.error(
+          '最多新建或选择' + this.maxlength + '个素材,已新建' + this.talkListLength + '个素材'
+        )
         return
       }
       obj.isCheck = !obj.isCheck
@@ -274,7 +299,9 @@ export default {
         this.$nextTick(() => {
           if (this.index) this.$refs.multipleTable[this.inx].toggleRowSelection(row, false)
         })
-        this.$message.error('最多新建或选择' + this.maxlength + '个素材,已新建' + this.talkListLength + '个素材')
+        this.$message.error(
+          '最多新建或选择' + this.maxlength + '个素材,已新建' + this.talkListLength + '个素材'
+        )
         this.paneList[this.index].list = this.paneList[this.index].list.filter((item) => {
           return item.id != row.id
         })
@@ -294,7 +321,9 @@ export default {
         select.forEach((item) => {
           this.$refs.multipleTable[this.inx].toggleAllSelection(item, false)
         })
-        this.$message.error('最多新建或选择' + this.maxlength + '个素材,已新建' + this.talkListLength + '个素材')
+        this.$message.error(
+          '最多新建或选择' + this.maxlength + '个素材,已新建' + this.talkListLength + '个素材'
+        )
         this.paneList[this.index].list = []
         this.getIds()
       }

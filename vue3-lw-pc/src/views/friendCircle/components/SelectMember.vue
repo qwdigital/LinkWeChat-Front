@@ -1,14 +1,15 @@
 <template>
-  <div class="select_content">
-    <!-- 部门与岗位开始 -->
-    <div class="flex">
-      <div class="lable_text">选择成员来源：</div>
-      <div>
-        <div class="select_unit">
-          <el-button @click="dialogVisibleSelectDept = true" :disabled="isDetail"
-            >{{ selectedDeptList.length ? '修改' : '选择' }}部门范围</el-button
-          >
-          <!-- <el-popover
+  <div>
+    <div class="select_content">
+      <!-- 部门与岗位开始 -->
+      <div class="flex">
+        <div class="lable_text">选择成员来源：</div>
+        <div>
+          <div class="select_unit">
+            <el-button @click="dialogVisibleSelectDept = true" :disabled="isDetail"
+              >{{ selectedDeptList.length ? '修改' : '选择' }}部门范围</el-button
+            >
+            <!-- <el-popover
             style="display: inline-block; margin-left: 10px"
             placement="top"
             trigger="hover"
@@ -18,76 +19,77 @@
             </div>
             <div>可根据地域行政管理规划/组织架构部门，与岗位的组合条件来筛选执行成员。</div>
           </el-popover>-->
-          <div v-if="selectedDeptList.length > 0">
-            <el-tag size="small" v-for="(item, index) in selectedDeptList" :key="index">
-              {{ item.deptName }}
+            <div v-if="selectedDeptList.length > 0">
+              <el-tag size="small" v-for="(item, index) in selectedDeptList" :key="index">
+                {{ item.deptName }}
+              </el-tag>
+            </div>
+          </div>
+          <div class="select_unit">
+            <el-button @click="dialogVisibleSelectPost = true" :disabled="isDetail">
+              {{ selectedPostList.length ? '修改' : '选择' }}岗位
+            </el-button>
+            <div v-if="selectedPostList.length > 0">
+              <el-tag size="small" v-for="(item, index) in selectedPostList" :key="index">{{
+                item
+              }}</el-tag>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 部门与岗位结束 -->
+      <div class="flex">
+        <div class="lable_text"></div>
+        <div class="select_unit">
+          <el-button @click="dialogVisibleSelectUser = true" :disabled="isDetail"
+            >{{ selectedUserList.length ? '修改' : '选择' }}员工</el-button
+          >
+          <div v-if="selectedUserList.length > 0">
+            <el-tag size="small" v-for="(item, index) in selectedUserList" :key="index">
+              {{ item.name }}
             </el-tag>
           </div>
         </div>
+      </div>
+      <!-- 选择客户标签 -->
+      <div class="flex mt10">
+        <div class="lable_text">选择客户标签：</div>
         <div class="select_unit">
-          <el-button @click="dialogVisibleSelectPost = true" :disabled="isDetail">
-            {{ selectedPostList.length ? '修改' : '选择' }}岗位
-          </el-button>
-          <div v-if="selectedPostList.length > 0">
-            <el-tag size="small" v-for="(item, index) in selectedPostList" :key="index">{{
-              item
+          <el-button plain @click="dialogVisibleSelectTag = true" :disabled="isDetail"
+            >{{ selectedTagList.length ? '修改' : '选择' }}标签</el-button
+          >
+          <div v-if="selectedTagList.length > 0">
+            <el-tag sizi="mini" v-for="(unit, key) in selectedTagList" :key="key">{{
+              unit.name
             }}</el-tag>
           </div>
         </div>
       </div>
+      <SelectDept
+        :defaultValues="selectedDeptList"
+        v-model:visible="dialogVisibleSelectDept"
+        title="选择部门"
+        @success="selectedDept"
+      ></SelectDept>
+      <SelectPost
+        :defaultValues="selectedPostList"
+        v-model:visible="dialogVisibleSelectPost"
+        title="选择岗位"
+        @success="selectedPost"
+      ></SelectPost>
+      <SelectWeUser
+        :defaultValues="selectedUserList"
+        v-model:visible="dialogVisibleSelectUser"
+        title="选择使用员工"
+        :isOnlyLeaf="true"
+        @success="selectedUser"
+      ></SelectWeUser>
+      <SelectTag
+        v-model:visible="dialogVisibleSelectTag"
+        :defaultValues="selectedTagList"
+        @success="submitSelectTag"
+      ></SelectTag>
     </div>
-    <!-- 部门与岗位结束 -->
-    <div class="flex">
-      <div class="lable_text"></div>
-      <div class="select_unit">
-        <el-button @click="dialogVisibleSelectUser = true" :disabled="isDetail"
-          >{{ selectedUserList.length ? '修改' : '选择' }}员工</el-button
-        >
-        <div v-if="selectedUserList.length > 0">
-          <el-tag size="small" v-for="(item, index) in selectedUserList" :key="index">
-            {{ item.name }}
-          </el-tag>
-        </div>
-      </div>
-    </div>
-    <!-- 选择客户标签 -->
-    <div class="flex mt10">
-      <div class="lable_text">选择客户标签：</div>
-      <div class="select_unit">
-        <el-button plain @click="dialogVisibleSelectTag = true" :disabled="isDetail"
-          >{{ selectedTagList.length ? '修改' : '选择' }}标签</el-button
-        >
-        <div v-if="selectedTagList.length > 0">
-          <el-tag sizi="mini" v-for="(unit, key) in selectedTagList" :key="key">{{
-            unit.name
-          }}</el-tag>
-        </div>
-      </div>
-    </div>
-    <SelectDept
-      :defaultValues="selectedDeptList"
-      v-model:visible="dialogVisibleSelectDept"
-      title="选择部门"
-      @success="selectedDept"
-    ></SelectDept>
-    <SelectPost
-      :defaultValues="selectedPostList"
-      v-model:visible="dialogVisibleSelectPost"
-      title="选择岗位"
-      @success="selectedPost"
-    ></SelectPost>
-    <SelectWeUser
-      :defaultValues="selectedUserList"
-      v-model:visible="dialogVisibleSelectUser"
-      title="选择使用员工"
-      :isOnlyLeaf="true"
-      @success="selectedUser"
-    ></SelectWeUser>
-    <SelectTag
-      v-model:visible="dialogVisibleSelectTag"
-      :defaultValues="selectedTagList"
-      @success="submitSelectTag"
-    ></SelectTag>
   </div>
 </template>
 <script>
@@ -252,6 +254,18 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.customer-num {
+  span {
+    font-size: 12px;
+    line-height: 30px;
+  }
+  span:nth-child(1) {
+    color: #aaa;
+  }
+  span:nth-child(2) {
+    color: #07c160;
+  }
+}
 .select_content {
   .select_unit {
     padding-bottom: 16px;

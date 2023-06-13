@@ -63,6 +63,7 @@ let config = {
   services: {
     wecom: '/open',
     system: env.SYSTEM_API,
+    // system: 'http://192.168.4.168:6180',
     common: '/common',
   },
 
