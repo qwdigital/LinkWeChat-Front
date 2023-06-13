@@ -8,7 +8,8 @@
     "test": "vite --mode=test",
     "build:dev": "vite build --mode=development",
     "build:test": "vite build --mode=test",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "report": "npm run build --report"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
