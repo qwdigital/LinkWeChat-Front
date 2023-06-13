@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :title="title" v-model:visible="Pvisible" width="800px" append-to-body :close-on-click-modal="false">
+    <el-dialog :title="title" v-model="Pvisible" width="800px" append-to-body :close-on-click-modal="false">
       <el-row v-if="list.length || !isInit" type="flex" justify="space-between" style="max-height: 500px">
         <el-col style="margin-top: 0px">
           <div>
@@ -90,11 +90,17 @@ export default {
     }
   },
   watch: {
-    selected(val) {
-      this.setSelected()
+    selected: {
+      deep: true,
+      handler(val) {
+        this.setSelected()
+      },
     },
-    list(val) {
-      this.setSelected()
+    list: {
+      deep: true,
+      handler(val) {
+        this.setSelected()
+      },
     },
   },
   computed: {

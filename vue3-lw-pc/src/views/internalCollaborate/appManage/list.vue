@@ -85,6 +85,7 @@ export default {
     submit() {
       this.$refs['form'].validate((valid) => {
         if (valid) {
+          this.form.agentId = Number(this.form.agentId)
           ;(this.form.id ? update : add)(this.form)
             .then(() => {
               this.msgSuccess('操作成功')
@@ -102,6 +103,8 @@ export default {
       // const operIds = id || this.ids + ''
       this.$confirm('是否确认删除？该操作不可撤销，请谨慎操作。', {
         title: '警告',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         type: 'warning',
       })
         .then(function () {
@@ -239,7 +242,7 @@ export default {
           <el-col :span="4">
             <div class="avatar-wrap ac" @click="dialogVisibleSelectMaterial = true">
               <img class="avatar" v-if="form.squareLogoUrl" :src="form.squareLogoUrl" />
-              <i v-else class="el-icon-plus avatar-uploader-icon cc"></i>
+              <el-icon-plus  v-else class="el-icon-plus avatar-uploader-icon cc"/>
             </div>
           </el-col>
           <el-col :span="20">

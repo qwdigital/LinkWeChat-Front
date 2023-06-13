@@ -521,7 +521,7 @@ export default {
         }
         this.setPosterBackgroundImage()
 
-        // 删除某个图层
+        // 删除图层按钮
         let deleteBtn = document.getElementById('deleteBtn')
 
         function addDeleteBtn(x, y) {
@@ -532,10 +532,15 @@ export default {
         }
 
         canvas.on('selection:created', function (e) {
-          addDeleteBtn(e.target.lineCoords.tr.x, e.target.lineCoords.tr.y)
+          addDeleteBtn(e.selected[0].lineCoords.tr.x, e.selected[0].lineCoords.tr.y)
         })
         canvas.on('selection:updated', function (e) {
-          addDeleteBtn(e.target.lineCoords.tr.x, e.target.lineCoords.tr.y)
+          let activeObject = canvas.getActiveObject()
+          if (activeObject._objects?.length > 1) {
+            deleteBtn.style.display = 'none'
+          } else {
+            addDeleteBtn(e.selected[0].lineCoords.tr.x, e.selected[0].lineCoords.tr.y)
+          }
         })
 
         //通用事件另外写法
@@ -620,23 +625,25 @@ export default {
         })
 
         // alt键缩放
-        document.getElementById('canvas-wrap').addEventListener('wheel', (e) => {
-          // e.stopPropagation()
-          if (e.altKey) {
-            e.preventDefault()
-            console.log(e)
-            let zoom = (e.deltaY > 0 ? 0.1 : -0.1) + canvas.getZoom()
-            zoom = Math.max(0.1, zoom) //最小为原来的1/10
-            zoom = Math.min(5, zoom) //最大是原来的5倍
-            let zoomPoint = new fabric.Point(e.offsetX, e.offsetY)
-            canvas.zoomToPoint(zoomPoint, zoom)
-          }
-        })
+        // document.getElementById('canvas-wrap').addEventListener('wheel', (e) => {
+        //   // e.stopPropagation()
+        //   if (e.altKey) {
+        //     e.preventDefault()
+        //     console.log(e)
+        //     let zoom = (e.deltaY > 0 ? 0.1 : -0.1) + canvas.getZoom()
+        //     zoom = Math.max(0.1, zoom) //最小为原来的1/10
+        //     zoom = Math.min(5, zoom) //最大是原来的5倍
+        //     let zoomPoint = new fabric.Point(e.offsetX, e.offsetY)
+        //     canvas.zoomToPoint(zoomPoint, zoom)
+        //   }
+        // })
 
         deleteBtn.addEventListener('click', () => {
           let activeObject = canvas.getActiveObject()
           if (activeObject) {
             this.$confirm('是否确认删除吗?', '警告', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
               type: 'warning',
             }).then(() => {
               canvas.remove(activeObject)

@@ -92,7 +92,7 @@ export default {
       rules: {
         activityName: [{ required: true, message: '请输入活码名称', trigger: 'blur' }],
         chatIdList: [{ required: true, message: '请添加活码客群', trigger: 'blur' }],
-        tagIds: [{ required: true, message: '请添加客群标签', trigger: 'blur' }],
+        // tagIds: [{ required: true, message: '请添加客群标签', trigger: 'blur' }],
         roomBaseName: [{ required: true, message: '请输入群名前缀', trigger: 'blur' }],
         roomBaseId: [{ required: true, message: '请输入群起始序号', trigger: 'blur' }],
       },

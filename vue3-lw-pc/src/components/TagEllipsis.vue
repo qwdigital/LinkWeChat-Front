@@ -42,8 +42,9 @@ export default {
     </template>
 
     <el-popover v-else placement="bottom" trigger="hover">
-      <div class="tag-all">
-        <el-tag v-for="(item, unique) in _list" :key="unique">
+      <!-- 插入到body，这里用css scoped calss无效，需使用style-->
+      <div class="tag-all" style="display: flex; flex-wrap: wrap; gap: 10px">
+        <el-tag v-for="(item, unique) in _list" :key="unique" style="margin: 0">
           {{ item[defaultProps] || item }}
         </el-tag>
       </div>

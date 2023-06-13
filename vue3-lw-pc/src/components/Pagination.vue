@@ -1,5 +1,8 @@
 <template>
-  <div class="pagination-container" ref="pagination">
+  <div
+    class="pagination-container"
+    ref="pagination"
+    v-if="$attrs['hide-on-single-page'] === false || $attrs.total > limit">
     <el-pagination
       v-bind="$attrs"
       :background="background"

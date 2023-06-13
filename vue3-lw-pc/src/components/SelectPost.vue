@@ -41,6 +41,7 @@ export default {
         this.selectList = value
       },
       immediate: true,
+      deep: true,
     },
     Pvisible(val) {
       this.selectList = this.defaultValues

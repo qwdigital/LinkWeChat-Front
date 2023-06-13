@@ -36,7 +36,7 @@
         </el-descriptions>
       </div>
       <div class="g-card mt20">
-        <el-tabs v-model="activeName" @tab-click="tabClick">
+        <el-tabs v-model="activeName" @tab-change="tabClick">
           <el-tab-pane label="客户列表" name="first">
             <div v-if="activeName === 'first'">
               <el-form label-position="left" inline label-width="80px">
@@ -90,7 +90,7 @@
                       <svg-icon icon="service" class="code-user" v-else></svg-icon>
                       <div class="ml10">
                         <p>{{ row.watchUserName }}</p>
-                        <i :class="['el-icon-s-custom', { 1: 'man', 2: 'woman' }[row.gender]]"></i>
+                        <el-icon-Avatar :class="['el-icon-Avatar', { 1: 'man', 2: 'woman' }[row.gender]]" />
                         <span
                           :style="{
                             color: ['@微信', '@微信用户'].includes(row.remarks) ? '#4bde03' : '#f9a90b',

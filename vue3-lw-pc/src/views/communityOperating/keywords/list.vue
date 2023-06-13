@@ -29,13 +29,16 @@ export default {
   },
   watch: {
     // 日期选择器数据同步至查询参数
-    dateRange(dateRange) {
-      if (!dateRange || dateRange.length !== 2) {
-        this.query.beginTime = ''
-        this.query.endTime = ''
-      } else {
-        ;[this.query.beginTime, this.query.endTime] = dateRange
-      }
+    dateRange: {
+      deep: true,
+      handler(val) {
+        if (!val || val.length !== 2) {
+          this.query.beginTime = ''
+          this.query.endTime = ''
+        } else {
+          ;[this.query.beginTime, this.query.endTime] = val
+        }
+      },
     },
   },
   created() {

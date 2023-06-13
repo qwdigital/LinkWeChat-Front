@@ -34,7 +34,7 @@
                     <span :style="{ color: item.customerType === 1 ? '#4bde03' : '#f9a90b' }">
                       {{ { 1: '@微信', 2: '@企业微信' }[item.customerType] }}
                     </span>
-                    <i :class="['el-icon-s-custom', { 1: 'man', 2: 'woman' }[item.gender]]"></i>
+                    <el-icon-Avatar :class="['el-icon-Avatar', { 1: 'man', 2: 'woman' }[item.gender]]"></el-icon-Avatar>
                   </el-col>
                 </el-row>
                 <div class="ac mt10 mb15">
@@ -56,7 +56,7 @@
               prefix-icon="el-icon-search"
               v-model="chatContent"
               @keyup.enter="getChatList()"></el-input>
-            <el-tabs v-model="activeName" @tab-click="getChatList()">
+            <el-tabs v-model="activeName" @tab-change="getChatList()">
               <el-tab-pane label="单聊" name="0">
                 <userList
                   v-if="activeName == 0"
@@ -266,7 +266,7 @@ export default {
   }
 }
 
-.el-icon-s-custom {
+.el-icon-Avatar {
   font-size: 16px;
   margin-left: 4px;
   color: #999;

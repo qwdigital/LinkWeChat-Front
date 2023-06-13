@@ -146,6 +146,7 @@ export default {
         this.tableData = JSON.parse(JSON.stringify(val))
       },
       immediate: true,
+      deep: true,
     },
   },
 
@@ -245,7 +246,7 @@ export default {
     },
     //表格拖动排序
     dragSort() {
-      const el = this.$refs.singleTable.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
+      const el = this.$refs.singleTable.$el.querySelectorAll('.el-table__body-wrapper table > tbody')[0]
 
       this.sortable = Sortable.create(el, {
         ghostClass: 'sortable-ghost',

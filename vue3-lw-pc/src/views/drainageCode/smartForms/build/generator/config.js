@@ -240,10 +240,11 @@ export const inputComponents = [
     labelWidth: null,
     style: { width: '100%' },
     ssq: '',
-    // props: {
-    //   value: 'id',
-    //   label: 'name',
-    // },
+    options: [],
+    props: {
+      value: 'id',
+      label: 'name',
+    },
     'show-all-levels': true,
     disabled: false,
     clearable: true,

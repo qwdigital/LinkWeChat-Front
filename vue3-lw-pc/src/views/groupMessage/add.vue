@@ -58,12 +58,7 @@
                   <span style="color: red">*</span>
                   添加人
                 </div>
-                <el-button
-                  class="mr10"
-                  icon="el-icon-circle - plus - outline"
-                  type="primary"
-                  plain
-                  @click="onSelectUser(2)">
+                <el-button class="mr10" icon="el-icon-CirclePlus" type="primary" plain @click="onSelectUser(2)">
                   选择添加人
                 </el-button>
                 <el-tag v-for="item in form.sendClientUserList" :key="item.userId">{{ item.name }}</el-tag>
@@ -91,12 +86,7 @@
               </div>
               <div class="item-magin aic">
                 <div class="item-name">客户标签</div>
-                <el-button
-                  class="mr10"
-                  icon="el-icon-circle - plus - outline"
-                  type="primary"
-                  plain
-                  @click="onSelectTag">
+                <el-button class="mr10" icon="el-icon-CirclePlus" type="primary" plain @click="onSelectTag">
                   选择标签
                 </el-button>
                 <el-tag v-for="item in form.sendClientTagList" :key="item.tagId">{{ item.name }}</el-tag>
@@ -321,6 +311,9 @@ export default {
     )
   },
   mounted() {
+    if (this.$route.query.chatType) {
+      this.form.chatType = Number(this.$route.query.chatType)
+    }
     this.getStage()
   },
   methods: {

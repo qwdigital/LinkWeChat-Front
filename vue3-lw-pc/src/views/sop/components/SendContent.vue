@@ -321,21 +321,25 @@ export default {
     },
   },
   watch: {
-    baseData(val) {
-      if (val) {
-        this.attachments = []
-        if (val.length) {
-          this.attachments = this.setEditList(val)
-        } else {
-          this.attachments.push({
-            msgType: '4',
-            ...materialField,
-          })
+    baseData: {
+      deep: true,
+      handler(val) {
+        if (val) {
+          this.attachments = []
+          if (val.length) {
+            this.attachments = this.setEditList(val)
+          } else {
+            this.attachments.push({
+              msgType: '4',
+              ...materialField,
+            })
+          }
+          // this.$forceUpdate()
         }
-        // this.$forceUpdate()
-      }
+      },
     },
     attachments: {
+      deep: true,
       immediate: true,
       handler(val) {
         this.setShow()

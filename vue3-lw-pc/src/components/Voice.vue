@@ -1,5 +1,8 @@
 <script>
 import BenzAMRRecorder from 'benz-amr-recorder'
+let $isVoice = undefined
+let $playRec = undefined
+let $playRecSymbole = undefined
 export default {
   name: 'Voice',
   props: {
@@ -18,27 +21,27 @@ export default {
   computed: {},
   watch: {},
   created() {
-    this.__proto__.$isVoice || document.addEventListener('click', this.stop)
-    this.__proto__.$isVoice = true
+    $isVoice || document.addEventListener('click', this.stop)
+    $isVoice = true
   },
   mounted() {},
   methods: {
     play() {
       if (this.amrUrl) {
-        if (this.$playRec) {
+        if ($playRec) {
           if (this.stop(true)) {
             return
           }
         }
-        this.__proto__.$playRec = new BenzAMRRecorder()
-        this.__proto__.$playRecSymbole = this.amrUrl
-        this.$playRec.initWithUrl(this.amrUrl).then(() => {
+        $playRec = new BenzAMRRecorder()
+        $playRecSymbole = this.amrUrl
+        $playRec.initWithUrl(this.amrUrl).then(() => {
           this.actived = true
-          this.$playRec.play()
-          this.$playRec.onEnded(() => {
+          $playRec.play()
+          $playRec.onEnded(() => {
             this.actived = false
           })
-          console.log('amr 时长：' + this.$playRec.getDuration())
+          console.log('amr 时长：' + $playRec.getDuration())
         })
         // .catch((e) => {
         //   this.$message.error('播放录音失败，或文件损坏')
@@ -48,10 +51,10 @@ export default {
     },
     //停止播放
     stop(noset) {
-      if (this.$playRec && this.$playRec.isPlaying()) {
-        this.$playRec.stop()
-        if (!noset || this.__proto__.$playRecSymbole === this.amrUrl) {
-          this.__proto__.$playRecSymbole = ''
+      if ($playRec && $playRec.isPlaying()) {
+        $playRec.stop()
+        if (!noset || $playRecSymbole === this.amrUrl) {
+          $playRecSymbole = ''
           return true
         }
       }
@@ -70,10 +73,10 @@ export default {
 
 <template>
   <div>
-    <i
+    <el-icon-microphone
       :class="['el-icon-microphone', actived && 'actived']"
       style="font-size: 40px; color: var(--color)"
-      @click.stop="play('attachment')"></i>
+      @click.stop="play('attachment')" />
 
     <!-- <AudioPlayer
           :audio-list="audioSrc"

@@ -43,20 +43,23 @@ export default {
     }
   },
   watch: {
-    defaultValues(value) {
-      const checkedUserList = []
-      if (!Array.isArray(value) || value.length == 0) {
-        this.userList = []
-      } else {
-        value.forEach((i) => {
-          const id = i.deptId
-          if (id) {
-            checkedUserList.push(i)
-          }
-        })
-        console.log(checkedUserList)
-        this.userList = checkedUserList
-      }
+    defaultValues: {
+      deep: true,
+      handler(value) {
+        const checkedUserList = []
+        if (!Array.isArray(value) || value.length == 0) {
+          this.userList = []
+        } else {
+          value.forEach((i) => {
+            const id = i.deptId
+            if (id) {
+              checkedUserList.push(i)
+            }
+          })
+          console.log(checkedUserList)
+          this.userList = checkedUserList
+        }
+      },
     },
     Pvisible(val) {
       val && this.$refs.tree && this.$refs.tree.setCheckedKeys(this.defaultValues.map((e) => e.deptId))

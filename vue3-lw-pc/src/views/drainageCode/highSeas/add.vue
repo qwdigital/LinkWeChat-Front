@@ -263,10 +263,10 @@ export default {
           <el-table-column property="welcomeMsg" show-overflow-tooltip></el-table-column>
           <el-table-column width="60">
             <template #default="{ row }">
-              <i
+              <el-icon-check
                 v-if="welSelected.id === row.id"
                 class="el-icon-check"
-                style="color: rgb(65, 133, 244); font-size: 25px"></i>
+                style="color: rgb(65, 133, 244); font-size: 25px" />
             </template>
           </el-table-column>
         </el-table>

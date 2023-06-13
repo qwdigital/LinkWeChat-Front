@@ -113,7 +113,7 @@
               :min="0"
               :max="activeData.options.length"
               placeholder="至少应选"
-              @input="$set(activeData, 'maxZ', $event ? $event : undefined)" />
+              @input="activeData['maxZ'] = $event ? $event : undefined" />
           </el-form-item>
           <el-form-item v-if="activeData.tag === 'el-checkbox-group'" label="最多可选">
             <el-input-number
@@ -121,7 +121,7 @@
               :min="0"
               :max="activeData.options.length"
               placeholder="最多可选"
-              @input="$set(activeData, 'max', $event ? $event : undefined)" />
+              @input="activeData['max'] = $event ? $event : undefined" />
           </el-form-item>
           <!-- <el-form-item v-if="activeData.prepend!==undefined" label="前缀">
             <el-input v-model="activeData.prepend" placeholder="请输入前缀" />
@@ -294,7 +294,7 @@
               </template>
             </draggable>
             <div style="margin-left: 20px">
-              <el-button style="padding-bottom: 0" icon="el-icon-circle - plus - outline" text @click="addSelectItem">
+              <el-button style="padding-bottom: 0" icon="el-icon-CirclePlus" text @click="addSelectItem">
                 添加选项
               </el-button>
             </div>
@@ -333,7 +333,7 @@
               :expand-on-click-node="false"
               :render-content="renderContent" />
             <div v-if="activeData.dataType === 'static'" style="margin-left: 20px">
-              <el-button style="padding-bottom: 0" icon="el-icon-circle - plus - outline" text @click="addTreeItem">
+              <el-button style="padding-bottom: 0" icon="el-icon-CirclePlus" text @click="addTreeItem">
                 添加父级
               </el-button>
             </div>
@@ -526,9 +526,9 @@
       </el-scrollbar>
     </div>
 
-    <treeNode-dialog v-model:visible="dialogVisible" title="添加选项" @commit="addNode" />
-    <treeNode-dialog v-model:visible="ifEditor" title="修改选项名" @commit="EditorNode" />
-    <icons-dialog v-model:visible="iconsVisible" :current="activeData[currentIconModel]" @select="setIcon" />
+    <treeNode-dialog v-model="dialogVisible" title="添加选项" @commit="addNode" />
+    <treeNode-dialog v-model="ifEditor" title="修改选项名" @commit="EditorNode" />
+    <icons-dialog v-model="iconsVisible" :current="activeData[currentIconModel]" @select="setIcon" />
   </div>
 </template>
 
@@ -789,11 +789,11 @@ export default {
 
     addNode(data) {
       this.currentNode.push(data)
-      console.log('this.currentNode', this.currentNode)
+      // console.log('this.currentNode', this.currentNode)
     },
     EditorNode(data) {
-      console.log('currentNode', this.currentNode)
-      console.log('data', data)
+      // console.log('currentNode', this.currentNode)
+      // console.log('data', data)
       this.currentNode.label = data.label
       this.currentNode.value = data.value
     },

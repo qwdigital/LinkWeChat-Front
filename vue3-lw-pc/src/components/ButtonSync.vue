@@ -1,6 +1,7 @@
 <script>
 export default {
   name: 'ButtonSync',
+  emits: ['click'],
   props: {
     customeBtn: {
       type: Boolean,

@@ -70,6 +70,7 @@ export default {
   watch: {},
   computed: {},
   created() {
+    dictAddType.then((res) => (this.dictAddType = res))
     this.getStage()
     this.getList()
     this.getListTag()
@@ -343,11 +344,20 @@ export default {
         this.queryTag = selected
         this.dialogVisible = false
       } else {
+        let deleteTag = []
+        this.selectedTag.forEach((dd) => {
+          let index = selected.findIndex((item) => item.tagId == dd.tagId)
+          if (index == -1) {
+            deleteTag.push(dd)
+          }
+        })
         let data = {
           externalUserid: this.currentEidt.externalUserid,
+          removeTag: deleteTag,
           addTag: selected,
           userId: this.currentEidt.firstUserId,
         }
+
         // let apiType = {
         //   add: 'makeLabel',
         //   remove: 'removeLabel'
@@ -526,7 +536,7 @@ export default {
               <el-image class="avatar" :src="row.avatar" fit="fill"></el-image>
               <div class="ml10">
                 <p class="blod">{{ row.customerName }}</p>
-                <i :class="['el-icon-s-custom', { 1: 'man', 2: 'woman' }[row.gender]]"></i>
+                <el-icon-Avatar :class="['el-icon-Avatar', { 1: 'man', 2: 'woman' }[row.gender]]" />
                 <span :style="{ color: row.customerType === 1 ? '#4bde03' : '#f9a90b' }">
                   {{ { 1: '@微信', 2: '@企业微信' }[row.customerType] }}
                 </span>
@@ -641,7 +651,7 @@ export default {
   flex: none;
   border-radius: var(--border-radius-big);
 }
-.el-icon-s-custom {
+.el-icon-Avatar {
   font-size: 16px;
   // margin-left: 4px;
   color: #999;

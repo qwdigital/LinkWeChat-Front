@@ -115,7 +115,7 @@ export default {
     },
     onClose() {},
     close() {
-      this.$emit('update:visible', false)
+      this.$emit('update:model-value', false)
     },
     handelConfirm() {
       this.$refs.elForm.validate((valid) => {

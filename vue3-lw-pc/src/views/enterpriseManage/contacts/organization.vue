@@ -327,6 +327,8 @@ export default {
         return
       }
       this.$confirm('是否确认更改当前成员角色？确认后即时生效', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         type: 'warning',
       })
         .then(() => {
@@ -385,9 +387,7 @@ export default {
       this.multipleSelection = val
     },
     departRemove(id) {
-      this.$confirm('是否确认删除吗?', '警告', {
-        type: 'warning',
-      })
+      this.$confirm('是否确认删除吗?', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
         .then(function () {
           return api.removeDepart(id)
         })

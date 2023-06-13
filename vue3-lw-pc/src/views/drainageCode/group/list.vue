@@ -43,9 +43,7 @@
         </el-table-column>
         <el-table-column label="客群标签" width="180px">
           <template #default="{ row }">
-            <div>
-              <tag-ellipsis limit="2" :list="row.tags.split(',')"></tag-ellipsis>
-            </div>
+            <tag-ellipsis v-if="row.tags" limit="2" :list="row.tags.split(',')"></tag-ellipsis>
           </template>
         </el-table-column>
         <el-table-column label="活码客群数" align="center" width="120px" prop="chatGroupNum">
@@ -246,13 +244,16 @@ export default {
     }
   },
   watch: {
-    searchDate(dateRange) {
-      if (!dateRange || dateRange.length !== 2) {
-        this.query.beginTime = ''
-        this.query.endTime = ''
-      } else {
-        ;[this.query.beginTime, this.query.endTime] = dateRange
-      }
+    searchDate: {
+      deep: true,
+      handler(dateRange) {
+        if (!dateRange || dateRange.length !== 2) {
+          this.query.beginTime = ''
+          this.query.endTime = ''
+        } else {
+          ;[this.query.beginTime, this.query.endTime] = dateRange
+        }
+      },
     },
     // 如果实际群码弹出框关闭,刷新数据
     realCodeDialog(val) {

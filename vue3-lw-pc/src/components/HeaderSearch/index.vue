@@ -39,11 +39,18 @@ export default {
     },
   },
   watch: {
-    routes() {
-      this.searchPool = this.generateRoutes(this.routes)
+    routes: {
+      deep: true,
+      handler() {
+        this.searchPool = this.generateRoutes(this.routes)
+      },
     },
-    searchPool(list) {
-      this.initFuse(list)
+
+    searchPool: {
+      deep: true,
+      handler(list) {
+        this.initFuse(list)
+      },
     },
     show(value) {
       if (value) {

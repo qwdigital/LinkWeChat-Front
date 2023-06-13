@@ -37,12 +37,18 @@ export default {
     }
   },
   watch: {
-    tags(tags) {
-      this.form.tagList = tags.map((t) => t.tagId)
+    tags: {
+      deep: true,
+      handler(tags) {
+        this.form.tagList = tags.map((t) => t.tagId)
+      },
     },
-    users(users) {
-      this.form.emplList = users.map((u) => u.businessId)
-      this.$refs.form.validateField('emplList')
+    users: {
+      deep: true,
+      handler(users) {
+        this.form.emplList = users.map((u) => u.businessId)
+        this.$refs.form.validateField('emplList')
+      },
     },
   },
   created() {

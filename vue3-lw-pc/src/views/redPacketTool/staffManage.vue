@@ -265,6 +265,8 @@ export default {
     },
     remove(id) {
       this.$confirm('是否确认删除吗?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
         id = id || this.selectedIds.join(',')

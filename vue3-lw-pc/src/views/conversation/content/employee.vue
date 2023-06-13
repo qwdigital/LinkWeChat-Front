@@ -40,7 +40,7 @@
         <div class="ct_box" style="height: calc(100vh - 197px)">
           <template v-if="talkName">
             <div class="name pd15">{{ talkName }}</div>
-            <el-tabs v-model="activeName" @tab-click="tabClick(true)">
+            <el-tabs v-model="activeName" @tab-change="tabClick(true)">
               <el-tab-pane label="内部联系人" name="0">
                 <userList
                   v-if="activeName == 0"

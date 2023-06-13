@@ -47,9 +47,7 @@
         <el-table-column label="群主" align="center" prop="groupLeaderName" />
         <el-table-column label="群标签" width="180">
           <template #default="{ row }">
-            <div v-if="row.tags">
-              <tag-ellipsis :list="row.tags.split(',')" limit="1"></tag-ellipsis>
-            </div>
+            <tag-ellipsis v-if="row.tags" :list="row.tags.split(',')" limit="1"></tag-ellipsis>
           </template>
         </el-table-column>
         <el-table-column label="群总人数 " align="center " prop="memberNum" />

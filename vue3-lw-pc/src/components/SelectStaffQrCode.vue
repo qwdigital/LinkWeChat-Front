@@ -27,7 +27,7 @@ export default {
       query: {
         pageNum: 1,
         pageSize: 10,
-        categoryId: '',
+        groupId: '',
         // createBy: '',
         // beginTime: '',
         // endTime: ''
@@ -43,11 +43,17 @@ export default {
     }
   },
   watch: {
-    selected(val) {
-      this.setSelected()
+    selected: {
+      deep: true,
+      handler(val) {
+        this.setSelected()
+      },
     },
-    list(val) {
-      this.setSelected()
+    list: {
+      deep: true,
+      handler(val) {
+        this.setSelected()
+      },
     },
   },
   computed: {
@@ -67,7 +73,7 @@ export default {
   methods: {
     switchGroup(index, data) {
       this.groupIndex = index
-      this.query.categoryId = data.id
+      this.query.groupId = data.id
       this.search()
     },
     search() {
@@ -78,7 +84,7 @@ export default {
       getCodeCategoryList({ mediaType: '6' }).then((res) => {
         if (res.code == 200) {
           this.groupList = res.data
-          this.query.categoryId = this.groupList[0].id
+          this.query.groupId = this.groupList[0].id
           this.groupIndex = 0
           this.query.pageNum = 1
           this.getList()

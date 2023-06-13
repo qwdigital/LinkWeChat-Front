@@ -40,11 +40,17 @@ export default {
     }
   },
   watch: {
-    selected(val) {
-      this.setSelected()
+    selected: {
+      deep: true,
+      handler(val) {
+        this.setSelected()
+      },
     },
-    list(val) {
-      this.setSelected()
+    list: {
+      deep: true,
+      handler(val) {
+        this.setSelected()
+      },
     },
   },
   computed: {
@@ -144,9 +150,7 @@ export default {
           </el-table-column>
           <el-table-column label="客群标签">
             <template #default="{ row }">
-              <div>
-                <tag-ellipsis limit="1" :list="row.tags.split(',')"></tag-ellipsis>
-              </div>
+              <tag-ellipsis v-if="row.tags" limit="1" :list="row.tags.split(',')"></tag-ellipsis>
             </template>
           </el-table-column>
           <el-table-column label="活码客群数" align="center" prop="chatGroupNum"></el-table-column>

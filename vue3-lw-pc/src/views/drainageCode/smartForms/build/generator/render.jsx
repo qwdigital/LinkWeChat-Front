@@ -19,9 +19,9 @@ const isAttr = makeMap(
 )
 
 function vModel(self, dataObject, defaultValue) {
-  console.log('defaultValue111', defaultValue)
-  console.log('dataObject', dataObject)
-  console.log('self', self)
+  // console.log('defaultValue111', defaultValue)
+  // console.log('dataObject', dataObject)
+  // console.log('self', self)
   if (dataObject.formCodeId == 5 || dataObject.formCodeId == 625) {
     if (defaultValue) {
       console.log('(/(^[1-9]d*$)/.test(defaultValue))', /(^[1-9]\d*$)/.test(defaultValue))
@@ -47,9 +47,9 @@ function vModel(self, dataObject, defaultValue) {
   // console.log('dataObject.props', dataObject.props)
 
   dataObject['model-value'] = defaultValue
-  // dataObject.onInput = (val) => {
-  //   self.$emit('input', val)
-  // }
+  dataObject.onInput = (val) => {
+    self.$emit('input', val)
+  }
 }
 
 const componentChild = {
@@ -146,12 +146,7 @@ const componentChild = {
 export default {
   props: ['conf'],
   render() {
-    const dataObject = {
-      // attrs: {},
-      // props: {},
-      // on: {},
-      // style: {},
-    }
+    const dataObject = {}
     const confClone = JSON.parse(JSON.stringify(this.conf))
     const children = []
 
@@ -165,11 +160,13 @@ export default {
       })
     }
     console.log('confClone', confClone.formCodeId)
-    Object.keys(confClone).forEach((key) => {
-      const val = confClone[key]
-      if (confClone.layout != 'rowFormItem') {
-        vModel(this, dataObject, confClone.defaultValue)
-      }
+    if (confClone.layout != 'rowFormItem') {
+      vModel(this, dataObject, confClone.defaultValue)
+    }
+    Object.assign(dataObject, confClone)
+
+    // Object.keys(confClone).forEach((key) => {
+    //   const val = confClone[key]
       // if (key === 'style') {
       //   Object.assign(dataObject[key], val)
       // } else if (!isAttr(key)) {
@@ -177,31 +174,15 @@ export default {
       // } else {
       //   dataObject.attrs[key] = val
       // }
-    })
-    Object.assign(dataObject, confClone)
+    // })
 
-
-    // 配置省市区数据首次懒加载
-    if (confClone.formCodeId == 9) {
-      dataObject.props = {
-        value: 'id',
-        label: 'name',
-        lazy: true,
-        lazyLoad(node, resolve) {
-          if (node.level == 0) {
-            getProvinceCityTree().then((data) => {
-              resolve(data)
-            })
-          } else {
-            if (node.level == 2) {
-              node.data.children.forEach((e) => (e.leaf = true))
-            }
-            resolve([])
-          }
-        },
-      }
+    // 配置省市区数据首次加载
+    if (confClone.formCodeId == 9 && !this.conf.options?.length) {
+      getProvinceCityTree().then((data) => {
+        this.conf.options= data
+        })
     }
 
-    return h(resolveComponent(this.conf.tag), dataObject, children)
+    return h(resolveComponent(this.conf.tag), dataObject, children?.length ? children : undefined)
   },
 }

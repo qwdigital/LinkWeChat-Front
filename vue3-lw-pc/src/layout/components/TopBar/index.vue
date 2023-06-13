@@ -57,17 +57,15 @@
 
         <el-tooltip content="功能清单" effect="dark" placement="bottom">
           <div class="right-menu-item hover-effect">
-            <i
-              class="el-icon-tickets right-icon"
-              @click="goto('https://docs.qq.com/sheet/DZW9HSHpHdWlOYWh2?tab=BB08J3')"></i>
+            <el-icon-tickets class="el-icon-tickets right-icon"
+              @click="goto('https://docs.qq.com/sheet/DZW9HSHpHdWlOYWh2?tab=BB08J3')"/>
           </div>
         </el-tooltip>
 
         <el-tooltip content="需求墙" effect="dark" placement="bottom">
           <div class="right-menu-item hover-effect">
-            <i
-              class="el-icon-data-board right-icon"
-              @click="goto('https://docs.qq.com/sheet/DZWxGU0JGVFRVdWZV?tab=BB08J2')"></i>
+            <el-icon-data-board class="el-icon-data-board right-icon"
+              @click="goto('https://docs.qq.com/sheet/DZWxGU0JGVFRVdWZV?tab=BB08J2')"/>
           </div>
         </el-tooltip> -->
 

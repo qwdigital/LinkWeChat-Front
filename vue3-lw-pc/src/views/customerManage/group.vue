@@ -238,12 +238,12 @@ export default {
         <el-table-column prop="tags" label="群标签" align="center">
           <template #default="{ row }">
             <div v-if="row.tags">
-              <TagEllipsis :list="row.tagNames"></TagEllipsis>
+              <TagEllipsis :list="row.tags"></TagEllipsis>
             </div>
             <span v-else>无标签</span>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="center" prop="createTime" width="180"></el-table-column>
+        <el-table-column label="创建时间" align="center" prop="addTime" width="180"></el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
             <el-button

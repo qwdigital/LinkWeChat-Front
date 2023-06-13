@@ -118,6 +118,7 @@ export default {
       handler(value) {
         this.fileListWatch = value
       },
+      deep: true,
     },
     loading(val) {
       this.$emit('loadingChange', val)
@@ -490,7 +491,7 @@ export default {
       // if (beforeUpload) {
       //   return beforeUpload(file)
       // }
-      if (!this.multiple || this.limit == 1) {
+      else if (!this.multiple || this.limit == 1) {
         this.file = file
       } else {
         Array.isArray(this.file) || (this.file = []) // 多选

@@ -222,7 +222,7 @@ export default {
       multiField(this.list)
     },
     dragSort() {
-      const el = this.$refs.table.$el.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
+      const el = this.$refs.table.$el.querySelectorAll('.el-table__body-wrapper table > tbody')[0]
       this.sortable = Sortable.create(el, {
         ghostClass: 'sortable-ghost',
         setData: function (dataTransfer) {

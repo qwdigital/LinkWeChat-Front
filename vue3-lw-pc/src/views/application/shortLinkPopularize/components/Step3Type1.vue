@@ -104,7 +104,7 @@ export default {
         this.$emit('preview', {
           previewData: JSON.parse(JSON.stringify(this.attachmentsData.attachments)),
         })
-        this.$emit('previewText', { templateInfo: JSON.parse(JSON.stringify(this.attachmentsData.templateInfo)) })
+        this.$emit('previewText', { templateInfo: this.attachmentsData.templateInfo })
       }
       if (!this.form.client) {
         this.form.client = {

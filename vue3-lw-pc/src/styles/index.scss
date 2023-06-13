@@ -240,6 +240,7 @@ div:focus {
     display: flex;
     justify-content: space-between;
     height: 100%;
+    max-height: calc(100vh - 135px);
     .left {
       flex: auto;
       display: flex;

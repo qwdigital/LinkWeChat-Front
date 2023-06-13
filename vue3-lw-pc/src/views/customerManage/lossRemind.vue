@@ -240,7 +240,7 @@ export default {
             <!-- <span :style="{ color: scope.row.type === 1 ? '#4bde03' : '#f9a90b' }">{{
             { 1: '@微信', 2: '@企业微信' }[scope.row.type]
           }}</span>
-          <i :class="['el-icon-s-custom', { 1: 'man', 2: 'woman' }[scope.row.gender]]"></i> -->
+          <el-icon-Avatar :class="['el-icon-Avatar', { 1: 'man', 2: 'woman' }[scope.row.gender]]"/> -->
           </template>
         </el-table-column>
         <!-- <el-table-column prop="corpName" label="公司名称" align="center"></el-table-column> -->

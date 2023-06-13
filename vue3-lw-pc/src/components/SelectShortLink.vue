@@ -36,10 +36,10 @@
                 <el-table-column label="短链地址" align="center" prop="shortLink" show-overflow-tooltip>
                   <template #default="{ row }">
                     <span>{{ row.shortLink }}</span>
-                    <i
+                    <el-icon-copy-document
                       class="el-icon-copy-document copy-btn cp ml20"
                       title="复制"
-                      :data-clipboard-text="row.shortLink"></i>
+                      :data-clipboard-text="row.shortLink" />
                   </template>
                 </el-table-column>
                 <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180"></el-table-column>
@@ -117,11 +117,17 @@ export default {
     }
   },
   watch: {
-    selected(val) {
-      this.setSelected()
+    selected: {
+      deep: true,
+      handler(val) {
+        this.setSelected()
+      },
     },
-    list(val) {
-      this.setSelected()
+    list: {
+      deep: true,
+      handler(val) {
+        this.setSelected()
+      },
     },
   },
   computed: {

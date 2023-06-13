@@ -365,6 +365,7 @@ export default {
         this.talkList = JSON.parse(JSON.stringify(val))
       },
       immediate: true,
+      deep: true,
     },
     materialForm: {
       handler(val) {

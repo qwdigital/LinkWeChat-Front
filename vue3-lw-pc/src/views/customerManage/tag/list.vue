@@ -104,7 +104,11 @@ export default {
     remove(id) {
       const operIds = id || this.ids + ''
       this.$confirm('是否确认删除吗?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
         type: 'warning',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
       })
         .then(function () {
           return api.remove(operIds)

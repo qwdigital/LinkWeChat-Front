@@ -373,7 +373,8 @@
   background-color: #f5f7fa;
 }
 
-.el-tabs__nav-wrap {
+.el-tabs__nav-wrap,
+.el-tabs__content {
   overflow: initial;
 }
 
@@ -409,6 +410,10 @@
 .el-pagination.is-background .el-pager li.is-disabled,
 .el-pagination.is-background .el-pager li:disabled {
   background-color: transparent;
+}
+// 分页大小选择框
+.el-pagination .el-select .el-input {
+  width: 115px;
 }
 // to fixed https://github.com/ElemeFE/element/issues/2461
 // .el-dialog {
@@ -582,6 +587,9 @@
     // border-top: 1px solid #dfe6ec;
     padding: 15px 0;
   }
+  .cell {
+    padding: 0 10px;
+  }
   th.el-table__cell.is-leaf {
     border-bottom: 0;
   }
@@ -635,6 +643,10 @@
 // 滚动条宽度
 .el-scrollbar__bar.is-vertical {
   width: 5px;
+}
+
+.el-checkbox-group {
+  line-height: initial;
 }
 
 // }

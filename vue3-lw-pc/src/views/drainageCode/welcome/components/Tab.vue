@@ -133,9 +133,7 @@ export default {
     /** 删除按钮操作 */
     remove(id) {
       // const operIds = id || this.ids + "";
-      this.$confirm('是否确认删除吗?', '警告', {
-        type: 'warning',
-      })
+      this.$confirm('是否确认删除吗?', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
         .then(() => {
           return remove(id)
         })
@@ -149,9 +147,7 @@ export default {
         this.msgInfo('请勾选需要删除的项！')
         return
       }
-      this.$confirm('是否确认删除吗?', '警告', {
-        type: 'warning',
-      })
+      this.$confirm('是否确认删除吗?', '警告', { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' })
         .then(() => {
           return remove(this.ids.join(','))
         })
