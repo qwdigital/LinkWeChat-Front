@@ -1,29 +1,12 @@
 <template>
-  <div>
-    <!-- <div class="title_name">
-        查询表格
-      </div> -->
-    <el-form :inline="true" label-width="" label-position="left" class="top-search">
-      <el-form-item label="人群名称">
-        <el-input v-model="query.name" placeholder="请输入人群名称" clearable @keyup.enter.native="search()" />
-      </el-form-item>
-      <el-form-item label="选择状态" prop="qrUserName">
-        <el-select v-model="query.status">
-          <el-option v-for="(unit, key) in statusList" :key="key" :label="unit.name" :value="unit.status"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label-width="0">
-        <el-button type="primary" size="small" @click="search()">查询</el-button>
-        <el-button @click="resetQuery" size="small" type="info" plain>清空</el-button>
-      </el-form-item>
-    </el-form>
-    <el-row type="flex" justify="space-between" class="g-margin-t">
-      <el-col :span="5" class="left g-card" style="border-radius: 4px; background: #fff;">
+  <div style="height: 100%;">
+    <div class="g-left-right">
+      <div class="left g-card">
         <div class="title">
           <div class="title-name">人群分组</div>
           <div class="title-btn" @click="addGroup">添加</div>
         </div>
-        <div class="item-list">
+        <el-scrollbar class="item-list">
           <div
             class="item"
             :class="{ active: groupIndex == key }"
@@ -36,96 +19,129 @@
               <span class="dot">
                 <i class="el-icon-more content-icon"></i>
               </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="edit">修改分组</el-dropdown-item>
-                <el-dropdown-item command="remove">删除分组</el-dropdown-item>
-              </el-dropdown-menu>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item command="edit">修改分组</el-dropdown-item>
+                  <el-dropdown-item command="remove">删除分组</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
             </el-dropdown>
           </div>
-        </div>
-      </el-col>
-      <el-col :span="19" class="g-card mt0">
-        <div>
-          <div style="display: flex; justify-content: space-between;">
-            <el-button type="primary" size="small" @click="goRoute('add')">新建人群</el-button>
+        </el-scrollbar>
+      </div>
+      <div class="right">
+        <el-form :inline="true" label-width="" label-position="left" class="top-search">
+          <el-form-item label="人群名称">
+            <el-input v-model="query.name" placeholder="请输入人群名称" clearable @keyup.enter.native="search()" />
+          </el-form-item>
+          <el-form-item label="选择状态" prop="qrUserName">
+            <el-select v-model="query.status">
+              <el-option
+                v-for="(unit, key) in statusList"
+                :key="key"
+                :label="unit.name"
+                :value="unit.status"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label-width="0">
+            <el-button type="primary" @click="search()">查询</el-button>
+            <el-button @click="resetQuery" type="info" plain>清空</el-button>
+          </el-form-item>
+        </el-form>
+        <div class="g-card">
+          <div class="mid-action">
+            <el-button type="primary" @click="goRoute('add')">新建人群</el-button>
             <div>
-              <el-button type="primary" plain size="small" @click="removeFn('mult')">批量删除</el-button>
-              <el-button type="primary" plain size="small" @click="updateFn('mult')">批量更新</el-button>
+              <el-button type="primary" plain @click="removeFn('mult')">批量删除</el-button>
+              <el-button type="primary" plain @click="updateFn('mult')">批量更新</el-button>
             </div>
           </div>
-        </div>
-        <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange" style="width: 100%;">
-          <el-table-column type="selection" width="55" align="center" />
-          <el-table-column label="人群名称" align="center" prop="qrCode" min-width="120">
-            <template slot-scope="{ row }">
-              <span class="default_name" @click="goRoute('detail', row.id)">{{ row.name }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="人群规模" align="center" min-width="100" prop="crowdNum" show-overflow-tooltip>
-            <template slot="header">
-              <el-popover placement="top" trigger="hover">
-                <div slot="reference">
-                  人群规模
-                  <i class="el-icon-question"></i>
+          <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange" style="width: 100%;">
+            <el-table-column type="selection" width="55" align="center" />
+            <el-table-column label="人群名称" align="center" prop="qrCode" min-width="120">
+              <template slot-scope="{ row }">
+                <span class="default_name" @click="goRoute('detail', row.id)">{{ row.name }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="人群规模" align="center" min-width="100" prop="crowdNum" show-overflow-tooltip>
+              <template slot="header">
+                <el-popover placement="top" trigger="hover">
+                  <div slot="reference">
+                    人群规模
+                    <i class="el-icon-question"></i>
+                  </div>
+                  <div>为上一次人群计算成功的数量，非实时数据，可手动更新</div>
+                </el-popover>
+              </template>
+              <template slot-scope="{ row }">
+                <span>{{ row.crowdNum ? row.crowdNum : '-' }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="计算状态" align="center" min-width="100" prop="qrGroupName" show-overflow-tooltip>
+              <template slot-scope="{ row }">
+                <div
+                  :class="{
+                    color1: row.status === 1,
+                    color2: row.status === 2,
+                    color3: row.status === 3,
+                    color4: row.status === 4
+                  }"
+                >
+                  {{
+                    row.status === 1
+                      ? '待计算'
+                      : row.status === 2
+                      ? '计算中'
+                      : row.status === 3
+                      ? '计算完成'
+                      : row.status === 4
+                      ? '计算失败'
+                      : ''
+                  }}
                 </div>
-                <div>为上一次人群计算成功的数量，非实时数据，可手动更新</div>
-              </el-popover>
-            </template>
-            <template slot-scope="{ row }">
-              <span>{{ row.crowdNum ? row.crowdNum : '-' }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="计算状态" align="center" min-width="100" prop="qrGroupName" show-overflow-tooltip>
-            <template slot-scope="{ row }">
-              <div
-                :class="{
-                  color1: row.status === 1,
-                  color2: row.status === 2,
-                  color3: row.status === 3,
-                  color4: row.status === 4
-                }"
-              >
-                {{
-                  row.status === 1
-                    ? '待计算'
-                    : row.status === 2
-                    ? '计算中'
-                    : row.status === 3
-                    ? '计算完成'
-                    : row.status === 4
-                    ? '计算失败'
-                    : ''
-                }}
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="创建人"
-            align="center"
-            min-width="140"
-            prop="createBy"
-            show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180"></el-table-column>
-          <el-table-column label="操作" align="center" fixed="right" width="180" class-name="small-padding fixed-width">
-            <template slot-scope="{ row }">
-              <el-button type="text" @click="goRoute('detail', row.id)">查看</el-button>
-              <template v-if="row.status === 3 || row.status === 4">
-                <el-divider direction="vertical"></el-divider>
-                <el-button type="text" @click="goRoute('add', row.id)">编辑</el-button>
               </template>
-              <el-divider direction="vertical"></el-divider>
-              <el-button type="text" @click="removeFn('single', row.id)">删除</el-button>
-              <template v-if="row.status !== 2 && row.type === 1">
+            </el-table-column>
+            <el-table-column
+              label="创建人"
+              align="center"
+              min-width="140"
+              prop="createBy"
+              show-overflow-tooltip
+            ></el-table-column>
+            <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180"></el-table-column>
+            <el-table-column
+              label="操作"
+              align="center"
+              fixed="right"
+              width="180"
+              class-name="small-padding fixed-width"
+            >
+              <template slot-scope="{ row }">
+                <el-button type="text" @click="goRoute('detail', row.id)">查看</el-button>
+                <template v-if="row.status === 3 || row.status === 4">
+                  <el-divider direction="vertical"></el-divider>
+                  <el-button type="text" @click="goRoute('add', row.id)">编辑</el-button>
+                </template>
                 <el-divider direction="vertical"></el-divider>
-                <el-button type="text" @click="updateFn('single', row.id)">更新</el-button>
+                <el-button type="text" @click="removeFn('single', row.id)">删除</el-button>
+                <template v-if="row.status !== 2 && row.type === 1">
+                  <el-divider direction="vertical"></el-divider>
+                  <el-button type="text" @click="updateFn('single', row.id)">更新</el-button>
+                </template>
               </template>
-            </template>
-          </el-table-column>
-        </el-table>
-        <pagination :total="total" :page.sync="query.pageNum" :limit.sync="query.pageSize" @pagination="getList()" />
-      </el-col>
-    </el-row>
+            </el-table-column>
+          </el-table>
+          <pagination :total="total" :page.sync="query.pageNum" :limit.sync="query.pageSize" @pagination="getList()" />
+        </div>
+      </div>
+    </div>
+
+    <!-- <el-row type="flex" justify="space-between" class="g-margin-t">
+      <el-col :span="5" class="left g-card" style="border-radius: 4px; background: #fff;"> </el-col>
+      <el-col :span="19" class="g-card mt0">
+       </el-col>
+    </el-row> -->
 
     <el-dialog :title="`${groupForm.id ? '修改' : '新建'}分组`" :visible.sync="groupVisible" width="30%">
       <el-form :model="groupForm" :rules="rules" ref="groupForm">
@@ -435,99 +451,6 @@
     cursor: pointer;
     &:hover {
       background-color: #f5f8fe;
-    }
-  }
-
-  .left {
-    margin-right: 16px;
-    .title {
-      color: #3c88f0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      .title-name {
-        color: rgba(0, 0, 0, 0.9);
-        font-size: 16px;
-        font-weight: 600;
-        // color: #333333;
-        display: flex;
-        align-items: center;
-      }
-      .title-btn {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-        font-weight: normal;
-        color: #0079de;
-        &:hover {
-          opacity: 0.8;
-        }
-      }
-    }
-
-    .item-list {
-      max-height: 700px;
-      padding-top: 15px;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      overflow-x: hidden;
-      overflow-y: auto;
-      .item {
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 14px;
-        color: rgba(0, 0, 0, 0.6);
-        height: 40px;
-        line-height: 40px;
-        width: 100%;
-        padding-left: 20px;
-        .name {
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-        .dropdown {
-          // display: none;
-          .dot {
-            cursor: pointer;
-            width: 15px;
-            height: 15px;
-            line-height: 15px;
-            font-size: 14px;
-            font-family: JMT-Font, JMT;
-            font-weight: normal;
-            color: rgba(0, 0, 0, 0.6);
-            margin-right: 10px;
-            margin-left: 5px;
-            font-weight: 500;
-            .content-icon {
-              color: rgba(0, 0, 0, 0.6);
-              font-size: 12px;
-              transform: rotate(90deg);
-            }
-          }
-        }
-        &:hover {
-          color: rgba(0, 0, 0, 0.9);
-          background: #f5f8fe;
-          opacity: 0.8;
-          border-radius: 2px;
-          .dropdown {
-            // display: block;
-          }
-        }
-      }
-
-      .active {
-        // border-left: 2px solid #3c88f0;
-        color: rgba(0, 0, 0, 0.9);
-        background: #f5f8fe;
-        border-radius: 2px;
-      }
     }
   }
 </style>

@@ -11,7 +11,7 @@
         >
         <span v-if="unit.andOr === 2" class="relation_button" :class="{ relation_active: unit.andOr === 2 }">或</span>
       </div>
-      <el-card>
+      <div class="g-card">
         <div class="card_header">
           <div>
             <show-people-title :titleType="unit.swipType"></show-people-title>
@@ -43,7 +43,7 @@
         <template v-if="unit.swipType === 5">
           <strategic-crowd :currentData="unit" :detail="true" :baseData="baseEnum.StrategicCrowdEnum"></strategic-crowd>
         </template>
-      </el-card>
+      </div>
     </div>
   </div>
 </template>

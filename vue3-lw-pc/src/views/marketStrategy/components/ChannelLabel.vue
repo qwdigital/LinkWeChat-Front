@@ -27,7 +27,6 @@
   </div>
 </template>
 <script>
-  import { getList } from '@/api/drainageCode/staff'
   import { getChannelDetail } from '@/api/marketStrategy/people'
   export default {
     name: 'channel-label',
