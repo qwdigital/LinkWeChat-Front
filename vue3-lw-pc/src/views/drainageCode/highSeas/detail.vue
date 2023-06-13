@@ -1,4 +1,5 @@
 <script>
+import * as echarts from 'echarts'
 import { getDetail, getUserAddCustomerStat, download } from '@/api/drainageCode/staff'
 
 export default {
