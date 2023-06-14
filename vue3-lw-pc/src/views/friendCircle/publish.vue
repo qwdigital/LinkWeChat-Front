@@ -2,7 +2,13 @@
   <div>
     <el-row :gutter="10" type="flex" style="margin-top: 10px">
       <el-col>
-        <el-form label-width="110px" label-position="right">
+        <el-form
+          label-width="110px"
+          label-position="right"
+          :model="form"
+          :rules="rules"
+          ref="ruleForm"
+        >
           <div class="g-card">
             <el-form-item label="任务名称：" prop="name">
               <el-input
@@ -10,10 +16,11 @@
                 placeholder="请输入任务名称"
                 maxlength="20"
                 show-word-limit
+                :disabled="firendId"
               ></el-input>
             </el-form-item>
             <el-form-item label="发送方式：" prop="sendType">
-              <el-radio-group v-model="form.sendType">
+              <el-radio-group v-model="form.sendType" :disabled="firendId">
                 <el-radio :label="0"
                   >企微群发
                   <el-popover placement="top" trigger="hover">
@@ -27,7 +34,7 @@
                     </div>
                   </el-popover></el-radio
                 >
-                <el-radio :label="1"
+                <el-radio :label="2"
                   >成员群发
                   <el-popover placement="top" trigger="hover">
                     <template #reference>
@@ -41,7 +48,7 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item label="发送范围：" required>
-              <el-radio-group v-model="form.scopeType">
+              <el-radio-group v-model="form.scopeType" :disabled="firendId">
                 <el-radio :label="0">全部客户</el-radio>
                 <el-radio :label="1">按条件筛选</el-radio>
               </el-radio-group>
@@ -54,6 +61,7 @@
                 @update="getExecuteData"
                 :show="true"
                 v-if="form.scopeType === 1"
+                :disabled="firendId"
               ></SelectMember>
             </el-form-item>
             <!-- <el-form-item label="选择客户标签" v-if="form.scopeType === 0">
@@ -65,7 +73,7 @@
               </div>
             </el-form-item> -->
             <el-form-item label="执行时间：">
-              <div class="tips">
+              <div class="tips" v-if="!firendId">
                 可自由设定该朋友圈任务下发通知的开始时间，如未设置则默认创建时间即开始执行时间
               </div>
               <el-date-picker
@@ -74,48 +82,57 @@
                 placeholder="选择年月日时分"
                 format="YYYY-MM-DD HH:mm"
                 v-bind="pickerOptions"
+                :disabled="firendId"
               >
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="结束时间：" required>
-              <div class="tips">朋友圈任务可设置截止时间，则未完成的成员不允许再执行本条任务</div>
+            <el-form-item label="结束时间：" prop="executeEndTime">
+              <div class="tips" v-if="!firendId">
+                朋友圈任务可设置截止时间，则未完成的成员不允许再执行本条任务
+              </div>
               <el-date-picker
                 v-model="form.executeEndTime"
                 type="datetime"
                 placeholder="选择年月日时分"
                 format="YYYY-MM-DD HH:mm"
                 v-bind="pickerOptions"
+                :disabled="firendId"
               >
               </el-date-picker>
             </el-form-item>
             <el-form-item label="自动标签：">
               <div class="tips">可根据客户的点赞或评论行为分别打上对应标签</div>
               <div>点赞自动打标签：</div>
-              <el-tag sizi="mini" v-for="(unit, key) in likeTagList" :key="key">{{
-                unit.name
-              }}</el-tag>
-              <div>
+              <div v-if="likeTagList.length">
+                <el-tag sizi="mini" v-for="(unit, key) in likeTagList" :key="key">{{
+                  unit.name
+                }}</el-tag>
+              </div>
+              <div class="tips" v-if="!likeTagList.length && firendId">未选择标签</div>
+              <div v-if="!firendId">
                 <el-button type="primary" plain @click="selectedFn">选择标签</el-button>
               </div>
               <div class="mt10">评论自动打标签：</div>
-              <div>
+              <div v-if="commentTagList.length">
                 <el-tag sizi="mini" v-for="(unit, key) in commentTagList" :key="key">{{
                   unit.name
                 }}</el-tag>
               </div>
-
-              <div>
+              <div class="tips" v-if="!commentTagList.length && firendId">未选择标签</div>
+              <div v-if="!firendId">
                 <el-button type="primary" plain @click="selectedFn2">选择标签</el-button>
               </div>
             </el-form-item>
           </div>
           <!-- <FriendCircleContent ref="friendCircleContent" :data="form"></FriendCircleContent> -->
+          {{firendId}}
           <AddMaterial
             :moduleType="4"
             @update="onBackStep"
             @submit="submit"
             :otherType="3"
             :showPhone="false"
+            :detail="firendId !== undefined"
           ></AddMaterial>
 
           <!-- <el-form-item label-width="0" style="margin-top: 20px; margin-bottom: 0">
@@ -146,9 +163,10 @@
 </template>
 
 <script>
-import { addMoments, numMoments } from '@/api/circle'
+import { addMoments, numMoments, getDetail } from '@/api/circle'
 import AddMaterial from '@/components/ContentCenter/AddMaterial'
 import SelectMember from './components/SelectMember.vue'
+import moment from 'moment'
 
 export default {
   name: 'publish-detail',
@@ -194,14 +212,38 @@ export default {
         posts: [],
         customerTag: [],
       },
+      rules: {
+        name: [{ required: true, message: '请输入任务名称', trigger: 'blur' }],
+        sendType: [{ required: true, message: '请选择发送方式', trigger: 'change' }],
+        executeEndTime: [
+          { type: 'date', required: true, message: '请选择结束时间', trigger: 'change' },
+        ],
+      },
+      firendId: undefined,
     }
   },
   mounted() {
-    let form = {}
-    form.scopeType = 0
-    this.getNumMoments(form)
+    this.firendId = this.$route.query.id
+    this.firendType = this.$route.query.type
+    if (this.firendId) {
+      // 详情页面
+      this.getDetail(this.firendId)
+    } else {
+      // 新增页面
+      let form = {}
+      form.scopeType = 0
+      this.getNumMoments(form)
+    }
   },
   methods: {
+    // 获取页面详情
+    getDetail(id) {
+      getDetail(id)
+        .then((res) => {
+          console.log(231, res)
+        })
+        .catch()
+    },
     // 获取可见客户数
     getNumMoments(data) {
       numMoments(data)
@@ -216,7 +258,6 @@ export default {
       let form = data
       form.scopeType = 1
       this.getNumMoments(form)
-      console.log(174, data)
       this.addWeUser = data
     },
     selectedFn() {
@@ -233,9 +274,9 @@ export default {
       this.likeTagList = data
     },
     submitSelectTag2(data) {
-      this.form.commentTagList = []
+      this.form.commentTagIds = []
       data.forEach((el) => {
-        this.form.commentTagList.push(el.tagId)
+        this.form.commentTagIds.push(el.tagId)
       })
       this.commentTagList = data
     },
@@ -265,41 +306,72 @@ export default {
     },
 
     submit(data) {
-      this.form.materialIds = []
-      data.attachments.forEach((item) => {
-        this.form.materialIds.push(item.materialId)
-      })
-      // this.form.content = data.templateInfo
-      // if (data.attachments.length !== 0) {
-      //   this.form.contentType = 'link'
-      //   this.form.realType = data.attachments[0].realType
-      //   this.form.materialId = data.attachments[0].materialId
-      //   this.dealType(data.attachments[0])
-      // } else {
-      //   this.form.otherContent = []
-      //   this.form.contentType = 'text'
-      // }
-      // // if (this.$refs.friendCircleContent.validate()) {
-      // if (this.form.scopeType === 0) {
-      //   this.form.customerTag = this.selectedTagList
-      //     .map((dd) => {
-      //       return dd.tagId
-      //     })
-      //     .join(',')
-      //   this.form.noAddUser = this.selectedUserList
-      //     .map((dd) => {
-      //       return dd.userId
-      //     })
-      //     .join(',')
-      // }
-      console.log(this.form)
-      addMoments(this.form).then((res) => {
-        if (res.code === 200) {
-          this.msgSuccess('操作成功')
-          this.$router.go(-1)
+      this.$refs['ruleForm'].validate((valid) => {
+        if (valid) {
+          if (this.form.scopeType === 1) {
+            if (
+              this.addWeUser.userIds.length ||
+              this.addWeUser.posts.length ||
+              this.addWeUser.deptIds.length ||
+              this.addWeUser.customerTag.length
+            ) {
+              this.form = Object.assign(this.form, this.addWeUser)
+            } else {
+              this.msgError('请选择按条件筛选时的发送范围！')
+              return false
+            }
+          }
+          this.form.materialIds = []
+          data.attachments.forEach((item) => {
+            this.form.materialIds.push(item.materialId)
+          })
+          this.form.content = data.templateInfo
+          // if (data.attachments.length !== 0) {
+          //   this.form.contentType = 'link'
+          //   this.form.realType = data.attachments[0].realType
+          //   this.form.materialId = data.attachments[0].materialId
+          //   this.dealType(data.attachments[0])
+          // } else {
+          //   this.form.otherContent = []
+          //   this.form.contentType = 'text'
+          // }
+          // // if (this.$refs.friendCircleContent.validate()) {
+          // if (this.form.scopeType === 0) {
+          //   this.form.customerTag = this.selectedTagList
+          //     .map((dd) => {
+          //       return dd.tagId
+          //     })
+          //     .join(',')
+          //   this.form.noAddUser = this.selectedUserList
+          //     .map((dd) => {
+          //       return dd.userId
+          //     })
+          //     .join(',')
+          // }
+          if (this.form.executeTime) {
+            let time = this.form.executeTime.getTime()
+            let time2 = Date.now()
+            if (time2 > time) {
+              this.msgError('执行时间不可早于当前日期！')
+              return false
+            }
+            this.form.executeTime = moment(this.form.executeTime).format('YYYY-MM-DD HH:mm')
+          } else {
+            this.form.executeTime = ''
+          }
+          this.form.executeEndTime = moment(this.form.executeEndTime).format('YYYY-MM-DD HH:mm')
+          console.log(304, this.form)
+          addMoments(this.form).then((res) => {
+            if (res.code === 200) {
+              this.msgSuccess('操作成功')
+              this.$router.go(-1)
+            }
+          })
+          // }
+        } else {
+          return false
         }
       })
-      // }
     },
     filPicType(file) {
       let filecontent = JSON.parse(JSON.stringify(file))

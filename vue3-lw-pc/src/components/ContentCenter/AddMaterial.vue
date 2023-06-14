@@ -210,7 +210,7 @@
             <el-button @click="getCancel" v-if="moduleType !== 4">取消</el-button>
             <el-button type="primary" v-loading="talkLoading" @click="tackSubmit">确定</el-button>
           </template>
-          <template v-else-if="otherType === 3 && moduleType !== 2">
+          <template v-else-if="otherType === 3 && moduleType !== 2 && !detail">
             <el-button @click="goBack">取消</el-button>
             <el-button type="primary" v-loading="talkLoading" @click="tackSubmit">确定</el-button>
           </template>
@@ -411,6 +411,11 @@ export default {
       type: Boolean,
       default: true,
     },
+    // 是否为详情页面
+    detail: {
+      type: Boolean,
+      default: false,
+    },
   },
   watch: {
     baseData(val) {
@@ -586,8 +591,17 @@ export default {
       this.talkList = val
       this.$emit('phoneData', this.talkList)
     },
-    getItemArry(val) {
+    getItemArry(val, length) {
       this.talkList = this.talkList.concat(val)
+      if (this.otherType === 3) {
+        this.maxlength = length
+        if (this.maxlength === 9) {
+          this.fontType = '图片类型的附件'
+        } else {
+          this.fontType = '其他类型的附件'
+        }
+      }
+
       // 当手机为非内嵌时
       this.$emit('phoneData', this.talkList)
     },
@@ -637,12 +651,21 @@ export default {
     // 新建话术
     tackSubmit() {
       this.talkLoading = true
-      if ([3, 4].includes(this.moduleType) && !this.talkForm.templateInfo) {
+      if ([3, 4].includes(this.moduleType) && !this.talkForm.templateInfo && this.otherType !== 3) {
         this.templateInfo = '请输入' + this.lableOne
         this.talkLoading = false
         return
       } else {
         this.templateInfo = ''
+      }
+      if (this.otherType === 3) {
+        if (!this.talkForm.templateInfo && !this.talkList.length) {
+          this.templateInfo = '文本或附件内容至少填写一种'
+          this.talkLoading = false
+          return
+        } else {
+          this.templateInfo = ''
+        }
       }
       if (!this.talkForm.userIds && this.tplType == 2) {
         this.userInfo = '请选择员工'
@@ -856,7 +879,7 @@ export default {
       this.talkList = this.baseData.attachments
     }
     this.dealType()
-    if (this.otherType === 3 || this.tplType == 3) {
+    if (this.tplType == 3) {
       this.maxlength = 1
     } else {
       this.maxlength = 9

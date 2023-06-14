@@ -23,10 +23,10 @@ export function syncHMoments(data) {
   })
 }
 
-// 朋友圈 企业 详情
+// 朋友圈 详情
 export function getDetail(id) {
   return request({
-    url: service + '/moments/findMomentsDetail/' + id,
+    url: service + '/moments/get/' + id,
   })
 }
 
@@ -61,5 +61,12 @@ export function numMoments(data) {
     url: service + '/moments/estimate/num',
     method: 'post',
     data: data,
+  })
+}
+
+// 朋友圈 提醒执行
+export function reminderMoments(data) {
+  return request({
+    url: service + '/moments/reminder/execution/' + data,
   })
 }

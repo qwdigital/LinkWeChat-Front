@@ -131,6 +131,11 @@ export default {
         this.dialogVisibel = val
       },
     },
+    maxlength: {
+      handler(val) {
+        this.maxlength2 = val
+      },
+    },
   },
   computed: {},
   components: {
@@ -152,6 +157,7 @@ export default {
       ids: [], // 选中数组
       itemArry: [], // 选中数组
       inx: 0,
+      maxlength2: 9, // 最大确认数
     }
   },
   methods: {
@@ -208,40 +214,54 @@ export default {
     },
     changeBox(event, obj) {
       event.preventDefault()
-      this.ids = []
-      this.paneList.forEach((item) => {
-        if (item.list && item.list.length) {
-          item.list.forEach((item1) => {
-            this.ids.push(item1)
-          })
-        }
-      })
-      if (
-        (this.ids.length + this.talkListLength > this.maxlength ||
-          this.ids.length + this.talkListLength === this.maxlength) &&
-        !obj.isCheck
-      ) {
-        this.$message.error(
-          '最多新建或选择' + this.maxlength + '个素材,已新建' + this.talkListLength + '个素材'
-        )
-        return
-      }
-      obj.isCheck = !obj.isCheck
-      if (obj.isCheck) {
-        this.paneList[this.picindex].list.push(obj)
-      } else {
-        this.paneList[this.picindex].list = this.paneList[this.picindex].list.filter((list) => {
-          return list.id !== obj.id
+      let setStatus = true
+      if (this.isFriends) {
+        // 如果是朋友圈的
+        this.maxlength2 = 9
+        this.paneList.forEach((item, i) => {
+          if (item.list.length > 0 && i !== 0) {
+            this.$message.error('仅允许选择一种类型的素材')
+            setStatus = false
+            return
+          }
         })
       }
-      this.ids = []
-      this.paneList.forEach((item) => {
-        if (item.list && item.list.length) {
-          item.list.forEach((item1) => {
-            this.ids.push(item1)
+      if (setStatus) {
+        this.ids = []
+        this.paneList.forEach((item) => {
+          if (item.list && item.list.length) {
+            item.list.forEach((item1) => {
+              this.ids.push(item1)
+            })
+          }
+        })
+        if (
+          (this.ids.length + this.talkListLength > this.maxlength2 ||
+            this.ids.length + this.talkListLength === this.maxlength2) &&
+          !obj.isCheck
+        ) {
+          this.$message.error(
+            '最多新建或选择' + this.maxlength2 + '个素材,已新建' + this.talkListLength + '个素材'
+          )
+          return
+        }
+        obj.isCheck = !obj.isCheck
+        if (obj.isCheck) {
+          this.paneList[this.picindex].list.push(obj)
+        } else {
+          this.paneList[this.picindex].list = this.paneList[this.picindex].list.filter((list) => {
+            return list.id !== obj.id
           })
         }
-      })
+        this.ids = []
+        this.paneList.forEach((item) => {
+          if (item.list && item.list.length) {
+            item.list.forEach((item1) => {
+              this.ids.push(item1)
+            })
+          }
+        })
+      }
     },
     centerCancel() {
       this.dialogVisibel = false
@@ -262,12 +282,12 @@ export default {
       this.ids = []
     },
     centerSubmit() {
-      if (this.ids.length + this.talkListLength > this.maxlength) {
-        this.$message.error('最多新建或选择' + this.maxlength + '个素材')
+      if (this.ids.length + this.talkListLength > this.maxlength2) {
+        this.$message.error('最多新建或选择' + this.maxlength2 + '个素材')
         return
       } else {
         this.dialogVisibel = false
-        this.$emit('itemArry', this.ids)
+        this.$emit('itemArry', this.ids, this.maxlength2)
         this.$emit('update:choseDialog', this.dialogVisibel)
         this.$refs.multipleTable.forEach((item) => {
           item.clearSelection()
@@ -276,7 +296,21 @@ export default {
         this.clearPaneList()
       }
     },
+    // 单个选择
     handleSelect(select, row) {
+      if (this.isFriends) {
+        // 如果是朋友圈的
+        this.maxlength2 = 1
+        this.paneList.forEach((item, i) => {
+          if (item.list.length > 0 && i !== +this.index) {
+            this.$message.error('仅允许选择一种类型的素材')
+            return
+          }
+        })
+        if (this.paneList[this.index].list.length > 0) {
+          this.$message.error('除图片素材可选9条数据,其他类型仅可选择一条数据')
+        }
+      }
       let list = this.paneList[this.index].list
       let falg = false
       if (list.length) {
@@ -295,13 +329,16 @@ export default {
         })
       }
       this.getIds()
-      if (this.ids.length + this.talkListLength > this.maxlength) {
+      if (this.ids.length + this.talkListLength > this.maxlength2) {
         this.$nextTick(() => {
           if (this.index) this.$refs.multipleTable[this.inx].toggleRowSelection(row, false)
         })
-        this.$message.error(
-          '最多新建或选择' + this.maxlength + '个素材,已新建' + this.talkListLength + '个素材'
-        )
+        if (!this.isFriends) {
+          this.$message.error(
+            '最多新建或选择' + this.maxlength2 + '个素材,已新建' + this.talkListLength + '个素材'
+          )
+        }
+
         this.paneList[this.index].list = this.paneList[this.index].list.filter((item) => {
           return item.id != row.id
         })
@@ -309,6 +346,16 @@ export default {
       }
     },
     selectAll(select) {
+      if (this.isFriends) {
+        // 如果是朋友圈的
+        this.maxlength2 = 1
+        // this.paneList.forEach((item, i) => {
+        //   if (item.list.length > 0 && i !== +this.index) {
+        //     this.$message.error('仅允许选择一种类型的素材')
+        //     return
+        //   }
+        // })
+      }
       if (select.length) {
         // 全选
         this.paneList[this.index].list = select
@@ -317,13 +364,16 @@ export default {
         this.paneList[this.index].list = []
       }
       this.getIds()
-      if (this.ids.length + this.talkListLength > this.maxlength) {
+      if (this.ids.length + this.talkListLength > this.maxlength2) {
         select.forEach((item) => {
           this.$refs.multipleTable[this.inx].toggleAllSelection(item, false)
         })
-        this.$message.error(
-          '最多新建或选择' + this.maxlength + '个素材,已新建' + this.talkListLength + '个素材'
-        )
+        if (!this.isFriends) {
+          this.$message.error(
+            '最多新建或选择' + this.maxlength2 + '个素材,已新建' + this.talkListLength + '个素材'
+          )
+        }
+
         this.paneList[this.index].list = []
         this.getIds()
       }
@@ -338,30 +388,6 @@ export default {
         }
       })
     },
-    // 多选框选中数据
-    // handleSelectionChange(selection) {
-    //   let list = JSON.parse(JSON.stringify(this.paneList[this.index].list))
-    //   this.paneList[this.index].list = selection
-    //   this.ids = []
-    //   this.paneList.forEach((item) => {
-    //     if (item.list && item.list.length) {
-    //       item.list.forEach((item1) => {
-    //         this.ids.push(item1)
-    //       })
-    //     }
-    //   })
-    //   if (this.ids.length + this.talkListLength > this.maxlength) {
-    //     this.paneList[this.index].list = list
-    //     this.ids = []
-    //     this.paneList.forEach((item) => {
-    //       if (item.list && item.list.length) {
-    //         item.list.forEach((item1) => {
-    //           this.ids.push(item1)
-    //         })
-    //       }
-    //     })
-    //   }
-    // },
     // 处理文件类型
     filType(file) {
       let filecontent = JSON.parse(JSON.stringify(file))
@@ -385,13 +411,6 @@ export default {
       } else {
         this.inx = index
       }
-      // if (this.picindex === 0) {
-      //   // 不包含文本
-      //   this.inx = this.index - 1
-      // } else if (this.picindex === 1) {
-      //   // 包含文本
-
-      // }
     },
   },
 }

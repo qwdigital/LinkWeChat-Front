@@ -97,7 +97,7 @@
           <template #default="{ row }">
             <el-button text @click="remind(row.id)" v-if="row.status === 2">提醒执行</el-button>
             <el-button text @click="detailFn(row.id)">统计</el-button>
-            <el-button text @click="detailFn(row.id)">查看</el-button>
+            <el-button text @click="detailFn(row)">查看</el-button>
             <el-button text @click="cease(row.id)" v-if="row.status !== 3">停止</el-button>
           </template>
         </el-table-column>
@@ -116,7 +116,7 @@
       :defaultValues="userArray"
       @success="getSelectUser"
     ></SelectUser>
-    <el-dialog title="详情" v-model="detailDialogVisible" width="40%">
+    <!-- <el-dialog title="详情" v-model="detailDialogVisible" width="40%">
       <el-form label-position="right" label-width="100px">
         <span style="margin-left: 40px; font-size: 16px">内容：</span>
         <template v-for="(data, index) in detail.otherContent" :key="index">
@@ -164,12 +164,12 @@
           </span>
         </template>
       </el-form>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 <script>
 import moment from 'moment'
-import { getEnterpriceList, syncHMoments, getDetail, cancelMoments } from '@/api/circle'
+import { getEnterpriceList, syncHMoments, cancelMoments, reminderMoments } from '@/api/circle'
 export default {
   name: 'enterprise',
   components: {},
@@ -192,8 +192,8 @@ export default {
       loading: false,
       tableData: [],
       total: 0,
-      detailDialogVisible: false,
-      detail: {},
+      // detailDialogVisible: false,
+      // detail: {},
       sendType: [
         { label: '企微群发', value: 0 },
         { label: '成员群发', value: 1 },
@@ -233,12 +233,19 @@ export default {
           break
       }
     },
-    remind() {
+    remind(id) {
       this.$confirm('提醒执行将针对本任务未执行的成员再次催促执行，是否确认提醒？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
       })
-        .then(() => {})
+        .then(() => {
+          reminderMoments(id).then((res) => {
+            if (res.code === 200) {
+              this.msgSuccess(res.msg)
+              this.getList()
+            }
+          })
+        })
         .catch(() => {})
     },
     cease(id) {
@@ -274,13 +281,34 @@ export default {
         this.query.executeEndTime = ''
       }
     },
-    detailFn(id) {
-      this.detailDialogVisible = true
-      getDetail(id).then((dd) => {
-        if (dd.code === 200) {
-          this.detail = dd.data
+    detailFn(row) {
+      let type = '' // 朋友圈类型 1：非同步型  2：企业同步型 3：个人同步型
+      if (row.isLwPush === 1) {
+        // 非同步型
+        type = 1
+      } else if (row.isLwPush === 0) {
+        // 同步型
+        if (row.type === 0) {
+          // 企业同步型
+          type = 2
+        } else if (row.type === 1) {
+          // 个人同步型
+          type = 3
         }
+      }
+      this.$router.push({
+        path: '/customerMaintain/friendCircle/publish',
+        query: {
+          type,
+          id: row.id,
+        },
       })
+      // this.detailDialogVisible = true
+      // getDetail(id).then((dd) => {
+      //   if (dd.code === 200) {
+      //     this.detail = dd.data
+      //   }
+      // })
     },
     syncFn() {
       syncHMoments(2).then((res) => {
