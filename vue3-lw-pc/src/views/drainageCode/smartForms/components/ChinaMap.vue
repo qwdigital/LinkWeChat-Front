@@ -1,11 +1,10 @@
 <script>
+import * as echarts from 'echarts'
 import chinaJson from './jsonData/china.json'
 export default {
   render: function (createElement) {
     return createElement('div', {
-      attrs: {
-        id: 'main',
-      },
+      id: 'main',
       style: {
         height: '550px',
         width: '800px',
@@ -84,8 +83,8 @@ export default {
       }
       max = max + 5
       const _this = this
-      var myChart = this.$echarts.init(document.getElementById('main'))
-      this.$echarts.registerMap('china', chinaJson)
+      var myChart = echarts.init(document.getElementById('main'))
+      echarts.registerMap('china', chinaJson)
       var option = {
         tooltip: {
           //数据格式化

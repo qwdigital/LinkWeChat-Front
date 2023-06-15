@@ -8,7 +8,8 @@
     "test": "vite --mode=test",
     "build:dev": "vite build --mode=development",
     "build:test": "vite build --mode=test",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "report": "npm run build --report"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
@@ -56,11 +57,14 @@
     "@vitejs/plugin-vue-jsx": "^3.0.1",
     "@vue/babel-plugin-jsx": "^1.1.1",
     "@vue/compat": "^3.2.47",
+    "rollup-plugin-visualizer": "^5.9.2",
     "sass": "^1.62.1",
     "terser": "^5.17.7",
     "unplugin-auto-import": "^0.15.3",
     "unplugin-vue-components": "^0.24.1",
     "vite": "^4.1.4",
+    "vite-plugin-cdn-import": "^0.3.5",
+    "vite-plugin-compression": "^0.5.1",
     "vite-plugin-require-transform": "^1.0.12"
   }
 }

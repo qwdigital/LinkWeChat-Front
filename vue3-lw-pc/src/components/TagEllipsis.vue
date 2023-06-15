@@ -67,13 +67,13 @@ export default {
   .el-tag {
     vertical-align: middle;
   }
-  .tag-all {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    .el-tag {
-      margin: 0;
-    }
-  }
+  // .tag-all {
+  //   display: flex;
+  //   flex-wrap: wrap;
+  //   gap: 10px;
+  //   .el-tag {
+  //     margin: 0;
+  //   }
+  // }
 }
 </style>
