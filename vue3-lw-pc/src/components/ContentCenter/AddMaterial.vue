@@ -10,7 +10,7 @@
         <div class="g-card" v-if="showModle">
           <el-button type="primary" @click="welcomVisible = true">从模板库中选择</el-button>
         </div>
-        <div class="g-card">
+        <div class="g-card" v-if="!detail">
           <div
             class="g-card-title"
             v-if="iswelcom || (moduleType === 4 && otherType !== 3)"
@@ -80,11 +80,12 @@
                 clearable
                 :autofocus="true"
                 @input="changeInfo"
+                v-if="!detail"
               />
             </el-form-item>
           </el-form>
         </div>
-        <div class="g-card">
+        <div class="g-card" v-if="!detail">
           <div class="g-card-title" v-if="otherType !== 3">
             {{ titleTwo }}
             <el-popover
@@ -189,15 +190,17 @@
             @setData="setData"
             @getEdit="getEdit"
             :dargAble="[2].includes(moduleType)"
+            :isDeatail="detail"
           />
         </div>
         <div
           class="g-card mt20 g-pad20"
           style="text-align: left"
           v-if="
-            (talkList.length && moduleType === 2) ||
-            (otherType !== 3 && moduleType !== 2) ||
-            (otherType === 3 && moduleType !== 2)
+            ((talkList.length && moduleType === 2) ||
+              (otherType !== 3 && moduleType !== 2) ||
+              (otherType === 3 && moduleType !== 2)) &&
+            !detail
           "
         >
           <!-- 话术中心，有列表才显示 -->
@@ -210,7 +213,7 @@
             <el-button @click="getCancel" v-if="moduleType !== 4">取消</el-button>
             <el-button type="primary" v-loading="talkLoading" @click="tackSubmit">确定</el-button>
           </template>
-          <template v-else-if="otherType === 3 && moduleType !== 2 && !detail">
+          <template v-else-if="otherType === 3 && moduleType !== 2">
             <el-button @click="goBack">取消</el-button>
             <el-button type="primary" v-loading="talkLoading" @click="tackSubmit">确定</el-button>
           </template>

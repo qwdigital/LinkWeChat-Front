@@ -1,7 +1,13 @@
 <template>
   <div>
     <!-- 表格拖拽组件 -->
-    <el-table :data="tableData" ref="singleTable" highlight-current-row row-key="id" class="load_table">
+    <el-table
+      :data="tableData"
+      ref="singleTable"
+      highlight-current-row
+      row-key="id"
+      class="load_table"
+    >
       <!-- <el-table-column type="index" width="50" label="序号" align="center"></el-table-column> -->
       <el-table-column label="" width="50" align="left" v-if="dargAble">
         <svg-icon icon="dragIcon" />
@@ -12,13 +18,16 @@
           <el-tooltip
             :content="row.materialName"
             placement="top"
-            :disabled="row.materialName ? row.materialName.length < 12 : true">
+            :disabled="row.materialName ? row.materialName.length < 12 : true"
+          >
             <span class="title">{{ coverContent(row.materialName, 12) }}</span>
           </el-tooltip>
           <!-- 文本 -->
           <div v-if="row.mediaType === '4'">
             <el-tooltip placement="top" :disabled="row.content ? row.content.length < 50 : true">
-              <template #content><p style="white-space: pre-line" v-html="row.content"></p></template>
+              <template #content
+                ><p style="white-space: pre-line" v-html="row.content"></p
+              ></template>
               <span class="twosplice">{{ coverContent(row.content, 50) }}</span>
             </el-tooltip>
           </div>
@@ -28,11 +37,20 @@
           </div>
           <!-- 图文 -->
           <div v-if="row.mediaType === '9'" style="display: flex">
-            <el-image :src="row.coverUrl" fit="contain" class="imgsize" v-if="row.coverUrl"></el-image>
+            <el-image
+              :src="row.coverUrl"
+              fit="contain"
+              class="imgsize"
+              v-if="row.coverUrl"
+            ></el-image>
             <div class="icon-style" v-else>
               <svg-icon class="icon-style" icon="imgText"></svg-icon>
             </div>
-            <el-tooltip :content="row.content" placement="top" :disabled="row.content ? row.content.length < 50 : true">
+            <el-tooltip
+              :content="row.content"
+              placement="top"
+              :disabled="row.content ? row.content.length < 50 : true"
+            >
               <span class="twosplice distStyle">{{ coverContent(row.content, 50) }}</span>
             </el-tooltip>
           </div>
@@ -42,18 +60,31 @@
           </div>
           <!-- 文章 -->
           <div v-if="row.mediaType === '12'" style="display: flex">
-            <el-image :src="row.coverUrl" fit="contain" class="imgsize" v-if="row.coverUrl"></el-image>
+            <el-image
+              :src="row.coverUrl"
+              fit="contain"
+              class="imgsize"
+              v-if="row.coverUrl"
+            ></el-image>
             <div class="icon-style" v-else>
               <svg-icon class="icon-style" icon="article"></svg-icon>
             </div>
-            <el-tooltip :content="row.digest" placement="top" :disabled="row.digest ? row.digest.length < 50 : true">
+            <el-tooltip
+              :content="row.digest"
+              placement="top"
+              :disabled="row.digest ? row.digest.length < 50 : true"
+            >
               <span class="twosplice distStyle">{{ coverContent(row.digest, 50) }}</span>
             </el-tooltip>
           </div>
           <!-- 视频 -->
           <div v-if="row.mediaType === '2'" style="display: flex">
             <el-image :src="row.coverUrl" fit="contain" class="imgsize"></el-image>
-            <el-tooltip :content="row.digest" placement="top" :disabled="row.digest ? row.digest.length < 50 : true">
+            <el-tooltip
+              :content="row.digest"
+              placement="top"
+              :disabled="row.digest ? row.digest.length < 50 : true"
+            >
               <span class="twosplice distStyle">{{ coverContent(row.digest, 50) }}</span>
             </el-tooltip>
           </div>
@@ -61,16 +92,27 @@
           <div v-if="row.mediaType === '3'" style="display: flex">
             <!-- <el-image :src="row.coverUrl" fit="contain" class="imgsize"></el-image> -->
             <div class="icon-style" v-if="row.materialUrl">
-              <svg-icon class="icon-style" :icon="row.materialUrl ? filType(row.materialUrl) : ''"></svg-icon>
+              <svg-icon
+                class="icon-style"
+                :icon="row.materialUrl ? filType(row.materialUrl) : ''"
+              ></svg-icon>
             </div>
-            <el-tooltip :content="row.digest" placement="top" :disabled="row.digest ? row.digest.length < 50 : true">
+            <el-tooltip
+              :content="row.digest"
+              placement="top"
+              :disabled="row.digest ? row.digest.length < 50 : true"
+            >
               <span class="twosplice distStyle">{{ coverContent(row.digest, 50) }}</span>
             </el-tooltip>
           </div>
           <!-- 海报 -->
           <div v-if="row.mediaType === '5'" style="display: flex">
             <el-image :src="row.materialUrl" fit="contain" class="imgsize"></el-image>
-            <el-tooltip :content="row.digest" placement="top" :disabled="row.digest ? row.digest.length < 50 : true">
+            <el-tooltip
+              :content="row.digest"
+              placement="top"
+              :disabled="row.digest ? row.digest.length < 50 : true"
+            >
               <span class="twosplice distStyle">{{ coverContent(row.digest, 50) }}</span>
             </el-tooltip>
           </div>
@@ -110,7 +152,7 @@
             >编辑</el-button
           > -->
           <el-button text @click="edit(scope.row)" v-if="scope.row.moduleType != 1">编辑</el-button>
-          <el-button text @click="remove(scope.row.delId)">移除</el-button>
+          <el-button text @click="remove(scope.row.delId)" v-if="!isDeatail">移除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -127,6 +169,11 @@ export default {
     },
     // 是否可拖拽
     dargAble: {
+      type: Boolean,
+      default: false,
+    },
+    // 是否为详情页面
+    isDeatail: {
       type: Boolean,
       default: false,
     },
@@ -166,7 +213,7 @@ export default {
       return btoa(
         encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function toSolidBytes(match, p1) {
           return String.fromCharCode('0x' + p1)
-        }),
+        })
       )
     },
     preview(row) {
@@ -245,7 +292,9 @@ export default {
     },
     //表格拖动排序
     dragSort() {
-      const el = this.$refs.singleTable.$el.querySelectorAll('.el-table__body-wrapper  table > tbody')[0]
+      const el = this.$refs.singleTable.$el.querySelectorAll(
+        '.el-table__body-wrapper  table > tbody'
+      )[0]
 
       this.sortable = Sortable.create(el, {
         ghostClass: 'sortable-ghost',

@@ -123,9 +123,21 @@
                 <el-button type="primary" plain @click="selectedFn2">选择标签</el-button>
               </div>
             </el-form-item>
+            <el-form-item label="朋友圈内容：" prop="name">
+              <el-input
+                v-model="form.content"
+                placeholder="未填写文本内容"
+                :disabled="true"
+                type="textarea"
+                :rows="4"
+                v-if="firendType === 1"
+              ></el-input>
+              <div class="firend-box" v-if="[2, 3].includes(firendType)">
+                <FirendContent />
+              </div>
+            </el-form-item>
           </div>
           <!-- <FriendCircleContent ref="friendCircleContent" :data="form"></FriendCircleContent> -->
-          {{firendId}}
           <AddMaterial
             :moduleType="4"
             @update="onBackStep"
@@ -133,6 +145,7 @@
             :otherType="3"
             :showPhone="false"
             :detail="firendId !== undefined"
+            v-if="!firendId || (firendId && firendType === 1)"
           ></AddMaterial>
 
           <!-- <el-form-item label-width="0" style="margin-top: 20px; margin-bottom: 0">
@@ -166,6 +179,7 @@
 import { addMoments, numMoments, getDetail } from '@/api/circle'
 import AddMaterial from '@/components/ContentCenter/AddMaterial'
 import SelectMember from './components/SelectMember.vue'
+import FirendContent from './components/FirendContent.vue'
 import moment from 'moment'
 
 export default {
@@ -173,6 +187,7 @@ export default {
   components: {
     AddMaterial,
     SelectMember,
+    FirendContent,
     SelectTag: defineAsyncComponent(() => import('@/components/SelectTag')),
     FriendCircleContent: defineAsyncComponent(() => import('@/components/FriendCircleContent')),
   },
@@ -220,11 +235,14 @@ export default {
         ],
       },
       firendId: undefined,
+      firendType: undefined,
     }
   },
   mounted() {
     this.firendId = this.$route.query.id
     this.firendType = this.$route.query.type
+    this.firendId = 1
+    this.firendType = 1
     if (this.firendId) {
       // 详情页面
       this.getDetail(this.firendId)
@@ -387,81 +405,87 @@ export default {
         return ''
       }
     },
-    dealType(data) {
-      this.form.otherContent = []
-      let arr = {}
-      let linkUrl =
-        window.document.location.origin + '/mobile/#/metrialDetail?materiaId=' + data.materialId
-      switch (data.realType) {
-        case 0:
-          arr = {
-            annexType: 'link',
-            annexUrl: data.picUrl,
-            other: data.picUrl,
-          }
-          this.form.otherContent.push(arr)
-          break
-        case 2:
-          arr = {
-            annexType: 'link',
-            annexUrl: linkUrl,
-            other: data.picUrl,
-            title: data.title,
-          }
-          this.form.otherContent.push(arr)
-          break
-        case 3:
-          arr = {
-            annexType: 'link',
-            annexUrl: linkUrl,
-            other: this.filPicType(data.fileUrl),
-            title: data.title,
-          }
-          this.form.otherContent.push(arr)
-          break
-        case 4:
-          arr = {
-            annexType: 'link',
-            annexUrl: linkUrl,
-            other: data.content,
-            title: data.title,
-          }
-          this.form.otherContent.push(arr)
-          break
-        case 5:
-          arr = {
-            annexType: 'link',
-            annexUrl: linkUrl,
-            other: data.fileUrl,
-            title: data.title,
-          }
-          this.form.otherContent.push(arr)
-          break
-        case 9:
-          arr = {
-            annexType: 'link',
-            annexUrl: data.linkUrl,
-            other: data.picUrl ? data.picUrl : window.lwConfig.DEFAULT_H5_TP,
-            title: data.title,
-          }
-          this.form.otherContent.push(arr)
-          break
-        case 12:
-          arr = {
-            annexType: 'link',
-            annexUrl: linkUrl,
-            other: data.picUrl ? data.picUrl : window.lwConfig.DEFAULT_H5_ART,
-            title: data.title,
-          }
-          this.form.otherContent.push(arr)
-          break
-      }
-    },
+    // dealType(data) {
+    //   this.form.otherContent = []
+    //   let arr = {}
+    //   let linkUrl =
+    //     window.document.location.origin + '/mobile/#/metrialDetail?materiaId=' + data.materialId
+    //   switch (data.realType) {
+    //     case 0:
+    //       arr = {
+    //         annexType: 'link',
+    //         annexUrl: data.picUrl,
+    //         other: data.picUrl,
+    //       }
+    //       this.form.otherContent.push(arr)
+    //       break
+    //     case 2:
+    //       arr = {
+    //         annexType: 'link',
+    //         annexUrl: linkUrl,
+    //         other: data.picUrl,
+    //         title: data.title,
+    //       }
+    //       this.form.otherContent.push(arr)
+    //       break
+    //     case 3:
+    //       arr = {
+    //         annexType: 'link',
+    //         annexUrl: linkUrl,
+    //         other: this.filPicType(data.fileUrl),
+    //         title: data.title,
+    //       }
+    //       this.form.otherContent.push(arr)
+    //       break
+    //     case 4:
+    //       arr = {
+    //         annexType: 'link',
+    //         annexUrl: linkUrl,
+    //         other: data.content,
+    //         title: data.title,
+    //       }
+    //       this.form.otherContent.push(arr)
+    //       break
+    //     case 5:
+    //       arr = {
+    //         annexType: 'link',
+    //         annexUrl: linkUrl,
+    //         other: data.fileUrl,
+    //         title: data.title,
+    //       }
+    //       this.form.otherContent.push(arr)
+    //       break
+    //     case 9:
+    //       arr = {
+    //         annexType: 'link',
+    //         annexUrl: data.linkUrl,
+    //         other: data.picUrl ? data.picUrl : window.lwConfig.DEFAULT_H5_TP,
+    //         title: data.title,
+    //       }
+    //       this.form.otherContent.push(arr)
+    //       break
+    //     case 12:
+    //       arr = {
+    //         annexType: 'link',
+    //         annexUrl: linkUrl,
+    //         other: data.picUrl ? data.picUrl : window.lwConfig.DEFAULT_H5_ART,
+    //         title: data.title,
+    //       }
+    //       this.form.otherContent.push(arr)
+    //       break
+    //   }
+    // },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+.firend-box {
+  width: 360px;
+  min-height: 100px;
+  border: 1px solid #dfe4ed;
+  padding: 12px;
+}
 .tips {
   color: #aaa;
   font-size: 12px;
