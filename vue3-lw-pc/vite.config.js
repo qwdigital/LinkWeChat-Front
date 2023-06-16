@@ -12,7 +12,7 @@ import AutoImport from 'unplugin-auto-import/vite' // 自动导入ref等api
 
 import rollupPluginVisualizer from 'rollup-plugin-visualizer'
 import vitePluginCompression from 'vite-plugin-compression'
-import vitePluginCdnImport from 'vite-plugin-cdn-import'
+import vitePluginCdnImport, { autoComplete } from 'vite-plugin-cdn-import'
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ command, mode }) => {
@@ -74,6 +74,9 @@ export default defineConfig(async ({ command, mode }) => {
     build: {
       outDir: 'pc',
       minify: 'terser',
+      reportCompressedSize: false, // 启用/禁用 gzip 压缩大小报告
+      // modulePreload: false, // { polyfill: false }
+      // modulePreload: { polyfill: false },
       terserOptions: {
         compress: {
           //生产环境时移除console
@@ -81,35 +84,53 @@ export default defineConfig(async ({ command, mode }) => {
           drop_debugger: true,
         },
       },
-      // rollupOptions: {
-      //   // vite打包是通过rollup来打包的
-      //   output: {
-      //     manualChunks: (id) => {
-      //       // 可以在这里打印看一下id的值，这里将node_modules中的包打包为 chunk-libs 文件
-      //       // console.log(id)
-      //       if (id.includes('benz-amr-recorder')) {
-      //         return 'benz-amr-recorder'
-      //       } else if (id.includes('aliyun-oss-sdk')) {
-      //         return 'aliyun-oss-sdk'
-      //       } else if (id.includes('echarts')) {
-      //         return 'echarts'
-      //       } else if (id.includes('element-plus')) {
-      //         return 'element-plus'
-      //       } else if (id.includes('node_modules')) {
-      //         return 'chunk-libs'
-      //       } else if (id.includes('src/components')) {
-      //         return 'chunk-components'
-      //       }
-      //       // else if (id.includes('views/')) {
-      //       //   let first = id.split('views/')[1]
-      //       //   if (first.includes('/')) {
-      //       //     return first.match(/(\w+)\/(\w+)/)[0].replace('/', '-') // a/b/c...  a-b
-      //       //   }
-      //       //   return first.split('.')[0] //  a.vue  a
-      //       // }
-      //     },
-      //   },
-      // },
+      rollupOptions: {
+        output: {
+          assetFileNames: 'assets/[ext]/[name]-[hash][extname]',
+          chunkFileNames: 'assets/js/[name]-[hash].js',
+          manualChunks: (id) => {
+            // 可以在这里打印看一下id的值，这里将node_modules中的包打包为 chunk-libs 文件
+            // console.log(id)
+            // if (
+            //   id.includes('node_modules') &&
+            //   (id.includes('@vue/dist/vue') || id.includes('pinia') || id.includes('vue-router'))
+            // ) {
+            //   return 'vue-modules'
+            // } else
+            if (id.includes('assets/icons/svg')) {
+              return 'icons-svg'
+            }
+            // if (id.includes('benz-amr-recorder')) {
+            //   return 'benz-amr-recorder'
+            // } else if (id.includes('cos-js-sdk-v5')) {
+            //   return 'cos-js-sdk-v5'
+            // } else if (id.includes('aliyun-oss-sdk')) {
+            //   return 'aliyun-oss-sdk'
+            // } else if (id.includes('fabric')) {
+            //   return 'fabric'
+            // } else if (id.includes('echarts')) {
+            //   return 'echarts'
+            // } else if (id.includes('element-plus')) {
+            //   return 'element-plus'
+            // } else
+            else if (['quill-image-resize-module', 'Quill'].some((e) => id.includes(e))) {
+              return 'quill-image-resize-module'
+            } else if (id.includes('node_modules')) {
+              return id.split('node_modules/')[1].split('/')[0]
+            }
+            // else if (id.includes('src/components')) {
+            //   return 'chunk-components'
+            // }
+            // else if (id.includes('views/')) {
+            //   let first = id.split('views/')[1]
+            //   if (first.includes('/')) {
+            //     return first.match(/(\w+)\/(\w+)/)[0].replace('/', '-') // a/b/c...  a-b
+            //   }
+            //   return first.split('.')[0] //  a.vue  a
+            // }
+          },
+        },
+      },
     },
     plugins: [
       // '@vue/babel-plugin-jsx',
@@ -147,7 +168,7 @@ export default defineConfig(async ({ command, mode }) => {
       }),
       vitePluginCompression({
         disable: !env._ISGZIP, // 是否禁用压缩，默认为 false
-        threshold: 100000, // 启用压缩的文件大小限制，单位是字节，默认为 0, 对大于 100kb 的文件进行压缩
+        threshold: 10000, // 启用压缩的文件大小限制，单位是字节，默认为 0, 对大于 10kb 的文件进行压缩
         // filter：过滤器，对哪些类型的文件进行压缩，默认为 ‘/.(js|mjs|json|css|html)$/i’
         // verbose: true：是否在控制台输出压缩结果，默认为 true
         // deleteOriginFile：压缩后是否删除原文件，默认为 false
@@ -156,12 +177,28 @@ export default defineConfig(async ({ command, mode }) => {
       }),
       env._ISCDN &&
         vitePluginCdnImport({
+          // prodUrl: 'https://unpkg.com/{name}@{version}/{path}',
           modules: [
+            // autoComplete('vue'),
+            // autoComplete('axios'),
             {
               name: 'axios', // 包名
               var: 'axios', // 对应cdn包导出的变量，如jQuery导出的是$
               path: '//cdn.bootcdn.net/ajax/libs/axios/1.4.0/axios.min.js',
             },
+            // {
+            //   name: 'element-plus',
+            //   var: 'ElementPlus',
+            //   version: '2.3.6',
+            //   path: 'dist/index.full.js',
+            //   css: 'dist/index.css',
+            // },
+            // {
+            //   name: '@element-plus/icons-vue',
+            //   var: 'ElementPlusIconsVue',
+            //   version: '2.1.0',
+            //   path: 'dist/index.iife.min.js',
+            // },
             // {
             //   name: 'ali-oss',
             //   var: 'OSS',
@@ -169,14 +206,13 @@ export default defineConfig(async ({ command, mode }) => {
             // },
           ],
         }),
-      process.env.npm_config_report &&
-        rollupPluginVisualizer({
-          emitFile: false, //使用 emitFile 生成文件。 属性为 true，打包后的分析文件会出现在打包好的文件包下；设置为 false ，则会出现在项目根目录下
-          filename: 'report.html', //生成分析网页文件名
-          open: true, //在默认用户代理中打开生成的文件
-          gzipSize: true, //从源代码中收集 gzip 大小并将其显示在图表中
-          // brotliSize: true, //从源代码中收集 brotli 大小并将其显示在图表中
-        }),
+      rollupPluginVisualizer({
+        emitFile: false, //使用 emitFile 生成文件。 属性为 true，打包后的分析文件会出现在打包好的文件包下；设置为 false ，则会出现在项目根目录下
+        filename: 'report.html', //生成分析网页文件名
+        open: false, //在默认用户代理中打开生成的文件
+        gzipSize: true, //从源代码中收集 gzip 大小并将其显示在图表中
+        // brotliSize: true, //从源代码中收集 brotli 大小并将其显示在图表中
+      }),
     ],
     // optimizedeps: {
     //   esbuildoptions: {
