@@ -55,7 +55,7 @@ const layouts = {
               <div>{element.url}</div>
               <div
                 // 无图片时，占位提示
-                domPropsInnerHTML={
+                innerHTML={
                   element.formCodeId == 1 && !element.src
                     ? '<div class="no-image">请在右侧控件设置中添加需要展示的图片</div>'
                     : ''

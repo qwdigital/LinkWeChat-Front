@@ -256,7 +256,11 @@ export default {
         </el-table-column>
         <el-table-column prop="address" label="标签" align="center">
           <template #default="{ row }">
-            <el-tag type="info" v-for="(unit, unique) in row?.tagNames.split(',')" :key="unique">{{ unit }}</el-tag>
+            <div v-if="row.tagNames">
+              <TagEllipsis :list="row.tagNames?.split(',')"></TagEllipsis>
+            </div>
+            <span v-else>无标签</span>
+            <!-- <el-tag type="info" v-for="(unit, unique) in row?.tagNames?.split(',')" :key="unique">{{ unit }}</el-tag> -->
 
             <!-- <div v-for="(item, index) in row.weFlowerCustomerRels" :key="index">
             <el-tag type="info" v-for="(unit, unique) in item.weFlowerCustomerTagRels" :key="unique">{{
