@@ -226,7 +226,10 @@
           geco.getLocation(point, function (res) {
             that.mk.setPosition(point)
             that.map.panTo(point)
-            that.form.address = that.splitName(res.address)
+            that.form.address = res.addressComponents.street + res.addressComponents.streetNumber
+            that.form.province = res.addressComponents.province
+            that.form.city = res.addressComponents.city
+            that.form.area = res.addressComponents.district
             that.form.addrPoint = point
             that.onSubmit()
           })
