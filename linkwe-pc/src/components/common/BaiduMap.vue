@@ -64,6 +64,7 @@
       initData: {
         handler(value) {
           if (this.initData.area && !this.initData.address) {
+            this.form.address = ''
             this.getPoint(this.initData.area)
             this.initMap()
           }
