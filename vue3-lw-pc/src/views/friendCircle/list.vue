@@ -96,7 +96,7 @@
         <el-table-column label="操作" align="center" width="200">
           <template #default="{ row }">
             <el-button text @click="remind(row.id)" v-if="row.status === 2">提醒执行</el-button>
-            <el-button text @click="detailFn(row.id)">统计</el-button>
+            <el-button text @click="statistics(row)">统计</el-button>
             <el-button text @click="detailFn(row)">查看</el-button>
             <el-button text @click="cease(row.id)" v-if="row.status !== 3">停止</el-button>
           </template>
@@ -281,21 +281,26 @@ export default {
         this.query.executeEndTime = ''
       }
     },
-    detailFn(row) {
-      let type = '' // 朋友圈类型 1：非同步型  2：企业同步型 3：个人同步型
+    determineType(row) {
+      let determineType = '' // 朋友圈类型 1：非同步型  2：企业同步型 3：个人同步型
       if (row.isLwPush === 1) {
         // 非同步型
-        type = 1
+        determineType = 1
       } else if (row.isLwPush === 0) {
         // 同步型
         if (row.type === 0) {
           // 企业同步型
-          type = 2
+          determineType = 2
         } else if (row.type === 1) {
           // 个人同步型
-          type = 3
+          determineType = 3
         }
       }
+      return determineType
+    },
+    detailFn(row) {
+      // 朋友圈类型 1：非同步型  2：企业同步型 3：个人同步型
+      let type = this.determineType(row)
       this.$router.push({
         path: '/customerMaintain/friendCircle/publish',
         query: {
@@ -303,12 +308,18 @@ export default {
           id: row.id,
         },
       })
-      // this.detailDialogVisible = true
-      // getDetail(id).then((dd) => {
-      //   if (dd.code === 200) {
-      //     this.detail = dd.data
-      //   }
-      // })
+    },
+    // 统计
+    statistics(row) {
+      // 朋友圈类型 1：非同步型  2：企业同步型 3：个人同步型
+      let type = this.determineType(row)
+      this.$router.push({
+        path: '/customerMaintain/friendCircle/statistics',
+        query: {
+          type,
+          id: row.id,
+        },
+      })
     },
     syncFn() {
       syncHMoments(2).then((res) => {

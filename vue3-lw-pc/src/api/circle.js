@@ -70,3 +70,9 @@ export function reminderMoments(data) {
     url: service + '/moments/reminder/execution/' + data,
   })
 }
+// 朋友圈 员工统计
+export function statisticMoments(id) {
+  return request({
+    url: service + '/moments/statistic/user/' + id,
+  })
+}

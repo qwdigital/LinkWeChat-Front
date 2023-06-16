@@ -33,7 +33,7 @@
           <el-button @click="resetQuery">清空</el-button>
         </div>
         <div>
-          <el-button type="primary">提醒执行</el-button>
+          <el-button type="primary" @click="remind(id)">提醒执行</el-button>
           <el-button type="primary" @click="exportFn" v-loading="exportLoading">导出</el-button>
         </div>
       </div>
@@ -87,15 +87,13 @@
   </div>
 </template>
 <script>
-import ChartBar from '@/components/ChartBar.vue'
-import ChartLine from '@/components/ChartLine.vue'
 import SelectDept from '@/components/SelectDept'
 import { getTableTotal } from '@/api/contentCenter/common.js'
+import { reminderMoments, statisticMoments } from '@/api/circle'
+
 export default {
   name: 'scene-statistics-scene',
   components: {
-    ChartLine,
-    ChartBar,
     SelectDept,
   },
   data() {
@@ -135,7 +133,6 @@ export default {
         },
       ],
       value: [],
-      id: '',
       exportLoading: false,
       tableList: [],
       loading: false,
@@ -149,9 +146,38 @@ export default {
         userIds: '',
       },
       tableSearch: {},
+      id: undefined,
+      type: undefined, // 朋友圈类型 1：非同步型  2：企业同步型 3：个人同步型
     }
   },
+  mounted() {
+    this.type = this.$route.query.type
+    this.id = this.$route.query.id
+    this.getTabTotalFn()
+  },
   methods: {
+    getTabTotalFn() {
+      statisticMoments(this.id).then((res) => {
+        this.cardData[0].value = res.data.inviterOldCustomerNum
+        this.cardData[1].value = res.data.completeTaskOldCustomerNum
+        this.cardData[2].value = res.data.fissionCustomerNum
+        this.cardData[3].value = res.data.tdCompleteTaskOldCustomerNum
+      })
+    },
+    remind(id) {
+      this.$confirm('提醒执行将针对本任务未执行的成员再次催促执行，是否确认提醒？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+      })
+        .then(() => {
+          reminderMoments(id).then((res) => {
+            if (res.code === 200) {
+              this.msgSuccess(res.msg)
+            }
+          })
+        })
+        .catch(() => {})
+    },
     exportFn() {
       this.$confirm('确认导出吗？', '提示', {
         confirmButtonText: '确定',
