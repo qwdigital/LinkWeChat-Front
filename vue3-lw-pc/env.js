@@ -14,7 +14,7 @@ const envs = {
   },
   test: {
     DOMAIN: 'https://demo.linkwechat.net',
-    BASE_URL: '/vue3/', // 路由基础路径
+    BASE_URL: '/', // 路由基础路径
     BASE_API: 'https://demo.linkwechat.net/linkwechat-api',
     SYSTEM_API: '/linkwechat-api',
     VIEW_URL: 'https://saas.pardigital.cn/file-view/onlinePreview?url=',
@@ -23,7 +23,7 @@ const envs = {
   },
   production: {
     DOMAIN: 'https://demo.linkwechat.net',
-    BASE_URL: '/vue3/', // 路由基础路径
+    BASE_URL: '/', // 路由基础路径
     BASE_API: 'https://demo.linkwechat.net/linkwechat-api',
     VIEW_URL: 'https://saas.pardigital.cn/file-view/onlinePreview?url=',
     SYSTEM_API: '/linkwechat-api',
