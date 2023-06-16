@@ -228,7 +228,7 @@ export default {
 <style lang="scss" scoped>
 .chart {
   position: relative;
-  height: 100%;
+  max-height: 100%;
   min-width: 400px;
   min-height: 400px;
 }

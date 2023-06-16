@@ -130,7 +130,7 @@ export default {
 
 <template>
   <div>
-    <div class="operation">
+    <div class="operation mb20">
       <el-button-group>
         <el-button type="primary" :plain="timeRange != 7" @click="setTime(7)">近一周</el-button>
         <el-button type="primary" :plain="timeRange != 30" @click="setTime(30)">近一月</el-button>
@@ -160,6 +160,7 @@ export default {
             placeholder="请选择群主" />
         </div>
         <ChartLine
+          style="height: 400px"
           v-loading="loading.customerGroup"
           :xData="customerGroup.xData"
           :legend="legend['customerGroup']"
@@ -187,6 +188,7 @@ export default {
           </el-select>
         </div>
         <ChartLine
+          style="height: 400px"
           v-loading="loading.customerGroupMember"
           :xData="customerGroupMember.xData"
           :legend="legend['customerGroupMember']"

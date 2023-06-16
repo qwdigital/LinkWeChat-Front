@@ -127,7 +127,7 @@ export default {
 
 <style lang="scss" scoped>
 .chart {
-  height: 100%;
+  max-height: 100%;
   min-width: 200px;
   min-height: 200px;
 }
