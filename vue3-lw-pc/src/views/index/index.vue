@@ -30,8 +30,7 @@
                   </template>
                 </el-popover>
               </div>
-              {{ item.num }}
-              <!-- <CountTo class="view-item-num" :start-val="0" :end-val="item.num" :duration="durationCount" /> -->
+              <CountTo class="view-item-num" :start-val="0" :end-val="item.num" :duration="durationCount" />
             </div>
           </div>
         </div>
@@ -66,7 +65,7 @@
           <div class="companyName">{{ $store.user.companyName }}</div>
           <div class="info">
             当前版本：
-            <span class="fr">{{ lwConfig._version||table.currentEdition }}</span>
+            <span class="fr">{{ lwConfig._version || table.currentEdition }}</span>
           </div>
           <div class="info">
             使用人数：
@@ -171,11 +170,11 @@
 import { getUserProfile } from '@/api/system/user'
 import * as api from '@/api/index'
 // import { getCustomerServiceQrUrl } from '@/api/login'
-// import CountTo from 'vue-count-to'
+import { CountTo } from 'vue3-count-to'
 export default {
   name: 'Index',
   components: {
-    // CountTo,
+    CountTo,
     Dynamics: defineAsyncComponent(() => import('./components/dynamics')),
     TabContent: defineAsyncComponent(() => import('./components/TabContent')),
   },
