@@ -11,9 +11,7 @@
   </div>
 </template>
 <script>
-import './Quill'
-import { QuillEditor, Quill } from '@vueup/vue-quill'
-import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import { QuillEditor, Quill } from './Quill'
 import ImageResize from 'quill-image-resize-module'
 Quill.register('modules/ImageResize', ImageResize)
 import SelectEmoji from '@/components/SelectEmoji'
