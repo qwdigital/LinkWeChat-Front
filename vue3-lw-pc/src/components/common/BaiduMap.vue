@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form-item label="详细地址" prop="address">
+    <el-form-item label="详细地址" prop="address" v-if="!isOnlyShowMap">
       <el-autocomplete
         :disabled="isDetail"
         @change="setChange"
@@ -21,8 +21,8 @@
         </template>
       </el-autocomplete>
     </el-form-item>
-    <el-form-item label="">
-      <div id="map-container" style="width: 500px; height: 300px" />
+    <el-form-item label="" :label-width="isOnlyShowMap ? 0 : ''" :style="isOnlyShowMap && 'margin-bottom: 0'">
+      <div id="map-container" :style="{ width: mapWidth, height: mapHeight }" />
     </el-form-item>
   </div>
 </template>
@@ -52,9 +52,27 @@ export default {
   props: {
     initData: {
       type: Object,
-      default: () => {},
+      default: () => ({
+        // area: '', // 省市区
+        // address: '', // 详细地址
+        // longitude: '', // 经度
+        // latitude: '', // 纬度
+      }),
+    },
+    mapWidth: {
+      type: String,
+      default: '500px',
+    },
+    mapHeight: {
+      type: String,
+      default: '300px',
     },
     isDetail: {
+      type: Boolean,
+      default: false,
+    },
+    // 是否只显示地图
+    isOnlyShowMap: {
       type: Boolean,
       default: false,
     },

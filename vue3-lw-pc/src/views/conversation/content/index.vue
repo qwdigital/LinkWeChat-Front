@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content" style="margin-top: -13px">
     <el-tabs v-model="activeName">
       <el-tab-pane label="员工检索" name="1">
         <employee></employee>
@@ -14,21 +14,21 @@
   </div>
 </template>
 <script>
-  import employee from './employee.vue'
-  import user from './customer.vue'
-  import global from './global.vue'
-  export default {
-    components: { employee, user, global },
-    data() {
-      return {
-        activeName: '1'
-      }
-    },
-    methods: {}
-  }
+import employee from './employee.vue'
+import user from './customer.vue'
+import global from './global.vue'
+export default {
+  components: { employee, user, global },
+  data() {
+    return {
+      activeName: '1',
+    }
+  },
+  methods: {},
+}
 </script>
 <style lang="scss" scoped>
-  ::v-deep.pd15 {
-    padding: 15px;
-  }
+::v-deep.pd15 {
+  padding: 15px;
+}
 </style>
