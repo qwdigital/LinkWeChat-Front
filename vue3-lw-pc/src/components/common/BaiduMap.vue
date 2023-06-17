@@ -101,7 +101,7 @@ export default {
   },
   async mounted() {
     // 百度地图AK： GeDsF2XGs01U0bUSpFIUCmvyNoYuGC3P
-    await loadBMap('GeDsF2XGs01U0bUSpFIUCmvyNoYuGC3P') // 加载引入BMap
+    await loadBMap() // 加载引入BMap
     if (this.initData.address) {
       this.form.address = this.initData.address
       if (this.initData.longitude && this.initData.latitude) {

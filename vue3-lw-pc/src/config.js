@@ -28,6 +28,7 @@ const common = {
   DEFAULT_H5_WORDE: env.DOMAIN + '/static/WORD.png',
   DEFAULT_H5_PPT: env.DOMAIN + '/static/PPT.png',
   PRIVIEW_URL: env.VIEW_URL,
+  BAIDU_MAP_KEY: 'GeDsF2XGs01U0bUSpFIUCmvyNoYuGC3P', // 百度地图key
 
   MICRO_APPS: {
     store: {
