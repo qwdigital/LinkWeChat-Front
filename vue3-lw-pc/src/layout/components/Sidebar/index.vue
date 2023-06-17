@@ -70,7 +70,7 @@
 
 <script>
 import { mapState } from 'pinia'
-import { appStore } from '@/stores'
+import stores from '@/stores'
 
 import SidebarItem from './SidebarItem'
 
@@ -78,7 +78,7 @@ export default {
   components: { SidebarItem },
   computed: {
     // ...mapState(['settings']),
-    ...mapState(appStore, ['permission_routes', 'sidebarRouters', 'sidebar']),
+    ...mapState(stores, ['permission_routes', 'sidebarRouters', 'sidebar']),
     activeMenu() {
       const route = this.$route
       const { meta, path } = route

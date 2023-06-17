@@ -1,4 +1,4 @@
-import store from '@/stores'
+import stores from '@/stores'
 
 /**
  * 字符权限校验
@@ -7,7 +7,7 @@ import store from '@/stores'
  */
 export function checkPermi(value) {
   if (value && value instanceof Array && value.length > 0) {
-    const permissions = store && store.permissions
+    const permissions = stores() && stores().permissions
     const permissionDatas = value
 
     const hasPermission = permissions.some((permission) => {

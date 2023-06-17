@@ -2,13 +2,13 @@
  * 操作权限处理
  */
 
-import store from '@/stores'
+import stores from '@/stores'
 
 export default {
-  inserted(el, binding, vnode) {
+  mounted(el, binding, vnode) {
     const { value } = binding
     const all_permission = '*:*:*'
-    const permissions = store && store.permissions
+    const permissions = stores() && stores().permissions
 
     if (value && value instanceof Array && value.length > 0) {
       const permissionFlag = value

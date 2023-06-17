@@ -2,13 +2,13 @@
  * 角色权限处理
  */
 
-import store from '@/stores'
+import stores from '@/stores'
 
 export default {
-  inserted(el, binding, vnode) {
+  mounted(el, binding, vnode) {
     const { value } = binding
     const super_admin = 'admin'
-    const roles = store && store.roles
+    const roles = stores() && stores().roles
 
     if (value && value instanceof Array && value.length > 0) {
       const roleFlag = value

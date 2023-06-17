@@ -6,9 +6,9 @@ import permission from './modules/permission'
 import settings from './modules/settings'
 import getters from './getters'
 
-export const stores = createPinia()
+export const store = createPinia()
 
-export const appStore = defineStore('app', {
+export default defineStore('app', {
   state: () => ({
     app: { ...app.state },
     user: { ...user.state },
@@ -25,5 +25,3 @@ export const appStore = defineStore('app', {
   },
   getters,
 })
-
-export default appStore

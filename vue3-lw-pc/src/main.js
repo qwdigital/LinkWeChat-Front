@@ -133,11 +133,10 @@ initAMapApiLoader({
 import directive from './directive'
 app.use(directive)
 
-// import { createPinia, defineStore } from 'pinia'
-import store, { stores } from '@/stores'
+import stores, { store } from '@/stores'
 
-app.use(stores)
+app.use(store)
 app.use(router)
-app.config.globalProperties.$store = store()
+app.config.globalProperties.$store = stores()
 
 app.mount('#app')

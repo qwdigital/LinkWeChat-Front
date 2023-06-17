@@ -28,7 +28,7 @@ import CustomerService from './components/CustomerService'
 import ResizeMixin from './mixin/ResizeHandler'
 
 import { mapState } from 'pinia'
-import { appStore } from '@/stores'
+import stores from '@/stores'
 
 export default {
   name: 'Layout',
@@ -43,7 +43,7 @@ export default {
   mixins: [ResizeMixin],
   computed: {
     //  ...mapGetters(['sidebar', 'avatar', 'device']),
-    ...mapState(appStore, {
+    ...mapState(stores, {
       sidebar: (state) => state.app.sidebar,
       device: (state) => state.app.device,
       showSettings: (state) => state.settings.showSettings,
