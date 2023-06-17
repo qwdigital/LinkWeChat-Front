@@ -113,23 +113,6 @@ app.config.globalProperties.$driver = new Driver({
   // showButtons:false
 })
 
-import VueAMap, { initAMapApiLoader } from '@vuemap/vue-amap'
-import '@vuemap/vue-amap/dist/style.css'
-app.use(VueAMap)
-initAMapApiLoader({
-  key: '32396af00cd726deed804cf5b63ed2d8',
-  plugin: [
-    'AMap.Autocomplete',
-    'AMap.PlaceSearch',
-    'AMap.Scale',
-    'AMap.OverView',
-    'AMap.ToolBar',
-    'AMap.MapType',
-    'AMap.PolyEditor',
-    'AMap.CircleEditor',
-  ],
-})
-
 import directive from './directive'
 app.use(directive)
 
