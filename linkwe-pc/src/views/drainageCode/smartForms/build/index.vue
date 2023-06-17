@@ -130,7 +130,7 @@ import drawingDefalutInit from './generator/drawingDefalut'
 import CodeTypeDialog from './CodeTypeDialog'
 import DraggableItem from './DraggableItem'
 
-let drawingDefalut = JSON.parse(JSON.stringify(drawingDefalutInit))
+let drawingDefalut = []
 
 const emptyActiveData = { style: {}, autosize: {} }
 let oldActiveId
@@ -238,7 +238,7 @@ export default {
     },
   },
   created() {
-    console.log('created', this.pageData)
+    drawingDefalut = JSON.parse(JSON.stringify(drawingDefalutInit))
     if (this.pageDataAll) {
       this.pageData = this.pageDataAll
     }
