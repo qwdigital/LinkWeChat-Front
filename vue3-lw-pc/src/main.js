@@ -99,19 +99,19 @@ Object.assign(app.config.globalProperties, methods, {
 
 // app.use(AudioPlayer)
 
-import Driver from 'driver.js'
-import 'driver.js/dist/driver.min.css'
-app.config.globalProperties.$driver = new Driver({
-  className: 'scoped-class',
-  allowClose: false, //禁止点击外部关闭
-  doneBtnText: '完成', // 完成按钮标题
-  closeBtnText: '关闭', // 关闭按钮标题
-  stageBackground: '#fff', // 引导对话的背景色
-  nextBtnText: '下一步', // 下一步按钮标题
-  prevBtnText: '上一步', // 上一步按钮标题
-  keyboardControl: false, // 禁止键盘控制
-  // showButtons:false
-})
+// import Driver from 'driver.js'
+// import 'driver.js/dist/driver.min.css'
+// app.config.globalProperties.$driver = new Driver({
+//   className: 'scoped-class',
+//   allowClose: false, //禁止点击外部关闭
+//   doneBtnText: '完成', // 完成按钮标题
+//   closeBtnText: '关闭', // 关闭按钮标题
+//   stageBackground: '#fff', // 引导对话的背景色
+//   nextBtnText: '下一步', // 下一步按钮标题
+//   prevBtnText: '上一步', // 上一步按钮标题
+//   keyboardControl: false, // 禁止键盘控制
+//   // showButtons:false
+// })
 
 import directive from './directive'
 app.use(directive)
