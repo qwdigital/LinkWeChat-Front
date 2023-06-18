@@ -22,7 +22,7 @@
       </el-autocomplete>
     </el-form-item>
     <el-form-item label="" :label-width="isOnlyShowMap ? 0 : ''" :style="isOnlyShowMap && 'margin-bottom: 0'">
-      <div id="map-container" :style="{ width: mapWidth, height: mapHeight }" />
+      <div ref="bMap" :style="{ width: mapWidth, height: mapHeight }" />
     </el-form-item>
   </div>
 </template>
@@ -179,7 +179,7 @@ export default {
     initMap() {
       var that = this
       // 1、挂载地图
-      this.map = new BMap.Map('map-container', { enableMapClick: false })
+      this.map = new BMap.Map(this.$refs.bMap, { enableMapClick: false })
       var point = new BMap.Point(
         this.form.addrPoint.lng || 117.2334414073489,
         this.form.addrPoint.lat || 31.826578293886,
