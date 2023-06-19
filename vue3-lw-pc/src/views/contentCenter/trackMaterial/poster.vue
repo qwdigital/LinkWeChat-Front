@@ -252,7 +252,7 @@ export default {
       font-size: 16px;
       font-family: Source Han Sans CN-Regular, Source Han Sans CN;
       font-weight: 400;
-      color: var(--font-white);
+      color: var(--font-black);
     }
     .item-text {
       margin-top: 6px;

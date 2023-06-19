@@ -351,7 +351,7 @@ export default {
 .info_title {
   font-size: 16px;
   font-weight: 600;
-  color: var(--font-white);
+  color: var(--font-black);
   margin-bottom: 10px;
 }
 </style>

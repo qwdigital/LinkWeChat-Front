@@ -312,7 +312,7 @@ export default {
 .info_title {
   font-size: 16px;
   font-weight: 600;
-  color: var(--font-white);
+  color: var(--font-black);
   margin-bottom: 10px;
 }
 .sub-des {
@@ -324,7 +324,7 @@ export default {
   font-size: 16px;
   font-family: PingFang SC-Bold, PingFang SC;
   font-weight: 600;
-  color: var(--font-white);
+  color: var(--font-black);
   margin: 24px 0;
 }
 .unit {
@@ -356,7 +356,7 @@ export default {
       font-size: 16px;
       font-family: Source Han Sans CN-Regular, Source Han Sans CN;
       font-weight: 400;
-      color: var(--font-white);
+      color: var(--font-black);
     }
     .item-text {
       margin-top: 6px;
