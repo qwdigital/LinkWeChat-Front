@@ -54,13 +54,13 @@ export default function permission(router) {
               } else {
                 // 没有设置企业微信的
                 let isEnterpriseWechat = router.getRoutes().some((element) => {
-                  return element.name === window.lwConfig.WORKWEIXINPAGENAME
+                  return element.name === window.lwConfig.WORK_WEIXIN_CONFIG_ROUTE_NAME
                 })
                 // 若有设置企业微信的页面权限，默认跳转到设置企业微信页面
                 if (isEnterpriseWechat) {
                   Message.warning('初次使用，请配置企业微信的id，以使用其他功能')
                   next({
-                    name: window.lwConfig.WORKWEIXINPAGENAME,
+                    name: window.lwConfig.WORK_WEIXIN_CONFIG_ROUTE_NAME,
                     replace: true,
                   })
                 } else {

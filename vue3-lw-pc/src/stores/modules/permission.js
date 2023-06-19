@@ -113,14 +113,15 @@ export const loadView = (route) => {
       res = modules[path]
 
       // 为需要单独使用的路由命名，避免使用绝对路径跳转
+      // 组件路径: route name
       let routeNames = {
-        'customerManage/customerDetail': 'customerDetail', //  客户详情
+        'customerManage/customerDetail': window.lwConfig.CUSTOMER_DETAIL_ROUTE_NAME, //  客户详情
         'drainageCode/staff/list': 'staffCode', //  员工活码
         'drainageCode/group/list': 'customerGroupCode', // 群活码
         'drainageCode/store/list': 'storeCode', //门店活码
         'drainageCode/identity/list': 'identityCode', //识客码
         'drainageCode/pullNews/list': 'pullNewsCode', //拉新活码
-        'enterpriseWechat/list': window.lwConfig.WORKWEIXINPAGENAME, //企微配置
+        'enterpriseWechat/list': window.lwConfig.WORK_WEIXIN_CONFIG_ROUTE_NAME, //企微配置
       }
       routeNames[route.component] && (route.name = routeNames[route.component])
 

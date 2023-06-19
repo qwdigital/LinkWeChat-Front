@@ -194,7 +194,7 @@ export default {
     goDetail(row) {
       let { externalUserid, firstUserId: userId } = row
       this.$router.push({
-        path: '/operateCenter/customerManage/customerDetail',
+        name: window.lwConfig.CUSTOMER_DETAIL_ROUTE_NAME,
         query: { externalUserid, userId },
       })
     },

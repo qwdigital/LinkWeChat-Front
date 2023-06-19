@@ -20,7 +20,8 @@ const common = {
   PRIVACY: env.BASE_URL + 'static/PRIVACY.pdf', // 隐私协议pdf
   IS_PUBLISH_DIALOG: false, // 是否显示发布弹窗
   COOKIEEXPIRES: 0.5, // token在Cookie中存储的天数，默认0.5天
-  WORKWEIXINPAGENAME: 'EnterpriseWechat', // 企业微信设置页面路由name
+  WORK_WEIXIN_CONFIG_ROUTE_NAME: 'EnterpriseWechat', // 企业微信设置页面路由名称, 用于router 通过name判断与跳转，避免使用path不易于扩展
+  CUSTOMER_DETAIL_ROUTE_NAME: 'customerDetail', // 客户详情页面路由name，同上
   DEFAULT_H5_PIC: env.DOMAIN + '/static/PIC.png',
   DEFAULT_H5_ART: env.DOMAIN + '/static/ARTICAL.png', // 文章默认封面
   DEFAULT_H5_TP: env.DOMAIN + '/static/TEXT_PIC.png', // 图文默认封面

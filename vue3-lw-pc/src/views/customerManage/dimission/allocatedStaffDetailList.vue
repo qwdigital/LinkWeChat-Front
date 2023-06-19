@@ -75,7 +75,7 @@
             v-hasPermi="['customerManage:dimission:edit']"
             @click="
               $router.push({
-                name: 'customerDetail',
+                name: window.lwConfig.CUSTOMER_DETAIL_ROUTE_NAME,
                 query: { externalUserid: row.externalUserid, userId: row.firstUserId, isDelete: true }
               })
             "

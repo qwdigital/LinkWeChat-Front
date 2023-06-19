@@ -26,7 +26,7 @@ export default {
           callback: (action) => {
             sessionStorage.setItem('currentActive', '4')
             this.$router.push({
-              name: window.lwConfig.WORKWEIXINPAGENAME,
+              name: window.lwConfig.WORK_WEIXIN_CONFIG_ROUTE_NAME,
             })
           },
         },
@@ -41,7 +41,7 @@ export default {
           callback: (action) => {
             sessionStorage.setItem('currentActive', '3')
             this.$router.push({
-              name: window.lwConfig.WORKWEIXINPAGENAME,
+              name: window.lwConfig.WORK_WEIXIN_CONFIG_ROUTE_NAME,
             })
           },
         },
