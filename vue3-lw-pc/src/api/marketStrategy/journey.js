@@ -1,5 +1,6 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/strategic/journey'
+const service =
+  window.lwConfig.services.system + window.lwConfig.services.wecom + '/strategic/journey'
 
 // import { get, post } from '@/plugins/axios'
 
@@ -19,8 +20,8 @@ export function getCrowdPackDetail(id) {
 
 // 计划列表查询接口
 // name	任务名称	String		支持模糊查询
-// startDate	开始日期	String		YYYY-MM-DD
-// endDate	结束日期	String		YYYY-MM-DD
+// startDate	开始日期	String		yyyy-MM-dd
+// endDate	结束日期	String		yyyy-MM-dd
 // status	状态	number		0:待完善,1:未开始,2:待运行,3:运行中,4:已暂停,5:已停止,6：正常结束,7:异常结束
 // pageNum	页码	number
 // pageSize	页大小	number
