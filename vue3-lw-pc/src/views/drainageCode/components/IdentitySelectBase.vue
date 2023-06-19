@@ -193,7 +193,7 @@ export default {
   <div class="page">
     <div style="margin-top: 16px">
       <el-row type="flex" justify="space-between">
-        <el-col :span="5" class="left pad20" style="border-radius: 4px; background: #fff">
+        <el-col :span="5" class="left pad20" style="border-radius: 4px; background: var(--bg-white)">
           <div class="title">
             <div class="title-name">{{ typeTitle[type] }}分组</div>
           </div>

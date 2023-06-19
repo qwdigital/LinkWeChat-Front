@@ -2,7 +2,8 @@
 /* 可以在此定义适用于自己团队的css 变量*/
 
 /* element-plus var */
-:root {
+:root,
+html.dark {
   --el-color-primary: hsl(var(--hsl));
   --el-color-primary-light-3: hsl(var(--hsl), 0.7);
   --el-color-primary-light-5: hsl(var(--hsl), 0.5);
@@ -12,14 +13,9 @@
   --el-color-primary-dark-2: var(--color-dark);
 
   --el-color-success: hsl(var(--hsl));
-  --el-color-warning: #faad14;
-  --el-color-danger: #eb5e12;
+
   /* // --el-color-info: #fa7216;
   // --el-color-info: #1E1E1E; */
-
-  --el-background-color-base: #e6f8ef;
-
-  --el-border-color-extra-light: #e6f8ef;
 
   /* --el-datepicker-inrange-background-color: var(--border-color-extra-light);
   --el-datepicker-inrange-hover-background-color: var(--border-color-extra-light); */
@@ -27,6 +23,11 @@
   --el-button-font-weight: 400;
 
   /* // --el-color-text-regular: #1f2d3d; */
+}
+:root {
+  --el-color-warning: #faad14;
+  --el-color-danger: #eb5e12;
+  --el-border-color-extra-light: #e6f8ef;
 
   --el-border-color-light: #dfe4ed;
   --el-border-color-lighter: #e6ebf5;

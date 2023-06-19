@@ -30,7 +30,7 @@
             </el-form-item>
             <el-form-item label="新客户标签">
               <template v-for="(item, index) in baseForm.weEmpleCodeTags">
-                <el-tag v-if="item.tagName"  :key="index">{{ item.tagName }}</el-tag>
+                <el-tag v-if="item.tagName" :key="index">{{ item.tagName }}</el-tag>
               </template>
               <div>
                 <el-button type="primary" icon="el-icon-plus" @click="selectedFn">
@@ -106,7 +106,7 @@
             </el-form-item>
             <el-form-item label="活码员工" prop="weEmpleCodeUseScops" v-if="codeForm.qrRuleType == 1">
               <div v-if="codeForm.weEmpleCodeUseScops.length > 0 && codeForm.qrType == 1">
-                <el-tag  v-for="(item, index) in codeForm.weEmpleCodeUseScops" :key="index">
+                <el-tag v-for="(item, index) in codeForm.weEmpleCodeUseScops" :key="index">
                   {{ item.businessName }}
                 </el-tag>
               </div>
@@ -137,7 +137,7 @@
               prop="weSpareUseScops"
               v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
               <div v-if="codeForm.weSpareUseScops.length > 0">
-                <el-tag  v-for="(item, index) in codeForm.weSpareUseScops" :key="index">
+                <el-tag v-for="(item, index) in codeForm.weSpareUseScops" :key="index">
                   {{ item.businessName }}
                 </el-tag>
               </div>
@@ -168,7 +168,7 @@
                     </el-button>
                   </div>
                   <el-form-item label="排班员工">
-                    <el-tag  v-for="(tag, key) in item.weEmpleCodeUseScops" :key="key">
+                    <el-tag v-for="(tag, key) in item.weEmpleCodeUseScops" :key="key">
                       {{ tag.businessName }}
                     </el-tag>
                     <el-button style="margin-left: 10px" type="primary" plain @click="onSelectUser(index)">
@@ -1062,7 +1062,7 @@ export default {
     font-weight: 500;
     color: #333;
     padding: 0 20px;
-    background: #fff;
+    background: var(--bg-white);
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
   }

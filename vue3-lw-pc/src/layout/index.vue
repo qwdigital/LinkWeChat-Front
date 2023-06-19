@@ -90,7 +90,7 @@ export default {
     flex-direction: column;
   }
   .breadcrumb-wrap {
-    background: #fff;
+    background: var(--bg-white);
     border-top: 1px solid #eee;
   }
 
@@ -100,7 +100,7 @@ export default {
   }
   .top-wrap {
     height: var(--top-nav-heght);
-    background: #fff;
+    background: var(--bg-white);
   }
 
   .main-wrap {

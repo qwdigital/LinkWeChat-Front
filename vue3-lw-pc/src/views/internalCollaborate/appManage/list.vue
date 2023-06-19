@@ -327,7 +327,7 @@ export default {
     margin: 0 20px 20px 0;
     padding: 20px 20px 10px;
     border: 1px solid #eee;
-    background: #fff;
+    background: var(--bg-white);
     border-radius: 6px;
     .el-image {
       margin-right: 10px;

@@ -205,7 +205,7 @@ export default {
 .login-text {
   font-size: 32px;
   font-weight: 700;
-  color: #1d2129;
+  color: var(--font-white);
   margin: 26px auto 50px auto;
 }
 

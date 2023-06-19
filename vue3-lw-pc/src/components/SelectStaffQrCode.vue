@@ -131,7 +131,7 @@ export default {
   <div>
     <el-dialog :title="title" v-model="Pvisible" width="900px" append-to-body :close-on-click-modal="false">
       <el-row type="flex" justify="space-between">
-        <el-col :span="5" class="left pad20" style="border-radius: 4px; background: #fff">
+        <el-col :span="5" class="left pad20" style="border-radius: 4px; background: var(--bg-white)">
           <div class="title">
             <div class="title-name">活码分组</div>
           </div>

@@ -87,7 +87,7 @@ export default {
   flex: auto;
   // min-width: 200px;
   max-width: 240px;
-  background: #fff;
+  background: var(--bg-white);
   border-radius: var(--border-radius-big);
   border: 1px solid #edf2f9;
   line-height: 1;

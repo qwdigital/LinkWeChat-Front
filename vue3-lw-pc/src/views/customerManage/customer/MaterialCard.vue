@@ -113,7 +113,7 @@ export default {
   width: 50px;
   height: 20px;
   font-size: 12px;
-  background-color: #fff;
+  background: var(--bg-white);
   border: 1px solid #0079de;
   border-radius: 10px;
   color: #0079de;

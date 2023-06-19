@@ -221,7 +221,7 @@ export default {
   text-align: center;
 
   .el-tabs {
-    background: #fff;
+    background: var(--bg-white);
   }
   ::v-deep .el-tabs__header {
     margin: 0;

@@ -34,7 +34,7 @@ export default {
 .active {
   font-weight: 600;
   color: var(--color) !important;
-  background-color: #fff !important;
+  background: var(--bg-white) !important;
   box-shadow: 0px 6px 30px 5px rgba(59, 59, 59, 0.05);
 }
 .card-tab {

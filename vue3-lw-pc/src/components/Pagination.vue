@@ -101,7 +101,7 @@ export default {
   bottom: 0;
   z-index: 9;
   text-align: right;
-  background: #fff;
+  background: var(--bg-white);
   padding: 15px 5px 20px;
   border-top: 1px solid #f8f8f8;
 }

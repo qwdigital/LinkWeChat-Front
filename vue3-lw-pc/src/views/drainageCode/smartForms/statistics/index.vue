@@ -97,7 +97,7 @@ export default {
   justify-content: space-between;
   width: 100%;
   border-radius: 5px;
-  background-color: #fff;
+  background: var(--bg-white);
   padding: 20px;
   box-sizing: border-box;
 }

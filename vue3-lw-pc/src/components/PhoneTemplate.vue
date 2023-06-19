@@ -54,7 +54,7 @@ export default {
   border-radius: 40px;
   box-sizing: content-box;
   overflow: hidden;
-  background: #fff;
+  background: var(--bg-white);
   // .preview-status {
   //   display: flex;
   //   justify-content: space-between;

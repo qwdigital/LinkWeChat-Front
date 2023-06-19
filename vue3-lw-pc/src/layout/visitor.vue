@@ -61,7 +61,7 @@ export default {
   height: 100vh;
   background: #e3ebf6;
   .login-top--wrap {
-    background: #fff;
+    background: var(--bg-white);
     padding: 5px 20px;
     box-shadow: 0px 5px 5px rgb(215 215 215 / 35%);
   }

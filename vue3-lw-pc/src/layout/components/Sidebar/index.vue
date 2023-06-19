@@ -110,7 +110,7 @@ export default {
   flex-direction: column;
   transition: width 0.28s;
   width: var(--side-bar-width) !important;
-  background-color: #fff;
+  background: var(--bg-white);
   bottom: 0;
   z-index: 1001;
   overflow: hidden;
@@ -185,7 +185,7 @@ export default {
   // 当前激活菜单
   .el-menu-item.is-active {
     background: linear-gradient(to right, var(--color) 0%, var(--color-sub) 100%);
-    box-shadow: 0px 13px 16px 0px rgba(7, 168, 85, 0.2);
+    box-shadow: 0px 13px 16px 0px hsl(var(--hsl-dark), 0.2);
     border-radius: 8px;
     color: var(--font-white, #fff) !important;
     z-index: 1;

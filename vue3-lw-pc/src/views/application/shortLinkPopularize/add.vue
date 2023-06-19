@@ -8,7 +8,7 @@
       </el-steps>
     </div>
     <template v-if="currentActive == 0">
-      <el-row :gutter="20" type="flex" style="margin-top: 20px;">
+      <el-row :gutter="20" type="flex" style="margin-top: 20px">
         <el-col>
           <div class="g-card">
             <el-form ref="baseForm" :rules="rules" :model="form" label-position="right" label-width="100px">
@@ -18,8 +18,7 @@
                   placeholder="请输入名称"
                   v-model="form.taskName"
                   show-word-limit
-                  clearable
-                ></el-input>
+                  clearable></el-input>
               </el-form-item>
               <el-form-item label="推广短链:" prop="shortLinkId">
                 <el-button type="primary" icon="el-icon-plus" @click="showShortLink = true">
@@ -27,12 +26,11 @@
                 </el-button>
                 <el-button
                   type="primary"
-                  @click="$router.push('/drainageCode/publicCustomer/IntelligentShortLink/index')"
-                >
+                  @click="$router.push('/drainageCode/publicCustomer/IntelligentShortLink/index')">
                   去新建
                 </el-button>
 
-                <div style="margin-top: 10px;">
+                <div style="margin-top: 10px">
                   <ShowShortLinkVue :data="shortLinkObj"></ShowShortLinkVue>
                 </div>
               </el-form-item>
@@ -48,10 +46,10 @@
                 <el-button type="primary" icon="el-icon-plus" @click="choseDialog = true">
                   {{ form.materialId ? '编辑' : '选择' }}海报
                 </el-button>
-                <div style="margin-top: 10px;" v-if="posterUrl">
+                <div style="margin-top: 10px" v-if="posterUrl">
                   <ul class="el-upload-list el-upload-list--picture-card">
                     <li class="el-upload-list__item is-success">
-                      <img style="width: 100%; height: 100%;" :src="posterUrl" />
+                      <img style="width: 100%; height: 100%" :src="posterUrl" />
                       <span class="el-upload-list__item-actions">
                         <span class="el-upload-list__item-delete">
                           <el-icon-delete class="el-icon-delete" @click="handleRemove"></el-icon-delete>
@@ -63,13 +61,13 @@
               </el-form-item>
             </el-form>
           </div>
-          <div class="g-card" style="text-align: right;">
+          <div class="g-card" style="text-align: right">
             <el-button plain @click="$router.go(-1)">取消</el-button>
             <el-button type="primary" @click="gotoNext">下一步</el-button>
           </div>
         </el-col>
-        <el-col style="flex-basis: 370px;">
-          <div class="g-card" style="height: 100%;">
+        <el-col style="flex-basis: 370px">
+          <div class="g-card" style="height: 100%">
             <div class="info_title">消息预览</div>
             <Preview :value="posterUrl"></Preview>
           </div>
@@ -135,7 +133,7 @@
           </div>
         </div>
       </div>
-      <div class="g-card" style="text-align: right;">
+      <div class="g-card" style="text-align: right">
         <el-button plain @click="currentActive = 0">上一步</el-button>
         <el-button plain @click="saveFn" v-loading="loading">保存，暂不推广</el-button>
         <el-button type="primary" @click="currentActive = 2">下一步</el-button>
@@ -153,227 +151,227 @@
   </div>
 </template>
 <script>
-  import SelectPosterSingle from './components/SelectPosterSingle.vue'
-  import Preview from './components/PreviewInPhone.vue'
-  import SelectShortLink from '@/components/SelectShortLink'
-  import Step3 from './components/Step3.vue'
-  import ShowShortLinkVue from './components/ShowShortLink.vue'
+import SelectPosterSingle from './components/SelectPosterSingle.vue'
+import Preview from './components/PreviewInPhone.vue'
+import SelectShortLink from '@/components/SelectShortLink'
+import Step3 from './components/Step3.vue'
+import ShowShortLinkVue from './components/ShowShortLink.vue'
 
-  import { getDetail, savePromotion } from './api'
-  export default {
-    name: 'short-link-popularize-add',
-    components: {
-      Preview,
-      SelectPosterSingle,
-      SelectShortLink,
-      ShowShortLinkVue,
-      Step3
-    },
-    data() {
-      return {
-        loading: false,
-        form: {
-          taskName: '',
-          shortLinkId: '',
-          style: 0,
-          materialId: '',
+import { getDetail, savePromotion } from './api'
+export default {
+  name: 'short-link-popularize-add',
+  components: {
+    Preview,
+    SelectPosterSingle,
+    SelectShortLink,
+    ShowShortLinkVue,
+    Step3,
+  },
+  data() {
+    return {
+      loading: false,
+      form: {
+        taskName: '',
+        shortLinkId: '',
+        style: 0,
+        materialId: '',
+        type: 0,
+        client: {
           type: 0,
-          client: {
-            type: 0,
-            sex: null,
-            trackState: null,
-            addBeginTime: '',
-            addEndTime: '',
-            labelIds: '',
-            userIds: '',
-            sendType: 0,
-            taskSendTime: '',
-            taskEndTime: ''
-          },
-          attachments: [],
-          senderList: []
+          sex: null,
+          trackState: null,
+          addBeginTime: '',
+          addEndTime: '',
+          labelIds: '',
+          userIds: '',
+          sendType: 0,
+          taskSendTime: '',
+          taskEndTime: '',
         },
-        currentActive: 0,
-        choseDialog: false,
-        showShortLink: false,
-        shortLinkObj: [],
-        posterUrl: '',
-        posterObj: {},
-        rules: {
-          taskName: [
-            {
-              required: true,
-              message: '请输入任务名称',
-              trigger: 'blur'
-            }
-          ],
-          shortLinkId: [
-            {
-              required: true,
-              message: '请选择短链',
-              trigger: 'blur'
-            }
-          ],
-          style: [
-            {
-              required: true,
-              message: '请选择推广样式',
-              trigger: 'blur'
-            }
-          ],
-          materialId: [
-            {
-              required: true,
-              message: '请选择海报',
-              trigger: 'blur'
-            }
-          ]
-        }
-      }
+        attachments: [],
+        senderList: [],
+      },
+      currentActive: 0,
+      choseDialog: false,
+      showShortLink: false,
+      shortLinkObj: [],
+      posterUrl: '',
+      posterObj: {},
+      rules: {
+        taskName: [
+          {
+            required: true,
+            message: '请输入任务名称',
+            trigger: 'blur',
+          },
+        ],
+        shortLinkId: [
+          {
+            required: true,
+            message: '请选择短链',
+            trigger: 'blur',
+          },
+        ],
+        style: [
+          {
+            required: true,
+            message: '请选择推广样式',
+            trigger: 'blur',
+          },
+        ],
+        materialId: [
+          {
+            required: true,
+            message: '请选择海报',
+            trigger: 'blur',
+          },
+        ],
+      },
+    }
+  },
+  methods: {
+    setTypeFn(type) {
+      this.form.type = type
     },
-    methods: {
-      setTypeFn(type) {
-        this.form.type = type
-      },
-      setChange(type) {
-        if (type == 0) {
-          this.posterUrl = ''
-          this.posterObj = {}
-          this.form.materialId = ''
-        }
-      },
-      saveFn() {
-        savePromotion(this.form)
-          .then((res) => {
-            if (res.code == 200) {
-              this.msgSuccess('操作成功!')
-              this.$router.back()
-            }
-            this.loading = false
-          })
-          .catch(() => {
-            this.loading = false
-          })
-      },
-      gotoNext() {
-        this.$refs.baseForm.validate((validate) => {
-          if (validate) {
-            this.currentActive = 1
-          }
-        })
-      },
-      handleRemove() {
+    setChange(type) {
+      if (type == 0) {
         this.posterUrl = ''
         this.posterObj = {}
         this.form.materialId = ''
-      },
-      getItemArry(data) {
-        this.posterUrl = data.materialUrl
-        this.posterObj = data
-        this.form.materialId = data.id
-      },
-      getShortLink(data) {
-        this.form.shortLinkId = data.id
-        this.shortLinkObj = [data]
-      },
-      getUpdateData(data) {
-        this.form = data
-      },
-      updateSteps(step) {
-        this.currentActive = step
-      },
-      getDetailFn() {
-        getDetail(this.id).then((res) => {
-          this.form = res.data
-          this.setEdit()
-        })
-      },
-      setEdit() {
-        if (this.form.shortLinkId) {
-          this.shortLinkObj = [this.form.shortLink]
-        }
-        if (this.form.style == 1) {
-          this.posterObj = this.form.weMaterial
-          this.posterUrl = this.posterObj.materialUrl
-        }
       }
     },
-    created() {
-      this.id = this.$route.query.id
-      if (this.$route.query.promotion) {
-        this.currentActive = 1
+    saveFn() {
+      savePromotion(this.form)
+        .then((res) => {
+          if (res.code == 200) {
+            this.msgSuccess('操作成功!')
+            this.$router.back()
+          }
+          this.loading = false
+        })
+        .catch(() => {
+          this.loading = false
+        })
+    },
+    gotoNext() {
+      this.$refs.baseForm.validate((validate) => {
+        if (validate) {
+          this.currentActive = 1
+        }
+      })
+    },
+    handleRemove() {
+      this.posterUrl = ''
+      this.posterObj = {}
+      this.form.materialId = ''
+    },
+    getItemArry(data) {
+      this.posterUrl = data.materialUrl
+      this.posterObj = data
+      this.form.materialId = data.id
+    },
+    getShortLink(data) {
+      this.form.shortLinkId = data.id
+      this.shortLinkObj = [data]
+    },
+    getUpdateData(data) {
+      this.form = data
+    },
+    updateSteps(step) {
+      this.currentActive = step
+    },
+    getDetailFn() {
+      getDetail(this.id).then((res) => {
+        this.form = res.data
+        this.setEdit()
+      })
+    },
+    setEdit() {
+      if (this.form.shortLinkId) {
+        this.shortLinkObj = [this.form.shortLink]
       }
-      if (this.id) {
-        this.getDetailFn()
+      if (this.form.style == 1) {
+        this.posterObj = this.form.weMaterial
+        this.posterUrl = this.posterObj.materialUrl
       }
+    },
+  },
+  created() {
+    this.id = this.$route.query.id
+    if (this.$route.query.promotion) {
+      this.currentActive = 1
     }
-  }
+    if (this.id) {
+      this.getDetailFn()
+    }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
-  .info_title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #1d2129;
-    margin-bottom: 10px;
-  }
-  .sub-des {
-    font-size: 12px;
-    font-weight: 400;
-    color: #999999;
-  }
-  .title {
-    font-size: 16px;
-    font-family: PingFang SC-Bold, PingFang SC;
-    font-weight: 600;
-    color: #1d2129;
-    margin: 24px 0;
-  }
-  .unit {
-    margin: 0 auto;
+.info_title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--font-white);
+  margin-bottom: 10px;
+}
+.sub-des {
+  font-size: 12px;
+  font-weight: 400;
+  color: #999999;
+}
+.title {
+  font-size: 16px;
+  font-family: PingFang SC-Bold, PingFang SC;
+  font-weight: 600;
+  color: var(--font-white);
+  margin: 24px 0;
+}
+.unit {
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  width: 580px;
+  justify-content: space-between;
+  .unit-item {
+    width: 280px;
+    height: 80px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(242, 242, 242, 1);
+    border-radius: 5px;
     display: flex;
-    flex-wrap: wrap;
-    width: 580px;
-    justify-content: space-between;
-    .unit-item {
-      width: 280px;
-      height: 80px;
-      border-width: 1px;
-      border-style: solid;
-      border-color: rgba(242, 242, 242, 1);
-      border-radius: 5px;
-      display: flex;
-      padding: 17px;
-      margin-bottom: 20px;
-      cursor: pointer;
-      .icon-style {
-        margin-right: 10px;
-        margin-top: 7px;
-        font-size: 22px;
-        width: 24px;
-        // height: 20px;
-      }
-      .item-title {
-        margin-top: 4px;
-        font-size: 16px;
-        font-family: Source Han Sans CN-Regular, Source Han Sans CN;
-        font-weight: 400;
-        color: #1d2129;
-      }
-      .item-text {
-        margin-top: 6px;
-        font-size: 12px;
-        color: #aaaaaa;
-        line-height: 24px;
-      }
-      &:hover {
-        border: 1px solid rgba(7, 193, 96, 1);
-        background-color: rgba(7, 193, 96, 0.09019607843137255);
-      }
+    padding: 17px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    .icon-style {
+      margin-right: 10px;
+      margin-top: 7px;
+      font-size: 22px;
+      width: 24px;
+      // height: 20px;
     }
-    .active_item {
+    .item-title {
+      margin-top: 4px;
+      font-size: 16px;
+      font-family: Source Han Sans CN-Regular, Source Han Sans CN;
+      font-weight: 400;
+      color: var(--font-white);
+    }
+    .item-text {
+      margin-top: 6px;
+      font-size: 12px;
+      color: #aaaaaa;
+      line-height: 24px;
+    }
+    &:hover {
       border: 1px solid rgba(7, 193, 96, 1);
       background-color: rgba(7, 193, 96, 0.09019607843137255);
     }
   }
+  .active_item {
+    border: 1px solid rgba(7, 193, 96, 1);
+    background-color: rgba(7, 193, 96, 0.09019607843137255);
+  }
+}
 </style>

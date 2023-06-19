@@ -240,7 +240,7 @@ export default {
   .dataStatistics_optionGraph_li {
     margin-bottom: 10px;
     width: 49.6%;
-    background-color: #fff;
+    background: var(--bg-white);
     padding: 30px;
   }
 }

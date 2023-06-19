@@ -157,7 +157,7 @@ export default {
 //   top: 8px;
 //   width: 8px;
 //   height: 8px;
-//   background: #fff;
+//   background: var(--bg-white);
 //   transform: rotate(45deg);
 //   border: 1px solid #e1edfc;
 //   z-index: 888;
@@ -179,7 +179,7 @@ export default {
   @extend .mes;
   color: #333;
   margin-left: 10px;
-  background-color: #fff;
+  background: var(--bg-white);
   border-top-left-radius: 0;
   // &::before {
   //   @extend .angle;
