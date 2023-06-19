@@ -207,7 +207,7 @@ export default {
   height: 100%;
   overflow: hidden;
   position: relative;
-  color: #1d2129;
+  color: var(--font-black);
 
   .errLog-container {
     display: inline-block;

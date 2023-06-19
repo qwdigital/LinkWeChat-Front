@@ -124,7 +124,7 @@ export default {
   & > .el-menu-item {
     height: 38px !important;
     line-height: 38px !important;
-    color: #1d2129;
+    color: var(--font-black);
     border-radius: 8px;
     font-weight: bold;
     margin: 0 4px !important;
