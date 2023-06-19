@@ -28,7 +28,8 @@
               <el-cascader
                 v-model="talkForm.categoryId"
                 :options="treeData[0].children"
-                :props="groupProps"></el-cascader>
+                :props="groupProps"
+              ></el-cascader>
             </el-form-item>
             <el-form-item
               label="话术标题"
@@ -111,7 +112,8 @@
                   '后重新尝试'
                 "
                 placement="top-start"
-                :disabled="talkList.length < maxlength">
+                :disabled="talkList.length < maxlength"
+              >
                 <template #reference>
                   <el-dropdown
                     @command="moveGroup"
@@ -166,12 +168,11 @@
                   '后重新尝试'
                 "
                 placement="top-start"
-                :disabled="talkList.length < maxlength">
+                :disabled="talkList.length < maxlength"
+              >
                 <template #reference>
                   <div class="ml20">
-                    <el-button
-                      @click="choseCenter"
-                      :disabled="talkList.length > maxlength || talkList.length === maxlength">
+                    <el-button @click="choseCenter" :disabled="talkList.length >= maxlength">
                       从素材中心选择
                     </el-button>
                   </div>
@@ -228,7 +229,8 @@
       @dialogClose="dialogClose"
       :materialTalkList="talkList"
       :moduleType="moduleType"
-      :maxlength="maxlength" />
+      :maxlength="maxlength"
+    />
     <!-- 模板库 -->
     <el-dialog
       :title="otherType === 2 ? '选择群发模板' : '选择欢迎语模板'"
@@ -236,7 +238,8 @@
       width="60%"
       append-to-body
       :close-on-click-modal="false"
-      v-if="welcomVisible">
+      v-if="welcomVisible"
+    >
       <TemplateLibrary @changeObj="changeObj" :isGroup="otherType === 2" />
       <template #footer>
         <div class="dialog-footer">
@@ -261,7 +264,8 @@
       :defaultValues="selectedUserList"
       v-model:visible="dialogVisibleSelectUser"
       title="选择使用员工"
-      @success="selectedUser"></SelectUser>
+      @success="selectedUser"
+    ></SelectUser>
   </div>
 </template>
 
@@ -589,8 +593,23 @@ export default {
     },
     getItemArry(val, length) {
       this.talkList = this.talkList.concat(val)
+
       if (this.otherType === 3) {
-        this.maxlength = length
+        // 朋友圈模块需要控制只能选择最多9个图片或者1个其他类型的文件
+        let img = 0
+        let other = 0
+        this.talkList.forEach((item) => {
+          if (item.mediaType === '0') {
+            img++
+          } else {
+            other++
+          }
+        })
+        if (img > 1) {
+          this.maxlength = 9
+        } else if (other === 1) {
+          this.maxlength = 1
+        }
         if (this.maxlength === 9) {
           this.fontType = '图片类型的附件'
         } else {

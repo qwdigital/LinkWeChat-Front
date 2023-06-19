@@ -283,7 +283,12 @@ export default {
     },
     centerSubmit() {
       if (this.ids.length + this.talkListLength > this.maxlength2) {
-        this.$message.error('最多新建或选择' + this.maxlength2 + '个素材')
+        if (this.isFriends) {
+          this.$message.error('除图片素材可选9条数据,其他类型仅可选择一条数据,且只能选择一种类型')
+        } else {
+          this.$message.error('最多新建或选择' + this.maxlength2 + '个素材')
+        }
+
         return
       } else {
         this.dialogVisibel = false
