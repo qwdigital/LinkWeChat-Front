@@ -209,7 +209,7 @@ export default {
 
 <style lang="scss" scoped>
 .list {
-  height: calc(100vh - 420px);
+  height: calc(100vh - 370px);
   margin-top: 10px;
   background: white;
   overflow-y: scroll;

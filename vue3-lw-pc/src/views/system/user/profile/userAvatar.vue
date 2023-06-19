@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import store from '@/stores'
+import stores from '@/stores'
 import 'vue-cropper/dist/index.css'
 import { VueCropper } from 'vue-cropper'
 import { uploadAvatar } from '@/api/system/user'
@@ -75,7 +75,7 @@ export default {
       title: '修改头像',
       options: {
         outputType: 'png', // 裁剪生成图片的格式 jpeg, png, webp
-        img: store().avatar, //裁剪图片的地址
+        img: stores().avatar, //裁剪图片的地址
         autoCrop: true, // 是否默认生成截图框
         autoCropWidth: 200, // 默认生成截图框宽度
         autoCropHeight: 200, // 默认生成截图框高度
@@ -129,7 +129,7 @@ export default {
           if (response.code === 200) {
             this.open = false
             this.options.img = response.imgUrl
-            store.avatar = this.options.img
+            stores.avatar = this.options.img
             this.msgSuccess('修改成功')
           }
           this.visible = false

@@ -99,45 +99,27 @@ Object.assign(app.config.globalProperties, methods, {
 
 // app.use(AudioPlayer)
 
-import Driver from 'driver.js'
-import 'driver.js/dist/driver.min.css'
-app.config.globalProperties.$driver = new Driver({
-  className: 'scoped-class',
-  allowClose: false, //禁止点击外部关闭
-  doneBtnText: '完成', // 完成按钮标题
-  closeBtnText: '关闭', // 关闭按钮标题
-  stageBackground: '#fff', // 引导对话的背景色
-  nextBtnText: '下一步', // 下一步按钮标题
-  prevBtnText: '上一步', // 上一步按钮标题
-  keyboardControl: false, // 禁止键盘控制
-  // showButtons:false
-})
-
-import VueAMap, { initAMapApiLoader } from '@vuemap/vue-amap'
-import '@vuemap/vue-amap/dist/style.css'
-app.use(VueAMap)
-initAMapApiLoader({
-  key: '32396af00cd726deed804cf5b63ed2d8',
-  plugin: [
-    'AMap.Autocomplete',
-    'AMap.PlaceSearch',
-    'AMap.Scale',
-    'AMap.OverView',
-    'AMap.ToolBar',
-    'AMap.MapType',
-    'AMap.PolyEditor',
-    'AMap.CircleEditor',
-  ],
-})
+// import Driver from 'driver.js'
+// import 'driver.js/dist/driver.min.css'
+// app.config.globalProperties.$driver = new Driver({
+//   className: 'scoped-class',
+//   allowClose: false, //禁止点击外部关闭
+//   doneBtnText: '完成', // 完成按钮标题
+//   closeBtnText: '关闭', // 关闭按钮标题
+//   stageBackground: '#fff', // 引导对话的背景色
+//   nextBtnText: '下一步', // 下一步按钮标题
+//   prevBtnText: '上一步', // 上一步按钮标题
+//   keyboardControl: false, // 禁止键盘控制
+//   // showButtons:false
+// })
 
 import directive from './directive'
 app.use(directive)
 
-// import { createPinia, defineStore } from 'pinia'
-import store, { stores } from '@/stores'
+import stores, { store } from '@/stores'
 
-app.use(stores)
+app.use(store)
 app.use(router)
-app.config.globalProperties.$store = store()
+app.config.globalProperties.$store = stores()
 
 app.mount('#app')

@@ -936,7 +936,7 @@ export default {
   background-color: var(--color);
   text-align: center;
   padding: 13px 30px;
-  color: #fff;
+  color: var(--font-white, #fff);
 }
 
 ::v-deep .form3 .el-scrollbar__wrap {

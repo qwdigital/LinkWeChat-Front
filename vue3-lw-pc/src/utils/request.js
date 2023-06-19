@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { ElNotification as Notification, ElMessageBox as MessageBox, ElMessage as Message } from 'element-plus'
-import _store from '@/stores'
+import stores from '@/stores'
 import { getToken, setToken } from '@/utils/auth'
 import errorCode from '@/utils/errorCode'
 
@@ -34,7 +34,7 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   (res) => {
-    let store = _store()
+    let store = stores()
     // 未设置状态码则默认成功状态
     const code = res.data.code || 200
     // 获取错误信息

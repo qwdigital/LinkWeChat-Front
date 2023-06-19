@@ -14,7 +14,7 @@ export default {
       default: () => ({}),
     },
   },
-  components: { Voice },
+  components: { Voice, BaiduMap: defineAsyncComponent(() => import('@/components/common/BaiduMap')) },
   data() {
     return {}
   },
@@ -108,17 +108,13 @@ export default {
       </video>
     </template>
     <div v-else-if="message.msgType === 'location'" class="msgtypecard">
-      <div class="card-content" style="height: 100%; width: 100%">
-        <el-amap
-          ref="map"
-          vid="amapDemo"
-          :center="[JSON.parse(message.contact).longitude, JSON.parse(message.contact).latitude]"
-          :zoom="14"
-          class="amap-demo"
-          style="height: 120px; width: 250px; pointer-events: none">
-          <el-amap-marker
-            :position="[JSON.parse(message.contact).longitude, JSON.parse(message.contact).latitude]"></el-amap-marker>
-        </el-amap>
+      <div class="card-content">
+        <BaiduMap
+          isDetail
+          isOnlyShowMap
+          mapWidth="300px"
+          mapHeight="120px"
+          :initData="JSON.parse(message.contact)"></BaiduMap>
       </div>
       <div class="card-foot">{{ content }}</div>
     </div>
@@ -193,7 +189,7 @@ export default {
 }
 .message-right {
   @extend .mes;
-  color: #fff;
+  color: var(--font-white, #fff);
   margin-right: 10px;
   background-color: var(--color);
   border-top-right-radius: 0;
@@ -234,6 +230,7 @@ export default {
     line-height: 1.5;
     // text-indent: 10px;
     color: #333;
+    z-index: -1;
     .card--link-title {
       font-size: 15px;
       font-weight: 500;

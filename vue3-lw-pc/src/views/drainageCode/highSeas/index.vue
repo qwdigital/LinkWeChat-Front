@@ -500,14 +500,14 @@ export default {
     font-size: 14px;
 
     font-weight: 400;
-    color: #ffffff;
+    color: var(--font-white, #fff);
   }
   .value {
     margin-top: 5px;
     font-size: 18px;
 
     font-weight: 400;
-    color: #ffffff;
+    color: var(--font-white, #fff);
   }
 }
 

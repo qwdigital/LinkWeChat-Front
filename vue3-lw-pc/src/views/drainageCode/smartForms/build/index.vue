@@ -578,7 +578,7 @@ export default {
   .el-tabs__item.is-active {
     background: #1e1e1e;
     border-bottom-color: #1e1e1e !important;
-    color: #fff;
+    color: var(--font-white, #fff);
   }
   .el-icon-EditPen {
     color: #f1fa8c;
@@ -626,7 +626,7 @@ export default {
     line-height: 16px;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 50%;
-    color: #fff;
+    color: var(--font-white, #fff);
     text-align: center;
     z-index: 1;
     cursor: pointer;
@@ -937,7 +937,7 @@ $selectedColor: #f6f7ff;
     background: #fff;
     &:hover {
       background: var(--color);
-      color: #fff;
+      color: var(--font-white, #fff);
     }
   }
   & > .drawing-item-delete {
@@ -947,7 +947,7 @@ $selectedColor: #f6f7ff;
     background: #fff;
     &:hover {
       background: #f56c6c;
-      color: #fff;
+      color: var(--font-white, #fff);
     }
   }
 }

@@ -2,7 +2,7 @@
   <div
     class="pagination-container"
     ref="pagination"
-    v-if="$attrs['hide-on-single-page'] === false || $attrs.total > limit">
+    v-if="['false', 'undefined'].includes($attrs['hide-on-single-page'] + '') || $attrs.total > limit">
     <el-pagination
       v-bind="$attrs"
       :background="background"

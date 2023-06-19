@@ -115,7 +115,7 @@
 import Settings from './Settings'
 import { isExternal } from '@/utils/validate'
 import { mapState } from 'pinia'
-import { appStore } from '@/stores'
+import stores from '@/stores'
 import Logo from './Logo'
 // import { getCustomerServiceQrUrl } from "@/api/login";
 
@@ -138,7 +138,7 @@ export default {
     Settings,
   },
   computed: {
-    ...mapState(appStore, ['avatar', 'name', 'permission_routes']),
+    ...mapState(stores, ['avatar', 'name', 'permission_routes']),
   },
   mounted() {
     // console.log(this.permission_routes)
@@ -316,12 +316,12 @@ export default {
   // background: #fff;
   // color: var(--color);
   .contact-us-icon {
-    color: #fff;
+    color: var(--font-white, #fff);
     // color: inherit;
     font-size: 30px;
   }
   // &:hover {
-  //   color: #fff;
+  //   color: var(--font-white, #fff);
   //   background: linear-gradient(225deg, var(--color-sub) 0%, var(--color) 100%);
   //   transition: all 0.3s;
   // }

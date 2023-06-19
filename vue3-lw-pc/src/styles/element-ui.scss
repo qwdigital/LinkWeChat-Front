@@ -32,7 +32,7 @@
 }
 // .el-message-box__btns {
 //   .el-button--default.el-button--primary {
-//     color: #fff;
+//     color: var(--font-white, #fff);
 //   }
 // }
 .el-button {
@@ -59,18 +59,18 @@
 .el-button--cyan:active {
   background: #20b2aa;
   border-color: #20b2aa;
-  color: #ffffff;
+  color: var(--font-white, #fff);
 }
 .el-button--cyan:focus,
 .el-button--cyan:hover {
   background: #48d1cc;
   border-color: #48d1cc;
-  color: #ffffff;
+  color: var(--font-white, #fff);
 }
 .el-button--cyan {
   background-color: #20b2aa;
   border-color: #20b2aa;
-  color: #ffffff;
+  color: var(--font-white, #fff);
 }
 
 // .el-input.el-input--small {
@@ -496,7 +496,7 @@
   color: #86909c; // 标题颜色
 }
 .el-step__head.is-process {
-  color: #fff; // 数字颜色
+  color: var(--font-white, #fff); // 数字颜色
   .el-step__icon.is-text {
     background: var(--color);
   }

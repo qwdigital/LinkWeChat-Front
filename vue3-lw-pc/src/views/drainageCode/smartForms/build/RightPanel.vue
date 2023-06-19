@@ -950,7 +950,7 @@ export default {
   border-radius: 0 0 6px 0;
   text-align: center;
   line-height: 26px;
-  color: #fff;
+  color: var(--font-white, #fff);
   font-size: 18px;
 }
 .node-label {

@@ -28,6 +28,7 @@ const common = {
   DEFAULT_H5_WORDE: env.DOMAIN + '/static/WORD.png',
   DEFAULT_H5_PPT: env.DOMAIN + '/static/PPT.png',
   PRIVIEW_URL: env.VIEW_URL,
+  BAIDU_MAP_KEY: 'GeDsF2XGs01U0bUSpFIUCmvyNoYuGC3P', // 百度地图key
 
   MICRO_APPS: {
     store: {
@@ -42,7 +43,7 @@ const common = {
 
 // 以下仅用于系统信息展示，不作为项目变量使用，请勿在代码中使用
 const project = {
-  _version: 'v5.0.0-rc.2', // 当前版本信息
+  // _version: 'v5.0.0', // 当前版本信息
   _packDateTime: __PACK_DATETIME__, // 打包时间
   _env: process.env.VUE_APP_ENV, // 前端系统环境模式
 }

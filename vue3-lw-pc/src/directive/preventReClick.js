@@ -3,7 +3,7 @@
  * 使用 <div @click="search" v-preventReClick="1000">搜索</div>
  */
 export default {
-  inserted(el, binding) {
+  mounted(el, binding) {
     el.addEventListener('click', () => {
       el.style.pointerEvents = 'none'
       setTimeout(() => {

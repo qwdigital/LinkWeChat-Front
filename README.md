@@ -1,1 +1,12 @@
-**本仓库为 LinkWeChat 的前端源码库，具体说明及后端库请移步至 [LinkWeChat](https://gitee.com/LinkWeChat/link-wechat) 查看。**
+**本仓库为 LinkWeChat 的前端源码库，具体项目说明及后端库请移步至 [LinkWeChat](https://gitee.com/LinkWeChat/link-wechat) 查看。**
+
+## 更新日志
+
+### v5.0.0
+
+2023.06.16
+
+1. pc 管理端由 vue cli + vue2 生态 升级为 vite+vue3 生态版本，同时 vue3-master 替换 master 成为默认分支
+2. v4.8 是当前、同时也是最后一个 v4.x 的次级版本更新。 pc 管理端 vue2 版本由此 2023.06.16 日进入维护状态，并持续到 vue2 官方生命周期终止，即 2023 年 12 月 31 日。在此期间，将会提供必要的 bug 修复和安全修复，但不再提供新功能特性。在此之后，v4 在已有的分发渠道中仍然可用，但不再进行更新，包括对安全问题和浏览器兼容性问题的修复等。
+3. 考虑移动端 vue3 生态的兼容性，小程序端和移动 web 端暂不升级 vue3，且暂无升级计划
+4. 优化系统性能，部分 UI 和交互体验

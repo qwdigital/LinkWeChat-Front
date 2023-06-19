@@ -28,8 +28,7 @@
               <el-cascader
                 v-model="talkForm.categoryId"
                 :options="treeData[0].children"
-                :props="groupProps"
-              ></el-cascader>
+                :props="groupProps"></el-cascader>
             </el-form-item>
             <el-form-item
               label="话术标题"
@@ -112,8 +111,7 @@
                   '后重新尝试'
                 "
                 placement="top-start"
-                :disabled="talkList.length < maxlength"
-              >
+                :disabled="talkList.length < maxlength">
                 <template #reference>
                   <el-dropdown
                     @command="moveGroup"
@@ -168,14 +166,12 @@
                   '后重新尝试'
                 "
                 placement="top-start"
-                :disabled="talkList.length < maxlength"
-              >
+                :disabled="talkList.length < maxlength">
                 <template #reference>
                   <div class="ml20">
                     <el-button
                       @click="choseCenter"
-                      :disabled="talkList.length > maxlength || talkList.length === maxlength"
-                    >
+                      :disabled="talkList.length > maxlength || talkList.length === maxlength">
                       从素材中心选择
                     </el-button>
                   </div>
@@ -232,8 +228,7 @@
       @dialogClose="dialogClose"
       :materialTalkList="talkList"
       :moduleType="moduleType"
-      :maxlength="maxlength"
-    />
+      :maxlength="maxlength" />
     <!-- 模板库 -->
     <el-dialog
       :title="otherType === 2 ? '选择群发模板' : '选择欢迎语模板'"
@@ -241,8 +236,7 @@
       width="60%"
       append-to-body
       :close-on-click-modal="false"
-      v-if="welcomVisible"
-    >
+      v-if="welcomVisible">
       <TemplateLibrary @changeObj="changeObj" :isGroup="otherType === 2" />
       <template #footer>
         <div class="dialog-footer">
@@ -267,8 +261,7 @@
       :defaultValues="selectedUserList"
       v-model:visible="dialogVisibleSelectUser"
       title="选择使用员工"
-      @success="selectedUser"
-    ></SelectUser>
+      @success="selectedUser"></SelectUser>
   </div>
 </template>
 
@@ -915,12 +908,12 @@ export default {
   }
 }
 ::v-deep .el-button.is-disabled {
-  color: #fff;
+  color: var(--font-white, #fff);
   background-color: #cccccc;
   border-color: #cccccc;
 }
 ::v-deep.el-dropdown [disabled] {
-  color: #fff;
+  color: var(--font-white, #fff);
   background-color: #cccccc;
   border-color: #cccccc;
 }

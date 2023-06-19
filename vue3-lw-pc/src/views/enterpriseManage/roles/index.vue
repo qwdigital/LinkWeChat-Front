@@ -53,7 +53,7 @@
           </el-form>
         </div>
         <div class="g-footer-sticky bottom" v-if="roles[activeIndex]">
-          <!-- <el-button plain type="danger">删除</el-button> -->
+          <el-button plain type="danger" @click="deleteFn">删除</el-button>
           <el-button type="primary" @click="edtiFn">编辑</el-button>
         </div>
       </div>

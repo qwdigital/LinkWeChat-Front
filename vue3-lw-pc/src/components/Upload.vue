@@ -716,7 +716,7 @@ export default {
   width: 300px;
   height: 150px;
   box-sizing: border-box;
-  color: #fff;
+  color: var(--font-white, #fff);
   background-color: #000;
   position: relative;
   padding: 0;
@@ -750,7 +750,7 @@ export default {
   top: 0;
   cursor: pointer;
   text-align: center;
-  color: #fff;
+  color: var(--font-white, #fff);
   opacity: 0;
   font-size: 20px;
   transition: opacity 0.3s;

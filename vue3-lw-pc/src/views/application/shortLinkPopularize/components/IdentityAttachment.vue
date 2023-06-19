@@ -806,12 +806,12 @@ export default {
   }
 }
 ::v-deep .el-button.is-disabled {
-  color: #fff;
+  color: var(--font-white, #fff);
   background-color: #cccccc;
   border-color: #cccccc;
 }
 ::v-deep.el-dropdown [disabled] {
-  color: #fff;
+  color: var(--font-white, #fff);
   background-color: #cccccc;
   border-color: #cccccc;
 }

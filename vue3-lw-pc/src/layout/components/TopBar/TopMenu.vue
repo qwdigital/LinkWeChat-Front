@@ -116,10 +116,11 @@ export default {
 //   }
 // }
 .el-menu--horizontal {
-  background-color: transparent;
+  background-color: initial;
   border: none;
   white-space: nowrap;
   flex: 1 1 1200px;
+  z-index: 0;
   & > .el-menu-item {
     height: 38px !important;
     line-height: 38px !important;
@@ -151,8 +152,8 @@ export default {
         &::after {
           opacity: 1;
         }
-        background-color: transparent;
-        color: #fff;
+        background-color: initial;
+        color: var(--font-white, #fff);
       }
     }
   }
@@ -160,7 +161,7 @@ export default {
   & > .el-menu-item.is-active,
   & > .el-submenu.is-active .el-submenu__title {
     @extend .g-bg-lg;
-    color: #fff !important;
+    color: var(--font-white, #fff) !important;
     border: 0;
   }
 

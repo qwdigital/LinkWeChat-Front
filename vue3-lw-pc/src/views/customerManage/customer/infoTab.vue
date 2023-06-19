@@ -166,7 +166,7 @@ export default {
     },
     // 根据生日计算年龄
     jsGetAge(strBirthday) {
-      if (strBirthday === null) {
+      if (!strBirthday) {
         return '无'
       }
       let returnAge
@@ -282,7 +282,7 @@ export default {
                         <el-row class="baseinfo-row" v-else-if="item.labelVal == 'age'">
                           <!-- 年龄 -->
                           <el-col :span="6">{{ item.labelName }}</el-col>
-                          <el-col :span="18">{{ jsGetAge(portrayalSum.bkirthday) }}</el-col>
+                          <el-col :span="18">{{ jsGetAge(portrayalSum.birthday) }}</el-col>
                         </el-row>
                         <el-row class="baseinfo-row" v-else-if="item.labelVal == 'birthday'">
                           <!-- 生日 -->
@@ -453,7 +453,7 @@ export default {
   line-height: 24px;
   padding: 0 5px;
   margin-right: 10px;
-  color: #fff;
+  color: var(--font-white, #fff);
   border-radius: var(--border-radius-small);
 }
 .el-card {
@@ -476,7 +476,7 @@ export default {
       }
       &.active {
         background: var(--color);
-        color: #fff;
+        color: var(--font-white, #fff);
       }
     }
   }

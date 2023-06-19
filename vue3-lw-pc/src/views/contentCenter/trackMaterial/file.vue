@@ -150,7 +150,7 @@ export default {
   left: 0;
   top: 0;
   text-align: center;
-  color: #fff;
+  color: var(--font-white, #fff);
   opacity: 0;
   font-size: 20px;
   background-color: rgba(0, 0, 0, 0.5);
