@@ -1,6 +1,6 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <div class="top-wrap no-dark">
+    <div class="top-wrap">
       <TopBar />
     </div>
     <div class="main-wrap">
@@ -100,6 +100,7 @@ export default {
   }
   .top-wrap {
     height: var(--top-nav-heght);
+    background: #fff;
   }
 
   .main-wrap {

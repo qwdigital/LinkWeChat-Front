@@ -359,14 +359,14 @@ li {
 }
 
 /* 暗黑模式 Dark mode */
-/* @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
   body,
   img,
   video {
-    filter: invert(1) hue-rotate(180deg);
+    filter: invert(1) brightness(1.5) hue-rotate(180deg);
   }
 
-  不使用暗黑模式
+  /* 不使用暗黑模式 */
   .no-dark {
     position: relative;
   }
@@ -376,6 +376,6 @@ li {
     display: block;
     height: 100%;
     width: 100%;
-    backdrop-filter: invert(1) hue-rotate(180deg);
+    backdrop-filter: invert(1) brightness(1.5) hue-rotate(180deg);
   }
-} */
+}

@@ -116,10 +116,11 @@ export default {
 //   }
 // }
 .el-menu--horizontal {
-  background-color: transparent;
+  background-color: initial;
   border: none;
   white-space: nowrap;
   flex: 1 1 1200px;
+  z-index: 0;
   & > .el-menu-item {
     height: 38px !important;
     line-height: 38px !important;
@@ -151,7 +152,7 @@ export default {
         &::after {
           opacity: 1;
         }
-        background-color: transparent;
+        background-color: initial;
         color: #fff;
       }
     }
