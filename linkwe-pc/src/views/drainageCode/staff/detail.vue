@@ -8,7 +8,7 @@
             <el-form label-position="right" label-width="100px">
               <el-form-item style="margin-bottom: 10px" label="活码名称">{{ form.name }}</el-form-item>
               <el-form-item style="margin-bottom: 10px" label="活码分组">{{ form.qrGroupName }}</el-form-item>
-              <el-form-item style="margin-bottom: 10px" label="自动通过标签">
+              <el-form-item style="margin-bottom: 10px" label="自动通过好友">
                 <el-switch :value="form.autoAdd" :active-value="1" :inactive-value="0" disabled></el-switch>
               </el-form-item>
               <el-form-item style="margin-bottom: 10px" label="新客户标签">
