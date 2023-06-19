@@ -1,20 +1,19 @@
 <template>
   <div>
-    <div style="display: flex; align-items: center; justify-content: space-between">
+    <div class="content-box">
       <div style="display: flex; align-items: center">
         <el-date-picker
-          clearable
           v-model="dateRange"
-          value-format="YYYY-MM-DD HH:mm:ss"
-          type="daterange"
-          v-bind="pickerOptions"
+          type="datetimerange"
           range-separator="-"
           start-placeholder="开始时间"
           end-placeholder="结束时间"
           align="right"
-        ></el-date-picker>
+          clearable
+        >
+        </el-date-picker>
         <el-input
-          style="width: 150px"
+          style="width: 150px; margin: 0 20px"
           :model-value="userName"
           readonly
           @click="dialogVisible = true"
@@ -32,7 +31,6 @@
         <el-button @click="resetQuery">清空</el-button>
       </div>
       <div>
-        <el-button type="primary" @click="remind(id)">提醒执行</el-button>
         <el-button type="primary" @click="exportFn" v-loading="exportLoading">导出</el-button>
       </div>
     </div>
@@ -51,13 +49,7 @@
         min-width="100"
         show-overflow-tooltip
       ></el-table-column>
-      <el-table-column
-        label="执行人所属部门"
-        align="center"
-        prop="deptName"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column label="执行状态" align="center" prop="timeOutNum" show-overflow-tooltip>
+      <el-table-column label="互动类型" align="center" prop="timeOutNum" show-overflow-tooltip>
         <template #default="{ row }">
           <div>
             {{ row }}
@@ -75,7 +67,7 @@
       :total="total"
       v-model:page="query.pageNum"
       v-model:limit="query.pageSize"
-      @pagination="getTableChangeSize()"
+      @pagination="getList()"
     />
   </div>
 </template>
@@ -102,16 +94,28 @@ export default {
         this.query.beginTime = ''
         this.query.endTime = ''
       }
-    },
-    getTableChangeSize() {
       this.loading = true
       getTableTotal(this.query).then((res) => {
         this.tableList = res.data
         this.loading = false
       })
     },
+    resetQuery() {
+      this.query = {
+        pageSize: 10,
+        pageNum: 1,
+      }
+      this.dateRange = []
+      this.getList()
+    },
   },
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.content-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+</style>

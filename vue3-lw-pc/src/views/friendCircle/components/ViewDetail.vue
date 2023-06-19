@@ -38,6 +38,7 @@
           <el-button text @click="goDetail(scope.row.id)" v-if="scope.row.isCustomer"
             >客户详情</el-button
           >
+          <el-button text v-else> - </el-button>
         </template>
       </el-table-column>
     </el-table>

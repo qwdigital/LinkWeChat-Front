@@ -73,7 +73,11 @@
         </div>
       </div>
       <el-table ref="table" v-loading="loading" :data="tableData">
-        <el-table-column show-overflow-tooltip prop="name" label="任务名称"></el-table-column>
+        <el-table-column show-overflow-tooltip prop="name" label="任务名称">
+          <template #default="{ row }">
+            {{ row.name ? row.name : '—' }}
+          </template>
+        </el-table-column>
         <el-table-column show-overflow-tooltip prop="sendType" label="发送方式">
           <template #default="{ row }">
             {{ dealSendType(row.sendType) }}
@@ -116,55 +120,6 @@
       :defaultValues="userArray"
       @success="getSelectUser"
     ></SelectUser>
-    <!-- <el-dialog title="详情" v-model="detailDialogVisible" width="40%">
-      <el-form label-position="right" label-width="100px">
-        <span style="margin-left: 40px; font-size: 16px">内容：</span>
-        <template v-for="(data, index) in detail.otherContent" :key="index">
-          <el-form-item label=" " v-if="data.annexType === 'text'">
-            {{ data.other }}
-          </el-form-item>
-          <el-form-item label=" " v-if="data.annexType === 'video'">
-            <div style="display: inline-block; margin-right: 10px">
-              <video style="width: 200px; height: 200px" :src="data.annexUrl" controls></video>
-            </div>
-          </el-form-item>
-          <el-form-item label=" " v-if="data.annexType === 'link'">
-            <div style="display: inline-block; margin-right: 10px">
-              <span style="width: 100px; height: 100px">{{ data.annexUrl }}</span>
-            </div>
-          </el-form-item>
-        </template>
-        <el-form-item label=" ">
-          <div class="img_list">
-            <div v-for="(data, index) in detail.otherContent">
-              <el-image
-                class="item"
-                style="width: 100px; height: 100px"
-                :preview-src-list="[data.annexUrl]"
-                v-if="data.annexType === 'image'"
-                :src="data.annexUrl"
-              ></el-image>
-            </div>
-          </div>
-        </el-form-item>
-        <el-form-item label="已发送员工" v-if="detail.addUserName">
-          <el-tag v-for="(data, key) in detail.addUserName.split(',')" :key="key">{{
-            data
-          }}</el-tag>
-        </el-form-item>
-        <el-form-item label="未发送员工" v-if="detail.noAddUserName">
-          <el-tag v-for="(data, key) in detail.noAddUserName.split(',')" :key="key">{{
-            data
-          }}</el-tag>
-        </el-form-item>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="detailDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="detailDialogVisible = false">确 定</el-button>
-          </span>
-        </template>
-      </el-form>
-    </el-dialog> -->
   </div>
 </template>
 <script>
@@ -175,7 +130,6 @@ export default {
   components: {},
   data() {
     return {
-      // disable: false,
       value1: [],
       dialogVisible: false,
       userArray: [],
@@ -184,16 +138,10 @@ export default {
         pageNum: 1,
         executeStartTime: '',
         executeEndTime: '',
-        // beginTime: '',
-        // endTime: '',
-        // creator: '',
-        // type: 0,
       },
       loading: false,
       tableData: [],
       total: 0,
-      // detailDialogVisible: false,
-      // detail: {},
       sendType: [
         { label: '企微群发', value: 0 },
         { label: '成员群发', value: 1 },

@@ -13,7 +13,13 @@
 
 <script>
 import { statisticMoments } from '@/api/circle'
+import Record from './Record.vue'
+import ViewDetail from './ViewDetail'
 export default {
+  components: {
+    Record,
+    ViewDetail,
+  },
   data() {
     return {
       activeName: 'first',

@@ -8,7 +8,7 @@
         <div style="display: flex; align-items: center">
           <!-- <search-title :showMore="true" @search="getTableFn"></search-title> -->
           <el-input
-            style="width: 150px"
+            style="width: 150px; margin-right: 20px"
             :model-value="userName"
             readonly
             @click="dialogVisible = true"
