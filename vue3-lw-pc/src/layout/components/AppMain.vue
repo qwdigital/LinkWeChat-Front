@@ -25,7 +25,7 @@
   <!-- </el-scrollbar> -->
 </template>
 <script>
-import { registerMicroApps, start } from 'qiankun'
+// import { registerMicroApps, start } from 'qiankun'
 export default {
   name: 'AppMain',
   data() {
@@ -50,32 +50,32 @@ export default {
     // },
   },
   mounted() {
-    if (window.lwConfig.MICRO_APPS && window.lwConfig.MICRO_APPS.store) {
-      // window.Vue2 = window.Vue
-      // delete window.Vue
-      window.lwConfig.MICRO_APPS.store.loader = (loading) => (this.loading = loading)
-      registerMicroApps([window.lwConfig.MICRO_APPS.store], {
-        beforeLoad: () => (this.isActiveMicroApp = true),
-        afterUnmount: () => (this.isActiveMicroApp = false),
-      })
-      start({
-        sandbox: { experimentalStyleIsolation: true },
-      })
+    // if (window.lwConfig.MICRO_APPS && window.lwConfig.MICRO_APPS.store) {
+    //   // window.Vue2 = window.Vue
+    //   // delete window.Vue
+    //   window.lwConfig.MICRO_APPS.store.loader = (loading) => (this.loading = loading)
+    //   registerMicroApps([window.lwConfig.MICRO_APPS.store], {
+    //     beforeLoad: () => (this.isActiveMicroApp = true),
+    //     afterUnmount: () => (this.isActiveMicroApp = false),
+    //   })
+    //   start({
+    //     sandbox: { experimentalStyleIsolation: true },
+    //   })
 
-      // 挂在window供下面微服务使用
-      window.lwConfig.$store = {
-        dispatch: (_, s) => {
-          this.$store.setBusininessDesc(s)
-        },
-      }
+    //   // 挂在window供下面微服务使用
+    //   window.lwConfig.$store = {
+    //     dispatch: (_, s) => {
+    //       this.$store.setBusininessDesc(s)
+    //     },
+    //   }
 
-      // 初始化 state
-      // const actions = initGlobalState({ token: getToken() })
-      // actions.onGlobalStateChange((state, prev) => {
-      //   // state: 变更后的状态; prev 变更前的状态
-      // });
-      // actions.setGlobalState(state)
-    }
+    //   // 初始化 state
+    //   // const actions = initGlobalState({ token: getToken() })
+    //   // actions.onGlobalStateChange((state, prev) => {
+    //   //   // state: 变更后的状态; prev 变更前的状态
+    //   // });
+    //   // actions.setGlobalState(state)
+    // }
     // if (window.lwConfig.MICRO_APPS) {
     //   import('qiankun').then(({ registerMicroApps, start }) => {
     //     registerMicroApps(window.lwConfig.MICRO_APPS)

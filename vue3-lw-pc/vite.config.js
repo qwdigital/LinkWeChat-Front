@@ -227,11 +227,11 @@ export default defineConfig(async ({ command, mode }) => {
             //   version: '2.1.0',
             //   path: 'dist/index.iife.min.js',
             // },
-            // {
-            //   name: 'ali-oss',
-            //   var: 'OSS',
-            //   path: 'http://gosspublic.alicdn.com/aliyun-oss-sdk-6.17.1.min.js',
-            // },
+            {
+              name: 'ali-oss',
+              var: 'OSS',
+              path: 'https://gosspublic.alicdn.com/aliyun-oss-sdk-6.17.1.min.js',
+            },
           ],
         }),
       rollupPluginVisualizer({
