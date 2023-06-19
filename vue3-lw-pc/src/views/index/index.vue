@@ -476,7 +476,7 @@ export default {
     .view-item-num {
       font-size: 24px;
       font-weight: 500;
-      color: var(--font-white);
+      color: var(--font-black);
       font-family: Bahnschrift-Regular, Bahnschrift;
     }
   }
