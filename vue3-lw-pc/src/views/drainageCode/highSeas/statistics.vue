@@ -189,7 +189,7 @@ export default {
     font-size: 14px;
 
     font-weight: 400;
-    color: #ffffff;
+    color: var(--font-white, #fff);
   }
 
   .value {
@@ -197,7 +197,7 @@ export default {
     font-size: 18px;
 
     font-weight: 400;
-    color: #ffffff;
+    color: var(--font-white, #fff);
   }
 }
 </style>

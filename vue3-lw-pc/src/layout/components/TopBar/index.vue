@@ -316,12 +316,12 @@ export default {
   // background: #fff;
   // color: var(--color);
   .contact-us-icon {
-    color: #fff;
+    color: var(--font-white, #fff);
     // color: inherit;
     font-size: 30px;
   }
   // &:hover {
-  //   color: #fff;
+  //   color: var(--font-white, #fff);
   //   background: linear-gradient(225deg, var(--color-sub) 0%, var(--color) 100%);
   //   transition: all 0.3s;
   // }

@@ -153,7 +153,7 @@ export default {
           opacity: 1;
         }
         background-color: initial;
-        color: #fff;
+        color: var(--font-white, #fff);
       }
     }
   }
@@ -161,7 +161,7 @@ export default {
   & > .el-menu-item.is-active,
   & > .el-submenu.is-active .el-submenu__title {
     @extend .g-bg-lg;
-    color: #fff !important;
+    color: var(--font-white, #fff) !important;
     border: 0;
   }
 

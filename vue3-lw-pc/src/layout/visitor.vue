@@ -91,7 +91,7 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
-  // color: #fff;
+  // color: var(--font-white, #fff);
   font-family: Arial;
   font-size: 12px;
   letter-spacing: 1px;

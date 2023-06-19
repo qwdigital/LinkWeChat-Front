@@ -1011,7 +1011,7 @@ export default {
   cursor: pointer;
   z-index: 9;
   font-size: 24px;
-  color: #fff;
+  color: var(--font-white, #fff);
   display: none;
   background: #0279de;
   width: 24px;

@@ -445,7 +445,7 @@ export default {
     width: 175px;
     height: 75px;
     padding: 20px 10px 0 54px;
-    color: #fff;
+    color: var(--font-white, #fff);
     line-height: 1.15;
     font-size: 14px;
     font-weight: 500;

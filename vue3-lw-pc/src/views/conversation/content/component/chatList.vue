@@ -89,7 +89,7 @@ export default {
   text-align: center;
   line-height: 50px;
   font-size: 20px;
-  color: #fff;
+  color: var(--font-white, #fff);
   cursor: pointer;
   font-size: 43px;
 }

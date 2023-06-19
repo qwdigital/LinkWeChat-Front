@@ -242,7 +242,7 @@ export default {
     border-radius: 4px;
     .red-text {
       font-size: 14px;
-      color: #fff;
+      color: var(--font-white, #fff);
       margin-left: 56px;
       width: 98px;
       white-space: nowrap; // 强制一行

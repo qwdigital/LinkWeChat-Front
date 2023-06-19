@@ -187,7 +187,7 @@ export default {
     background: linear-gradient(to right, var(--color) 0%, var(--color-sub) 100%);
     box-shadow: 0px 13px 16px 0px rgba(7, 168, 85, 0.2);
     border-radius: 8px;
-    color: #fff !important;
+    color: var(--font-white, #fff) !important;
     z-index: 1;
   }
 
@@ -251,7 +251,7 @@ export default {
 }
 
 .card {
-  // color: #fff;
+  // color: var(--font-white, #fff);
   // padding: 20px;
   // background: linear-gradient(315deg, #07c160 0%, #90de45 100%);
   // box-shadow: 0px 15px 20px 0px rgba(64, 64, 64, 0.12);

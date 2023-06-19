@@ -84,7 +84,7 @@ div:focus {
 /* 拖拽列样式 */
 .sortable-ghost {
   opacity: 0.8;
-  color: #fff !important;
+  color: var(--font-white, #fff) !important;
   background: #42b983 !important;
 }
 
@@ -203,7 +203,7 @@ div:focus {
   &card-blue-wrap {
     display: flex;
     .card-blue {
-      color: #fff;
+      color: var(--font-white, #fff);
       width: 200px;
       height: 90px;
       background: linear-gradient(90deg, #3c89f0 0%, #1364f4 100%);

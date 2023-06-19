@@ -231,7 +231,7 @@ $selectedColor: #f6f7ff;
     background: #fff;
     &:hover {
       background: var(--color);
-      color: #fff;
+      color: var(--font-white, #fff);
     }
   }
   & > .drawing-item-delete {
@@ -241,7 +241,7 @@ $selectedColor: #f6f7ff;
     background: #fff;
     &:hover {
       background: #f56c6c;
-      color: #fff;
+      color: var(--font-white, #fff);
     }
   }
 }

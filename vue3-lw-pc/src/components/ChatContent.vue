@@ -189,7 +189,7 @@ export default {
 }
 .message-right {
   @extend .mes;
-  color: #fff;
+  color: var(--font-white, #fff);
   margin-right: 10px;
   background-color: var(--color);
   border-top-right-radius: 0;

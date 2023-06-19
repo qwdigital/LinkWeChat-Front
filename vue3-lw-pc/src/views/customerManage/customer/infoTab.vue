@@ -453,7 +453,7 @@ export default {
   line-height: 24px;
   padding: 0 5px;
   margin-right: 10px;
-  color: #fff;
+  color: var(--font-white, #fff);
   border-radius: var(--border-radius-small);
 }
 .el-card {
@@ -476,7 +476,7 @@ export default {
       }
       &.active {
         background: var(--color);
-        color: #fff;
+        color: var(--font-white, #fff);
       }
     }
   }

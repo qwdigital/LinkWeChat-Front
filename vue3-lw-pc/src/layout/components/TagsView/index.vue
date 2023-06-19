@@ -236,7 +236,7 @@ export default {
       }
       &.active {
         background-color: #42b983;
-        color: #fff;
+        color: var(--font-white, #fff);
         border-color: #42b983;
         &::before {
           content: '';
@@ -294,7 +294,7 @@ export default {
       }
       &:hover {
         background-color: #b4bccc;
-        color: #fff;
+        color: var(--font-white, #fff);
       }
     }
   }

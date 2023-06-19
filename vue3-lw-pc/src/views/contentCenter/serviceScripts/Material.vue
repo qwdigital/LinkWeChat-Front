@@ -79,7 +79,7 @@ export default {
 .group {
   font-size: 12px;
   background: var(--color);
-  color: #fff;
+  color: var(--font-white, #fff);
   display: block;
   padding: 0 5px;
   height: 24px;
