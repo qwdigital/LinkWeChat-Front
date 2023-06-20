@@ -179,7 +179,7 @@
     data() {
       return {
         defaultStart: '00:00',
-        defaultEnd: '00:00',
+        defaultEnd: '23:59',
         form: {},
         checkList: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
         // 遮罩层
