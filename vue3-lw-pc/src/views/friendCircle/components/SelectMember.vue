@@ -124,10 +124,13 @@ export default {
     },
     // 查询账号类型：null:企微，非企微  1:企微  0:非企微
     accountType: { type: [String, Number], default: 1 },
+    isDetail: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
-      isDetail: false,
       selectMember: false,
       selectDept: false,
       selectedUserList: [],
@@ -241,10 +244,12 @@ export default {
       if (this.form.customerTag && this.form.customerTag.length) {
         getList({ groupTagType: 1 }).then(({ rows }) => {
           this.form.customerTag.forEach((dd) => {
-            let index = rows.findIndex((item) => item.tagId === dd)
-            if (rows[index] !== undefined) {
-              this.selectedTagList.push(rows[index])
-            }
+            rows.forEach((inx) => {
+              let index = inx.weTags.findIndex((item) => item.tagId === dd)
+              if (inx.weTags[index] !== undefined) {
+                this.selectedTagList.push(inx.weTags[index])
+              }
+            })
           })
         })
       }

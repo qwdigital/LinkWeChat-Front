@@ -11,12 +11,12 @@
         </div>
       </div>
     </div> -->
-    <div class="item" v-if="list[0].mediaType === '4'">
+    <div class="item mb10" style="margin-top: 0px" v-if="content">
       <div class="msg">
         <div class="word">
           <p
             style="line-height: 18px"
-            v-html="list[0].content?.replace(/\n|\r\n/g, '<br>').replace(/ /g, ' &nbsp')"
+            v-html="content?.replace(/\n|\r\n/g, '<br>').replace(/ /g, ' &nbsp')"
           ></p>
         </div>
       </div>
@@ -140,7 +140,7 @@ export default {
     //   default: null,
     // },
     // 内容
-    templateInfo: {
+    content: {
       type: String,
       default: null,
     },
@@ -250,9 +250,9 @@ export default {
     display: flex;
     margin-top: 20px;
 
-    &:first-child {
-      margin-top: 0;
-    }
+    // &:first-child {
+    //   margin-top: 0;
+    // }
 
     .avatar222 {
       // align-self: center;

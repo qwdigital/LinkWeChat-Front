@@ -61,7 +61,7 @@
                 @update="getExecuteData"
                 :show="true"
                 v-if="form.scopeType === 1"
-                :disabled="firendId"
+                :isDetail="firendId"
               ></SelectMember>
             </el-form-item>
             <!-- <el-form-item label="选择客户标签" v-if="form.scopeType === 0">
@@ -133,7 +133,7 @@
                 v-if="firendType === 1"
               ></el-input>
               <div class="firend-box" v-else>
-                <FirendContent :list="friendsList" />
+                <FirendContent :list="friendsList" :content="form.content" />
               </div>
             </el-form-item>
           </div>
@@ -181,6 +181,7 @@ import AddMaterial from '@/components/ContentCenter/AddMaterial'
 import SelectMember from './components/SelectMember.vue'
 import FirendContent from './components/FirendContent.vue'
 import moment from 'moment'
+import { getList } from '@/api/customer/tag'
 
 export default {
   name: 'publish-detail',
@@ -236,410 +237,12 @@ export default {
       },
       firendId: undefined,
       firendType: undefined,
-      friendsList: [
-        {
-          searchValue: null,
-          createBy: 'admin',
-          createById: '1',
-          createTime: '2022-11-15 15:48:31',
-          updateBy: 'admin',
-          updateById: '1',
-          updateTime: '2023-02-06 17:26:08',
-          remark: null,
-          params: {},
-          id: '1592424290681036801',
-          categoryId: '1592424015153205248',
-          fileName: null,
-          moduleType: 1,
-          materialUrl: null,
-          materialName: '企微',
-          content: '企微文本测试',
-          digest: null,
-          coverUrl: null,
-          audioTime: '0',
-          backgroundImgUrl: null,
-          type: null,
-          width: null,
-          height: null,
-          mediaType: '4',
-          otherField: null,
-          materialStatus: 0,
-          frontOrder: null,
-          delFlag: 0,
-          linkUrl: null,
-          isCheck: false,
-          posterSubassembly: null,
-          posterQrType: null,
-          weMaterialImgAoList: null,
-        },
-        {
-          searchValue: null,
-          createBy: 'admin',
-          createById: '1',
-          createTime: '2022-11-15 16:16:40',
-          updateBy: 'admin',
-          updateById: '1',
-          updateTime: '2022-11-15 16:17:14',
-          remark: null,
-          params: {},
-          id: '1592431373463810050',
-          categoryId: '1',
-          fileName: null,
-          moduleType: 1,
-          materialUrl: 'https://baidu.com',
-          materialName: '测试图文111',
-          content: '11111',
-          digest: null,
-          coverUrl:
-            'https://link-wechat-1251309172.cos.ap-nanjing.myqcloud.com/2022-11-15/t1668500192729-S9m2jF8F58Z7IIky-.jpg',
-          audioTime: '0',
-          backgroundImgUrl: null,
-          type: null,
-          width: null,
-          height: null,
-          mediaType: '9',
-          otherField: null,
-          materialStatus: 0,
-          frontOrder: null,
-          delFlag: 0,
-          linkUrl: null,
-          isCheck: false,
-          posterSubassembly: null,
-          posterQrType: null,
-          weMaterialImgAoList: null,
-        },
-        {
-          searchValue: null,
-          createBy: 'admin',
-          createById: '1',
-          createTime: '2022-11-21 16:43:00',
-          updateBy: 'admin',
-          updateById: '1',
-          updateTime: '2022-11-21 16:43:00',
-          remark: null,
-          params: {},
-          id: '1594612329406877697',
-          categoryId: '1',
-          fileName: null,
-          moduleType: 1,
-          materialUrl: null,
-          materialName: 'dddd',
-          content:
-            '<p><img src="https://link-wechat-1251309172.cos.ap-nanjing.myqcloud.com/2022/11/21/84950e1f-55b5-4797-8b90-d260138502ac.jpg"></p>',
-          digest: 'dddd',
-          coverUrl: null,
-          audioTime: '0',
-          backgroundImgUrl: null,
-          type: null,
-          width: null,
-          height: null,
-          mediaType: '12',
-          otherField: null,
-          materialStatus: 0,
-          frontOrder: null,
-          delFlag: 0,
-          linkUrl: null,
-          isCheck: false,
-          posterSubassembly: null,
-          posterQrType: null,
-          weMaterialImgAoList: null,
-        },
-        // {
-        //   searchValue: null,
-        //   createBy: 'admin',
-        //   createById: '1',
-        //   createTime: '2022-11-15 16:09:27',
-        //   updateBy: 'admin',
-        //   updateById: '1',
-        //   updateTime: '2023-01-05 14:59:19',
-        //   remark: null,
-        //   params: {},
-        //   id: '1592429557892255745',
-        //   categoryId: '1',
-        //   fileName: null,
-        //   moduleType: 1,
-        //   materialUrl:
-        //     'https://link-wechat-1251309172.cos.ap-nanjing.myqcloud.com/2023-01-05/t1672901951467-mzNiInJA43JG7jYN.png',
-        //   materialName: 'noOrder.png',
-        //   content: null,
-        //   digest: null,
-        //   coverUrl: null,
-        //   audioTime: '0',
-        //   backgroundImgUrl: null,
-        //   type: null,
-        //   width: null,
-        //   height: null,
-        //   mediaType: '0',
-        //   otherField: null,
-        //   materialStatus: 0,
-        //   frontOrder: null,
-        //   delFlag: 0,
-        //   linkUrl: null,
-        //   isCheck: false,
-        //   posterSubassembly: null,
-        //   posterQrType: null,
-        //   weMaterialImgAoList: null,
-        // },
-        // {
-        //   searchValue: null,
-        //   createBy: 'admin',
-        //   createById: '1',
-        //   createTime: '2023-05-22 10:21:17',
-        //   updateBy: 'admin',
-        //   updateById: '1',
-        //   updateTime: '2023-05-22 10:21:17',
-        //   remark: null,
-        //   params: {},
-        //   id: '1660470855588671489',
-        //   categoryId: '1',
-        //   fileName: null,
-        //   moduleType: 1,
-        //   materialUrl:
-        //     'https://dev.linkwechat.net/fileUpload/afb88b4a-a989-47df-82af-9d285a5cfcb1.png',
-        //   materialName: '0-2.png',
-        //   content: null,
-        //   digest: null,
-        //   coverUrl: null,
-        //   audioTime: '0',
-        //   backgroundImgUrl: null,
-        //   type: null,
-        //   width: null,
-        //   height: null,
-        //   mediaType: '0',
-        //   otherField: null,
-        //   materialStatus: 0,
-        //   frontOrder: null,
-        //   delFlag: 0,
-        //   linkUrl: null,
-        //   isCheck: false,
-        //   posterSubassembly: null,
-        //   posterQrType: null,
-        //   weMaterialImgAoList: null,
-        // },
-        // {
-        //   searchValue: null,
-        //   createBy: 'admin',
-        //   createById: '1',
-        //   createTime: '2023-03-30 16:46:07',
-        //   updateBy: 'admin',
-        //   updateById: '1',
-        //   updateTime: '2023-03-30 16:46:07',
-        //   remark: null,
-        //   params: {},
-        //   id: '1641361146957025281',
-        //   categoryId: '1',
-        //   fileName: null,
-        //   moduleType: 1,
-        //   materialUrl:
-        //     'https://dev.linkwechat.net/fileUpload/dc6e74db-9b36-44db-9558-b67e4b6f5334.jpg',
-        //   materialName: '微信图片_20211011135610.jpg',
-        //   content: null,
-        //   digest: null,
-        //   coverUrl: null,
-        //   audioTime: '0',
-        //   backgroundImgUrl: null,
-        //   type: null,
-        //   width: null,
-        //   height: null,
-        //   mediaType: '0',
-        //   otherField: null,
-        //   materialStatus: 0,
-        //   frontOrder: null,
-        //   delFlag: 0,
-        //   linkUrl: null,
-        //   isCheck: false,
-        //   posterSubassembly: null,
-        //   posterQrType: null,
-        //   weMaterialImgAoList: null,
-        // },
-        // {
-        //   searchValue: null,
-        //   createBy: 'admin',
-        //   createById: '1',
-        //   createTime: '2023-03-30 16:46:07',
-        //   updateBy: 'admin',
-        //   updateById: '1',
-        //   updateTime: '2023-03-30 16:46:07',
-        //   remark: null,
-        //   params: {},
-        //   id: '1641361147204489218',
-        //   categoryId: '1',
-        //   fileName: null,
-        //   moduleType: 1,
-        //   materialUrl:
-        //     'https://dev.linkwechat.net/fileUpload/b58366f4-7d12-44b5-98e1-b36c2e12d4aa.png',
-        //   materialName: '69a262f2-5947-430f-9308-6a493257e6e9.png',
-        //   content: null,
-        //   digest: null,
-        //   coverUrl: null,
-        //   audioTime: '0',
-        //   backgroundImgUrl: null,
-        //   type: null,
-        //   width: null,
-        //   height: null,
-        //   mediaType: '0',
-        //   otherField: null,
-        //   materialStatus: 0,
-        //   frontOrder: null,
-        //   delFlag: 0,
-        //   linkUrl: null,
-        //   isCheck: false,
-        //   posterSubassembly: null,
-        //   posterQrType: null,
-        //   weMaterialImgAoList: null,
-        // },
-        // {
-        //   searchValue: null,
-        //   createBy: 'admin',
-        //   createById: '1',
-        //   createTime: '2023-03-30 16:46:07',
-        //   updateBy: 'admin',
-        //   updateById: '1',
-        //   updateTime: '2023-03-30 16:46:07',
-        //   remark: null,
-        //   params: {},
-        //   id: '1641361147426787330',
-        //   categoryId: '1',
-        //   fileName: null,
-        //   moduleType: 1,
-        //   materialUrl:
-        //     'https://dev.linkwechat.net/fileUpload/a087f787-5efc-4bce-8980-66e3abc221d4.png',
-        //   materialName: '111.png',
-        //   content: null,
-        //   digest: null,
-        //   coverUrl: null,
-        //   audioTime: '0',
-        //   backgroundImgUrl: null,
-        //   type: null,
-        //   width: null,
-        //   height: null,
-        //   mediaType: '0',
-        //   otherField: null,
-        //   materialStatus: 0,
-        //   frontOrder: null,
-        //   delFlag: 0,
-        //   linkUrl: null,
-        //   isCheck: false,
-        //   posterSubassembly: null,
-        //   posterQrType: null,
-        //   weMaterialImgAoList: null,
-        // },
-        // {
-        //   searchValue: null,
-        //   createBy: 'admin',
-        //   createById: '1',
-        //   createTime: '2023-03-23 18:10:17',
-        //   updateBy: 'admin',
-        //   updateById: '1',
-        //   updateTime: '2023-03-23 18:10:17',
-        //   remark: null,
-        //   params: {},
-        //   id: '1638845612566822913',
-        //   categoryId: '1',
-        //   fileName: null,
-        //   moduleType: 1,
-        //   materialUrl:
-        //     'https://linkwechat.oss-cn-beijing.aliyuncs.com/2023-03-23/t1679566212238-ypDderONucE4Q0vR.jpg',
-        //   materialName: '微信图片_20211011135610.jpg',
-        //   content: null,
-        //   digest: null,
-        //   coverUrl: null,
-        //   audioTime: '0',
-        //   backgroundImgUrl: null,
-        //   type: null,
-        //   width: null,
-        //   height: null,
-        //   mediaType: '0',
-        //   otherField: null,
-        //   materialStatus: 0,
-        //   frontOrder: null,
-        //   delFlag: 0,
-        //   linkUrl: null,
-        //   isCheck: false,
-        //   posterSubassembly: null,
-        //   posterQrType: null,
-        //   weMaterialImgAoList: null,
-        // },
-        // {
-        //   searchValue: null,
-        //   createBy: 'admin',
-        //   createById: '1',
-        //   createTime: '2023-03-14 11:20:57',
-        //   updateBy: 'admin',
-        //   updateById: '1',
-        //   updateTime: '2023-03-14 11:20:57',
-        //   remark: null,
-        //   params: {},
-        //   id: '1635481109598941185',
-        //   categoryId: '1',
-        //   fileName: null,
-        //   moduleType: 1,
-        //   materialUrl:
-        //     'https://link-wechat-1251309172.cos.ap-nanjing.myqcloud.com/2023-03-14/t1678764052148-vGMUfd6TX9Vxr6vs.png',
-        //   materialName: 'newred2.png',
-        //   content: null,
-        //   digest: null,
-        //   coverUrl: null,
-        //   audioTime: '0',
-        //   backgroundImgUrl: null,
-        //   type: null,
-        //   width: null,
-        //   height: null,
-        //   mediaType: '0',
-        //   otherField: null,
-        //   materialStatus: 0,
-        //   frontOrder: null,
-        //   delFlag: 0,
-        //   linkUrl: null,
-        //   isCheck: false,
-        //   posterSubassembly: null,
-        //   posterQrType: null,
-        //   weMaterialImgAoList: null,
-        // },
-        // {
-        //   searchValue: null,
-        //   createBy: 'admin',
-        //   createById: '1',
-        //   createTime: '2023-03-03 18:42:04',
-        //   updateBy: 'admin',
-        //   updateById: '1',
-        //   updateTime: '2023-03-03 18:42:04',
-        //   remark: null,
-        //   params: {},
-        //   id: '1631605855105368065',
-        //   categoryId: '1',
-        //   fileName: null,
-        //   moduleType: 1,
-        //   materialUrl:
-        //     'https://link-wechat-1251309172.cos.ap-nanjing.myqcloud.com/2023-03-03/t1677840116282-sESFp4h9VUZoGFq3.png',
-        //   materialName: '卡券 (1).png',
-        //   content: null,
-        //   digest: null,
-        //   coverUrl: null,
-        //   audioTime: '0',
-        //   backgroundImgUrl: null,
-        //   type: null,
-        //   width: null,
-        //   height: null,
-        //   mediaType: '0',
-        //   otherField: null,
-        //   materialStatus: 0,
-        //   frontOrder: null,
-        //   delFlag: 0,
-        //   linkUrl: null,
-        //   isCheck: false,
-        //   posterSubassembly: null,
-        //   posterQrType: null,
-        //   weMaterialImgAoList: null,
-        // },
-      ],
+      friendsList: [],
     }
   },
   mounted() {
     this.firendId = this.$route.query.id
-    this.firendType = this.$route.query.type
-    // this.firendId = 1
-    // this.firendType = 2
+    this.firendType = +this.$route.query.type
     if (this.firendId) {
       // 详情页面
       this.getDetail(this.firendId)
@@ -672,9 +275,45 @@ export default {
     getDetail(id) {
       getDetail(id)
         .then((res) => {
-          console.log(231, res)
+          if (res.code === 200) {
+            this.form = res.data
+            this.addWeUser = res.data
+            this.likeTagList = res.data.likeTagIds ? res.data.likeTagIds : []
+            this.commentTagList = res.data.commentTagIds ? res.data.commentTagIds : []
+            this.friendsList = res.data.materialList ? res.data.materialList : []
+            this.setEditTag()
+          }
         })
         .catch()
+    },
+    // 处理详情页面里的点赞/评论自动打标签
+    setEditTag() {
+      this.likeTagList = []
+      this.commentTagList = []
+      if (this.form.likeTagIds && this.form.likeTagIds.length) {
+        getList({ groupTagType: 1 }).then(({ rows }) => {
+          this.form.likeTagIds.forEach((dd) => {
+            rows.forEach((inx) => {
+              let index = inx.weTags.findIndex((item) => item.tagId === dd)
+              if (inx.weTags[index] !== undefined) {
+                this.likeTagList.push(inx.weTags[index])
+              }
+            })
+          })
+        })
+      }
+      if (this.form.commentTagIds && this.form.commentTagIds.length) {
+        getList({ groupTagType: 1 }).then(({ rows }) => {
+          this.form.commentTagIds.forEach((dd) => {
+            rows.forEach((inx) => {
+              let index = inx.weTags.findIndex((item) => item.tagId === dd)
+              if (inx.weTags[index] !== undefined) {
+                this.commentTagList.push(inx.weTags[index])
+              }
+            })
+          })
+        })
+      }
     },
     // 获取可见客户数
     getNumMoments(data) {
