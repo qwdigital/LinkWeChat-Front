@@ -1006,13 +1006,22 @@
         } else {
           this.codeForm.qrUserInfos = []
           this.codeForm.empleCodeRosterDto.forEach((fff) => {
+            let qrUserInfosDetail = []
+            fff.weEmpleCodeUseScops.forEach((uu) => {
+              let objDetail = {
+                userId: uu.businessId,
+                schedulingNum: 0
+              }
+              qrUserInfosDetail.push(objDetail)
+            })
             let obj = {
               scopeId: fff.scopeId ? fff.scopeId : '',
               type: fff.type,
               beginTime: fff.startDate,
               endTime: fff.endDate,
               userIds: fff.weEmpleCodeUseScops.map((dd) => dd.businessId),
-              workCycle: fff.weekday
+              workCycle: fff.weekday,
+              qrUserInfosDetail: qrUserInfosDetail
             }
             this.codeForm.qrUserInfos.push(obj)
           })
