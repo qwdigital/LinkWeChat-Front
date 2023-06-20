@@ -1,12 +1,26 @@
 :root {
-  --hsl: 149, 93%, 39%; /* 主题色hsl*/
-  --hsl-dark: 149, 93%, 34%; /* 深主题色hsl*/
+  /* 主题色hsl*/
+  --h: 149;
+  --s: 93%;
+  --l: 39%;
+  --l-dark: calc(var(--l) - 5%); /* 深主题色 l */
+
+  --hsl: var(--h), var(--s), var(--l); /* 主题色hsl*/
+  --hsl-dark: var(--h), var(--s), var(--l-dark); /* 深主题色hsl*/
 
   --color: hsl(var(--hsl)); /* 主题色 hsl(149, 93%, 39%)*/
-  --color-dark: hsl(var(--hsl-dark)); /* 深主题色  */
-  --color-light: hsl(var(--hsl), 0.12); /* 浅主题色  */
+  --color-dark: hsl(var(--hsl-dark)); /* 深主题色 hsl(149, 93%, 34%) */
   --color-sub: hsl(91, 70%, 57%); /* 主题辅色 */
 
+  /* 浅主题色 递浅系列阶梯  */
+  --color-light: hsl(var(--hsl), 0.12);
+  --color-light-3: hsl(var(--hsl), 0.7);
+  --color-light-5: hsl(var(--hsl), 0.5);
+  --color-light-7: hsl(var(--hsl), 0.3);
+  --color-light-8: hsl(var(--hsl), 0.2);
+  --color-light-9: hsl(var(--hsl), 0.1);
+
+  /* 功能色 */
   --color-success: #07c160;
   --color-warning: #faad14;
   --color-danger: #eb5e12;
@@ -18,6 +32,16 @@
   --top-nav-heght: 64px; /* 顶部导航条高度 */
 
   --font-black: #1d2129; /* 通用字体黑色 */
+  --black-: #000;
+  --black-d2: rgba(0, 0, 0, 0.2); /* 黑色 #ddd*/
+  --black-d3: rgba(0, 0, 0, 0.3); /* 黑色 #ccc*/
+  --black-d4: rgba(0, 0, 0, 0.4); /* 黑色 #aaa*/
+  --black-d5: rgba(0, 0, 0, 0.5); /* 黑色 */
+  --black-d6: rgba(0, 0, 0, 0.6); /* 黑色 */
+  --black-d7: rgba(0, 0, 0, 0.7); /* 黑色 */
+  --black-d8: rgba(0, 0, 0, 0.8); /* 黑色 */
+  --black-d9: rgba(0, 0, 0, 0.9); /* 黑色 */
+
   --font-white: #fff; /* 通用字体白色 */
 
   /* 背景色，暗黑模式下为黑色 */

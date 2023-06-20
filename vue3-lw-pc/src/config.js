@@ -81,11 +81,15 @@ window.lwConfig = Object.assign(config, env, common, lwConfig, project)
 
 // 主题回显
 const [h, s, l] = localStorage.hsl?.split(',')?.map((e) => e.trim()) || []
-const l1 = l?.slice(0, -1) - 5
+// const l1 = l?.slice(0, -1) - 5
 if (h) {
   const style = document.documentElement.style
-  style.setProperty('--hsl', localStorage.hsl)
-  style.setProperty('--hsl-dark', `${h},${s},${l1}%`)
+  style.setProperty('--h', h)
+  style.setProperty('--s', s)
+  style.setProperty('--l', l)
+
+  // style.setProperty('--hsl', localStorage.hsl)
+  // style.setProperty('--hsl-dark', `${h},${s},${l1}%`)
   style.setProperty('--color-sub', localStorage.colorSub)
 }
 

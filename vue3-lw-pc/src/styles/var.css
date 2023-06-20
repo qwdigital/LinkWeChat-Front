@@ -4,15 +4,15 @@
 /* element-plus var */
 :root,
 html.dark {
-  --el-color-primary: hsl(var(--hsl));
-  --el-color-primary-light-3: hsl(var(--hsl), 0.7);
-  --el-color-primary-light-5: hsl(var(--hsl), 0.5);
-  --el-color-primary-light-7: hsl(var(--hsl), 0.3);
-  --el-color-primary-light-8: hsl(var(--hsl), 0.2);
-  --el-color-primary-light-9: hsl(var(--hsl), 0.1);
+  --el-color-primary: var(--color);
+  --el-color-primary-light-3: var(--color-light-3);
+  --el-color-primary-light-5: var(--color-light-5);
+  --el-color-primary-light-7: var(--color-light-7);
+  --el-color-primary-light-8: var(--color-light-8);
+  --el-color-primary-light-9: var(--color-light-9);
   --el-color-primary-dark-2: var(--color-dark);
 
-  --el-color-success: hsl(var(--hsl));
+  --el-color-success: var(--color-success);
 
   /* // --el-color-info: #fa7216;
   // --el-color-info: #1E1E1E; */
@@ -25,8 +25,8 @@ html.dark {
   /* // --el-color-text-regular: #1f2d3d; */
 }
 :root {
-  --el-color-warning: #faad14;
-  --el-color-danger: #eb5e12;
+  --el-color-warning: var(--color-warning);
+  --el-color-danger: var(--color-danger);
   --el-border-color-extra-light: #e6f8ef;
 
   --el-border-color-light: #dfe4ed;
