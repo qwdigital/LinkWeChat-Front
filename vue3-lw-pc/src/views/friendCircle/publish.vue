@@ -16,11 +16,11 @@
                 placeholder="请输入任务名称"
                 maxlength="20"
                 show-word-limit
-                :disabled="firendId"
+                :disabled="!!firendId"
               ></el-input>
             </el-form-item>
             <el-form-item label="发送方式：" prop="sendType">
-              <el-radio-group v-model="form.sendType" :disabled="firendId">
+              <el-radio-group v-model="form.sendType" :disabled="!!firendId">
                 <el-radio :label="0"
                   >企微群发
                   <el-popover placement="top" trigger="hover">
@@ -48,7 +48,7 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item label="发送范围：" required @change="scopeTypeChange">
-              <el-radio-group v-model="form.scopeType" :disabled="firendId">
+              <el-radio-group v-model="form.scopeType" :disabled="!!firendId">
                 <el-radio :label="0">全部客户</el-radio>
                 <el-radio :label="1">按条件筛选</el-radio>
               </el-radio-group>
@@ -61,7 +61,7 @@
                 @update="getExecuteData"
                 :show="true"
                 v-if="form.scopeType === 1"
-                :isDetail="firendId"
+                :isDetail="!!firendId"
               ></SelectMember>
             </el-form-item>
             <!-- <el-form-item label="选择客户标签" v-if="form.scopeType === 0">
@@ -82,7 +82,7 @@
                 placeholder="选择年月日时分"
                 format="YYYY-MM-DD HH:mm"
                 v-bind="pickerOptions"
-                :disabled="firendId"
+                :disabled="!!firendId"
               >
               </el-date-picker>
             </el-form-item>
@@ -96,7 +96,7 @@
                 placeholder="选择年月日时分"
                 format="YYYY-MM-DD HH:mm"
                 v-bind="pickerOptions"
-                :disabled="firendId"
+                :disabled="!!firendId"
               >
               </el-date-picker>
             </el-form-item>
@@ -123,16 +123,16 @@
                 <el-button type="primary" plain @click="selectedFn2">选择标签</el-button>
               </div>
             </el-form-item>
-            <el-form-item label="朋友圈内容：" v-if="[1, 2, 3].includes(firendType)">
-              <el-input
+            <el-form-item label="朋友圈内容：" v-if="[2, 3].includes(firendType)">
+              <!-- <el-input
                 v-model="form.content"
                 placeholder="未填写文本内容"
                 :disabled="true"
                 type="textarea"
                 :rows="4"
                 v-if="firendType === 1"
-              ></el-input>
-              <div class="firend-box" v-else>
+              ></el-input> -->
+              <div class="firend-box">
                 <FirendContent :list="friendsList" :content="form.content" />
               </div>
             </el-form-item>
@@ -146,6 +146,7 @@
             :showPhone="false"
             :detail="firendId !== undefined"
             v-if="!firendId || (firendId && firendType === 1)"
+            :baseData="baseData"
           ></AddMaterial>
 
           <!-- <el-form-item label-width="0" style="margin-top: 20px; margin-bottom: 0">
@@ -238,6 +239,7 @@ export default {
       firendId: undefined,
       firendType: undefined,
       friendsList: [],
+      baseData: {},
     }
   },
   mounted() {
@@ -281,6 +283,12 @@ export default {
             this.likeTagList = res.data.likeTagIds ? res.data.likeTagIds : []
             this.commentTagList = res.data.commentTagIds ? res.data.commentTagIds : []
             this.friendsList = res.data.materialList ? res.data.materialList : []
+            let obj = {
+              templateInfo: res.data.content,
+              attachments: res.data.materialList,
+            }
+            this.baseData = JSON.parse(JSON.stringify(obj))
+            console.log(291,this.baseData)
             this.setEditTag()
           }
         })

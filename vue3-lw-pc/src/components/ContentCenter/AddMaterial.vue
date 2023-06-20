@@ -423,6 +423,10 @@ export default {
         this.form.templateInfo = val.templateInfo
         this.form.attachments = val.attachments
         // this.$forceUpdate()
+        if (this.otherType === 3 && this.detail) {
+          this.talkForm = val
+          this.talkList = val.attachments
+        }
       }
     },
     talkId: {
