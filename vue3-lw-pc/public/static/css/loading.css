@@ -59,7 +59,7 @@
 #loader-wrapper .loader-section {
   position: absolute;
   top: 0;
-  width: 51%;
+  width: 50%;
   height: 100%;
   background: #07c160;
   z-index: 1000;
@@ -76,24 +76,24 @@
 
 .loaded#loader-wrapper .loader-section.section-left {
   transform: translateX(-100%);
-  transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.35s 0.15s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 .loaded#loader-wrapper .loader-section.section-right {
   transform: translateX(100%);
-  transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.35s 0.15s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 .loaded#loader-wrapper #loader,
 .loaded#loader-wrapper .load-title {
   opacity: 0;
-  transition: all 0.3s ease-out;
+  transition: all 0.15s ease-out;
 }
 
 .loaded#loader-wrapper {
   visibility: hidden;
   transform: translateY(-100%);
-  transition: all 0.3s 1s ease-out;
+  transition: all 0.15s 0.5s ease-out;
 }
 
 #loader-wrapper .load-title {
