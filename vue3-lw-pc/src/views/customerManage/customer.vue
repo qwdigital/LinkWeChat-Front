@@ -398,7 +398,7 @@ export default {
     goRoute(row) {
       let { externalUserid, firstUserId: userId } = row
       this.$router.push({
-        path: 'customerDetail',
+        name: window.lwConfig.CUSTOMER_DETAIL_ROUTE_NAME,
         query: { externalUserid, userId },
       })
     },

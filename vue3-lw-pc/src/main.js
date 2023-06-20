@@ -14,6 +14,10 @@ import ElementPlus, { ElNotification } from 'element-plus'
 import 'element-plus/dist/index.css'
 app.use(ElementPlus, {})
 
+// import 'element-plus/theme-chalk/dark/css-vars.css'
+// import { useDark, useToggle } from '@vueuse/core'
+// useDark()
+
 import '@/styles/index.scss'
 
 // svg图标

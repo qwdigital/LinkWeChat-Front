@@ -228,7 +228,7 @@ $selectedColor: #f6f7ff;
     right: 56px;
     border-color: var(--color);
     color: var(--color);
-    background: #fff;
+    background: var(--bg-white);
     &:hover {
       background: var(--color);
       color: var(--font-white, #fff);
@@ -238,7 +238,7 @@ $selectedColor: #f6f7ff;
     right: 24px;
     border-color: #f56c6c;
     color: #f56c6c;
-    background: #fff;
+    background: var(--bg-white);
     &:hover {
       background: #f56c6c;
       color: var(--font-white, #fff);

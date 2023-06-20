@@ -50,7 +50,7 @@ export default {
   box-shadow: 0px 6px 8px 0px rgba(78, 89, 105, 0.3);
   border-radius: 8px 8px 8px 8px;
   border: 1px solid #fff;
-  background: #fff;
+  background: var(--bg-white);
 }
 .shabowbox {
   position: fixed;
@@ -71,7 +71,7 @@ export default {
   top: 50%;
   margin-top: -235px;
   z-index: 2001;
-  background: #fff;
+  background: var(--bg-white);
 }
 
 .shabowboxaudio {

@@ -98,7 +98,7 @@ div:focus {
   padding: 0 15px;
   overflow: hidden;
   height: 32px;
-  background-color: #fff;
+  background: var(--bg-white);
   .tag-place {
     color: #bbb;
     font-size: 14px;
@@ -143,7 +143,7 @@ div:focus {
     font-weight: 500;
     color: var(--font-black);
     padding: 0 20px;
-    background: #fff;
+    background: var(--bg-white);
     border-radius: var(--border-radius-big) var(--border-radius-big) 0 0;
     line-height: 1;
     .desc {
@@ -174,7 +174,7 @@ div:focus {
   // 卡片样式
   &card {
     border-radius: var(--border-radius-big);
-    background: #fff;
+    background: var(--bg-white);
     overflow: auto;
     padding: 20px;
     scroll-behavior: smooth;
@@ -229,7 +229,7 @@ div:focus {
     justify-content: center;
     height: 60px;
     bottom: 0;
-    background: #fff;
+    background: var(--bg-white);
     box-shadow: 0px -4px 20px 0px #edf2f9;
     border-radius: var(--border-radius-big);
     margin-top: var(--card-margin);

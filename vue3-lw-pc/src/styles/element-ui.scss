@@ -80,7 +80,7 @@
 .--card {
   padding: 20px 20px;
   border-radius: var(--border-radius-big);
-  background: #fff;
+  background: var(--bg-white);
 }
 // 页面公用搜索
 .top-search {
@@ -344,7 +344,7 @@
   }
   .el-radio__input.is-disabled {
     .el-radio__inner {
-      background-color: #fff;
+      background: var(--bg-white);
       border-color: #dcdfe6;
       cursor: default;
     }
@@ -358,7 +358,7 @@
       cursor: default;
 
       &::after {
-        background-color: #fff;
+        background: var(--bg-white);
       }
     }
   }
@@ -541,7 +541,7 @@
 // .top-search + .el-table {
 //   @extend .--card;
 //   box-sizing: content-box;
-// border: 20px solid #fff; border-radius: 20px; background: #fff
+// border: 20px solid #fff; border-radius: 20px; background: var(--bg-white)
 // }
 .el-table {
   --el-table-header-bg-color: #f5f7fa;

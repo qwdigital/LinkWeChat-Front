@@ -207,7 +207,7 @@ export default {
     padding: 20px 20px 0;
     border: 1px solid #eee;
     margin: 0 20px 20px 0;
-    background: #fff;
+    background: var(--bg-white);
     border-radius: 6px;
     .title {
       font-size: 16px;

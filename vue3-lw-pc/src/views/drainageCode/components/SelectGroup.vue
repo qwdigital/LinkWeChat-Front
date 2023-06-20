@@ -242,6 +242,6 @@ export default {
   top: 0;
   left: 0;
   z-index: 10;
-  background-color: #fff;
+  background: var(--bg-white);
 }
 </style>

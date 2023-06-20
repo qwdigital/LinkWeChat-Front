@@ -219,7 +219,7 @@ export default {
 .total-list {
   .item {
     padding: 10px;
-    background-color: #fff;
+    background: var(--bg-white);
   }
 }
 </style>

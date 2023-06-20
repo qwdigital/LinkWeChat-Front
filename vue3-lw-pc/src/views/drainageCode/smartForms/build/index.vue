@@ -783,7 +783,7 @@ $selectedColor: #f6f7ff;
 .logo-wrapper {
   position: relative;
   height: 42px;
-  background: #fff;
+  background: var(--bg-white);
   border-bottom: 1px solid #f1e8e8;
   box-sizing: border-box;
 }
@@ -934,7 +934,7 @@ $selectedColor: #f6f7ff;
     right: 56px;
     border-color: var(--color);
     color: var(--color);
-    background: #fff;
+    background: var(--bg-white);
     &:hover {
       background: var(--color);
       color: var(--font-white, #fff);
@@ -944,7 +944,7 @@ $selectedColor: #f6f7ff;
     right: 24px;
     border-color: #f56c6c;
     color: #f56c6c;
-    background: #fff;
+    background: var(--bg-white);
     &:hover {
       background: #f56c6c;
       color: var(--font-white, #fff);
@@ -1012,13 +1012,13 @@ $selectedColor: #f6f7ff;
     border-left: 1px solid #d7d7d7;
   }
   .smartForms_build_index_liBtn {
-    background-color: #fff;
+    background: var(--bg-white);
     border-left: 0px solid #d7d7d7 !important;
     border-bottom: none;
   }
 }
 .drawing-item {
-  background-color: #fff !important;
+  background: var(--bg-white) !important;
   overflow: inherit !important;
 }
 .sortable-ghost .ssc {

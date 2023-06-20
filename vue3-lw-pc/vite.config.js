@@ -178,13 +178,41 @@ export default defineConfig(async ({ command, mode }) => {
       env._ISCDN &&
         vitePluginCdnImport({
           // prodUrl: 'https://unpkg.com/{name}@{version}/{path}',
+          prodUrl: 'https://cdn.bootcdn.net/ajax/libs/{name}/{version}/{path}',
           modules: [
             // autoComplete('vue'),
             // autoComplete('axios'),
+
             {
               name: 'axios', // 包名
               var: 'axios', // 对应cdn包导出的变量，如jQuery导出的是$
-              path: '//cdn.bootcdn.net/ajax/libs/axios/1.4.0/axios.min.js',
+              version: '1.4.0',
+              path: 'axios.min.js',
+            },
+            {
+              name: 'clipboard',
+              var: 'ClipboardJS',
+              version: '2.0.11',
+              path: 'https://cdn.bootcdn.net/ajax/libs/clipboard.js/2.0.11/clipboard.min.js',
+            },
+            {
+              name: 'jsencrypt',
+              var: 'JSEncrypt',
+              version: '3.3.2',
+              path: 'jsencrypt.min.js',
+            },
+            {
+              name: 'crypto-js',
+              var: 'CryptoJS',
+              version: '4.1.1',
+              path: 'crypto-js.min.js',
+            },
+            {
+              name: 'nprogress',
+              var: 'NProgress',
+              version: '0.2.0',
+              path: 'nprogress.min.js',
+              css: 'nprogress.min.css',
             },
             // {
             //   name: 'element-plus',
@@ -199,11 +227,11 @@ export default defineConfig(async ({ command, mode }) => {
             //   version: '2.1.0',
             //   path: 'dist/index.iife.min.js',
             // },
-            // {
-            //   name: 'ali-oss',
-            //   var: 'OSS',
-            //   path: 'http://gosspublic.alicdn.com/aliyun-oss-sdk-6.17.1.min.js',
-            // },
+            {
+              name: 'ali-oss',
+              var: 'OSS',
+              path: 'https://gosspublic.alicdn.com/aliyun-oss-sdk-6.17.1.min.js',
+            },
           ],
         }),
       rollupPluginVisualizer({

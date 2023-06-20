@@ -90,7 +90,7 @@ export default {
 }
 .msg {
   min-height: 28px;
-  background-color: #fff;
+  background: var(--bg-white);
   border: 1px solid #e4e6e9;
   display: inline-block;
   position: relative;
@@ -122,7 +122,7 @@ export default {
 }
 .avatar {
   border: 1px solid #fff;
-  background: #fff;
+  background: var(--bg-white);
   border-radius: 6px;
   width: 28px;
   height: 28px;

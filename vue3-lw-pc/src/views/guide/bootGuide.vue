@@ -70,15 +70,15 @@ export default {
           boxData: [
             {
               title: `管理员账号登录企业微信管理后台——进入【应用管理】——点击【${lwConfig.SYSTEM_NAME_MOBILE}】`,
-              url: ('@/assets/register/guid/customer-portrait-one.png'),
+              url: '@/assets/register/guid/customer-portrait-one.png',
             },
             {
               title: `在【${lwConfig.SYSTEM_NAME_MOBILE}】应用内找到“配置到聊天工具栏”功能中的“配置”按钮`,
-              url: ('@/assets/register/guid/customer-portrait-two.png'),
+              url: '@/assets/register/guid/customer-portrait-two.png',
             },
             {
               title: '进入“配置到聊天工具栏”功能页后点击“配置页面”按钮配置路径',
-              url: ('@/assets/register/guid/customer-portrait-three.png'),
+              url: '@/assets/register/guid/customer-portrait-three.png',
             },
           ],
           boxDataTwo: {
@@ -87,7 +87,7 @@ export default {
             title2: '客户画像',
             title3: '输入页面内容：选择“自定义”，内容链接为：',
             title4: 'https://×××××××',
-            url: ('@/assets/register/guid/customer-portrait-four.png'),
+            url: '@/assets/register/guid/customer-portrait-four.png',
           },
           buttonData: {
             one: '返回上一步',
@@ -98,7 +98,7 @@ export default {
           boxData: [
             {
               title: '在当前页面内点击“继续配置”按钮',
-              url: ('@/assets/register/guid/chat-material-five.png'),
+              url: '@/assets/register/guid/chat-material-five.png',
             },
           ],
           boxDataTwo: {
@@ -107,7 +107,7 @@ export default {
             title2: '聊天素材',
             title3: '输入页面内容：选择“自定义”，内容链接为：',
             title4: 'https://×××××××',
-            url: ('@/assets/register/guid/chat-material-six.png'),
+            url: '@/assets/register/guid/chat-material-six.png',
           },
           buttonData: {
             one: '返回上一步',
@@ -118,7 +118,7 @@ export default {
           boxData: [
             {
               title: '在当前页面内点击“继续配置”按钮',
-              url: ('@/assets/register/guid/keyword-group-seven.png'),
+              url: '@/assets/register/guid/keyword-group-seven.png',
             },
           ],
           boxDataTwo: {
@@ -127,7 +127,7 @@ export default {
             title2: '关键词群',
             title3: '输入页面内容：选择“自定义”，内容链接为：',
             title4: 'https://×××××××',
-            url: ('@/assets/register/guid/keyword-group-eight.png'),
+            url: '@/assets/register/guid/keyword-group-eight.png',
           },
           buttonData: {
             one: '返回上一步',
@@ -138,7 +138,7 @@ export default {
           boxData: [
             {
               title: '在当前页面内点击“继续配置”按钮',
-              url: ('@/assets/register/guid/red-envelopes-nine.png'),
+              url: '@/assets/register/guid/red-envelopes-nine.png',
             },
           ],
           boxDataTwo: {
@@ -147,7 +147,7 @@ export default {
             title2: '红包',
             title3: '输入页面内容：选择“自定义”，内容链接为：',
             title4: 'https://×××××××',
-            url: ('@/assets/register/guid/red-envelopes-ten.png'),
+            url: '@/assets/register/guid/red-envelopes-ten.png',
           },
           buttonData: {
             one: '返回上一步',
@@ -216,7 +216,7 @@ svg.svg-icon {
   width: 80%;
   height: 146px;
   border-radius: 4px;
-  background-color: #fff;
+  background: var(--bg-white);
   padding-top: 20px;
   margin-top: 20px;
   margin-bottom: 10px;
@@ -228,14 +228,14 @@ svg.svg-icon {
 .content-box {
   width: 80%;
   padding: 20px;
-  background: #fff;
+  background: var(--bg-white);
   padding-bottom: 60px;
 }
 .content {
   //   width: 80%;
 }
 .tab {
-  background: #fff;
+  background: var(--bg-white);
   border-top: 1px solid #f1f1f1;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;

@@ -297,7 +297,7 @@ export default {
 }
 .employ {
   .el-tabs {
-    background: #fff;
+    background: var(--bg-white);
   }
   .name {
     font-size: 16px;

@@ -207,7 +207,7 @@ export default {
   height: 100%;
   overflow: hidden;
   position: relative;
-  color: #1d2129;
+  color: var(--font-black);
 
   .errLog-container {
     display: inline-block;
@@ -218,7 +218,7 @@ export default {
     // position: absolute;
     // right: 0;
     flex: none;
-    background: #fff;
+    background: var(--bg-white);
 
     &:focus {
       outline: none;
@@ -296,7 +296,7 @@ export default {
 //       left: 50%;
 //       transform: translateX(-50%);
 //       border-radius: 6px;
-//       background: #fff;
+//       background: var(--bg-white);
 //     }
 //   }
 // }
@@ -313,7 +313,7 @@ export default {
   background: linear-gradient(225deg, var(--color-sub) 0%, var(--color) 100%);
   box-shadow: 0px 4px 20px 0px rgba(28, 49, 111, 0.1);
   border-radius: 50%;
-  // background: #fff;
+  // background: var(--bg-white);
   // color: var(--color);
   .contact-us-icon {
     color: var(--font-white, #fff);

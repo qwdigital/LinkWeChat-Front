@@ -107,7 +107,7 @@ export default {
 <style lang="scss" scoped>
 .g-bg-lg {
   background: linear-gradient(to left, var(--color) 0%, var(--color-sub) 100%);
-  box-shadow: 0px 13px 16px 0px rgba(7, 168, 85, 0.2);
+  box-shadow: 0px 13px 16px 0px hsl(var(--hsl-dark), 0.2);
 }
 // .nav-scrollbar {
 //   width: calc(100% - 580px);
@@ -124,7 +124,7 @@ export default {
   & > .el-menu-item {
     height: 38px !important;
     line-height: 38px !important;
-    color: #1d2129;
+    color: var(--font-black);
     border-radius: 8px;
     font-weight: bold;
     margin: 0 4px !important;

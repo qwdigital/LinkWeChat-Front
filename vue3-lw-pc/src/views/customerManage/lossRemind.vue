@@ -276,7 +276,7 @@ export default {
             <el-button
               @click="
                 $router.push({
-                  path: '/customerManage/customerManage/customer/customerDetail',
+                  name: window.lwConfig.CUSTOMER_DETAIL_ROUTE_NAME,
                   query: {
                     externalUserid: row.externalUserid,
                     userId: row.firstUserId,

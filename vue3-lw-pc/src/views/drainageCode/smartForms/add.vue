@@ -1519,7 +1519,7 @@ export default {
     font-weight: 500;
     color: #333;
     padding: 0 20px;
-    background: #fff;
+    background: var(--bg-white);
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
   }
@@ -1590,7 +1590,7 @@ export default {
   img {
     width: 132px;
     height: 132px;
-    background-color: #fff; //设置白色背景色
+    background: var(--bg-white); //设置白色背景色
     padding: 6px; // 利用padding的特性，挤出白边
   }
 }

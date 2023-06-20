@@ -925,7 +925,7 @@ export default {
   width: 100%;
   height: 100%;
   // max-height: 100vh;
-  background: #fff;
+  background: var(--bg-white);
 }
 .containerPC {
   max-width: 350px;

@@ -636,7 +636,7 @@ export default {
     font-weight: 500;
     color: #333;
     padding: 0 20px;
-    background: #fff;
+    background: var(--bg-white);
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
   }

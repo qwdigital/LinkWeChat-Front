@@ -1,4 +1,4 @@
-html {
+:root {
   --hsl: 149, 93%, 39%; /* 主题色hsl*/
   --hsl-dark: 149, 93%, 34%; /* 深主题色hsl*/
 
@@ -19,6 +19,15 @@ html {
 
   --font-black: #1d2129; /* 通用字体黑色 */
   --font-white: #fff; /* 通用字体白色 */
+
+  /* 背景色，暗黑模式下为黑色 */
+  --bg-white: #fff;
+}
+
+/* 暗黑模式 */
+.dark {
+  --font-black: var(--font-white);
+  --bg-white: #1d2129;
 }
 
 /* 项目定制原子类 */

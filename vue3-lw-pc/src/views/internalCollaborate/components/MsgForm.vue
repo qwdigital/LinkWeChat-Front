@@ -1,124 +1,124 @@
 <script>
-  var validateHttp = (rule, value, callback) => {
-    if (/^https?:\/\//gi.test(value)) {
-      callback()
-    } else {
-      callback(new Error('必须以 http://或 https://开头'))
-    }
+var validateHttp = (rule, value, callback) => {
+  if (/^https?:\/\//gi.test(value)) {
+    callback()
+  } else {
+    callback(new Error('必须以 http://或 https://开头'))
   }
-  export default {
-    name: '',
-    components: {},
-    props: {
-      data: {
-        type: Object,
-        default: () => ({})
+}
+export default {
+  name: '',
+  components: {},
+  props: {
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+    disabled: {
+      type: Boolean,
+    },
+  },
+
+  data() {
+    return {
+      // 表单校验
+      form: Object.assign({ scopeType: 1, sendType: 1, weMessageTemplate: { msgType: 'text' } }, this.data),
+      rules: Object.freeze({
+        content: [{ required: true, message: '不能为空', trigger: 'blur' }],
+        fileUrl: [{ required: true, message: '不能为空', trigger: 'change' }],
+        title: [{ required: true, message: '不能为空', trigger: 'blur' }],
+        msgTitle: [{ required: true, message: '不能为空', trigger: 'blur' }],
+        description: [{ required: true, message: '不能为空', trigger: 'blur' }],
+        picUrl: [{ required: true, message: '不能为空', trigger: 'blur' }],
+        sendTime: [{ required: true, message: '不能为空', trigger: 'blur' }],
+        linkUrl: [
+          { required: true, message: '不能为空', trigger: 'blur' },
+          { validator: validateHttp, trigger: 'blur' },
+        ],
+      }),
+      typeDict: {
+        text: '文本',
+        image: '图片',
+        news: '图文',
+        video: '视频',
+        file: '文件',
       },
-      disabled: {
-        type: Boolean
-      }
-    },
 
-    data() {
-      return {
-        // 表单校验
-        form: Object.assign({ scopeType: 1, sendType: 1, weMessageTemplate: { msgType: 'text' } }, this.data),
-        rules: Object.freeze({
-          content: [{ required: true, message: '不能为空', trigger: 'blur' }],
-          fileUrl: [{ required: true, message: '不能为空', trigger: 'change' }],
-          title: [{ required: true, message: '不能为空', trigger: 'blur' }],
-          msgTitle: [{ required: true, message: '不能为空', trigger: 'blur' }],
-          description: [{ required: true, message: '不能为空', trigger: 'blur' }],
-          picUrl: [{ required: true, message: '不能为空', trigger: 'blur' }],
-          sendTime: [{ required: true, message: '不能为空', trigger: 'blur' }],
-          linkUrl: [
-            { required: true, message: '不能为空', trigger: 'blur' },
-            { validator: validateHttp, trigger: 'blur' }
-          ]
-        }),
-        typeDict: {
-          text: '文本',
-          image: '图片',
-          news: '图文',
-          video: '视频',
-          file: '文件'
-        },
-
-        dialogVisible: false
-      }
-    },
-    computed: {},
-    watch: {
-      'form.weMessageTemplate.msgType'(val, oldVal) {
-        if (!this.disabled) {
-          this.form.weMessageTemplate = { msgType: val }
-          if (this.$route.query.posterId && val == 'image') {
-            this.form.weMessageTemplate.picUrl = this.$route.query.posterId
-          }
+      dialogVisible: false,
+    }
+  },
+  computed: {},
+  watch: {
+    'form.weMessageTemplate.msgType'(val, oldVal) {
+      if (!this.disabled) {
+        this.form.weMessageTemplate = { msgType: val }
+        if (this.$route.query.posterId && val == 'image') {
+          this.form.weMessageTemplate.picUrl = this.$route.query.posterId
         }
       }
     },
-    created() {
-      if (!this.form.toParty) {
-        this.form.toParty = []
-        this.form.toPartyName = []
-      }
-      if (!this.form.toUser) {
-        this.form.toUser = []
-        this.form.toUserName = []
-      }
-      if (this.form.robotId) {
-        // 机器人消息没有视频类型
-        delete this.typeDict.video
-      }
-      if (this.$route.query.posterId) {
-        this.form.weMessageTemplate.msgType = 'image'
-        this.form.weMessageTemplate.picUrl = this.$route.query.posterId
-      }
-    },
-    mounted() {},
-    methods: {
-      selectedUser(value) {
-        this.form.toParty = []
-        this.form.toPartyName = []
-        this.form.toUser = []
-        this.form.toUserName = []
-        value.map((item) => {
-          if (item.isParty) {
-            // 部门
-            this.form.toParty.push(item.userId)
-            this.form.toPartyName.push(item.name)
-          } else {
-            let isInSelectDepart = item.userDepts.some((e) => value.some((e2) => e2.userId === e.deptId))
-            // 人员
-            if (!isInSelectDepart) {
-              this.form.toUser.push(item.userId)
-              this.form.toUserName.push(item.name)
-            }
-          }
-        })
-      },
-      async submit(status) {
-        let form = JSON.parse(JSON.stringify(this.form))
-        let valid = await this.$refs['form'].validate()
-        valid = await this.$refs['formCon'].validate()
-        if (valid) {
-          if (form.scopeType == 2 && !form.toParty.concat(form.toUser).length) {
-            this.msgError('发送范围不能为空')
-          } else if (form.sendType == 2 && new Date(form.sendTime).getTime() <= Date.now()) {
-            this.msgError('定时发送时间不能小于当前时间')
-          } else {
-            form.status = status
-            this.$emit('submit', form)
+  },
+  created() {
+    if (!this.form.toParty) {
+      this.form.toParty = []
+      this.form.toPartyName = []
+    }
+    if (!this.form.toUser) {
+      this.form.toUser = []
+      this.form.toUserName = []
+    }
+    if (this.form.robotId) {
+      // 机器人消息没有视频类型
+      delete this.typeDict.video
+    }
+    if (this.$route.query.posterId) {
+      this.form.weMessageTemplate.msgType = 'image'
+      this.form.weMessageTemplate.picUrl = this.$route.query.posterId
+    }
+  },
+  mounted() {},
+  methods: {
+    selectedUser(value) {
+      this.form.toParty = []
+      this.form.toPartyName = []
+      this.form.toUser = []
+      this.form.toUserName = []
+      value.map((item) => {
+        if (item.isParty) {
+          // 部门
+          this.form.toParty.push(item.userId)
+          this.form.toPartyName.push(item.name)
+        } else {
+          let isInSelectDepart = item.userDepts.some((e) => value.some((e2) => e2.userId === e.deptId))
+          // 人员
+          if (!isInSelectDepart) {
+            this.form.toUser.push(item.userId)
+            this.form.toUserName.push(item.name)
           }
         }
+      })
+    },
+    async submit(status) {
+      let form = JSON.parse(JSON.stringify(this.form))
+      let valid = await this.$refs['form'].validate()
+      valid = await this.$refs['formCon'].validate()
+      if (valid) {
+        if (form.scopeType == 2 && !form.toParty.concat(form.toUser).length) {
+          this.msgError('发送范围不能为空')
+        } else if (form.sendType == 2 && new Date(form.sendTime).getTime() <= Date.now()) {
+          this.msgError('定时发送时间不能小于当前时间')
+        } else {
+          form.status = status
+          this.$emit('submit', form)
+        }
       }
-    }
-  }
+    },
+  },
+}
 </script>
 
 <template>
-  <div style="margin: 0 20px;" :class="disabled && 'detail-form'">
+  <div style="margin: 0 20px" :class="disabled && 'detail-form'">
     <!-- 应用消息 -->
     <el-form
       class="mb20"
@@ -127,12 +127,11 @@
       :model="form"
       :rules="rules"
       :disabled="disabled"
-      label-width="100px"
-    >
+      label-width="100px">
       <div class="">
         <div class="title">
           <span>消息设置</span>
-          <span style="font-size: 12px; margin-left: 10px;">
+          <span style="font-size: 12px; margin-left: 10px">
             将通过应用
             <span class="theme">【{{ form.agentName }}】</span>
             发送消息
@@ -151,8 +150,7 @@
             <el-button v-if="!disabled" class="mr10" text @click="dialogVisible = true">选择范围</el-button>
             <TagEllipsis
               v-if="form.toPartyName.concat(form.toUserName).length"
-              :list="form.toPartyName.concat(form.toUserName)"
-            />
+              :list="form.toPartyName.concat(form.toUserName)" />
           </template>
         </el-form-item>
         <el-form-item label="发送类型" prop="sendType">
@@ -171,9 +169,8 @@
               disabledDate(time) {
                 let date = new Date()
                 return time.getTime() < date.setDate(date.getDate() - 1)
-              }
-            }"
-          ></el-date-picker>
+              },
+            }"></el-date-picker>
         </el-form-item>
       </div>
     </el-form>
@@ -187,8 +184,7 @@
       :model="form"
       :rules="rules"
       :disabled="disabled"
-      label-width="100px"
-    >
+      label-width="100px">
       <el-form-item label="消息标题" prop="msgTitle">
         <el-input v-model="form.msgTitle" placeholder="请输入标题" maxlength="30" show-word-limit></el-input>
       </el-form-item>
@@ -210,8 +206,7 @@
           :autosize="{ minRows: 2, maxRows: 50 }"
           placeholder="请输入内容"
           maxlength="2000"
-          show-word-limit
-        ></el-input>
+          show-word-limit></el-input>
       </el-form-item>
 
       <!-- 图片 -->
@@ -227,8 +222,7 @@
           <el-input
             v-model="form.weMessageTemplate.linkUrl"
             type="text"
-            placeholder="请输入图文地址，以http://或https://开头"
-          ></el-input>
+            placeholder="请输入图文地址，以http://或https://开头"></el-input>
         </el-form-item>
         <el-form-item label="图文标题" prop="title">
           <el-input
@@ -236,8 +230,7 @@
             type="text"
             :maxlength="60"
             show-word-limit
-            placeholder="请输入图文标题"
-          ></el-input>
+            placeholder="请输入图文标题"></el-input>
         </el-form-item>
         <el-form-item label="图文描述" prop="description">
           <el-input
@@ -246,8 +239,7 @@
             :maxlength="100"
             show-word-limit
             :autosize="{ minRows: 2, maxRows: 50 }"
-            placeholder="请输入"
-          ></el-input>
+            placeholder="请输入"></el-input>
         </el-form-item>
         <el-form-item label="图文封面">
           <Upload v-model:fileUrl="form.weMessageTemplate.picUrl" type="0">
@@ -285,54 +277,53 @@
       :isSigleSelect="false"
       :destroy-on-close="false"
       :defaultValues="form.toParty.concat(form.toUser)"
-      @success="selectedUser"
-    ></SelectUser>
+      @success="selectedUser"></SelectUser>
   </div>
 </template>
 
 <style lang="scss" scoped>
-  .theme {
-    color: var(--color);
-  }
-  ::v-deep.detail-form {
-    .el-input.is-disabled .el-input__inner,
-    .el-textarea.is-disabled .el-textarea__inner {
-      background-color: transparent;
-      // border-color: transparent;
-      color: inherit;
-      cursor: default;
-      // &:hover {
-      //   border-color: transparent;
-      // }
-    }
-    .el-radio__input.is-disabled {
-      .el-radio__inner {
-        background-color: #fff;
-        border-color: #dcdfe6;
-        cursor: default;
-      }
-      + span.el-radio__label {
-        color: inherit;
-        cursor: default;
-      }
-      &.is-checked .el-radio__inner {
-        background-color: var(--color);
-        border-color: var(--color);
-        cursor: default;
-
-        &::after {
-          background-color: #fff;
-        }
-      }
-    }
-
-    // .el-input-number__decrease,
-    // .el-input-number__increase,
-    // .el-input-group__prepend,
-    // .el-input-group__append,
-    // .el-icon-arrow-up,
-    // .el-input__prefix {
-    //   display: none;
+.theme {
+  color: var(--color);
+}
+::v-deep.detail-form {
+  .el-input.is-disabled .el-input__inner,
+  .el-textarea.is-disabled .el-textarea__inner {
+    background-color: transparent;
+    // border-color: transparent;
+    color: inherit;
+    cursor: default;
+    // &:hover {
+    //   border-color: transparent;
     // }
   }
+  .el-radio__input.is-disabled {
+    .el-radio__inner {
+      background: var(--bg-white);
+      border-color: #dcdfe6;
+      cursor: default;
+    }
+    + span.el-radio__label {
+      color: inherit;
+      cursor: default;
+    }
+    &.is-checked .el-radio__inner {
+      background-color: var(--color);
+      border-color: var(--color);
+      cursor: default;
+
+      &::after {
+        background: var(--bg-white);
+      }
+    }
+  }
+
+  // .el-input-number__decrease,
+  // .el-input-number__increase,
+  // .el-input-group__prepend,
+  // .el-input-group__append,
+  // .el-icon-arrow-up,
+  // .el-input__prefix {
+  //   display: none;
+  // }
+}
 </style>
