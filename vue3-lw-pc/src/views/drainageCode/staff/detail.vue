@@ -75,12 +75,35 @@
                   </el-checkbox-group>
                 </el-form-item>
                 <el-form-item v-if="unit.type === 0" v-model="checkList" style="margin-bottom: 10px;" label="在线时间">
-                  <el-time-select disabled value="00:00" placeholder="任意时间点"></el-time-select>
-                  <el-time-select disabled value="23:59" placeholder="任意时间点"></el-time-select>
+                  <el-time-select
+                    style="width: 40%;"
+                    disabled
+                    v-model="defaultStart"
+                    placeholder="任意时间点"
+                  ></el-time-select>
+                  -
+                  <el-time-select
+                    style="width: 40%;"
+                    v-model="defaultEnd"
+                    disabled
+                    value="23:59"
+                    placeholder="任意时间点"
+                  ></el-time-select>
                 </el-form-item>
                 <el-form-item v-else style="margin-bottom: 10px;" label="在线时间">
-                  <el-time-select disabled :value="unit.beginTime" placeholder="任意时间点"></el-time-select>
-                  <el-time-select disabled :value="unit.endTime" placeholder="任意时间点"></el-time-select>
+                  <el-time-select
+                    style="width: 40%;"
+                    disabled
+                    v-model="unit.beginTime"
+                    placeholder="任意时间点"
+                  ></el-time-select>
+                  -
+                  <el-time-select
+                    style="width: 40%;"
+                    disabled
+                    v-model="unit.endTime"
+                    placeholder="任意时间点"
+                  ></el-time-select>
                 </el-form-item>
               </el-form>
             </div>
@@ -155,6 +178,8 @@
     },
     data() {
       return {
+        defaultStart: '00:00',
+        defaultEnd: '00:00',
         form: {},
         checkList: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
         // 遮罩层
