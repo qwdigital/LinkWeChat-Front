@@ -249,7 +249,7 @@
                     show-overflow-tooltip />
                   <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
                     <template slot-scope="scope">
-                      <el-button type="text" @click="goDetail(scope.row.id)" v-if="scope.row.isCustomer">
+                      <el-button type="text" @click="goDetail(scope.row)" v-if="scope.row.isCustomer">
                         客户详情
                       </el-button>
                     </template>
@@ -582,6 +582,13 @@ export default {
         this.tableList = res.rows
         this.total = Number(res.total)
         this.loading = false
+      })
+    },
+    goRoute(row) {
+      let { externalUserid, firstUserId: userId } = row
+      this.$router.push({
+        name: 'CustomerDetail',
+        query: { externalUserid, userId },
       })
     },
   },
