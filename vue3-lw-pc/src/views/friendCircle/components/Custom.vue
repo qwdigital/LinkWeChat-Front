@@ -72,7 +72,7 @@ import ChartBar from '@/components/ChartBar.vue'
 import ChartLine from '@/components/ChartLine.vue'
 import SelectDept from '@/components/SelectDept'
 import { getTableTotal } from '@/api/contentCenter/common.js'
-import { statisticMoments } from '@/api/circle'
+import { statisticCustomer } from '@/api/circle'
 
 export default {
   name: 'scene-statistics-scene',
@@ -143,13 +143,13 @@ export default {
   },
   methods: {
     getTabTotalFn() {
-      statisticMoments(this.id).then((res) => {
-        this.cardData[0].value = res.data.inviterOldCustomerNum
-        this.cardData[1].value = res.data.completeTaskOldCustomerNum
-        this.cardData[2].value = res.data.fissionCustomerNum
-        this.cardData[3].value = res.data.tdCompleteTaskOldCustomerNum
+      statisticCustomer(this.id).then((res) => {
+        this.cardData[0].value = res.data.predictSend
+        this.cardData[1].value = res.data.nonSend
+        this.cardData[2].value = res.data.sent
+        this.cardData[3].value = res.data.failSend
         if (this.type !== 3) {
-          this.cardData[4].value = res.data.tdCompleteTaskOldCustomerNum
+          this.cardData[4].value = res.data.todaySend
         }
       })
     },

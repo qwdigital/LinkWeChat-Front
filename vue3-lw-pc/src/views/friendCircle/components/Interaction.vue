@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { statisticMoments } from '@/api/circle'
+import { statisticInteract } from '@/api/circle'
 import Record from './Record.vue'
 import ViewDetail from './ViewDetail'
 export default {
@@ -61,12 +61,12 @@ export default {
   },
   methods: {
     getTabTotalFn() {
-      statisticMoments(this.id).then((res) => {
-        this.cardData[0].value = res.data.inviterOldCustomerNum
-        this.cardData[1].value = res.data.completeTaskOldCustomerNum
+      statisticInteract(this.id).then((res) => {
+        this.cardData[0].value = res.data.like
+        this.cardData[1].value = res.data.comment
         if (this.type === 1) {
-          this.cardData[2].value = res.data.fissionCustomerNum
-          this.cardData[3].value = res.data.tdCompleteTaskOldCustomerNum
+          this.cardData[2].value = res.data.people
+          this.cardData[3].value = res.data.count
         }
       })
     },

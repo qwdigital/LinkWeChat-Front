@@ -158,10 +158,11 @@ export default {
   methods: {
     getTabTotalFn() {
       statisticMoments(this.id).then((res) => {
-        this.cardData[0].value = res.data.inviterOldCustomerNum
-        this.cardData[1].value = res.data.completeTaskOldCustomerNum
-        this.cardData[2].value = res.data.fissionCustomerNum
-        this.cardData[3].value = res.data.tdCompleteTaskOldCustomerNum
+        this.cardData[0].value = res.data.targetExecute
+        this.cardData[1].value = res.data.nonExecute
+        this.cardData[2].value = res.data.executed
+        this.cardData[3].value = res.data.todayExecute
+        this.cardData[4].value = res.data.remindCount
       })
     },
     remind(id) {
