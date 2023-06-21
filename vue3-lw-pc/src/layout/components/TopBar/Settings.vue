@@ -99,10 +99,13 @@ export default {
           .slice(4, -1)
           .split(',')
           .map((e) => e.trim())
-        let l1 = l.slice(0, -1) - 5 // 主题色明暗度减5%即为深主题色
+        // let l1 = l.slice(0, -1) - 5 // 主题色明暗度减5%即为深主题色
         let style = document.documentElement.style
-        style.setProperty('--hsl', `${h},${s},${l}`)
-        l1 && style.setProperty('--hsl-dark', `${h},${s},${l1}%`)
+        style.setProperty('--h', h)
+        style.setProperty('--s', s)
+        style.setProperty('--l', l)
+        // style.setProperty('--hsl', `${h},${s},${l}`)
+        // l1 && style.setProperty('--hsl-dark', `${h},${s},${l1}%`)
 
         localStorage.hsl = `${h},${s},${l}`
       }
@@ -118,8 +121,11 @@ export default {
     // 恢复默认主题
     reset() {
       let style = document.documentElement.style
-      style.removeProperty('--hsl')
-      style.removeProperty('--hsl-dark')
+      style.removeProperty('--h')
+      style.removeProperty('--s')
+      style.removeProperty('--l')
+      // style.removeProperty('--hsl')
+      // style.removeProperty('--hsl-dark')
       style.removeProperty('--color-sub')
       localStorage.hsl = ''
       localStorage.colorSub = ''
