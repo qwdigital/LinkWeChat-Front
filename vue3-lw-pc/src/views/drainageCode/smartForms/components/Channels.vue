@@ -98,7 +98,7 @@ export default {
       selectInfoToSurvey(this.formId).then((response) => {
         this.loading = false
 
-        that.baseFormUrl4 = window.lwConfig.DOMAIN + '/#/formsDetail?id=true&formId=' + that.formId
+        that.baseFormUrl4 = window.lwConfig.DOMAIN + '/formsDetail?id=true&formId=' + that.formId
         if (response.data.channelsName) {
           that.ChannelsList = response.data.channelsName.split(',')
           that.channelsPathList = response.data.channelsPath.split(',')
