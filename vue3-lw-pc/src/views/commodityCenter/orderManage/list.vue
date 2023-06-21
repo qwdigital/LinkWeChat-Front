@@ -397,7 +397,7 @@ export default {
   }
 }
 .tip {
-  var(--font-black-7);
+  color: var(--font-black-7);
   font-size: 12px;
   line-height: 20px;
 }

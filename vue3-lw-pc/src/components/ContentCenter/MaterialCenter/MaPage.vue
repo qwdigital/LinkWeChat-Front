@@ -369,7 +369,7 @@ export default {
 // }
 
 .sub-des {
-  // var(--font-black-7);
+  // color: var(--font-black-7);
   color: var(--color);
   font-size: 12px;
 }

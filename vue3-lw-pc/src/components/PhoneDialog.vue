@@ -74,7 +74,7 @@ export default {
 <style lang="scss" scoped>
 .time {
   font-size: 12px;
-  var(--font-black-7);
+  color: var(--font-black-7);
   padding: 10px 0 5px;
   text-align: center;
 }

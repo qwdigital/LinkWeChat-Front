@@ -186,7 +186,7 @@ export default {
 .info-wrap {
   margin-left: 20px;
   .info {
-    var(--font-black-7);
+    color: var(--font-black-7);
     line-height: 32px;
   }
 }

@@ -221,7 +221,7 @@ export default {
   // }
   .desc {
     text-align: center;
-    var(--font-black-7);
+    color: var(--font-black-7);
     font-size: 12px;
     margin: -22px 0 50px;
   }

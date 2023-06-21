@@ -97,7 +97,7 @@ export default {
 .my-title {
 }
 .tips {
-  var(--font-black-7);
+  color: var(--font-black-7);
   font-size: 12px;
 }
 </style>

@@ -77,7 +77,7 @@ export default {
 
   .login-nav--wrap {
     .nav-li {
-      var(--font-black-7);
+      color: var(--font-black-7);
       margin-left: 20px;
     }
   }

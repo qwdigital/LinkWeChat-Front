@@ -549,7 +549,7 @@ export default {
   font-weight: 700;
 }
 .titleColor {
-  var(--font-black-7);
+  color: var(--font-black-7);
 }
 .el-tag:nth-of-type(2) {
   margin-right: 10px;

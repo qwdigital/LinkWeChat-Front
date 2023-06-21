@@ -289,7 +289,7 @@ export default {
 
 <style lang="scss" scoped>
 .tips {
-  var(--font-black-7);
+  color: var(--font-black-7);
   font-size: 12px;
 }
 </style>

@@ -728,7 +728,7 @@ export default {
 }
 .tip {
   margin-top: 10px;
-  var(--font-black-7);
+  color: var(--font-black-7);
   font-size: 12px;
 }
 .img-item {
