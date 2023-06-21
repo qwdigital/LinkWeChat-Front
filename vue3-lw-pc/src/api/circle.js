@@ -76,3 +76,61 @@ export function statisticMoments(id) {
     url: service + '/moments/statistic/user/' + id,
   })
 }
+// 朋友圈 员工记录
+export function getRecordList(data) {
+  return request({
+    url: service + '/moments/statistic/user/record',
+    params: data,
+  })
+}
+// 员工记录导出
+export function exportUser(data) {
+  return request({
+    url: service + '/moments/statistic/user/export',
+    params: data,
+    responseType: 'blob',
+  })
+}
+// 朋友圈 客户统计
+export function statisticCustomer(id) {
+  return request({
+    url: service + '/moments/statistic/customer/' + id,
+  })
+}
+// 朋友圈 客户记录
+export function getCustomerList(data) {
+  return request({
+    url: service + '/moments/statistic/customer/record',
+    params: data,
+  })
+}
+// 互动记录导出
+export function exportCustomer(data) {
+  return request({
+    url: service + '/moments/statistic/customer/export',
+    params: data,
+    responseType: 'blob',
+  })
+}
+
+// 朋友圈 互动统计
+export function statisticInteract(id) {
+  return request({
+    url: service + '/moments/statistic/interact/' + id,
+  })
+}
+// 朋友圈 互动记录
+export function getInteractList(data) {
+  return request({
+    url: service + '/moments/statistic/interact/record',
+    params: data,
+  })
+}
+// 互动数据导出
+export function exportInteract(data) {
+  return request({
+    url: service + '/moments/statistic/interact/export',
+    params: data,
+    responseType: 'blob',
+  })
+}
