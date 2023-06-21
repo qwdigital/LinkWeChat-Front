@@ -195,7 +195,7 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: bold;
-  color: #aaa;
+  var(--font-black-7);
   font-size: 12px;
 }
 .imgsize {

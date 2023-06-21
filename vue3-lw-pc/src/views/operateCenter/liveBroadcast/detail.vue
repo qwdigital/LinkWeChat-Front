@@ -501,7 +501,7 @@ export default {
 }
 .my-label {
   font-size: 14px;
-  color: #aaa;
+  var(--font-black-7);
 }
 .my-content {
   font-size: 14px;

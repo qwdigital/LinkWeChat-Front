@@ -350,7 +350,7 @@ export default {
   font-size: 10px;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
-  color: #aaa;
+  var(--font-black-7);
 }
 ::v-deep .image-uploader {
   .uploader-icon {

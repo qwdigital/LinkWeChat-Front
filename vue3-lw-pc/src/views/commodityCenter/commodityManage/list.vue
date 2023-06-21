@@ -260,7 +260,7 @@ export default {
 </template>
 <style lang="scss" scoped>
 .tip {
-  color: #aaa;
+  var(--font-black-7);
   font-size: 12px;
   line-height: 20px;
 }

@@ -254,7 +254,7 @@ export default {
 
 <style lang="scss" scoped>
 .tips {
-  color: #aaa;
+  var(--font-black-7);
   font-size: 12px;
 }
 ::v-deep.qrCode {
