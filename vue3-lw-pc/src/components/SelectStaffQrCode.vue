@@ -263,7 +263,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     .title-name {
-      color: rgba(0, 0, 0, 0.9);
+      var(--font-black);
       font-size: 16px;
       font-weight: 600;
       // color: #333333;
@@ -329,7 +329,7 @@ export default {
         }
       }
       &:hover {
-        color: rgba(0, 0, 0, 0.9);
+        var(--font-black);
         background: #f5f8fe;
         opacity: 0.8;
         border-radius: 2px;
@@ -341,7 +341,7 @@ export default {
 
     .active {
       // border-left: 2px solid var(--color);
-      color: rgba(0, 0, 0, 0.9);
+      var(--font-black);
       background: #f5f8fe;
       border-radius: 2px;
     }
