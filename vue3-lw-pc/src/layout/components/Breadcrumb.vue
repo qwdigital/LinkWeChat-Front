@@ -120,7 +120,7 @@ export default {
   margin-left: 20px;
 
   .no-redirect {
-    color: #999;
+    color: var(--font-black-6);
     cursor: text;
   }
 }

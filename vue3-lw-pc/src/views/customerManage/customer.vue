@@ -654,7 +654,7 @@ export default {
 .el-icon-Avatar {
   font-size: 16px;
   // margin-left: 4px;
-  color: #999;
+  color: var(--font-black-6);
   &.man {
     color: #13a2e8;
   }

@@ -94,7 +94,7 @@ export default {
   }
 
   .gray {
-    color: #999;
+    color: var(--font-black-6);
   }
   .padt10 {
     padding-top: 10px;

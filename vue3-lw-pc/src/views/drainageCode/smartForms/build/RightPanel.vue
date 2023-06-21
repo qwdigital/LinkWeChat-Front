@@ -924,7 +924,7 @@ export default {
   line-height: 32px;
   font-size: 22px;
   padding: 0 4px;
-  color: #777;
+  color: var(--font-black-5);
 }
 .option-drag {
   cursor: move;

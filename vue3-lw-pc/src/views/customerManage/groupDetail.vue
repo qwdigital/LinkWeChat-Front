@@ -234,17 +234,17 @@ export default {
 .info-wrap {
   margin-left: 20px;
   .info {
-    color: #666;
+    color: var(--font-black-4);
   }
 }
 .overview {
   justify-content: space-around;
   line-height: 30px;
   .key {
-    color: #999;
+    color: var(--font-black-6);
   }
   .value {
-    color: #333;
+    color: var(--font-black);
     font-weight: 600;
     font-size: 16px;
   }

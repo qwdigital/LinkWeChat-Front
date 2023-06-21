@@ -540,12 +540,12 @@ export default {
   justify-content: flex-end;
   span {
     font-size: 12px;
-    color: #999;
+    color: var(--font-black-6);
   }
 }
 .numStyle {
   font-size: 48px;
-  color: #333;
+  color: var(--font-black);
   font-weight: 700;
 }
 .titleColor {

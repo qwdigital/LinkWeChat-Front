@@ -259,7 +259,7 @@ $selectedColor: #f6f7ff;
   }
 }
 ::v-deep .no-image {
-  color: #666;
+  color: var(--font-black-4);
   line-height: 80px;
 }
 .el-image {

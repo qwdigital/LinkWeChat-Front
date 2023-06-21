@@ -285,13 +285,13 @@ export default {
 }
 .prompt-title {
   margin-left: 10px;
-  color: #999;
+  color: var(--font-black-6);
 }
 .tag-place {
   color: var(--color);
 }
 .sub-title {
   font-size: 13px;
-  color: #999;
+  color: var(--font-black-6);
 }
 </style>

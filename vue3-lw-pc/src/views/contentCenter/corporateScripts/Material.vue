@@ -102,7 +102,7 @@ export default {
 }
 .title {
   font-size: 16px;
-  color: #333;
+  color: var(--font-black);
   font-weight: 600;
 }
 .data-content {

@@ -260,7 +260,7 @@ export default {
   line-height: 26px;
 }
 .tip {
-  color: #999;
+  color: var(--font-black-6);
 }
 .welcome-input {
   display: table;

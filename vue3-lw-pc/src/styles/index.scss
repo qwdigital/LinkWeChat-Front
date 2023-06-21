@@ -150,7 +150,7 @@ div:focus {
       font-weight: 400;
       margin: 0 5px;
       font-size: 12px;
-      color: #999;
+      color: var(--font-black-6);
     }
     // & + .g-card {
     //   border-radius: 0 0 var(--border-radius-big) var(--border-radius-big);
@@ -219,7 +219,7 @@ div:focus {
   }
 
   &tip-color {
-    color: #999;
+    color: var(--font-black-6);
   }
   // 粘性底部
   &footer-sticky {

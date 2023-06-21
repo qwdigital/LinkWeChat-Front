@@ -40,7 +40,7 @@
               <img style="height: 60px; width: 60px" src="../../assets/image/success.png" />
             </div>
             <upload class="image-uploader" v-model:fileUrl="form.certP12Url" :format="mat" type="3">
-              <span style="font-size: 14px; color: #333; margin-left: 20px; break-word: no-warp">
+              <span style="font-size: 14px; color: var(--font-black); margin-left: 20px; break-word: no-warp">
                 {{ form.certP12Url ? '重新上传' : '上传' }}
               </span>
             </upload>
