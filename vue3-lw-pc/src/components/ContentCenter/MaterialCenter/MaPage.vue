@@ -242,7 +242,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     .title-name {
-      var(--font-black);
+      color: var(--font-black);
       font-size: 16px;
       font-weight: 600;
       // color: #333333;
@@ -308,7 +308,7 @@ export default {
         }
       }
       &:hover {
-        var(--font-black);
+        color: var(--font-black);
         background: #f5f8fe;
         opacity: 0.8;
         border-radius: 2px;
@@ -320,7 +320,7 @@ export default {
 
     .active {
       // border-left: 2px solid var(--color);
-      var(--font-black);
+      color: var(--font-black);
       background: #f5f8fe;
       border-radius: 2px;
     }
