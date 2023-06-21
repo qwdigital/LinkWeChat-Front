@@ -213,7 +213,7 @@ export default {
       font-size: 16px;
     }
     .desc {
-      var(--font-black-9);
+      color: var(--font-black-9);
       height: 40px;
       overflow: hidden;
       text-overflow: ellipsis;

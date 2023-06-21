@@ -451,7 +451,7 @@ export default {
 }
 .avatar-uploader-icon {
   font-size: 58px;
-  var(--font-black-9);
+  color: var(--font-black-9);
 }
 .img-wrap {
   height: 340px;
