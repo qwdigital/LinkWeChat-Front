@@ -155,7 +155,7 @@
               v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1"
             >
               <el-switch v-model="codeForm.isExclusive" :active-value="1" :inactive-value="0"></el-switch>
-              <div class="sub-des">开启后，同一个企业的客户会优先添加到同一个员工。</div>
+              <div class="sub-des">开启后，相同客户会优先添加到同一个员工。</div>
             </el-form-item>
             <el-form-item v-if="codeForm.qrRuleType == 2" label="活码排班" prop="empleCodeRosterDto">
               <template v-for="(item, index) in codeForm.empleCodeRosterDto">
