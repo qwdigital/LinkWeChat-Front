@@ -6,7 +6,7 @@
         <div class="lable_text">选择成员来源：</div>
         <div>
           <div class="select_unit">
-            <el-button @click="dialogVisibleSelectDept = true" :disabled="isDetail"
+            <el-button @click="dialogVisibleSelectDept = true" v-show="!isDetail"
               >{{ selectedDeptList.length ? '修改' : '选择' }}部门范围</el-button
             >
             <!-- <el-popover
@@ -24,9 +24,10 @@
                 {{ item.deptName }}
               </el-tag>
             </div>
+            <span class="tips" v-else-if="isDetail">未选择标签</span>
           </div>
           <div class="select_unit">
-            <el-button @click="dialogVisibleSelectPost = true" :disabled="isDetail">
+            <el-button @click="dialogVisibleSelectPost = true" v-show="!isDetail">
               {{ selectedPostList.length ? '修改' : '选择' }}岗位
             </el-button>
             <div v-if="selectedPostList.length > 0">
@@ -34,6 +35,7 @@
                 item
               }}</el-tag>
             </div>
+            <span class="tips" v-else-if="isDetail">未选择标签</span>
           </div>
         </div>
       </div>
@@ -41,7 +43,7 @@
       <div class="flex">
         <div class="lable_text"></div>
         <div class="select_unit">
-          <el-button @click="dialogVisibleSelectUser = true" :disabled="isDetail"
+          <el-button @click="dialogVisibleSelectUser = true" v-show="!isDetail"
             >{{ selectedUserList.length ? '修改' : '选择' }}员工</el-button
           >
           <div v-if="selectedUserList.length > 0">
@@ -49,13 +51,14 @@
               {{ item.name }}
             </el-tag>
           </div>
+          <span class="tips" v-else-if="isDetail">未选择标签</span>
         </div>
       </div>
       <!-- 选择客户标签 -->
       <div class="flex mt10">
         <div class="lable_text">选择客户标签：</div>
         <div class="select_unit">
-          <el-button plain @click="dialogVisibleSelectTag = true" :disabled="isDetail"
+          <el-button plain @click="dialogVisibleSelectTag = true" v-show="!isDetail"
             >{{ selectedTagList.length ? '修改' : '选择' }}标签</el-button
           >
           <div v-if="selectedTagList.length > 0">
@@ -63,6 +66,7 @@
               unit.name
             }}</el-tag>
           </div>
+          <span class="tips" v-else-if="isDetail">未选择标签</span>
         </div>
       </div>
       <SelectDept
@@ -259,6 +263,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.tips {
+  color: #aaa;
+  font-size: 12px;
+  line-height: 30px;
+}
 .customer-num {
   span {
     font-size: 12px;

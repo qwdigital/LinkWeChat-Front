@@ -104,7 +104,9 @@
         <el-table-column show-overflow-tooltip prop="finishRate" label="完成率"></el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template #default="{ row }">
-            <el-button text @click="remind(row.id)" v-if="row.status === 2">提醒执行</el-button>
+            <el-button text @click="remind(row.id)" v-if="row.status === 2 && row.sendType !== 0"
+              >提醒执行</el-button
+            >
             <el-button text @click="statistics(row)">统计</el-button>
             <el-button text @click="detailFn(row)">查看</el-button>
             <el-button text @click="cease(row.id)" v-if="row.status !== 3">停止</el-button>

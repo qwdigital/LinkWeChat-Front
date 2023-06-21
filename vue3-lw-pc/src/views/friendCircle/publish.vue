@@ -10,7 +10,7 @@
           ref="ruleForm"
         >
           <div class="g-card">
-            <el-form-item label="任务名称：" prop="name">
+            <el-form-item label="任务名称：" prop="name" v-if="![2, 3].includes(firendType)">
               <el-input
                 v-model="form.name"
                 placeholder="请输入任务名称"
@@ -20,7 +20,8 @@
               ></el-input>
             </el-form-item>
             <el-form-item label="发送方式：" prop="sendType">
-              <el-radio-group v-model="form.sendType" :disabled="!!firendId">
+              <span v-if="firendType === 3">个人发送</span>
+              <el-radio-group v-model="form.sendType" :disabled="!!firendId" v-else>
                 <el-radio :label="0"
                   >企微群发
                   <el-popover placement="top" trigger="hover">
@@ -86,7 +87,11 @@
               >
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="结束时间：" prop="executeEndTime">
+            <el-form-item
+              label="结束时间："
+              prop="executeEndTime"
+              v-if="![2, 3].includes(firendType)"
+            >
               <div class="tips" v-if="!firendId">
                 朋友圈任务可设置截止时间，则未完成的成员不允许再执行本条任务
               </div>
@@ -100,7 +105,7 @@
               >
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="自动标签：">
+            <el-form-item label="自动标签：" v-if="![2, 3].includes(firendType)">
               <div class="tips">可根据客户的点赞或评论行为分别打上对应标签</div>
               <div>点赞自动打标签：</div>
               <div v-if="likeTagList.length">
@@ -123,16 +128,16 @@
                 <el-button type="primary" plain @click="selectedFn2">选择标签</el-button>
               </div>
             </el-form-item>
-            <el-form-item label="朋友圈内容：" v-if="[2, 3].includes(firendType)">
-              <!-- <el-input
+            <el-form-item label="朋友圈内容：" v-if="[1, 2, 3].includes(firendType)">
+              <el-input
                 v-model="form.content"
                 placeholder="未填写文本内容"
                 :disabled="true"
                 type="textarea"
                 :rows="4"
                 v-if="firendType === 1"
-              ></el-input> -->
-              <div class="firend-box">
+              ></el-input>
+              <div class="firend-box" v-else>
                 <FirendContent :list="friendsList" :content="form.content" />
               </div>
             </el-form-item>
@@ -284,11 +289,10 @@ export default {
             this.commentTagList = res.data.commentTagIds ? res.data.commentTagIds : []
             this.friendsList = res.data.materialList ? res.data.materialList : []
             let obj = {
-              templateInfo: res.data.content,
-              attachments: res.data.materialList,
+              templateInfo: res.data.content ? res.data.content : '',
+              attachments: res.data.materialList ? res.data.materialList : [],
             }
             this.baseData = JSON.parse(JSON.stringify(obj))
-            console.log(291,this.baseData)
             this.setEditTag()
           }
         })
@@ -438,8 +442,18 @@ export default {
           } else {
             this.form.executeTime = ''
           }
-          this.form.executeEndTime = moment(this.form.executeEndTime).format('YYYY-MM-DD HH:mm')
-          console.log(304, this.form)
+          if (this.form.executeEndTime) {
+            let time = this.form.executeEndTime.getTime()
+            let time2 = Date.now()
+            if (time2 > time) {
+              this.msgError('结束时间不可早于当前日期！')
+              return false
+            }
+            this.form.executeEndTime = moment(this.form.executeEndTime).format('YYYY-MM-DD HH:mm')
+          } else {
+            this.form.executeEndTime = ''
+          }
+          // console.log(304, this.form)
           addMoments(this.form).then((res) => {
             if (res.code === 200) {
               this.msgSuccess('操作成功')

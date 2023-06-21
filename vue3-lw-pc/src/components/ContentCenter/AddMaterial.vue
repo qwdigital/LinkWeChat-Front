@@ -80,7 +80,6 @@
                 clearable
                 :autofocus="true"
                 @input="changeInfo"
-                v-if="!detail"
               />
             </el-form-item>
           </el-form>
