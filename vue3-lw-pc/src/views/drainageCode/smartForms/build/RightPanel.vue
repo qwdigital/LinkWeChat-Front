@@ -537,7 +537,11 @@ import TreeNodeDialog from './TreeNodeDialog'
 import { isNumberStr } from '@/utils/index'
 import IconsDialog from './IconsDialog'
 import draggable from 'vuedraggable'
-import { inputComponents, selectComponents, layoutComponents } from './generator/config'
+import {
+  inputComponents,
+  //  selectComponents,
+  layoutComponents,
+} from './generator/config'
 
 const dateTimeFormat = {
   date: 'YYYY-MM-DD',
@@ -696,18 +700,18 @@ export default {
       }
       return []
     },
-    tagList() {
-      return [
-        {
-          label: '输入型组件',
-          options: inputComponents,
-        },
-        {
-          label: '选择型组件',
-          options: selectComponents,
-        },
-      ]
-    },
+    // tagList() {
+    //   return [
+    //     {
+    //       label: '输入型组件',
+    //       options: inputComponents,
+    //     },
+    //     {
+    //       label: '选择型组件',
+    //       options: selectComponents,
+    //     },
+    //   ]
+    // },
   },
   methods: {
     numberChange(val, max) {

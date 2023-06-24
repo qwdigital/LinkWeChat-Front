@@ -61,13 +61,7 @@ const layouts = {
                     : ''
                 }></div>
               <div class={element.formCodeId == '1' && !element.src ? 'nullC' : ''}>
-                <render
-                  key={element.renderKey}
-                  conf={element}
-                  onInput={(event) => {
-                    element.defaultValue = event
-                  }}
-                />
+                <render key={element.renderKey} conf={element} />
               </div>
             </div>
             <div class={element.formCodeId == 4 ? 'elementInputNum' : 'nullC'}>
