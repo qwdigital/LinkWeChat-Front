@@ -496,7 +496,7 @@ export default {
     .el-col {
       box-shadow: 0px 1px 0px 0px #f1f1f1;
       &:first-child {
-        color: #999;
+        color: var(--font-black-6);
       }
     }
     &::before {

@@ -46,9 +46,9 @@ function vModel(self, dataObject, defaultValue) {
   // }
   // console.log('dataObject.props', dataObject.props)
 
-  dataObject['model-value'] = defaultValue
-  dataObject.onInput = (val) => {
-    self.$emit('input', val)
+  dataObject['modelValue'] = self.conf.defaultValue
+  dataObject['onUpdate:modelValue'] = (val) => {
+    self.conf.defaultValue = val
   }
 }
 
@@ -164,6 +164,13 @@ export default {
       vModel(this, dataObject, confClone.defaultValue)
     }
     Object.assign(dataObject, confClone)
+
+    for (const key in dataObject._props) {
+      if (Object.hasOwnProperty.call(dataObject._props, key)) {
+         dataObject[key] = dataObject._props[key];
+      }
+    }
+    delete dataObject._props
 
     // Object.keys(confClone).forEach((key) => {
     //   const val = confClone[key]

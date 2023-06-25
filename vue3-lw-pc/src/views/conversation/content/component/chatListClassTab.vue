@@ -214,7 +214,7 @@ export default {
   background: white;
   overflow-y: scroll;
   border-bottom: 1px solid #efefef;
-  color: #999;
+  color: var(--font-black-6);
   text-align: center;
 
   ::-webkit-scrollbar {

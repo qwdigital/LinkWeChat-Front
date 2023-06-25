@@ -477,7 +477,7 @@ export default {
 .code-user {
   width: 50px;
   height: 50px;
-  color: #999;
+  color: var(--font-black-6);
 }
 .noBack {
   color: #ed4014;
@@ -501,7 +501,7 @@ export default {
 }
 .my-label {
   font-size: 14px;
-  color: #aaa;
+  color: var(--font-black-7);
 }
 .my-content {
   font-size: 14px;
@@ -510,7 +510,7 @@ export default {
 .el-icon-s-custom {
   font-size: 16px;
   // margin-left: 4px;
-  color: #999;
+  color: var(--font-black-6);
   &.man {
     color: #13a2e8;
   }

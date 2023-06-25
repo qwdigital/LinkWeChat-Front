@@ -186,7 +186,7 @@ export default {
 .info-wrap {
   margin-left: 20px;
   .info {
-    color: #aaa;
+    color: var(--font-black-7);
     line-height: 32px;
   }
 }
@@ -194,7 +194,7 @@ export default {
 .el-icon-s-custom {
   font-size: 16px;
   margin-left: 4px;
-  color: #999;
+  color: var(--font-black-6);
   &.man {
     color: #13a2e8;
   }

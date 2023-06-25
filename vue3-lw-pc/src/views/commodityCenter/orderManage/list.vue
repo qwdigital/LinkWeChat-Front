@@ -388,7 +388,7 @@ export default {
 <style lang="scss" scoped>
 .el-icon-s-custom {
   font-size: 16px;
-  color: #999;
+  color: var(--font-black-6);
   &.man {
     color: #13a2e8;
   }
@@ -397,7 +397,7 @@ export default {
   }
 }
 .tip {
-  color: #aaa;
+  color: var(--font-black-7);
   font-size: 12px;
   line-height: 20px;
 }

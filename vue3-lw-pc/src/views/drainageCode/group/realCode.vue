@@ -396,7 +396,7 @@ export default {
   }
 }
 .tip {
-  color: #aaa;
+  color: var(--font-black-7);
   font-size: 12px;
 }
 .green-text {

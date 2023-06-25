@@ -1,5 +1,10 @@
 <template>
-  <div :style="Ifcontainer ? '' : 'background:#666;display: flex;justify-content: center;height: 100%;padding: 30px;'">
+  <div
+    :style="
+      Ifcontainer
+        ? 'height: 100%;'
+        : 'background:#666;display: flex;justify-content: center;height: 100%;padding: 30px;'
+    ">
     <div
       :class="Ifcontainer ? 'container' : 'container containerPC'"
       data-title="调查问卷"

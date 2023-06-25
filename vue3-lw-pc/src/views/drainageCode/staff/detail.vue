@@ -1,17 +1,17 @@
 <template>
   <div>
-    <el-row style="margin-top: 10px;" type="flex" :gutter="10">
+    <el-row style="margin-top: 10px" type="flex" :gutter="10">
       <el-col>
         <div class="g-card">
           <div class="g-card-title">基本信息</div>
           <div class="pad20">
             <el-form label-position="right" label-width="100px">
-              <el-form-item style="margin-bottom: 10px;" label="活码名称">{{ form.name }}</el-form-item>
-              <el-form-item style="margin-bottom: 10px;" label="活码分组">{{ form.qrGroupName }}</el-form-item>
-              <el-form-item style="margin-bottom: 10px;" label="自动通过好友">
+              <el-form-item style="margin-bottom: 10px" label="活码名称">{{ form.name }}</el-form-item>
+              <el-form-item style="margin-bottom: 10px" label="活码分组">{{ form.qrGroupName }}</el-form-item>
+              <el-form-item style="margin-bottom: 10px" label="自动通过好友">
                 <el-switch :value="form.autoAdd" :active-value="1" :inactive-value="0" disabled></el-switch>
               </el-form-item>
-              <el-form-item style="margin-bottom: 10px;" label="新客户标签">
+              <el-form-item style="margin-bottom: 10px" label="新客户标签">
                 <el-tag v-for="(data, key) in form.qrTags" :key="key">{{ data.tagName }}</el-tag>
               </el-form-item>
             </el-form>
@@ -51,10 +51,10 @@
           <div class="pad20" v-for="(unit, index) in form.qrUserInfos" :key="index">
             <div class="content pad20">
               <el-form label-position="right" label-width="100px">
-                <el-form-item style="margin-bottom: 10px;" label="排班员工">
+                <el-form-item style="margin-bottom: 10px" label="排班员工">
                   <el-tag v-for="(data, key) in unit.weQrUserList" :key="key">{{ data.userName }}</el-tag>
                 </el-form-item>
-                <el-form-item style="margin-bottom: 10px;" label="工作周期">
+                <el-form-item style="margin-bottom: 10px" label="工作周期">
                   <el-checkbox-group v-if="unit.type === 0" v-model="checkList">
                     <el-checkbox label="周一" disabled></el-checkbox>
                     <el-checkbox label="周二" disabled></el-checkbox>
@@ -74,36 +74,32 @@
                     <el-checkbox label="7" disabled>周日</el-checkbox>
                   </el-checkbox-group>
                 </el-form-item>
-                <el-form-item v-if="unit.type === 0" v-model="checkList" style="margin-bottom: 10px;" label="在线时间">
+                <el-form-item v-if="unit.type === 0" v-model="checkList" style="margin-bottom: 10px" label="在线时间">
                   <el-time-select
-                    style="width: 40%;"
+                    style="width: 40%"
                     disabled
                     v-model="defaultStart"
-                    placeholder="任意时间点"
-                  ></el-time-select>
+                    placeholder="任意时间点"></el-time-select>
                   -
                   <el-time-select
-                    style="width: 40%;"
+                    style="width: 40%"
                     v-model="defaultEnd"
                     disabled
                     value="23:59"
-                    placeholder="任意时间点"
-                  ></el-time-select>
+                    placeholder="任意时间点"></el-time-select>
                 </el-form-item>
-                <el-form-item v-else style="margin-bottom: 10px;" label="在线时间">
+                <el-form-item v-else style="margin-bottom: 10px" label="在线时间">
                   <el-time-select
-                    style="width: 40%;"
+                    style="width: 40%"
                     disabled
                     v-model="unit.beginTime"
-                    placeholder="任意时间点"
-                  ></el-time-select>
+                    placeholder="任意时间点"></el-time-select>
                   -
                   <el-time-select
-                    style="width: 40%;"
+                    style="width: 40%"
                     disabled
                     v-model="unit.endTime"
-                    placeholder="任意时间点"
-                  ></el-time-select>
+                    placeholder="任意时间点"></el-time-select>
                 </el-form-item>
               </el-form>
             </div>
@@ -121,21 +117,20 @@
             <el-date-picker
               v-model="dateRange"
               class="ml20"
-              style="width: 260px;"
+              style="width: 260px"
               value-format="YYYY-MM-DD"
               type="daterange"
               :clearable="false"
               range-separator="-"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
-              @change="getList"
-            ></el-date-picker>
+              @change="getList"></el-date-picker>
           </div>
-          <div ref="chart" id="mychart" style="width: 100%; height: 400px;"></div>
+          <div ref="chart" id="mychart" style="width: 100%; height: 400px"></div>
         </div>
       </el-col>
-      <el-col style="flex-basis: auto;">
-        <div style="height: 100%; display: flex; flex-direction: column;">
+      <el-col style="flex-basis: auto">
+        <div style="height: 100%; display: flex; flex-direction: column">
           <div class="g-card">
             <div class="right-title pad20">
               <div class="right-title-name">员工活码</div>
@@ -150,15 +145,14 @@
                   :src="form.qrCode"
                   fit="fill"
                   :preview-src-list="[form.qrCode]"
-                  style="width: 124px; height: 124px;"
-                ></el-image>
+                  style="width: 124px; height: 124px"></el-image>
                 <div>
                   <el-button text @click="download()">下载二维码</el-button>
                 </div>
               </div>
             </div>
           </div>
-          <div class="g-card" style="flex: 1;">
+          <div class="g-card" style="flex: 1">
             <preview-client :list="form.materialMsgList" :templateInfo="form.welcomeMsg"></preview-client>
           </div>
         </div>
@@ -168,335 +162,335 @@
 </template>
 
 <script>
-  import * as echarts from 'echarts'
-  import PreviewClient from '@/components/ContentCenter/PreviewInPhone'
-  import { getDetail, getTotal, downloadBatch } from '@/api/drainageCode/staff'
-  export default {
-    name: 'CodeDetail',
-    components: {
-      PreviewClient
-    },
-    data() {
-      return {
-        defaultStart: '00:00',
-        defaultEnd: '23:59',
-        form: {},
-        checkList: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-        // 遮罩层
-        loading: false,
-        // 选中数组
-        ids: [],
-        // 表格数据
-        list: [],
-        // 日期范围
-        dateRange: [],
-        // 表单参数
-        form: {},
-        // 查询参数
-        query: {
-          qrId: '',
-          beginTime: undefined,
-          endTime: undefined
-        },
-        type: {
-          1: '单人',
-          2: '多人',
-          3: '批量单人'
-        },
-        timeRange: 7,
+import * as echarts from 'echarts'
+import PreviewClient from '@/components/ContentCenter/PreviewInPhone'
+import { getDetail, getTotal, downloadBatch } from '@/api/drainageCode/staff'
+export default {
+  name: 'CodeDetail',
+  components: {
+    PreviewClient,
+  },
+  data() {
+    return {
+      defaultStart: '00:00',
+      defaultEnd: '23:59',
+      form: {},
+      checkList: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+      // 遮罩层
+      loading: false,
+      // 选中数组
+      ids: [],
+      // 表格数据
+      list: [],
+      // 日期范围
+      dateRange: [],
+      // 表单参数
+      form: {},
+      // 查询参数
+      query: {
+        qrId: '',
+        beginTime: undefined,
+        endTime: undefined,
+      },
+      type: {
+        1: '单人',
+        2: '多人',
+        3: '批量单人',
+      },
+      timeRange: 7,
 
-        cardData: []
-      }
-    },
-    created() {
-      let id = this.$route.query.id
-      this.query.qrId = id
-      id && this.getDetail(id)
-      // this.getList()
-    },
-    mounted() {
-      // var clipboard = new this.ClipboardJS('.copy-btn')
-    },
-    methods: {
-      editFn() {
-        this.$router.push({
-          path: '/drainageCode/qrCode/staff/' + 'staffAdd',
-          query: {
-            id: this.form.id
-          }
-        })
-      },
-      /** 获取详情 */
-      getDetail(id) {
-        this.loading = true
-        getDetail(id).then((res) => {
-          this.form = res.data
-          if (this.form.qrAttachments && this.form.qrAttachments.length) {
-            this.form.welcomeMsg = this.form.qrAttachments[0].content
-            this.form.materialMsgList = this.setEditList(this.form.qrAttachments)
-          }
-          this.form.qrUserInfos.forEach((dd) => {
-            if (dd.workCycle) {
-              dd.weekday = dd.workCycle.split(',')
-            } else {
-              dd.weekday = []
-            }
-          })
-          this.loading = false
-          this.setTime(7)
-        })
-      },
-      setEditList(list) {
-        let arr = []
-        if (list && list.length) {
-          list.forEach((dd) => {
-            if (dd.realType === 0) {
-              let obj = {
-                id: dd.materialId,
-                mediaType: '0',
-                materialUrl: dd.picUrl
-              }
-              arr.push(obj)
-            } else if (dd.realType === 2) {
-              let obj = {
-                id: dd.materialId,
-                mediaType: '2',
-                materialUrl: dd.fileUrl,
-                coverUrl: dd.picUrl,
-                digest: dd.description,
-                materialName: dd.title
-              }
-              arr.push(obj)
-            } else if (dd.realType === 3) {
-              let obj = {
-                id: dd.materialId,
-                mediaType: '3',
-                materialUrl: dd.fileUrl,
-                digest: dd.description,
-                materialName: dd.title
-              }
-              arr.push(obj)
-            } else if (dd.realType === 4) {
-              let obj = {
-                id: dd.materialId,
-                mediaType: '4',
-                content: dd.content
-              }
-              arr.push(obj)
-            } else if (dd.realType === 9) {
-              let obj = {
-                id: dd.materialId,
-                mediaType: '9',
-                content: dd.content,
-                coverUrl: dd.picUrl,
-                materialUrl: dd.linkUrl,
-                materialName: dd.title
-              }
-              arr.push(obj)
-            } else if (dd.realType === 8) {
-              let ob = {
-                id: dd.materialId,
-                mediaType: '8',
-                materialName: dd.title,
-                materialUrl: dd.linkUrl,
-                materialName: dd.title
-              }
-              arr.push(ob)
-            } else if (dd.realType === 11) {
-              let ff = {
-                id: dd.materialId,
-                mediaType: '11',
-                digest: dd.appId,
-                materialName: dd.title,
-                coverUrl: dd.picUrl,
-                materialUrl: dd.fileUrl
-              }
-              arr.push(ff)
-            } else if (dd.realType === 12) {
-              let ff = {
-                id: dd.materialId,
-                mediaType: '12',
-                digest: dd.description,
-                materialUrl: dd.fileUrl,
-                coverUrl: dd.picUrl,
-                content: dd.content,
-                materialName: dd.title
-              }
-              arr.push(ff)
-            } else if (dd.realType === 5) {
-              let obj = {
-                id: dd.materialId,
-                mediaType: '5',
-                materialUrl: dd.fileUrl,
-                materialName: dd.title
-              }
-              arr.push(obj)
-            }
-          })
-        }
-        return arr
-      },
-      getList() {
-        this.query.beginTime = this.dateRange[0]
-        this.query.endTime = this.dateRange[1]
-        getTotal(this.query).then(({ data }) => {
-          this.cardData = [
-            {
-              title: '今日扫码次数',
-              value: data.total
-            },
-            {
-              title: '累计扫码次数',
-              value: data.today
-            }
-          ]
-          let option = {
-            xAxis: {
-              type: 'category',
-              data: data.xaxis
-            },
-            yAxis: {
-              type: 'value'
-            },
-            series: [
-              {
-                data: data.yaxis,
-                type: 'line'
-              }
-            ]
-          }
-          var myChart = echarts.init(document.getElementById('mychart'))
-          myChart.setOption(option)
-          this.$nextTick(() => {
-            myChart.resize()
-          })
-        })
-      },
-      setTime(days) {
-        this.timeRange = days
-        let date = new Date()
-        date.setDate(date.getDate() - days)
-        this.dateRange = [this.getTime(date), this.getTime()]
-        this.getList()
-      },
-      getHandledValue(num) {
-        return num < 10 ? '0' + num : num
-      },
-      getTime(datePar) {
-        const d = datePar ? new Date(datePar) : new Date()
-        const year = d.getFullYear()
-        const month = this.getHandledValue(d.getMonth() + 1)
-        const date = this.getHandledValue(d.getDate())
-        return year + '-' + month + '-' + date
-      },
-      downloadByBlob(url, name) {
-        let image = new Image()
-        image.setAttribute('crossOrigin', 'anonymous')
-        image.src = url
-        image.onload = () => {
-          let canvas = document.createElement('canvas')
-          canvas.width = image.width
-          canvas.height = image.height
-          let ctx = canvas.getContext('2d')
-          ctx.drawImage(image, 0, 0, image.width, image.height)
-          canvas.toBlob((blob) => {
-            let url = URL.createObjectURL(blob)
-            this.downloadFn(url, name)
-            // 用完释放URL对象
-            URL.revokeObjectURL(url)
-          })
-        }
-      },
-      downloadFn(href, name) {
-        let eleLink = document.createElement('a')
-        eleLink.download = name
-        eleLink.href = href
-        eleLink.click()
-        eleLink.remove()
-      },
-      download() {
-        let name = this.form.name + '.png'
-        this.downloadByBlob(this.form.qrCode, name)
-      }
+      cardData: [],
     }
-  }
+  },
+  created() {
+    let id = this.$route.query.id
+    this.query.qrId = id
+    id && this.getDetail(id)
+    // this.getList()
+  },
+  mounted() {
+    // var clipboard = new this.ClipboardJS('.copy-btn')
+  },
+  methods: {
+    editFn() {
+      this.$router.push({
+        path: '/drainageCode/qrCode/staff/' + 'staffAdd',
+        query: {
+          id: this.form.id,
+        },
+      })
+    },
+    /** 获取详情 */
+    getDetail(id) {
+      this.loading = true
+      getDetail(id).then((res) => {
+        this.form = res.data
+        if (this.form.qrAttachments && this.form.qrAttachments.length) {
+          this.form.welcomeMsg = this.form.qrAttachments[0].content
+          this.form.materialMsgList = this.setEditList(this.form.qrAttachments)
+        }
+        this.form.qrUserInfos.forEach((dd) => {
+          if (dd.workCycle) {
+            dd.weekday = dd.workCycle.split(',')
+          } else {
+            dd.weekday = []
+          }
+        })
+        this.loading = false
+        this.setTime(7)
+      })
+    },
+    setEditList(list) {
+      let arr = []
+      if (list && list.length) {
+        list.forEach((dd) => {
+          if (dd.realType === 0) {
+            let obj = {
+              id: dd.materialId,
+              mediaType: '0',
+              materialUrl: dd.picUrl,
+            }
+            arr.push(obj)
+          } else if (dd.realType === 2) {
+            let obj = {
+              id: dd.materialId,
+              mediaType: '2',
+              materialUrl: dd.fileUrl,
+              coverUrl: dd.picUrl,
+              digest: dd.description,
+              materialName: dd.title,
+            }
+            arr.push(obj)
+          } else if (dd.realType === 3) {
+            let obj = {
+              id: dd.materialId,
+              mediaType: '3',
+              materialUrl: dd.fileUrl,
+              digest: dd.description,
+              materialName: dd.title,
+            }
+            arr.push(obj)
+          } else if (dd.realType === 4) {
+            let obj = {
+              id: dd.materialId,
+              mediaType: '4',
+              content: dd.content,
+            }
+            arr.push(obj)
+          } else if (dd.realType === 9) {
+            let obj = {
+              id: dd.materialId,
+              mediaType: '9',
+              content: dd.content,
+              coverUrl: dd.picUrl,
+              materialUrl: dd.linkUrl,
+              materialName: dd.title,
+            }
+            arr.push(obj)
+          } else if (dd.realType === 8) {
+            let ob = {
+              id: dd.materialId,
+              mediaType: '8',
+              materialName: dd.title,
+              materialUrl: dd.linkUrl,
+              materialName: dd.title,
+            }
+            arr.push(ob)
+          } else if (dd.realType === 11) {
+            let ff = {
+              id: dd.materialId,
+              mediaType: '11',
+              digest: dd.appId,
+              materialName: dd.title,
+              coverUrl: dd.picUrl,
+              materialUrl: dd.fileUrl,
+            }
+            arr.push(ff)
+          } else if (dd.realType === 12) {
+            let ff = {
+              id: dd.materialId,
+              mediaType: '12',
+              digest: dd.description,
+              materialUrl: dd.fileUrl,
+              coverUrl: dd.picUrl,
+              content: dd.content,
+              materialName: dd.title,
+            }
+            arr.push(ff)
+          } else if (dd.realType === 5) {
+            let obj = {
+              id: dd.materialId,
+              mediaType: '5',
+              materialUrl: dd.fileUrl,
+              materialName: dd.title,
+            }
+            arr.push(obj)
+          }
+        })
+      }
+      return arr
+    },
+    getList() {
+      this.query.beginTime = this.dateRange[0]
+      this.query.endTime = this.dateRange[1]
+      getTotal(this.query).then(({ data }) => {
+        this.cardData = [
+          {
+            title: '今日扫码次数',
+            value: data.total,
+          },
+          {
+            title: '累计扫码次数',
+            value: data.today,
+          },
+        ]
+        let option = {
+          xAxis: {
+            type: 'category',
+            data: data.xaxis,
+          },
+          yAxis: {
+            type: 'value',
+          },
+          series: [
+            {
+              data: data.yaxis,
+              type: 'line',
+            },
+          ],
+        }
+        var myChart = echarts.init(document.getElementById('mychart'))
+        myChart.setOption(option)
+        this.$nextTick(() => {
+          myChart.resize()
+        })
+      })
+    },
+    setTime(days) {
+      this.timeRange = days
+      let date = new Date()
+      date.setDate(date.getDate() - days)
+      this.dateRange = [this.getTime(date), this.getTime()]
+      this.getList()
+    },
+    getHandledValue(num) {
+      return num < 10 ? '0' + num : num
+    },
+    getTime(datePar) {
+      const d = datePar ? new Date(datePar) : new Date()
+      const year = d.getFullYear()
+      const month = this.getHandledValue(d.getMonth() + 1)
+      const date = this.getHandledValue(d.getDate())
+      return year + '-' + month + '-' + date
+    },
+    downloadByBlob(url, name) {
+      let image = new Image()
+      image.setAttribute('crossOrigin', 'anonymous')
+      image.src = url
+      image.onload = () => {
+        let canvas = document.createElement('canvas')
+        canvas.width = image.width
+        canvas.height = image.height
+        let ctx = canvas.getContext('2d')
+        ctx.drawImage(image, 0, 0, image.width, image.height)
+        canvas.toBlob((blob) => {
+          let url = URL.createObjectURL(blob)
+          this.downloadFn(url, name)
+          // 用完释放URL对象
+          URL.revokeObjectURL(url)
+        })
+      }
+    },
+    downloadFn(href, name) {
+      let eleLink = document.createElement('a')
+      eleLink.download = name
+      eleLink.href = href
+      eleLink.click()
+      eleLink.remove()
+    },
+    download() {
+      let name = this.form.name + '.png'
+      this.downloadByBlob(this.form.qrCode, name)
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
-  .top {
-    align-items: flex-start;
-  }
+.top {
+  align-items: flex-start;
+}
 
-  .title {
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 20px;
+}
+
+.crumb {
+  font-size: 12px;
+
+  font-weight: 400;
+  color: #666666;
+  display: flex;
+}
+
+.crumb- {
+  // 一级 页面标题
+  &title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 90px; // line-height: 90px;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--font-black);
+    padding: 0 20px;
+    background: var(--bg-white);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+}
+
+.content {
+  margin-top: 20px;
+  border-radius: 4px;
+  border: 1px solid #f1f1f1;
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.right-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .right-title-name {
     font-size: 16px;
-    font-weight: 600;
-    margin: 0 0 20px;
-  }
 
-  .crumb {
+    font-weight: 500;
+    color: #333333;
+  }
+  .right-title-edit {
     font-size: 12px;
 
     font-weight: 400;
-    color: #666666;
+    color: var(--color);
     display: flex;
-  }
-
-  .crumb- {
-    // 一级 页面标题
-    &title {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      height: 90px; // line-height: 90px;
-      font-size: 18px;
-      font-weight: 500;
-      color: #333;
-      padding: 0 20px;
-      background: var(--bg-white);
-      border-top-left-radius: 4px;
-      border-top-right-radius: 4px;
-    }
-  }
-
-  .content {
-    margin-top: 20px;
-    border-radius: 4px;
-    border: 1px solid #f1f1f1;
-    &:first-child {
-      margin-top: 0;
-    }
-  }
-
-  .right-title {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    .right-title-name {
-      font-size: 16px;
-
-      font-weight: 500;
-      color: #333333;
-    }
-    .right-title-edit {
-      font-size: 12px;
-
-      font-weight: 400;
-      color: var(--color);
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      &:hover {
-        opacity: 0.8;
-      }
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
     }
   }
+}
 
-  .code-show {
-    text-align: center; // .download-btn {
-    // 	font-size: 12px;
-    //
-    // 	font-weight: 400;
-    // 	color: var(--color);
-    // }
-  }
+.code-show {
+  text-align: center; // .download-btn {
+  // 	font-size: 12px;
+  //
+  // 	font-weight: 400;
+  // 	color: var(--color);
+  // }
+}
 </style>

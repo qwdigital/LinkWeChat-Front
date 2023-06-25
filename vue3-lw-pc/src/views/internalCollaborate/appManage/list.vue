@@ -369,6 +369,6 @@ export default {
 // }
 // .avatar-uploader-icon {
 //   font-size: 28px;
-//   color: #ddd;
+//   color: var(--font-black-9);
 // }
 </style>

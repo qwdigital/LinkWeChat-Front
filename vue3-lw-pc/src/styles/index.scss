@@ -150,7 +150,7 @@ div:focus {
       font-weight: 400;
       margin: 0 5px;
       font-size: 12px;
-      color: #999;
+      color: var(--font-black-6);
     }
     // & + .g-card {
     //   border-radius: 0 0 var(--border-radius-big) var(--border-radius-big);
@@ -219,7 +219,7 @@ div:focus {
   }
 
   &tip-color {
-    color: #999;
+    color: var(--font-black-6);
   }
   // 粘性底部
   &footer-sticky {
@@ -251,7 +251,7 @@ div:focus {
         justify-content: space-between;
         align-items: center;
         .title-name {
-          color: rgba(0, 0, 0, 0.9);
+          color: var(--font-black);
           font-size: 14px;
           font-weight: 600;
           // color: #333333;
@@ -315,7 +315,7 @@ div:focus {
             }
           }
           &:hover {
-            color: rgba(0, 0, 0, 0.9);
+            color: var(--font-black);
             background: #f5f8fe;
             opacity: 0.8;
             border-radius: 2px;
@@ -327,7 +327,7 @@ div:focus {
 
         .active {
           // border-left: 2px solid #3c88f0;
-          color: rgba(0, 0, 0, 0.9);
+          color: var(--font-black);
           background: #f5f8fe;
           border-radius: 2px;
         }

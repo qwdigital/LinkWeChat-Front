@@ -648,7 +648,7 @@ export default {
           }
           this.pageDataAll = JSON.parse(data.styles)
         }
-        this.baseFormUrl4 = window.lwConfig.DOMAIN + '/#/formsDetail?id=true&formId=' + this.formId
+        this.baseFormUrl4 = window.lwConfig.DOMAIN + '/formsDetail?id=true&formId=' + this.formId
 
         this.creatQrCode()
         // this.$forceUpdate()
@@ -735,7 +735,7 @@ export default {
       // }
       var qrcode = QRCode.toDataURL(
         this.$refs.qrCodeUrl,
-        window.lwConfig.DOMAIN + '/#/formsDetail?id=q&formId=' + that.formId, // 需要转换为二维码的内容
+        window.lwConfig.DOMAIN + '/formsDetail?id=q&formId=' + that.formId, // 需要转换为二维码的内容
         {
           width: 150,
           margin: 4,
@@ -1517,7 +1517,7 @@ export default {
     height: 90px; // line-height: 90px;
     font-size: 18px;
     font-weight: 500;
-    color: #333;
+    color: var(--font-black);
     padding: 0 20px;
     background: var(--bg-white);
     border-top-left-radius: 4px;
@@ -1543,7 +1543,7 @@ export default {
 }
 
 .tip {
-  color: #999;
+  color: var(--font-black-6);
 }
 
 .welcome-input {

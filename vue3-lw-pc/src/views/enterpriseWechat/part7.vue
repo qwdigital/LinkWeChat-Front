@@ -262,7 +262,7 @@ div#driver-highlighted-element-stage {
 //   visibility: hidden;
 // }
 .tips {
-  color: #aaa;
+  color: var(--font-black-7);
   font-size: 12px;
 }
 </style>

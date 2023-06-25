@@ -244,7 +244,7 @@ export default {
     height: calc(100vh - 320px);
     overflow-y: auto;
     overflow-x: hidden;
-    color: #999;
+    color: var(--font-black-6);
     text-align: center;
     .customer-li {
       padding: 10px;
@@ -269,7 +269,7 @@ export default {
 .el-icon-Avatar {
   font-size: 16px;
   margin-left: 4px;
-  color: #999;
+  color: var(--font-black-6);
   &.man {
     color: #13a2e8;
   }

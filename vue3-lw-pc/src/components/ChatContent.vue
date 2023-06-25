@@ -86,11 +86,11 @@ export default {
     </a>
     <div v-else-if="message.msgType === 'voice'">
       <voice :amrUrl="JSON.parse(message.contact)['attachment']"></voice>
-      <span style="font-size: 12px; color: #999">语音消息</span>
+      <span style="font-size: 12px; color: var(--font-black-6)">语音消息</span>
     </div>
     <div v-else-if="message.msgType === 'meeting_voice_call'">
       <voice :amrUrl="JSON.parse(message.contact)['attachment']"></voice>
-      <span style="font-size: 12px; color: #999" v-if="JSON.parse(message.contact)['endtime']">
+      <span style="font-size: 12px; color: var(--font-black-6)" v-if="JSON.parse(message.contact)['endtime']">
         语音通话-结束时间：{{ setDate(JSON.parse(message.contact)['endtime']) }}
       </span>
     </div>
@@ -177,7 +177,7 @@ export default {
 
 .message {
   @extend .mes;
-  color: #333;
+  color: var(--font-black);
   margin-left: 10px;
   background: var(--bg-white);
   border-top-left-radius: 0;
@@ -229,7 +229,7 @@ export default {
     padding: 10px;
     line-height: 1.5;
     // text-indent: 10px;
-    color: #333;
+    color: var(--font-black);
     z-index: -1;
     .card--link-title {
       font-size: 15px;
@@ -247,7 +247,7 @@ export default {
     }
     .card--link-desc {
       font-size: 13px;
-      color: #666;
+      color: var(--font-black-4);
       text-overflow: -o-ellipsis-lastline;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -263,7 +263,7 @@ export default {
     border-top: 1px solid #efefef;
     text-align: left;
     padding: 10px;
-    color: #333;
+    color: var(--font-black);
     font-weight: bold;
     width: 100%;
   }

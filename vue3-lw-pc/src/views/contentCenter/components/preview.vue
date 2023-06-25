@@ -41,7 +41,7 @@ export default {
   margin: 20px 0;
 }
 .content {
-  color: #333;
+  color: var(--font-black);
   font-size: 12px;
   line-height: 16px;
 }

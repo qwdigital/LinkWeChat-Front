@@ -259,7 +259,7 @@ export default {
   margin: 30px auto;
   text-align: center;
   .tips {
-    color: #aaa;
+    color: var(--font-black-7);
     font-size: 12px;
     line-height: 60px;
   }

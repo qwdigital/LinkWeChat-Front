@@ -61,13 +61,7 @@ const layouts = {
                     : ''
                 }></div>
               <div class={element.formCodeId == '1' && !element.src ? 'nullC' : ''}>
-                <render
-                  key={element.renderKey}
-                  conf={element}
-                  onInput={(event) => {
-                    element.defaultValue = event
-                  }}
-                />
+                <render key={element.renderKey} conf={element} />
               </div>
             </div>
             <div class={element.formCodeId == 4 ? 'elementInputNum' : 'nullC'}>
@@ -259,7 +253,7 @@ $selectedColor: #f6f7ff;
   }
 }
 ::v-deep .no-image {
-  color: #666;
+  color: var(--font-black-4);
   line-height: 80px;
 }
 .el-image {

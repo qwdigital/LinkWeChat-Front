@@ -634,7 +634,7 @@ export default {
     height: 90px; // line-height: 90px;
     font-size: 18px;
     font-weight: 500;
-    color: #333;
+    color: var(--font-black);
     padding: 0 20px;
     background: var(--bg-white);
     border-top-left-radius: 4px;
@@ -652,7 +652,7 @@ export default {
 
 .small-tip {
   font-size: 12px;
-  color: #999;
+  color: var(--font-black-6);
   margin-left: 12px;
 }
 

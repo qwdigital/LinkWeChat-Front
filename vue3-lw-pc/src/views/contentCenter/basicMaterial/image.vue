@@ -139,7 +139,7 @@ export default {
     .content {
       width: 95%;
       overflow: hidden;
-      color: #aaa;
+      color: var(--font-black-7);
       font-size: 13px;
       .name {
         margin-right: 6px;

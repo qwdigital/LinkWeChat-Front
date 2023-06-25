@@ -491,7 +491,7 @@ export default {
       line-height: 36px;
       font-size: 18px;
       font-weight: 500;
-      color: #333;
+      color: var(--font-black);
       font-weight: bold;
     }
 

@@ -225,7 +225,7 @@ export default {
   bottom: 20px;
 }
 .el-icon-QuestionFilled {
-  color: #aaa;
+  color: var(--font-black-7);
 }
 .auth-desc-img {
   height: 400px;

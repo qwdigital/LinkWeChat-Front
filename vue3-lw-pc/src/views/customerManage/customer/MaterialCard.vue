@@ -124,7 +124,7 @@ export default {
 .title {
   font-weight: 700;
   font-size: 12px;
-  color: #333;
+  color: var(--font-black);
   line-height: 18px;
   width: 100%;
   white-space: nowrap;

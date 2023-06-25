@@ -398,9 +398,9 @@
             "
             label="选项尺寸">
             <el-radio-group v-model="activeData.size">
-              <el-radio-button label="medium">中等</el-radio-button>
+              <el-radio-button label="large">较大</el-radio-button>
+              <el-radio-button label="default">中等</el-radio-button>
               <el-radio-button label="small">较小</el-radio-button>
-              <el-radio-button label="mini">迷你</el-radio-button>
             </el-radio-group>
           </el-form-item>
           <!--         <el-form-item v-if="activeData['show-word-limit'] !== undefined" label="输入统计">
@@ -495,9 +495,9 @@
           </el-form-item>
           <el-form-item label="表单尺寸">
             <el-radio-group v-model="formConf.size">
-              <el-radio-button label="medium">中等</el-radio-button>
+              <el-radio-button label="large">较大</el-radio-button>
+              <el-radio-button label="default">中等</el-radio-button>
               <el-radio-button label="small">较小</el-radio-button>
-              <el-radio-button label="mini">迷你</el-radio-button>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="标签对齐">
@@ -537,7 +537,11 @@ import TreeNodeDialog from './TreeNodeDialog'
 import { isNumberStr } from '@/utils/index'
 import IconsDialog from './IconsDialog'
 import draggable from 'vuedraggable'
-import { inputComponents, selectComponents, layoutComponents } from './generator/config'
+import {
+  inputComponents,
+  //  selectComponents,
+  layoutComponents,
+} from './generator/config'
 
 const dateTimeFormat = {
   date: 'YYYY-MM-DD',
@@ -652,8 +656,7 @@ export default {
   watch: {
     'activeData.maxZ': {
       handler: function (neww, oldd) {
-        console.log('activeData', this.activeData.options)
-        if (this.activeData.options.length > neww) {
+        if (this.activeData.options?.length > neww) {
           if (neww > this.activeData.max) {
             this.activeData.max = neww
           } else {
@@ -697,18 +700,18 @@ export default {
       }
       return []
     },
-    tagList() {
-      return [
-        {
-          label: '输入型组件',
-          options: inputComponents,
-        },
-        {
-          label: '选择型组件',
-          options: selectComponents,
-        },
-      ]
-    },
+    // tagList() {
+    //   return [
+    //     {
+    //       label: '输入型组件',
+    //       options: inputComponents,
+    //     },
+    //     {
+    //       label: '选择型组件',
+    //       options: selectComponents,
+    //     },
+    //   ]
+    // },
   },
   methods: {
     numberChange(val, max) {
@@ -924,7 +927,7 @@ export default {
   line-height: 32px;
   font-size: 22px;
   padding: 0 4px;
-  color: #777;
+  color: var(--font-black-5);
 }
 .option-drag {
   cursor: move;

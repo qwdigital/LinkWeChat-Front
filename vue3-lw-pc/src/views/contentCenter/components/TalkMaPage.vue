@@ -544,7 +544,7 @@ export default {
 }
 
 .sub-des {
-  // color: #aaa;
+  // color: var(--font-black-7);
   color: var(--color);
   font-size: 12px;
 }

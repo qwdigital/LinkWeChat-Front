@@ -13,7 +13,9 @@
       <el-alert type="warning" show-icon v-if="type === '11'">
         <template #title>
           <div style="display: flex">
-            <div style="color: #333">小程序必须已经绑定关联到企业微信，否则将无法在欢迎语、群发、话术中正常发送。</div>
+            <div style="color: var(--font-black)">
+              小程序必须已经绑定关联到企业微信，否则将无法在欢迎语、群发、话术中正常发送。
+            </div>
             <a href="https://www.yuque.com/linkwechat/help/gy4ghv" target="_blank" style="color: var(--color)">
               如何关联绑定?
             </a>
@@ -564,7 +566,7 @@ export default {
 
 <style lang="scss" scoped>
 .tip {
-  color: #999;
+  color: var(--font-black-6);
   font-size: 12px;
 }
 ::v-deep .ql-editor {

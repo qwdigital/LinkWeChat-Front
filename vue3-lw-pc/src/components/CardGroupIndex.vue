@@ -120,7 +120,7 @@ export default {
     line-height: 1.15;
   }
   .el-icon-warning {
-    color: #999;
+    color: var(--font-black-6);
   }
   .icon-arrow {
     position: absolute;

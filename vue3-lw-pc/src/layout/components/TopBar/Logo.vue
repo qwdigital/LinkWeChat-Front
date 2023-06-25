@@ -72,7 +72,7 @@ export default {
   }
 
   .el-icon-s-operation {
-    color: #333;
+    color: var(--font-black);
     font-size: 20px;
   }
 }

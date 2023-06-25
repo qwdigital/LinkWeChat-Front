@@ -59,7 +59,7 @@ export default {
   }
 
   .gray {
-    color: #999;
+    color: var(--font-black-6);
   }
   .list {
     padding: 10px;

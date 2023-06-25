@@ -708,7 +708,7 @@ $selectedColor: #f6f7ff;
   color: #222;
   margin: 6px 2px;
   .svg-icon {
-    color: #666;
+    color: var(--font-black-4);
     font-size: 18px;
   }
 }
@@ -721,7 +721,7 @@ $selectedColor: #f6f7ff;
   border: 1px dashed $selectedColor;
   border-radius: 3px;
   .svg-icon {
-    color: #777;
+    color: var(--font-black-5);
     font-size: 15px;
   }
   &:hover {

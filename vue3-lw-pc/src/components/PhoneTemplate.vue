@@ -130,7 +130,7 @@ export default {
   .bottom {
     padding: 15px 0 20px;
     line-height: 1;
-    color: #999;
+    color: var(--font-black-6);
     text-align: center;
   }
 }
