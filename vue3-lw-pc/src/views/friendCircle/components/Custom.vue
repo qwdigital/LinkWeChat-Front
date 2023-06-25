@@ -35,14 +35,14 @@
         <el-table-column
           label="客户名称"
           align="center"
-          prop="userName"
+          prop="customerName"
           min-width="100"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           label="对应成员"
           align="center"
-          prop="deptName"
+          prop="userName"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column label="送达状态" align="center" prop="timeOutNum" show-overflow-tooltip>
