@@ -2,11 +2,11 @@
   <div>
     <CardGroupIndex :data="cardData"></CardGroupIndex>
     <div class="g-card">
-      <el-tabs v-model="activeName" @tab-click="handleClick" v-if="this.type === 1">
+      <!-- <el-tabs v-model="activeName" @tab-click="handleClick" v-if="this.type === 1">
         <el-tab-pane label="互动记录" name="first"><Record /></el-tab-pane>
         <el-tab-pane label="查看明细" name="second"><ViewDetail /></el-tab-pane>
-      </el-tabs>
-      <Record v-else />
+      </el-tabs> -->
+      <Record />
     </div>
   </div>
 </template>
@@ -51,7 +51,7 @@ export default {
     }
   },
   mounted() {
-    this.type = this.$route.query.type
+    this.type = +this.$route.query.type
     this.id = this.$route.query.id
 
     if (this.type !== 1) {

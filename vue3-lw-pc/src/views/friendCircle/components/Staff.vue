@@ -22,7 +22,7 @@
             placeholder="请选择部门"
           />
           <el-select
-            v-model="query.surveyState"
+            v-model="query.status"
             placeholder="请选择状态"
             style="width: 150px; margin-right: 20px"
           >
@@ -51,17 +51,17 @@
           prop="deptName"
           show-overflow-tooltip
         ></el-table-column>
-        <el-table-column label="执行状态" align="center" prop="timeOutNum" show-overflow-tooltip>
+        <el-table-column label="执行状态" align="center" prop="executeStatus" show-overflow-tooltip>
           <template #default="{ row }">
             <div>
-              {{ row }}
+              {{ dealStatus(row.executeStatus) }}
             </div>
           </template>
         </el-table-column>
         <el-table-column
           label="提醒执行次数"
           align="center"
-          prop="timeOutNum"
+          prop="executeCount"
           show-overflow-tooltip
         ></el-table-column>
       </el-table>
@@ -88,8 +88,8 @@
 </template>
 <script>
 import SelectDept from '@/components/SelectDept'
-import { getTableTotal } from '@/api/contentCenter/common.js'
-import { reminderMoments, statisticMoments } from '@/api/circle'
+import { dateFormat } from '@/utils/index'
+import { reminderMoments, statisticMoments, getRecordList, exportUser } from '@/api/circle'
 
 export default {
   name: 'scene-statistics-scene',
@@ -140,22 +140,38 @@ export default {
       query: {
         pageSize: 10,
         pageNum: 1,
-        beginTime: '',
-        endTime: '',
+        // beginTime: '',
+        // endTime: '',
+        status: '',
         deptIds: '',
-        userIds: '',
+        weUserIds: [],
       },
       tableSearch: {},
       id: undefined,
       type: undefined, // 朋友圈类型 1：非同步型  2：企业同步型 3：个人同步型
+      name: '',
     }
   },
   mounted() {
     this.type = this.$route.query.type
     this.id = this.$route.query.id
+    this.name = this.$route.query.name
     this.getTabTotalFn()
+    this.getTableChangeSize()
   },
   methods: {
+    dealStatus(type) {
+      switch (type) {
+        case 0:
+          return '未执行'
+          break
+        case 1:
+          return '已执行'
+          break
+        default:
+          break
+      }
+    },
     getTabTotalFn() {
       statisticMoments(this.id).then((res) => {
         this.cardData[0].value = res.data.targetExecute
@@ -187,20 +203,21 @@ export default {
       })
         .then(() => {
           this.exportLoading = true
-          return getTableExport(this.id, Object.assign({}, this.query))
+          this.query.weMomentsTaskId = this.id
+          return exportUser(Object.assign({}, this.query))
         })
         .then((res) => {
           if (!res) return
           const blob = new Blob([res], { type: 'application/vnd.ms-excel' }) // 构造一个blob对象来处理数据，并设置文件类型
           if (window.navigator.msSaveOrOpenBlob) {
             //兼容IE10
-            navigator.msSaveBlob(blob, '质检详情')
+            navigator.msSaveBlob(blob, '客户统计')
           } else {
             const href = URL.createObjectURL(blob) //创建新的URL表示指定的blob对象
             const a = document.createElement('a') //创建a标签
             a.style.display = 'none'
             a.href = href // 指定下载链接
-            a.download = dateFormat(new Date(), 'YYYY-MM-DD') + '-质检详情.xlsx' //指定下载文件名
+            a.download = dateFormat(new Date(), 'YYYY-MM-DD') + '-' + this.name + '-员工统计.xlsx' //指定下载文件名
             a.click() //触发下载
             URL.revokeObjectURL(a.href) //释放URL对象
           }
@@ -219,7 +236,7 @@ export default {
           return obj.name
         })
         .join(',')
-      this.query.userIds = this.userArray
+      this.query.weUserIds = this.userArray
         .map(function (obj, index) {
           return obj.userId
         })
@@ -232,7 +249,7 @@ export default {
           return obj.deptName
         })
         .join(',')
-      this.query.deptIds = this.userArray
+      this.query.deptIds = this.deptArray
         .map(function (obj, index) {
           return obj.deptId
         })
@@ -246,8 +263,10 @@ export default {
     // },
     getTableChangeSize() {
       this.loading = true
-      getTableTotal(this.query).then((res) => {
-        this.tableList = res.data
+      this.query.weMomentsTaskId = this.id
+      getRecordList(this.query).then((res) => {
+        this.tableList = res.rows
+        this.total = +res.total
         this.loading = false
       })
     },
@@ -255,10 +274,11 @@ export default {
       this.query = {
         pageSize: 10,
         pageNum: 1,
-        beginTime: '',
-        endTime: '',
+        // beginTime: '',
+        // endTime: '',
+        status: '',
         deptIds: '',
-        userIds: '',
+        weUserIds: '',
       }
       this.userArray = []
       this.userName = ''
@@ -271,12 +291,11 @@ export default {
     },
   },
   created() {
-    this.getTableChangeSize()
-    this.$store.setBusininessDesc(
-      `
-      <div>全部素材发送与查看情况数据统计与分析</div>
-    `
-    )
+    // this.$store.setBusininessDesc(
+    //   `
+    //   <div>全部素材发送与查看情况数据统计与分析</div>
+    // `
+    // )
   },
 }
 </script>

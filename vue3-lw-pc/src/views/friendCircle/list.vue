@@ -273,6 +273,7 @@ export default {
         query: {
           type,
           id: row.id,
+          name:row.name
         },
       })
     },

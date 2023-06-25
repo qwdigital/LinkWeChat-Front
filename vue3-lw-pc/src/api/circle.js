@@ -104,7 +104,7 @@ export function getCustomerList(data) {
     params: data,
   })
 }
-// 互动记录导出
+// 客户记录导出
 export function exportCustomer(data) {
   return request({
     url: service + '/moments/statistic/customer/export',
