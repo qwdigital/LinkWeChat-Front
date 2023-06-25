@@ -552,6 +552,10 @@ export default {
           if (stylesx[i][q].formCodeId == 0) {
             that.readonly = false
           }
+          // 删除提交数据中固定的省市区JSON数据树
+          else if (stylesx[i][q].formCodeId == 9) {
+            stylesx[i][q].options = []
+          }
         }
       }
 
@@ -1098,6 +1102,10 @@ export default {
           for (let q = 0; q < stylesx[i].length; q++) {
             if (stylesx[i][q].formCodeId == 0) {
               that.readonly = false
+            }
+            // 删除提交数据中固定的省市区JSON数据树
+            else if (stylesx[i][q].formCodeId == 9) {
+              stylesx[i][q].options = []
             }
           }
         }
