@@ -584,7 +584,7 @@ export default {
         this.loading = false
       })
     },
-    goRoute(row) {
+    goDetail(row) {
       let { externalUserid, firstUserId: userId } = row
       this.$router.push({
         name: 'CustomerDetail',
