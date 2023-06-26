@@ -44,11 +44,11 @@
               :key="index">
               <template #default="{ row }">
                 <div class="toe">
-                  <span v-if="![8, 9, 10].includes(row.answer[index].formCodeId)">
+                  <span v-if="![8, 9, 10, 6].includes(row.answer[index].formCodeId)">
                     {{ row.answer[index].defaultValue }}
                   </span>
-                  <span v-else-if="row.answer[index].formCodeId == 8">
-                    {{ row.answer[index].multiple ? multipleTrans(row.answer[index]) : row.answer[index].defaultValue }}
+                  <span v-else-if="[8, 6].includes(row.answer[index].formCodeId)">
+                    {{ multipleTrans(row.answer[index]) }}
                   </span>
                   <span v-else-if="row.answer[index].formCodeId == 9">
                     {{ row.answer[index].ssq }}
@@ -285,14 +285,21 @@ export default {
         // that.baseList= res.data;
       })
     },
+    // transDefaultValueToView(data) {
+    //   debugger
+    //   data = JSON.parse(JSON.stringify(data))
+    //   let option = data.options.filter((e, index) => data.defaultValue.includes(index + ''))
+    //   return option.map((e) => e.value).join(',')
+    // },
     multipleTrans(data) {
       data = JSON.parse(JSON.stringify(data))
       data.viewValue = []
-      if (typeof data.defaultValue === 'string') {
-        data.defaultValue = data.defaultValue.split(',')
-        data.options = data.options.split(',')
-        data.viewValue = data.options.filter((e, index) => data.defaultValue.includes(index + ''))
-      }
+      data.defaultValue += ''
+      // if (typeof data.defaultValue === 'string') {
+      data.defaultValue = data.defaultValue.split(',')
+      data.options = data.options.split(',')
+      data.viewValue = data.options.filter((e, index) => data.defaultValue.includes(index + ''))
+      // }
       return data.viewValue.join()
     },
   },

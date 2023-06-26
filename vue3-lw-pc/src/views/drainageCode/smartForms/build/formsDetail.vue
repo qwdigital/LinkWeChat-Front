@@ -469,6 +469,7 @@ export default {
 
               if (cloneCurItem.formCodeId == 9) {
                 cloneCurItem.defaultValue += ''
+                cloneCurItem.options = []
               } else {
                 // let str
                 // for (let p = 0; p < cloneCurItem.options.length; p++) {
