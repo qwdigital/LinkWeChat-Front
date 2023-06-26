@@ -22,11 +22,12 @@
         />
         <el-select
           v-model="query.surveyState"
-          placeholder="请选择状态"
+          placeholder="请选择类型"
           style="width: 150px; margin-right: 20px"
+          v-if="type === 1"
         >
-          <el-option label="未执行" :value="0"></el-option>
-          <el-option label="已执行" :value="1"></el-option>
+          <el-option label="评论" :value="0"></el-option>
+          <el-option label="点赞" :value="1"></el-option>
         </el-select>
         <el-button type="primary" @click="handleSearch">查询</el-button>
         <el-button @click="resetQuery">清空</el-button>
@@ -53,7 +54,7 @@
       <el-table-column label="互动类型" align="center" prop="type" show-overflow-tooltip>
         <template #default="{ row }">
           <div>
-            {{ row.type }}
+            {{ row.type === 1 ? '点赞' : '评论' }}
           </div>
         </template>
       </el-table-column>
@@ -107,7 +108,7 @@ export default {
     }
   },
   mounted() {
-    this.type = this.$route.query.type
+    this.type = +this.$route.query.type
     this.id = this.$route.query.id
     this.name = this.$route.query.name
     this.getList()

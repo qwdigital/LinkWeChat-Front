@@ -246,6 +246,7 @@ export default {
     },
     setEditTag() {
       if (this.form.customerTag && this.form.customerTag.length) {
+        this.selectedTagList = []
         getList({ groupTagType: 1 }).then(({ rows }) => {
           this.form.customerTag.forEach((dd) => {
             rows.forEach((inx) => {

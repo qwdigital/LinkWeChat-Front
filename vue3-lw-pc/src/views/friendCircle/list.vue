@@ -280,7 +280,7 @@ export default {
     syncFn() {
       syncHMoments(2).then((res) => {
         if (res.code === 200) {
-          this.msgSuccess(res.msg)
+          this.msgSuccess(res.data)
           this.getList()
         }
       })

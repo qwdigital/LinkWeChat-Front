@@ -7,19 +7,28 @@
           <el-form-item label-width="0px">
             <!-- 富文本content -->
             <!-- <quill-editor v-model="form.content" ref="myQuillEditor"></quill-editor> -->
-            <DefineQuillEditor :value="form.content" @change="getContent" ref="myQuillEditor"></DefineQuillEditor>
+            <DefineQuillEditor
+              :value="form.content"
+              @change="getContent"
+              ref="myQuillEditor"
+            ></DefineQuillEditor>
           </el-form-item>
         </el-col>
         <el-col :span="6" class="g-card">
           <el-form-item label="选择分组" prop="categoryId">
-            <el-cascader v-model="form.categoryId" :options="treeData[0].children" :props="groupProps"></el-cascader>
+            <el-cascader
+              v-model="form.categoryId"
+              :options="treeData[0].children"
+              :props="groupProps"
+            ></el-cascader>
           </el-form-item>
           <el-form-item label="文章标题" prop="materialName">
             <el-input
               v-model="form.materialName"
               placeholder="请输入文章标题"
               :maxlength="30"
-              show-word-limit></el-input>
+              show-word-limit
+            ></el-input>
           </el-form-item>
 
           <el-form-item label="文章描述">
@@ -28,10 +37,11 @@
               type="textarea"
               placeholder="请输入文章描述"
               :maxlength="100"
-              show-word-limit></el-input>
+              show-word-limit
+            ></el-input>
           </el-form-item>
           <el-form-item label="文章封面">
-            <upload v-model:fileUrl="form.coverUrl" type="0">
+            <upload v-model:fileUrl="form.coverUrl" v-model:imgSize="form.memorySize" type="0">
               <template #tip><div>支持jpg/jpeg/png格式，建议200*200</div></template>
             </upload>
           </el-form-item>
@@ -139,6 +149,14 @@ export default {
           this.times = setTimeout(() => {
             let form = JSON.parse(JSON.stringify(this.form))
             form.mediaType = 12
+            if (form.coverUrl) {
+              let img = new Image()
+              img.src = form.coverUrl //图片链接
+              form.width = img.width
+              form.height = img.height
+              form.pixelSize = img.width * img.height
+            }
+
             ;(form.id ? update : add)(form)
               .then(() => {
                 this.msgSuccess('操作成功')
