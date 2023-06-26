@@ -16,7 +16,10 @@
             </div>
             <!-- 图文 -->
             <div v-if="row.mediaType === '9'" style="display: flex">
-              <el-image :src="row.coverUrl" fit="contain" class="imgsize"></el-image>
+              <el-image v-if="row.coverUrl" :src="row.coverUrl" fit="contain" class="imgsize"></el-image>
+              <div class="icon-style" v-else>
+                <svg-icon class="icon-style" icon="imgText"></svg-icon>
+              </div>
               <span class="twosplice mt10">{{ coverContent(row.content) }}</span>
             </div>
             <!-- 小程序 -->
@@ -25,7 +28,10 @@
             </div>
             <!-- 文章 -->
             <div v-if="row.mediaType === '12'" style="display: flex">
-              <el-image :src="row.coverUrl" fit="contain" class="imgsize"></el-image>
+              <el-image v-if="row.coverUrl" :src="row.coverUrl" fit="contain" class="imgsize"></el-image>
+              <div class="icon-style" v-else>
+                <svg-icon class="icon-style" icon="article"></svg-icon>
+              </div>
               <span class="twosplice mt10">{{ coverContent(row.digest) }}</span>
             </div>
             <!-- 视频 -->
