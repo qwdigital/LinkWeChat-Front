@@ -53,8 +53,11 @@
 **关于 Node，推荐 16.x 版本**
 
 这里以 vue3-lw-pc 管理端项目运行示例
+
 linkwe-mobile 项目与 vue3-lw-pc 架构基本雷同
+
 linkwe-uniapp 只有一个活码识别页面，属于基础的 uniapp 项目
+
 故，不做赘述
 
 ```sh
