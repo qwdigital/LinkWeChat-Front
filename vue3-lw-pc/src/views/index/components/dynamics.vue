@@ -156,7 +156,7 @@ export default {
             font-size: 12px;
             font-family: 'PingFang SC-中等', 'PingFang SC';
             font-weight: normal;
-            color: #666666;
+            color: var(--font-black-4);
             line-height: 17px;
           }
           .nomal {
@@ -178,11 +178,11 @@ export default {
           line-height: 17px;
         }
         span:nth-child(1) {
-          color: #666666;
+          color: var(--font-black-4);
           margin-bottom: 9px;
         }
         span:nth-child(2) {
-          color: #999999;
+          color: var(--font-black-6);
         }
       }
     }

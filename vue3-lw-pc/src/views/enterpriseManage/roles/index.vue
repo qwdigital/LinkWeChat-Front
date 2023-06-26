@@ -242,7 +242,7 @@ export default {
   font-size: 14px;
 
   font-weight: 600;
-  color: #333333;
+  color: var(--font-black);
   display: flex;
   align-items: center;
 }

@@ -219,7 +219,7 @@ export default {
 }
 .timeline-time {
   font-size: 14px;
-  color: #999999;
+  color: var(--font-black-6);
   line-height: 48px;
 }
 .el-timeline > .timeline-box-item:first-child ::v-deep .el-timeline-item__node {

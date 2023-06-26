@@ -125,7 +125,7 @@ export default {
   }
 }
 .el-icon-QuestionFilled {
-  color: #888;
+  color: var(--font-black-6);
   margin-left: 10px;
 }
 .home {

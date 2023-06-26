@@ -431,7 +431,7 @@ export default {
   font-size: 12px;
 
   font-weight: 400;
-  color: #666666;
+  color: var(--font-black-4);
   display: flex;
 }
 
@@ -469,7 +469,7 @@ export default {
     font-size: 16px;
 
     font-weight: 500;
-    color: #333333;
+    color: var(--font-black);
   }
   .right-title-edit {
     font-size: 12px;

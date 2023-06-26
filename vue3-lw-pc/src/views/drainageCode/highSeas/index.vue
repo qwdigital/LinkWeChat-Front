@@ -488,7 +488,7 @@ export default {
   font-size: 12px;
 
   font-weight: 400;
-  color: #999999;
+  color: var(--font-black-6);
 }
 
 .total-item {
@@ -515,7 +515,7 @@ export default {
   font-size: 16px;
 
   font-weight: 500;
-  color: #333333;
+  color: var(--font-black);
   margin-bottom: 20px;
 }
 </style>

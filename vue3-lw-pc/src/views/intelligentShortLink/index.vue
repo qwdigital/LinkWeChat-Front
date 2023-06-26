@@ -1,158 +1,158 @@
 <script>
-  import { getList, getAnalysis, remove } from '@/api/intelligentShortLink'
-  import * as api from '@/api/enterpriseId'
-  import { touchTypeDict } from './components/mixin'
-  export default {
-    name: '',
-    components: {},
-    data() {
-      return {
-        loading: false,
-        cardData: [],
-        total: 0,
-        query: {
-          pageSize: 10,
-          pageNum: 1
-        },
-        touchTypeDict,
-        // dictStatus: Object.freeze({
-        //   1: '启用',
-        //   2: '关闭',
-        // }),
+import { getList, getAnalysis, remove } from '@/api/intelligentShortLink'
+import * as api from '@/api/enterpriseId'
+import { touchTypeDict } from './components/mixin'
+export default {
+  name: '',
+  components: {},
+  data() {
+    return {
+      loading: false,
+      cardData: [],
+      total: 0,
+      query: {
+        pageSize: 10,
+        pageNum: 1,
+      },
+      touchTypeDict,
+      // dictStatus: Object.freeze({
+      //   1: '启用',
+      //   2: '关闭',
+      // }),
 
-        list: [],
-        ids: [],
-        needMoreInfo: false,
-        dialogVisible: false
-      }
-    },
-    computed: {},
-    watch: {},
-    created() {
-      this.setState()
-      this.getList()
-      this.getAnalysis()
-      this.$store.setBusininessDesc(` <div>生成智能短链，一键跳转公众号、小程序、企业微信</div> `)
-    },
-    mounted() {
-      this.clipboard = new this.ClipboardJS('.copy-btn')
-    },
-    unmounted() {
-      this.clipboard.destroy()
-    },
-    methods: {
-      cancelFn() {
-        this.needMoreInfo = false
-        this.dialogVisible = false
-        this.goRoute()
-      },
-      gotoSetting() {
-        this.$router.push({
-          path: '/enterpriseManage/enterpriseWechat'
-        })
-      },
-      setState() {
-        api.getDetail().then((res) => {
-          if (!res.data.wxAppletOriginalId || !res.data.miniAppId || !res.data.miniSecret) {
-            this.needMoreInfo = true
-          }
-        })
-      },
-      getAnalysis() {
-        this.loading = true
-        getAnalysis()
-          .then(({ data }) => {
-            this.cardData = [
-              {
-                title: '访问总数(pv)',
-                tips: '短链页面访问的总次数',
-                value: data.pvTotalCount
-              },
-              {
-                title: '访问总人数(uv)',
-                tips: '短链页面访问的独立IP数',
-                value: data.uvTotalCount
-              },
-              {
-                title: '小程序打开数',
-                tips: '小程序成功打开的总次数',
-                value: data.openTotalCount
-              },
-              {
-                title: '今日访问总数(pv)',
-                tips: '今日短链页面访问的总次数',
-                value: data.pvTodayCount,
-                title1: '较昨日',
-                value1: data.pvDiff
-              },
-              {
-                title: '今日访问总人数(uv)',
-                tips: '今日短链页面访问的独立IP数',
-                value: data.uvTodayCount,
-                title1: '较昨日',
-                value1: data.uvDiff
-              },
-              {
-                title: '今日小程序打开数',
-                tips: '今日小程序成功打开的总次数',
-                value: data.openTodayCount,
-                title1: '较昨日',
-                value1: data.openDiff
-              }
-            ]
-          })
-          .catch((e) => {
-            console.log(e)
-          })
-          .finally(() => {
-            this.loading = false
-          })
-      },
-      getList(page) {
-        page && (this.query.pageNum = page)
-        this.loading = true
-        getList(this.query)
-          .then(({ rows, total }) => {
-            this.list = rows
-            this.total = +total
-          })
-          .catch(() => {})
-          .finally(() => {
-            this.loading = false
-          })
-      },
-      resetForm() {
-        this.$refs['queryForm'].resetFields()
-        this.getList(1)
-      },
-      goRoute(row = {}, detail) {
-        if (this.needMoreInfo) {
-          this.dialogVisible = true
-          return
-        }
-        let { id } = row
-        this.$router.push({
-          path: './' + (detail || 'addEdit'),
-          query: { id }
-        })
-      },
-      remove(id) {
-        const ids = id || this.ids + ''
-        this.$confirm('是否确认删除吗?', '警告', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        })
-          .then(function () {
-            return remove(ids)
-          })
-          .then(() => {
-            this.getList()
-            this.msgSuccess('删除成功')
-          })
-      }
+      list: [],
+      ids: [],
+      needMoreInfo: false,
+      dialogVisible: false,
     }
-  }
+  },
+  computed: {},
+  watch: {},
+  created() {
+    this.setState()
+    this.getList()
+    this.getAnalysis()
+    this.$store.setBusininessDesc(` <div>生成智能短链，一键跳转公众号、小程序、企业微信</div> `)
+  },
+  mounted() {
+    this.clipboard = new this.ClipboardJS('.copy-btn')
+  },
+  unmounted() {
+    this.clipboard.destroy()
+  },
+  methods: {
+    cancelFn() {
+      this.needMoreInfo = false
+      this.dialogVisible = false
+      this.goRoute()
+    },
+    gotoSetting() {
+      this.$router.push({
+        path: '/enterpriseManage/enterpriseWechat',
+      })
+    },
+    setState() {
+      api.getDetail().then((res) => {
+        if (!res.data.wxAppletOriginalId || !res.data.miniAppId || !res.data.miniSecret) {
+          this.needMoreInfo = true
+        }
+      })
+    },
+    getAnalysis() {
+      this.loading = true
+      getAnalysis()
+        .then(({ data }) => {
+          this.cardData = [
+            {
+              title: '访问总数(pv)',
+              tips: '短链页面访问的总次数',
+              value: data.pvTotalCount,
+            },
+            {
+              title: '访问总人数(uv)',
+              tips: '短链页面访问的独立IP数',
+              value: data.uvTotalCount,
+            },
+            {
+              title: '小程序打开数',
+              tips: '小程序成功打开的总次数',
+              value: data.openTotalCount,
+            },
+            {
+              title: '今日访问总数(pv)',
+              tips: '今日短链页面访问的总次数',
+              value: data.pvTodayCount,
+              title1: '较昨日',
+              value1: data.pvDiff,
+            },
+            {
+              title: '今日访问总人数(uv)',
+              tips: '今日短链页面访问的独立IP数',
+              value: data.uvTodayCount,
+              title1: '较昨日',
+              value1: data.uvDiff,
+            },
+            {
+              title: '今日小程序打开数',
+              tips: '今日小程序成功打开的总次数',
+              value: data.openTodayCount,
+              title1: '较昨日',
+              value1: data.openDiff,
+            },
+          ]
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    getList(page) {
+      page && (this.query.pageNum = page)
+      this.loading = true
+      getList(this.query)
+        .then(({ rows, total }) => {
+          this.list = rows
+          this.total = +total
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    resetForm() {
+      this.$refs['queryForm'].resetFields()
+      this.getList(1)
+    },
+    goRoute(row = {}, detail) {
+      if (this.needMoreInfo) {
+        this.dialogVisible = true
+        return
+      }
+      let { id } = row
+      this.$router.push({
+        path: './' + (detail || 'addEdit'),
+        query: { id },
+      })
+    },
+    remove(id) {
+      const ids = id || this.ids + ''
+      this.$confirm('是否确认删除吗?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(function () {
+          return remove(ids)
+        })
+        .then(() => {
+          this.getList()
+          this.msgSuccess('删除成功')
+        })
+    },
+  },
+}
 </script>
 
 <template>
@@ -169,8 +169,7 @@
             v-for="(item, index) in touchTypeDict"
             :key="index"
             :label="item.allName"
-            :value="+index"
-          ></el-option>
+            :value="+index"></el-option>
         </el-select>
       </el-form-item>
       <!-- <el-form-item label="" prop="status">
@@ -202,8 +201,7 @@
             <el-icon-copy-document
               class="el-icon-copy-document copy-btn cp ml20"
               title="复制"
-              :data-clipboard-text="row.shortLink"
-            ></el-icon-copy-document>
+              :data-clipboard-text="row.shortLink"></el-icon-copy-document>
           </template>
         </el-table-column>
         <!-- <el-table-column label="状态" align="center" prop="status">
@@ -221,14 +219,13 @@
       <pagination :total="total" v-model:page="query.pageNum" v-model:limit="query.pageSize" @pagination="getList()" />
       <template v-if="!list.length">
         <div class="tips">
-          智能短链需要先配置短链小程序，否则无法正常使用，<a class="link" @click="gotoSetting">去配置</a>
+          智能短链需要先配置短链小程序，否则无法正常使用，
+          <a class="link" @click="gotoSetting">去配置</a>
         </div>
       </template>
     </div>
     <el-dialog title="提示" :close-on-click-modal="false" :show-close="false" v-model="dialogVisible" width="auto">
-      <div style="text-align: center;">
-        智能短链需要先配置短链小程序，否则无法正常使用。
-      </div>
+      <div style="text-align: center">智能短链需要先配置短链小程序，否则无法正常使用。</div>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="cancelFn">继续新建</el-button>
@@ -240,18 +237,18 @@
 </template>
 
 <style lang="scss" scoped>
-  .tips {
-    margin-top: 30px;
-    text-align: center;
-    color: #999999;
-  }
-  .link {
+.tips {
+  margin-top: 30px;
+  text-align: center;
+  color: var(--font-black-6);
+}
+.link {
+  color: var(--color);
+  border-bottom: 1px solid var(--color);
+}
+.el-icon-copy-document {
+  &:hover {
     color: var(--color);
-    border-bottom: 1px solid var(--color);
   }
-  .el-icon-copy-document {
-    &:hover {
-      color: var(--color);
-    }
-  }
+}
 </style>

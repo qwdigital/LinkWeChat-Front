@@ -342,19 +342,19 @@ export default {
       font-size: 16px;
     }
     .desc {
-      color: #888;
+      color: var(--font-black-6);
       word-break: break-all;
       margin: 5px 0;
     }
     .list-label {
-      color: #888;
+      color: var(--font-black-6);
       width: 90px;
     }
   }
 }
 
 .dialog-tip {
-  color: #888;
+  color: var(--font-black-6);
   font-size: 12px;
 }
 // .avatar-wrap {
