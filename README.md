@@ -1,12 +1,78 @@
-**本仓库为 LinkWeChat 的前端源码库，具体项目说明及后端库请移步至 [LinkWeChat](https://gitee.com/LinkWeChat/link-wechat) 查看。**
+# 平台简介
 
-## 更新日志
+本仓库为 LinkWeChat 的前端源码库，技术栈（Vue3 Element Plus Vite）
 
-### v5.0.0
+具体项目说明及后端库请移步至 [LinkWeChat](https://gitee.com/LinkWeChat/link-wechat) 查看。
 
-2023.06.16
+# 在线体验
 
-1. pc 管理端由 vue cli + vue2 生态 升级为 vite+vue3 生态版本，同时 vue3-master 替换 master 成为默认分支
-2. v4.8 是当前、同时也是最后一个 v4.x 的次级版本更新。 pc 管理端 vue2 版本由此 2023.06.16 日进入维护状态，并持续到 vue2 官方生命周期终止，即 2023 年 12 月 31 日。在此期间，将会提供必要的 bug 修复和安全修复，但不再提供新功能特性。在此之后，v4 在已有的分发渠道中仍然可用，但不再进行更新，包括对安全问题和浏览器兼容性问题的修复等。
-3. 考虑移动端 vue3 生态的兼容性，小程序端和移动 web 端暂不升级 vue3，且暂无升级计划
-4. 优化系统性能，部分 UI 和交互体验
+开源演示地址：[http://demo.linkwechat.net/](http://demo.linkwechat.net/)
+
+默认账号密码：lw，123456
+
+目前支持两种方式体验：
+
+1. 在首页扫码二维码申请加入测试企业，申请通过后即可扫码登录，体验系统的完整功能；
+2. 点击账密登录并勾选演示账号登录即可在线体验后台系统，但不支持体验移动端相关功能；
+
+**注意：演示环境已屏蔽管理权限和相关操作**
+
+前端结构
+
+```
+├── vue3-lw-pc			// 后台管理端项目
+    ├── public                     # 静态资源
+    │   │── static                 # 用于绝对路径的非打包资源，公用基础css等
+    │   │── favicon.ico            # favicon图标
+    ├── src                        # 源代码
+    │   ├── api                    # 所有后端接口请求
+    │   ├── assets                 # 主题 字体 svg icons 等静态资源
+    │   ├── components             # 全局公用组件
+    │   ├── directive              # 全局指令
+    │   ├── layout                 # 全局基础布局结构组件
+    │   ├── router                 # 路由 权限管理等
+    │   ├── stores                 # 全局 pinia store管理
+    │   ├── styles                 # 全局样式
+    │   ├── utils                  # 全局公用方法
+    │   ├── views                  # 业务功能所有页面
+    │   ├── App.vue                # 入口页面
+    │   ├── config.js              # 全局配置文件
+    │   ├── main.js                # 入口文件 加载组件 初始化等
+    ├── babel.config.js            # babel-loader 配置
+    ├── .env.js                    # 环境变量配置
+    ├── index.html                 # html模板
+    ├── jsconfig.json              # jsconfig 配置 快捷路径等
+    └── package.json               # package.json
+    ├── vite.config.js             # vite 配置
+├── linkwe-mobile		// 移动端项目包含移动工作台、任务宝、群裂变等H5
+├── linkwe-uniapp		// uniapp短链小程序项目
+```
+
+# 安装与运行
+
+**关于 Node，推荐 16.x 版本**
+
+这里以 vue3-lw-pc 管理端项目运行示例
+linkwe-mobile 项目与 vue3-lw-pc 架构基本雷同
+linkwe-uniapp 只有一个活码识别页面，属于基础的 uniapp 项目
+故，不做赘述
+
+```sh
+# 克隆项目
+git clone https://gitee.com/LinkWeChat/link-we-chat-front.git
+
+# 进入项目目录
+cd LinkWeChat-Front/vue3-lw-pc
+
+# 安装依赖
+npm i --registry=https://registry.npmmirror.com
+
+# 启动开发服务 npm run dev
+# 启动测试服务 npm run test (后端接口为测试环境接口)
+
+# 构建测试环境 npm run build:test
+# 构建生产环境 npm run build
+# 前端访问地址 http://localhost:1024
+```
+
+## [更新日志](./RELEASES.md)
