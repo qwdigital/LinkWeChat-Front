@@ -294,7 +294,7 @@ export default {
             ? //获取视频第一帧画面
               getVideoPic({ url: location }).then((res) => {
                 this.loading = false
-                this.$emit('getPicUrl', res.data.url)
+                this.$emit('getPicUrl', res.data.url, res.data)
               })
             : (this.loading = false)
 
@@ -366,7 +366,7 @@ export default {
               ? //获取视频第一帧画面
                 getVideoPic({ url: location }).then((res) => {
                   this.loading = false
-                  this.$emit('getPicUrl', res.data.url)
+                  this.$emit('getPicUrl', res.data.url, res.data)
                 })
               : (this.loading = false)
 

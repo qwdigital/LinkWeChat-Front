@@ -151,8 +151,8 @@ export default {
       total: 0,
       sendType: [
         { label: '企微群发', value: 0 },
-        { label: '成员群发', value: 1 },
-        { label: '自主发送', value: 2 },
+        { label: '个人发送', value: 1 },
+        { label: '成员群发', value: 2 },
       ], // 发送方式
       taskStatus: [
         { label: '未开始', value: 1 },
@@ -273,7 +273,7 @@ export default {
         query: {
           type,
           id: row.id,
-          name:row.name
+          name: row.name,
         },
       })
     },
