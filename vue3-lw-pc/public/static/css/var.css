@@ -24,7 +24,7 @@
   --color-light-8: hsl(var(--h), var(--s), calc(var(--step) * 8 + var(--l))); /* hsl(149, 93%, 88%) */
   --color-light-9: hsl(var(--h), var(--s), calc(var(--step) * 9 + var(--l))); /* hsl(149, 93%, 94%) */
   --color-light-10: hsl(var(--h), var(--s), calc(var(--step) * 9.5 + var(--l))); /* :hsl(149, 93%, 97%) */
-  /* --test: hsl(149, 93%, 96%); */
+  --test: hsl(149, 93%, 94%);
 
   /* 功能色 */
   --color-success: #07c160;
@@ -79,7 +79,15 @@
   --font-black-3: var(--font-black-7);
   --font-black-4: var(--font-black-6);
 
-  --bg-white: #1d2129;
+  --bg-black-5: var(--bg-black-5);
+  --bg-black-6: var(--bg-black-4);
+  --bg-black-7: var(--bg-black-3);
+  --bg-black-8: var(--bg-black-2);
+  --bg-black-9: var(--bg-black-1);
+  --bg-black-10: var(--bg-black-1-1);
+  --bg-black-11: var(--bg-black-1-2);
+
+  --bg-white: #000;
 }
 
 /* 项目定制原子类 */
