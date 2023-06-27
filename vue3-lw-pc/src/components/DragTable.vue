@@ -217,11 +217,12 @@ export default {
       )
     },
     preview(row) {
-      let routeData = this.$router.resolve({
-        path: '/preview',
-        query: { obj: encodeURIComponent(JSON.stringify(row)) },
-      })
-      window.open(routeData.href, '_blank')
+      // let routeData = this.$router.resolve({
+      //   path: '/preview',
+      //   query: { obj: encodeURIComponent(JSON.stringify(row)) },
+      // })
+      // window.open(routeData.href, '_blank')
+      window.open(window.lwConfig.PRIVIEW_PATH + row.id + '&otherModle=' + true, '_blank')
     },
     // 处理文件类型
     filType(file) {

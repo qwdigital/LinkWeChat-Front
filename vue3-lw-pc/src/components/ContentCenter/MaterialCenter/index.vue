@@ -18,7 +18,7 @@
           :label="item.label + '(' + item.list.length + ')'"
           :name="item.name"
         >
-          <MaPage ref="page" :type="item.type" v-slot="{ list }" @listChange="listChange">
+          <MaPage ref="page" :type="item.type" :isFriends ='isFriends' v-slot="{ list }" @listChange="listChange">
             <div v-if="item.type === '0'">
               <div v-if="list && list.length">
                 <el-checkbox-group v-model="paneList[picindex].list" class="imgStyle">

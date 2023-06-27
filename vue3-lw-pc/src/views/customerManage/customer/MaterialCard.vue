@@ -4,7 +4,12 @@
       <div class="title">{{ weMaterialVo.materialName }}</div>
       <!-- 文章 -->
       <div class="centerStyle" v-if="weMaterialVo.mediaType == 12">
-        <el-image class="img-style" fit="contain" :src="weMaterialVo.coverUrl" v-if="weMaterialVo.coverUrl" />
+        <el-image
+          class="img-style"
+          fit="contain"
+          :src="weMaterialVo.coverUrl"
+          v-if="weMaterialVo.coverUrl"
+        />
         <svg-icon class="icon-style" icon="article" v-else></svg-icon>
         <div class="contentStyle">{{ weMaterialVo.digest }}</div>
       </div>
@@ -15,7 +20,12 @@
       </div>
       <!-- 海报 -->
       <div class="centerStyle" v-if="weMaterialVo.mediaType == 5">
-        <el-image class="img-style" fit="contain" :src="weMaterialVo.materialUrl" v-if="weMaterialVo.materialUrl" />
+        <el-image
+          class="img-style"
+          fit="contain"
+          :src="weMaterialVo.materialUrl"
+          v-if="weMaterialVo.materialUrl"
+        />
         <svg-icon class="icon-style" icon="pic" v-else></svg-icon>
         <div class="contentStyle">{{ weMaterialVo.digest }}</div>
       </div>
@@ -24,7 +34,8 @@
         <svg-icon
           class="icon-style"
           :icon="weMaterialVo.materialUrl ? filType(weMaterialVo.materialUrl) : ''"
-          v-if="weMaterialVo.materialUrl"></svg-icon>
+          v-if="weMaterialVo.materialUrl"
+        ></svg-icon>
         <span class="contentStyle">{{ weMaterialVo.digest }}</span>
       </div>
     </div>
@@ -34,12 +45,15 @@
           <a :href="weMaterialVo.materialUrl" target="_blank">预览</a>
         </div>
 
-        <div v-if="weMaterialVo.mediaType === '12'" class="preview" @click="preview(weMaterialVo)">预览</div>
+        <div v-if="weMaterialVo.mediaType === '12'" class="preview" @click="preview(weMaterialVo)">
+          预览
+        </div>
         <a
           target="_blank"
           :href="dealUrl(weMaterialVo.materialUrl)"
           class="preview"
-          v-if="weMaterialVo.mediaType == '3'">
+          v-if="weMaterialVo.mediaType == '3'"
+        >
           预览
         </a>
       </div>
@@ -73,15 +87,16 @@ export default {
       return btoa(
         encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function toSolidBytes(match, p1) {
           return String.fromCharCode('0x' + p1)
-        }),
+        })
       )
     },
     preview(row) {
-      let routeData = this.$router.resolve({
-        path: '/preview',
-        query: { obj: encodeURIComponent(JSON.stringify(row)) },
-      })
-      window.open(routeData.href, '_blank')
+      // let routeData = this.$router.resolve({
+      //   path: '/preview',
+      //   query: { obj: encodeURIComponent(JSON.stringify(row)) },
+      // })
+      // window.open(routeData.href, '_blank')
+      window.open(window.lwConfig.PRIVIEW_PATH + row.id + '&otherModle=' + true, '_blank')
     },
     // 处理文件类型
     filType(file) {

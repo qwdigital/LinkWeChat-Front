@@ -7,7 +7,8 @@
       width="60%"
       append-to-body
       :close-on-click-modal="false"
-      @close="dialogClose">
+      @close="dialogClose"
+    >
       <el-table :data="tableData" ref="singleTable" v-loading="loading">
         <!-- <el-table-column type="index" width="50" label="序号" align="center"></el-table-column> -->
         <el-table-column prop="name" align="center" label="素材" width="260">
@@ -22,17 +23,32 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="发送总次数" align="center" prop="sendTotalNum" :show-overflow-tooltip="true">
+        <el-table-column
+          label="发送总次数"
+          align="center"
+          prop="sendTotalNum"
+          :show-overflow-tooltip="true"
+        >
           <template #default="scope">
             {{ scope.row.sendTotalNum || '-' }}
           </template>
         </el-table-column>
-        <el-table-column label="查看总次数" align="center" prop="viewTotalNum" :show-overflow-tooltip="true">
+        <el-table-column
+          label="查看总次数"
+          align="center"
+          prop="viewTotalNum"
+          :show-overflow-tooltip="true"
+        >
           <template #default="scope">
             {{ scope.row.viewTotalNum || '-' }}
           </template>
         </el-table-column>
-        <el-table-column label="查看总人数" align="center" prop="viewByTotalNum" :show-overflow-tooltip="true">
+        <el-table-column
+          label="查看总人数"
+          align="center"
+          prop="viewByTotalNum"
+          :show-overflow-tooltip="true"
+        >
           <template #default="scope">
             {{ scope.row.viewByTotalNum || '-' }}
           </template>
@@ -131,15 +147,16 @@ export default {
       return btoa(
         encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function toSolidBytes(match, p1) {
           return String.fromCharCode('0x' + p1)
-        }),
+        })
       )
     },
     preview(row) {
-      let routeData = this.$router.resolve({
-        path: '/preview',
-        query: { obj: encodeURIComponent(JSON.stringify(row)) },
-      })
-      window.open(routeData.href, '_blank')
+      // let routeData = this.$router.resolve({
+      //   path: '/preview',
+      //   query: { obj: encodeURIComponent(JSON.stringify(row)) },
+      // })
+      // window.open(routeData.href, '_blank')
+      window.open(window.lwConfig.PRIVIEW_PATH + row.id + '&otherModle=' + true, '_blank')
     },
     deltype(type) {
       switch (type) {

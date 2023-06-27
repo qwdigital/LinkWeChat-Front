@@ -20,6 +20,11 @@ export default {
       type: [Array, String],
       default: '',
     },
+    // 朋友圈
+    isFriends: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -168,6 +173,10 @@ export default {
     getList(page) {
       page && (this.query.pageNum = page)
       this.loading = true
+      // 如果是朋友圈模块使用isFirends为true
+      if (this.isFriends) {
+        this.query.scene = 1
+      }
       getList(this.query)
         .then(({ rows, total }) => {
           this.list = rows.sort((a, b) => +new Date(b.updateTime) - +new Date(a.updateTime))
@@ -187,7 +196,11 @@ export default {
   <div class="page">
     <div style="margin-top: 16px">
       <el-row type="flex" justify="space-between">
-        <el-col :span="5" class="left pad20" style="border-radius: 4px; background: var(--bg-white)">
+        <el-col
+          :span="5"
+          class="left pad20"
+          style="border-radius: 4px; background: var(--bg-white)"
+        >
           <div class="title">
             <div class="title-name">{{ typeTitle[type] }}分组</div>
           </div>
@@ -197,7 +210,8 @@ export default {
               :class="{ active: groupIndex == key }"
               v-for="(group, key) in groupList"
               :key="group.id"
-              @click="switchGroup(key, group)">
+              @click="switchGroup(key, group)"
+            >
               <div class="name">{{ group.name + ' (' + group.number + ')' }}</div>
             </div>
           </div>
@@ -211,7 +225,8 @@ export default {
               clearable
               prefix-icon="el-icon-search"
               style="width: 300px"
-              @keyup.enter="search()" />
+              @keyup.enter="search()"
+            />
             <el-button class="ml10" @click="getList(1)" type="primary">查询</el-button>
             <!-- v-hasPermi="['wecom:material:list']" -->
             <el-button @click="resetQuery">重置</el-button>
@@ -225,7 +240,8 @@ export default {
               :total="total"
               v-model:page="query.pageNum"
               v-model:limit="query.pageSize"
-              @pagination="getList()" />
+              @pagination="getList()"
+            />
           </div>
         </el-col>
       </el-row>
