@@ -76,7 +76,7 @@ export default {
     cursor: pointer;
     overflow: hidden;
     &:hover {
-      background: #f2f2f2;
+      background: var(--bg-black-10);
     }
     &.active-item {
       background: #e1f3fb;

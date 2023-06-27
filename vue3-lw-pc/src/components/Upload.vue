@@ -717,7 +717,7 @@ export default {
   height: 150px;
   box-sizing: border-box;
   color: var(--font-white, #fff);
-  background-color: #000;
+  background-color: var(--bg-black);
   position: relative;
   padding: 0;
   font-size: 10px;
@@ -754,7 +754,7 @@ export default {
   opacity: 0;
   font-size: 20px;
   transition: opacity 0.3s;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--bg-black-5);
   z-index: 1;
 }
 .upload-item {

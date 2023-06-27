@@ -251,7 +251,7 @@ export default {
   .line {
     width: 1px;
     height: 30px;
-    background: #ddd;
+    background: var(--bg-black-8);
   }
 }
 .left {

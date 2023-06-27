@@ -107,7 +107,7 @@ export default {
 
 .takecontent {
   border-radius: 3px;
-  background-color: #eee;
+  background-color: var(--bg-black-9);
   position: relative;
   text-align: left;
   height: 100%;

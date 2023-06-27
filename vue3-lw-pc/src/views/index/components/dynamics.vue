@@ -107,10 +107,10 @@ export default {
   width: 100%;
   max-height: 60vh;
   margin: 0;
-  background: #fafafa;
+  background: var(--bg-black-11);
   .dynamics-content {
     width: 100%;
-    background: #ffffff;
+    background: var(--bg-white);
     box-shadow: 0px 2px 6px -3px rgba(0, 0, 0, 0.04);
     border-radius: 8px 8px 8px 8px;
     padding: 20px 16px;

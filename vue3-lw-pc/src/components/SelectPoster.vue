@@ -193,7 +193,7 @@ export default {
     height: 100%;
     width: 100%;
     z-index: 99;
-    background: rgba(0, 0, 0, 0.6);
+    background: var(--bg-black-4);
     display: flex;
     align-items: center;
     justify-content: center;

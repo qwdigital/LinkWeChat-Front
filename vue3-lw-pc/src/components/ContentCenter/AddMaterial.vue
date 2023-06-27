@@ -821,12 +821,12 @@ export default {
 }
 ::v-deep .el-button.is-disabled {
   color: var(--font-white, #fff);
-  background-color: #cccccc;
+  background-color: var(--bg-black-8);
   border-color: #cccccc;
 }
 ::v-deep.el-dropdown [disabled] {
   color: var(--font-white, #fff);
-  background-color: #cccccc;
+  background-color: var(--bg-black-8);
   border-color: #cccccc;
 }
 .footer {

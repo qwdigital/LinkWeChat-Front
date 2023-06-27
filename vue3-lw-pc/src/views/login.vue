@@ -189,7 +189,7 @@ export default {
   width: min(80%, 1234px);
   height: min(80%, 878px);
   min-height: 700px;
-  background: #ffffff;
+  background: var(--bg-white);
   border-radius: 56px;
   .logo {
     position: absolute;
@@ -248,7 +248,7 @@ export default {
   width: 220px;
   height: 240px;
   padding: 20px;
-  background: #ffffff;
+  background: var(--bg-white);
   box-shadow: 0px 8px 24px 0px rgba(7, 193, 96, 0.16);
   border-radius: 24px 24px 24px 24px;
   border: 1px solid #07c160;

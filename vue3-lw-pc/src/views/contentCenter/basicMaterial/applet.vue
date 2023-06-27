@@ -99,7 +99,7 @@ export default {
   color: var(--font-white, #fff);
   opacity: 0;
   font-size: 20px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--bg-black-5);
   transition: opacity 0.3s;
   .el-icon-EditPen {
     margin-right: 20px;

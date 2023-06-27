@@ -205,7 +205,7 @@ export default {
       }
       &:hover {
         color: var(--font-black);
-        background: #f5f8fe;
+        background: var(--bg-black-11);
         opacity: 0.8;
         border-radius: 2px;
         .dropdown {
@@ -217,7 +217,7 @@ export default {
     .active {
       // border-left: 2px solid var(--color);
       color: var(--font-black);
-      background: #f5f8fe;
+      background: var(--bg-black-11);
       border-radius: 2px;
     }
   }

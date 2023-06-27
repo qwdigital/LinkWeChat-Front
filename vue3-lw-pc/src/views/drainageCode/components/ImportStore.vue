@@ -111,7 +111,7 @@ export default {
 .download_template {
   padding: 5px 20px;
   // color: #ebb563;
-  background-color: #eee;
+  background-color: var(--bg-black-9);
   border-radius: 4px;
   display: flex;
   justify-content: space-between;

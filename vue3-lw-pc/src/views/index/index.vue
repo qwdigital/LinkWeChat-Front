@@ -463,7 +463,7 @@ export default {
       width: 54px;
       height: 54px;
       overflow: hidden;
-      background: #edf2f9 center no-repeat;
+      background: var(--bg-black-11) center no-repeat;
       // background-repeat: no-repeat;
       border-radius: var(--border-radius-big);
       margin: 0 16px;

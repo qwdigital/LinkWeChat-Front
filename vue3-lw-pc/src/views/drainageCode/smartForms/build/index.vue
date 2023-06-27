@@ -613,7 +613,7 @@ export default {
 }
 .reg-item {
   padding: 12px 6px;
-  background: #f8f8f8;
+  background: var(--bg-black-11);
   position: relative;
   border-radius: 4px;
   .close-btn {

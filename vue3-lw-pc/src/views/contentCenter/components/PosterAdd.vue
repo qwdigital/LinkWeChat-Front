@@ -1125,7 +1125,7 @@ export default {
   margin: 3px 1px;
   border: 1px dashed #bfbebe;
   outline: 0;
-  background-color: #eee;
+  background-color: var(--bg-black-9);
   cursor: pointer;
 }
 .disableClass {

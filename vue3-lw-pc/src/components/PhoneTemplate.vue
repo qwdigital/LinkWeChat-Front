@@ -70,7 +70,7 @@ export default {
     height: 25px;
     margin: 6px auto;
     border-radius: 50px;
-    background: #bbb;
+    background: var(--bg-black-7);
     // border: 10px solid #bbb;
     // box-sizing: content-box;
     // border-width: 13px 62px;
@@ -83,7 +83,7 @@ export default {
     left: 50%;
     margin: 15px auto;
     border-radius: 10px;
-    background: #bbb;
+    background: var(--bg-black-7);
     transform: translateX(-50%);
     z-index: 10;
   }
@@ -113,7 +113,7 @@ export default {
     // left: 50%;
     // transform: translateX(-50%);
     border-radius: 0 0 20px 20px;
-    background: #f6f8ff;
+    background: var(--bg-black-11);
     ::v-deep img {
       max-width: 100%;
     }

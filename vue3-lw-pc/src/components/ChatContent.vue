@@ -218,7 +218,7 @@ export default {
   -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 8px 0 rgba(0, 0, 0, 0.19);
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 8px 0 rgba(0, 0, 0, 0.19);
   position: relative;
-  background: #f8f8f8;
+  background: var(--bg-black-11);
   overflow: hidden;
 
   .card-content {

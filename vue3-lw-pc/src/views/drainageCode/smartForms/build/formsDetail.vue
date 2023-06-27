@@ -919,7 +919,7 @@ export default {
 .form-logo {
   width: 100px;
   height: 100px;
-  background-color: #f2f2f2;
+  background-color: var(--bg-black-10);
   border-radius: 50%;
   display: flex;
   justify-content: center;

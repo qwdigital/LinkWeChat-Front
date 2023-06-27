@@ -174,7 +174,7 @@ export default {
       .msg {
         position: relative;
         min-height: 26px;
-        background: #ffffff;
+        background: var(--bg-white);
         box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
         border: 1px solid #e1edfc;
         display: inline-block;

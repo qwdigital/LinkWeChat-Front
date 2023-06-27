@@ -1221,7 +1221,7 @@ export default {
     margin: 3px;
     cursor: pointer;
     &:hover {
-      background: #eee;
+      background: var(--bg-black-9);
     }
   }
 }

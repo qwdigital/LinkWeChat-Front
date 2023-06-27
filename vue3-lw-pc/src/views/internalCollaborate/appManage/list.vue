@@ -336,7 +336,7 @@ export default {
       flex: none;
       border: 1px solid #eee;
       border-radius: 5px;
-      background: #eee;
+      background: var(--bg-black-9);
     }
     .title {
       font-size: 16px;

@@ -614,7 +614,7 @@ export default {
 <style lang="scss" scoped>
 .content-border {
   padding: 10px 20px;
-  background: #ffffff;
+  background: var(--bg-white);
   border: 1px solid #f1f1f1;
   .item-name {
     width: 100px;
@@ -657,7 +657,7 @@ export default {
 }
 
 .content-wrap {
-  background: #ffffff;
+  background: var(--bg-white);
   border-radius: 10px;
   padding: 20px;
 }

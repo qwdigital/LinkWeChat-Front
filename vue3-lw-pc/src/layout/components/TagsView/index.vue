@@ -268,7 +268,7 @@ export default {
       padding: 7px 16px;
       cursor: pointer;
       &:hover {
-        background: #eee;
+        background: var(--bg-black-9);
       }
     }
   }
@@ -293,7 +293,7 @@ export default {
         vertical-align: -3px;
       }
       &:hover {
-        background-color: #b4bccc;
+        background-color: var(--bg-black-9);
         color: var(--font-white, #fff);
       }
     }

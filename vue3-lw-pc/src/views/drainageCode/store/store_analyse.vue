@@ -246,7 +246,7 @@ export default {
   display: flex;
   flex: 1;
   .unit {
-    background: #ffffff;
+    background: var(--bg-white);
     // box-shadow: 0px 6px 30px 5px rgba(59, 59, 59, 0.05);
     border-radius: 8px;
     margin-right: 16px;
@@ -279,7 +279,7 @@ export default {
 }
 .bar_content {
   margin-top: 16px;
-  background: #ffffff;
+  background: var(--bg-white);
   border-radius: 8px;
 }
 .data-content {

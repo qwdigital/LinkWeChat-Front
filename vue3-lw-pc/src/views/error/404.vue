@@ -200,7 +200,7 @@ export default {
       float: left;
       width: 110px;
       height: 36px;
-      background: #1482f0;
+      background-c: #1482f0;
       border-radius: 100px;
       text-align: center;
       color: var(--font-white, #fff);

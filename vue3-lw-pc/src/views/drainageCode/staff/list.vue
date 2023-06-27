@@ -479,7 +479,7 @@ export default {
   cursor: pointer;
 
   &:hover {
-    background-color: #f5f8fe;
+    background-color: var(--bg-black-11);
   }
 }
 </style>

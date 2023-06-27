@@ -17,7 +17,7 @@
   border-radius: 5px;
   /*深色模式*/
   -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  background: #eee;
+  background: var(--bg-black-9);
 
   /*浅色模式*/
   /*-webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
@@ -34,7 +34,7 @@
 //   /*滚动条里面轨道*/
 //   -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
 //   border-radius: 10px;
-//   background: #eee;
+//    background: var(--bg-black-9);
 // }
 
 #app {
@@ -316,7 +316,7 @@ div:focus {
           }
           &:hover {
             color: var(--font-black);
-            background: #f5f8fe;
+            background: var(--bg-black-11);
             opacity: 0.8;
             border-radius: 2px;
             .dropdown {
@@ -328,7 +328,7 @@ div:focus {
         .active {
           // border-left: 2px solid #3c88f0;
           color: var(--font-black);
-          background: #f5f8fe;
+          background: var(--bg-black-11);
           border-radius: 2px;
         }
       }

@@ -136,7 +136,7 @@ export default {
           </template>
         </el-radio-group>
       </el-form-item>
-      <div class="g-card" style="background: #eee">
+      <div class="g-card" style="background: var(--bg-black-9)">
         <span>{{ touchTypeDict[form.type].tip }}</span>
       </div>
     </el-form>
@@ -154,7 +154,7 @@ export default {
         class="el-icon-SuccessFilled"
         style="font-size: 36px; color: #06c160; margin: 10px 0 20px"></el-icon-SuccessFilled>
       <div style="">短链创建成功</div>
-      <div class="g-card" style="background: #eee; width: 50%; margin: 30px auto">
+      <div class="g-card" style="background: var(--bg-black-9); width: 50%; margin: 30px auto">
         <span>{{ data.shortUrl }}</span>
       </div>
       <img ref="qrCode" style="width: 130px; height: 130px" :src="data.qrCode" fit="fill" crossOrigin="anonymous" />

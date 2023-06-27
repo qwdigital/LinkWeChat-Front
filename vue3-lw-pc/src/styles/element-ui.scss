@@ -370,7 +370,7 @@
 }
 .el-input.is-disabled .el-input__inner,
 .el-image__error {
-  background-color: #f5f7fa;
+  background-color: var(--bg-black-11);
 }
 
 .el-tabs__nav-wrap,
@@ -560,7 +560,7 @@
   .el-table__header-wrapper tr {
     word-break: break-word;
     font-size: 14px;
-    background-color: #f5f7fa;
+    background-color: var(--bg-black-11);
     height: 40px;
     color: var(--font-black);
     // border-radius: var(--border-radius-small);

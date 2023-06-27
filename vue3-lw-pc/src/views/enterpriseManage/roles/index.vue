@@ -318,14 +318,14 @@ export default {
 
       &:hover {
         color: var(--color);
-        background: #f5f8fe;
+        background: var(--bg-black-11);
         opacity: 0.8;
       }
     }
 
     .active {
       color: var(--color);
-      background: #f5f8fe;
+      background: var(--bg-black-11);
     }
   }
 }
