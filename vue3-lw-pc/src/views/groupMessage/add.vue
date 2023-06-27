@@ -646,7 +646,7 @@ export default {
   font-size: 12px;
 
   font-weight: 400;
-  color: #666666;
+  color: var(--font-black-4);
   display: flex;
 }
 

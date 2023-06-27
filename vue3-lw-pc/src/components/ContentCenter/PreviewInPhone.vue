@@ -297,7 +297,7 @@ export default {
     font-size: 12px;
 
     font-weight: 400;
-    color: #666666;
+    color: var(--font-black-4);
     display: flex;
     margin-top: 20px;
 
@@ -360,7 +360,7 @@ export default {
           font-size: 12px;
 
           font-weight: 400;
-          color: #999999;
+          color: var(--font-black-6);
           img {
             height: 40px;
             width: 40px;

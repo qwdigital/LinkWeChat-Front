@@ -131,7 +131,7 @@ export default {
   padding: 5px 20px;
   margin-top: 10px;
   font-size: 12px;
-  color: #999999;
+  color: var(--font-black-6);
   .title {
     margin-bottom: 10px;
     font-size: 14px;

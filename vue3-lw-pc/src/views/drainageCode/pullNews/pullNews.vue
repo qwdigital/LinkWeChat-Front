@@ -462,7 +462,7 @@ export default {
 .sub-des {
   font-size: 12px;
   font-weight: 400;
-  color: #999999;
+  color: var(--font-black-6);
 }
 ::v-deep .image-uploader {
   .uploader-icon {

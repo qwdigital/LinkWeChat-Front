@@ -102,7 +102,7 @@ export default {
     flex: none;
     font-size: 14px;
     font-weight: 500;
-    color: #333333;
+    color: var(--font-black);
   }
 
   .preview-content {

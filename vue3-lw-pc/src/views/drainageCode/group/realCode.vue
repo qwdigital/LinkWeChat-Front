@@ -410,7 +410,7 @@ export default {
   background-color: white;
   padding: 0 10px;
   font-weight: bold;
-  color: #666666;
+  color: var(--font-black-4);
 
   .example-text {
     font-size: 12px;

@@ -223,7 +223,7 @@ export default {
 }
 
 .dialog-tip {
-  color: #888;
+  color: var(--font-black-6);
   font-size: 12px;
 }
 </style>

@@ -380,6 +380,6 @@ export default {
   font-size: 12px;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
-  color: #999999;
+  color: var(--font-black-6);
 }
 </style>

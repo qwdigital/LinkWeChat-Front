@@ -143,7 +143,7 @@ export default {
       font-size: 13px;
       .name {
         margin-right: 6px;
-        color: #888;
+        color: var(--font-black-6);
       }
     }
   }

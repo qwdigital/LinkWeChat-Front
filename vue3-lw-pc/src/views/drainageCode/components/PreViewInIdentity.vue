@@ -62,7 +62,7 @@ export default {
     font-size: 14px;
 
     font-weight: 400;
-    color: #333333;
+    color: var(--font-black);
   }
 
   .content {
@@ -97,6 +97,6 @@ export default {
   font-size: 12px;
 
   font-weight: 400;
-  color: #999999;
+  color: var(--font-black-6);
 }
 </style>
