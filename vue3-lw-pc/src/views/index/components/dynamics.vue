@@ -140,7 +140,7 @@ export default {
             color: var(--color);
           }
           .staff {
-            background: #effffa;
+            background: var(--color-light-9);
             color: #00d695;
           }
           span:nth-child(2) {

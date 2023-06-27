@@ -514,7 +514,7 @@ export default {
     width: 16px;
     height: 16px;
     line-height: 15px;
-    background: white;
+    background: var(--bg-white);
     border-radius: 50%;
     font-size: 12px;
     text-align: center;
@@ -546,7 +546,7 @@ export default {
           border-color: #1869ff;
         }
         .staff {
-          background: #effffa;
+          background: var(--color-light-9);
           color: var(--color);
           border-color: var(--color);
         }

@@ -235,7 +235,7 @@ export default {
   .ct_box {
     height: calc(100vh - 197px);
     border-radius: 5px;
-    background: white;
+    background: var(--bg-white);
     padding: 20px;
   }
 
