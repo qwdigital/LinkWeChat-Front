@@ -541,7 +541,7 @@ export default {
           margin-right: 8px;
         }
         .customer {
-          background: #ecf5ff;
+          background: var(--color-light-10);
           color: #1869ff;
           border-color: #1869ff;
         }
