@@ -86,7 +86,7 @@
   --bg-black-10: var(--bg-black-3);
   --bg-black-11: var(--bg-black-2);
 
-  --bg-white: var(--bg-black-1);
+  --bg-white: #141414;
 }
 
 /* 项目定制原子类 */
