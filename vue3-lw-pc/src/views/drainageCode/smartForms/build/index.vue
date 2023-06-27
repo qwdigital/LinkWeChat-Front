@@ -735,7 +735,7 @@ $selectedColor: #f6f7ff;
 
 .elementCaptions {
   margin-top: -15px;
-  color: #aaaaaa;
+  color: var(--font-black-7);
 }
 .left-board {
   width: 260px;
@@ -898,7 +898,7 @@ $selectedColor: #f6f7ff;
     top: 0;
     left: 0;
     font-size: 12px;
-    color: #bbb;
+    color: var(--font-black-7);
     display: inline-block;
     padding: 0 6px;
   }

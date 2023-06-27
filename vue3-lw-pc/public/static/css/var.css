@@ -32,14 +32,14 @@
   --top-nav-heght: 64px; /* 顶部导航条高度 */
 
   --font-black: #1d2129; /* 通用字体黑色 */
-  --font-black-2: rgba(0, 0, 0, 0.8); /* #333*/
-  --font-black-3: rgba(0, 0, 0, 0.7); /* #444*/
-  --font-black-4: rgba(0, 0, 0, 0.6); /* #666 */
-  --font-black-5: rgba(0, 0, 0, 0.5); /* #777*/
-  --font-black-6: rgba(0, 0, 0, 0.4); /* #999*/
-  --font-black-7: rgba(0, 0, 0, 0.3); /* #ababab #aaa*/
-  --font-black-8: rgba(0, 0, 0, 0.2); /* #c4c4c4 #ccc*/
-  --font-black-9: rgba(0, 0, 0, 0.1); /* #dcdcdc #ddd*/
+  --font-black-2: hsl(0, 0%, 20%); /* #333*/
+  --font-black-3: hsl(0, 0%, 30%); /* #444*/
+  --font-black-4: hsl(0, 0%, 40%); /* #666 */
+  --font-black-5: hsl(0, 0%, 50%); /* #808080 #777*/
+  --font-black-6: hsl(0, 0%, 60%); /* #999*/
+  --font-black-7: hsl(0, 0%, 70%); /* #b3b3b3 #bbb #aaa*/
+  --font-black-8: hsl(0, 0%, 80%); /* #ccc #ddd*/
+  --font-black-9: hsl(0, 0%, 90%); /* #e6e6e6 #eee*/
 
   --font-white: #fff; /* 通用字体白色 */
 
@@ -47,14 +47,15 @@
   --bg-white: #fff;
 
   --bg-black: #000; /* 通用背景黑色 */
-  --bg-black-2: rgba(0, 0, 0, 0.8); /* #333*/
-  --bg-black-3: rgba(0, 0, 0, 0.7); /* #444*/
-  --bg-black-4: rgba(0, 0, 0, 0.6); /* #666 */
-  --bg-black-5: rgba(0, 0, 0, 0.5); /* #777*/
-  --bg-black-6: rgba(0, 0, 0, 0.4); /* #999*/
-  --bg-black-7: rgba(0, 0, 0, 0.3); /* #ababab #aaa*/
-  --bg-black-8: rgba(0, 0, 0, 0.2); /* #c4c4c4 #ccc*/
-  --bg-black-9: rgba(0, 0, 0, 0.1); /* #dcdcdc #ddd*/
+  --bg-black-2: hsl(0, 0%, 20%); /* #333*/
+  --bg-black-3: hsl(0, 0%, 30%); /* #444*/
+  --bg-black-4: hsl(0, 0%, 40%); /* #666 */
+  --bg-black-5: hsl(0, 0%, 50%); /* #808080 #777*/
+  --bg-black-6: hsl(0, 0%, 60%); /* #999*/
+  --bg-black-7: hsl(0, 0%, 70%); /* #b3b3b3 #bbb #aaa*/
+  --bg-black-8: hsl(0, 0%, 80%); /* #ccc #ddd*/
+  --bg-black-9: hsl(0, 0%, 90%); /* #e6e6e6 #eee*/
+  --bg-black-10: hsl(0, 0%, 95%); /* #f2f2f2 */
 }
 
 /* 暗黑模式 */

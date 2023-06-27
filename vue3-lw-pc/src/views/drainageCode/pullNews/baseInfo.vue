@@ -334,7 +334,7 @@ export default {
     }
     .item-text {
       font-size: 12px;
-      color: #aaaaaa;
+      color: var(--font-black-7);
       line-height: 24px;
     }
   }

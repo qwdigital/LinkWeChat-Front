@@ -690,7 +690,7 @@ export default {
   height: 32px;
 
   .placeholder {
-    color: #bbb;
+    color: var(--font-black-7);
     font-size: 14px;
   }
 }

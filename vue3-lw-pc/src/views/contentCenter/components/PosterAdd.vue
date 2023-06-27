@@ -984,7 +984,7 @@ export default {
 }
 .tips {
   font-size: 12px;
-  color: #aaaaaa;
+  color: var(--font-black-7);
   line-height: 32px;
 }
 .up-style {

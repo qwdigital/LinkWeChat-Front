@@ -257,7 +257,7 @@ export default {
     .item-text {
       margin-top: 6px;
       font-size: 12px;
-      color: #aaaaaa;
+      color: var(--font-black-7);
       line-height: 24px;
     }
     &:hover {

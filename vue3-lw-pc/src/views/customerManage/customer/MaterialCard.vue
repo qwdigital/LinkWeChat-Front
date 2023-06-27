@@ -170,7 +170,7 @@ export default {
   justify-content: space-between;
   .contentStyle {
     font-size: 12px;
-    color: #aaaaaa;
+    color: var(--font-black-7);
     width: calc(100% - 60px);
     overflow: hidden;
     text-overflow: ellipsis;
