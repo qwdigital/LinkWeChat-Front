@@ -418,8 +418,8 @@ export default {
   },
   watch: {
     baseData(val) {
-      if (val.templateInfo) {
-        this.form.templateInfo = val.templateInfo
+      if (val.templateInfo || val.attachments) {
+        this.form.templateInfo = val.templateInfo ? val.templateInfo : ''
         this.form.attachments = val.attachments
         // this.$forceUpdate()
         if (this.otherType === 3 && this.detail) {
@@ -891,7 +891,7 @@ export default {
     if (this.templateType != 1 && this.moduleType != 4) {
       this.getTree()
     }
-    if (this.baseData.templateInfo) {
+    if (this.form.templateInfo) {
       // this.form.templateInfo = this.baseData.templateInfo
       this.talkForm = this.baseData
       this.talkList = this.baseData.attachments
