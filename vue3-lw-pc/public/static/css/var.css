@@ -79,15 +79,14 @@
   --font-black-3: var(--font-black-7);
   --font-black-4: var(--font-black-6);
 
-  --bg-black-5: var(--bg-black-5);
-  --bg-black-6: var(--bg-black-4);
-  --bg-black-7: var(--bg-black-3);
-  --bg-black-8: var(--bg-black-2);
-  --bg-black-9: var(--bg-black-1);
-  --bg-black-10: var(--bg-black-1-1);
-  --bg-black-11: var(--bg-black-1-2);
+  --bg-black-6: var(--bg-black-7);
+  --bg-black-7: var(--bg-black-6);
+  --bg-black-8: var(--bg-black-5);
+  --bg-black-9: var(--bg-black-4);
+  --bg-black-10: var(--bg-black-3);
+  --bg-black-11: var(--bg-black-2);
 
-  --bg-white: #030303;
+  --bg-white: var(--bg-black-1);
 }
 
 /* 项目定制原子类 */
