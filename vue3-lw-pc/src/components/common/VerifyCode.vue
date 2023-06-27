@@ -127,13 +127,13 @@ export default {
 
 .unclickable {
   font-size: 12px;
-  color: #b5bbc4;
+  color: var(--font-black-7);
   letter-spacing: 0;
   text-align: center;
 }
 
 span {
-  color: #b5bbc4;
+  color: var(--font-black-7);
   margin-right: 5px;
 }
 

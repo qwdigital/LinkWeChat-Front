@@ -693,7 +693,7 @@ export default {
   font-size: 28px;
   align-items: center;
   justify-content: center;
-  color: #8c939d;
+  color: var(--font-black-6);
   border-radius: 6px;
   border: 1px dashed #d9d9d9;
   transition: all 0.3s;

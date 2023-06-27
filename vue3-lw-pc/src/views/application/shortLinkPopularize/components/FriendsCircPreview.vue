@@ -126,7 +126,7 @@ export default {
         .word {
           font-size: 14px;
           font-weight: 400;
-          color: #191919;
+          color: var(--font-black);
         }
         .code_img {
           height: 140px;

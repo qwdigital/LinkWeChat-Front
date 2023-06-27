@@ -289,7 +289,7 @@ export default {
       // justify-content: space-between;
       align-items: center;
       font-size: 12px;
-      color: #000;
+      color: var(--font-black);
       height: 40px;
       line-height: 40px;
       width: 100%;

@@ -456,7 +456,7 @@
   // right: 25px;
   .el-dialog__close {
     font-size: 22px;
-    color: #86909c;
+    color: var(--font-black-5);
   }
 }
 
@@ -493,7 +493,7 @@
   }
 }
 .el-step__title.is-process {
-  color: #86909c; // 标题颜色
+  color: var(--font-black-5); // 标题颜色
 }
 .el-step__head.is-process {
   color: var(--font-white, #fff); // 数字颜色
@@ -502,7 +502,7 @@
   }
 }
 .el-step__head.is-wait {
-  color: #86909c;
+  color: var(--font-black-5);
   .el-step__icon.is-text {
     background: #e8e9ed;
   }

@@ -382,7 +382,7 @@ export default {
 }
 .tips,
 .el-icon-QuestionFilled {
-  color: #d7d7d7;
+  color: var(--font-black-8);
   font-size: 12px;
   margin-top: 20px;
 }

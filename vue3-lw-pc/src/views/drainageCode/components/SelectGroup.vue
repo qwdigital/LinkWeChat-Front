@@ -233,7 +233,7 @@ export default {
 ::v-deep .el-dialog__body {
   margin: 30px 20px;
   padding: 0;
-  color: #606266;
+  color: var(--font-black-4);
   font-size: 14px;
   word-break: break-all;
 }

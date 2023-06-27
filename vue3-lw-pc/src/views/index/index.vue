@@ -470,7 +470,7 @@ export default {
     }
 
     .view-item-title {
-      color: #4e5969;
+      color: var(--font-black-4);
       margin-bottom: 10px;
     }
     .view-item-num {
@@ -498,7 +498,7 @@ export default {
     .info {
       line-height: 24px;
       margin-top: 10px;
-      color: #4e5969;
+      color: var(--font-black-4);
       .fr {
         color: var(--font-black);
         font-weight: bold;
@@ -560,14 +560,14 @@ export default {
         }
         .operatorName {
           font-size: 16px;
-          color: #222222;
+          color: var(--font-black);
           font-weight: 600;
         }
       }
 
       .operator {
         font-size: 12px;
-        color: #4e5969;
+        color: var(--font-black-4);
         margin-top: 10px;
         .nomal {
           color: var(--color);

@@ -222,7 +222,7 @@ export default {
       height: 26px;
       line-height: 26px;
       border: 1px solid #d8dce5;
-      color: #495060;
+      color: var(--font-black-4);
       background: var(--bg-white);
       padding: 0 8px;
       font-size: 12px;

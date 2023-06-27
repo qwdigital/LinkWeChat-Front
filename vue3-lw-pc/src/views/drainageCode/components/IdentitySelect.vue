@@ -169,7 +169,7 @@ export default {
   // height: 60px;
   text-align: center;
   line-height: 60px;
-  color: #909399;
+  color: var(--font-black-6);
   font-size: 13px;
   padding: 40px;
   padding-left: 0px;

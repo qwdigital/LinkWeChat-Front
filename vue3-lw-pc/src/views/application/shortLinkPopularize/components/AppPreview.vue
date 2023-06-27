@@ -84,7 +84,7 @@ export default {
   border-radius: 4px;
   font-size: 14px;
   font-weight: 400;
-  color: #191919;
+  color: var(--font-black);
 }
 .preview {
   margin: 0 auto;

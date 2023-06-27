@@ -230,7 +230,7 @@ div#driver-popover-item {
     .driver-btn-group {
       button.driver-disabled {
         // display: none !important;
-        color: #2d2d2d;
+        color: var(--font-black);
         border: 1px solid #d4d4d4;
         cursor: pointer !important;
         pointer-events: auto !important;

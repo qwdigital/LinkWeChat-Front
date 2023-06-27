@@ -30,7 +30,7 @@
               </div>
             </template>
           </draggable>
-          <div style="display: flex; justify-content: center; color: #b6b6b6">更多控件持续上线中...</div>
+          <div style="display: flex; justify-content: center; color: var(--font-black-7)">更多控件持续上线中...</div>
         </div>
       </el-scrollbar>
     </div>
@@ -569,7 +569,7 @@ export default {
   .el-tabs__item {
     height: 32px;
     line-height: 32px;
-    color: #888a8e;
+    color: var(--font-black-5);
     border-left: 1px solid #121315 !important;
     background: #363636;
     margin-right: 5px;
@@ -705,7 +705,7 @@ $selectedColor: #f6f7ff;
 }
 .components-title {
   font-size: 14px;
-  color: #222;
+  color: var(--font-black);
   margin: 6px 2px;
   .svg-icon {
     color: var(--font-black-4);

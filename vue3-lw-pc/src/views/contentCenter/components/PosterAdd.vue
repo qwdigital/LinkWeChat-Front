@@ -1087,7 +1087,7 @@ export default {
   padding: 0;
   margin-bottom: 5px;
   text-align: center;
-  color: #544b61;
+  color: var(--font-black-4);
   font-weight: 400;
   list-style-type: none;
   user-select: none;
@@ -1113,7 +1113,7 @@ export default {
 }
 .menu-item.disabled {
   cursor: default;
-  color: #bfbebe;
+  color: var(--font-black-7);
 }
 .sub-menu-container {
   font-size: 14px;
@@ -1130,6 +1130,6 @@ export default {
 }
 .disableClass {
   cursor: default;
-  color: #b0b7bf;
+  color: var(--font-black-7);
 }
 </style>

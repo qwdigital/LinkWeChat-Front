@@ -115,7 +115,7 @@ div:focus {
     font-weight: 400;
     margin: 0 5px;
     font-size: 12px;
-    color: #86909c;
+    color: var(--font-black-5);
   }
   // .total {
   //   background-color: rgba(65, 133, 244, 0.1);
@@ -125,7 +125,7 @@ div:focus {
   //   min-height: 32px;
   //   line-height: 32px;
   //   padding: 0 12px;
-  //   color: #606266;
+  //   color: var(--font-black-6);
   // }
   // .num {
   //   color: #00f;
@@ -194,7 +194,7 @@ div:focus {
         font-weight: 400;
         margin: 0 5px;
         font-size: 12px;
-        color: #86909c;
+        color: var(--font-black-5);
       }
     }
   }

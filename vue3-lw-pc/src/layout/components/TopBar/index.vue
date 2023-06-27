@@ -227,7 +227,7 @@ export default {
     .right-menu-item {
       display: inline-block;
       padding: 0 0 0 min(2vw - 20px, 15px);
-      // color: #5a5e66;
+      // color: var(--font-black-4);
       vertical-align: middle;
 
       &.hover-effect {
@@ -267,7 +267,7 @@ export default {
         .el-icon-arrow-down {
           margin-left: 3px;
           font-size: 12px;
-          color: #000;
+          color: var(--font-black);
         }
       }
     }

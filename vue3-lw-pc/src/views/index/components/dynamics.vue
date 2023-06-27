@@ -146,7 +146,7 @@ export default {
           span:nth-child(2) {
             font-size: 14px;
             font-family: 'PingFang SC-粗体', 'PingFang SC';
-            color: #222222;
+            color: var(--font-black);
             line-height: 20px;
             font-weight: 600;
           }

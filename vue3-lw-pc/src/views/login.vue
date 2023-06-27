@@ -200,7 +200,7 @@ export default {
 }
 .login-title {
   font-size: 16px;
-  color: #4e5969;
+  color: var(--font-black-4);
 }
 .login-text {
   font-size: 32px;
