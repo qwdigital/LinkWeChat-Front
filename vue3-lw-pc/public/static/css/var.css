@@ -56,11 +56,17 @@
   --bg-black-8: hsl(0, 0%, 80%); /* #ccc #ddd*/
   --bg-black-9: hsl(0, 0%, 90%); /* #e6e6e6 #eee*/
   --bg-black-10: hsl(0, 0%, 95%); /* #f2f2f2 */
+
+  color: var(--font-black);
 }
 
 /* 暗黑模式 */
 .dark {
   --font-black: var(--font-white);
+  --font-black-2: var(--font-black-8);
+  --font-black-3: var(--font-black-7);
+  --font-black-4: var(--font-black-6);
+
   --bg-white: #1d2129;
 }
 
