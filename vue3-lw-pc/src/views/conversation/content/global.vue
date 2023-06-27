@@ -215,7 +215,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .demo-form-inline {
-  background: #f1f1f1;
+  background: var(--bg-black-10);
   padding: 18px 10px 0 10px;
 }
 

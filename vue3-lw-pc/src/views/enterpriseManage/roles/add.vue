@@ -255,6 +255,6 @@ export default {
   justify-content: flex-end;
   border-radius: 5px;
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: var(--bg-black-11);
 }
 </style>

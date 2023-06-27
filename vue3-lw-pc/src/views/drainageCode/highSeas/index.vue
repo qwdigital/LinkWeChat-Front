@@ -475,7 +475,7 @@ export default {
   display: block;
   height: 1px;
   width: 100%;
-  background-color: #dcdfe6;
+  background-color: var(--bg-black-9);
 }
 
 .bottom {

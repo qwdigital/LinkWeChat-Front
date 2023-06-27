@@ -240,7 +240,7 @@ div#driver-popover-item {
 }
 div#driver-page-overlay {
   opacity: 1 !important;
-  background: rgba($color: #000000, $alpha: 0.65) !important;
+  background: var(--bg-black-3) !important;
 }
 div#driver-highlighted-element-stage {
   border-radius: 8px !important;

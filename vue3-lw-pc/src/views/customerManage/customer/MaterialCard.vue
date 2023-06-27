@@ -139,7 +139,7 @@ export default {
 .itemList {
   width: 60%;
   margin: 10px;
-  background-color: #eaeaea;
+  background-color: var(--bg-black-9);
   padding: 10px;
   border-radius: 4px;
 }

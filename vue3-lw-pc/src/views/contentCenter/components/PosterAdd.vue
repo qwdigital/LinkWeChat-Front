@@ -1109,7 +1109,7 @@ export default {
 }
 .menu-item.active,
 .menu-item:hover {
-  background-color: #f3f3f3;
+  background-color: var(--bg-black-10);
 }
 .menu-item.disabled {
   cursor: default;

@@ -558,7 +558,7 @@ export default {
 
 <style lang="scss" scoped>
 .editor-tabs {
-  background: #121315;
+  background: var(--bg-black);
   .el-tabs__header {
     margin: 0;
     border-bottom-color: #121315;
@@ -571,12 +571,12 @@ export default {
     line-height: 32px;
     color: var(--font-black-5);
     border-left: 1px solid #121315 !important;
-    background: #363636;
+    background: var(--bg-black-2);
     margin-right: 5px;
     user-select: none;
   }
   .el-tabs__item.is-active {
-    background: #1e1e1e;
+    background: var(--bg-black-1);
     border-bottom-color: #1e1e1e !important;
     color: var(--font-white, #fff);
   }
@@ -624,7 +624,7 @@ export default {
     width: 16px;
     height: 16px;
     line-height: 16px;
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--bg-black-8);
     border-radius: 50%;
     color: var(--font-white, #fff);
     text-align: center;
@@ -1003,10 +1003,10 @@ $selectedColor: #f6f7ff;
     cursor: pointer;
   }
   .smartForms_build_index_li:hover {
-    background-color: #f6f7ff;
+    background-color: var(--bg-black-11);
   }
   .smartForms_build_index_ul_liX_hover:hover {
-    background-color: #f6f7ff;
+    background-color: var(--bg-black-11);
   }
   .smartForms_build_index_li:nth-of-type(1) {
     border-left: 1px solid #d7d7d7;

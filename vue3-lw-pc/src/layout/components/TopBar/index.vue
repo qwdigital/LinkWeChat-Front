@@ -235,7 +235,7 @@ export default {
         transition: background 0.3s;
 
         // &:hover {
-        //   background: rgba(0, 0, 0, 0.025);
+        //   background: var(--bg-black-11);
         // }
       }
     }

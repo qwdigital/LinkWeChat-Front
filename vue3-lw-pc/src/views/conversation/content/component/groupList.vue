@@ -110,10 +110,10 @@ export default {
       text-overflow: ellipsis;
     }
     &:hover {
-      background: #efefef;
+      background: var(--bg-black-10);
     }
     &.active {
-      background: var(--color-light);
+      background: var(--color-light-10);
     }
     img {
       width: 100%;

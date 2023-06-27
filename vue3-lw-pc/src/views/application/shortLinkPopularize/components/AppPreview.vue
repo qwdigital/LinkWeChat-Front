@@ -80,7 +80,7 @@ export default {
 }
 .bg_con {
   padding: 10px 20px;
-  background-color: #f2eeee;
+  background-color: var(--bg-black-10);
   border-radius: 4px;
   font-size: 14px;
   font-weight: 400;

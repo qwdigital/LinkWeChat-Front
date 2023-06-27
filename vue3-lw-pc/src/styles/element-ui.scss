@@ -480,7 +480,7 @@
 .el-step.is-horizontal .el-step__line {
   top: 20px;
   height: 1px;
-  background: #e8e9ed;
+  background: var(--bg-black-10);
 }
 .el-step.is-center .el-step__line {
   left: calc(50% + 30px + 80px);
@@ -504,7 +504,7 @@
 .el-step__head.is-wait {
   color: var(--font-black-5);
   .el-step__icon.is-text {
-    background: #e8e9ed;
+    background: var(--bg-black-10);
   }
 }
 
@@ -637,7 +637,7 @@
 .el-table__body tr.hover-row.current-row > td.el-table__cell,
 .el-table__body tr.hover-row.el-table__row--striped > td.el-table__cell,
 .el-table__body tr.hover-row.el-table__row--striped.current-row > td.el-table__cell {
-  background-color: #f8fafc;
+  background-color: var(--bg-black-11);
 }
 
 // 滚动条宽度
