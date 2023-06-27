@@ -172,7 +172,7 @@ export default {
       justify-content: space-between;
       align-items: center;
       font-size: 14px;
-      color: rgba(0, 0, 0, 0.6);
+      color: var(--font-black-5);
       height: 40px;
       line-height: 40px;
       width: 100%;
@@ -192,12 +192,12 @@ export default {
           font-size: 14px;
           font-family: JMT-Font, JMT;
           font-weight: normal;
-          color: rgba(0, 0, 0, 0.6);
+          color: var(--font-black-5);
           margin-right: 10px;
           margin-left: 5px;
           font-weight: 500;
           .content-icon {
-            color: rgba(0, 0, 0, 0.6);
+            color: var(--font-black-5);
             font-size: 12px;
             transform: rotate(90deg);
           }

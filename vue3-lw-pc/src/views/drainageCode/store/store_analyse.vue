@@ -259,7 +259,7 @@ export default {
     .title {
       font-size: 14px;
       font-weight: 500;
-      color: rgba(0, 0, 0, 0.6);
+      color: var(--font-black-5);
       display: flex;
       justify-content: space-between;
     }

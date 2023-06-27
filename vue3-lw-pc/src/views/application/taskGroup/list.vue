@@ -234,7 +234,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .self_a {
-  color: #07c160;
+  color: var(--color);
   text-decoration: underline;
   &:hover {
     opacity: 0.8;
