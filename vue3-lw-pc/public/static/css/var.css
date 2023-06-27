@@ -24,7 +24,7 @@
   --color-light-8: hsl(var(--h), var(--s), calc(var(--step) * 8 + var(--l))); /* hsl(149, 93%, 88%) */
   --color-light-9: hsl(var(--h), var(--s), calc(var(--step) * 9 + var(--l))); /* hsl(149, 93%, 94%) */
   --color-light-10: hsl(var(--h), var(--s), calc(var(--step) * 9.5 + var(--l))); /* :hsl(149, 93%, 97%) */
-  --test: hsl(149, 93%, 94%);
+  /* --test: hsl(149, 93%, 51%); */
 
   /* 功能色 */
   --color-success: #07c160;

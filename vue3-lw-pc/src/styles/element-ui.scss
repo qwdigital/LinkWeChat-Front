@@ -87,7 +87,7 @@
   position: sticky;
   top: 0;
   z-index: 9;
-  box-shadow: 0px 4px 20px 0px #edf2f9;
+  box-shadow: 0px 4px 20px 0px var(--bg-black-10);
   display: flex;
   flex-wrap: wrap;
   gap: 18px;
@@ -544,7 +544,7 @@
 // border: 20px solid #fff; border-radius: 20px; background: var(--bg-white)
 // }
 .el-table {
-  --el-table-header-bg-color: #f5f7fa;
+  --el-table-header-bg-color: var(--bg-black-11);
 
   font-size: 14px;
   background-color: transparent;
