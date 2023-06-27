@@ -124,7 +124,11 @@ export default {
   methods: {
     // 开始
     getCodeCategoryListFn() {
-      getCodeCategoryList({ mediaType: this.type }).then((res) => {
+      let obj = { mediaType: this.type }
+      if (this.isFriends) {
+        obj.scene = 1
+      }
+      getCodeCategoryList(obj).then((res) => {
         if (res.code == 200) {
           this.groupList = res.data
           this.query.categoryId = this.groupList[0].id

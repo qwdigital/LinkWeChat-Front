@@ -431,7 +431,7 @@ export default {
           //     })
           //     .join(',')
           // }
-          if (this.form.executeTime) {
+          if (this.form.executeTime && typeof this.form.executeTime !== 'string' ) {
             let time = this.form.executeTime.getTime()
             let time2 = Date.now()
             if (time2 > time) {
@@ -439,10 +439,8 @@ export default {
               return false
             }
             this.form.executeTime = moment(this.form.executeTime).format('YYYY-MM-DD HH:mm')
-          } else {
-            this.form.executeTime = ''
           }
-          if (this.form.executeEndTime) {
+          if (this.form.executeEndTime && typeof this.form.executeEndTime !== 'string') {
             let time = this.form.executeEndTime.getTime()
             let time2 = Date.now()
             if (time2 > time) {
@@ -450,10 +448,7 @@ export default {
               return false
             }
             this.form.executeEndTime = moment(this.form.executeEndTime).format('YYYY-MM-DD HH:mm')
-          } else {
-            this.form.executeEndTime = ''
           }
-          // console.log(304, this.form)
           addMoments(this.form).then((res) => {
             if (res.code === 200) {
               this.msgSuccess('操作成功')
