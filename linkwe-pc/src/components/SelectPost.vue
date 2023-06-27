@@ -1,81 +1,82 @@
 <script>
-import { getDeptUserAll } from '@/api/organization'
-export default {
-  name: 'SelectPost',
-  components: {},
-  props: {
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-    title: {
-      type: String,
-      default: '选择岗位',
-    },
-    // 是否单选
-    isSigleSelect: {
-      type: Boolean,
-      default: false,
-    },
-    // 默认选中
-    defaultValues: {
-      type: Array,
-      default: () => [],
-    },
-    // 禁止选中
-    disabledValues: {
-      type: Array,
-      default: () => [],
-    },
-    destroyOnClose: Boolean,
-  },
-  data() {
-    return {
-      postList: [],
-      selectList: [],
-    }
-  },
-  watch: {
-    defaultValues: {
-      handler(value) {
-        this.selectList = value
+  import { getDeptUserAll } from '@/api/organization'
+  export default {
+    name: 'SelectPost',
+    components: {},
+    props: {
+      visible: {
+        type: Boolean,
+        default: false
       },
-      immediate: true,
-    },
-    Pvisible(val) {
-      this.selectList = this.defaultValues
-    },
-  },
-  computed: {
-    Pvisible: {
-      get() {
-        return this.visible
+      title: {
+        type: String,
+        default: '选择岗位'
       },
-      set(val) {
-        this.$emit('update:visible', val)
+      // 是否单选
+      isSigleSelect: {
+        type: Boolean,
+        default: false
       },
+      // 默认选中
+      defaultValues: {
+        type: Array,
+        default: () => []
+      },
+      // 禁止选中
+      disabledValues: {
+        type: Array,
+        default: () => []
+      },
+      destroyOnClose: Boolean
     },
-  },
-  created() {
-    getDeptUserAll().then(({ data }) => {
-      this.postList = data.map((item) => {
-        return item.position
+    data() {
+      return {
+        postList: [],
+        selectList: []
+      }
+    },
+    watch: {
+      defaultValues: {
+        handler(value) {
+          this.selectList = value
+        },
+        immediate: true
+      },
+      Pvisible(val) {
+        this.selectList = this.defaultValues
+      }
+    },
+    computed: {
+      Pvisible: {
+        get() {
+          return this.visible
+        },
+        set(val) {
+          this.$emit('update:visible', val)
+        }
+      }
+    },
+    created() {
+      getDeptUserAll().then(({ data }) => {
+        let arr = data.map((item) => {
+          return item.position
+        })
+        this.postList = Array.from(new Set(arr))
       })
-    })
-  },
-  mounted() {},
-  methods: {
-    // 确 定
-    submit() {
-      this.Pvisible = false
-      this.$emit('success', [...this.selectList])
     },
-    // 取消选择
-    cancle(index) {
-      this.selectList.splice(index, 1)
-    },
-  },
-}
+    mounted() {},
+    methods: {
+      // 确 定
+      submit() {
+        this.Pvisible = false
+        this.$emit('success', [...this.selectList])
+      },
+      // 取消选择
+      cancle(index) {
+        this.selectList.splice(index, 1)
+      }
+    }
+  }
 </script>
 <template>
   <el-dialog :title="title" :visible.sync="Pvisible" :close-on-click-modal="false" :destroy-on-close="destroyOnClose">
@@ -85,11 +86,12 @@ export default {
           <el-checkbox-group v-model="selectList">
             <template v-for="(unit, index) in postList">
               <el-checkbox
-                style="display: block"
+                style="display: block;"
                 :label="unit"
                 v-if="unit"
                 :key="index"
-                :disabled="disabledValues.includes(unit)">
+                :disabled="disabledValues.includes(unit)"
+              >
                 {{ unit }}
               </el-checkbox>
             </template>
@@ -113,9 +115,9 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-.user-list {
-  .el-row {
-    line-height: 26px;
+  .user-list {
+    .el-row {
+      line-height: 26px;
+    }
   }
-}
 </style>
