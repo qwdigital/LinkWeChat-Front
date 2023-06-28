@@ -570,14 +570,14 @@ export default {
     height: 32px;
     line-height: 32px;
     color: var(--font-black-5);
-    border-left: 1px solid #121315 !important;
+    border-left: 1px solid var(--border-black-1) !important;
     background: var(--bg-black-2);
     margin-right: 5px;
     user-select: none;
   }
   .el-tabs__item.is-active {
     background: var(--bg-black-1);
-    border-bottom-color: #1e1e1e !important;
+    border-bottom-color: var(--border-black-1) !important;
     color: var(--font-white, #fff);
   }
   .el-icon-EditPen {
@@ -725,10 +725,10 @@ $selectedColor: var(--bg-black-11);
     font-size: 15px;
   }
   &:hover {
-    border: 1px dashed #787be8;
-    color: #787be8;
+    border: 1px dashed var(--color);
+    color: var(--color);
     .svg-icon {
-      color: #787be8;
+      color: var(--color);
     }
   }
 }

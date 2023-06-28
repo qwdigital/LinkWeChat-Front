@@ -126,7 +126,7 @@
             <span>帮助中心</span>
             <a
               class="title-right-icon"
-              style="color: #fff !important; background: #000"
+              style="color: var(--font-white) !important; background: var(--bg-black)"
               href="https://www.yuque.com/linkwechat/help"
               target="_blank">
               ➔
@@ -454,7 +454,7 @@ export default {
       margin: 30px -20px 0;
     }
     .data-view-item {
-      border-left: 1px solid #e2e8f0;
+      border-left: 1px solid var(--bg-black-9);
       &:first-child {
         border: 0;
       }

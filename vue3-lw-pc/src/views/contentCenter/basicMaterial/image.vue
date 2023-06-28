@@ -134,7 +134,7 @@ export default {
       white-space: nowrap;
       text-overflow: ellipsis;
       font-size: 14px;
-      border-top: 1px solid #eaeaea;
+      border-top: 1px solid var(--border-black-9);
     }
     .content {
       width: 95%;

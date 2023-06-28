@@ -20,7 +20,7 @@
       </el-tooltip>
       <el-tooltip placement="top" :disabled="objRow.digest ? objRow.digest.length < contentNum : true">
         <template #content><p style="white-space: pre-line" v-html="objRow.digest"></p></template>
-        <p style="color: #aaaaaa; text-align: left">
+        <p style="color: var(--font-black-7); text-align: left">
           {{ coverContent(objRow.digest, contentNum) }}
         </p>
       </el-tooltip>

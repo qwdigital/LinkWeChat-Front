@@ -683,7 +683,7 @@ export default {
   width: 240px;
   display: inline-flex;
   border-radius: 4px;
-  border: 1px solid #dcdfe6;
+  border: 1px solid var(--border-black-9);
   align-items: center;
   padding: 0 15px;
   overflow: hidden;

@@ -184,7 +184,7 @@ export default {
     font-size: 14px;
     line-height: 40px;
     padding-left: 20px;
-    border-top: 1px solid #000;
+    border-top: 1px solid var(--border-black);
   }
   .materialMask {
     position: absolute;

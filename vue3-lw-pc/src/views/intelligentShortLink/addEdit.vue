@@ -152,7 +152,7 @@ export default {
     <div v-show="currentActive == 2" class="g-card ac">
       <el-icon-SuccessFilled
         class="el-icon-SuccessFilled"
-        style="font-size: 36px; color: #06c160; margin: 10px 0 20px"></el-icon-SuccessFilled>
+        style="font-size: 36px; color: var(--color); margin: 10px 0 20px"></el-icon-SuccessFilled>
       <div style="">短链创建成功</div>
       <div class="g-card" style="background: var(--bg-black-9); width: 50%; margin: 30px auto">
         <span>{{ data.shortUrl }}</span>
