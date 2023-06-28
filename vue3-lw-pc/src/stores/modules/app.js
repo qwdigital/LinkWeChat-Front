@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+import { useDark, useToggle } from '@vueuse/core'
 
 const state = {
   sidebar: {
@@ -8,6 +9,7 @@ const state = {
   device: 'desktop',
   size: Cookies.get('size') || 'medium',
   busininessDesc: undefined,
+  isDark: useDark(),
 }
 
 const actions = {

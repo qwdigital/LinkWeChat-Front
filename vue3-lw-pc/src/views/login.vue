@@ -1,7 +1,7 @@
 <template>
   <div class="login cc fcbw">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <img class="logo" :src="lwConfig.LOGO_TEXT_DARK" alt="" />
+      <img class="logo" :src="$store.app.isDark ? lwConfig.LOGO_TEXT_LIGHT : lwConfig.LOGO_TEXT_DARK" alt="" />
       <div class="login-title">欢迎来到{{ lwConfig.SYSTEM_NAME }}</div>
       <div class="login-text">登录你的账户</div>
       <template v-if="loginType === 'account'">
@@ -193,7 +193,7 @@ export default {
   border-radius: 56px;
   .logo {
     position: absolute;
-    height: 58px;
+    height: 28px;
     left: 38px;
     top: 38px;
   }
