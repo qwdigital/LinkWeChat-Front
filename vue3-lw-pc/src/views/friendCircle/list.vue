@@ -9,13 +9,12 @@
       class="top-search"
     >
       <el-form-item prop="name">
-        <el-input v-model="query.name" placeholder="请输入任务名称" style="width: 160px"></el-input>
+        <el-input v-model="query.name" placeholder="请输入任务名称" ></el-input>
       </el-form-item>
       <el-form-item prop="createBy">
         <el-input
           v-model="query.createBy"
           placeholder="请输入创建人"
-          style="width: 160px"
         ></el-input>
       </el-form-item>
       <el-form-item prop="sendType">
@@ -49,7 +48,7 @@
           range-separator="—"
           start-placeholder="执行开始时间"
           end-placeholder="执行结束时间"
-          style="width: 260px"
+          style="width: 240px"
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
