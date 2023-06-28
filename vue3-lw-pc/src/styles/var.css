@@ -30,7 +30,7 @@ html.dark {
   --el-border-color-extra-light: #e6f8ef;
 
   --el-border-color-light: #dfe4ed;
-  --el-border-color-lighter: #e6ebf5;
+  --el-border-color-lighter: var(--border-black-9);
 
   --el-table-border: 1px solid #dfe6ec;
 }

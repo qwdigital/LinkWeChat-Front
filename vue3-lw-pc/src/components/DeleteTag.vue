@@ -157,7 +157,7 @@ export default {
   overflow-y: scroll;
   &-item {
     margin: 10px;
-    border-bottom: 1px solid #f1f1f1;
+    border-bottom: 1px solid var(--border-black-10);
 
     &-title {
       font-weight: 700;

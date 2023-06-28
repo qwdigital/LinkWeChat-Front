@@ -236,7 +236,7 @@ svg.svg-icon {
 }
 .tab {
   background: var(--bg-white);
-  border-top: 1px solid #f1f1f1;
+  border-top: 1px solid var(--border-black-10);
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   //   margin-top: 10px;

@@ -91,7 +91,7 @@ export default {
 .msg {
   min-height: 28px;
   background: var(--bg-white);
-  border: 1px solid #e4e6e9;
+  border: 1px solid var(--border-black-9);
   display: inline-block;
   position: relative;
   text-align: left;
@@ -115,13 +115,13 @@ export default {
     width: 0;
     border-style: solid;
     border-color: transparent;
-    border-right-color: #fff;
+    border-right-color: var(--border-white);
     top: 10px;
     z-index: 888;
   }
 }
 .avatar {
-  border: 1px solid #fff;
+  border: 1px solid var(--border-white);
   background: var(--bg-white);
   border-radius: 6px;
   width: 28px;

@@ -116,7 +116,7 @@ export default {
     padding: 20px 16px;
     margin-top: 12px;
     .dynamics-item {
-      border-bottom: 1px solid #f1f1f1;
+      border-bottom: 1px solid var(--border-black-10);
       display: flex;
       justify-content: space-between;
       padding-bottom: 9px;

@@ -261,11 +261,11 @@
 //   tr td {
 //     &:first-child {
 //       border-radius: 4px 0 0 4px;
-//       border-left: 1px solid #ddd;
+//       border-left: 1px solid var(--border-black-8);
 //     }
 //     &:last-child {
 //       border-radius: 0 4px 4px 0;
-//       border-right: 1px solid #ddd;
+//       border-right: 1px solid var(--border-black-8);
 //     }
 //   }
 //   .el-table__body {
@@ -396,7 +396,7 @@
   background-color: transparent;
   border-radius: 4px;
   height: 30px;
-  border: 1px solid #d4d6d9;
+  border: 1px solid var(--border-black-9);
 }
 .el-pagination.is-background .el-pager li:not(.disabled).active {
   background-color: transparent;
@@ -541,7 +541,7 @@
 // .top-search + .el-table {
 //   @extend .--card;
 //   box-sizing: content-box;
-// border: 20px solid #fff; border-radius: 20px; background: var(--bg-white)
+// border: 20px solid var(--border-white); border-radius: 20px; background: var(--bg-white)
 // }
 .el-table {
   --el-table-header-bg-color: var(--bg-black-11);

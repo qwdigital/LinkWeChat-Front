@@ -192,7 +192,7 @@ export default {
   width: 120px;
   height: 120px;
   border-radius: 8px;
-  border: 1px solid #e6ebf5;
+  border: 1px solid var(--border-black-10);
   justify-content: center;
 }
 .img-li {

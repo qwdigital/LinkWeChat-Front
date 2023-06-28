@@ -213,7 +213,7 @@ export default {
   margin-top: 10px;
   background: var(--bg-white);
   overflow-y: scroll;
-  border-bottom: 1px solid #efefef;
+  border-bottom: 1px solid var(--border-black-10);
   color: var(--font-black-6);
   text-align: center;
 

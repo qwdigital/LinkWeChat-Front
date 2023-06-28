@@ -50,7 +50,7 @@ export default {
   max-width: 375px;
   min-width: 320px;
   height: 720px;
-  border: 12px solid #edf2f9;
+  border: 12px solid var(--border-black-10);
   border-radius: 40px;
   box-sizing: content-box;
   overflow: hidden;
@@ -71,7 +71,7 @@ export default {
     margin: 6px auto;
     border-radius: 50px;
     background: var(--bg-black-7);
-    // border: 10px solid #bbb;
+    // border: 10px solid var(--border-black-7);
     // box-sizing: content-box;
     // border-width: 13px 62px;
   }

@@ -429,7 +429,7 @@ export default {
         width: 90px;
         height: 90px;
         border-radius: 50%;
-        border: 1px solid #fafafa;
+        border: 1px solid var(--border-black-11);
       }
     }
     .wel {
@@ -525,7 +525,7 @@ export default {
     margin-top: -10px;
     padding-top: 0;
     .dynamics-item {
-      border-bottom: 1px solid #f1f1f1;
+      border-bottom: 1px solid var(--border-black-10);
       padding: 16px 0;
 
       .info {
@@ -590,7 +590,7 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #f1f1f1;
+      border-bottom: 1px solid var(--border-black-10);
       padding: 16px 0;
       // font-size: 12px;
       &:first-of-type {

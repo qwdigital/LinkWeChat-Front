@@ -110,8 +110,8 @@ export default {
 }
 
 .list-group-item {
-  border-bottom: 1px solid #e7eaec;
-  border-top: 1px solid #e7eaec;
+  border-bottom: 1px solid var(--border-black-9);
+  border-top: 1px solid var(--border-black-9);
   margin-bottom: -1px;
   padding: 11px 0px;
   font-size: 13px;

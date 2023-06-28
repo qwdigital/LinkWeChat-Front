@@ -271,14 +271,14 @@ export default {
   width: 160px;
   height: 160px;
   border-radius: 8px;
-  border: 1px solid #e6ebf5;
+  border: 1px solid var(--border-black-10);
 }
 
 .img-wrap {
   position: relative;
   height: 0;
   padding: 70% 0 0 0;
-  border-bottom: 1px solid #e6ebf5;
+  border-bottom: 1px solid var(--border-black-9);
   .el-image,
   #video {
     position: absolute;

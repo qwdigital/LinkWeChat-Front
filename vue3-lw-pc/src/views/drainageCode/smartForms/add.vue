@@ -1612,7 +1612,7 @@ export default {
 }
 .add_form4_qd {
   width: 100%;
-  border: 1px solid #e6e6e6;
+  border: 1px solid var(--border-black-9);
   .add_form4_qd_ul {
     overflow: hidden;
     flex-shrink: 0;
@@ -1623,7 +1623,7 @@ export default {
       justify-content: center;
       align-items: center;
       height: 100%;
-      border: 1px solid #e6e6e6;
+      border: 1px solid var(--border-black-9);
     }
     .add_form4_qd_li1 {
       width: 160px;

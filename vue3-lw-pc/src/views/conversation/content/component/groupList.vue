@@ -102,7 +102,7 @@ export default {
   ul li {
     padding: 3px 10px;
     overflow: hidden;
-    border-bottom: 1px solid #efefef;
+    border-bottom: 1px solid var(--border-black-10);
     cursor: pointer;
     p {
       white-space: nowrap;

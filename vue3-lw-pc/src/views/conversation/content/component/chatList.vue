@@ -49,7 +49,7 @@ export default {
   vertical-align: top;
   box-shadow: 0px 6px 8px 0px rgba(78, 89, 105, 0.3);
   border-radius: 8px 8px 8px 8px;
-  border: 1px solid #fff;
+  border: 1px solid var(--border-white);
   background: var(--bg-white);
 }
 .shabowbox {

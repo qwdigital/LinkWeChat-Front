@@ -326,7 +326,7 @@ export default {
     height: 218px;
     margin: 0 20px 20px 0;
     padding: 20px 20px 10px;
-    border: 1px solid #eee;
+    border: 1px solid var(--border-black-9);
     background: var(--bg-white);
     border-radius: 6px;
     .el-image {
@@ -334,7 +334,7 @@ export default {
       width: 80px;
       height: 80px;
       flex: none;
-      border: 1px solid #eee;
+      border: 1px solid var(--border-black-9);
       border-radius: 5px;
       background: var(--bg-black-9);
     }
@@ -361,7 +361,7 @@ export default {
 //   position: relative;
 //   width: 120px;
 //   height: 120px;
-//   border: 1px solid #eee;
+//   border: 1px solid var(--border-black-9);
 //   border-radius: 5px;
 // }
 // .avatar {

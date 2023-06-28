@@ -315,7 +315,7 @@ export default {
       min-height: 26px;
       background: var(--bg-white);
       box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
-      border: 1px solid #e1edfc;
+      border: 1px solid var(--color-light-9);
       display: inline-block;
       border-radius: 4px;
       box-sizing: border-box;
@@ -333,7 +333,7 @@ export default {
         width: 0;
         border-style: solid;
         border-color: transparent;
-        border-right-color: #fff;
+        border-right-color: var(--border-white);
         top: 8px;
         z-index: 888;
       }

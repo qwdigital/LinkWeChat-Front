@@ -441,7 +441,7 @@ export default {
 }
 .avatar-wrap {
   height: 200px;
-  border: 1px solid #eee;
+  border: 1px solid var(--border-black-9);
   border-radius: 5px;
   position: relative;
   overflow: hidden;

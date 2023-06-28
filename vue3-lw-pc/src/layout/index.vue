@@ -91,7 +91,7 @@ export default {
   }
   .breadcrumb-wrap {
     background: var(--bg-white);
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--border-black-9);
   }
 
   &.mobile.openSidebar {

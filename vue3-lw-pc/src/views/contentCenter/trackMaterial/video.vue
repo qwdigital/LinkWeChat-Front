@@ -126,7 +126,7 @@ export default {
   position: relative;
   height: 0;
   padding: 70% 0 0 0;
-  border-bottom: 1px solid #e6ebf5;
+  border-bottom: 1px solid var(--border-black-9);
   &:hover .actions {
     opacity: 1;
   }

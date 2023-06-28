@@ -250,7 +250,7 @@ export default {
       padding: 10px;
       text-align: left;
       cursor: pointer;
-      border-bottom: 1px solid #efefef;
+      border-bottom: 1px solid var(--border-black-10);
 
       &:hover {
         background: var(--bg-black-10);

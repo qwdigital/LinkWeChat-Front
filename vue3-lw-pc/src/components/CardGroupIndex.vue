@@ -89,7 +89,7 @@ export default {
   max-width: 240px;
   background: var(--bg-white);
   border-radius: var(--border-radius-big);
-  border: 1px solid #edf2f9;
+  border: 1px solid var(--border-black-10);
   line-height: 1;
   padding: 22px 20px;
   margin-right: 10px;

@@ -269,7 +269,7 @@ export default {
     height: 32px;
     border-radius: var(--border-radius);
     box-shadow: inset 4px 8px 16px 0px rgba(134, 144, 156, 0.18);
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-black-9);
     cursor: pointer;
     .right-icon {
       font-size: 20px;
