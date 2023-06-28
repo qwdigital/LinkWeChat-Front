@@ -541,12 +541,12 @@ export default {
           margin-right: 8px;
         }
         .customer {
-          background: var(--color-light-10);
+          background: #ecf5ff;
           color: #1869ff;
           border-color: #1869ff;
         }
         .staff {
-          background: var(--color-light-9);
+          background: var(--color-light-10);
           color: var(--color);
           border-color: var(--color);
         }

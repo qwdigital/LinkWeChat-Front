@@ -4,7 +4,8 @@
       <router-link key="collapse" class="sidebar-logo-link" to="/">
         <img :src="$store.app.isDark ? lwConfig.LOGO_TEXT_LIGHT : lwConfig.LOGO_TEXT_DARK" class="sidebar-logo" />
       </router-link>
-      <hamburger />
+
+      <Hamburger />
     </div>
   </transition>
 </template>
@@ -47,7 +48,7 @@ export default {
   & .sidebar-logo-link {
     & .sidebar-logo {
       max-height: 44px;
-      max-width: 160px;
+      max-width: 138px;
       vertical-align: middle;
       margin: 0 12px 0 10px;
     }

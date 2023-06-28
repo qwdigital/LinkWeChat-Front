@@ -88,6 +88,16 @@
             <el-dropdown-item @click="logout">
               <span>退出登录</span>
             </el-dropdown-item>
+            <el-dropdown-item @click="$store.app.isDark = !$store.app.isDark">
+              <template v-if="$store.app.isDark">
+                <el-icon-Moon class="el-icon-Moon right-icon mr5" />
+                深色
+              </template>
+              <template v-else>
+                <el-icon-Sunny class="el-icon-Sunny right-icon mr5" />
+                浅色
+              </template>
+            </el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -196,7 +206,7 @@ export default {
   }
 }
 .right-icon {
-  font-size: 22px;
+  font-size: 20px;
 }
 //
 .navbar {
