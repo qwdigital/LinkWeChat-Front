@@ -232,6 +232,6 @@ export default {
 .divider-content {
   width: 100%;
   height: 10px;
-  background-color: #f5f7fb;
+  background-color: var(--bg-black-11);
 }
 </style>

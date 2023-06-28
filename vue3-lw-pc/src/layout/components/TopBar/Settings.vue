@@ -142,13 +142,13 @@ export default {
 <style lang="scss" scoped>
 .drawer-title {
   margin-bottom: 12px;
-  color: rgba(0, 0, 0, 0.85);
+  color: var(--font-black-2);
   font-size: 14px;
   line-height: 22px;
 }
 
 .drawer-item {
-  color: rgba(0, 0, 0, 0.65);
+  color: var(--font-black-5);
   font-size: 14px;
   padding: 0 0 12px;
 }

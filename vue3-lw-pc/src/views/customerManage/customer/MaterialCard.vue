@@ -129,9 +129,9 @@ export default {
   height: 20px;
   font-size: 12px;
   background: var(--bg-white);
-  border: 1px solid #0079de;
+  border: 1px solid var(--color);
   border-radius: 10px;
-  color: #0079de;
+  color: var(--color);
   line-height: 20px;
   text-align: center;
   margin-right: 6px;
@@ -154,7 +154,7 @@ export default {
 .itemList {
   width: 60%;
   margin: 10px;
-  background-color: #eaeaea;
+  background-color: var(--bg-black-9);
   padding: 10px;
   border-radius: 4px;
 }

@@ -209,7 +209,7 @@ export default {
   .step-line {
     width: 2px;
     height: 190px;
-    background: #eee;
+    background: var(--bg-black-9);
   }
 }
 .register-step-desc {
@@ -219,7 +219,7 @@ export default {
   width: 520px;
   padding: 10px 40px;
   margin: 0 auto;
-  background: #eee;
+  background: var(--bg-black-9);
   border-radius: 5px;
   line-height: 1.5;
   bottom: 20px;

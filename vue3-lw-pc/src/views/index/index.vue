@@ -463,14 +463,14 @@ export default {
       width: 54px;
       height: 54px;
       overflow: hidden;
-      background: #edf2f9 center no-repeat;
+      background: var(--bg-black-11) center no-repeat;
       // background-repeat: no-repeat;
       border-radius: var(--border-radius-big);
       margin: 0 16px;
     }
 
     .view-item-title {
-      color: #4e5969;
+      color: var(--font-black-4);
       margin-bottom: 10px;
     }
     .view-item-num {
@@ -498,7 +498,7 @@ export default {
     .info {
       line-height: 24px;
       margin-top: 10px;
-      color: #4e5969;
+      color: var(--font-black-4);
       .fr {
         color: var(--font-black);
         font-weight: bold;
@@ -514,7 +514,7 @@ export default {
     width: 16px;
     height: 16px;
     line-height: 15px;
-    background: white;
+    background: var(--bg-white);
     border-radius: 50%;
     font-size: 12px;
     text-align: center;
@@ -541,12 +541,12 @@ export default {
           margin-right: 8px;
         }
         .customer {
-          background: #ecf5ff;
+          background: var(--color-light-10);
           color: #1869ff;
           border-color: #1869ff;
         }
         .staff {
-          background: #effffa;
+          background: var(--color-light-9);
           color: var(--color);
           border-color: var(--color);
         }
@@ -560,14 +560,14 @@ export default {
         }
         .operatorName {
           font-size: 16px;
-          color: #222222;
+          color: var(--font-black);
           font-weight: 600;
         }
       }
 
       .operator {
         font-size: 12px;
-        color: #4e5969;
+        color: var(--font-black-4);
         margin-top: 10px;
         .nomal {
           color: var(--color);

@@ -13,25 +13,25 @@
           <div class="total_list fxbw">
             <div class="item">
               <div>已发送{{ data.chatType === 1 ? '员工' : '群主' }}</div>
-              <div style="font-size: 18px; color: #000">
+              <div style="font-size: 18px; color: var(--font-black)">
                 {{ data.alreadySendNum ? data.alreadySendNum : 0 }}
               </div>
             </div>
             <div class="item">
               <div>未发送{{ data.chatType === 1 ? '员工' : '群主' }}</div>
-              <div style="font-size: 18px; color: #000">
+              <div style="font-size: 18px; color: var(--font-black)">
                 {{ data.toBeSendNum ? data.toBeSendNum : 0 }}
               </div>
             </div>
             <div class="item">
               <div>已送达{{ data.chatType === 1 ? '客户' : '客户群' }}</div>
-              <div style="font-size: 18px; color: #000">
+              <div style="font-size: 18px; color: var(--font-black)">
                 {{ data.alreadySendCustomerNum ? data.alreadySendCustomerNum : 0 }}
               </div>
             </div>
             <div class="item">
               <div>未送达{{ data.chatType === 1 ? '客户' : '客户群' }}</div>
-              <div style="font-size: 18px; color: #000">
+              <div style="font-size: 18px; color: var(--font-black)">
                 {{ data.toBeSendCustomerNum ? data.toBeSendCustomerNum : 0 }}
               </div>
             </div>

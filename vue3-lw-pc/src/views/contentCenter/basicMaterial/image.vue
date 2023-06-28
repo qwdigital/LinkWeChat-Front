@@ -118,7 +118,7 @@ export default {
     }
     .img:hover {
       .action-wrap {
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: var(--bg-black-5);
 
         .action {
           opacity: 1;
@@ -153,7 +153,7 @@ export default {
   height: 60px;
   text-align: center;
   line-height: 60px;
-  color: #909399;
+  color: var(--font-black-6);
   font-size: 13px;
 }
 // .img-wrap {
@@ -175,7 +175,7 @@ export default {
 //   color: var(--font-white, #fff);
 //   opacity: 0;
 //   font-size: 20px;
-//   background-color: rgba(0, 0, 0, 0.5);
+//   background-color: var(--bg-black-5);
 //   transition: opacity 0.3s;
 //   .el-icon-EditPen {
 //     margin-right: 20px;

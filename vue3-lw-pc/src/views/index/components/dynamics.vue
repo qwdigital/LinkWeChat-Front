@@ -107,10 +107,10 @@ export default {
   width: 100%;
   max-height: 60vh;
   margin: 0;
-  background: #fafafa;
+  background: var(--bg-black-11);
   .dynamics-content {
     width: 100%;
-    background: #ffffff;
+    background: var(--bg-white);
     box-shadow: 0px 2px 6px -3px rgba(0, 0, 0, 0.04);
     border-radius: 8px 8px 8px 8px;
     padding: 20px 16px;
@@ -136,17 +136,17 @@ export default {
             margin-right: 8px;
           }
           .customer {
-            background: #ecf5ff;
+            background: var(--color-light-10);
             color: var(--color);
           }
           .staff {
-            background: #effffa;
+            background: var(--color-light-9);
             color: #00d695;
           }
           span:nth-child(2) {
             font-size: 14px;
             font-family: 'PingFang SC-粗体', 'PingFang SC';
-            color: #222222;
+            color: var(--font-black);
             line-height: 20px;
             font-weight: 600;
           }

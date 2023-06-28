@@ -1,7 +1,7 @@
 <template>
   <div class="login cc fcbw">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <img class="logo" :src="lwConfig.LOGO_TEXT_DARK" alt="" />
+      <img class="logo" :src="$store.app.isDark ? lwConfig.LOGO_TEXT_LIGHT : lwConfig.LOGO_TEXT_DARK" alt="" />
       <div class="login-title">欢迎来到{{ lwConfig.SYSTEM_NAME }}</div>
       <div class="login-text">登录你的账户</div>
       <template v-if="loginType === 'account'">
@@ -189,18 +189,18 @@ export default {
   width: min(80%, 1234px);
   height: min(80%, 878px);
   min-height: 700px;
-  background: #ffffff;
+  background: var(--bg-white);
   border-radius: 56px;
   .logo {
     position: absolute;
-    height: 58px;
+    height: 28px;
     left: 38px;
     top: 38px;
   }
 }
 .login-title {
   font-size: 16px;
-  color: #4e5969;
+  color: var(--font-black-4);
 }
 .login-text {
   font-size: 32px;
@@ -248,7 +248,7 @@ export default {
   width: 220px;
   height: 240px;
   padding: 20px;
-  background: #ffffff;
+  background: var(--bg-white);
   box-shadow: 0px 8px 24px 0px rgba(7, 193, 96, 0.16);
   border-radius: 24px 24px 24px 24px;
   border: 1px solid #07c160;

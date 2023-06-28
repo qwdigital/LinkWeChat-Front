@@ -73,7 +73,7 @@ export default {
     width: 100px;
     float: left;
     font-size: 30px;
-    color: #24292e;
+    color: var(--font-black);
     cursor: pointer;
   }
 

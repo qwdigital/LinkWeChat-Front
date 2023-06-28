@@ -59,7 +59,7 @@ export default {
 }
 .visitor {
   height: 100vh;
-  background: #e3ebf6;
+  background: var(--bg-black-10);
   .login-top--wrap {
     background: var(--bg-white);
     padding: 5px 20px;

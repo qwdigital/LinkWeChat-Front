@@ -960,6 +960,6 @@ export default {
   font-size: 14px;
 }
 .node-icon {
-  color: #bebfc3;
+  color: var(--font-black-7);
 }
 </style>

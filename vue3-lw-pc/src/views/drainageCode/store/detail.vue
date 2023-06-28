@@ -43,10 +43,10 @@ export default {
   div {
     width: 88px;
     height: 30px;
-    background: #fafafa;
+    background: var(--bg-black-11);
     border-radius: 32px 32px 32px 32px;
     font-size: 14px;
-    color: rgba(0, 0, 0, 0.4);
+    color: var(--font-black-7);
     line-height: 30px;
     text-align: center;
     margin-top: 15px;

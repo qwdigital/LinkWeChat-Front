@@ -468,7 +468,7 @@ export default {
   display: block;
   height: 1px;
   width: 100%;
-  background-color: #dcdfe6;
+  background-color: var(--bg-black-9);
 }
 .hover-item {
   font-size: 12px;
@@ -479,7 +479,7 @@ export default {
   cursor: pointer;
 
   &:hover {
-    background-color: #f5f8fe;
+    background-color: var(--bg-black-11);
   }
 }
 </style>

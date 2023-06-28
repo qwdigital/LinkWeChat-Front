@@ -289,7 +289,7 @@ export default {
       // justify-content: space-between;
       align-items: center;
       font-size: 12px;
-      color: #000;
+      color: var(--font-black);
       height: 40px;
       line-height: 40px;
       width: 100%;
@@ -318,14 +318,14 @@ export default {
 
       &:hover {
         color: var(--color);
-        background: #f5f8fe;
+        background: var(--bg-black-11);
         opacity: 0.8;
       }
     }
 
     .active {
       color: var(--color);
-      background: #f5f8fe;
+      background: var(--bg-black-11);
     }
   }
 }

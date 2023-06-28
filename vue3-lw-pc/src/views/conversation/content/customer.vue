@@ -217,7 +217,7 @@ export default {
 }
 
 .customer {
-  // background: #f6f6f9;
+  // background: var(--bg-black-11);
   text-align: center;
 
   .el-tabs {
@@ -235,7 +235,7 @@ export default {
   .ct_box {
     height: calc(100vh - 197px);
     border-radius: 5px;
-    background: white;
+    background: var(--bg-white);
     padding: 20px;
   }
 
@@ -253,14 +253,14 @@ export default {
       border-bottom: 1px solid #efefef;
 
       &:hover {
-        background: #efefef;
+        background: var(--bg-black-10);
       }
 
       img {
         width: 40px;
       }
       &.active {
-        background: var(--color-light);
+        background: var(--color-light-10);
       }
     }
   }

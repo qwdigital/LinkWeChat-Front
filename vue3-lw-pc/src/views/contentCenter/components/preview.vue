@@ -32,7 +32,7 @@ export default {
 .title {
   width: 100%;
   text-align: center;
-  color: #000;
+  color: var(--font-black);
   font-size: 16px;
   margin-bottom: 20px;
 }

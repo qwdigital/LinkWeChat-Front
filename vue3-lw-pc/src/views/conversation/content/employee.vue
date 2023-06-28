@@ -306,7 +306,7 @@ export default {
   }
   .ct_box {
     border-radius: 5px;
-    background: white;
+    background: var(--bg-white);
     height: calc(100vh - 286px);
     padding: 20px;
     overflow-y: auto;
@@ -324,14 +324,14 @@ export default {
     border-bottom: 1px solid #efefef;
 
     &:hover {
-      background: #efefef;
+      background: var(--bg-black-10);
     }
 
     img {
       width: 40px;
     }
     &.active {
-      background: var(--color-light);
+      background: var(--color-light-10);
     }
   }
 }

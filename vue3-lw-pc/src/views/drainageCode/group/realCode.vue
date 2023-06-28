@@ -407,7 +407,7 @@ export default {
 }
 .example-code-box {
   margin: 0 5px;
-  background-color: white;
+  background-color: var(--bg-white);
   padding: 0 10px;
   font-weight: bold;
   color: var(--font-black-4);

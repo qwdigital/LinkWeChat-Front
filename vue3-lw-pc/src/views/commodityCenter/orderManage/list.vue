@@ -163,7 +163,7 @@
       </template>
     </el-dialog>
     <el-dialog title="退款状态" v-model="dialogStateVisible" width="800px" :close-on-click-modal="false">
-      <div style="background-color: #f5f5f5; padding: 20px">
+      <div style="background-color: var(--bg-black-11); padding: 20px">
         <div class="g-card" v-for="(unit, key) in refundStateList" :key="key">
           <el-form ref="form">
             <el-form-item label="退款发起时间：">

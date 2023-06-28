@@ -1087,7 +1087,7 @@ export default {
   padding: 0;
   margin-bottom: 5px;
   text-align: center;
-  color: #544b61;
+  color: var(--font-black-4);
   font-weight: 400;
   list-style-type: none;
   user-select: none;
@@ -1109,11 +1109,11 @@ export default {
 }
 .menu-item.active,
 .menu-item:hover {
-  background-color: #f3f3f3;
+  background-color: var(--bg-black-10);
 }
 .menu-item.disabled {
   cursor: default;
-  color: #bfbebe;
+  color: var(--font-black-7);
 }
 .sub-menu-container {
   font-size: 14px;
@@ -1125,11 +1125,11 @@ export default {
   margin: 3px 1px;
   border: 1px dashed #bfbebe;
   outline: 0;
-  background-color: #eee;
+  background-color: var(--bg-black-9);
   cursor: pointer;
 }
 .disableClass {
   cursor: default;
-  color: #b0b7bf;
+  color: var(--font-black-7);
 }
 </style>

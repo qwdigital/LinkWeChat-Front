@@ -30,7 +30,7 @@
               </div>
             </template>
           </draggable>
-          <div style="display: flex; justify-content: center; color: #b6b6b6">更多控件持续上线中...</div>
+          <div style="display: flex; justify-content: center; color: var(--font-black-7)">更多控件持续上线中...</div>
         </div>
       </el-scrollbar>
     </div>
@@ -558,7 +558,7 @@ export default {
 
 <style lang="scss" scoped>
 .editor-tabs {
-  background: #121315;
+  background: var(--bg-black);
   .el-tabs__header {
     margin: 0;
     border-bottom-color: #121315;
@@ -569,14 +569,14 @@ export default {
   .el-tabs__item {
     height: 32px;
     line-height: 32px;
-    color: #888a8e;
+    color: var(--font-black-5);
     border-left: 1px solid #121315 !important;
-    background: #363636;
+    background: var(--bg-black-2);
     margin-right: 5px;
     user-select: none;
   }
   .el-tabs__item.is-active {
-    background: #1e1e1e;
+    background: var(--bg-black-1);
     border-bottom-color: #1e1e1e !important;
     color: var(--font-white, #fff);
   }
@@ -613,7 +613,7 @@ export default {
 }
 .reg-item {
   padding: 12px 6px;
-  background: #f8f8f8;
+  background: var(--bg-black-11);
   position: relative;
   border-radius: 4px;
   .close-btn {
@@ -624,7 +624,7 @@ export default {
     width: 16px;
     height: 16px;
     line-height: 16px;
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--bg-black-8);
     border-radius: 50%;
     color: var(--font-white, #fff);
     text-align: center;
@@ -705,7 +705,7 @@ $selectedColor: #f6f7ff;
 }
 .components-title {
   font-size: 14px;
-  color: #222;
+  color: var(--font-black);
   margin: 6px 2px;
   .svg-icon {
     color: var(--font-black-4);
@@ -1003,10 +1003,10 @@ $selectedColor: #f6f7ff;
     cursor: pointer;
   }
   .smartForms_build_index_li:hover {
-    background-color: #f6f7ff;
+    background-color: var(--bg-black-11);
   }
   .smartForms_build_index_ul_liX_hover:hover {
-    background-color: #f6f7ff;
+    background-color: var(--bg-black-11);
   }
   .smartForms_build_index_li:nth-of-type(1) {
     border-left: 1px solid #d7d7d7;

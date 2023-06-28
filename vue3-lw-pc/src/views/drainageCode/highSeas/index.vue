@@ -468,14 +468,14 @@ export default {
 .divider-content {
   width: 100%;
   height: 10px;
-  background-color: #f5f7fb;
+  background-color: var(--bg-black-11);
 }
 
 .my-divider {
   display: block;
   height: 1px;
   width: 100%;
-  background-color: #dcdfe6;
+  background-color: var(--bg-black-9);
 }
 
 .bottom {

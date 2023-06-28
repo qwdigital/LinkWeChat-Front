@@ -2,7 +2,7 @@
   <transition name="sidebarLogoFade">
     <div class="logo-container" :class="{ collapse: collapse }">
       <router-link key="collapse" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
+        <img :src="$store.app.isDark ? lwConfig.LOGO_TEXT_LIGHT : lwConfig.LOGO_TEXT_DARK" class="sidebar-logo" />
       </router-link>
       <hamburger />
     </div>
@@ -23,7 +23,6 @@ export default {
   data() {
     return {
       title: process.env.VUE_APP_TITLE,
-      logo: this.lwConfig.LOGO_TEXT_DARK,
     }
   },
 }
@@ -48,9 +47,9 @@ export default {
   & .sidebar-logo-link {
     & .sidebar-logo {
       max-height: 44px;
-      max-width: 170px;
+      max-width: 160px;
       vertical-align: middle;
-      margin-right: 12px;
+      margin: 0 12px 0 10px;
     }
 
     & .sidebar-title {

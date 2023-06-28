@@ -207,7 +207,7 @@ export default {
 .list {
   height: calc(100vh - 420px);
   margin-top: 10px;
-  background: white;
+  background: var(--bg-white);
   overflow-y: scroll;
   border-bottom: 1px solid #efefef;
   color: var(--font-black-6);

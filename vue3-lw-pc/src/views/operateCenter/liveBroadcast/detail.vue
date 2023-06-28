@@ -505,7 +505,7 @@ export default {
 }
 .my-content {
   font-size: 14px;
-  color: #000;
+  color: var(--font-black);
 }
 .el-icon-s-custom {
   font-size: 16px;

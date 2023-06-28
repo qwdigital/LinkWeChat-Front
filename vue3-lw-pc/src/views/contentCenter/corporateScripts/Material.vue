@@ -89,7 +89,7 @@ export default {
 }
 ::v-deep.card-group-index {
   .card-index-li {
-    background: #f9f9f9 !important;
+    background: var(--bg-black-11);
     margin-top: 20px;
   }
 }

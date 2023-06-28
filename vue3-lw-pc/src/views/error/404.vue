@@ -175,7 +175,7 @@ export default {
     &__headline {
       font-size: 20px;
       line-height: 24px;
-      color: #222;
+      color: var(--font-black);
       font-weight: bold;
       opacity: 0;
       margin-bottom: 10px;
@@ -200,7 +200,7 @@ export default {
       float: left;
       width: 110px;
       height: 36px;
-      background: #1482f0;
+      background-c: #1482f0;
       border-radius: 100px;
       text-align: center;
       color: var(--font-white, #fff);

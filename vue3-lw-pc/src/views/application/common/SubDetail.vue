@@ -172,7 +172,7 @@ export default {
       justify-content: space-between;
       align-items: center;
       font-size: 14px;
-      color: rgba(0, 0, 0, 0.6);
+      color: var(--font-black-5);
       height: 40px;
       line-height: 40px;
       width: 100%;
@@ -192,12 +192,12 @@ export default {
           font-size: 14px;
           font-family: JMT-Font, JMT;
           font-weight: normal;
-          color: rgba(0, 0, 0, 0.6);
+          color: var(--font-black-5);
           margin-right: 10px;
           margin-left: 5px;
           font-weight: 500;
           .content-icon {
-            color: rgba(0, 0, 0, 0.6);
+            color: var(--font-black-5);
             font-size: 12px;
             transform: rotate(90deg);
           }
@@ -205,7 +205,7 @@ export default {
       }
       &:hover {
         color: var(--font-black);
-        background: #f5f8fe;
+        background: var(--bg-black-11);
         opacity: 0.8;
         border-radius: 2px;
         .dropdown {
@@ -217,7 +217,7 @@ export default {
     .active {
       // border-left: 2px solid var(--color);
       color: var(--font-black);
-      background: #f5f8fe;
+      background: var(--bg-black-11);
       border-radius: 2px;
     }
   }

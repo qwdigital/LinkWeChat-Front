@@ -207,7 +207,7 @@ textarea {
   white-space: pre-wrap; //保留所有空格
 }
 .select_content {
-  // background-color: #ecf5ff;
+  // background-color: var(--color-light-10);
   padding: 20px;
   border-radius: 5px;
   margin-left: 120px;

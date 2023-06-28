@@ -316,7 +316,7 @@ export default {
     text-align: right;
     width: 140px;
     line-height: 32px;
-    color: #606266;
+    color: var(--font-black-4);
     // margin-right: 12px;
   }
 }

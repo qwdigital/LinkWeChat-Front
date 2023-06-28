@@ -56,7 +56,7 @@ export default {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  background: var(--bg-black-6);
   left: 0;
   top: 0;
   z-index: 2000;
@@ -96,7 +96,7 @@ export default {
 
 .takecontent {
   border-radius: 3px;
-  background-color: #eee;
+  background-color: var(--bg-black-9);
   position: relative;
   text-align: left;
   height: 100%;

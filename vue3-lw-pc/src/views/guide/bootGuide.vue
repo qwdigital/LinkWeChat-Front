@@ -247,7 +247,7 @@ svg.svg-icon {
     width: 100%;
     line-height: 40px;
     padding-left: 20px;
-    background-color: #ecf5ff;
+    background-color: var(--color-light-10);
     margin-bottom: 20px;
     border-radius: 4px;
     font-size: 16px;

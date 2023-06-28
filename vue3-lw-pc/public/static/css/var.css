@@ -12,15 +12,21 @@
   --color-dark: hsl(var(--hsl-dark)); /* 深主题色 hsl(149, 93%, 34%) */
   --color-sub: hsl(91, 70%, 57%); /* 主题辅色 */
 
-  /* 浅主题色 递浅系列阶梯  */
-  --color-light: hsl(var(--hsl), 0.12);
-  --color-light-3: hsl(var(--hsl), 0.7);
-  --color-light-5: hsl(var(--hsl), 0.5);
-  --color-light-7: hsl(var(--hsl), 0.3);
-  --color-light-8: hsl(var(--hsl), 0.2);
-  --color-light-9: hsl(var(--hsl), 0.1);
+  /* ------ 主题色 递浅色阶 ------  */
+  --step: calc((100% - var(--l)) / 10); /* 100 - 39  / 10 = 6.1 */
+  --color-light-1: hsl(var(--h), var(--s), calc(var(--step) * 1 + var(--l))); /* hsl(149, 93%, 45%) */
+  --color-light-2: hsl(var(--h), var(--s), calc(var(--step) * 2 + var(--l))); /* hsl(149, 93%, 51%) */
+  --color-light-3: hsl(var(--h), var(--s), calc(var(--step) * 3 + var(--l))); /* hsl(149, 93%, 57%) */
+  --color-light-4: hsl(var(--h), var(--s), calc(var(--step) * 4 + var(--l))); /* hsl(149, 93%, 64%) */
+  --color-light-5: hsl(var(--h), var(--s), calc(var(--step) * 5 + var(--l))); /* hsl(149, 93%, 70%) */
+  --color-light-6: hsl(var(--h), var(--s), calc(var(--step) * 6 + var(--l))); /* hsl(149, 93%, 76%) */
+  --color-light-7: hsl(var(--h), var(--s), calc(var(--step) * 7 + var(--l))); /* hsl(149, 93%, 82%) */
+  --color-light-8: hsl(var(--h), var(--s), calc(var(--step) * 8 + var(--l))); /* hsl(149, 93%, 88%) */
+  --color-light-9: hsl(var(--h), var(--s), calc(var(--step) * 9 + var(--l))); /* hsl(149, 93%, 94%) */
+  --color-light-10: hsl(var(--h), var(--s), calc(var(--step) * 9.5 + var(--l))); /* :hsl(149, 93%, 97%) */
+  /* --test: hsl(149, 93%, 51%); */
 
-  /* 功能色 */
+  /* ------ 功能色 ------ */
   --color-success: #07c160;
   --color-warning: #faad14;
   --color-danger: #eb5e12;
@@ -31,7 +37,11 @@
   --card-margin: 16px; /* 卡片间距 */
   --top-nav-heght: 64px; /* 顶部导航条高度 */
 
-  --font-black: #1d2129; /* 通用字体黑色 */
+  /* ------ 通用字体白色 ------ */
+  --font-white: #fff;
+
+  /* 通用字体黑灰色阶  */
+  --font-black: #1d2129;
   --font-black-2: hsl(0, 0%, 20%); /* #333*/
   --font-black-3: hsl(0, 0%, 30%); /* #444*/
   --font-black-4: hsl(0, 0%, 40%); /* #666 */
@@ -41,12 +51,30 @@
   --font-black-8: hsl(0, 0%, 80%); /* #ccc #ddd*/
   --font-black-9: hsl(0, 0%, 90%); /* #e6e6e6 #eee*/
 
-  --font-white: #fff; /* 通用字体白色 */
+  /* ------ 通用边框白色 ------ */
+  --border-white: #fff;
 
-  /* 背景色，暗黑模式下为黑色 */
+  /* 通用边框黑灰色阶  */
+  --border-black: #1d2129;
+  --border-black-2: hsl(0, 0%, 20%); /* #333*/
+  --border-black-3: hsl(0, 0%, 30%); /* #444*/
+  --border-black-4: hsl(0, 0%, 40%); /* #666 */
+  --border-black-5: hsl(0, 0%, 50%); /* #808080 #777*/
+  --border-black-6: hsl(0, 0%, 60%); /* #999*/
+  --border-black-7: hsl(0, 0%, 70%); /* #b3b3b3 #bbb #aaa*/
+  --border-black-8: hsl(0, 0%, 80%); /* #ccc #ddd*/
+  --border-black-9: hsl(0, 0%, 90%); /* #e6e6e6 #eee*/
+  --border-black-10: hsl(0, 0%, 95%); /* #f2f2f2 */
+  --border-black-11: hsl(0, 0%, 97%); /* #f7f7f7 #f8f8f8 #f5f8fe #f5f7fb #fafafa #edf2f9*/
+
+  /* ------ 通用背景白色 ------ */
   --bg-white: #fff;
 
-  --bg-black: #000; /* 通用背景黑色 */
+  /* 通用背景黑灰色阶 */
+  --bg-black: #000;
+  --bg-black-1-2: hsl(0, 0%, 3%); /* #080808*/
+  --bg-black-1-1: hsl(0, 0%, 5%); /* #0d0d0d*/
+  --bg-black-1: hsl(0, 0%, 10%); /* #1a1a1a*/
   --bg-black-2: hsl(0, 0%, 20%); /* #333*/
   --bg-black-3: hsl(0, 0%, 30%); /* #444*/
   --bg-black-4: hsl(0, 0%, 40%); /* #666 */
@@ -56,12 +84,28 @@
   --bg-black-8: hsl(0, 0%, 80%); /* #ccc #ddd*/
   --bg-black-9: hsl(0, 0%, 90%); /* #e6e6e6 #eee*/
   --bg-black-10: hsl(0, 0%, 95%); /* #f2f2f2 */
+  --bg-black-11: hsl(0, 0%, 97%); /* #f7f7f7 #f8f8f8 #f5f8fe #f5f7fb #fafafa #edf2f9*/
+
+  color: var(--font-black);
 }
 
 /* 暗黑模式 */
 .dark {
+  --font-white: #f2f2f2;
+
   --font-black: var(--font-white);
-  --bg-white: #1d2129;
+  --font-black-2: var(--font-black-8);
+  --font-black-3: var(--font-black-7);
+  --font-black-4: var(--font-black-6);
+
+  --bg-white: #141414;
+
+  --bg-black-6: hsl(0, 0%, 70%);
+  --bg-black-7: hsl(0, 0%, 60%);
+  --bg-black-8: hsl(0, 0%, 50%);
+  --bg-black-9: var(--bg-black-4);
+  --bg-black-10: var(--bg-black-3);
+  --bg-black-11: var(--bg-black-2);
 }
 
 /* 项目定制原子类 */

@@ -467,7 +467,7 @@ export default {
   // }
   .track-tab-wrap {
     .track-tab {
-      background: #ddd;
+      background: var(--bg-black-8);
       border-radius: 50px;
       padding: 5px 10px;
       cursor: pointer;

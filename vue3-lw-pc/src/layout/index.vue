@@ -105,7 +105,7 @@ export default {
 
   .main-wrap {
     height: calc(100vh - var(--top-nav-heght));
-    background: #edf2f9;
+    background: var(--bg-black-11);
     .main {
       height: 100%;
       // padding: 10px;

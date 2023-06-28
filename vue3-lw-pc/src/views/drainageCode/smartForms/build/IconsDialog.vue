@@ -76,10 +76,10 @@ export default {
     cursor: pointer;
     overflow: hidden;
     &:hover {
-      background: #f2f2f2;
+      background: var(--bg-black-10);
     }
     &.active-item {
-      background: #e1f3fb;
+      background: var(--bg-black-11);
       color: #7a6df0;
     }
     > i {

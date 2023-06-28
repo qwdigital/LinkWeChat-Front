@@ -72,7 +72,7 @@ export default {
 
 <style lang="scss" scoped>
 .self_a {
-  color: #07c160;
+  color: var(--color);
   text-decoration: underline;
   &:hover {
     opacity: 0.8;
@@ -80,11 +80,11 @@ export default {
 }
 .bg_con {
   padding: 10px 20px;
-  background-color: #f2eeee;
+  background-color: var(--bg-black-10);
   border-radius: 4px;
   font-size: 14px;
   font-weight: 400;
-  color: #191919;
+  color: var(--font-black);
 }
 .preview {
   margin: 0 auto;
