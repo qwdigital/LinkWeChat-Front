@@ -24,18 +24,7 @@
   --color-light-8: hsl(var(--h), var(--s), calc(var(--step) * 8 + var(--l))); /* hsl(149, 93%, 88%) */
   --color-light-9: hsl(var(--h), var(--s), calc(var(--step) * 9 + var(--l))); /* hsl(149, 93%, 94%) */
   --color-light-10: hsl(var(--h), var(--s), calc(var(--step) * 9.5 + var(--l))); /* :hsl(149, 93%, 97%) */
-  /* --test: hsl(149, 93%, 51%); */
-
-  /* ------ 功能色 ------ */
-  --color-success: #07c160;
-  --color-warning: #faad14;
-  --color-danger: #eb5e12;
-
-  --border-radius: 8px; /* 常规圆角 */
-  --border-radius-small: 4px; /* 小圆角 */
-  --border-radius-big: 16px; /* 大圆角 */
-  --card-margin: 16px; /* 卡片间距 */
-  --top-nav-heght: 64px; /* 顶部导航条高度 */
+  --test: hsl(149, 93%, 88%);
 
   /* ------ 通用字体白色 ------ */
   --font-white: #fff;
@@ -87,25 +76,48 @@
   --bg-black-11: hsl(0, 0%, 97%); /* #f7f7f7 #f8f8f8 #f5f8fe #f5f7fb #fafafa #edf2f9*/
 
   color: var(--font-black);
+
+  /* ------ 功能色 ------ */
+  --color-success: #07c160;
+  --color-warning: #faad14;
+  --color-danger: #eb5e12;
+
+  /* ------ 距离大小 ------ */
+  --border-radius: 8px; /* 常规圆角 */
+  --border-radius-small: 4px; /* 小圆角 */
+  --border-radius-big: 16px; /* 大圆角 */
+  --card-margin: 16px; /* 卡片间距 */
+  --top-nav-heght: 64px; /* 顶部导航条高度 */
 }
 
 /* 暗黑模式 */
-.dark {
+html.dark {
   --font-white: #f2f2f2;
 
   --font-black: var(--font-white);
-  --font-black-2: var(--font-black-8);
-  --font-black-3: var(--font-black-7);
-  --font-black-4: var(--font-black-6);
+  --font-black-2: hsl(0, 0%, 80%);
+  --font-black-3: hsl(0, 0%, 70%);
+  --font-black-4: hsl(0, 0%, 60%);
+
+  --border-white: #f2f2f2;
+
+  --border-black: var(--border-white);
+  --border-black-2: hsl(0, 0%, 80%);
+  --border-black-3: hsl(0, 0%, 70%);
+  --border-black-4: hsl(0, 0%, 60%);
+  --border-black-9: hsl(0, 0%, 40%);
+  --border-black-10: hsl(0, 0%, 30%);
+  --border-black-11: hsl(0, 0%, 20%);
 
   --bg-white: #141414;
 
+  --bg-black: var(--bg-white);
   --bg-black-6: hsl(0, 0%, 70%);
   --bg-black-7: hsl(0, 0%, 60%);
   --bg-black-8: hsl(0, 0%, 50%);
-  --bg-black-9: var(--bg-black-4);
-  --bg-black-10: var(--bg-black-3);
-  --bg-black-11: var(--bg-black-2);
+  --bg-black-9: hsl(0, 0%, 40%);
+  --bg-black-10: hsl(0, 0%, 30%);
+  --bg-black-11: hsl(0, 0%, 20%);
 }
 
 /* 项目定制原子类 */
