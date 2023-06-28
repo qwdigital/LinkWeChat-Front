@@ -3,13 +3,13 @@
     <div class="index-l">
       <div class="flex">
         <div class="userinfo">
+          <div v-html="bgSvg" class="bgSvg"></div>
           <div class="portrait">
             <img class="portrait-img" :src="$store.user.avatar" alt="" v-if="$store.user.avatar" />
             <!-- <svg-icon icon="user" class="code-user" v-else></svg-icon> -->
           </div>
           <div class="wel toe">
-            <span>{{ greetings }}，</span>
-            <span>{{ $store.user.name }}</span>
+            <span>{{ greetings }}，{{ $store.user.name }}</span>
           </div>
           <div class="role toe g-bg-lg">{{ roleGroup || '管理员' }}</div>
         </div>
@@ -171,6 +171,7 @@ import { getUserProfile } from '@/api/system/user'
 import * as api from '@/api/index'
 // import { getCustomerServiceQrUrl } from '@/api/login'
 import { CountTo } from 'vue3-count-to'
+import bgSvg from './asstes/bg.svg?raw'
 export default {
   name: 'Index',
   components: {
@@ -181,6 +182,7 @@ export default {
   data() {
     return {
       api,
+      bgSvg,
       table: {
         currentEdition: '-', // 当前版本
         userNumbers: 0, // 使用人数
@@ -417,11 +419,15 @@ export default {
     flex-direction: column;
     align-items: center;
     width: 218px;
-    background: url('./asstes/bg.svg') no-repeat;
     border-radius: var(--border-radius-big);
     padding: 0px 20px 20px;
     margin-top: -38px;
+    .bgSvg {
+      color: var(--bg-white);
+      position: absolute;
+    }
     .portrait {
+      position: relative;
       padding: 10px;
       .portrait-img {
         display: block;
@@ -433,11 +439,13 @@ export default {
       }
     }
     .wel {
+      position: relative;
       font-size: 22px;
       font-weight: bold;
       margin: 2px 0 16px;
     }
     .role {
+      position: relative;
       color: white;
       padding: 6px 8px;
       font-size: 12px;

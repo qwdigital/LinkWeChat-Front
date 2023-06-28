@@ -1,1 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" version="1.1" width="218" height="198" viewBox="0 0 218 198"><defs><linearGradient x1="0.5" y1="0" x2="0.5" y2="1" id="master_svg0_1_0523"><stop offset="49.817198514938354%" stop-color="#FFFFFF" stop-opacity="1"/><stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.20000000298023224"/></linearGradient></defs><g style="mix-blend-mode:passthrough"><path d="M178.763,38L202,38C210.837,38,218,45.1634,218,54L218,182C218,190.837,210.837,198,202,198L16,198C7.16344,198,0,190.837,0,182L0,54C0,45.1634,7.16344,38,16,38L39.2366,38C49.636,38,58.4828,30.8652,64.6375,22.4827C74.6473,8.84961,90.7902,0,109,0C127.21,0,143.353,8.84961,153.363,22.4827C159.517,30.8652,168.364,38,178.763,38" fill-rule="evenodd" fill="url(#master_svg0_1_0523)" fill-opacity="1"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" version="1.1" width="218"
+  height="198" viewBox="0 0 218 198">
+  <defs>
+    <linearGradient x1="0.5" y1="0" x2="0.5" y2="1" id="master_svg0_1_0523">
+      <stop offset="49.817198514938354%" stop-color="currentColor" stop-opacity="1" />
+      <stop offset="100%" stop-color="currentColor" stop-opacity="0.20000000298023224" />
+    </linearGradient>
+  </defs>
+  <g style="mix-blend-mode:passthrough">
+    <path
+      d="M178.763,38L202,38C210.837,38,218,45.1634,218,54L218,182C218,190.837,210.837,198,202,198L16,198C7.16344,198,0,190.837,0,182L0,54C0,45.1634,7.16344,38,16,38L39.2366,38C49.636,38,58.4828,30.8652,64.6375,22.4827C74.6473,8.84961,90.7902,0,109,0C127.21,0,143.353,8.84961,153.363,22.4827C159.517,30.8652,168.364,38,178.763,38"
+      fill-rule="evenodd" fill="url(#master_svg0_1_0523)" fill-opacity="1" />
+  </g>
+</svg>
