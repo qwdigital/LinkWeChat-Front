@@ -12,7 +12,7 @@
   --color-dark: hsl(var(--hsl-dark)); /* 深主题色 hsl(149, 93%, 34%) */
   --color-sub: hsl(91, 70%, 57%); /* 主题辅色 */
 
-  /* 主题色 递浅色阶  */
+  /* ------ 主题色 递浅色阶 ------  */
   --step: calc((100% - var(--l)) / 10); /* 100 - 39  / 10 = 6.1 */
   --color-light-1: hsl(var(--h), var(--s), calc(var(--step) * 1 + var(--l))); /* hsl(149, 93%, 45%) */
   --color-light-2: hsl(var(--h), var(--s), calc(var(--step) * 2 + var(--l))); /* hsl(149, 93%, 51%) */
@@ -26,7 +26,7 @@
   --color-light-10: hsl(var(--h), var(--s), calc(var(--step) * 9.5 + var(--l))); /* :hsl(149, 93%, 97%) */
   /* --test: hsl(149, 93%, 51%); */
 
-  /* 功能色 */
+  /* ------ 功能色 ------ */
   --color-success: #07c160;
   --color-warning: #faad14;
   --color-danger: #eb5e12;
@@ -37,7 +37,7 @@
   --card-margin: 16px; /* 卡片间距 */
   --top-nav-heght: 64px; /* 顶部导航条高度 */
 
-  /* 通用字体白色 */
+  /* ------ 通用字体白色 ------ */
   --font-white: #fff;
 
   /* 通用字体黑灰色阶  */
@@ -51,7 +51,23 @@
   --font-black-8: hsl(0, 0%, 80%); /* #ccc #ddd*/
   --font-black-9: hsl(0, 0%, 90%); /* #e6e6e6 #eee*/
 
-  /* 通用背景白色，暗黑模式下为黑色 */
+  /* ------ 通用边框白色 ------ */
+  --border-white: #fff;
+
+  /* 通用边框黑灰色阶  */
+  --border-black: #1d2129;
+  --border-black-2: hsl(0, 0%, 20%); /* #333*/
+  --border-black-3: hsl(0, 0%, 30%); /* #444*/
+  --border-black-4: hsl(0, 0%, 40%); /* #666 */
+  --border-black-5: hsl(0, 0%, 50%); /* #808080 #777*/
+  --border-black-6: hsl(0, 0%, 60%); /* #999*/
+  --border-black-7: hsl(0, 0%, 70%); /* #b3b3b3 #bbb #aaa*/
+  --border-black-8: hsl(0, 0%, 80%); /* #ccc #ddd*/
+  --border-black-9: hsl(0, 0%, 90%); /* #e6e6e6 #eee*/
+  --border-black-10: hsl(0, 0%, 95%); /* #f2f2f2 */
+  --border-black-11: hsl(0, 0%, 97%); /* #f7f7f7 #f8f8f8 #f5f8fe #f5f7fb #fafafa #edf2f9*/
+
+  /* ------ 通用背景白色 ------ */
   --bg-white: #fff;
 
   /* 通用背景黑灰色阶 */
