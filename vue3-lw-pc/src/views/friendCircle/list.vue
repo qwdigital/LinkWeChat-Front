@@ -9,13 +9,10 @@
       class="top-search"
     >
       <el-form-item prop="name">
-        <el-input v-model="query.name" placeholder="请输入任务名称" ></el-input>
+        <el-input v-model="query.name" placeholder="请输入任务名称"></el-input>
       </el-form-item>
       <el-form-item prop="createBy">
-        <el-input
-          v-model="query.createBy"
-          placeholder="请输入创建人"
-        ></el-input>
+        <el-input v-model="query.createBy" placeholder="请输入创建人"></el-input>
       </el-form-item>
       <el-form-item prop="sendType">
         <!-- <el-input v-model="query" placeholder="请输入创建人"></el-input> -->
@@ -273,6 +270,7 @@ export default {
           type,
           id: row.id,
           name: row.name,
+          showRemaind: row.status === 2 && row.sendType !== 0 ? 1 : 0,
         },
       })
     },

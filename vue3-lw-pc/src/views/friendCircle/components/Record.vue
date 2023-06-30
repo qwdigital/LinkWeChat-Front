@@ -36,7 +36,7 @@
         <el-button type="primary" @click="exportFn" v-loading="exportLoading">导出</el-button>
       </div>
     </div>
-    <el-table v-loading="loading" :data="tableList" style="width: 100%">
+    <el-table v-loading="loading" :data="tableList" style="width: 100%; margin-bottom: 20px">
       <el-table-column
         label="客户名称"
         align="center"

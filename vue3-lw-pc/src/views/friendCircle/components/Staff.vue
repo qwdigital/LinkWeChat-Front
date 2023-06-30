@@ -33,11 +33,11 @@
           <el-button @click="resetQuery">清空</el-button>
         </div>
         <div>
-          <el-button type="primary" @click="remind(id)">提醒执行</el-button>
+          <el-button type="primary" @click="remind(id)" v-if="showRemaind">提醒执行</el-button>
           <el-button type="primary" @click="exportFn" v-loading="exportLoading">导出</el-button>
         </div>
       </div>
-      <el-table v-loading="loading" :data="tableList" style="width: 100%">
+      <el-table v-loading="loading" :data="tableList" style="width: 100%; margin-bottom: 20px">
         <el-table-column
           label="执行人名称"
           align="center"
@@ -150,12 +150,15 @@ export default {
       id: undefined,
       type: undefined, // 朋友圈类型 1：非同步型  2：企业同步型 3：个人同步型
       name: '',
+      showRemaind: 0, // 是否显示提醒执行 0不显示 1显示
     }
   },
   mounted() {
     this.type = this.$route.query.type
     this.id = this.$route.query.id
     this.name = this.$route.query.name
+    this.showRemaind = +this.$route.query.showRemaind
+    console.log(this.showRemaind)
     this.getTabTotalFn()
     this.getTableChangeSize()
   },
