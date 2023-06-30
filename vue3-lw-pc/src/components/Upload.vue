@@ -733,7 +733,7 @@ export default {
   justify-content: center;
   color: var(--font-black-6);
   border-radius: 6px;
-  border: 1px dashed #d9d9d9;
+  border: 1px dashed var(--border-black-10);
   transition: all 0.3s;
   &:hover {
     border-color: var(--color);
@@ -744,7 +744,7 @@ export default {
   overflow: hidden;
 }
 .upload-img-single {
-  border: 1px dashed #eee;
+  border: 1px dashed var(--border-black-9);
 }
 .upload-img {
   display: block;

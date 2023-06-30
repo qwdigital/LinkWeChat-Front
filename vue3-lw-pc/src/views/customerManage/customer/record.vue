@@ -212,7 +212,7 @@ export default {
   overflow: auto;
 }
 .infinite-list-item {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-black-9);
   &:last-child {
     border: 0;
   }

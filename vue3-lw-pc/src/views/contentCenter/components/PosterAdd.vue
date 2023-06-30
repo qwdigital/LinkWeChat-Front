@@ -999,7 +999,7 @@ export default {
   cursor: pointer;
   width: 120px;
   height: 120px;
-  border: 1px dashed #aaa;
+  border: 1px dashed var(--border-black-7);
   line-height: 120px;
   text-align: center;
   margin-right: 20px;
@@ -1028,7 +1028,7 @@ export default {
   position: relative;
   height: 0;
   padding: 70% 0 0 0;
-  border-bottom: 1px solid #e6ebf5;
+  border-bottom: 1px solid var(--border-black-9);
   &:hover .actions {
     opacity: 1;
   }
@@ -1123,7 +1123,7 @@ export default {
 .btn-text-style {
   padding: 5px;
   margin: 3px 1px;
-  border: 1px dashed #bfbebe;
+  border: 1px dashed var(--border-black-7);
   outline: 0;
   background-color: var(--bg-black-9);
   cursor: pointer;

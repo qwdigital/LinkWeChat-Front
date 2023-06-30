@@ -47,7 +47,7 @@ export default {
     left: 0;
     width: 18px;
     height: 2px;
-    background: var(--bg-black-6);
+    background: var(--bg-black-4);
     border-radius: 8px;
     transition: all 0.3s;
   }

@@ -103,7 +103,7 @@ export default {
   text-align: right;
   background: var(--bg-white);
   padding: 15px 5px 20px;
-  border-top: 1px solid #f8f8f8;
+  border-top: 1px solid var(--border-black-11);
 }
 /* .pagination-container.hidden {
   display: none;

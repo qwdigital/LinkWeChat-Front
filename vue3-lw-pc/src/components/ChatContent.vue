@@ -159,7 +159,7 @@ export default {
 //   height: 8px;
 //   background: var(--bg-white);
 //   transform: rotate(45deg);
-//   border: 1px solid #e1edfc;
+//   border: 1px solid var(--color-light-9);
 //   z-index: 888;
 //   box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
 // }
@@ -170,7 +170,7 @@ export default {
   line-height: 14px;
   border-radius: 12px;
   // box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
-  // border: 1px solid #e1edfc;
+  // border: 1px solid var(--color-light-9);
   display: inline-block;
   word-break: break-all;
 }
@@ -260,7 +260,7 @@ export default {
     }
   }
   .card-foot {
-    border-top: 1px solid #efefef;
+    border-top: 1px solid var(--border-black-10);
     text-align: left;
     padding: 10px;
     color: var(--font-black);

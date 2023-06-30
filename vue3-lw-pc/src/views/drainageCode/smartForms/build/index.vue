@@ -561,23 +561,23 @@ export default {
   background: var(--bg-black);
   .el-tabs__header {
     margin: 0;
-    border-bottom-color: #121315;
+    border-bottom-color: var(--border-black-1);
     .el-tabs__nav {
-      border-color: #121315;
+      border-color: var(--border-black-1);
     }
   }
   .el-tabs__item {
     height: 32px;
     line-height: 32px;
     color: var(--font-black-5);
-    border-left: 1px solid #121315 !important;
+    border-left: 1px solid var(--border-black-1) !important;
     background: var(--bg-black-2);
     margin-right: 5px;
     user-select: none;
   }
   .el-tabs__item.is-active {
     background: var(--bg-black-1);
-    border-bottom-color: #1e1e1e !important;
+    border-bottom-color: var(--border-black-1) !important;
     color: var(--font-white, #fff);
   }
   .el-icon-EditPen {
@@ -680,7 +680,7 @@ export default {
   line-height: 1.2;
 }
 
-$selectedColor: #f6f7ff;
+$selectedColor: var(--bg-black-11);
 
 .container {
   position: relative;
@@ -725,10 +725,10 @@ $selectedColor: #f6f7ff;
     font-size: 15px;
   }
   &:hover {
-    border: 1px dashed #787be8;
-    color: #787be8;
+    border: 1px dashed var(--color);
+    color: var(--color);
     .svg-icon {
-      color: #787be8;
+      color: var(--color);
     }
   }
 }
@@ -749,8 +749,8 @@ $selectedColor: #f6f7ff;
 .center-scrollbar {
   height: calc(100% - 42px);
   overflow: hidden;
-  border-left: 1px solid #f1e8e8;
-  border-right: 1px solid #f1e8e8;
+  border-left: 1px solid var(--border-black-9);
+  border-right: 1px solid var(--border-black-9);
   box-sizing: border-box;
 }
 .center-board {
@@ -773,7 +773,7 @@ $selectedColor: #f6f7ff;
   text-align: right;
   padding: 0 15px;
   box-sizing: border-box;
-  border: 1px solid #f1e8e8;
+  border: 1px solid var(--border-black-9);
   border-top: none;
   border-left: none;
   .delete-btn {
@@ -784,7 +784,7 @@ $selectedColor: #f6f7ff;
   position: relative;
   height: 42px;
   background: var(--bg-white);
-  border-bottom: 1px solid #f1e8e8;
+  border-bottom: 1px solid var(--border-black-9);
   box-sizing: border-box;
 }
 .logo {
@@ -864,7 +864,7 @@ $selectedColor: #f6f7ff;
   position: relative;
   cursor: move;
   &.unfocus-bordered:not(.activeFromItem) > div:first-child {
-    border: 1px dashed #ccc;
+    border: 1px dashed var(--border-black-8);
   }
   .el-form-item {
     padding: 12px 10px;
@@ -874,7 +874,7 @@ $selectedColor: #f6f7ff;
   position: relative;
   cursor: move;
   box-sizing: border-box;
-  border: 1px dashed #ccc;
+  border: 1px dashed var(--border-black-8);
   border-radius: 3px;
   padding: 0 2px;
   margin-bottom: 15px;
@@ -984,9 +984,9 @@ $selectedColor: #f6f7ff;
     flex-shrink: 0;
     width: 70px;
     height: 30px;
-    border: 1px solid #d7d7d7;
-    border-top: 0px solid #d7d7d7;
-    border-left: 0px solid #d7d7d7;
+    border: 1px solid var(--border-black-8);
+    border-top: 0px solid var(--border-black-8);
+    border-left: 0px solid var(--border-black-8);
     cursor: pointer;
   }
   .smartForms_build_index_li {
@@ -997,9 +997,9 @@ $selectedColor: #f6f7ff;
     align-items: center;
     width: 70px;
     height: 30px;
-    border: 1px solid #d7d7d7;
-    border-top: 0px solid #d7d7d7;
-    border-left: 0px solid #d7d7d7;
+    border: 1px solid var(--border-black-8);
+    border-top: 0px solid var(--border-black-8);
+    border-left: 0px solid var(--border-black-8);
     cursor: pointer;
   }
   .smartForms_build_index_li:hover {
@@ -1009,7 +1009,7 @@ $selectedColor: #f6f7ff;
     background-color: var(--bg-black-11);
   }
   .smartForms_build_index_li:nth-of-type(1) {
-    border-left: 1px solid #d7d7d7;
+    border-left: 1px solid var(--border-black-8);
   }
   .smartForms_build_index_liBtn {
     background: var(--bg-white);

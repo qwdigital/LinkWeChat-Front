@@ -64,7 +64,7 @@ export default {
   .list {
     padding: 10px;
     overflow: hidden;
-    border-bottom: 1px solid #efefef;
+    border-bottom: 1px solid var(--border-black-10);
     cursor: pointer;
     text-align: left;
     .name {

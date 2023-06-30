@@ -152,7 +152,7 @@ $selectedColor: #f6f7ff;
   position: relative;
   cursor: move;
   &.unfocus-bordered:not(.activeFromItem) > div:first-child {
-    border: 1px dashed #ccc;
+    border: 1px dashed var(--border-black-8);
   }
   .el-form-item {
     padding: 12px 10px;
@@ -162,7 +162,7 @@ $selectedColor: #f6f7ff;
   position: relative;
   cursor: move;
   box-sizing: border-box;
-  border: 1px dashed #ccc;
+  border: 1px dashed var(--border-black-8);
   border-radius: 3px;
   padding: 0 2px;
   margin-bottom: 15px;

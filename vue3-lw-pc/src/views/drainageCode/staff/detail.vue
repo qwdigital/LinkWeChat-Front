@@ -455,7 +455,7 @@ export default {
 .content {
   margin-top: 20px;
   border-radius: 4px;
-  border: 1px solid #f1f1f1;
+  border: 1px solid var(--border-black-10);
   &:first-child {
     margin-top: 0;
   }

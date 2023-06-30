@@ -907,7 +907,7 @@ export default {
 }
 .select-item {
   display: flex;
-  border: 1px dashed #fff;
+  border: 1px dashed var(--border-white);
   box-sizing: border-box;
   & .close-btn {
     cursor: pointer;

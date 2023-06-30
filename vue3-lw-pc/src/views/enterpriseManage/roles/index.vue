@@ -251,7 +251,7 @@ export default {
   padding: 20px;
 }
 .left {
-  border-right: 1px solid #f1f1f1;
+  border-right: 1px solid var(--border-black-10);
   .title {
     color: var(--color);
     display: flex;

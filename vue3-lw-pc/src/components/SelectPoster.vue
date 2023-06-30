@@ -171,7 +171,7 @@ export default {
   justify-content: space-between;
   .posterBody {
     width: 30%;
-    border: 1px solid #000;
+    border: 1px solid var(--border-black);
     margin-bottom: 10px;
     cursor: pointer;
     position: relative;
@@ -184,7 +184,7 @@ export default {
     font-size: 14px;
     line-height: 40px;
     padding-left: 20px;
-    border-top: 1px solid #000;
+    border-top: 1px solid var(--border-black);
   }
   .materialMask {
     position: absolute;

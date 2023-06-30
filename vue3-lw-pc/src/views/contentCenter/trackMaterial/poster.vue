@@ -90,7 +90,7 @@ export default {
             ></el-image>
             <div class="ml10">
               <p style="text-align: left">{{ row.materialName }}</p>
-              <span style="color: #aaaaaa">
+              <span style="color: var(--font-black-7)">
                 {{ coverContent(row.digest) }}
               </span>
             </div>
@@ -274,7 +274,7 @@ export default {
   position: relative;
   height: 0;
   padding: 70% 0 0 0;
-  border-bottom: 1px solid #e6ebf5;
+  border-bottom: 1px solid var(--border-black-9);
   &:hover .actions {
     opacity: 1;
   }

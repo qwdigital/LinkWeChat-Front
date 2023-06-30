@@ -151,7 +151,7 @@ export default {
 .img-lg {
   width: 120px;
   height: 120px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-black-8);
 }
 
 .avatar-upload-preview {

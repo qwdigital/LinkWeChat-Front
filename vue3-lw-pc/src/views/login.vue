@@ -251,7 +251,7 @@ export default {
   background: var(--bg-white);
   box-shadow: 0px 8px 24px 0px rgba(7, 193, 96, 0.16);
   border-radius: 24px 24px 24px 24px;
-  border: 1px solid #07c160;
+  border: 1px solid var(--color);
 }
 .login-img {
   padding: 20px;

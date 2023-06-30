@@ -91,7 +91,7 @@ export default {
   }
   .breadcrumb-wrap {
     background: var(--bg-white);
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--border-black-9);
   }
 
   &.mobile.openSidebar {
@@ -105,16 +105,19 @@ export default {
 
   .main-wrap {
     height: calc(100vh - var(--top-nav-heght));
-    background: var(--bg-black-11);
+    background: #edf2f9;
     .main {
       height: 100%;
       // padding: 10px;
       display: flex;
       align-items: stretch;
     }
+  }
+}
 
-    .breadcrumb-wrap {
-    }
+.dark {
+  .main-wrap {
+    background: var(--bg-black-11);
   }
 }
 </style>

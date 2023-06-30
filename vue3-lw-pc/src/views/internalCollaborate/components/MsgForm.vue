@@ -299,7 +299,7 @@ export default {
   .el-radio__input.is-disabled {
     .el-radio__inner {
       background: var(--bg-white);
-      border-color: #dcdfe6;
+      border-color: var(--border-black-9);
       cursor: default;
     }
     + span.el-radio__label {

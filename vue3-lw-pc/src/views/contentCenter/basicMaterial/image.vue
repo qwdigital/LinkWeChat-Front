@@ -86,7 +86,7 @@ export default {
   .list-li {
     height: 230px;
     line-height: 1.15;
-    border: 1px solid #eaeaea;
+    border: 1px solid var(--border-black-9);
     border-radius: var(--border-radius);
     overflow: hidden;
     .img {
@@ -134,7 +134,7 @@ export default {
       white-space: nowrap;
       text-overflow: ellipsis;
       font-size: 14px;
-      border-top: 1px solid #eaeaea;
+      border-top: 1px solid var(--border-black-9);
     }
     .content {
       width: 95%;
@@ -160,7 +160,7 @@ export default {
 //   position: relative;
 //   height: 0;
 //   padding: 70% 0 0 0;
-//   border-bottom: 1px solid #e6ebf5;
+//   border-bottom: 1px solid var(--border-black-9);
 //   &:hover .actions {
 //     opacity: 1;
 //   }

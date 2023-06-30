@@ -808,12 +808,12 @@ export default {
 ::v-deep .el-button.is-disabled {
   color: var(--font-white, #fff);
   background-color: var(--bg-black-8);
-  border-color: #cccccc;
+  border-color: var(--border-black-8);
 }
 ::v-deep.el-dropdown [disabled] {
   color: var(--font-white, #fff);
   background-color: var(--bg-black-8);
-  border-color: #cccccc;
+  border-color: var(--border-black-8);
 }
 .footer {
   display: flex;

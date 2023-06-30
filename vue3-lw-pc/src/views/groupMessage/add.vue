@@ -615,7 +615,7 @@ export default {
 .content-border {
   padding: 10px 20px;
   background: var(--bg-white);
-  border: 1px solid #f1f1f1;
+  border: 1px solid var(--border-black-10);
   .item-name {
     width: 100px;
   }
@@ -683,7 +683,7 @@ export default {
   width: 240px;
   display: inline-flex;
   border-radius: 4px;
-  border: 1px solid #dcdfe6;
+  border: 1px solid var(--border-black-9);
   align-items: center;
   padding: 0 15px;
   overflow: hidden;

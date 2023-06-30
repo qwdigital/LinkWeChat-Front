@@ -205,7 +205,7 @@ export default {
   .list-item {
     height: 128px;
     padding: 20px 20px 0;
-    border: 1px solid #eee;
+    border: 1px solid var(--border-black-9);
     margin: 0 20px 20px 0;
     background: var(--bg-white);
     border-radius: 6px;

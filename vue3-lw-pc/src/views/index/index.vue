@@ -3,13 +3,13 @@
     <div class="index-l">
       <div class="flex">
         <div class="userinfo">
+          <div v-html="bgSvg" class="bgSvg"></div>
           <div class="portrait">
             <img class="portrait-img" :src="$store.user.avatar" alt="" v-if="$store.user.avatar" />
             <!-- <svg-icon icon="user" class="code-user" v-else></svg-icon> -->
           </div>
           <div class="wel toe">
-            <span>{{ greetings }}，</span>
-            <span>{{ $store.user.name }}</span>
+            <span>{{ greetings }}，{{ $store.user.name }}</span>
           </div>
           <div class="role toe g-bg-lg">{{ roleGroup || '管理员' }}</div>
         </div>
@@ -126,7 +126,7 @@
             <span>帮助中心</span>
             <a
               class="title-right-icon"
-              style="color: #fff !important; background: #000"
+              style="color: var(--font-white) !important; background: var(--bg-black)"
               href="https://www.yuque.com/linkwechat/help"
               target="_blank">
               ➔
@@ -171,6 +171,7 @@ import { getUserProfile } from '@/api/system/user'
 import * as api from '@/api/index'
 // import { getCustomerServiceQrUrl } from '@/api/login'
 import { CountTo } from 'vue3-count-to'
+import bgSvg from './asstes/bg.svg?raw'
 export default {
   name: 'Index',
   components: {
@@ -181,6 +182,7 @@ export default {
   data() {
     return {
       api,
+      bgSvg,
       table: {
         currentEdition: '-', // 当前版本
         userNumbers: 0, // 使用人数
@@ -417,11 +419,15 @@ export default {
     flex-direction: column;
     align-items: center;
     width: 218px;
-    background: url('./asstes/bg.svg') no-repeat;
     border-radius: var(--border-radius-big);
     padding: 0px 20px 20px;
     margin-top: -38px;
+    .bgSvg {
+      color: var(--bg-white);
+      position: absolute;
+    }
     .portrait {
+      position: relative;
       padding: 10px;
       .portrait-img {
         display: block;
@@ -429,15 +435,17 @@ export default {
         width: 90px;
         height: 90px;
         border-radius: 50%;
-        border: 1px solid #fafafa;
+        border: 1px solid var(--border-black-11);
       }
     }
     .wel {
+      position: relative;
       font-size: 22px;
       font-weight: bold;
       margin: 2px 0 16px;
     }
     .role {
+      position: relative;
       color: white;
       padding: 6px 8px;
       font-size: 12px;
@@ -454,7 +462,7 @@ export default {
       margin: 30px -20px 0;
     }
     .data-view-item {
-      border-left: 1px solid #e2e8f0;
+      border-left: 1px solid var(--bg-black-9);
       &:first-child {
         border: 0;
       }
@@ -525,7 +533,7 @@ export default {
     margin-top: -10px;
     padding-top: 0;
     .dynamics-item {
-      border-bottom: 1px solid #f1f1f1;
+      border-bottom: 1px solid var(--border-black-10);
       padding: 16px 0;
 
       .info {
@@ -541,12 +549,12 @@ export default {
           margin-right: 8px;
         }
         .customer {
-          background: var(--color-light-10);
+          background: #ecf5ff;
           color: #1869ff;
           border-color: #1869ff;
         }
         .staff {
-          background: var(--color-light-9);
+          background: var(--color-light-10);
           color: var(--color);
           border-color: var(--color);
         }
@@ -590,7 +598,7 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #f1f1f1;
+      border-bottom: 1px solid var(--border-black-10);
       padding: 16px 0;
       // font-size: 12px;
       &:first-of-type {
