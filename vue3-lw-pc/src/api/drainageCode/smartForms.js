@@ -30,7 +30,7 @@ export function insertInfoToSurvey(data) {
   return request({
     url: service + '/survey/add',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -39,7 +39,7 @@ export function surveyList(data) {
   return request({
     url: service + '/survey/list',
     method: 'GET',
-    params: data,
+    params: data
   })
 }
 
@@ -47,7 +47,7 @@ export function surveyList(data) {
 export function deleteInfoToSurvey(ids) {
   return request({
     url: service + '/survey/delete/' + ids,
-    method: 'DELETE',
+    method: 'DELETE'
   })
 }
 
@@ -55,7 +55,7 @@ export function deleteInfoToSurvey(ids) {
 export function selectInfoToSurvey(id) {
   return request({
     url: service + '/survey/getInfo/' + id,
-    method: 'GET',
+    method: 'GET'
   })
 }
 
@@ -64,7 +64,7 @@ export function submitForm(data) {
   return request({
     url: service + '/answer/add',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -73,7 +73,7 @@ export function isCompleteSurvey(data) {
   return request({
     url: service + '/answer/isCompleteSurvey',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -82,7 +82,7 @@ export function insertPieValue(data) {
   return request({
     url: service + '/statistic/insertPieValue',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -91,7 +91,7 @@ export function updateSurveyStatus(data) {
   return request({
     url: service + '/survey/updateStatus',
     method: 'put',
-    data,
+    data
   })
 }
 
@@ -100,7 +100,7 @@ export function getAccessToken(data) {
   return request({
     url: service + '/Statistics/getAccessToken' + data,
     method: 'get',
-    data,
+    data
   })
 }
 
@@ -109,7 +109,7 @@ export function updateSurveyGroup(data) {
   return request({
     url: service + '/updateSurveyGroup',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -120,7 +120,7 @@ export function selectStatistics(data) {
   return request({
     url: service + '/statistic/getStatistics',
     method: 'get',
-    params: data,
+    params: data
   })
 }
 
@@ -129,7 +129,7 @@ export function lineChart(data) {
   return request({
     url: service + '/statistic/lineChart',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -138,7 +138,7 @@ export function StatisticsDataList(data) {
   return request({
     url: service + '/statistic/dataList',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -147,7 +147,7 @@ export function updateInfoToSurvey(data) {
   return request({
     url: service + '/survey/update',
     method: 'put',
-    data,
+    data
   })
 }
 
@@ -156,7 +156,7 @@ export function selectAnswerInfo(data) {
   return request({
     url: service + '/answer/getAnswerList',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -165,7 +165,7 @@ export function pieChart(data) {
   return request({
     url: service + '/statistic/pieChart',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -186,6 +186,7 @@ export function overviewExport(data) {
     url: service + '/statistic/data/export',
     method: 'post',
     data,
+    responseType: 'blob'
   })
 }
 
@@ -195,7 +196,7 @@ export function answerExport(data) {
     url: service + '/statistic/answer/export',
     method: 'get',
     params: data,
-    responseType: 'blob',
+    responseType: 'blob'
   })
 }
 
@@ -205,6 +206,7 @@ export function userExport(data) {
     url: service + '/statistic/user/export',
     method: 'post',
     data,
+    responseType: 'blob'
   })
 }
 
@@ -213,7 +215,7 @@ export function statisticsCustomer(data) {
   return request({
     url: service + '/statistic/customer',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -222,7 +224,7 @@ export function areaStatistic(data) {
   return request({
     url: service + '/statistic/areaStatistic',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -239,6 +241,6 @@ export function siteStas(data) {
   return request({
     url: service + '/statistic/siteStas',
     method: 'post',
-    data,
+    data
   })
 }
