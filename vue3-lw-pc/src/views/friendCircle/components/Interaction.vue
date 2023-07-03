@@ -35,16 +35,16 @@ export default {
           tips: '该朋友圈任务评论的客户数',
           value: 0,
         },
-        {
-          title: '附件浏览人数',
-          tips: '该朋友圈任务附带的视频/图文/文章/文件/海报的UV量',
-          value: 0,
-        },
-        {
-          title: '附件浏览次数',
-          tips: '该朋友圈任务附带的视频/图文/文章/文件/海报的PV量',
-          value: 0,
-        },
+        // {
+        //   title: '附件浏览人数',
+        //   tips: '该朋友圈任务附带的视频/图文/文章/文件/海报的UV量',
+        //   value: 0,
+        // },
+        // {
+        //   title: '附件浏览次数',
+        //   tips: '该朋友圈任务附带的视频/图文/文章/文件/海报的PV量',
+        //   value: 0,
+        // },
       ],
       id: undefined,
       type: undefined, // 朋友圈类型 1：非同步型  2：企业同步型 3：个人同步型
@@ -54,9 +54,9 @@ export default {
     this.type = +this.$route.query.type
     this.id = this.$route.query.id
 
-    if (this.type !== 1) {
-      this.cardData = this.cardData.slice(0, 2)
-    }
+    // if (this.type !== 1) {
+    //   this.cardData = this.cardData.slice(0, 2)
+    // }
     this.getTabTotalFn()
   },
   methods: {
@@ -64,10 +64,10 @@ export default {
       statisticInteract(this.id).then((res) => {
         this.cardData[0].value = res.data.like
         this.cardData[1].value = res.data.comment
-        if (this.type === 1) {
-          this.cardData[2].value = res.data.people
-          this.cardData[3].value = res.data.count
-        }
+        // if (this.type === 1) {
+        //   this.cardData[2].value = res.data.people
+        //   this.cardData[3].value = res.data.count
+        // }
       })
     },
   },
