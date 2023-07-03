@@ -18,7 +18,13 @@
           :label="item.label + '(' + item.list.length + ')'"
           :name="item.name"
         >
-          <MaPage ref="page" :type="item.type" :isFriends ='isFriends' v-slot="{ list }" @listChange="listChange">
+          <MaPage
+            ref="page"
+            :type="item.type"
+            :isFriends="isFriends"
+            v-slot="{ list }"
+            @listChange="listChange"
+          >
             <div v-if="item.type === '0'">
               <div v-if="list && list.length">
                 <el-checkbox-group v-model="paneList[picindex].list" class="imgStyle">
@@ -282,23 +288,35 @@ export default {
       this.ids = []
     },
     centerSubmit() {
-      if (this.ids.length + this.talkListLength > this.maxlength2) {
+      if (this.ids.length) {
         if (this.isFriends) {
-          this.$message.error('除图片素材可选9条数据,其他类型仅可选择一条数据,且只能选择一种类型')
-        } else {
-          this.$message.error('最多新建或选择' + this.maxlength2 + '个素材')
+          if (this.ids[0].mediaType === '0') {
+            // 朋友圈下的图片,最大数量为9
+            this.maxlength2 = 9
+          } else {
+            this.maxlength2 = 1
+          }
         }
+        if (this.ids.length + this.talkListLength > this.maxlength2) {
+          if (this.isFriends) {
+            this.$message.error('除图片素材可选9条数据,其他类型仅可选择一条数据,且只能选择一种类型')
+          } else {
+            this.$message.error('最多新建或选择' + this.maxlength2 + '个素材')
+          }
 
-        return
+          return
+        } else {
+          this.dialogVisibel = false
+          this.$emit('itemArry', this.ids, this.maxlength2)
+          this.$emit('update:choseDialog', this.dialogVisibel)
+          this.$refs.multipleTable.forEach((item) => {
+            item.clearSelection()
+          })
+          this.ids = []
+          this.clearPaneList()
+        }
       } else {
-        this.dialogVisibel = false
-        this.$emit('itemArry', this.ids, this.maxlength2)
-        this.$emit('update:choseDialog', this.dialogVisibel)
-        this.$refs.multipleTable.forEach((item) => {
-          item.clearSelection()
-        })
-        this.ids = []
-        this.clearPaneList()
+        this.$message.error('请选择素材!')
       }
     },
     // 单个选择

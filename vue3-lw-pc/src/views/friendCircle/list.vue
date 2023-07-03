@@ -85,11 +85,11 @@
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip prop="createBy" label="创建人"></el-table-column>
-        <el-table-column
-          show-overflow-tooltip
-          prop="executeTime"
-          label="执行时间"
-        ></el-table-column>
+        <el-table-column show-overflow-tooltip prop="executeTime" label="执行时间">
+          <template #default="{ row }">
+            {{ row.executeTime ? row.executeTime : '—' }}
+          </template>
+        </el-table-column>
         <el-table-column show-overflow-tooltip prop="status" label="任务状态">
           <template #default="{ row }">
             <div>
