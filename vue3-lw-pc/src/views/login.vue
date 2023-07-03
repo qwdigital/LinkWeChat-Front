@@ -161,8 +161,10 @@ export default {
             Cookies.remove('password')
             Cookies.remove('rememberMe')
           }
+          let loginForm = JSON.parse(JSON.stringify(this.loginForm))
+          loginForm.password = encrypt(this.loginForm.password)
           this.$store
-            .Login(this.loginForm)
+            .Login(loginForm)
             .then(() => {
               this.$router.push({ path: this.redirect || window.lwConfig.BASE_URL })
             })
