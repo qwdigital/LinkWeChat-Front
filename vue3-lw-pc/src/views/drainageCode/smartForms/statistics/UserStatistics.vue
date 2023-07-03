@@ -1,5 +1,5 @@
 <template>
-  <div style="padding-bottom: 30px">
+  <div style="padding-bottom: 30px;">
     <div>
       <div class="g-card">
         <div class="mid-action">
@@ -10,7 +10,7 @@
               {{tableList[0].answer}}
             </div> -->
         <template v-if="tableList">
-          <el-table v-loading="loading1" :data="tableList" style="width: 100%">
+          <el-table v-loading="loading1" :data="tableList" style="width: 100%;">
             <!-- <el-table-column label="日期" align="center" min-width="100"  show-overflow-tooltip >
                   <template #default="{ row }">
                     <div style="display: flex;justify-content:center;">{{row.updateTime.substring(0,10)}}</div>
@@ -69,7 +69,8 @@
             :total="total"
             v-model:page="query.pageNum"
             v-model:limit="query.pageSize"
-            @pagination="getTableChangeSize(query.pageNum, query.pageSize)" />
+            @pagination="getTableChangeSize(query.pageNum, query.pageSize)"
+          />
         </template>
       </div>
     </div>
@@ -77,200 +78,208 @@
 </template>
 
 <script>
-import { statisticsCustomer, userExport } from '@/api/drainageCode/smartForms.js'
-import SearchTitle from '../components/SearchTitle.vue'
-export default {
-  props: ['formId'],
-  components: {
-    SearchTitle,
-  },
-  data() {
-    return {
-      loading1: false,
-      total: 0,
-      baseList: '',
-      query: {
-        pageSize: 10,
-        pageNum: 1,
+  import { statisticsCustomer, userExport } from '@/api/drainageCode/smartForms.js'
+  import SearchTitle from '../components/SearchTitle.vue'
+  export default {
+    props: ['formId'],
+    components: {
+      SearchTitle
+    },
+    data() {
+      return {
+        loading1: false,
+        total: 0,
+        baseList: '',
+        query: {
+          pageSize: 10,
+          pageNum: 1
+        },
+        tableList: [],
+        exportLoading: false,
+        dataSource: '默认渠道'
+      }
+    },
+    methods: {
+      exportFn() {
+        let that = this
+        this.$confirm('确认导出吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.exportLoading = true
+          let data = this.tableSearch
+          console.log('data', data)
+          if (!data.dataSource) {
+            return
+          }
+          data.belongId = this.$route.query.id
+          userExport(data)
+            .then((res) => {
+              console.log('数据报表导出返回值', res)
+              if (res != null) {
+                let blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+                let url = window.URL.createObjectURL(blob)
+                const link = document.createElement('a') // 创建a标签
+                link.href = url
+                link.download = '数据报表.xlsx' //指定下载文件名
+                link.click()
+                URL.revokeObjectURL(url) // 释放内存
+              }
+            })
+            .catch((error) => {
+              console.error(error)
+            })
+            .finally(() => {
+              that.exportLoading = false
+            })
+          // delete data.pageNum
+          // delete data.pageSize
+          // that.dataSource = data.dataSource
+          // statisticsCustomer(data).then((res) => {
+          //   console.log('用户统计数据返回值', res)
+          //   let b = []
+          //   if (res.data && res.data.length) {
+          //     that.tableList = []
+          //     for (let i = 0; i < res.data.length; i++) {
+          //       b.push(res.data[i].data)
+          //       console.log('b', b)
+          //     }
+          //     that.tableList = b
+          //     that.total = Number(res.data[0].total)
+          //   } else {
+          //     that.tableList = []
+          //   }
+          //   console.log('that.tableList', that.tableList)
+          //   // this.tableList = res.data.xAxis.data.length
+          //   that.loading1 = false
+          //   let data = []
+          //   for (let i = 0; i < that.tableList.length; i++) {
+          //     let isOfficeCustomer = '否'
+          //     if (that.tableList[i].isOfficeCustomer) {
+          //       isOfficeCustomer = '是'
+          //     }
+          //     let a = {
+          //       createTime: that.tableList[i].createTime,
+          //       dataSource: that.dataSource,
+          //       isOfficeCustomer: isOfficeCustomer,
+          //       mobile: that.tableList[i].mobile,
+          //       unionId: that.tableList[i].unionId,
+          //       openId: that.tableList[i].openId,
+          //     }
+          //     data.push(a)
+          //   }
+          //   console.log('that.tableList', that.tableList)
+          //   console.log('data', JSON.stringify(data))
+
+          //   userExport(data)
+          //     .then((res) => {
+          //       console.log('数据报表导出返回值', res)
+          //       download(res.msg)
+          //     })
+          //     .catch((error) => {
+          //       console.error(error)
+          //     })
+          //     .finally(() => {
+          //       that.exportLoading = false
+          //     })
+          // })
+        })
       },
-      tableList: [],
-      exportLoading: false,
-      dataSource: '默认渠道',
-    }
-  },
-  methods: {
-    exportFn() {
-      let that = this
-      this.$confirm('确认导出吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(() => {
-        this.exportLoading = true
+      getTableChangeSize(a, b) {
+        console.log('a', a, b)
+        let that = this
+        this.loading1 = true
         let data = this.tableSearch
         console.log('data', data)
         if (!data.dataSource) {
+          that.loading1 = false
           return
         }
-        data.belongId = this.$route.query.id
-        userExport(data)
-          .then((res) => {
-            console.log('数据报表导出返回值', res)
-            this.download(res.data)
-          })
-          .catch((error) => {
-            console.error(error)
-          })
-          .finally(() => {
-            that.exportLoading = false
-          })
-        // delete data.pageNum
-        // delete data.pageSize
-        // that.dataSource = data.dataSource
-        // statisticsCustomer(data).then((res) => {
-        //   console.log('用户统计数据返回值', res)
-        //   let b = []
-        //   if (res.data && res.data.length) {
-        //     that.tableList = []
-        //     for (let i = 0; i < res.data.length; i++) {
-        //       b.push(res.data[i].data)
-        //       console.log('b', b)
-        //     }
-        //     that.tableList = b
-        //     that.total = Number(res.data[0].total)
-        //   } else {
-        //     that.tableList = []
-        //   }
-        //   console.log('that.tableList', that.tableList)
-        //   // this.tableList = res.data.xAxis.data.length
-        //   that.loading1 = false
-        //   let data = []
-        //   for (let i = 0; i < that.tableList.length; i++) {
-        //     let isOfficeCustomer = '否'
-        //     if (that.tableList[i].isOfficeCustomer) {
-        //       isOfficeCustomer = '是'
-        //     }
-        //     let a = {
-        //       createTime: that.tableList[i].createTime,
-        //       dataSource: that.dataSource,
-        //       isOfficeCustomer: isOfficeCustomer,
-        //       mobile: that.tableList[i].mobile,
-        //       unionId: that.tableList[i].unionId,
-        //       openId: that.tableList[i].openId,
-        //     }
-        //     data.push(a)
-        //   }
-        //   console.log('that.tableList', that.tableList)
-        //   console.log('data', JSON.stringify(data))
-
-        //   userExport(data)
-        //     .then((res) => {
-        //       console.log('数据报表导出返回值', res)
-        //       download(res.msg)
-        //     })
-        //     .catch((error) => {
-        //       console.error(error)
-        //     })
-        //     .finally(() => {
-        //       that.exportLoading = false
-        //     })
-        // })
-      })
-    },
-    getTableChangeSize(a, b) {
-      console.log('a', a, b)
-      let that = this
-      this.loading1 = true
-      let data = this.tableSearch
-      console.log('data', data)
-      if (!data.dataSource) {
-        that.loading1 = false
-        return
-      }
-      data.pageNum = a
-      data.pageSize = b
-      that.dataSource = data.dataSource
-      statisticsCustomer(data).then((res) => {
-        console.log('用户统计数据返回值', res)
-        let b = []
-        if (res.data && res.data.length) {
-          that.tableList = []
-          for (let i = 0; i < res.data.length; i++) {
-            b.push(res.data[i].data)
-            console.log('b', b)
+        data.pageNum = a
+        data.pageSize = b
+        that.dataSource = data.dataSource
+        statisticsCustomer(data).then((res) => {
+          console.log('用户统计数据返回值', res)
+          let b = []
+          if (res.data && res.data.length) {
+            that.tableList = []
+            for (let i = 0; i < res.data.length; i++) {
+              b.push(res.data[i].data)
+              console.log('b', b)
+            }
+            that.tableList = b
+            that.total = Number(res.data[0].total)
+          } else {
+            that.tableList = []
           }
-          that.tableList = b
-          that.total = Number(res.data[0].total)
-        } else {
-          that.tableList = []
+          console.log('that.tableList', that.tableList)
+          // this.tableList = res.data.xAxis.data.length
+          that.loading1 = false
+        })
+      },
+      getTableFn(data) {
+        let that = this
+        this.loading1 = true
+        data.belongId = this.$route.query.id
+        // getTableTotal(Object.assign({}, this.query, data)).then(res => {
+        //   this.tableList = res.rows
+        //   this.total = Number(res.total)
+        //   this.loading = false
+        // })
+        if (!data.dataSource) {
+          that.loading1 = false
+          return
         }
-        console.log('that.tableList', that.tableList)
-        // this.tableList = res.data.xAxis.data.length
-        that.loading1 = false
-      })
-    },
-    getTableFn(data) {
-      let that = this
-      this.loading1 = true
-      data.belongId = this.$route.query.id
-      // getTableTotal(Object.assign({}, this.query, data)).then(res => {
-      //   this.tableList = res.rows
-      //   this.total = Number(res.total)
-      //   this.loading = false
-      // })
-      if (!data.dataSource) {
-        that.loading1 = false
-        return
+        this.tableSearch = data
+        that.dataSource = data.dataSource
+        that.getTableChangeSize(1, 10)
       }
-      this.tableSearch = data
-      that.dataSource = data.dataSource
-      that.getTableChangeSize(1, 10)
     },
-  },
-  mounted() {},
-}
+    mounted() {}
+  }
 </script>
 
 <style lang="scss" scoped>
-.dataStatistics_optionGraph_ul {
-  margin-top: 30px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  .dataStatistics_optionGraph_li {
-    margin-bottom: 10px;
-    width: 49.6%;
-    background: var(--bg-white);
-    padding: 30px;
-  }
-}
-
-.data-content {
-  margin-top: 10px;
-
-  .chart-content {
-    margin-top: 10px;
-
-    .my_button {
-      float: right;
-    }
-
-    .column {
-      display: flex;
-
-      .column-item {
-        flex: 1;
-      }
-    }
-  }
-
-  .search-content {
+  .dataStatistics_optionGraph_ul {
+    margin-top: 30px;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    .dataStatistics_optionGraph_li {
+      margin-bottom: 10px;
+      width: 49.6%;
+      background: var(--bg-white);
+      padding: 30px;
+    }
   }
 
-  .table-content {
+  .data-content {
     margin-top: 10px;
+
+    .chart-content {
+      margin-top: 10px;
+
+      .my_button {
+        float: right;
+      }
+
+      .column {
+        display: flex;
+
+        .column-item {
+          flex: 1;
+        }
+      }
+    }
+
+    .search-content {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .table-content {
+      margin-top: 10px;
+    }
   }
-}
 </style>
