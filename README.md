@@ -42,7 +42,7 @@
     ├── .env.js                    # 环境变量配置
     ├── index.html                 # html模板
     ├── jsconfig.json              # jsconfig 配置 快捷路径等
-    └── package.json               # package.json
+    ├── package.json               # package.json
     ├── vite.config.js             # vite 配置
 ├── linkwe-mobile		// 移动端项目包含移动工作台、任务宝、群裂变等H5
 ├── linkwe-uniapp		// uniapp短链小程序项目
