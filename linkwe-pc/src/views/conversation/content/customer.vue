@@ -109,7 +109,8 @@
         customerQuery: {
           pageNum: 1,
           pageSize: 10,
-          name: ''
+          name: '',
+          noRepeat: true
         },
         customerList: [],
         customerTotal: 0,
