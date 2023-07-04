@@ -65,7 +65,7 @@
           <div class="companyName">{{ $store.user.companyName }}</div>
           <div class="info">
             当前版本：
-            <span class="fr">{{ lwConfig._version || table.currentEdition }}</span>
+            <span class="fr">{{ table.currentEdition }}</span>
           </div>
           <div class="info">
             使用人数：

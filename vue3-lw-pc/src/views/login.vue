@@ -15,12 +15,19 @@
         <el-form-item prop="password">
           <el-input
             v-model="loginForm.password"
-            type="password"
+            :type="isPassword ? 'password' : 'text'"
             auto-complete="off"
             placeholder="密码"
             @keyup.enter="handleLogin">
             <template #prefix>
               <svg-icon style="height: 33px" icon="password" class="el-input__icon input-icon" />
+            </template>
+            <template #suffix>
+              <svg-icon
+                style="height: 33px"
+                :icon="isPassword ? 'eye' : 'eye-open'"
+                class="el-input__icon input-icon cp"
+                @click="isPassword = !isPassword" />
             </template>
           </el-input>
         </el-form-item>
@@ -75,6 +82,7 @@ export default {
       codeUrl: '',
       wechatCodeUrl: '',
       cookiePassword: '',
+      isPassword: true,
       loginForm: {
         username: '',
         password: '',
@@ -162,7 +170,7 @@ export default {
             Cookies.remove('rememberMe')
           }
           let loginForm = JSON.parse(JSON.stringify(this.loginForm))
-          loginForm.password = encrypt(this.loginForm.password)
+          // loginForm.password = encrypt(this.loginForm.password)
           this.$store
             .Login(loginForm)
             .then(() => {
