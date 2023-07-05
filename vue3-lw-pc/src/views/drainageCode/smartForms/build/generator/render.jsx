@@ -159,11 +159,11 @@ export default {
         }
       })
     }
-    console.log('confClone', confClone.formCodeId)
+    Object.assign(dataObject, confClone)
+    // console.log('confClone', confClone.formCodeId)
     if (confClone.layout != 'rowFormItem') {
       vModel(this, dataObject, confClone.defaultValue)
     }
-    Object.assign(dataObject, confClone)
 
     for (const key in dataObject._props) {
       if (Object.hasOwnProperty.call(dataObject._props, key)) {

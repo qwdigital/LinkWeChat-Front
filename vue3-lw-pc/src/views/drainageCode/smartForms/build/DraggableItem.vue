@@ -146,7 +146,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-$selectedColor: #f6f7ff;
+$selectedColor: var(--color-light-10);
 
 .drawing-item {
   position: relative;
@@ -272,13 +272,13 @@ $selectedColor: #f6f7ff;
   margin-right: 10px;
 }
 
-.el-form:not(.el-form--inline) .el-input,
-.el-form:not(.el-form--inline) .el-select,
-.el-form:not(.el-form--inline) .el-textarea,
-.el-form:not(.el-form--inline) .el-input-number,
-.el-form:not(.el-form--inline) .el-cascader,
-.el-form:not(.el-form--inline) .el-date-editor--daterange,
-.el-form:not(.el-form--inline) .el-date-editor--datetimerange {
-  max-width: 100%;
-}
+// .el-form:not(.el-form--inline) .el-input,
+// .el-form:not(.el-form--inline) .el-select,
+// .el-form:not(.el-form--inline) .el-textarea,
+// .el-form:not(.el-form--inline) .el-input-number,
+// .el-form:not(.el-form--inline) .el-cascader,
+// .el-form:not(.el-form--inline) .el-date-editor--daterange,
+// .el-form:not(.el-form--inline) .el-date-editor--datetimerange {
+//   max-width: 100%;
+// }
 </style>

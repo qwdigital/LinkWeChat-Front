@@ -223,7 +223,7 @@ export const inputComponents = [
   },
   {
     formCodeId: 8,
-    label: '选项组',
+    label: '单选项',
     tag: 'el-radio-group',
     _props: {
       tag: 'div',
