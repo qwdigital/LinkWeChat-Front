@@ -103,7 +103,6 @@ export default {
       if (this.type == 'table') {
         this.query.pageSize || (this.query.pageSize = 10)
       }
-
       if (this.dateRange) {
         this.query.beginTime = this.dateRange[0]
         this.query.endTime = this.dateRange[1]
@@ -243,7 +242,8 @@ export default {
           range-separator="-"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
-          @change="getList(1)"></el-date-picker>
+          @change="getList(1)"
+        ></el-date-picker>
       </template>
       <el-input
         v-if="isGroupOwnerQuery"
@@ -251,19 +251,22 @@ export default {
         :model-value="userArray.map((e) => e.name) + ''"
         readonly
         @click="showDialog('_groupOwners')"
-        placeholder="请选择群主"></el-input>
+        placeholder="请选择群主"
+      ></el-input>
       <el-select
         style="margin-left: 20px"
         v-if="isGroupQuery"
         v-model="query.chatIds"
         placeholder="请选择群聊"
         clearable
-        @change="getList()">
+        @change="getList()"
+      >
         <el-option
           v-for="item in groupChats"
           :key="item.chatId"
           :label="item.groupName"
-          :value="item.chatId"></el-option>
+          :value="item.chatId"
+        ></el-option>
       </el-select>
       <el-input
         v-if="isDepartOrStaff"
@@ -271,12 +274,20 @@ export default {
         :model-value="userArray.map((e) => e.name) + ''"
         readonly
         @click="showDialog('_users')"
-        placeholder="请选择部门或员工" />
-      <el-button v-if="requestExport" class="fr" type="primary" @click="exprotTable">导出 Excel</el-button>
+        placeholder="请选择部门或员工"
+      />
+      <el-button v-if="requestExport" class="fr" type="primary" @click="exprotTable"
+        >导出 Excel</el-button
+      >
     </div>
 
     <div v-loading="loading">
-      <ChartLine v-if="type == 'lineChart'" :xData="xData" :legend="legend" :series="data"></ChartLine>
+      <ChartLine
+        v-if="type == 'lineChart'"
+        :xData="xData"
+        :legend="legend"
+        :series="data"
+      ></ChartLine>
 
       <template v-else-if="type == 'table'">
         <el-table :data="data" style="width: 100%">
@@ -285,13 +296,15 @@ export default {
             :key="index"
             :prop="item.prop"
             :label="item.label"
-            align="center"></el-table-column>
+            align="center"
+          ></el-table-column>
         </el-table>
         <pagination
           :total="total"
           v-model:page="query.pageNum"
           v-model:limit="query.pageSize"
-          @pagination="getList()" />
+          @pagination="getList()"
+        />
       </template>
 
       <ChartBar v-else-if="'barChart'.includes(type)" :xData="xData" :series="data"></ChartBar>
@@ -301,7 +314,8 @@ export default {
         :xData="xData"
         :legend="legend"
         :series="data"
-        :option="option"></ChartLine>
+        :option="option"
+      ></ChartLine>
     </div>
 
     <SelectUser
@@ -309,7 +323,8 @@ export default {
       title="组织架构"
       :defaultValues="userArray"
       @success="getSelectUser"
-      :isOnlyLeaf="dialogType === '_groupOwners'"></SelectUser>
+      :isOnlyLeaf="dialogType === '_groupOwners'"
+    ></SelectUser>
   </div>
 </template>
 

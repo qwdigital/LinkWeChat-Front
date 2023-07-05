@@ -2,12 +2,20 @@
   <div>
     <!-- 新建欢迎语 -->
     <el-row type="flex" justify="space-between">
-      <el-col :span="!showPhone ? 24 : 16" :class="!showPhone ? 'mt10' : 'boxClass'" class="left radius">
+      <el-col
+        :span="!showPhone ? 24 : 16"
+        :class="!showPhone ? 'mt10' : 'boxClass'"
+        class="left radius"
+      >
         <div class="g-card" v-if="showModle">
           <el-button type="primary" @click="welcomVisible = true">从模板库中选择</el-button>
         </div>
-        <div class="g-card">
-          <div class="g-card-title" v-if="iswelcom || moduleType === 4" style="margin-bottom: 20px">
+        <div class="g-card" v-if="!detail">
+          <div
+            class="g-card-title"
+            v-if="iswelcom || (moduleType === 4 && otherType !== 3)"
+            style="margin-bottom: 20px"
+          >
             {{ titleOne }}
             <el-popover trigger="hover" content="最多发送1条文字信息" placement="top-start">
               <template #reference>
@@ -15,20 +23,37 @@
               </template>
             </el-popover>
           </div>
-          <el-form ref="talkform" :model="talkForm" :rules="talkRules" label-width="80px">
+          <el-form ref="talkform" :model="talkForm" :rules="talkRules" label-width="120px">
             <el-form-item prop="categoryId" label="选择分组" v-if="!iswelcom && moduleType !== 4">
               <el-cascader
                 v-model="talkForm.categoryId"
                 :options="treeData[0].children"
-                :props="groupProps"></el-cascader>
+                :props="groupProps"
+              ></el-cascader>
             </el-form-item>
-            <el-form-item label="话术标题" prop="talkTitle" v-if="moduleType !== 3 && moduleType !== 4">
-              <el-input v-model="talkForm.talkTitle" placeholder="请输入标题" maxlength="30" show-word-limit></el-input>
+            <el-form-item
+              label="话术标题"
+              prop="talkTitle"
+              v-if="moduleType !== 3 && moduleType !== 4"
+            >
+              <el-input
+                v-model="talkForm.talkTitle"
+                placeholder="请输入标题"
+                maxlength="30"
+                show-word-limit
+              ></el-input>
             </el-form-item>
-            <el-form-item label="使用员工" required v-if="iswelcom && tplType === '2'" :error="userInfo">
+            <el-form-item
+              label="使用员工"
+              required
+              v-if="iswelcom && tplType === '2'"
+              :error="userInfo"
+            >
               <el-tag sizi="mini" v-for="(unit, key) in users" :key="key">{{ unit.name }}</el-tag>
               <div>
-                <el-button type="primary" plain @click="onSelectUser" :error="userInfo">选择员工</el-button>
+                <el-button type="primary" plain @click="onSelectUser" :error="userInfo"
+                  >选择员工</el-button
+                >
               </div>
               <div class="sub-des">
                 员工被设置多个欢迎语时，以最新设置或修改的为准，如果通过活码添加，则只推送活码欢迎语
@@ -39,24 +64,34 @@
               required
               style="margin-right: 200px !important"
               :error="templateInfo"
-              v-if="[3, 4].includes(moduleType)">
+              v-if="[3, 4].includes(moduleType)"
+            >
+              <div v-if="tips" class="tips">{{ tips }}</div>
               <TextareaExtend
                 v-model="talkForm.templateInfo"
-                :toolbar="['emoji', (iswelcom || [1, 4].includes(otherType)) && 'insertCustomerNickName']"
+                :toolbar="[
+                  'emoji',
+                  (iswelcom || [1, 4].includes(otherType)) && 'insertCustomerNickName',
+                ]"
                 maxlength="2000"
                 show-word-limit
                 placeholder="请输入"
                 :autosize="{ minRows: 5, maxRows: 20 }"
                 clearable
                 :autofocus="true"
-                @input="changeInfo" />
+                @input="changeInfo"
+              />
             </el-form-item>
           </el-form>
         </div>
-        <div class="g-card">
+        <div class="g-card" v-if="!detail">
           <div class="g-card-title" v-if="otherType !== 3">
             {{ titleTwo }}
-            <el-popover trigger="hover" :content="'最多添加' + maxlength + '个素材'" placement="top-start">
+            <el-popover
+              trigger="hover"
+              :content="'最多添加' + maxlength + '个素材'"
+              placement="top-start"
+            >
               <template #reference>
                 <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
               </template>
@@ -66,17 +101,32 @@
             <div style="text-align: left" class="mt20 flex">
               <el-popover
                 trigger="hover"
-                :content="'最多添加' + maxlength + '个' + fontType + '，如需修改请删除已有' + fontType + '后重新尝试'"
+                :content="
+                  '最多添加' +
+                  maxlength +
+                  '个' +
+                  fontType +
+                  '，如需修改请删除已有' +
+                  fontType +
+                  '后重新尝试'
+                "
                 placement="top-start"
-                :disabled="talkList.length < maxlength">
+                :disabled="talkList.length < maxlength"
+              >
                 <template #reference>
                   <el-dropdown
                     @command="moveGroup"
-                    :disabled="talkList.length > maxlength || talkList.length === maxlength">
-                    <el-button type="primary">+ {{ '新建' + fontType }}</el-button>
+                    :disabled="talkList.length > maxlength || talkList.length === maxlength"
+                  >
+                    <el-button type="primary" v-show="!(moduleType === 4 && otherType === 3)"
+                      >+ {{ '新建' + fontType }}</el-button
+                    >
                     <template #dropdown>
                       <el-dropdown-menu trigger="click">
-                        <el-dropdown-item :command="'4'" v-if="!this.templateType && this.moduleType !== 4">
+                        <el-dropdown-item
+                          :command="'4'"
+                          v-if="!this.templateType && this.moduleType !== 4"
+                        >
                           <el-button text>文本</el-button>
                         </el-dropdown-item>
                         <el-dropdown-item :command="'0'">
@@ -107,14 +157,21 @@
               </el-popover>
               <el-popover
                 trigger="hover"
-                :content="'最多添加' + maxlength + '个' + fontType + '，如需修改请删除已有' + fontType + '后重新尝试'"
+                :content="
+                  '最多添加' +
+                  maxlength +
+                  '个' +
+                  fontType +
+                  '，如需修改请删除已有' +
+                  fontType +
+                  '后重新尝试'
+                "
                 placement="top-start"
-                :disabled="talkList.length < maxlength">
+                :disabled="talkList.length < maxlength"
+              >
                 <template #reference>
                   <div class="ml20">
-                    <el-button
-                      @click="choseCenter"
-                      :disabled="talkList.length > maxlength || talkList.length === maxlength">
+                    <el-button @click="choseCenter" :disabled="talkList.length >= maxlength">
                       从素材中心选择
                     </el-button>
                   </div>
@@ -128,16 +185,20 @@
             :tableData2="talkList"
             @setData="setData"
             @getEdit="getEdit"
-            :dargAble="[2].includes(moduleType)" />
+            :dargAble="[2].includes(moduleType)"
+            :isDeatail="detail"
+          />
         </div>
         <div
           class="g-card mt20 g-pad20"
           style="text-align: left"
           v-if="
-            (talkList.length && moduleType === 2) ||
-            (otherType !== 3 && moduleType !== 2) ||
-            (otherType === 3 && moduleType !== 2)
-          ">
+            ((talkList.length && moduleType === 2) ||
+              (otherType !== 3 && moduleType !== 2) ||
+              (otherType === 3 && moduleType !== 2)) &&
+            !detail
+          "
+        >
           <!-- 话术中心，有列表才显示 -->
           <template v-if="talkList.length && moduleType === 2">
             <el-button @click="getCancel">取消</el-button>
@@ -150,7 +211,7 @@
           </template>
           <template v-else-if="otherType === 3 && moduleType !== 2">
             <el-button @click="goBack">取消</el-button>
-            <el-button type="primary" v-loading="talkLoading" @click="tackSubmit">通知成员发表</el-button>
+            <el-button type="primary" v-loading="talkLoading" @click="tackSubmit">确定</el-button>
           </template>
         </div>
       </el-col>
@@ -167,7 +228,8 @@
       @dialogClose="dialogClose"
       :materialTalkList="talkList"
       :moduleType="moduleType"
-      :maxlength="maxlength" />
+      :maxlength="maxlength"
+    />
     <!-- 模板库 -->
     <el-dialog
       :title="otherType === 2 ? '选择群发模板' : '选择欢迎语模板'"
@@ -175,7 +237,8 @@
       width="60%"
       append-to-body
       :close-on-click-modal="false"
-      v-if="welcomVisible">
+      v-if="welcomVisible"
+    >
       <TemplateLibrary @changeObj="changeObj" :isGroup="otherType === 2" />
       <template #footer>
         <div class="dialog-footer">
@@ -193,12 +256,15 @@
       :tplType="tplType"
       :moduleType="moduleType"
       :maxlength="maxlength"
-      :noApplets="otherType === 3" />
+      :noApplets="otherType === 3"
+      :isFriends="otherType === 3"
+    />
     <SelectUser
       :defaultValues="selectedUserList"
       v-model:visible="dialogVisibleSelectUser"
       title="选择使用员工"
-      @success="selectedUser"></SelectUser>
+      @success="selectedUser"
+    ></SelectUser>
   </div>
 </template>
 
@@ -271,6 +337,7 @@ export default {
       fontType: '',
       maxlength: 9,
       libraryLoading: false,
+      tips: null,
     }
   },
   props: {
@@ -343,13 +410,22 @@ export default {
       type: Boolean,
       default: true,
     },
+    // 是否为详情页面
+    detail: {
+      type: Boolean,
+      default: false,
+    },
   },
   watch: {
     baseData(val) {
-      if (val.templateInfo) {
-        this.form.templateInfo = val.templateInfo
+      if (val.templateInfo || val.attachments) {
+        this.form.templateInfo = val.templateInfo ? val.templateInfo : ''
         this.form.attachments = val.attachments
         // this.$forceUpdate()
+        if (this.otherType === 3 && this.detail) {
+          this.talkForm = val
+          this.talkList = val.attachments
+        }
       }
     },
     talkId: {
@@ -410,7 +486,8 @@ export default {
             break
           case 3:
             this.titleOne = '动态内容'
-            this.lableOne = '动态文本'
+            this.lableOne = '朋友圈内容：'
+            this.tips = '文本或附件内容至少满足一种类型才可发表，附件类型仅支持添加一种类型'
             break
         }
       } else if (this.iswelcom) {
@@ -517,8 +594,32 @@ export default {
       this.talkList = val
       this.$emit('phoneData', this.talkList)
     },
-    getItemArry(val) {
+    getItemArry(val, length) {
       this.talkList = this.talkList.concat(val)
+
+      if (this.otherType === 3) {
+        // 朋友圈模块需要控制只能选择最多9个图片或者1个其他类型的文件
+        let img = 0
+        let other = 0
+        this.talkList.forEach((item) => {
+          if (item.mediaType === '0') {
+            img++
+          } else {
+            other++
+          }
+        })
+        if (img > 1) {
+          this.maxlength = 9
+        } else if (other === 1) {
+          this.maxlength = 1
+        }
+        if (this.maxlength === 9) {
+          this.fontType = '图片类型的附件'
+        } else {
+          this.fontType = '其他类型的附件'
+        }
+      }
+
       // 当手机为非内嵌时
       this.$emit('phoneData', this.talkList)
     },
@@ -568,12 +669,21 @@ export default {
     // 新建话术
     tackSubmit() {
       this.talkLoading = true
-      if ([3, 4].includes(this.moduleType) && !this.talkForm.templateInfo) {
+      if ([3, 4].includes(this.moduleType) && !this.talkForm.templateInfo && this.otherType !== 3) {
         this.templateInfo = '请输入' + this.lableOne
         this.talkLoading = false
         return
       } else {
         this.templateInfo = ''
+      }
+      if (this.otherType === 3) {
+        if (!this.talkForm.templateInfo && !this.talkList.length) {
+          this.templateInfo = '文本或附件内容至少填写一种'
+          this.talkLoading = false
+          return
+        } else {
+          this.templateInfo = ''
+        }
       }
       if (!this.talkForm.userIds && this.tplType == 2) {
         this.userInfo = '请选择员工'
@@ -781,13 +891,13 @@ export default {
     if (this.templateType != 1 && this.moduleType != 4) {
       this.getTree()
     }
-    if (this.baseData.templateInfo) {
+    if (this.form.templateInfo) {
       // this.form.templateInfo = this.baseData.templateInfo
       this.talkForm = this.baseData
       this.talkList = this.baseData.attachments
     }
     this.dealType()
-    if (this.otherType === 3 || this.tplType == 3) {
+    if (this.tplType == 3) {
       this.maxlength = 1
     } else {
       this.maxlength = 9
@@ -844,5 +954,10 @@ export default {
 }
 .boxClass {
   padding: 0 var(--card-margin) 0 0;
+}
+.tips {
+  color: #aaa;
+  font-size: 12px;
+  line-height: 30px;
 }
 </style>

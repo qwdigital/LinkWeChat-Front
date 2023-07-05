@@ -9,33 +9,51 @@
       width="80%"
       append-to-body
       :close-on-click-modal="false"
-      @close="dialogClose">
+      @close="dialogClose"
+    >
       <el-tabs v-model="activeName" @tab-click="tabClick">
         <el-tab-pane
           v-for="(item, index) in paneList"
           :key="index"
           :label="item.label + '(' + item.list.length + ')'"
-          :name="item.name">
-          <MaPage ref="page" :type="item.type" v-slot="{ list }" @listChange="listChange">
+          :name="item.name"
+        >
+          <MaPage
+            ref="page"
+            :type="item.type"
+            :isFriends="isFriends"
+            v-slot="{ list }"
+            @listChange="listChange"
+          >
             <div v-if="item.type === '0'">
               <div v-if="list && list.length">
                 <el-checkbox-group v-model="paneList[picindex].list" class="imgStyle">
-                  <div class="imgItem" v-for="(item, index) in list" :key="index" @click="changeBox($event, item)">
+                  <div
+                    class="imgItem"
+                    v-for="(item, index) in list"
+                    :key="index"
+                    @click="changeBox($event, item)"
+                  >
                     <div class="checkboxStyle">
                       <el-checkbox
                         :label="item"
                         style="width: 20px; height: 20px"
-                        :checked="item.isCheck"></el-checkbox>
+                        :checked="item.isCheck"
+                      ></el-checkbox>
                       <el-tooltip
                         :content="item.materialName"
                         placement="top"
-                        :disabled="item.materialName ? item.materialName.length < 6 : true">
+                        :disabled="item.materialName ? item.materialName.length < 6 : true"
+                      >
                         <div class="title ml10">
                           {{ coverContent(item.materialName, 6) }}
                         </div>
                       </el-tooltip>
                     </div>
-                    <div class="img" :style="{ 'background-image': 'url(' + item.materialUrl + ')' }"></div>
+                    <div
+                      class="img"
+                      :style="{ 'background-image': 'url(' + item.materialUrl + ')' }"
+                    ></div>
                   </div>
                 </el-checkbox-group>
               </div>
@@ -43,7 +61,13 @@
                 <span>暂无数据</span>
               </div>
             </div>
-            <el-table :data="list" ref="multipleTable" @select="handleSelect" @select-all="selectAll" v-else>
+            <el-table
+              :data="list"
+              ref="multipleTable"
+              @select="handleSelect"
+              @select-all="selectAll"
+              v-else
+            >
               <el-table-column type="selection" width="50" align="center" />
               <el-table-column label="素材" align="left">
                 <template #default="{ row }">
@@ -101,11 +125,21 @@ export default {
       type: Boolean,
       default: false,
     },
+    // 朋友圈
+    isFriends: {
+      type: Boolean,
+      default: false,
+    },
   },
   watch: {
     choseDialog: {
       handler(val) {
         this.dialogVisibel = val
+      },
+    },
+    maxlength: {
+      handler(val) {
+        this.maxlength2 = val
       },
     },
   },
@@ -129,6 +163,7 @@ export default {
       ids: [], // 选中数组
       itemArry: [], // 选中数组
       inx: 0,
+      maxlength2: 9, // 最大确认数
     }
   },
   methods: {
@@ -185,38 +220,54 @@ export default {
     },
     changeBox(event, obj) {
       event.preventDefault()
-      this.ids = []
-      this.paneList.forEach((item) => {
-        if (item.list && item.list.length) {
-          item.list.forEach((item1) => {
-            this.ids.push(item1)
-          })
-        }
-      })
-      if (
-        (this.ids.length + this.talkListLength > this.maxlength ||
-          this.ids.length + this.talkListLength === this.maxlength) &&
-        !obj.isCheck
-      ) {
-        this.$message.error('最多新建或选择' + this.maxlength + '个素材,已新建' + this.talkListLength + '个素材')
-        return
-      }
-      obj.isCheck = !obj.isCheck
-      if (obj.isCheck) {
-        this.paneList[this.picindex].list.push(obj)
-      } else {
-        this.paneList[this.picindex].list = this.paneList[this.picindex].list.filter((list) => {
-          return list.id !== obj.id
+      let setStatus = true
+      if (this.isFriends) {
+        // 如果是朋友圈的
+        this.maxlength2 = 9
+        this.paneList.forEach((item, i) => {
+          if (item.list.length > 0 && i !== 0) {
+            this.$message.error('仅允许选择一种类型的素材')
+            setStatus = false
+            return
+          }
         })
       }
-      this.ids = []
-      this.paneList.forEach((item) => {
-        if (item.list && item.list.length) {
-          item.list.forEach((item1) => {
-            this.ids.push(item1)
+      if (setStatus) {
+        this.ids = []
+        this.paneList.forEach((item) => {
+          if (item.list && item.list.length) {
+            item.list.forEach((item1) => {
+              this.ids.push(item1)
+            })
+          }
+        })
+        if (
+          (this.ids.length + this.talkListLength > this.maxlength2 ||
+            this.ids.length + this.talkListLength === this.maxlength2) &&
+          !obj.isCheck
+        ) {
+          this.$message.error(
+            '最多新建或选择' + this.maxlength2 + '个素材,已新建' + this.talkListLength + '个素材'
+          )
+          return
+        }
+        obj.isCheck = !obj.isCheck
+        if (obj.isCheck) {
+          this.paneList[this.picindex].list.push(obj)
+        } else {
+          this.paneList[this.picindex].list = this.paneList[this.picindex].list.filter((list) => {
+            return list.id !== obj.id
           })
         }
-      })
+        this.ids = []
+        this.paneList.forEach((item) => {
+          if (item.list && item.list.length) {
+            item.list.forEach((item1) => {
+              this.ids.push(item1)
+            })
+          }
+        })
+      }
     },
     centerCancel() {
       this.dialogVisibel = false
@@ -237,21 +288,52 @@ export default {
       this.ids = []
     },
     centerSubmit() {
-      if (this.ids.length + this.talkListLength > this.maxlength) {
-        this.$message.error('最多新建或选择' + this.maxlength + '个素材')
-        return
+      if (this.ids.length) {
+        if (this.isFriends) {
+          if (this.ids[0].mediaType === '0') {
+            // 朋友圈下的图片,最大数量为9
+            this.maxlength2 = 9
+          } else {
+            this.maxlength2 = 1
+          }
+        }
+        if (this.ids.length + this.talkListLength > this.maxlength2) {
+          if (this.isFriends) {
+            this.$message.error('除图片素材可选9条数据,其他类型仅可选择一条数据,且只能选择一种类型')
+          } else {
+            this.$message.error('最多新建或选择' + this.maxlength2 + '个素材')
+          }
+
+          return
+        } else {
+          this.dialogVisibel = false
+          this.$emit('itemArry', this.ids, this.maxlength2)
+          this.$emit('update:choseDialog', this.dialogVisibel)
+          this.$refs.multipleTable.forEach((item) => {
+            item.clearSelection()
+          })
+          this.ids = []
+          this.clearPaneList()
+        }
       } else {
-        this.dialogVisibel = false
-        this.$emit('itemArry', this.ids)
-        this.$emit('update:choseDialog', this.dialogVisibel)
-        this.$refs.multipleTable.forEach((item) => {
-          item.clearSelection()
-        })
-        this.ids = []
-        this.clearPaneList()
+        this.$message.error('请选择素材!')
       }
     },
+    // 单个选择
     handleSelect(select, row) {
+      if (this.isFriends) {
+        // 如果是朋友圈的
+        this.maxlength2 = 1
+        this.paneList.forEach((item, i) => {
+          if (item.list.length > 0 && i !== +this.index) {
+            this.$message.error('仅允许选择一种类型的素材')
+            return
+          }
+        })
+        if (this.paneList[this.index].list.length > 0) {
+          this.$message.error('除图片素材可选9条数据,其他类型仅可选择一条数据')
+        }
+      }
       let list = this.paneList[this.index].list
       let falg = false
       if (list.length) {
@@ -270,11 +352,16 @@ export default {
         })
       }
       this.getIds()
-      if (this.ids.length + this.talkListLength > this.maxlength) {
+      if (this.ids.length + this.talkListLength > this.maxlength2) {
         this.$nextTick(() => {
           if (this.index) this.$refs.multipleTable[this.inx].toggleRowSelection(row, false)
         })
-        this.$message.error('最多新建或选择' + this.maxlength + '个素材,已新建' + this.talkListLength + '个素材')
+        if (!this.isFriends) {
+          this.$message.error(
+            '最多新建或选择' + this.maxlength2 + '个素材,已新建' + this.talkListLength + '个素材'
+          )
+        }
+
         this.paneList[this.index].list = this.paneList[this.index].list.filter((item) => {
           return item.id != row.id
         })
@@ -282,6 +369,16 @@ export default {
       }
     },
     selectAll(select) {
+      if (this.isFriends) {
+        // 如果是朋友圈的
+        this.maxlength2 = 1
+        // this.paneList.forEach((item, i) => {
+        //   if (item.list.length > 0 && i !== +this.index) {
+        //     this.$message.error('仅允许选择一种类型的素材')
+        //     return
+        //   }
+        // })
+      }
       if (select.length) {
         // 全选
         this.paneList[this.index].list = select
@@ -290,11 +387,16 @@ export default {
         this.paneList[this.index].list = []
       }
       this.getIds()
-      if (this.ids.length + this.talkListLength > this.maxlength) {
+      if (this.ids.length + this.talkListLength > this.maxlength2) {
         select.forEach((item) => {
           this.$refs.multipleTable[this.inx].toggleAllSelection(item, false)
         })
-        this.$message.error('最多新建或选择' + this.maxlength + '个素材,已新建' + this.talkListLength + '个素材')
+        if (!this.isFriends) {
+          this.$message.error(
+            '最多新建或选择' + this.maxlength2 + '个素材,已新建' + this.talkListLength + '个素材'
+          )
+        }
+
         this.paneList[this.index].list = []
         this.getIds()
       }
@@ -309,30 +411,6 @@ export default {
         }
       })
     },
-    // 多选框选中数据
-    // handleSelectionChange(selection) {
-    //   let list = JSON.parse(JSON.stringify(this.paneList[this.index].list))
-    //   this.paneList[this.index].list = selection
-    //   this.ids = []
-    //   this.paneList.forEach((item) => {
-    //     if (item.list && item.list.length) {
-    //       item.list.forEach((item1) => {
-    //         this.ids.push(item1)
-    //       })
-    //     }
-    //   })
-    //   if (this.ids.length + this.talkListLength > this.maxlength) {
-    //     this.paneList[this.index].list = list
-    //     this.ids = []
-    //     this.paneList.forEach((item) => {
-    //       if (item.list && item.list.length) {
-    //         item.list.forEach((item1) => {
-    //           this.ids.push(item1)
-    //         })
-    //       }
-    //     })
-    //   }
-    // },
     // 处理文件类型
     filType(file) {
       let filecontent = JSON.parse(JSON.stringify(file))
@@ -356,13 +434,6 @@ export default {
       } else {
         this.inx = index
       }
-      // if (this.picindex === 0) {
-      //   // 不包含文本
-      //   this.inx = this.index - 1
-      // } else if (this.picindex === 1) {
-      //   // 包含文本
-
-      // }
     },
   },
 }

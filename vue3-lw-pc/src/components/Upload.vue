@@ -10,7 +10,18 @@ import OSS from 'ali-oss'
 
 export default {
   components: {},
-  emits: ['update:fileUrl', 'update:fileName', 'update:fileList', 'upSuccess', 'getPicUrl', 'loadingChange'],
+  emits: [
+    'update:fileUrl',
+    'update:fileName',
+    'update:imgSize',
+    'update:width',
+    'update:heigth',
+    'update:pixelSize',
+    'update:fileList',
+    'upSuccess',
+    'getPicUrl',
+    'loadingChange',
+  ],
   props: {
     // 单文件上传时使用
     fileUrl: {
@@ -19,6 +30,10 @@ export default {
     },
     fileName: {
       type: String,
+      default: '',
+    },
+    imgSize: {
+      type: Number,
       default: '',
     },
 
@@ -91,6 +106,7 @@ export default {
       fileUrlWatch: this.fileUrl,
       fileNameWatch: this.fileName,
       fileListWatch: this.fileList,
+      imgSizeWatch: this.imgSize,
 
       picUrl: '', // 视频第一帧
       file: undefined,
@@ -112,6 +128,11 @@ export default {
     fileName: {
       handler(value) {
         this.fileNameWatch = value
+      },
+    },
+    imgSize: {
+      handler(value) {
+        this.imgSizeWatch = value
       },
     },
     fileList: {
@@ -216,7 +237,7 @@ export default {
             ? //获取视频第一帧画面
               getVideoPic({ url: location }).then((res) => {
                 this.loading = false
-                this.$emit('getPicUrl', res.data.url)
+                this.$emit('getPicUrl', res.data.url, res.data)
               })
             : (this.loading = false)
 
@@ -224,13 +245,15 @@ export default {
           let url = window.URL.createObjectURL(file)
 
           let name = file.name
+          let memorySize = file.size
           if (!this.multiple) {
             this.fileUrlWatch = url
             this.$emit('update:fileUrl', location)
             this.$emit('update:fileName', (this.fileNameWatch = name))
+            this.$emit('update:imgSize', memorySize)
           } else {
-            this.fileListWatch = this.fileListWatch.concat({ name, url })
-            this.$emit('update:fileList', this.fileList.concat({ name, url: location }))
+            this.fileListWatch = this.fileListWatch.concat({ name, url, memorySize })
+            this.$emit('update:fileList', this.fileList.concat({ name, url: location, memorySize }))
           }
         } else {
           this.loading = false
@@ -271,7 +294,7 @@ export default {
             ? //获取视频第一帧画面
               getVideoPic({ url: location }).then((res) => {
                 this.loading = false
-                this.$emit('getPicUrl', res.data.url)
+                this.$emit('getPicUrl', res.data.url, res.data)
               })
             : (this.loading = false)
 
@@ -279,13 +302,15 @@ export default {
           let url = window.URL.createObjectURL(file)
 
           let name = file.name
+          let memorySize = file.size
           if (!this.multiple) {
             this.fileUrlWatch = url
             this.$emit('update:fileUrl', location)
             this.$emit('update:fileName', (this.fileNameWatch = name))
+            this.$emit('update:imgSize', memorySize)
           } else {
-            this.fileListWatch = this.fileListWatch.concat({ name, url })
-            this.$emit('update:fileList', this.fileList.concat({ name, url: location }))
+            this.fileListWatch = this.fileListWatch.concat({ name, url, memorySize })
+            this.$emit('update:fileList', this.fileList.concat({ name, url: location, memorySize }))
           }
         }
       } catch (e) {
@@ -341,7 +366,7 @@ export default {
               ? //获取视频第一帧画面
                 getVideoPic({ url: location }).then((res) => {
                   this.loading = false
-                  this.$emit('getPicUrl', res.data.url)
+                  this.$emit('getPicUrl', res.data.url, res.data)
                 })
               : (this.loading = false)
 
@@ -349,16 +374,18 @@ export default {
             let url = window.URL.createObjectURL(file)
 
             let name = file.name
+            let memorySize = file.size
             if (!this.multiple) {
               this.fileUrlWatch = url
               this.$emit('update:fileUrl', location)
               this.$emit('update:fileName', (this.fileNameWatch = name))
+              this.$emit('update:imgSize', memorySize)
             } else {
-              this.fileListWatch = this.fileListWatch.concat({ name, url })
-              this.$emit('update:fileList', this.fileList.concat({ name, url: location }))
+              this.fileListWatch = this.fileListWatch.concat({ name, url, memorySize  })
+              this.$emit('update:fileList', this.fileList.concat({ name, url: location, memorySize  }))
             }
           }
-        },
+        }
       )
     },
     remove(i) {
@@ -552,7 +579,8 @@ export default {
             :src="item.url"
             fit="contain"
             :preview-src-list="fileListWatch.map((e) => e.url)"
-            alt="" />
+            alt=""
+          />
           <div class="action-mask">
             <el-icon-search class="el-icon-search mr5" @click="showView(index)"></el-icon-search>
             <!-- <span v-if="action.includes('download')" @click="download(item)">
@@ -580,7 +608,8 @@ export default {
       :limit="limit"
       :on-error="onError"
       :on-exceed="handleExceed"
-      :before-upload="handleBeforeUpload">
+      :before-upload="handleBeforeUpload"
+    >
       <!--
       element-loading-text="正在上传..."
         :on-success="onSuccess"
@@ -616,7 +645,8 @@ export default {
                 :preview-src-list="[fileUrlWatch]"
                 preview-teleported
                 fit="contain"
-                @click.stop />
+                @click.stop
+              />
 
               <div class="action-mask" @click.self.stop>
                 <el-icon-search class="el-icon-search" @click.stop="showView()"></el-icon-search>
@@ -640,7 +670,8 @@ export default {
                 playsinline="true"
                 :autoplay="false"
                 :key="fileUrlWatch"
-                preload="auto">
+                preload="auto"
+              >
                 <source :src="fileUrlWatch" type="video/mp4" />
               </video>
               <div class="action-mask" style="height: 30%" @click.self.stop>
@@ -651,8 +682,15 @@ export default {
               {{ fileNameWatch || fileUrlWatch }}
               <el-icon-EditPen class="el-icon-EditPen ml10"></el-icon-EditPen>
               <!-- a链接用本地视频打不开，视频地址使用远程地址 -->
-              <a @click.stop :href="/\.mp4$/.test(fileNameWatch) ? fileUrl : fileUrlWatch" target="_blank">
-                <el-icon-view class="el-icon-view ml10" style="vertical-align: middle"></el-icon-view>
+              <a
+                @click.stop
+                :href="/\.mp4$/.test(fileNameWatch) ? fileUrl : fileUrlWatch"
+                target="_blank"
+              >
+                <el-icon-view
+                  class="el-icon-view ml10"
+                  style="vertical-align: middle"
+                ></el-icon-view>
               </a>
             </template>
           </div>

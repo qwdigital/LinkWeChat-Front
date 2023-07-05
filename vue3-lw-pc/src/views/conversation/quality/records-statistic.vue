@@ -239,7 +239,6 @@ export default {
     },
     getTableFn(data) {
       this.loading = true
-      // this.query.id = this.id
       this.query.beginTime = data.beginTime
       this.query.endTime = data.endTime
       this.getTableChangeSize()
