@@ -66,13 +66,11 @@
                 <el-table-column label="收集量" align="center" prop="CollectionQuantity" min-width="100" show-overflow-tooltip></el-table-column>
                 <el-table-column label="平均完成时间" align="center" prop="average" min-width="100" show-overflow-tooltip></el-table-column> -->
         </el-table>
-        <div class="bottom">
-          <pagination
-            :total="total"
-            v-model:page="query.pageNum"
-            v-model:limit="query.pageSize"
-            @pagination="getTableChangeSize(query.pageNum, query.pageSize)" />
-        </div>
+        <pagination
+          :total="total"
+          v-model:page="query.pageNum"
+          v-model:limit="query.pageSize"
+          @pagination="getTableChangeSize(query.pageNum, query.pageSize)" />
       </template>
     </div>
 
@@ -274,15 +272,26 @@ export default {
     },
     // 地图
     areaStatisticF(data) {
-      let that = this
-      console.log('123')
       areaStatistic(data).then((res) => {
-        console.log('地图统计图返回值', res)
-        that.baseListMap = res.data
-        for (let i = 0; i < that.baseListMap.length; i++) {
-          that.baseListMap[i].hidden = 1
-        }
-        // that.baseList= res.data;
+        // console.log('地图统计图返回值', res)
+        // res =[{data:[{name,value}],label:''},{data:[{name,value}],label:''}
+        let _data = res.data[0].data
+        let cities = res.data.map((e) => e.data.find((e2) => e2.value))
+        cities.forEach((element) => {
+          let city = _data.find((e) => element.name === e.name)
+          Object.assign(city, element)
+        })
+        this.baseListMap = [
+          {
+            data: _data,
+            label: res.data[0].label,
+            hidden: 1,
+          },
+        ]
+        // for (let i = 0; i < this.baseListMap.length; i++) {
+        //   this.baseListMap[i].hidden = 1
+        // }
+        // this.baseList= res.data;
       })
     },
     // transDefaultValueToView(data) {

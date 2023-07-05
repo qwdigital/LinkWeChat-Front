@@ -2,12 +2,12 @@
 import * as echarts from 'echarts'
 import chinaJson from './jsonData/china.json'
 export default {
-  render: function (createElement) {
-    return createElement('div', {
-      id: 'main',
+  render: function () {
+    return h('div', {
+      ref: 'chart',
       style: {
-        height: '550px',
-        width: '800px',
+        'min-height': '500px',
+        'min-width': '200px',
         margin: 'auto',
       },
     })
@@ -65,8 +65,8 @@ export default {
   methods: {
     initEchart() {
       let that = this
-      console.log('this.Datas', this.Datas.data)
-      console.log('this.dataList', this.dataList)
+      // console.log('this.Datas', this.Datas.data)
+      // console.log('this.dataList', this.dataList)
       let dataList = this.dataList
       let max = 0
       for (let i = 0; i < dataList.length; i++) {
@@ -83,7 +83,7 @@ export default {
       }
       max = max + 5
       const _this = this
-      var myChart = echarts.init(document.getElementById('main'))
+      var myChart = echarts.init(this.$refs.chart)
       echarts.registerMap('china', chinaJson)
       var option = {
         tooltip: {
@@ -139,6 +139,11 @@ export default {
         ],
       }
       myChart.setOption(option)
+
+      new ResizeObserver((entries) => {
+        myChart.resize()
+      }).observe(this.$refs.chart)
+
       myChart.on('click', function (params) {
         if (!params.data.ename) {
           alert('暂无' + params.name + '地图数据')

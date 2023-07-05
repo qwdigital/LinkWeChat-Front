@@ -501,8 +501,10 @@ export default {
                   if (q == 0) {
                     cloneCurItem.defaultValue = defaultValue[q] + ''
                   } else {
-                    answer.push(that.deepCopy(cloneCurItem))
-                    answer[answer.length - 1].defaultValue = defaultValue[q] + ''
+                    let _cloneCurItem = that.deepCopy(cloneCurItem)
+                    _cloneCurItem.defaultValue = defaultValue[q] + ''
+                    answer.push(_cloneCurItem)
+                    btData.push(_cloneCurItem)
                   }
                 }
               }
