@@ -170,7 +170,7 @@ export default {
             Cookies.remove('rememberMe')
           }
           let loginForm = JSON.parse(JSON.stringify(this.loginForm))
-          // loginForm.password = encrypt(this.loginForm.password)
+          loginForm.password = encrypt(this.loginForm.password)
           this.$store
             .Login(loginForm)
             .then(() => {
