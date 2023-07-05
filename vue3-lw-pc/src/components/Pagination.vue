@@ -110,5 +110,6 @@ export default {
 } */
 .g-card > .pagination-container {
   margin-bottom: -20px;
+  bottom: -20px;
 }
 </style>

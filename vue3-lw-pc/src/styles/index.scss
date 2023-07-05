@@ -338,11 +338,6 @@ div:focus {
       display: flex;
       flex-direction: column;
       flex: none;
-      .g-card {
-        .pagination-container {
-          bottom: -20px;
-        }
-      }
     }
   }
 }
@@ -352,6 +347,9 @@ div:focus {
 }
 #page-container > .g-card {
   overflow: initial;
+  .pagination-container {
+    bottom: 0;
+  }
 }
 // .el-row > .g-card {
 //   flex: 1;
