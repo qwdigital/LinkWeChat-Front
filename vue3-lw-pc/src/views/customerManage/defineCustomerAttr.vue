@@ -28,7 +28,7 @@
       </div>
       <el-table ref="table" row-key="id" :data="list" v-loading="loading">
         <el-table-column label="" width="50" align="left">
-          <svg-icon icon="dragIcon" style="cursor: move" />
+          <svg-icon icon="dragIcon" style="cursor: move;" />
         </el-table-column>
         <el-table-column label="信息项名称" align="center" prop="labelName"></el-table-column>
         <el-table-column label="信息项类型" align="center">
@@ -71,11 +71,12 @@
         <el-form ref="form" :rules="rules" :model="form" label-position="left" label-width="120px">
           <el-form-item label="信息项名称" prop="labelName">
             <el-input
-              style="width: 250px"
+              style="width: 250px;"
               v-model="form.labelName"
               placeholder="请输入信息项名称"
               maxlength="10"
-              show-word-limit></el-input>
+              show-word-limit
+            ></el-input>
           </el-form-item>
           <el-form-item label="选择标签">
             <div class="sub-des">引导新客户扫码时添加以下任意成员为好友</div>
@@ -108,7 +109,7 @@
               </el-tag>
             </template>
             <el-input
-              style="margin-left: 10px; width: 200px"
+              style="margin-left: 10px; width: 200px;"
               class="input-new-tag"
               v-if="visibleAdd"
               v-model.trim="newInput"
@@ -116,8 +117,9 @@
               maxlength="10"
               show-word-limit
               @keyup.enter="newInputConfirm"
-              @blur="newInputConfirm"></el-input>
-            <el-button v-else style="margin-left: 10px" type="primary" plain class="button-new-tag" @click="showInput">
+              @blur="newInputConfirm"
+            ></el-input>
+            <el-button v-else style="margin-left: 10px;" type="primary" plain class="button-new-tag" @click="showInput">
               + 添加内容项
             </el-button>
           </el-form-item>
@@ -137,249 +139,253 @@
       title="选择标签"
       :defaultValues="tagList"
       @success="submitSelectTag"
-      :isSingle="true"></SelectTag>
+      :isSingle="true"
+    ></SelectTag>
   </div>
 </template>
 <script>
-import Sortable from 'sortablejs'
-import SelectTag from '@/components/SelectTag'
-import { getList, addField, updateField, deleteField, multiField } from '@/api/customer/defineAttr.js'
-export default {
-  name: 'define-customer-attr',
-  components: {
-    SelectTag,
-  },
-  data() {
-    return {
-      queryTag: [],
-      dialogVisible: false,
-      loading: false,
-      infoType: [
-        { name: '文本', key: 1 },
-        { name: '时间', key: 2 },
-        { name: '勾选项', key: 3 },
-      ],
-      query: {
-        labelName: '',
-        type: null,
-        visualTagIds: '',
-      },
-      list: [],
-      dialog: {
-        title: '新建信息项',
-        state: 'add',
-        show: false,
-      },
-      tagList: [],
-      showSelectTag: false,
-      form: {
-        labelName: '',
-        businessType: 1,
-        visualTagIds: '',
-        type: 1,
-        // typeSub: 1,
-        otherContent: [],
-      },
-      visibleAdd: false,
-      newInput: '',
-      rules: {
-        labelName: [
-          {
-            required: true,
-            message: '信息项名称不能为空',
-            trigger: 'blur',
-          },
-        ],
-        type: [
-          {
-            required: true,
-            message: '信息项属性不能为空',
-            trigger: 'blur',
-          },
-        ],
-        typeSub: [
-          {
-            required: true,
-            message: '勾选项性质不能为空',
-            trigger: 'blur',
-          },
-        ],
-        otherContent: [
-          {
-            required: true,
-            message: '勾选项内容不能为空',
-            trigger: 'blur',
-          },
-        ],
-      },
-    }
-  },
-  methods: {
-    updateSort() {
-      this.list.forEach((item, index) => {
-        item.labelSort = this.list.length - index
-      })
-      multiField(this.list)
+  import Sortable from 'sortablejs'
+  import SelectTag from '@/components/SelectTag'
+  import { getList, addField, updateField, deleteField, multiField } from '@/api/customer/defineAttr.js'
+  export default {
+    name: 'define-customer-attr',
+    components: {
+      SelectTag
     },
-    dragSort() {
-      const el = this.$refs.table.$el.querySelectorAll('.el-table__body-wrapper table > tbody')[0]
-      this.sortable = Sortable.create(el, {
-        ghostClass: 'sortable-ghost',
-        setData: function (dataTransfer) {
-          dataTransfer.setData('Text', '')
+    data() {
+      return {
+        queryTag: [],
+        dialogVisible: false,
+        loading: false,
+        infoType: [
+          { name: '文本', key: 1 },
+          { name: '时间', key: 2 },
+          { name: '勾选项', key: 3 }
+        ],
+        query: {
+          labelName: '',
+          type: null,
+          visualTagIds: ''
         },
-        onEnd: (e) => {
-          if (e.oldIndex !== e.newIndex) {
-            const targetRow = this.list.splice(e.oldIndex, 1)[0]
-            this.list.splice(e.newIndex, 0, targetRow)
+        list: [],
+        dialog: {
+          title: '新建信息项',
+          state: 'add',
+          show: false
+        },
+        tagList: [],
+        showSelectTag: false,
+        form: {
+          labelName: '',
+          businessType: 1,
+          visualTagIds: '',
+          type: 1,
+          // typeSub: 1,
+          otherContent: []
+        },
+        visibleAdd: false,
+        newInput: '',
+        rules: {
+          labelName: [
+            {
+              required: true,
+              message: '信息项名称不能为空',
+              trigger: 'blur'
+            }
+          ],
+          type: [
+            {
+              required: true,
+              message: '信息项属性不能为空',
+              trigger: 'blur'
+            }
+          ],
+          typeSub: [
+            {
+              required: true,
+              message: '勾选项性质不能为空',
+              trigger: 'blur'
+            }
+          ],
+          otherContent: [
+            {
+              required: true,
+              message: '勾选项内容不能为空',
+              trigger: 'blur'
+            }
+          ]
+        }
+      }
+    },
+    methods: {
+      updateSort() {
+        this.list.forEach((item, index) => {
+          item.labelSort = this.list.length - index
+        })
+        multiField(this.list)
+      },
+      closeTag(data, index) {
+        this.form.otherContent.splice(index, 1)
+      },
+      dragSort() {
+        const el = this.$refs.table.$el.querySelectorAll('.el-table__body-wrapper table > tbody')[0]
+        this.sortable = Sortable.create(el, {
+          ghostClass: 'sortable-ghost',
+          setData: function (dataTransfer) {
+            dataTransfer.setData('Text', '')
+          },
+          onEnd: (e) => {
+            if (e.oldIndex !== e.newIndex) {
+              const targetRow = this.list.splice(e.oldIndex, 1)[0]
+              this.list.splice(e.newIndex, 0, targetRow)
+              this.updateSort()
+            }
+          }
+        })
+      },
+      setValue(data) {
+        let str = ''
+        this.infoType.forEach((dd) => {
+          if (dd.key == data) {
+            str = dd.name
+          }
+        })
+        return str
+      },
+      deleteFn(data) {
+        this.$confirm('是否确认删除当前画像信息项？该操作不可恢复，请谨慎操作。', '删除', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(() => {
+            deleteField(data.id).then((res) => {
+              this.getList('delete')
+            })
+          })
+          .catch(() => {})
+      },
+      editFn(data) {
+        this.form = data
+        if (this.form.visualTagIds) {
+          this.tagList = [
+            {
+              tagId: this.form.visualTagIds,
+              name: this.form.visualTagName
+            }
+          ]
+        }
+        this.dialog.show = true
+      },
+      setChange(type) {
+        if (type !== 3) {
+          delete this.form.typeSub
+          this.form.otherContent = []
+        }
+      },
+      submit() {
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            this.form.id ? '' : (this.form.labelSort = this.list.length + 1)
+            ;(this.form.id ? updateField : addField)(this.form)
+              .then((res) => {
+                this.getList(1)
+                this.msgSuccess('操作成功！')
+                this.dialog.show = false
+              })
+              .catch((err) => {
+                this.msgError('操作失败！')
+              })
+          }
+        })
+      },
+      setField(type) {
+        this.form = {
+          labelName: '',
+          businessType: 1,
+          visualTagIds: '',
+          type: 1,
+          otherContent: []
+        }
+        this.tagList = []
+        this.dialog.show = true
+      },
+      showInput() {
+        this.visibleAdd = true
+        this.$nextTick((_) => {
+          this.$refs.saveTagInput.$refs.input.focus()
+        })
+      },
+      newInputConfirm() {
+        let name = this.newInput
+        if (name) {
+          Array.isArray(this.form.otherContent) || (this.form.otherContent = [])
+          let isExist = this.form.otherContent.some((e) => {
+            return e.labelName === name
+          })
+          if (isExist) {
+            this.msgError('内容项已存在，不可重复添加')
+            return
+          }
+          this.form.otherContent.push({ labelName: name })
+        }
+        this.visibleAdd = false
+        this.newInput = ''
+      },
+      resetQuery() {
+        this.query.labelName = ''
+        this.query.type = null
+        this.query.visualTagIds = ''
+        this.queryTag = []
+        this.getList()
+      },
+      submitSelectTag(data) {
+        this.tagList = data
+        this.form.visualTagIds = data
+          .map((dd) => {
+            return dd.tagId
+          })
+          .join(',')
+      },
+      querySelectFn(data) {
+        this.queryTag = data
+        this.query.visualTagIds = data
+          .map((dd) => {
+            return dd.tagId
+          })
+          .join(',')
+      },
+      getList(type) {
+        this.loading = true
+        getList(this.query).then((res) => {
+          this.loading = false
+          this.list = res.data
+          if (type == 'init') {
+            this.dragSort()
+          }
+          if (type == 'delete') {
             this.updateSort()
           }
-        },
-      })
-    },
-    setValue(data) {
-      let str = ''
-      this.infoType.forEach((dd) => {
-        if (dd.key == data) {
-          str = dd.name
-        }
-      })
-      return str
-    },
-    deleteFn(data) {
-      this.$confirm('是否确认删除当前画像信息项？该操作不可恢复，请谨慎操作。', '删除', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          deleteField(data.id).then((res) => {
-            this.getList('delete')
-          })
         })
-        .catch(() => {})
-    },
-    editFn(data) {
-      this.form = data
-      if (this.form.visualTagIds) {
-        this.tagList = [
-          {
-            tagId: this.form.visualTagIds,
-            name: this.form.visualTagName,
-          },
-        ]
-      }
-      this.dialog.show = true
-    },
-    setChange(type) {
-      if (type !== 3) {
-        delete this.form.typeSub
-        this.form.otherContent = []
       }
     },
-    submit() {
-      this.$refs['form'].validate((valid) => {
-        if (valid) {
-          this.form.id ? '' : (this.form.labelSort = this.list.length + 1)
-          ;(this.form.id ? updateField : addField)(this.form)
-            .then((res) => {
-              this.getList(1)
-              this.msgSuccess('操作成功！')
-              this.dialog.show = false
-            })
-            .catch((err) => {
-              this.msgError('操作失败！')
-            })
-        }
-      })
+    mounted() {
+      this.getList('init')
     },
-    setField(type) {
-      this.form = {
-        labelName: '',
-        businessType: 1,
-        visualTagIds: '',
-        type: 1,
-        otherContent: [],
-      }
-      this.tagList = []
-      this.dialog.show = true
-    },
-    showInput() {
-      this.visibleAdd = true
-      this.$nextTick((_) => {
-        this.$refs.saveTagInput.$refs.input.focus()
-      })
-    },
-    newInputConfirm() {
-      let name = this.newInput
-      if (name) {
-        Array.isArray(this.form.otherContent) || (this.form.otherContent = [])
-        let isExist = this.form.otherContent.some((e) => {
-          return e.labelName === name
-        })
-        if (isExist) {
-          this.msgError('内容项已存在，不可重复添加')
-          return
-        }
-        this.form.otherContent.push({ labelName: name })
-      }
-      this.visibleAdd = false
-      this.newInput = ''
-    },
-    resetQuery() {
-      this.query.labelName = ''
-      this.query.type = null
-      this.query.visualTagIds = ''
-      this.queryTag = []
-      this.getList()
-    },
-    submitSelectTag(data) {
-      this.tagList = data
-      this.form.visualTagIds = data
-        .map((dd) => {
-          return dd.tagId
-        })
-        .join(',')
-    },
-    querySelectFn(data) {
-      this.queryTag = data
-      this.query.visualTagIds = data
-        .map((dd) => {
-          return dd.tagId
-        })
-        .join(',')
-    },
-    getList(type) {
-      this.loading = true
-      getList(this.query).then((res) => {
-        this.loading = false
-        this.list = res.data
-        if (type == 'init') {
-          this.dragSort()
-        }
-        if (type == 'delete') {
-          this.updateSort()
-        }
-      })
-    },
-  },
-  mounted() {
-    this.getList('init')
-  },
-  created() {
-    this.$store.setBusininessDesc(
-      `
+    created() {
+      this.$store.setBusininessDesc(
+        `
           <div>可自定义修改企业客户的画像信息项供企业个性化使用</div>
-        `,
-    )
-  },
-}
+        `
+      )
+    }
+  }
 </script>
 <style lang="scss" scoped>
-.sub-des {
-  font-size: 12px;
-  font-family: PingFangSC-Regular, PingFang SC;
-  font-weight: 400;
-  color: var(--font-black-6);
-}
+  .sub-des {
+    font-size: 12px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: var(--font-black-6);
+  }
 </style>
