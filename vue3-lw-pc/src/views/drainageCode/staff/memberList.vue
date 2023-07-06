@@ -12,7 +12,7 @@
       <el-table :data="dataList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="员工名称" align="center" prop="businessName" show-overflow-tooltip />
-        <el-table-column label="每日添加上线" align="center" width="150" prop="businessNumber" show-overflow-tooltip>
+        <el-table-column label="每日添加上限" align="center" width="150" prop="businessNumber" show-overflow-tooltip>
           <template #default="scope">
             <el-input-number
               v-model="scope.row.businessNumber"
