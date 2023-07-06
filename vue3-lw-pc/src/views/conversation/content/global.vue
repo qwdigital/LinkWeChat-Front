@@ -21,7 +21,8 @@
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           align="right"
-          v-bind="pickerOptions"></el-date-picker>
+          v-bind="pickerOptions"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="消息状态">
         <el-select v-model="query.action" class="noborder">
@@ -29,14 +30,15 @@
             v-for="item in displayOptions"
             :key="item.value"
             :label="item.label"
-            :value="item.value"></el-option>
+            :value="item.value"
+          ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getList(1)">查询</el-button>
         <el-button @click="resetFn">重置</el-button>
       </el-form-item>
-      <el-form-item style="float: right">
+      <el-form-item style="float: right;">
         <el-button type="primary" @click="exportList()">导出列表</el-button>
       </el-form-item>
     </el-form>
@@ -83,189 +85,191 @@
         :total="total"
         v-model:page="query.pageNum"
         v-model:limit="query.pageSize"
-        @pagination="getList()" />
+        @pagination="getList()"
+      />
     </div>
   </div>
 </template>
 <script>
-import { getChatList, exportList } from '@/api/conversation/content.js'
-import ChatContent from '@/components/ChatContent'
-import { dateFormat } from '@/utils/index'
+  import { getChatList, exportList } from '@/api/conversation/content.js'
+  import ChatContent from '@/components/ChatContent'
+  import { dateFormat } from '@/utils/index'
 
-export default {
-  components: { ChatContent },
-  data() {
-    return {
-      query: {
-        action: '',
-        userName: '',
-        customerName: '',
-        contact: '',
-        beginTime: '',
-        endTime: '',
-        pageNum: 1,
-        pageSize: 10,
-        orderByColumn: 't.msg_time',
-        isAsc: 'desc', // asc 升序 desc 降序
-      },
-      dateRange: [],
-      total: 0,
-      fileData: [],
-      floorRange: '全部',
-      displayOptions: [
-        {
-          value: '',
-          label: '全部',
+  export default {
+    components: { ChatContent },
+    data() {
+      return {
+        query: {
+          action: '',
+          userName: '',
+          customerName: '',
+          contact: '',
+          beginTime: '',
+          endTime: '',
+          pageNum: 1,
+          pageSize: 10,
+          orderByColumn: 't.msg_time',
+          isAsc: 'desc', // asc 升序 desc 降序
+          fullSearch: 1
         },
-        {
-          value: 'send',
-          label: '已发送',
-        },
-        {
-          value: 'recall',
-          label: '已撤回',
-        },
-        {
-          value: 'switch',
-          label: '切回企业日志',
-        },
-      ],
-      loading: false,
-    }
-  },
-  created() {
-    this.getList()
-  },
-  methods: {
-    resetFn() {
-      this.dateRange = []
-      this.query = {
-        action: '',
-        userName: '',
-        customerName: '',
-        contact: '',
-        beginTime: '',
-        endTime: '',
-        pageNum: 1,
-        pageSize: 10,
-        orderByColumn: 't.msg_time',
-        isAsc: 'desc',
-      }
-      this.getList(1)
-    },
-    getList(page) {
-      if (this.dateRange) {
-        this.query.beginTime = this.dateRange[0]
-        this.query.endTime = this.dateRange[1]
-      } else {
-        this.query.beginTime = ''
-        this.query.endTime = ''
-      }
-      page && (this.query.pageNum = page)
-      this.loading = true
-      getChatList(this.query)
-        .then((res) => {
-          this.fileData = res.rows
-          this.total = ~~res.total
-          this.loading = false
-        })
-        .catch(() => {
-          this.loading = false
-        })
-    },
-    parseMesContent(data, type) {
-      let contact = JSON.parse(data)
-      let typeDict = {
-        text: 'content',
-        image: 'attachment',
-        text: 'content',
-      }
-      return contact[type]
-    },
-    exportList() {
-      this.$confirm('是否确认导出所有数据项?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          return exportList(this.query)
-        })
-        .then((res) => {
-          if (!res) return
-          const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
-
-          if (window.navigator.msSaveOrOpenBlob) {
-            //兼容IE10
-            navigator.msSaveBlob(blob, '内容存档')
-          } else {
-            const href = URL.createObjectURL(blob) //创建新的URL表示指定的blob对象
-            const a = document.createElement('a') //创建a标签
-            a.style.display = 'none'
-            a.href = href // 指定下载链接
-            a.download = dateFormat(new Date(), 'YYYY-MM-DD') + '_内容存档.xlsx' //指定下载文件名
-            a.click() //触发下载
-            URL.revokeObjectURL(a.href) //释放URL对象
+        dateRange: [],
+        total: 0,
+        fileData: [],
+        floorRange: '全部',
+        displayOptions: [
+          {
+            value: '',
+            label: '全部'
+          },
+          {
+            value: 'send',
+            label: '已发送'
+          },
+          {
+            value: 'recall',
+            label: '已撤回'
+          },
+          {
+            value: 'switch',
+            label: '切回企业日志'
           }
-        })
-        .catch(function () {})
+        ],
+        loading: false
+      }
     },
-  },
-}
+    created() {
+      this.getList()
+    },
+    methods: {
+      resetFn() {
+        this.dateRange = []
+        this.query = {
+          action: '',
+          userName: '',
+          customerName: '',
+          contact: '',
+          beginTime: '',
+          endTime: '',
+          pageNum: 1,
+          pageSize: 10,
+          orderByColumn: 't.msg_time',
+          isAsc: 'desc'
+        }
+        this.getList(1)
+      },
+      getList(page) {
+        if (this.dateRange) {
+          this.query.beginTime = this.dateRange[0]
+          this.query.endTime = this.dateRange[1]
+        } else {
+          this.query.beginTime = ''
+          this.query.endTime = ''
+        }
+        page && (this.query.pageNum = page)
+        this.loading = true
+        getChatList(this.query)
+          .then((res) => {
+            this.fileData = res.rows
+            this.total = ~~res.total
+            this.loading = false
+          })
+          .catch(() => {
+            this.loading = false
+          })
+      },
+      parseMesContent(data, type) {
+        let contact = JSON.parse(data)
+        let typeDict = {
+          text: 'content',
+          image: 'attachment',
+          text: 'content'
+        }
+        return contact[type]
+      },
+      exportList() {
+        this.$confirm('是否确认导出所有数据项?', '警告', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(() => {
+            return exportList(this.query)
+          })
+          .then((res) => {
+            if (!res) return
+            const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+
+            if (window.navigator.msSaveOrOpenBlob) {
+              //兼容IE10
+              navigator.msSaveBlob(blob, '内容存档')
+            } else {
+              const href = URL.createObjectURL(blob) //创建新的URL表示指定的blob对象
+              const a = document.createElement('a') //创建a标签
+              a.style.display = 'none'
+              a.href = href // 指定下载链接
+              a.download = dateFormat(new Date(), 'YYYY-MM-DD') + '_内容存档.xlsx' //指定下载文件名
+              a.click() //触发下载
+              URL.revokeObjectURL(a.href) //释放URL对象
+            }
+          })
+          .catch(function () {})
+      }
+    }
+  }
 </script>
 <style lang="scss" scoped>
-.demo-form-inline {
-  background: var(--bg-black-10);
-  padding: 18px 10px 0 10px;
-}
-
-.content {
-  margin-top: 15px;
-  padding: 10px;
-}
-
-.pers {
-  position: relative;
-
-  .green {
-    background: greenyellow;
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    top: 10px;
-    left: -8px;
+  .demo-form-inline {
+    background: var(--bg-black-10);
+    padding: 18px 10px 0 10px;
   }
 
-  .red {
-    background: red;
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    top: 10px;
-    left: -8px;
+  .content {
+    margin-top: 15px;
+    padding: 10px;
   }
 
-  .gay {
-    background: gray;
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    top: 10px;
-    left: -8px;
-  }
-}
+  .pers {
+    position: relative;
 
-.noborder {
-  ::v-deep .el-input--mini .el-input__inner {
-    width: 2px;
-    border: none;
-  }
-}
+    .green {
+      background: greenyellow;
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      top: 10px;
+      left: -8px;
+    }
 
-.emcode ::v-deep em {
-  color: #ff0000;
-}
+    .red {
+      background: red;
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      top: 10px;
+      left: -8px;
+    }
+
+    .gay {
+      background: gray;
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      top: 10px;
+      left: -8px;
+    }
+  }
+
+  .noborder {
+    ::v-deep .el-input--mini .el-input__inner {
+      width: 2px;
+      border: none;
+    }
+  }
+
+  .emcode ::v-deep em {
+    color: #ff0000;
+  }
 </style>
