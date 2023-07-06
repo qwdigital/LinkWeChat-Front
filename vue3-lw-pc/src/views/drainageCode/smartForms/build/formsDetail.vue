@@ -204,6 +204,7 @@ import {
   insertPieValue,
   isCompleteSurvey,
   siteStas,
+  statisticAdd,
 } from '@/api/drainageCode/smartForms.js'
 import { getProvinceCityTree } from '@/utils/index'
 // import render from './generator/render'
@@ -321,7 +322,6 @@ export default {
     },
     index: {
       handler(val) {
-        console.log('indexxxxxxxxxxxxxxxxxx', val)
         if (val == 1) {
           this.fromList.visibility = 0
         } else {
@@ -872,6 +872,10 @@ export default {
     },
     async siteStas() {
       if (!['y', 'q'].includes(this.style)) {
+        statisticAdd({
+          belongId: this.formId,
+          dataSource: this.dataSource,
+        })
         //智能表单站点统计 PV
         try {
           this.userIp = this.userIp || (await getIP())

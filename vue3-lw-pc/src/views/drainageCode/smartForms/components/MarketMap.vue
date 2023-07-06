@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import * as echarts from 'echarts'
 import { areaStatistic } from '@/api/drainageCode/smartForms.js'
 export default {
   name: 'province',
@@ -144,16 +145,16 @@ export default {
         // that.baseList= res.data;
       })
     },
-    initDate() {
+    async initDate() {
       console.log('this.params', this.params)
       const provinceName = this.params.ename
       const province = this.params.name
       this.provinceName = provinceName
-      this.provinceJSON = import(`./jsonData/${provinceName}.json`)
+      this.provinceJSON = (await import(`./jsonData/${provinceName}.json`)).default
       this.option.title.text = province
       this.option.geo.map = province
-      this.echartObj = this.$echarts.init(document.getElementById(this.id))
-      this.$echarts.registerMap(province, this.provinceJSON)
+      this.echartObj = echarts.init(document.getElementById(this.id))
+      echarts.registerMap(province, this.provinceJSON)
       this.echartObj.setOption(this.option)
       // this.echartObj.on("click", (params) => {
       //   this.$router.push({

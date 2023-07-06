@@ -73,7 +73,7 @@ export default {
         for (let q = 0; q < this.Datas.data.length; q++) {
           if (this.Datas.data[q].name.substring(0, 2) == dataList[i].name.substring(0, 2)) {
             dataList[i].value = this.Datas.data[q].value
-            console.log(' dataList[i].value', dataList[i].value)
+            // console.log(' dataList[i].value', dataList[i].value)
             if (dataList[i].value > max) {
               max = dataList[i].value
             }

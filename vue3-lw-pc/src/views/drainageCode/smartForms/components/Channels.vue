@@ -7,10 +7,11 @@
     </el-table-column>
     <el-table-column label="二维码" align="center" prop="createTime" show-overflow-tooltip>
       <template #default="{ row, $index }">
-        <el-popover placement="bottom" trigger="hover" v-if="eImgList[$index]">
+        <el-image :src="eImgList[$index]" class="code-image"></el-image>
+        <!-- <el-popover placement="bottom" trigger="hover" v-if="eImgList[$index]">
           <template #reference><el-image :src="eImgList[$index]" class="code-image--small"></el-image></template>
           <el-image :src="eImgList[$index]" class="code-image"></el-image>
-        </el-popover>
+        </el-popover> -->
       </template>
     </el-table-column>
     <el-table-column label="渠道标识" align="center" prop="createTime" show-overflow-tooltip>
@@ -108,7 +109,7 @@ export default {
               console.log('二维码转换内容', that.baseFormUrl4 + '&dataSource=' + that.channelsPathList[w])
               QRCode.toDataURL(
                 this.baseFormUrl4 + '&dataSource=' + that.channelsPathList[w], // 需要转换为二维码的内容
-                { width: 150, margin: 4, errorCorrectionLevel: 'H' },
+                { width: 150, margin: 2, errorCorrectionLevel: 'H' },
               ).then((url) => (this.eImgList[i] = url))
             }
           }
@@ -122,11 +123,11 @@ export default {
 
 <style lang="scss" scoped>
 .code-image {
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
 }
-.code-image--small {
-  width: 80px;
-  height: 80px;
-}
+// .code-image--small {
+//   width: 200px;
+//   height: 200px;
+// }
 </style>

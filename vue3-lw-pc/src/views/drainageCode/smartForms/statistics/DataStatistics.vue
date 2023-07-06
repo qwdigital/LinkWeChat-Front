@@ -75,11 +75,11 @@
     </div>
 
     <div class="dataStatistics_optionGraph_ul">
-      <div class="dataStatistics_optionGraph_li" v-for="(item, index) in baseList" :key="index">
-        <div style="font-size: 20xp; font-weight: 700">{{ item.label }}</div>
-        <PieChart style="height: 300px" :Data="item"></PieChart>
+      <div class="g-card mt0" v-for="(item, index) in baseList" :key="index">
+        <div class="g-card-title">{{ item.label }}</div>
+        <PieChart :Data="item"></PieChart>
       </div>
-      <div class="dataStatistics_optionGraph_li" v-for="(item, index) in baseListMap" :key="index">
+      <!-- <div class="" v-for="(item, index) in baseListMap" :key="index">
         <div style="font-size: 20xp; font-weight: 700">{{ item.label }}</div>
         <div
           style="margin-left: 30%; font-weight: 700; font-size: 22px; cursor: pointer"
@@ -93,7 +93,11 @@
         <div v-if="item.hidden == 2" @click="btnFparams(item, index)">
           <MarketMap :params="item.params"></MarketMap>
         </div>
-      </div>
+      </div> -->
+    </div>
+    <div class="g-card" v-if="baseListMap.label">
+      <div class="g-card-title">{{ baseListMap.label }}</div>
+      <ChinaMap style="height: 600px" :Datas="baseListMap"></ChinaMap>
     </div>
   </div>
 </template>
@@ -101,8 +105,8 @@
 <script>
 import PieChart from '../components/PieChart.vue'
 import ChinaMap from '../components/ChinaMap.vue'
-import MarketMap from '../components/MarketMap.vue'
-import { getProvinceCityTree } from '@/utils/index'
+// import MarketMap from '../components/MarketMap.vue'
+// import { getProvinceCityTree } from '@/utils/index'
 
 import { selectAnswerInfo, areaStatistic, pieChart, answerExport } from '@/api/drainageCode/smartForms.js'
 import SearchTitle from '../components/SearchTitle.vue'
@@ -112,7 +116,7 @@ export default {
     SearchTitle,
     PieChart,
     ChinaMap,
-    MarketMap,
+    // MarketMap,
   },
   data() {
     return {
@@ -124,7 +128,7 @@ export default {
         pageSize: 10,
         pageNum: 1,
       },
-      baseListMap: [],
+      baseListMap: {},
       tableList: [],
       exportLoading: false,
     }
@@ -134,26 +138,25 @@ export default {
       item.hidden = 1
       // this.$forceUpdate()
     },
-    async btnFparams(item, index) {
-      console.log('item', item, index)
-      if (this.params) {
-        item.hidden = 2
-        item.params = this.params
-        item.params.formId = this.formId
-        let regionalLinkage = await getProvinceCityTree()
-        for (let i = 0; i < regionalLinkage.length; i++) {
-          if (regionalLinkage[i].label.substring(0, 2) == item.params.name.substring(0, 2)) {
-            item.params.parentCode = regionalLinkage[i].id
-          }
-        }
-        this.params = ''
-        // this.$forceUpdate()
-      }
-    },
-    Fparams(data) {
-      this.params = data.data
-      console.log('点击返回值', data.data)
-    },
+    // async btnFparams(item, index) {
+    //   if (this.params) {
+    //     item.params = this.params
+    //     item.params.formId = this.formId
+    //     let regionalLinkage = await getProvinceCityTree()
+    //     for (let i = 0; i < regionalLinkage.length; i++) {
+    //       if (regionalLinkage[i].name.substring(0, 2) == item.params.name.substring(0, 2)) {
+    //         item.params.parentCode = regionalLinkage[i].id
+    //       }
+    //     }
+    //     item.hidden = 2
+    //     this.params = ''
+    //     // this.$forceUpdate()
+    //   }
+    // },
+    // Fparams(data) {
+    //   this.params = data.data
+    //   console.log('点击返回值', data.data)
+    // },
     exportFn() {
       this.$confirm('确认导出吗？', '提示', {
         confirmButtonText: '确定',
@@ -192,8 +195,7 @@ export default {
         formId: this.formId,
       }
       pieChart(data).then((res) => {
-        console.log('扇形统计图返回值', res)
-
+        // console.log('扇形统计图返回值', res)
         for (let i = 0; i < res.data.length; i++) {
           let optionss = []
           for (let q = 0; q < res.data[i].data.length; q++) {
@@ -274,20 +276,23 @@ export default {
     areaStatisticF(data) {
       areaStatistic(data).then((res) => {
         // console.log('地图统计图返回值', res)
-        // res =[{data:[{name,value}],label:''},{data:[{name,value}],label:''}
+        // res = [{data:[{name,value}],label:''},{data:[{name,value}],label:''}
         let _data = res.data[0].data
         let cities = res.data.map((e) => e.data.find((e2) => e2.value))
         cities.forEach((element) => {
           let city = _data.find((e) => element.name === e.name)
           Object.assign(city, element)
         })
-        this.baseListMap = [
-          {
-            data: _data,
-            label: res.data[0].label,
-            hidden: 1,
-          },
-        ]
+        this.baseListMap = {
+          data: _data,
+          label: res.data[0].label,
+          hidden: 1,
+        }
+        // this.baseListMap = [{
+        //   data: _data,
+        //   label: res.data[0].label,
+        //   hidden: 1,
+        // }]
         // for (let i = 0; i < this.baseListMap.length; i++) {
         //   this.baseListMap[i].hidden = 1
         // }
@@ -326,15 +331,9 @@ export default {
 
 <style lang="scss" scoped>
 .dataStatistics_optionGraph_ul {
-  margin-top: 30px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  .dataStatistics_optionGraph_li {
-    margin-bottom: 10px;
-    width: 49.6%;
-    background: var(--bg-white);
-    padding: 30px;
-  }
+  margin-top: var(--card-margin);
+  display: grid;
+  grid: auto/1fr 1fr;
+  gap: var(--card-margin);
 }
 </style>
