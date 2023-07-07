@@ -381,6 +381,12 @@
           this.form = res.data
           this.form.qiRuleScope.forEach((dd) => {
             dd.workCycle = dd.workCycle.split(',')
+            dd.weQiRuleUserList.forEach((ss) => {
+              ss.name = ss.userName
+            })
+          })
+          this.form.manageUserInfo.forEach((ff) => {
+            ff.name = ff.userName
           })
         })
       }
