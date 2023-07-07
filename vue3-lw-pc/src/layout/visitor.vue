@@ -46,9 +46,7 @@ export default {
 
     <!--  底部  -->
     <div class="login-footer">
-      <span>
-        {{ lwConfig.COPYRIGHT || 'Copyright © 2018-2022 LinkWeChat All Rights Reserved.' }}
-      </span>
+      <span v-html="lwConfig.COPYRIGHT"></span>
     </div>
   </div>
 </template>
