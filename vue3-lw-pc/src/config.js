@@ -9,7 +9,7 @@ const common = {
   COMPANY_NAME: 'LinkWeChat', // 公司简称
   COMPANY_NAME_ALL: 'LinkWeChat', // 公司全称
   COPYRIGHT:
-    'Copyright © 2018-2023 LinkWeChat All Rights Reserved. 备案号：<a hrdf="https://beian.miit.gov.cn/">皖ICP备022014134号-1</a>', // 版权信息
+    'Copyright © 2018-2023 LinkWeChat All Rights Reserved. 备案号：<a href="https://beian.miit.gov.cn/">皖ICP备022014134号-1</a>', // 版权信息
   LOGO_DARK: env.BASE_URL + 'static/LOGO_DARK.png', // 深色logo
   LOGO_LIGHT: env.BASE_URL + 'static/LOGO_LIGHT.png', // 淡色logo
   LOGO_TEXT_DARK: env.BASE_URL + 'static/LOGO_TEXT_DARK.png', // 深色logo+文字
