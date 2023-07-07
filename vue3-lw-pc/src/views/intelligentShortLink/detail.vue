@@ -94,9 +94,9 @@ export default {
         endTime: data.endTime,
       }
       getLineAnalysis(query).then(({ data }) => {
-        this.series = []
         this.xData = data.xaxis
-        this.series = data.yaxis
+        // this.series = data.yaxis
+        this.series = [data.yaxis.pv, data.yaxis.uv, data.yaxis.open]
         // this.series.push(data.map((e) => e.pvTodayCount))
         // this.series.push(data.map((e) => e.uvTodayCount))
         // this.series.push(data.map((e) => e.openTodayCount))
@@ -116,11 +116,11 @@ export default {
             编辑
           </el-button>
         </div>
-        <Add :form="data" />
+        <Add v-if="data.type" :form="data" />
       </div>
       <div class="g-card">
         <div class="g-card-title">数据趋势</div>
-        <CardGroupIndex :data="cardData" style="margin-right: -10px"></CardGroupIndex>
+        <CardGroupIndex :data="cardData"></CardGroupIndex>
         <TimeSearchTitle @search="getLineAnalysis"></TimeSearchTitle>
         <ChartLine
           :xData="xData"
