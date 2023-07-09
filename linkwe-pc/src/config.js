@@ -41,7 +41,7 @@ const common = {
 
 // 以下仅用于系统信息展示，不作为项目变量使用，请勿在代码中使用
 const project = {
-  _version: '3.x', // 当前版本信息
+  _version: 'v4.8.3', // 当前版本信息
   _packageTime: process.env.VUE_APP_PACKETTIME, // 打包时间
   _env: process.env.VUE_APP_ENV, // 前端系统环境模式
 }

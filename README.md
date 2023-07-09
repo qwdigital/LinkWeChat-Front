@@ -1,1 +1,16 @@
-**本仓库为 LinkWeChat 的前端源码库，具体说明及后端库请移步至 [LinkWeChat](https://gitee.com/LinkWeChat/link-wechat) 查看。**
+# 仓库说明
+
+本仓库当前分支为 LinkWeChat vue2 版的前端源码库，具体说明及后端库请移步至 [LinkWeChat](https://gitee.com/LinkWeChat/link-wechat) 查看。
+
+**vue2 版本已停止维护，后续升级和新功能版本请切换至 vue3 版的 vue3-master 分支查看**
+
+# 当前版本说明
+
+## v4.8.3
+
+2023.07.09
+
+1. 由于朋友圈功能的重构升级，vue2 版功能已不再适用后端 v4.8.4 之后版本更新的接口
+2. 鉴于上述原因，v4.8.3 将是 vue2 技术栈的最后一个版本，此后 vue2 版将不再进行维护和更新，彻底成为历史版本、
+3. 当前 v4.8.3 版本对应适用的后端版本为 v4.8.4
+4. 后续新功能请切换至 vue3 版分支 vue3-master 查看
