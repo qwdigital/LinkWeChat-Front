@@ -58,7 +58,7 @@
         <el-table-column label="导入时间" align="center" prop="createTime" width="180"></el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="{ row }">
-            <el-button v-if="row.addState !== 1" type="text" @click="tipFn(row.id)">提醒</el-button>
+            <el-button v-if="row.addState == 0" type="text" @click="tipFn(row.id)">提醒</el-button>
             <el-button type="text" @click="removeFn(row.id)">删除</el-button>
           </template>
         </el-table-column>

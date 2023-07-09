@@ -107,7 +107,7 @@
               @click="
                 $router.push({
                   path: 'allocatedStaffDetail',
-                  query: { userId: scope.row.userId }
+                  query: { userId: scope.row.userId, leaveUserId:scope.row.id }
                 })
               "
               type="text"
