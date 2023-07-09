@@ -35,6 +35,7 @@
     created() {
       this.query.handoverUserId = this.$route.query.userId
       this.query.oldOwner = this.$route.query.userId
+      this.query.leaveUserId = this.$route.query.leaveUserId
       this.getList()
     },
     mounted() {},

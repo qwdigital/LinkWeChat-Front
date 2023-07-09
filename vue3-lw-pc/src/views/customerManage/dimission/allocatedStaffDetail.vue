@@ -31,7 +31,7 @@ export default {
 <template>
   <div class="page">
     <el-form ref="queryForm" :inline="true" label-width="70px" class="top-search">
-      <el-form-item label="离职日期">
+      <el-form-item label="分配时间">
         <el-date-picker
           clearable
           v-model="dateRange"
