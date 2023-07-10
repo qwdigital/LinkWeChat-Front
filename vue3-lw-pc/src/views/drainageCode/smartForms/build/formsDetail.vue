@@ -204,7 +204,6 @@ import {
   insertPieValue,
   isCompleteSurvey,
   siteStas,
-  statisticAdd,
 } from '@/api/drainageCode/smartForms.js'
 import { getProvinceCityTree } from '@/utils/index'
 // import render from './generator/render'
@@ -242,7 +241,7 @@ export default {
       Ifcontainer: true,
       ifEnd: false,
       style: 'false',
-      formData1: {
+      formData: {
         userName: undefined,
         mobile: '',
       },
@@ -292,10 +291,6 @@ export default {
       drawingData: {},
       activeId: '',
       drawerVisible: false,
-      formData: {
-        userName: '',
-        mobile: '',
-      },
       dialogVisible: false,
       generateConf: null,
       showFileName: false,
@@ -305,7 +300,6 @@ export default {
       page: 1,
       unionidN: '',
       openIdN: '',
-      nickname: '',
       isMobile: true,
     }
   },
@@ -432,6 +426,21 @@ export default {
     //开始填写
     startFillIn() {
       if (this.style != 'y' || this.index != 1) {
+        if (this.style != 'y' && this.fromList.anAuth == 1 && !this.unionidN) {
+          showDialog({
+            title: '提示',
+            message: '需要微信授权登录',
+            showCancelButton: true,
+          })
+            .then(() => {
+              this.getAccessToken()
+              // on confirm
+            })
+            .catch(() => {
+              // on cancel
+            })
+          return
+        }
         this.fromList.visibility = 1
         // this.$forceUpdate()
       }
@@ -459,9 +468,9 @@ export default {
             answer.push(cloneCurItem)
 
             if (curItem.formCodeId == 11) {
-              this.formData1.userName = curItem.defaultValue // 姓名
+              this.formData.userName = curItem.defaultValue // 姓名
             } else if (curItem.formCodeId == 5) {
-              this.formData1.mobile = curItem.defaultValue // 手机号
+              this.formData.mobile = curItem.defaultValue // 手机号
             } else if ([6, 7, 8, 9].includes(+cloneCurItem.formCodeId)) {
               // 下拉选择, 级联选择, 选项组, 省市联动
               cloneCurItem.formId = this.formId
@@ -511,12 +520,6 @@ export default {
             }
           }
         }
-      }
-      try {
-        localStorage.setItem('userName', that.formData1.userName)
-        localStorage.setItem('mobile', that.formData1.mobile)
-      } catch (e) {
-        //TODO handle the exception
       }
       console.log('answer', answer)
       let formCodeDict = {
@@ -581,8 +584,8 @@ export default {
         }
       }
       let data = {
-        mobile: that.formData1.mobile,
-        name: that.formData1.userName,
+        mobile: that.formData.mobile,
+        name: that.formData.userName,
         //开始填写时间
         anTime: this.anTime,
         //填写用时
@@ -682,8 +685,8 @@ export default {
         console.log('提交饼图信息返回值', response)
       })
     },
-    //判断是否在微信里，然后下一步
-    getAuthorize() {
+    //微信授权登录，获取微信用户信息
+    getAccessToken() {
       let code = getQueryValue('code')
       if (!code) {
         if (this.formId) {
@@ -692,32 +695,20 @@ export default {
           localStorage.removeItem('formId')
         }
       }
-      this.getAccessToken()
-    },
-    //获取微信用户信息
-    getAccessToken() {
       getWechatAuthUserInfo().then((data) => {
+        this.loading = false
         this.unionidN = data.unionId
         this.openIdN = data.openId
-        this.nickname = data.nickName
-        if (this.nickname) {
-          this.formData.userName = this.nickname
-        }
+        this.formData.userName = data.nickName
         this.siteStas()
         this.isCompleteSurveyF()
-        this.formData1.userName = localStorage.getItem('userName')
-        this.formData1.mobile = localStorage.getItem('mobile')
-        // if (response.code == 200) {
-        // } else {
-        //   this.toast(response.msg)
-        // }
       })
     },
     //判断用户是否填写表单
     isCompleteSurveyF() {
       let data = {
         belongId: this.formId,
-        // mobile: this.formData1.mobile,
+        // mobile: this.formData.mobile,
         openId: this.openIdN,
         dataSource: this.dataSource,
       }
@@ -758,11 +749,10 @@ export default {
       }
       selectInfoToSurvey(this.formId).then((response) => {
         if (response.code == 200) {
-          this.loading = false
           that.fromList = response.data
           let clannelsName = that.fromList.channelsName.split(',')
           let clannelsPath = that.fromList.channelsPath.split(',')
-          console.log('that.dataSource', that.dataSource, clannelsPath)
+          // console.log('that.dataSource', that.dataSource, clannelsPath)
           for (let i = 0; i < clannelsName.length; i++) {
             if (clannelsPath[i] == that.dataSource) {
               that.dataSource = clannelsName[i]
@@ -789,37 +779,16 @@ export default {
           let styles = JSON.parse(response.data.styles)
           that.pageData = [[]]
           if (that.style != 'y' && that.style != 'q') {
-            if (that.fromList.surveyState == 0) {
-              // this.$alert('当前问卷暂未开放回收，暂时无法填写。', '提示', {
-              //           confirmButtonText: '我知道了',
-              //         });
+            let dict = {
+              0: '当前问卷暂未开放回收，暂时无法填写。',
+              2: '当前问卷已暂停回收，暂时无法填写。',
+              3: '当前问卷已结束回收，无法填写。',
+            }
+            if (Object.keys(dict).includes(that.fromList.surveyState + '')) {
+              this.loading = false
               showDialog({
                 title: '提示',
-                message: '当前问卷暂未开放回收，暂时无法填写。',
-                confirmButtonText: '我知道了',
-              }).then(() => {
-                // on close
-              })
-              return
-            } else if (that.fromList.surveyState == 2) {
-              // this.$alert('当前问卷已暂停回收，暂时无法填写。', '提示', {
-              //           confirmButtonText: '我知道了',
-              //         });
-              showDialog({
-                title: '提示',
-                message: '当前问卷已暂停回收，暂时无法填写。',
-                confirmButtonText: '我知道了',
-              }).then(() => {
-                // on close
-              })
-              return
-            } else if (that.fromList.surveyState == 3) {
-              // this.$alert('当前问卷已结束回收，无法填写。', '提示', {
-              //           confirmButtonText: '我知道了',
-              //         });
-              showDialog({
-                title: '提示',
-                message: '当前问卷已结束回收，无法填写。',
+                message: dict[that.fromList.surveyState],
                 confirmButtonText: '我知道了',
               }).then(() => {
                 // on close
@@ -837,7 +806,6 @@ export default {
               that.pageData[page - 1] = styles[i]
             }
           }
-          console.log('that.pageDataxx', that.pageData)
           that.drawingList = this.pageData[this.page - 1]
           that.$forceUpdate()
           that.activeData = that.drawingList[0]
@@ -848,15 +816,17 @@ export default {
             //   if (that.style == 'y' || that.style == 'q') {
             //     return
             //   }
-            //   that.getAuthorize()
+            //   that.getAccessToken()
             // } else {
             // }
             if (that.style == 'y' || that.style == 'q') {
+              this.loading = false
               return
             }
-            that.getAuthorize()
+            that.getAccessToken()
           } else {
             //如果是表单首页
+            this.loading = false
             if (that.fromList.visibility == 1) {
               if (that.style == 'y' || that.style == 'q') {
                 return
@@ -864,7 +834,6 @@ export default {
             }
             this.siteStas()
           }
-          return
         } else {
           showDialog(response.msg)
         }
@@ -872,10 +841,6 @@ export default {
     },
     async siteStas() {
       if (!['y', 'q'].includes(this.style)) {
-        statisticAdd({
-          belongId: this.formId,
-          dataSource: this.dataSource,
-        })
         //智能表单站点统计 PV
         try {
           this.userIp = this.userIp || (await getIP())

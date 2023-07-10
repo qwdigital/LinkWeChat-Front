@@ -26,19 +26,19 @@
                 {{ row.createTime }}
               </template>
             </el-table-column>
-            <!-- <el-table-column label="用户姓名" align="center" min-width="100" show-overflow-tooltip>
+            <el-table-column label="用户昵称" align="center" min-width="100" show-overflow-tooltip>
               <template #default="{ row }">
                 {{ row.name }}
               </template>
             </el-table-column>
-            <el-table-column label="用户手机号" align="center" min-width="100" show-overflow-tooltip>
+            <!--  <el-table-column label="用户手机号" align="center" min-width="100" show-overflow-tooltip>
               <template #default="{ row }">
                 {{ row.mobile }}
               </template>
             </el-table-column> -->
             <el-table-column label="渠道" align="center" min-width="100" show-overflow-tooltip>
               <template #default="{ row }">
-                {{ dataSource }}
+                {{ row.dataSource }}
               </template>
             </el-table-column>
             <el-table-column label="openId" align="center" min-width="100" show-overflow-tooltip>
