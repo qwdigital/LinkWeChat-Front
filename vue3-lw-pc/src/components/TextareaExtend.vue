@@ -10,6 +10,10 @@ export default {
       type: Array,
       default: () => ['emoji'],
     },
+    nikeName: {
+      type: String,
+      default: '#客户昵称#',
+    },
   },
   components: {
     SelectEmoji: defineAsyncComponent(() => import('@/components/SelectEmoji')),
@@ -53,7 +57,11 @@ export default {
           </el-button>
         </template>
       </SelectEmoji>
-      <el-button v-if="toolbar.includes('insertCustomerNickName')" @click="insertContent('#客户昵称#')" class="ml10">
+      <el-button
+        v-if="toolbar.includes('insertCustomerNickName')"
+        @click="insertContent(nikeName)"
+        class="ml10"
+      >
         插入客户昵称
       </el-button>
     </div>

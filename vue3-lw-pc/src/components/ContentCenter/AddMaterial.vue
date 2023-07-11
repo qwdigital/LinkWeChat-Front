@@ -80,6 +80,7 @@
                 clearable
                 :autofocus="true"
                 @input="changeInfo"
+                :nikeName="tplType === '3' ? '%NICKNAME%' : '#客户昵称#'"
               />
             </el-form-item>
           </el-form>
