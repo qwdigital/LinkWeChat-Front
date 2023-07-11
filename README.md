@@ -2,13 +2,13 @@
 
 本仓库为 LinkWeChat 的前端源码库，技术栈采用 [vue3](https://cn.vuejs.org/) [vite](https://cn.vitejs.dev/) [pinia](https://pinia.vuejs.org/zh/) [element-plus](https://element-plus.gitee.io/zh-CN/)
 
-vue2 技术栈版本（处于维护状态）可切换至 master 分支查看，具体说明参见[更新日志](./RELEASES.md)中 v5.0.0 版本说明
+vue2 技术栈版本（停止维护）可切换至 master 分支查看，具体说明参见[更新日志](./RELEASES.md)中 v5.0.0 版本说明
 
 具体项目说明及后端库请移步至 [LinkWeChat](https://gitee.com/LinkWeChat/link-wechat) 查看。
 
 # 在线体验
 
-开源演示地址：[http://demo.linkwechat.net/](http://demo.linkwechat.net/)
+开源演示地址：[https://demo.linkwechat.net/](https://demo.linkwechat.net/)
 
 默认账号密码：lw，123456
 
