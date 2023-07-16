@@ -522,25 +522,13 @@ export default {
         }
       }
       console.log('answer', answer)
-      let formCodeDict = {
-        0: '单行文本',
-        2: '单行文本',
-        3: '多行文本',
-        4: '数字文本',
-        5: '手机号',
-        6: '下拉选择',
-        7: '级联选择',
-        8: '选项组',
-        9: '省市联动',
-        10: '日期时间',
-      }
       for (let i = 0; i < answer.length; i++) {
         let curItem = answer[i]
         if (curItem.required) {
           let label = curItem.label.substring(curItem.label.indexOf('.') + 1)
           if (curItem.defaultValue === '' || curItem.defaultValue === undefined || curItem.defaultValue.length === 0) {
             // this.toast('第' + curItem.page + '页,' + label + ',' + '不能为空')
-            this.toast(`第${curItem.page}页,${label},${formCodeDict[curItem.formCodeId]}不能为空`)
+            this.toast(`第${curItem.page}页,${label}不能为空`)
             return
           }
 
