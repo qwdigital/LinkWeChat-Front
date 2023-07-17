@@ -267,14 +267,29 @@ export default {
     },
     // 删除敏感词
     handleDelete(row) {
-      sensitiveApis.deleteSensitive(row.id).then((res) => {
+      this.$confirm('是否确认删除吗?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+      }).then(() => {
+        return sensitiveApis.deleteSensitive(row.id).then((res) => {
+          if (res.code === 200) {
+            this.msgSuccess('删除成功')
+            this.getSettingList()
+          }
+        })
+      })
+    },
+    handleStatusChange(row) {
+      sensitiveApis.modifySettingSensitive(row).then((res) => {
         if (res.code === 200) {
-          this.$message.success(res.msg)
+          this.msgSuccess('操作成功')
           this.getSettingList()
         }
       })
     },
-    handleStatusChange(row) {},
   },
 }
 </script>
