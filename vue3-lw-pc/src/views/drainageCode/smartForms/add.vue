@@ -126,10 +126,14 @@
           </div>
         </el-form-item>
         <el-form-item label="只允许在微信中填写">
-          <el-switch v-model="baseForm.anAuth" :active-value="1" :inactive-value="0"></el-switch>
+          <el-switch
+            v-model="baseForm.anAuth"
+            :active-value="1"
+            :inactive-value="0"
+            @change="(val) => val == 0 && (One = 0)"></el-switch>
           <div class="sub-des">开启后会授权登录，提供微信昵称、性别、城市信息</div>
         </el-form-item>
-        <el-form-item label="每人限制填写1次">
+        <el-form-item v-if="baseForm.anAuth == 1" label="每人限制填写1次">
           <el-switch v-model="One" :active-value="1" :inactive-value="0"></el-switch>
         </el-form-item>
         <el-form-item v-if="One == 1" style="" label="每人每天限制填写1次">
