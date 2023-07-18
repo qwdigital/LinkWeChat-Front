@@ -43,7 +43,7 @@
           </el-form-item>
 
           <el-form-item
-            v-if="activeData.label !== undefined && activeData.formCodeId != 0 && activeData.formCodeId != 1"
+            v-if="activeData.label !== undefined && ![0, 1, 5, 11].includes(+activeData.formCodeId)"
             label="标题">
             <el-input v-model="activeData.label" placeholder="请输入标题" />
           </el-form-item>
@@ -725,12 +725,12 @@ export default {
     //单选与多选的转换
     switchChange(newX) {
       if (newX) {
-        this.activeData.label = '多选项'
+        // this.activeData.label = '多选项'
         this.activeData.tag = 'el-checkbox-group'
         this.activeData.tagIcon = 'checkbox'
         this.activeData.defaultValue = []
       } else {
-        this.activeData.label = '单选项'
+        // this.activeData.label = '单选项'
         this.activeData.tag = 'el-radio-group'
         this.activeData.tagIcon = 'radio'
         this.activeData.defaultValue = undefined

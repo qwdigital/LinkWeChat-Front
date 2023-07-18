@@ -24,7 +24,7 @@ function vModel(self, dataObject, defaultValue) {
   // console.log('self', self)
   if (dataObject.formCodeId == 5 || dataObject.formCodeId == 625) {
     if (defaultValue) {
-      console.log('(/(^[1-9]d*$)/.test(defaultValue))', /(^[1-9]\d*$)/.test(defaultValue))
+      // console.log('(/(^[1-9]d*$)/.test(defaultValue))', /(^[1-9]\d*$)/.test(defaultValue))
       if (/(^[1-9]\d*$)/.test(defaultValue)) {
       } else {
         defaultValue = defaultValue.replace(/[^\d]/g, '')

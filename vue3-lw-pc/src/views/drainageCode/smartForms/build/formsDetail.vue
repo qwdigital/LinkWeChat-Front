@@ -80,7 +80,7 @@
             <div @click="dePage" class="formDetailPush">上一页</div>
           </div>
           <div v-if="page == pageData.length" style="padding: 1rem; position: relative; top: 0.5rem">
-            <div @click.stop="fromPush()" class="formDetailPush">确认提交</div>
+            <div @click.stop="submit()" class="formDetailPush">确认提交</div>
           </div>
           <div v-if="page != pageData.length && page == 1" style="padding: 1rem; position: relative; top: 0.5rem">
             <div @click="addPage" class="formDetailPush">下一页</div>
@@ -166,7 +166,7 @@
               <div @click="dePage" class="formDetailPush">上一页</div>
             </div>
             <div v-if="page == pageData.length && !ifEnd" style="padding: 1rem; position: relative; top: 0.5rem">
-              <div @click.stop="fromPush()" class="formDetailPush">确认提交</div>
+              <div @click.stop="submit()" class="formDetailPush">确认提交</div>
             </div>
             <div v-if="page == pageData.length && ifEnd" style="padding: 1rem; position: relative; top: 0.5rem">
               <div class="formDetailPush">您已完成填写</div>
@@ -416,13 +416,6 @@ export default {
     back() {
       this.$router.go(-1) //返回上一层
     },
-    submitForm() {
-      let that = this
-      this.$refs['elForm'].validate((valid) => {
-        if (!valid) return
-        that.fromPush()
-      })
-    },
     //开始填写
     startFillIn() {
       if (this.style != 'y' || this.index != 1) {
@@ -445,23 +438,78 @@ export default {
         // this.$forceUpdate()
       }
     },
+    //表单验证
+    validate(page) {
+      // this.$refs['elForm'].validate((valid) => {
+      //   if (!valid) return
+      // })
+      let pageData = this.pageData
+      page = page || pageData.length
+      for (let i = page ? page - 1 : 0; i < page; i++) {
+        for (let q = 0; q < pageData[i].length; q++) {
+          let curItem = JSON.parse(JSON.stringify(pageData[i][q]))
+          if (curItem.required && ![0, 1].includes(+curItem.formCodeId)) {
+            let label = curItem.label.substring(curItem.label.indexOf('.') + 1)
+            if (
+              curItem.defaultValue === '' ||
+              curItem.defaultValue === undefined ||
+              curItem.defaultValue.length === 0
+            ) {
+              // this.toast('第' + curItem.page + '页,' + label + ',' + '不能为空')
+              this.toast(`第${curItem.page}页,${label}不能为空`)
+              return
+            }
 
+            if (curItem.formCodeId == 4) {
+              if (curItem.max) {
+                if (curItem.defaultValue > curItem.max) {
+                  this.toast(`第${curItem.page}页,${label},数字文本中数字不能大于${curItem.max}`)
+                  return
+                }
+              }
+              if (curItem.min) {
+                if (curItem.defaultValue < curItem.min) {
+                  this.toast(`第${curItem.page}页,${label},数字文本中数字不能小于${curItem.min}`)
+                  return
+                }
+              }
+            }
+
+            let component = inputComponents.find((item) => item.formCodeId === curItem.formCodeId)
+            if (Array.isArray(component.regList) && component.regList.length != 0) {
+              let isRegValidate = component.regList.every((item) => {
+                if (!curItem.defaultValue.match(item.pattern)) {
+                  this.toast(`第${curItem.page}页,${label},${item.message}`)
+                  return false
+                } else {
+                  return true
+                }
+              })
+              if (!isRegValidate) return
+            }
+          }
+        }
+      }
+      return true
+    },
     //表单提交
-    async fromPush() {
+    async submit() {
+      if (!this.validate()) {
+        return
+      }
+
       try {
         this.userIp = this.userIp || (await getIP())
       } catch (error) {
         this.toast('获取ip失败')
         return
       }
-      let that = this
       let answer = []
-      let pageDatess = that.pageData
-      //饼图参数
-      let btData = []
-      for (let i = 0; i < pageDatess.length; i++) {
-        for (let q = 0; q < pageDatess[i].length; q++) {
-          let curItem = pageDatess[i][q]
+      let pageData = this.pageData
+      let btData = [] //饼图参数
+      for (let i = 0; i < pageData.length; i++) {
+        for (let q = 0; q < pageData[i].length; q++) {
+          let curItem = pageData[i][q]
           if (![0, 1].includes(+curItem.formCodeId)) {
             let cloneCurItem = JSON.parse(JSON.stringify(curItem))
             cloneCurItem.questionNumber = answer.length
@@ -500,6 +548,8 @@ export default {
                 // }
                 cloneCurItem.options = cloneCurItem.options.map((e) => e.label).join(',')
               }
+            } else if (curItem.formCodeId == 10) {
+              curItem.timeS = this.formateDate(i, curItem.defaultValue, curItem)
             }
             if (cloneCurItem.formCodeId == 8 && Array.isArray(cloneCurItem.defaultValue)) {
               if (cloneCurItem.defaultValue.length === 1) {
@@ -510,7 +560,7 @@ export default {
                   if (q == 0) {
                     cloneCurItem.defaultValue = defaultValue[q] + ''
                   } else {
-                    let _cloneCurItem = that.deepCopy(cloneCurItem)
+                    let _cloneCurItem = this.deepCopy(cloneCurItem)
                     _cloneCurItem.defaultValue = defaultValue[q] + ''
                     answer.push(_cloneCurItem)
                     btData.push(_cloneCurItem)
@@ -521,59 +571,21 @@ export default {
           }
         }
       }
-      console.log('answer', answer)
-      for (let i = 0; i < answer.length; i++) {
-        let curItem = answer[i]
-        if (curItem.required) {
-          let label = curItem.label.substring(curItem.label.indexOf('.') + 1)
-          if (curItem.defaultValue === '' || curItem.defaultValue === undefined || curItem.defaultValue.length === 0) {
-            // this.toast('第' + curItem.page + '页,' + label + ',' + '不能为空')
-            this.toast(`第${curItem.page}页,${label}不能为空`)
-            return
-          }
 
-          if (curItem.formCodeId == 4) {
-            if (curItem.max) {
-              if (curItem.defaultValue > curItem.max) {
-                this.toast('第' + curItem.page + '页,' + label + ',数字文本中数字不能大于' + curItem.max)
-                return
-              }
-            }
-            if (curItem.min) {
-              if (curItem.defaultValue < curItem.min) {
-                this.toast('第' + curItem.page + '页,' + label + ',数字文本中数字不能小于' + curItem.min)
-                return
-              }
-            }
-          } else if (curItem.formCodeId == 10) {
-            curItem.timeS = this.formateDate(i, curItem.defaultValue, curItem)
-          }
-
-          if (curItem.regList && curItem.regList.length != 0) {
-            curItem.regList[0].pattern = curItem.regList[0].pattern.substring(1, curItem.regList[0].pattern.length - 2)
-            let a = new RegExp(curItem.regList[0].pattern)
-
-            if (!a.test(curItem.defaultValue)) {
-              this.toast('第' + curItem.page + '页,' + label + ',' + curItem.regList[0].message)
-              return
-            }
-          }
-        }
-      }
-      let clannelsName = that.fromList.channelsName.split(',')
-      let clannelsPath = that.fromList.channelsPath.split(',')
+      let clannelsName = this.fromList.channelsName.split(',')
+      let clannelsPath = this.fromList.channelsPath.split(',')
       for (let i = 0; i < clannelsName.length; i++) {
-        if (clannelsPath[i] == that.dataSource) {
-          that.dataSource = clannelsName[i]
+        if (clannelsPath[i] == this.dataSource) {
+          this.dataSource = clannelsName[i]
           break
         }
-        if (that.clannelsName == that.dataSource && clannelsName[i] != '默认渠道') {
+        if (this.clannelsName == this.dataSource && clannelsName[i] != '默认渠道') {
           break
         }
       }
       let data = {
-        mobile: that.formData.mobile,
-        name: that.formData.userName,
+        mobile: this.formData.mobile,
+        name: this.formData.userName,
         //开始填写时间
         anTime: this.anTime,
         //填写用时
@@ -602,9 +614,9 @@ export default {
       submitForm(data)
         .then((response) => {
           if (response.code == 200) {
-            that.ifEnd = true
+            this.ifEnd = true
             if (btData.length != 0) {
-              that.insertPieValue(btData)
+              this.insertPieValue(btData)
             }
           } else {
             this.toast(response.msg)
@@ -860,9 +872,11 @@ export default {
     },
     //下一页
     addPage() {
-      this.page++
-      this.drawingList = this.pageData[this.page - 1]
-      that.$forceUpdate()
+      if (this.validate(this.page)) {
+        this.page++
+        this.drawingList = this.pageData[this.page - 1]
+        // that.$forceUpdate()
+      }
     },
     toast(message) {
       showFailToast({

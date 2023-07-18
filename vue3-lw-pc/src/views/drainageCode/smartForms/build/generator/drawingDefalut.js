@@ -53,7 +53,7 @@ export default [
     changeTag: true,
     regList: [
       {
-        pattern: '/^1(3|4|5|7|8|9)\\d{9}$/',
+        pattern: /^1[^012]\d{9}$/, // 匹配的字符串或正则表达式 传递给string.match()校验
         message: '手机号格式错误',
       },
     ],
