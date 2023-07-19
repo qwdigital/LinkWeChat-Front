@@ -718,19 +718,19 @@ export default {
         data.createTime = new Date()
       }
 
-      isCompleteSurvey(data).then((response) => {
-        console.log('判断用户是否填写', response)
-        if (response.code == 200) {
-        } else {
-          // this.toast(response.data)
-          this.fromList = ''
-          showDialog({
-            title: '提示',
-            message: '当前问卷您已填写完毕，暂时无法填写。',
-            confirmButtonText: '我知道了',
-          }).then(() => {
-            // on close
-          })
+      isCompleteSurvey(data).then((res) => {
+        // console.log('判断用户是否填写', res)
+        // res.data = true / false
+        if (res?.data == true) {
+          this.ifEnd = true
+          // this.fromList = ''
+          // showDialog({
+          //   title: '提示',
+          //   message: '当前问卷您已填写完毕，暂时无法填写。',
+          //   confirmButtonText: '我知道了',
+          // }).then(() => {
+          //   // on close
+          // })
         }
       })
     },
