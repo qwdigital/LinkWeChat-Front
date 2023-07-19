@@ -282,7 +282,7 @@ export default {
       try {
         const data = await this.ossObj.multipartUpload(name, file, {
           progress: (progressData) => {
-            this.percentage = progressData * 100
+            progressData > 0 && (this.percentage = progressData.toFixed(2) * 100)
             // this.speed = (progressData.speed / 1024 / 1024).toFixed(2)
           },
         })
@@ -349,8 +349,8 @@ export default {
           ...params,
           Body: file /* 必须，上传文件对象，可以是input[type="file"]的file对象 */,
           onProgress: (progressData) => {
-            this.percentage = progressData.percent * 100
-            this.speed = (progressData.speed / 1024 / 1024).toFixed(2)
+            progressData.percent > 0 && (this.percentage = progressData.percent.toFixed(2) * 100)
+            progressData.speed > 0 && (this.speed = (progressData.speed / 1024 / 1024).toFixed(2))
             // this.onProgress && this.onProgress(this.percentage, this.speed)
           },
         },
@@ -381,11 +381,11 @@ export default {
               this.$emit('update:fileName', (this.fileNameWatch = name))
               this.$emit('update:imgSize', memorySize)
             } else {
-              this.fileListWatch = this.fileListWatch.concat({ name, url, memorySize  })
-              this.$emit('update:fileList', this.fileList.concat({ name, url: location, memorySize  }))
+              this.fileListWatch = this.fileListWatch.concat({ name, url, memorySize })
+              this.$emit('update:fileList', this.fileList.concat({ name, url: location, memorySize }))
             }
           }
-        }
+        },
       )
     },
     remove(i) {
@@ -579,8 +579,7 @@ export default {
             :src="item.url"
             fit="contain"
             :preview-src-list="fileListWatch.map((e) => e.url)"
-            alt=""
-          />
+            alt="" />
           <div class="action-mask">
             <el-icon-search class="el-icon-search mr5" @click="showView(index)"></el-icon-search>
             <!-- <span v-if="action.includes('download')" @click="download(item)">
@@ -608,8 +607,7 @@ export default {
       :limit="limit"
       :on-error="onError"
       :on-exceed="handleExceed"
-      :before-upload="handleBeforeUpload"
-    >
+      :before-upload="handleBeforeUpload">
       <!--
       element-loading-text="正在上传..."
         :on-success="onSuccess"
@@ -623,7 +621,7 @@ export default {
         <TransitionGroup>
           <!-- 上传进度条 -->
           <div class="upload-action uploader-size" v-if="loading" :key="1">
-            <el-progress class="progress cc" type="circle" :percentage="percentage"></el-progress>
+            <el-progress v-if="percentage" class="progress cc" type="circle" :percentage="percentage"></el-progress>
             <div class="el-loading-spinner">
               <svg viewBox="25 25 50 50" class="circular">
                 <circle cx="50" cy="50" r="20" fill="none" class="path"></circle>
@@ -645,8 +643,7 @@ export default {
                 :preview-src-list="[fileUrlWatch]"
                 preview-teleported
                 fit="contain"
-                @click.stop
-              />
+                @click.stop />
 
               <div class="action-mask" @click.self.stop>
                 <el-icon-search class="el-icon-search" @click.stop="showView()"></el-icon-search>
@@ -670,8 +667,7 @@ export default {
                 playsinline="true"
                 :autoplay="false"
                 :key="fileUrlWatch"
-                preload="auto"
-              >
+                preload="auto">
                 <source :src="fileUrlWatch" type="video/mp4" />
               </video>
               <div class="action-mask" style="height: 30%" @click.self.stop>
@@ -682,15 +678,8 @@ export default {
               {{ fileNameWatch || fileUrlWatch }}
               <el-icon-EditPen class="el-icon-EditPen ml10"></el-icon-EditPen>
               <!-- a链接用本地视频打不开，视频地址使用远程地址 -->
-              <a
-                @click.stop
-                :href="/\.mp4$/.test(fileNameWatch) ? fileUrl : fileUrlWatch"
-                target="_blank"
-              >
-                <el-icon-view
-                  class="el-icon-view ml10"
-                  style="vertical-align: middle"
-                ></el-icon-view>
+              <a @click.stop :href="/\.mp4$/.test(fileNameWatch) ? fileUrl : fileUrlWatch" target="_blank">
+                <el-icon-view class="el-icon-view ml10" style="vertical-align: middle"></el-icon-view>
               </a>
             </template>
           </div>
