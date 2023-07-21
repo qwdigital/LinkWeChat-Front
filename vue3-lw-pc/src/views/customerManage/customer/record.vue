@@ -52,7 +52,7 @@ export default {
   computed: {},
   watch: {},
   created() {
-    this.viewType && this.getList(1)
+    this.getList(1)
     this.getStage()
   },
   mounted() {},
@@ -180,7 +180,11 @@ export default {
     </template>
 
     <div v-else class="timeline-time-wrap">
-      <ul class="infinite-list" v-infinite-scroll="getList" :infinite-scroll-disabled="loading">
+      <ul
+        class="infinite-list"
+        :infinite-scroll-immediate="true"
+        v-infinite-scroll="getList"
+        :infinite-scroll-disabled="loading">
         <!-- -->
         <template v-if="list.length">
           <li v-for="(unit, i) in list" class="infinite-list-item" :key="i">
