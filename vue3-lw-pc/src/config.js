@@ -31,7 +31,7 @@ const common = {
   DEFAULT_H5_PPT: env.DOMAIN + '/static/PPT.png',
   PRIVIEW_URL: env.VIEW_URL,
   PRIVIEW_PATH: env.DOMAIN + '/mobile/#/metrialDetail?materiaId=',
-  BAIDU_MAP_KEY: 'GeDsF2XGs01U0bUSpFIUCmvyNoYuGC3P', // 百度地图key
+  BAIDU_MAP_KEY: '6fZIymhpgfnAHUT1baHeEF922lPIThOG', // 百度地图key
 
   MICRO_APPS: {
     store: {
