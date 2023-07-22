@@ -1,6 +1,5 @@
 import request from '@/utils/request'
-const service =
-  window.lwConfig.services.system + window.lwConfig.services.wecom + '/communityPresTagGroup'
+const service = window.lwConfig.services.wecom + '/communityPresTagGroup'
 
 /**
  * 获取老客标签建群列表

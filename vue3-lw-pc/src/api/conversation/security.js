@@ -4,7 +4,7 @@
  * @Date: 2021-05-25 11:19:34
  */
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/sensitive'
+const service = window.lwConfig.services.wecom + '/sensitive'
 
 /**
  * 获取敏感词触发列表

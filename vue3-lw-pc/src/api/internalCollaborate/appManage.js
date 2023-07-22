@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/agent'
+const service = window.lwConfig.services.wecom + '/agent'
 const serviceMsg = service + '/msg'
 
 // 应用管理

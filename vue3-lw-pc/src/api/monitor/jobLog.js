@@ -1,9 +1,8 @@
 import request from '@/utils/request'
-const base = window.lwConfig.services.system
 // 查询调度日志列表
 export function listJobLog(query) {
   return request({
-    url: base + '/monitor/jobLog/list',
+    url: '/monitor/jobLog/list',
     method: 'get',
     params: query,
   })
@@ -12,7 +11,7 @@ export function listJobLog(query) {
 // 删除调度日志
 export function delJobLog(jobLogId) {
   return request({
-    url: base + '/monitor/jobLog/' + jobLogId,
+    url: '/monitor/jobLog/' + jobLogId,
     method: 'delete',
   })
 }
@@ -20,7 +19,7 @@ export function delJobLog(jobLogId) {
 // 清空调度日志
 export function cleanJobLog() {
   return request({
-    url: base + '/monitor/jobLog/clean',
+    url: '/monitor/jobLog/clean',
     method: 'delete',
   })
 }
@@ -28,7 +27,7 @@ export function cleanJobLog() {
 // 导出调度日志
 export function exportJobLog(query) {
   return request({
-    url: base + '/monitor/jobLog/export',
+    url: '/monitor/jobLog/export',
     method: 'get',
     params: query,
   })

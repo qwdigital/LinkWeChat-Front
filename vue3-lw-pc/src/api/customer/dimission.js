@@ -1,11 +1,11 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/leaveUser'
+const service = window.lwConfig.services.wecom + '/leaveUser'
 
 // 接口整合 离职员工 isAllocate 是否已分配:1:是;0:否
 export function getListTable(params) {
   return request({
     url: service + '/leaveUserList',
-    params
+    params,
   })
 }
 
@@ -23,7 +23,7 @@ userName:
 export function getList(params) {
   return request({
     url: service + '/leaveUserAllocateList',
-    params
+    params,
   })
 }
 
@@ -41,7 +41,7 @@ userName:
 export function getListNo(params) {
   return request({
     url: service + '/leaveUserNoAllocateList',
-    params
+    params,
   })
 }
 
@@ -57,7 +57,7 @@ export function allocate(data) {
   return request({
     url: service + '/allocateLeaveUserAboutData',
     method: 'put',
-    data
+    data,
   })
 }
 
@@ -75,7 +75,7 @@ export function allocate(data) {
 export function getAllocateCustomers(params) {
   return request({
     url: service + '/getAllocateCustomers',
-    params
+    params,
   })
 }
 
@@ -93,13 +93,13 @@ export function getAllocateCustomers(params) {
 export function getAllocateGroups(params) {
   return request({
     url: service + '/getAllocateGroups',
-    params
+    params,
   })
 }
 
 // 离职员工同步
 export function sync() {
   return request({
-    url: service + '/synchLeaveUser'
+    url: service + '/synchLeaveUser',
   })
 }

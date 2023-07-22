@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const base = window.lwConfig.services.system + window.lwConfig.services.wecom
+const base = window.lwConfig.services.wecom
 
 // 基础数据枚举值
 /**

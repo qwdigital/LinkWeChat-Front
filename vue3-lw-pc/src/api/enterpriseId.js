@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/corp'
+const service = window.lwConfig.services.wecom + '/corp'
 // 企业id
 
 /**

@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system
 
 // 登录方法
 export function login(username, password, code, uuid) {
@@ -10,7 +9,7 @@ export function login(username, password, code, uuid) {
     uuid,
   }
   return request({
-    url: service + '/auth/accountLogin',
+    url: '/auth/accountLogin',
     method: 'post',
     data: data,
   })
@@ -19,14 +18,14 @@ export function login(username, password, code, uuid) {
 // 获取企微二维码和登录二维码
 export function getCodeInSyetem() {
   return request({
-    url: service + '/auth/findLoginParam',
+    url: '/auth/findLoginParam',
   })
 }
 
 // 获取用户详细信息
 export function getInfo() {
   return request({
-    url: service + '/system/user/getInfo',
+    url: '/system/user/getInfo',
     method: 'get',
   })
 }
@@ -34,7 +33,7 @@ export function getInfo() {
 // 退出方法
 export function logout() {
   return request({
-    url: service + '/logout',
+    url: '/logout',
     method: 'post',
   })
 }
@@ -42,7 +41,7 @@ export function logout() {
 // 获取验证码
 export function getCodeImg() {
   return request({
-    url: service + '/code',
+    url: '/code',
     method: 'get',
   })
 }
@@ -50,7 +49,7 @@ export function getCodeImg() {
 // 获取应用待开发授权码
 export function getRegisterQrCode() {
   return request({
-    url: service + '/auth/getRegisterQrCode',
+    url: '/auth/getRegisterQrCode',
     method: 'get',
   })
 }
@@ -61,7 +60,7 @@ export function getRegisterQrCode() {
  */
 export function wxQrLogin(auth_code) {
   return request({
-    url: service + '/auth/qrLogin',
+    url: '/auth/qrLogin',
     method: 'get',
     params: {
       authCode: auth_code,
@@ -74,7 +73,7 @@ export function wxQrLogin(auth_code) {
  */
 export function findWxQrLoginInfo() {
   return request({
-    url: service + '/auth/qrLoginUrl',
+    url: '/auth/qrLoginUrl',
     method: 'get',
   })
 }
@@ -84,7 +83,7 @@ export function findWxQrLoginInfo() {
  */
 export function getExtensionRegisterUrl() {
   return request({
-    url: service + '/auth/weExtensionRegisterUrl',
+    url: '/auth/weExtensionRegisterUrl',
     method: 'get',
   })
 }
@@ -94,7 +93,7 @@ export function getExtensionRegisterUrl() {
  */
 export function getInstallThirdAppUrl() {
   return request({
-    url: service + '/auth/3rd_install',
+    url: '/auth/3rd_install',
     method: 'get',
     params: {
       authType: process.env.VUE_APP_ENV === 'production' ? 0 : 1,
@@ -107,7 +106,7 @@ export function getInstallThirdAppUrl() {
  */
 export function getCustomerServiceQrUrl() {
   return request({
-    url: service + '/auth/kfQrUrl',
+    url: '/auth/kfQrUrl',
     method: 'get',
   })
 }
@@ -117,7 +116,7 @@ export function getCustomerServiceQrUrl() {
  */
 export function noviceGuideInfo() {
   return request({
-    url: service + '/open/config/findWeSideBar',
+    url: '/open/config/findWeSideBar',
     method: 'get',
   })
 }
@@ -125,7 +124,7 @@ export function noviceGuideInfo() {
 // 试用手机号密码登录
 export function probationLogin(params) {
   return request({
-    url: service + '/auth/sysTrialAccount/applyLogin',
+    url: '/auth/sysTrialAccount/applyLogin',
     method: 'post',
     data: params,
   })
@@ -134,14 +133,14 @@ export function probationLogin(params) {
 // 图形验证码
 export function getImageCode() {
   return request({
-    url: service + '/auth/sysTrialAccount/captchaImage',
+    url: '/auth/sysTrialAccount/captchaImage',
   })
 }
 
 // 获取短信验证码
 export function getCodeInPhone(params) {
   return request({
-    url: service + '/auth/sysTrialAccount/findVerifyCode',
+    url: '/auth/sysTrialAccount/findVerifyCode',
     params,
   })
 }
@@ -149,7 +148,7 @@ export function getCodeInPhone(params) {
 // 申请试用
 export function applyFn(data) {
   return request({
-    url: service + '/auth/sysTrialAccount/apply',
+    url: '/auth/sysTrialAccount/apply',
     method: 'post',
     data: data,
   })
@@ -158,7 +157,7 @@ export function applyFn(data) {
 // 重置密码
 export function resetPwd(data) {
   return request({
-    url: service + '/auth/sysTrialAccount/resetPwd',
+    url: '/auth/sysTrialAccount/resetPwd',
     method: 'post',
     data,
   })

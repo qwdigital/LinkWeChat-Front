@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/live'
+const service = window.lwConfig.services.wecom + '/live'
 // top5列表
 export function getList(params) {
   return request({

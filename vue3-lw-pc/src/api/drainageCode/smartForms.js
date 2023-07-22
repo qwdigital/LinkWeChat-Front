@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 import { dataURLtoFile } from '@/utils/common'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/form'
+const service = window.lwConfig.services.wecom + '/form'
 
 //查询省市区
 // export function treelist(data) {

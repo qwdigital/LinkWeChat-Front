@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-let getway = window.lwConfig.services.system + window.lwConfig.services.wecom
+let getway = window.lwConfig.services.wecom
 const service = getway + '/strackStage'
 
 // 列表
@@ -7,7 +7,7 @@ export function getList(params) {
   return request({
     url: service + '/findWeStrackStage',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -16,7 +16,7 @@ export function addField(data) {
   return request({
     url: service + '/add',
     data,
-    method: 'post'
+    method: 'post',
   })
 }
 
@@ -25,7 +25,7 @@ export function updateField(data) {
   return request({
     url: service + '/batchUpdate',
     data,
-    method: 'put'
+    method: 'put',
   })
 }
 
@@ -34,7 +34,7 @@ export function deleteField(data) {
   return request({
     url: service + '/delete',
     method: 'delete',
-    params: data
+    params: data,
   })
 }
 
@@ -43,13 +43,13 @@ export function multiField(data) {
   return request({
     url: service + '/batchUpdateSysField',
     method: 'post',
-    data
+    data,
   })
 }
 
 // 获取对应客户数
 export function getCustomerNum(val) {
   return request({
-    url: service + '/getStrackStageCustomerNum/' + val
+    url: service + '/getStrackStageCustomerNum/' + val,
   })
 }

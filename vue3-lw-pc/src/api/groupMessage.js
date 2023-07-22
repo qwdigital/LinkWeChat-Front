@@ -1,7 +1,6 @@
 import request from '@/utils/request'
-const base = window.lwConfig.services.system + window.lwConfig.services.wecom
-const service =
-  window.lwConfig.services.system + window.lwConfig.services.wecom + '/groupmsg/template'
+const base = window.lwConfig.services.wecom
+const service = window.lwConfig.services.wecom + '/groupmsg/template'
 
 /**
  * 新增群发

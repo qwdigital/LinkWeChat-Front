@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/group/robot'
+const service = window.lwConfig.services.wecom + '/group/robot'
 const serviceMsg = service + '/msg'
 
 // 机器人管理

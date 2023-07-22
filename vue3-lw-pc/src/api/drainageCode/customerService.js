@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/kf'
+const service = window.lwConfig.services.wecom + '/kf'
 
 // 同步客服
 export function setAsync() {
@@ -17,15 +17,15 @@ export function getMemeberInCustomer(data) {
 }
 
 // 客服列表
-export function getList (params) {
+export function getList(params) {
   return request({
     url: service + '/list/page',
-    params
+    params,
   })
 }
 
 // 新增客服 -- 账号
-export function addService (data) {
+export function addService(data) {
   return request({
     url: service + '/add',
     method: 'post',
@@ -34,47 +34,47 @@ export function addService (data) {
 }
 
 // 客服编辑 -- 账号
-export function editService (data) {
+export function editService(data) {
   return request({
     url: service + '/edit/account',
     method: 'post',
-    data: data
+    data: data,
   })
 }
 
 // 新增客服 -- 欢迎语
-export function addServiceWelcome (data) {
+export function addServiceWelcome(data) {
   return request({
     url: service + '/add/welcome',
     method: 'post',
-    data: data
+    data: data,
   })
 }
 
 // 客服编辑 -- 欢迎语
-export function editServiceWelcome (data) {
+export function editServiceWelcome(data) {
   return request({
     url: service + '/edit/welcome',
     method: 'post',
-    data: data
+    data: data,
   })
 }
 
 // 新增客服 -- 规则
-export function addServiceServicer (data) {
+export function addServiceServicer(data) {
   return request({
     url: service + '/add/servicer',
     method: 'post',
-    data: data
+    data: data,
   })
 }
 
 // 客服编辑 -- 规则
-export function editServiceServicer (data) {
+export function editServiceServicer(data) {
   return request({
     url: service + '/edit/servicer',
     method: 'post',
-    data: data
+    data: data,
   })
 }
 
@@ -167,7 +167,7 @@ export function getResultDetail(params) {
 export function getEvaluteData(data) {
   return request({
     url: service + '/msg/analyze',
-    params: data
+    params: data,
   })
 }
 
@@ -254,7 +254,7 @@ export function getConsultTableExport(params) {
 // 质量分析 统计
 export function getQualityTotal() {
   return request({
-    url: service + '/statistic/quality/getAnalysis'
+    url: service + '/statistic/quality/getAnalysis',
   })
 }
 

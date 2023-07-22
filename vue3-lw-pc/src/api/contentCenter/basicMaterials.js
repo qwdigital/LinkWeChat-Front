@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-let getway = window.lwConfig.services.system + window.lwConfig.services.wecom
+let getway = window.lwConfig.services.wecom
 const service = getway + '/material'
 // 基础素材-添加
 export function add(params) {
@@ -45,7 +45,7 @@ export function lexicalRemove(ids) {
 // 获取视频第一帧
 export function getVideoPic(params) {
   return request({
-    url: window.lwConfig.services.system + '/file/getVideoFirstImg/',
+    url: '/file/getVideoFirstImg/',
     params,
   })
 }

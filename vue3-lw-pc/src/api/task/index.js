@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/fission'
+const service = window.lwConfig.services.wecom + '/fission'
 
 export function getList(params) {
   return request({

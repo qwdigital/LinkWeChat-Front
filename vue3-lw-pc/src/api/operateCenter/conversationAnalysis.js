@@ -1,6 +1,5 @@
 import request from '@/utils/request'
-const service =
-  window.lwConfig.services.system + window.lwConfig.services.wecom + '/operation/session'
+const service = window.lwConfig.services.wecom + '/operation/session'
 
 /**
  * 会话分析-客户联系总数

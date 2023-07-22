@@ -1,11 +1,11 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom
+const service = window.lwConfig.services.wecom
 
 // 外部联系人 会话列表
 export const getExternalChatList = (fromId) => {
   return request({
     url: service + '/chat/msg/selectExternalChatList/' + fromId,
-    method: 'get'
+    method: 'get',
   })
 }
 
@@ -14,7 +14,7 @@ export const selectAloneChatList = (params) => {
   return request({
     url: service + '/chat/msg/selectAloneChatList',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -22,20 +22,20 @@ export const selectAloneChatList = (params) => {
 export const getInternalChatList = (fromId) => {
   return request({
     url: service + '/chat/msg/selectInternalChatList/' + fromId,
-    method: 'get'
+    method: 'get',
   })
 }
 
 export const getGroupChatList = (fromId) => {
   return request({
     url: service + '/chat/msg/selectGroupChatList/' + fromId,
-    method: 'get'
+    method: 'get',
   })
 }
 export const getGroupChatListNew = (fromId) => {
   return request({
     url: service + '/groupchat/getGroupListByMemberId/' + fromId,
-    method: 'get'
+    method: 'get',
   })
 }
 // export const chatList = (params) => {
@@ -64,7 +64,7 @@ export const getChatList = (params) => {
   return request({
     url: service + '/chat/msg/selectFullSearchChatList',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -74,6 +74,6 @@ export const exportList = (params) => {
     url: service + '/chat/msg/selectFullSearchChatList/export',
     method: 'get',
     params,
-    responseType: 'blob'
+    responseType: 'blob',
   })
 }

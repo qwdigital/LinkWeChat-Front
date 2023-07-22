@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom
+const service = window.lwConfig.services.wecom
 
 // 朋友圈 企业动态 列表
 export function getEnterpriceList(data) {

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
-const base = window.lwConfig.services.system + window.lwConfig.services.wecom
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/category'
+const base = window.lwConfig.services.wecom
+const service = window.lwConfig.services.wecom + '/category'
 
 /**
  * 编辑员工活码

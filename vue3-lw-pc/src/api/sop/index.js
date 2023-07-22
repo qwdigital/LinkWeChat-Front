@@ -1,6 +1,5 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system
-const wecom = window.lwConfig.services.system + window.lwConfig.services.wecom
+const wecom = window.lwConfig.services.wecom
 
 // 新增
 export function addSop(data) {

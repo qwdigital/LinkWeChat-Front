@@ -1,6 +1,5 @@
 import request from '@/utils/request'
-const service =
-  window.lwConfig.services.system + window.lwConfig.services.wecom + '/communityKeywordGroup'
+const service = window.lwConfig.services.wecom + '/communityKeywordGroup'
 
 /**
  * 获取关键词拉群列表

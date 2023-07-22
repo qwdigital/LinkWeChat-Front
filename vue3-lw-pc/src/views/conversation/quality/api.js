@@ -1,12 +1,12 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom
+const service = window.lwConfig.services.wecom
 
 // 列表
 export function getList(data) {
   return request({
     url: service + '/qi/list',
     method: 'get',
-    params: data
+    params: data,
   })
 }
 
@@ -15,7 +15,7 @@ export function addQuality(data) {
   return request({
     url: service + '/qi/add',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -24,7 +24,7 @@ export function editQuality(id, data) {
   return request({
     url: service + '/qi/update/' + id,
     method: 'put',
-    data
+    data,
   })
 }
 
@@ -32,21 +32,21 @@ export function editQuality(id, data) {
 export function deleteQuality(id) {
   return request({
     url: service + '/qi/del/' + id,
-    method: 'delete'
+    method: 'delete',
   })
 }
 
 // 详情
 export function detailQuality(id) {
   return request({
-    url: service + '/qi/get/' + id
+    url: service + '/qi/get/' + id,
   })
 }
 
 // 质检统计 看板
 export function statisticData(id) {
   return request({
-    url: service + '/qi/statistics/view/' + id
+    url: service + '/qi/statistics/view/' + id,
   })
 }
 
@@ -54,7 +54,7 @@ export function statisticData(id) {
 export function statisticTable(id, data) {
   return request({
     url: service + '/qi/statistics/table/' + id,
-    params: data
+    params: data,
   })
 }
 
@@ -63,7 +63,7 @@ export function statisticRecordList(data) {
   return request({
     url: service + '/qi/statistics/table/msg',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -71,14 +71,14 @@ export function statisticRecordList(data) {
 export function qualityWeekly(data) {
   return request({
     url: service + '/qi/weekly/list',
-    params: data
+    params: data,
   })
 }
 
 // 质检周报 详情汇总卡片
 export function qualityWeeklyDetailTotal(id) {
   return request({
-    url: service + '/qi/weekly/getDetail/' + id
+    url: service + '/qi/weekly/getDetail/' + id,
   })
 }
 
@@ -86,7 +86,7 @@ export function qualityWeeklyDetailTotal(id) {
 export function qualityWeeklyTable(id, data) {
   return request({
     url: service + '/qi/weekly/detail/list/' + id,
-    params: data
+    params: data,
   })
 }
 
@@ -95,6 +95,6 @@ export function getTableExport(id, data) {
   return request({
     url: service + '/qi/weekly/detail/list/export/' + id,
     params: data,
-    responseType: 'blob'
+    responseType: 'blob',
   })
 }

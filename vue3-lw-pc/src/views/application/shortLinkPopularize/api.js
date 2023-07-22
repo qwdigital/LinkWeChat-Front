@@ -1,13 +1,12 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system
-const wecom = window.lwConfig.services.system + window.lwConfig.services.wecom + '/short/link'
+const wecom = window.lwConfig.services.wecom + '/short/link'
 
 // 列表
 export function getList(data) {
   return request({
     url: wecom + '/promotion/list',
     method: 'get',
-    params: data
+    params: data,
   })
 }
 
@@ -16,7 +15,7 @@ export function addPromotion(data) {
   return request({
     url: wecom + '/promotion/add',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -25,7 +24,7 @@ export function editPromotion(data) {
   return request({
     url: wecom + '/promotion/edit',
     method: 'put',
-    data
+    data,
   })
 }
 
@@ -34,7 +33,7 @@ export function savePromotion(data) {
   return request({
     url: wecom + '/promotion/ts',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -42,14 +41,14 @@ export function savePromotion(data) {
 export function getPosterList(data) {
   return request({
     url: wecom + '/promotion/poster/list',
-    params: data
+    params: data,
   })
 }
 
 // 详情
 export function getDetail(id) {
   return request({
-    url: wecom + '/promotion/' + id
+    url: wecom + '/promotion/' + id,
   })
 }
 
@@ -57,7 +56,7 @@ export function getDetail(id) {
 export function deletePomotion(id) {
   return request({
     url: wecom + '/promotion/delete/' + id,
-    method: 'delete'
+    method: 'delete',
   })
 }
 
@@ -65,14 +64,14 @@ export function deletePomotion(id) {
 export function deleteMultPo(ids) {
   return request({
     url: wecom + '/promotion/batch/delete/' + ids,
-    method: 'delete'
+    method: 'delete',
   })
 }
 
 // 统计 头部
 export function getTotal(id) {
   return request({
-    url: wecom + '/promotion/day/stat/statistics/' + id
+    url: wecom + '/promotion/day/stat/statistics/' + id,
   })
 }
 
@@ -80,6 +79,6 @@ export function getTotal(id) {
 export function getLineData(data) {
   return request({
     url: wecom + '/promotion/day/stat/statistics/line',
-    params: data
+    params: data,
   })
 }

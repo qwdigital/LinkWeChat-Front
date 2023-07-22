@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-let getway = window.lwConfig.services.system + window.lwConfig.services.wecom
+let getway = window.lwConfig.services.wecom
 const service = getway + '/field'
 
 // 列表
@@ -7,7 +7,7 @@ export function getList(params) {
   return request({
     url: service + '/list',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -16,7 +16,7 @@ export function addField(data) {
   return request({
     url: service + '/addSysField',
     data,
-    method: 'post'
+    method: 'post',
   })
 }
 
@@ -25,7 +25,7 @@ export function updateField(data) {
   return request({
     url: service + '/updateSysField',
     data,
-    method: 'put'
+    method: 'put',
   })
 }
 
@@ -33,7 +33,7 @@ export function updateField(data) {
 export function deleteField(ids) {
   return request({
     url: service + '/' + ids,
-    method: 'delete'
+    method: 'delete',
   })
 }
 
@@ -42,6 +42,6 @@ export function multiField(data) {
   return request({
     url: service + '/batchUpdateSysField',
     method: 'post',
-    data
+    data,
   })
 }

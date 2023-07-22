@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/tlp'
+const service = window.lwConfig.services.wecom + '/tlp'
 
 /**
  * 获取欢迎语列表

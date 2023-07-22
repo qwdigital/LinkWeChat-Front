@@ -1,24 +1,23 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system
-const wecom = window.lwConfig.services.system + window.lwConfig.services.wecom
+const wecom = window.lwConfig.services.wecom
 
 export const indexTable = () => {
   return request({
-    url: service + '/page/getCorpBasicData',
+    url: '/page/getCorpBasicData',
     method: 'get',
   })
 }
 
 export const indexEchart = () => {
   return request({
-    url: service + '/page/getCorpRealTimeData',
+    url: '/page/getCorpRealTimeData',
     method: 'get',
   })
 }
 
 export const refresh = () => {
   return request({
-    url: service + '/page/refresh',
+    url: '/page/refresh',
     method: 'get',
   })
 }
@@ -26,7 +25,7 @@ export const refresh = () => {
 // 获取企业轨迹
 export const getCompanyDynamicsData = (params) => {
   return request({
-    url: service + '/open/trajectory/findCompanyDynamics',
+    url: '/open/trajectory/findCompanyDynamics',
     params,
   })
 }

@@ -1,7 +1,6 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/material'
-const serviceCategory =
-  window.lwConfig.services.system + window.lwConfig.services.wecom + '/category'
+const service = window.lwConfig.services.wecom + '/material'
+const serviceCategory = window.lwConfig.services.wecom + '/category'
 
 /**
  * 查询素材列表

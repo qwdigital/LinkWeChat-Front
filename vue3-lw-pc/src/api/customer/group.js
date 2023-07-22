@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom
+const service = window.lwConfig.services.wecom
 
 export function getDetail(chatId) {
   return request({

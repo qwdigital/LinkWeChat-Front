@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/product'
+const service = window.lwConfig.services.wecom + '/product'
 
 /**
  * 商品列表
@@ -102,14 +102,14 @@ export function getDetailChart(data) {
   return request({
     url: service + '/lineChart',
     data,
-    method:'post'
+    method: 'post',
   })
 }
 
 // 商品详情top5
 export function getDetailTable(id) {
   return request({
-    url: service + '/top5/' + id
+    url: service + '/top5/' + id,
   })
 }
 
@@ -117,14 +117,14 @@ export function getDetailTable(id) {
 export function getOrderTalbe(data) {
   return request({
     url: service + '/order/page/list',
-    params: data
+    params: data,
   })
 }
 
 // 订单同步
 export function setOrderSync() {
   return request({
-    url: service + '/order/orderSync'
+    url: service + '/order/orderSync',
   })
 }
 
@@ -140,21 +140,21 @@ export function exportOrder(data) {
 // 订单交易状态
 export function getOrderState(orderId) {
   return request({
-    url: service + '/order/trading/status/' + orderId
+    url: service + '/order/trading/status/' + orderId,
   })
 }
 
 // 订单退款状态
 export function getRefundOrderState(orderNo) {
   return request({
-    url: service + '/refund/refund/status/' + orderNo
+    url: service + '/refund/refund/status/' + orderNo,
   })
 }
 
 // 商品分析 汇总
 export function getGoodsTotal() {
   return request({
-    url: service + '/analyze/statistics'
+    url: service + '/analyze/statistics',
   })
 }
 
@@ -163,7 +163,7 @@ export function getLineChartTotal(data) {
   return request({
     url: service + '/analyze/lineChart',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -172,7 +172,7 @@ export function getGoodsTop5(data) {
   return request({
     url: service + '/analyze/top5',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -181,7 +181,7 @@ export function getMembersTop5(data) {
   return request({
     url: service + '/analyze/user/top5',
     method: 'post',
-    data
+    data,
   })
 }
 
@@ -189,7 +189,7 @@ export function getMembersTop5(data) {
 export function getTableTotal(data) {
   return request({
     url: service + '/analyze/data/report',
-    params: data
+    params: data,
   })
 }
 

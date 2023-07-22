@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/actual'
+const service = window.lwConfig.services.wecom + '/actual'
 
 /**
  * 获取实际群码

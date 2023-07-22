@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-let getway = window.lwConfig.services.system + window.lwConfig.services.wecom
+let getway = window.lwConfig.services.wecom
 const service = getway + '/content/talk'
 // 话术中心
 // 企业话术

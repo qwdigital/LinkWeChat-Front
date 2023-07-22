@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/RedEnvelopes'
+const service = window.lwConfig.services.wecom + '/RedEnvelopes'
 
 /**
  * 发放记录-发放客户

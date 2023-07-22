@@ -1,12 +1,12 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/operation/group'
+const service = window.lwConfig.services.wecom + '/operation/group'
 
 /**
  * 客群数据分析
  */
 export function getAnalysis() {
   return request({
-    url: service + '/getAnalysis'
+    url: service + '/getAnalysis',
   })
 }
 
@@ -21,7 +21,7 @@ endTime	是 结束时间
 export function getTotalCnt(params) {
   return request({
     url: service + '/getTotalCnt',
-    params
+    params,
   })
 }
 
@@ -36,7 +36,7 @@ endTime	是 结束时间
 export function getTotalCntMember(params) {
   return request({
     url: service + '/member/getTotalCnt',
-    params
+    params,
   })
 }
 
@@ -51,7 +51,7 @@ endTime	是 结束时间
 export function getRealCnt(params) {
   return request({
     url: service + '/getGroupRealPageCnt',
-    params
+    params,
   })
 }
 
@@ -66,7 +66,7 @@ endTime	是 结束时间
 export function getRealCntMember(params) {
   return request({
     url: service + '/member/getGroupMemberRealPageCnt',
-    params
+    params,
   })
 }
 
@@ -82,7 +82,7 @@ export function realDataExport(params) {
   return request({
     url: service + '/real/export',
     params,
-    responseType: 'blob'
+    responseType: 'blob',
   })
 }
 
@@ -98,6 +98,6 @@ export function realDataExportMember(params) {
   return request({
     url: service + '/member/real/export',
     params,
-    responseType: 'blob'
+    responseType: 'blob',
   })
 }

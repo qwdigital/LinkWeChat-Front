@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/lxqr'
+const service = window.lwConfig.services.wecom + '/lxqr'
 
 // 列表
 export function getList(params) {
@@ -11,14 +11,14 @@ export function getList(params) {
 // 卡券列表
 export function getCardList(params) {
   return request({
-    url: window.lwConfig.services.system + window.lwConfig.services.wecom + '/coupon/getCouponList',
+    url: window.lwConfig.services.wecom + '/coupon/getCouponList',
     params,
   })
 }
 // 红包列表
 export function getRedList(params) {
   return request({
-    url: window.lwConfig.services.system + window.lwConfig.services.wecom + '/RedEnvelopes/list',
+    url: window.lwConfig.services.wecom + '/RedEnvelopes/list',
     params,
   })
 }

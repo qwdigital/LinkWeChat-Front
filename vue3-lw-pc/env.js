@@ -7,7 +7,6 @@ const envs = {
     DOMAIN: 'https://dev.linkwechat.net',
     BASE_URL: './', // 路由基础路径
     BASE_API: 'https://dev.linkwechat.net/linkwechat-dev-api',
-    SYSTEM_API: '/linkwechat-dev-api',
     VIEW_URL: 'https://saas.pardigital.cn/file-view/onlinePreview?url=',
     _ISGZIP: true, // 是否开启gzip压缩
     _ISCDN: true, // 是否开启cdn加速
@@ -16,7 +15,6 @@ const envs = {
     DOMAIN: 'https://demo.linkwechat.net',
     BASE_URL: '/', // 路由基础路径
     BASE_API: 'https://demo.linkwechat.net/linkwechat-api',
-    SYSTEM_API: '/linkwechat-api',
     VIEW_URL: 'https://saas.pardigital.cn/file-view/onlinePreview?url=',
     _ISGZIP: true, // 是否开启gzip压缩
     _ISCDN: true, // 是否开启cdn加速
@@ -26,7 +24,6 @@ const envs = {
     BASE_URL: '/', // 路由基础路径
     BASE_API: 'https://demo.linkwechat.net/linkwechat-api',
     VIEW_URL: 'https://saas.pardigital.cn/file-view/onlinePreview?url=',
-    SYSTEM_API: '/linkwechat-api',
     _ISGZIP: true, // 是否开启gzip压缩
     _ISCDN: true, // 是否开启cdn加速
   },

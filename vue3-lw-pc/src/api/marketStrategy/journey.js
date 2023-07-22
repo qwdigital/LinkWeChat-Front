@@ -1,6 +1,5 @@
 import request from '@/utils/request'
-const service =
-  window.lwConfig.services.system + window.lwConfig.services.wecom + '/strategic/journey'
+const service = window.lwConfig.services.wecom + '/strategic/journey'
 
 // import { get, post } from '@/plugins/axios'
 

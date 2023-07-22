@@ -1,12 +1,12 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/operation/customer'
+const service = window.lwConfig.services.wecom + '/operation/customer'
 
 /**
  * 客户数据分析
  */
 export function getAnalysis() {
   return request({
-    url: service + '/getAnalysis'
+    url: service + '/getAnalysis',
   })
 }
 
@@ -21,7 +21,7 @@ endTime	是 结束时间
 export function getTotalCnt(params) {
   return request({
     url: service + '/getTotalCnt',
-    params
+    params,
   })
 }
 
@@ -36,7 +36,7 @@ endTime	是 结束时间
 export function getRealCnt(params) {
   return request({
     url: service + '/getCustomerRealPageCnt',
-    params
+    params,
   })
 }
 
@@ -51,7 +51,7 @@ endTime	是 结束时间
 export function getRankCnt(params) {
   return request({
     url: service + '/getRankCnt',
-    params
+    params,
   })
 }
 
@@ -67,6 +67,6 @@ export function realDataExport(params) {
   return request({
     url: service + '/real/export',
     params,
-    responseType: 'blob'
+    responseType: 'blob',
   })
 }

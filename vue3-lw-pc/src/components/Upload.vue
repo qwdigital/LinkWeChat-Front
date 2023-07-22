@@ -181,7 +181,7 @@ export default {
     //   getAuthorization: function (options, callback) {
     //     // 服务端例子：https://github.com/tencentyun/qcloud-cos-sts-sdk/blob/master/scope.md
     //     // 异步获取临时密钥
-    //     var url = window.lwConfig.SYSTEM_API + '/file/get/config' // url替换成您自己的后端服务
+    //     var url = window.lwConfig.BASE_API + '/file/get/config' // url替换成您自己的后端服务
     //     var xhr = new XMLHttpRequest()
     //     xhr.open('get', url, true)
     //     xhr.setRequestHeader('Content-Type', 'application/json')

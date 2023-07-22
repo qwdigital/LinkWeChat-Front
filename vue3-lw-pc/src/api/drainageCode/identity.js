@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/knowCustomer'
+const service = window.lwConfig.services.wecom + '/knowCustomer'
 
 // 列表
 export function getList(params) {
@@ -24,12 +24,11 @@ export function remove(ids) {
   })
 }
 
-
 export function addOrUpdate(params) {
   return request({
     url: service + '/addOrUpdateKnowCustomer',
-    data:params,
-    method: 'post'
+    data: params,
+    method: 'post',
   })
 }
 
@@ -37,8 +36,7 @@ export function addOrUpdate(params) {
 export function downloadBatch() {
   return request({
     url: service + '/exportKnowCustomers',
-    params: {
-    },
+    params: {},
     responseType: 'blob',
   })
 }
@@ -55,7 +53,7 @@ export function download(id) {
 export function getIdentityCodeTab(params) {
   return request({
     url: service + '/findWKCountDetailTab',
-    params
+    params,
   })
 }
 

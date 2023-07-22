@@ -1,6 +1,5 @@
 import request from '@/utils/request'
-const service =
-  window.lwConfig.services.system + window.lwConfig.services.wecom + '/communityGroupSop'
+const service = window.lwConfig.services.wecom + '/communityGroupSop'
 
 /**
  * 获取群SOP列表

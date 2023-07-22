@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/short/link'
+const service = window.lwConfig.services.wecom + '/short/link'
 
 // 智能短链
 

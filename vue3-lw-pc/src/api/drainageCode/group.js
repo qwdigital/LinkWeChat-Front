@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const service = window.lwConfig.services.system + window.lwConfig.services.wecom + '/groupCode'
+const service = window.lwConfig.services.wecom + '/groupCode'
 
 /**
  * 获取群活码列表
