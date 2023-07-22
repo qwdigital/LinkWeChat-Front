@@ -120,6 +120,4 @@ function requestFactory(baseURL) {
   return service
 }
 
-export const request = requestFactory(window.lwConfig.BASE_API)
-
-export default requestFactory(window.lwConfig.DOMAIN)
+export default requestFactory(window.lwConfig.BASE_API)
