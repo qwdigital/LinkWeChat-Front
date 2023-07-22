@@ -1,3 +1,37 @@
+// import { request } from '@/utils/request'
+// const { get, post, put, del: _del } = request
+// /**
+//  * 列表
+//  * @param {*} data
+//  */
+// export function getList(data) {
+//   get(service + '/statistic', data)
+// }
+
+// // 详情
+// export function getDetail(id) {
+//   return get(service + '/get/' + id)
+// }
+
+// // 删除
+// export function del(id) {
+//   return _del(service + '/delete/' + id)
+// }
+
+// /**
+//  * 新增
+//  * @param {*} data
+//  * @returns
+//  */
+// export function add(data) {
+//   return post(service + '/add', data)
+// }
+
+// // 修改
+// export function update(data) {
+//   return put(service + '/update/' + id, data)
+// }
+
 import { decryptAES } from '@/utils/jsencrypt'
 import request from '@/utils/request'
 import { dataURLtoFile } from '@/utils/common'
