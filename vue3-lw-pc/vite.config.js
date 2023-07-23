@@ -59,7 +59,7 @@ export default defineConfig(async ({ command, mode }) => {
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
         '/api': {
-          target: env.DOMAIN,
+          target: env.BASE_API,
           changeOrigin: true,
           rewrite: (p) => p.replace(/^\/api/, ''),
         },
