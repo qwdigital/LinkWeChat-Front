@@ -53,7 +53,7 @@ export default defineConfig(async ({ command, mode }) => {
     },
     // vite 相关配置
     server: {
-      port: 1024,
+      port: { development: 1024, test: 1025 }[mode],
       host: true,
       open: true,
       proxy: {

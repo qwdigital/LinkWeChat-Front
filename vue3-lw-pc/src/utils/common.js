@@ -4,6 +4,7 @@
 
 const baseURL = window.lwConfig.BASE_API
 import { getToken } from '@/utils/auth'
+import { dateFormat } from '@/utils/index'
 import axios from 'axios'
 
 // 日期格式化
@@ -95,6 +96,28 @@ export function selectDictLabels(datas, value, separator) {
   return actions.join('').substring(0, actions.join('').length - 1)
 }
 
+/**
+ * 下载bolb文件
+ * @param {*} blob bolo源数据
+ * @param {*} type 文件类型
+ * @param {*} downloadName 下载文件名，需含文件后缀名
+ */
+export function downloadBlob(blob, type, downloadName) {
+  const typeDict = {
+    excel: 'application/vnd.ms-excel',
+    zip: 'application/zip',
+    image: 'application/image',
+  }
+  blob = new Blob([blob], { type: typeDict[type] || type })
+  let url = window.URL.createObjectURL(blob)
+  const a = document.createElement('a') // 创建a标签
+  a.href = url
+  a.download = dateFormat(new Date(), 'YYYY-MM-DD HH：mm：ss-') + downloadName // 下载文件名，不能包含英文 : 冒号
+  a.click()
+  a.remove()
+  URL.revokeObjectURL(url) // 释放内存
+}
+
 // 通用下载方法 系统内部
 export function download(fileName) {
   axios({
@@ -106,16 +129,18 @@ export function download(fileName) {
     },
   }).then((res) => {
     const { data, headers } = res
-    const blob = new Blob([data], { type: headers['content-type'] })
-    let dom = document.createElement('a')
-    let url = window.URL.createObjectURL(blob)
-    dom.href = url
-    dom.download = fileName
-    dom.style.display = 'none'
-    document.body.appendChild(dom)
-    dom.click()
-    dom.parentNode.removeChild(dom)
-    window.URL.revokeObjectURL(url)
+    downloadBlob(data, headers['content-type'], fileName)
+
+    // const blob = new Blob([data], { type: headers['content-type'] })
+    // let dom = document.createElement('a')
+    // let url = window.URL.createObjectURL(blob)
+    // dom.href = url
+    // dom.download = fileName
+    // dom.style.display = 'none'
+    // document.body.appendChild(dom)
+    // dom.click()
+    // dom.parentNode.removeChild(dom)
+    // window.URL.revokeObjectURL(url)
   })
 }
 
@@ -130,16 +155,18 @@ export function downloadNet(url, fileName) {
     },
   }).then((res) => {
     const { data, headers } = res
-    const blob = new Blob([data], { type: headers['content-type'] })
-    let dom = document.createElement('a')
-    let url = window.URL.createObjectURL(blob)
-    dom.href = url
-    dom.download = fileName
-    dom.style.display = 'none'
-    document.body.appendChild(dom)
-    dom.click()
-    dom.parentNode.removeChild(dom)
-    window.URL.revokeObjectURL(url)
+    downloadBlob(data, headers['content-type'], fileName)
+
+    // const blob = new Blob([data], { type: headers['content-type'] })
+    // let dom = document.createElement('a')
+    // let url = window.URL.createObjectURL(blob)
+    // dom.href = url
+    // dom.download = fileName
+    // dom.style.display = 'none'
+    // document.body.appendChild(dom)
+    // dom.click()
+    // dom.parentNode.removeChild(dom)
+    // window.URL.revokeObjectURL(url)
   })
 }
 
