@@ -4,10 +4,10 @@
  */
 const envs = {
   development: {
-    DOMAIN: 'https://dev.linkwechat.net',
+    DOMAIN: 'https://dev.linkwechat.net', // 站点域名
     BASE_URL: './', // 路由基础路径
-    BASE_API: 'https://dev.linkwechat.net/linkwechat-dev-api',
-    VIEW_URL: 'https://saas.pardigital.cn/file-view/onlinePreview?url=',
+    BASE_API: 'https://dev.linkwechat.net/linkwechat-dev-api', // 接口基础路径
+    VIEW_URL: 'https://saas.pardigital.cn/file-view/onlinePreview?url=', // kkfileview，素材预览服务地址
     _ISGZIP: true, // 是否开启gzip压缩
     _ISCDN: true, // 是否开启cdn加速
   },
