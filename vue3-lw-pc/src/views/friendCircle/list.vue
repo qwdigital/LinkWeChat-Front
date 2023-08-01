@@ -147,7 +147,7 @@ export default {
       total: 0,
       sendType: [
         { label: '企微群发', value: 0 },
-        { label: '个人发送', value: 1 },
+        // { label: '个人发送', value: 1 },
         { label: '成员群发', value: 2 },
       ], // 发送方式
       taskStatus: [
