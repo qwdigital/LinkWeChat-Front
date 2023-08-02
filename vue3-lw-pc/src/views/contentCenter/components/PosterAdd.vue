@@ -670,23 +670,23 @@ export default {
         //   scaleY: canvas.height / img.height/2
         // })
         // console.log(597, this.imgWidth)
-        if (img.width > 375) {
-          img.set({
-            // 通过scale来设置图片大小，这里设置和画布一样大
-            scaleX: canvas.width / img.width,
-            scaleY: canvas.width / img.width,
-          })
-          canvas.setWidth(375)
-          let height = img.height * (canvas.width / img.width)
-          canvas.setHeight(height)
-          this.form.width = 375
-          this.form.height = height
-        } else {
-          canvas.setWidth(img.width)
-          canvas.setHeight(img.height)
-          this.form.width = img.width
-          this.form.height = img.height
-        }
+        // if (img.width > 375) {
+        //   img.set({
+        //     // 通过scale来设置图片大小，这里设置和画布一样大
+        //     scaleX: canvas.width / img.width,
+        //     scaleY: canvas.width / img.width,
+        //   })
+        //   canvas.setWidth(375)
+        //   let height = img.height * (canvas.width / img.width)
+        //   canvas.setHeight(height)
+        //   this.form.width = 375
+        //   this.form.height = height
+        // } else {
+        // }
+        canvas.setWidth(img.width)
+        canvas.setHeight(img.height)
+        this.form.width = img.width
+        this.form.height = img.height
 
         canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas))
         canvas.renderAll()
@@ -761,6 +761,7 @@ export default {
             this.activeLiveCodeType = 'qrcode'
           }
           if (type == 'qrcode' && this.form.type === '2') {
+            // 自定义裂变海报二维码位置排列方式
             options.left =
               this.imgWidth > 375
                 ? 107.5 + this.time * 20
@@ -770,9 +771,6 @@ export default {
             options.top = this.canvas.height > 200 ? this.canvas.height - 200 : 20
 
             this.time++
-          } else {
-            options.left = positionAdd + times * 20
-            options.top = positionAdd
           }
           new fabric.Image.fromURL(type == 'image' ? obj : window.lwConfig.POST_QRCODE, (img) => {
             img.set(options)
