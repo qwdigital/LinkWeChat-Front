@@ -36,11 +36,9 @@ import { decryptAES } from '@/utils/jsencrypt'
 import request from '@/utils/request'
 import { dataURLtoFile } from '@/utils/common'
 
-const service = window.lwConfig.services.system
-
 export function upload(data) {
   return request({
-    url: service + '/file/upload',
+    url: '/file/upload',
     method: 'POST',
     data,
   })
@@ -49,7 +47,7 @@ export function upload(data) {
 // 获取cos配置
 export function getCosConfig(data) {
   return request({
-    url: service + '/file/get/config',
+    url: '/file/get/config',
     params: data,
   }).then(({ data }) => {
     let res = {}
@@ -63,7 +61,7 @@ export function getCosConfig(data) {
 // 获取视频第一帧
 export function getVideoPic(params) {
   return request({
-    url: window.lwConfig.services.system + '/file/getVideoFirstImg/',
+    url: '/file/getVideoFirstImg/',
     params,
   })
 }
@@ -77,7 +75,7 @@ export function getVideoPic(params) {
 }
  */
 export function download(url, name) {
-  return window.lwConfig.DOMAIN + window.lwConfig.services.system + `/common/download/url?url=${url}&name=${name}`
+  return window.lwConfig.BASE_API + `/common/download/url?url=${url}&name=${name}`
 }
 
 /**
@@ -93,7 +91,7 @@ export function uploadDataURL(dataURL) {
   data.append('file', f)
 
   return request({
-    url: window.lwConfig.services.system + '/file/upload',
+    url: '/file/upload',
     method: 'post',
     processData: false,
     data,
@@ -103,7 +101,7 @@ export function uploadDataURL(dataURL) {
 // 省市区 级联数据
 export function getProCityList(data) {
   return request({
-    url: service + '/system/area/list',
+    url: '/system/area/list',
     params: data,
   })
 }
@@ -115,7 +113,7 @@ export function getProCityList(data) {
  */
 export function getWxRedirect(redirectUrl = location.href) {
   return request({
-    url: service + '/auth/wxRedirect',
+    url: '/auth/wxRedirect',
     method: 'get',
     params: {
       redirectUrl,
@@ -131,7 +129,7 @@ export function getWxRedirect(redirectUrl = location.href) {
  */
 export function wxLogin(code, openId) {
   return request({
-    url: service + '/auth/wxLogin',
+    url: '/auth/wxLogin',
     method: 'get',
     params: {
       code,
@@ -146,6 +144,6 @@ export function wxLogin(code, openId) {
  */
 export function getWechatUserInfo() {
   return request({
-    url: service + `/system/user/getWxInfo`,
+    url: `/system/user/getWxInfo`,
   })
 }
