@@ -57,6 +57,19 @@
           .catch(() => {
             this.loading = false
           })
+      },
+      gotoRoute(row) {
+        if (this.type == 'customer') {
+          this.$router.push({
+            name: window.lwConfig.CUSTOMER_DETAIL_ROUTE_NAME,
+            query: { externalUserid: row.externalUserid, userId: row.firstUserId, isDelete: true }
+          })
+        } else {
+          this.$router.push({
+            path: window.lwConfig.GROUP_DETAIL_ROUTE_PATH,
+            query: { chatId: row.chatId }
+          })
+        }
       }
     }
   }
@@ -72,16 +85,7 @@
       <el-table-column prop="allocateTime" label="分配时间" show-overflow-tooltip></el-table-column>
       <el-table-column label="操作" width="100">
         <template #default="{ row }">
-          <el-button
-            v-hasPermi="['customerManage:dimission:edit']"
-            @click="
-              $router.push({
-                name: window.lwConfig.CUSTOMER_DETAIL_ROUTE_NAME,
-                query: { externalUserid: row.externalUserid, userId: row.firstUserId, isDelete: true }
-              })
-            "
-            text
-          >
+          <el-button v-hasPermi="['customerManage:dimission:edit']" @click="gotoRoute(row)" text>
             查看
           </el-button>
         </template>

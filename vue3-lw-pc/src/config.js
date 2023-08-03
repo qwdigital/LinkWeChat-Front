@@ -23,6 +23,7 @@ const common = {
   COOKIEEXPIRES: 0.5, // token在Cookie中存储的天数，默认0.5天
   WORK_WEIXIN_CONFIG_ROUTE_NAME: 'EnterpriseWechat', // 企业微信设置页面路由名称, 用于router 通过name判断与跳转，避免使用path不易于扩展
   CUSTOMER_DETAIL_ROUTE_NAME: 'customerDetail', // 客户详情页面路由name，同上
+  GROUP_DETAIL_ROUTE_PATH: '/groupManage/customerGroupManage/groupDetail', // 客群详情
   DEFAULT_H5_PIC: env.DOMAIN + '/static/PIC.png',
   DEFAULT_H5_ART: env.DOMAIN + '/static/ARTICAL.png', // 文章默认封面
   DEFAULT_H5_TP: env.DOMAIN + '/static/TEXT_PIC.png', // 图文默认封面
@@ -39,16 +40,16 @@ const common = {
       entry: env.DOMAIN + '/microStore/',
       container: '#micro-app',
       // activeRule: (location) => location.hash.startsWith('#/microStore'),
-      activeRule: env.BASE_URL.slice(env.BASE_URL.indexOf('/')) + 'microStore', // eg:/vue/microStore
-    },
-  },
+      activeRule: env.BASE_URL.slice(env.BASE_URL.indexOf('/')) + 'microStore' // eg:/vue/microStore
+    }
+  }
 }
 
 // 以下仅用于系统信息展示，不作为项目变量使用，请勿在代码中使用
 const project = {
   _version: 'v5.x', // 当前版本信息
   _packDateTime: __PACK_DATETIME__, // 打包时间
-  _env: process.env.VUE_APP_ENV, // 前端系统环境模式
+  _env: process.env.VUE_APP_ENV // 前端系统环境模式
 }
 
 let config = {
@@ -67,12 +68,12 @@ let config = {
   services: {
     wecom: '/open',
     // system: 'http://192.168.4.168:6180',
-    common: '/common',
+    common: '/common'
   },
 
   get headers() {
     return { Authorization: 'Bearer ' + getToken() }
-  },
+  }
 }
 
 const lwConfig = window.lwConfig || {} // 线上动态配置，用于覆盖系统默认常量的配置信息
