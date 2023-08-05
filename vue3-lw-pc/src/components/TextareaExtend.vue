@@ -1,4 +1,4 @@
-// 带 插入 表情/客户昵称 等扩展工具栏的文本内容框
+<!-- // 带 插入 表情/客户昵称 等扩展工具栏的文本内容框 -->
 <script>
 export default {
   name: '',
@@ -57,11 +57,7 @@ export default {
           </el-button>
         </template>
       </SelectEmoji>
-      <el-button
-        v-if="toolbar.includes('insertCustomerNickName')"
-        @click="insertContent(nikeName)"
-        class="ml10"
-      >
+      <el-button v-if="toolbar.includes('insertCustomerNickName')" @click="insertContent(nikeName)" class="ml10">
         插入客户昵称
       </el-button>
     </div>

@@ -106,7 +106,6 @@ export default {
       fileUrlWatch: this.fileUrl,
       fileNameWatch: this.fileName,
       fileListWatch: this.fileList,
-      imgSizeWatch: this.imgSize,
 
       picUrl: '', // 视频第一帧
       file: undefined,
@@ -128,11 +127,6 @@ export default {
     fileName: {
       handler(value) {
         this.fileNameWatch = value
-      },
-    },
-    imgSize: {
-      handler(value) {
-        this.imgSizeWatch = value
       },
     },
     fileList: {
@@ -425,9 +419,9 @@ export default {
         format = formatDefault[this.type].value
         tip = formatDefault[this.type].tip
       }
-      let match = file.name.match(/\.(\w+)$/g)
-      let fileFormat = match && match[0].replace('.', '').toLowerCase()
-      isFormat = format[0] === '*' || format.includes(fileFormat)
+
+      const reg = new RegExp(`\\.(${this.format.join('|')})$`, 'ig') // /\.xlsx|.$/
+      isFormat = format[0] === '*' || reg.test(file.name)
       if (!isFormat) {
         this.$message.error('文件格式错误，仅支持 ' + (tip || format.join('，')) + ' 格式!')
         this.loading = false

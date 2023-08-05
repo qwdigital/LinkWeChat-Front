@@ -30,9 +30,10 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 // 全局异步组件挂载，
 // 所有异步组件，在其父组件需要更改其样式时可能会导致同级权重css样式顺序覆盖问题，使用时需注意加权
 let components = {
+  Empty: () => import('./components/Empty.vue'),
+  Upload: () => import('./components/Upload.vue'),
   Pagination: () => import('./components/Pagination.vue'),
   RightToolbar: () => import('./components/RightToolbar.vue'),
-  Upload: () => import('./components/Upload.vue'),
   ButtonSync: () => import('./components/ButtonSync.vue'),
   TagEllipsis: () => import('./components/TagEllipsis.vue'),
   SelectUser: () => import('./components/SelectUser.vue'),
@@ -41,6 +42,7 @@ let components = {
   PhoneTemplate: () => import('./components/PhoneTemplate.vue'),
   CardGroupIndex: () => import('./components/CardGroupIndex.vue'),
   TextareaExtend: () => import('./components/TextareaExtend.vue'), // 带 插入 表情/客户昵称 等扩展工具栏的文本内容框
+  DateSearchChartTable: () => import('./components/DateSearchChartTable.vue'),
 }
 for (const c in components) {
   app.component(c, defineAsyncComponent(components[c]))

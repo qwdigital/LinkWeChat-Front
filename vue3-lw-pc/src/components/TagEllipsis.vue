@@ -1,4 +1,6 @@
 <script>
+import { del } from '@/views/clue/clueTemplate/api'
+
 export default {
   name: 'TagEllipsis',
   components: {},
@@ -15,28 +17,37 @@ export default {
       type: String,
       default: 'name',
     },
+    // 空数据时显示的文本内容
+    emptyText: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {}
   },
   computed: {
     _list() {
-      return this.list.filter((e) => (typeof e === 'string' ? e : e[this.defaultProps]))
+      return this.list?.filter((e) => (typeof e === 'string' ? e : e[this.defaultProps]))
     },
   },
   watch: {},
-  created() {},
+  created() {
+    // 可传入 el-tag 的props
+    this.elTagProps = Object.assign({}, this.$attrs)
+    delete this.elTagProps.style
+  },
   mounted() {},
   methods: {},
 }
 </script>
 
 <template>
-  <div class="tag-ellipsis">
-    <div v-if="!_list.length">无</div>
+  <div class="tag-ellipsis" v-if="_list?.length || emptyText">
+    <div v-if="!_list?.length">{{ emptyText }}</div>
 
     <template v-else-if="_list.length <= +limit">
-      <el-tag v-for="(item, unique) in _list" :key="unique">
+      <el-tag v-bind="elTagProps" v-for="(item, unique) in _list" :key="unique">
         {{ item[defaultProps] || item }}
       </el-tag>
     </template>
@@ -44,16 +55,16 @@ export default {
     <el-popover v-else placement="bottom" trigger="hover">
       <!-- 插入到body，这里用css scoped calss无效，需使用style-->
       <div class="tag-all" style="display: flex; flex-wrap: wrap; gap: 10px">
-        <el-tag v-for="(item, unique) in _list" :key="unique" style="margin: 0">
+        <el-tag v-bind="elTagProps" v-for="(item, unique) in _list" :key="unique" style="margin: 0">
           {{ item[defaultProps] || item }}
         </el-tag>
       </div>
       <template #reference>
         <div>
-          <el-tag v-for="(item, unique) in _list.slice(0, +limit)" :key="unique">
+          <el-tag v-bind="elTagProps" v-for="(item, unique) in _list.slice(0, +limit)" :key="unique">
             {{ item[defaultProps] || item }}
           </el-tag>
-          <el-tag key="a" v-if="_list.length > +limit">...</el-tag>
+          <el-tag v-bind="elTagProps" key="a" v-if="_list.length > +limit">...</el-tag>
         </div>
       </template>
     </el-popover>

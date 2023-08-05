@@ -122,13 +122,17 @@ export default {
 </script>
 
 <template>
-  <div ref="chart" class="chart-pie chart"></div>
+  <div v-if="series?.length" ref="chart" class="chart-pie chart" key="1"></div>
+  <div v-else class="chart-pie chart" key="2">
+    <div class="cc"><Empty /></div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 .chart {
+  position: relative;
   max-height: 100%;
-  min-width: 200px;
-  min-height: 200px;
+  min-width: 400px;
+  min-height: 400px;
 }
 </style>

@@ -27,9 +27,15 @@
     <div class="load-title">正在加载系统资源，请耐心等待</div>
   </div>
   <script type="module" src="/src/main.js"></script>
-
-  <script src="https://hm.baidu.com/hm.js?8f5214f3a0f80a33eb32a0f890167cc1"></script>
-  <script src="https://hm.baidu.com/hm.js?489a58fd4fcaf2347cee64a8827e7094"></script>
+  <script>
+    setTimeout(() => {
+      if (window.lwConfig && window.lwConfig._env !== 'development') {
+        var hm = document.createElement("script").src = "https://hm.baidu.com/hm.js?489a58fd4fcaf2347cee64a8827e7094";
+        var hm1 = document.createElement("script").src = "https://hm.baidu.com/hm.js?8f5214f3a0f80a33eb32a0f890167cc1";
+        document.body.append(hm, hm1)
+      }
+    }, 1000);
+  </script>
 </body>
 
 </html>

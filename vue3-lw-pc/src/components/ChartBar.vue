@@ -179,9 +179,9 @@ export default {
 </script>
 
 <template>
-  <div v-if="series && series.length" ref="chart" class="chart-bar chart" key="1"></div>
+  <div v-if="series?.length" ref="chart" class="chart-bar chart" key="1"></div>
   <div v-else class="chart-bar chart" key="2">
-    <div class="cc">暂无数据</div>
+    <div class="cc"><Empty /></div>
   </div>
 </template>
 
