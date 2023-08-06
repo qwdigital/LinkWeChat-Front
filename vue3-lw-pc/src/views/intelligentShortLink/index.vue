@@ -113,7 +113,7 @@ export default {
       this.loading = true
       getList(this.query)
         .then(({ rows, total }) => {
-          this.list = rows
+          this.list = rows || []
           this.total = +total
         })
         .catch(() => {})
@@ -217,7 +217,7 @@ export default {
         </el-table-column>
       </el-table>
       <pagination :total="total" v-model:page="query.pageNum" v-model:limit="query.pageSize" @pagination="getList()" />
-      <template v-if="!list.length">
+      <template v-if="!list?.length">
         <div class="tips">
           智能短链需要先配置短链小程序，否则无法正常使用，
           <a class="link" @click="gotoSetting">去配置</a>
