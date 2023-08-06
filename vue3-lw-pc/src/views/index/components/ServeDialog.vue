@@ -26,6 +26,14 @@ let $datas = reactive({
 <template>
   <div class="mask" v-if="$datas.dialogVisible" @click.self="$datas.dialogVisible = false">
     <div class="serveDialog cc">
+      <div class="top">
+        <div class="top-desc">更轻便、更灵活、更专业</div>
+        <div class="top-title">LinkWeChat开源服务包正式上架</div>
+        <div class="top-promise">
+          “为了更好地建设开源社区，我们郑重承诺，所有服务包收入均用于LinkWeChat开源社区建设，包括但不限于升级服务器、内容宣发、社区活动等。”
+        </div>
+        <div class="top-author">——LinkWeCHat项目组</div>
+      </div>
       <div class="main">
         <div
           v-for="(item, index) in $datas.list"
@@ -91,8 +99,33 @@ let $datas = reactive({
   width: 800px;
   height: 668px;
   background: url(../asstes/serveDialogBg.png) 100%;
+
+  .top {
+    width: 455px;
+    margin: 22px 72px;
+    .top-desc,
+    .top-promise {
+      font-size: 12px;
+      font-weight: 400;
+      color: #ffd192;
+      line-height: 18px;
+    }
+    .top-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #ffd192;
+      line-height: 32px;
+      margin: 16px 0;
+      text-shadow: 0px 4px 0px rgba(0, 0, 0, 0.16);
+    }
+    .top-author {
+      font-size: 12px;
+      text-align: right;
+      color: var(--font-white);
+    }
+  }
   .main {
-    position: relative;
+    position: absolute;
     top: 200px;
     padding: 0 40px;
   }
