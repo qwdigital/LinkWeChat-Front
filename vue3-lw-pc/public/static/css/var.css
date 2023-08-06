@@ -12,6 +12,18 @@
   --color-dark: hsl(var(--hsl-dark)); /* 深主题色 hsl(149, 93%, 34%) */
   --color-sub: hsl(91, 70%, 57%); /* 主题辅色 */
 
+  /* ------ 功能色 ------ */
+  --color-success: #07c160;
+  --color-warning: #faad14;
+  --color-danger: #eb5e12;
+
+  /* ------ 距离大小 ------ */
+  --border-radius: 8px; /* 常规圆角 */
+  --border-radius-small: 4px; /* 小圆角 */
+  --border-radius-big: 16px; /* 大圆角 */
+  --card-margin: 16px; /* 卡片间距 */
+  --top-nav-heght: 64px; /* 顶部导航条高度 */
+
   /* ------ 主题色 递浅色阶 ------  */
   --step: calc((100% - var(--l)) / 10); /* 100 - 39  / 10 = 6.1 */
   --color-light-1: hsl(var(--h), var(--s), calc(var(--step) * 1 + var(--l))); /* hsl(149, 93%, 45%) */
@@ -76,18 +88,6 @@
   --bg-black-11: hsl(0, 0%, 97%); /* #f7f7f7 #f8f8f8 #f5f8fe #f5f7fb #fafafa #edf2f9*/
 
   color: var(--font-black);
-
-  /* ------ 功能色 ------ */
-  --color-success: #07c160;
-  --color-warning: #faad14;
-  --color-danger: #eb5e12;
-
-  /* ------ 距离大小 ------ */
-  --border-radius: 8px; /* 常规圆角 */
-  --border-radius-small: 4px; /* 小圆角 */
-  --border-radius-big: 16px; /* 大圆角 */
-  --card-margin: 16px; /* 卡片间距 */
-  --top-nav-heght: 64px; /* 顶部导航条高度 */
 }
 
 /* 暗黑模式 */
