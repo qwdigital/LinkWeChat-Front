@@ -1,3 +1,4 @@
+<!-- 服务包弹窗 -->
 <template>
   <div class="sidebar-container">
     <el-scrollbar wrap-class="scrollbar-wrapper">
@@ -15,6 +16,15 @@
           :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
+
+    <div class="serve-card" @click="$refs.serveDialog.$data.dialogVisible = true">
+      LinkWeChat
+      <br />
+      官方服务包
+      <br />
+      正式上线啦!
+    </div>
+    <ServeDialog ref="serveDialog" />
 
     <div class="card">
       <el-tooltip content="文档手册" effect="dark" placement="top">
@@ -73,9 +83,10 @@ import { mapState } from 'pinia'
 import stores from '@/stores'
 
 import SidebarItem from './SidebarItem'
+import ServeDialog from './ServeDialog'
 
 export default {
-  components: { SidebarItem },
+  components: { SidebarItem, ServeDialog },
   computed: {
     // ...mapState(['settings']),
     ...mapState(stores, ['permission_routes', 'sidebarRouters', 'sidebar']),
@@ -95,6 +106,11 @@ export default {
       return false
     },
   },
+  // mounted() {
+  //   this.$nextTick(() => {
+  //     console.log(this.$refs.serveDialog)
+  //   })
+  // },
   methods: {
     goto(url) {
       window.open(url)
@@ -250,6 +266,17 @@ export default {
   }
 }
 
+.serve-card {
+  margin: 0 24px 24px;
+  padding: 15px;
+  cursor: pointer;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+  color: var(--color);
+  background: var(--color-light-9);
+  border-radius: var(--border-radius);
+}
 .card {
   // color: var(--font-white, #fff);
   // padding: 20px;

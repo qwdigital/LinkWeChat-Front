@@ -164,8 +164,6 @@
       </div>
       <Dynamics v-else />
     </el-dialog>
-
-    <ServeDialog />
   </div>
 </template>
 <script>
@@ -174,14 +172,12 @@ import * as api from '@/api/index'
 // import { getCustomerServiceQrUrl } from '@/api/login'
 import { CountTo } from 'vue3-count-to'
 import bgSvg from './asstes/bg.svg?raw'
-import ServeDialog from './components/ServeDialog'
 export default {
   name: 'Index',
   components: {
     CountTo,
     Dynamics: defineAsyncComponent(() => import('./components/dynamics')),
     TabContent: defineAsyncComponent(() => import('./components/TabContent')),
-    ServeDialog,
   },
   data() {
     return {
