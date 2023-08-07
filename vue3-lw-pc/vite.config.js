@@ -13,6 +13,7 @@ import AutoImport from 'unplugin-auto-import/vite' // 自动导入ref等api
 import rollupPluginVisualizer from 'rollup-plugin-visualizer'
 import vitePluginCompression from 'vite-plugin-compression'
 import vitePluginCdnImport, { autoComplete } from 'vite-plugin-cdn-import'
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ command, mode }) => {
@@ -147,6 +148,18 @@ export default defineConfig(async ({ command, mode }) => {
       createSvgIconsPlugin({
         iconDirs: [path.resolve(process.cwd(), 'src/assets/icons/svg')],
         symbolId: 'icon-[dir]-[name]',
+      }),
+      ViteImageOptimizer({
+        png: {
+          // https://sharp.pixelplumbing.com/api-output#png
+          quality: 100,
+        },
+        jpeg: {
+          quality: 100,
+        },
+        jpg: {
+          quality: 100,
+        },
       }),
       AutoImport({
         imports: [
