@@ -64,7 +64,7 @@ defineExpose({
           </template>
 
           <div class="bottom" ref="bottom" :style="{ '--color': $data.activeIndex == 0 ? '#07c160' : '#7e5d25' }">
-            <img class="qrcode" :src="lwConfig.QRCODE_CUSTOMER_SERVICE" alt="" />
+            <img class="qrcode" :src="lwConfig.QRCODE_CONTACT_US" alt="" />
             <div>
               <div>
                 <span class="desc">限时优惠 永久服务</span>
