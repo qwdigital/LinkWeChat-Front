@@ -2,6 +2,12 @@
 <script>
 import { getDeptTree, getDeptUserAll } from '@/api/organization'
 import SelectPost from '@/components/SelectPost'
+
+// 缓存接口数据，避免重复请求
+const pageCache = {
+  getDeptTreeData: undefined,
+  getDeptUserAllData: undefined,
+}
 export default {
   components: { SelectPost },
   props: {
@@ -36,16 +42,19 @@ export default {
       selectedUserList: [],
       selectedDeptList: [],
       // selectedPostList: [],
+
+      selectData: {},
     }
   },
   computed: {},
   watch: {
     modelValue: {
       handler(val) {
-        // 设置默认值
-        val.selectedUserList || (val.selectedUserList = {})
-        val.selectedDeptList || (val.selectedDeptList = {})
-        val.selectedPostList || (val.selectedPostList = {})
+        // 设置数据结构
+        this.selectData = JSON.parse(JSON.stringify(val))
+        val.selectedUserList || (this.selectData.selectedUserList = {})
+        val.selectedDeptList || (this.selectData.selectedDeptList = {})
+        val.selectedPostList || (this.selectData.selectedPostList = {})
 
         if (val.selectedUserList?.weUserIds?.length && !this.selectedUserList.length) {
           this.setEditUser()
@@ -53,7 +62,7 @@ export default {
         if (val.selectedDeptList?.deptIds?.length && !this.selectedDeptList.length) {
           this.setEditDept()
         }
-        this.$emit('update:modelValue', val)
+        // this.$emit('update:modelValue', val)
       },
       deep: true,
       immediate: true,
@@ -66,27 +75,27 @@ export default {
     validate() {
       if (
         this.required &&
-        !this.modelValue.selectedUserList?.select &&
-        !this.modelValue.selectedDeptList?.select &&
-        !this.modelValue.selectedPostList?.select
+        !this.selectData.selectedUserList?.select &&
+        !this.selectData.selectedDeptList?.select &&
+        !this.selectData.selectedPostList?.select
       ) {
         this.msgError('请选择成员！')
         return false
       }
-      if (this.modelValue.selectedUserList?.select) {
-        if (!this.modelValue.selectedUserList?.weUserIds?.length) {
+      if (this.selectData.selectedUserList?.select) {
+        if (!this.selectData.selectedUserList?.weUserIds?.length) {
           this.msgError('请选择员工！')
           return false
         }
       }
-      if (this.modelValue.selectedDeptList?.select) {
-        if (!this.modelValue.selectedDeptList.deptIds.length) {
+      if (this.selectData.selectedDeptList?.select) {
+        if (!this.selectData.selectedDeptList.deptIds.length) {
           this.msgError('请选择部门！')
           return false
         }
       }
-      if (this.modelValue.selectedPostList?.select) {
-        if (!this.modelValue.selectedPostList.posts?.length) {
+      if (this.selectData.selectedPostList?.select) {
+        if (!this.selectData.selectedPostList.posts?.length) {
           this.msgError('请选择岗位！')
           return false
         }
@@ -98,59 +107,63 @@ export default {
     // 选中员工
     selectedUser(data) {
       this.selectedUserList = data
-      this.modelValue.selectedUserList.weUserIds = data.map((dd) => {
+      this.selectData.selectedUserList.weUserIds = data.map((dd) => {
         return dd.userId
       })
-      // this.changeFn()
+      this.changeFn()
     },
     // 选中部门
     selectedDept(data) {
       this.selectedDeptList = data
-      this.modelValue.selectedDeptList.deptIds = data.map((dd) => {
+      this.selectData.selectedDeptList.deptIds = data.map((dd) => {
         return dd.deptId
       })
-      // this.changeFn()
+      this.changeFn()
     },
     // 选中岗位
     selectedPost(data) {
       // this.selectedPostList = data
-      this.modelValue.selectedPostList.posts = data
-      // this.changeFn()
+      this.selectData.selectedPostList.posts = data
+      this.changeFn()
     },
 
     // ------ 清空选中 ------
     clearUserData(data) {
       if (!data) {
         this.selectedUserList = []
-        this.modelValue.selectedUserList.weUserIds = []
-        // this.changeFn()
+        this.selectData.selectedUserList.weUserIds = []
+        this.changeFn()
       }
     },
     clearDeptData(data) {
       if (!data) {
         this.selectedDeptList = []
-        this.modelValue.selectedDeptList.deptIds = []
+        this.selectData.selectedDeptList.deptIds = []
         // this.selectedPostList = []
-        // this.modelValue.selectedDeptList.posts = []
-        // this.changeFn()
+        // this.selectData.selectedDeptList.posts = []
+        this.changeFn()
       }
     },
     clearPostData(data) {
       if (!data) {
         // this.selectedPostList = []
-        this.modelValue.selectedPostList.posts = []
-        // this.changeFn()
+        this.selectData.selectedPostList.posts = []
+        this.changeFn()
       }
     },
 
-    // changeFn() {
-    // this.$emit('update', this.modelValue)
-    // },
+    changeFn() {
+      this.$emit('update:modelValue', this.selectData)
+    },
 
     // ------ 根据选中的 id 回显 数据 -------
     setEditUser() {
       if (this.modelValue.selectedUserList?.weUserIds) {
-        getDeptUserAll().then(({ data }) => {
+        ;(pageCache.getDeptUserAllData
+          ? Promise.resolve({ data: pageCache.getDeptUserAllData })
+          : getDeptUserAll()
+        ).then(({ data }) => {
+          pageCache.getDeptUserAllData = data
           this.selectedUserList = []
           this.modelValue.selectedUserList.weUserIds.forEach((element) => {
             let traget = data.find((item) => item.weUserId == element)
@@ -165,17 +178,20 @@ export default {
     },
     setEditDept() {
       if (this.modelValue.selectedDeptList?.deptIds?.length) {
-        getDeptTree().then(({ data }) => {
-          this.selectedDeptList = []
-          this.modelValue.selectedDeptList.deptIds.forEach((element) => {
-            let traget = data.find((item) => item.deptId == element)
-            if (traget) {
-              traget.userId = element
-              traget.name = traget.deptName
-              this.selectedDeptList.push(traget)
-            }
-          })
-        })
+        ;(pageCache.getDeptTreeData ? Promise.resolve({ data: pageCache.getDeptTreeData }) : getDeptTree()).then(
+          ({ data }) => {
+            pageCache.getDeptTreeData = data
+            this.selectedDeptList = []
+            this.modelValue.selectedDeptList.deptIds.forEach((element) => {
+              let traget = data.find((item) => item.deptId == element)
+              if (traget) {
+                traget.userId = element
+                traget.name = traget.deptName
+                this.selectedDeptList.push(traget)
+              }
+            })
+          },
+        )
       }
     },
   },
@@ -186,8 +202,8 @@ export default {
   <div>
     <!-- 选择成员 -->
     <div>
-      <el-checkbox v-model="modelValue.selectedUserList.select" @change="clearUserData" label="选择成员"></el-checkbox>
-      <template v-if="modelValue.selectedUserList.select">
+      <el-checkbox v-model="selectData.selectedUserList.select" @change="clearUserData" label="选择成员"></el-checkbox>
+      <template v-if="selectData.selectedUserList.select">
         <el-button type="primary" @click="dialogVisibleSelectUser = true">选择成员</el-button>
         <TagEllipsis :list="selectedUserList" limit="10" type="info" style="display: block" />
       </template>
@@ -195,8 +211,8 @@ export default {
 
     <!-- 选择部门 -->
     <div class="mt10">
-      <el-checkbox v-model="modelValue.selectedDeptList.select" @change="clearDeptData" label="选择部门"></el-checkbox>
-      <template v-if="modelValue.selectedDeptList.select">
+      <el-checkbox v-model="selectData.selectedDeptList.select" @change="clearDeptData" label="选择部门"></el-checkbox>
+      <template v-if="selectData.selectedDeptList.select">
         <el-button type="primary" @click="dialogVisibleSelectDept = true">选择部门</el-button>
         <TagEllipsis :list="selectedDeptList" limit="10" type="info" style="display: block" />
       </template>
@@ -204,10 +220,10 @@ export default {
 
     <!-- 选择岗位 -->
     <div class="mt10">
-      <el-checkbox v-model="modelValue.selectedPostList.select" @change="clearPostData" label="选择岗位"></el-checkbox>
-      <template v-if="modelValue.selectedPostList.select">
+      <el-checkbox v-model="selectData.selectedPostList.select" @change="clearPostData" label="选择岗位"></el-checkbox>
+      <template v-if="selectData.selectedPostList.select">
         <el-button type="primary" @click="dialogVisibleSelectPost = true">选择岗位</el-button>
-        <TagEllipsis :list="modelValue.selectedPostList.posts" limit="10" type="info" style="display: block" />
+        <TagEllipsis :list="selectData.selectedPostList.posts" limit="10" type="info" style="display: block" />
       </template>
     </div>
 
@@ -233,7 +249,7 @@ export default {
       append-to-body
       width="600px"
       title="选择岗位"
-      :defaultValues="modelValue.selectedPostList.posts"
+      :defaultValues="selectData.selectedPostList.posts"
       @success="selectedPost"></SelectPost>
   </div>
 </template>
