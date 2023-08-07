@@ -80,7 +80,28 @@
         </div>
       </template>
       <template v-else>
-        <div></div>
+        <div class="page">
+          <div class="code-wrapper">
+            <div class="code-success">
+              <el-button type="success" icon="el-icon-check" circle></el-button>
+            </div>
+            <div class="code-text">获客链接创建成功，支持复制链接即可使用</div>
+            <el-form label-width="140px" style="display: inline-block;">
+              <el-form-item label="获客链接:">
+                <div style="text-align: left;">
+                  {{ detail.linkUrl }}
+                  <el-button type="text" @click="copyFn(detail.linkUrl)">复制</el-button>
+                </div>
+              </el-form-item>
+              <el-form-item label="获客短链:">
+                <div style="text-align: left;">
+                  {{ detail.linkShortUrl }}
+                  <el-button type="text" @click="copyFn(detail.linkShortUrl)">复制</el-button>
+                </div>
+              </el-form-item>
+            </el-form>
+          </div>
+        </div>
       </template>
     </div>
     <div class="g-card ac">
@@ -117,7 +138,7 @@
     data() {
       return {
         id: '',
-        active: 0,
+        active: 1,
         loading: false,
         tagList: [],
         userList: [],
@@ -155,6 +176,16 @@
       }
     },
     methods: {
+      copyFn(text) {
+        const input = document.createElement('input')
+        input.style.cssText = 'opacity: 0;'
+        input.type = 'text'
+        input.value = text // 修改文本框的内容
+        document.body.appendChild(input)
+        input.select() // 选中文本
+        document.execCommand('copy') // 执行浏览器复制命令
+        this.$message({ message: '复制成功', type: 'success' })
+      },
       submit() {
         this.$refs['form'].validate((validate) => {
           if (validate) {
@@ -207,7 +238,7 @@
         this.dialogVisibleSelectUser = true
       },
       selectedUser(data) {
-        if (data.length > 1) {
+        if (data.length > 100) {
           this.msgError('最多选择100名成员')
           return
         }
@@ -371,5 +402,14 @@
     font-size: 12px;
     font-weight: 400;
     color: var(--font-black-6);
+  }
+  .code-wrapper {
+    text-align: center;
+
+    .code-success,
+    .code-text,
+    .code-actions {
+      padding: 20px 0;
+    }
   }
 </style>
