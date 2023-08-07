@@ -90,13 +90,13 @@
               <el-form-item label="获客链接:">
                 <div style="text-align: left;">
                   {{ detail.linkUrl }}
-                  <el-button type="text" @click="copyFn(detail.linkUrl)">复制</el-button>
+                  <el-button text @click="copyFn(detail.linkUrl)">复制</el-button>
                 </div>
               </el-form-item>
               <el-form-item label="获客短链:">
                 <div style="text-align: left;">
                   {{ detail.linkShortUrl }}
-                  <el-button type="text" @click="copyFn(detail.linkShortUrl)">复制</el-button>
+                  <el-button text @click="copyFn(detail.linkShortUrl)">复制</el-button>
                 </div>
               </el-form-item>
             </el-form>
@@ -138,7 +138,7 @@
     data() {
       return {
         id: '',
-        active: 1,
+        active: 0,
         loading: false,
         tagList: [],
         userList: [],

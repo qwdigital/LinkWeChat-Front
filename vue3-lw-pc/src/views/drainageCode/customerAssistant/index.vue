@@ -51,7 +51,7 @@
           <template #default="{ row }">
             <div>
               {{ row.linkUrl }}
-              <el-button type="text" @click="copyFn(row.linkUrl)">复制</el-button>
+              <el-button text @click="copyFn(row.linkUrl)">复制</el-button>
             </div>
           </template>
         </el-table-column>
@@ -70,7 +70,7 @@
           <template #default="{ row }">
             <div>
               {{ row.linkShortUrl }}
-              <el-button type="text" @click="copyFn(row.linkShortUrl)">复制</el-button>
+              <el-button text @click="copyFn(row.linkShortUrl)">复制</el-button>
             </div>
           </template>
         </el-table-column>
