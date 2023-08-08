@@ -12,8 +12,8 @@
       <template v-if="activeIndex === 1">
         <analyse></analyse>
       </template>
-      <template>
-        <div v-if="activeIndex === 2"></div>
+      <template v-if="activeIndex === 2">
+        <info-table></info-table>
       </template>
     </div>
   </div>
@@ -21,6 +21,7 @@
 <script>
   import Info from './info'
   import Analyse from './info-total'
+  import InfoTable from './info-table'
   export default {
     name: 'customer-assistant-detail',
     data() {
@@ -30,7 +31,8 @@
     },
     components: {
       Info,
-      Analyse
+      Analyse,
+      InfoTable
     }
   }
 </script>

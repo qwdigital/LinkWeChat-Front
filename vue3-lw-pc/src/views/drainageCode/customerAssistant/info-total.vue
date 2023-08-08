@@ -7,7 +7,7 @@
       <chart-line style="height: 300px;" :legend="legend" :xData="xdata" :series="series"></chart-line>
     </div>
     <div class="g-card">
-      <div class="g-card-title">数据明细</div>
+      <div class="g-card-title">数据报表</div>
       <el-button type="primary" @click="exportFn" v-loading="exportLoading">导出Excel</el-button>
       <el-table v-loading="loading" :data="tableList" style="width: 100%;">
         <el-table-column label="日期" align="center" min-width="100" prop="date" show-overflow-tooltip />
@@ -59,7 +59,7 @@
 
   import { getTabData, getLineData, getTableData, getTableExport } from './api.js'
   export default {
-    name: 'identity-code-statistics',
+    name: 'customer-assistant-statistics',
     components: {
       SearchTitle,
       ChartLine,
@@ -104,7 +104,6 @@
         bar: [],
         value: [],
         tableSearch: {},
-        addWeUserState: null,
         id: ''
       }
     },
