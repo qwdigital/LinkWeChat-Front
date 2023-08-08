@@ -35,7 +35,7 @@
 //     color: var(--font-white, #fff);
 //   }
 // }
-.el-button {
+.el-button:not(.el-button--small, .el-button--large) {
   padding: 9px 19px;
 }
 .el-button:not(.is-text) {
@@ -292,6 +292,7 @@
 .el-form-item .el-form-item {
   margin-bottom: 18px;
 }
+
 .el-form-item__content {
   display: block;
 }
@@ -320,6 +321,11 @@
   .el-input-number {
     width: 100%;
   }
+
+  // 会导致提示信息被滚动隐藏
+  // .el-form-item:last-child {
+  //   margin-bottom: 0;
+  // }
 }
 // 重置el-form-item hover样式
 .no-hover-form .el-form-item {

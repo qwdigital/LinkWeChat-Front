@@ -8,10 +8,10 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // setToken('eyJhbGciOiJIUzUxMiJ9.eyJ0ZW5hbnRfaWQiOjI2LCJ1c2VyX3R5cGUiOiI1IiwidXNlcl9pZCI6MjU5LCJ3ZUFwcFNlY3JldCI6IjY0YjRjNWRiMzg3MjA2Nzc2ZDRmYWJlMjEwNWMwNTc1IiwibG9naW5fdHlwZSI6IkxpbmtXZUNoYXRBUEkiLCJ1c2VyX25hbWUiOiLlp5zpuY_lh68iLCJ1c2VyX2tleSI6ImRmNTdmYzY4LWI2ZTYtNDVmNS04N2UzLWY4YzA5ZTZiNzFiOSIsIndlQXBwSWQiOiJ3eDg2M2MwMzFhNzRmNTg5YTAiLCJjb3JwX25hbWUiOiLku5_lvq7np5HmioAiLCJjb3JwX2lkIjoid3c2MjJmYzg1MmY3OWMzZjEzIn0.X5To1L7fJRBEIxmP6Dvp2XTpvWHwz8Ey6ODAeyk_owlFj_JywVjfpodDk0B7bGjRXE16nNpab0L9f3eF_-WGPQ')
 
 // 创建axios实例
-function requestFactory(baseURL) {
+function requestFactory(getway = '') {
   const service = axios.create({
     // axios中请求配置有baseURL选项，表示请求URL公共部分
-    baseURL: process.env.NODE_ENV === 'development' ? '/api' : baseURL,
+    baseURL: (process.env.NODE_ENV === 'development' ? '/api' : window.lwConfig.BASE_API) + getway,
     // 超时
     timeout: 100000,
   })
@@ -112,7 +112,7 @@ function requestFactory(baseURL) {
     return put(url, data, config)
   }
 
-  let del = service.del
+  let del = service.delete
   service.del = (url, params, config = {}) => {
     return del(url, { params, ...config })
   }
@@ -120,4 +120,7 @@ function requestFactory(baseURL) {
   return service
 }
 
-export default requestFactory(window.lwConfig.BASE_API)
+// 创建常用网关接口请求
+export const requestOpen = requestFactory(window.lwConfig.services.wecom)
+
+export default requestFactory()

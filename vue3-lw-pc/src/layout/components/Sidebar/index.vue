@@ -13,18 +13,9 @@
           :key="route.path + index"
           :item="route"
           level="1"
-          :base-path="route.path" />
+          :base-path="resolvePath(route.path)" />
       </el-menu>
     </el-scrollbar>
-
-    <div class="serve-card" @click="$refs.serveDialog.$data.dialogVisible = true">
-      LinkWeChat
-      <br />
-      官方服务包
-      <br />
-      正式上线啦!
-    </div>
-    <ServeDialog ref="serveDialog" />
 
     <div class="card">
       <el-tooltip content="文档手册" effect="dark" placement="top">
@@ -79,14 +70,15 @@
 </template>
 
 <script>
+import path from 'path-browserify'
 import { mapState } from 'pinia'
 import stores from '@/stores'
 
 import SidebarItem from './SidebarItem'
-import ServeDialog from './ServeDialog'
+// import ServeDialog from './ServeDialog'
 
 export default {
-  components: { SidebarItem, ServeDialog },
+  components: { SidebarItem },
   computed: {
     // ...mapState(['settings']),
     ...mapState(stores, ['permission_routes', 'sidebarRouters', 'sidebar']),
@@ -114,6 +106,9 @@ export default {
   methods: {
     goto(url) {
       window.open(url)
+    },
+    resolvePath(pathStr) {
+      return path.resolve(this.sidebarRouters.parentRoute.path, pathStr)
     },
   },
 }

@@ -1,7 +1,11 @@
 /* Layout */
+import { RouterView } from 'vue-router'
+import { h } from 'vue'
 import Layout from '@/layout/index.vue'
 import visitor from '@/layout/visitor.vue'
-
+const routerView = {
+  render: () => h(RouterView),
+}
 /**
  * Note: 路由配置项
  *
@@ -52,41 +56,98 @@ export let fixedRoutes = [
   //     },
   //   ],
   // },
-  // {
-  //   path: '/drainageCode/customerService',
-  //   component: Layout,
-  //   hidden: true,
-  //   meta: {
-  //     title: '客服管理',
-  //   },
-  //   children: [
-  //     {
-  //       path: 'add',
-  //       name: 'service-add',
-  //       component: () => import('@/views/customerService/customerServiceManage/add'),
-  //       meta: {
-  //         title: '新建客服',
-  //         activeMenu: '/drainageCode/customerService/index',
-  //         breadcrumb: true,
-  //       },
-  //     },
-  //     {
-  //       path: 'detail',
-  //       name: 'service-add-detail',
-  //       component: () => import('@/views/customerService/customerServiceManage/detail'),
-  //       meta: {
-  //         title: '客服详情',
-  //         activeMenu: '/drainageCode/customerService/index',
-  //         breadcrumb: true,
-  //       },
-  //     },
-  //   ],
-  // },
 ]
 
 // 开发环境路由，总后台配置完菜单务必删除或注释，只在开发环境生效
-if (process.env.VUE_APP_ENV === 'development') {
-  fixedRoutes = fixedRoutes.concat()
+if (process.env.NODE_ENV === 'development' || process.env.VUE_APP_ENV === 'development') {
+  let devRoutes = [
+    {
+      path: '/dev',
+      component: Layout,
+      redirect: '/dev/saleInsight',
+      meta: {
+        title: '开发菜单',
+      },
+      children: [
+        // {
+        //   path: '/dev/saleInsight',
+        //   component: routerView,
+        //   redirect: '/dev/saleInsight/clueAnalysis',
+        //   meta: {
+        //     title: '销售洞察',
+        //   },
+        //   children: [
+        //     {
+        //       path: 'clueAnalysis',
+        //       component: () => import('@/views/clue/clueAnalysis/index'),
+        //       meta: {
+        //         title: '线索分析',
+        //       },
+        //     },
+        //   ],
+        // },
+        // {
+        //   path: '/dev/privateIncubation',
+        //   component: routerView,
+        //   meta: {
+        //     title: '私域孵化',
+        //   },
+        //   children: [
+        //     {
+        //       path: 'clueHighseas',
+        //       component: routerView,
+        //       redirect: '/dev/privateIncubation/clueHighseas/index',
+        //       meta: {
+        //         title: '线索公海',
+        //       },
+        //       children: [
+        //         {
+        //           path: 'index',
+        //           hidden: true,
+        //           component: () => import('@/views/clue/clueHighseas/index'),
+        //           meta: {
+        //             title: '',
+        //           },
+        //         },
+        //         {
+        //           path: 'addEdit',
+        //           hidden: true,
+        //           component: () => import('@/views/clue/clueHighseas/addEdit'),
+        //           meta: {
+        //             title: '新建公海',
+        //           },
+        //         },
+        //         {
+        //           path: 'highseasStatistics',
+        //           hidden: true,
+        //           component: () => import('@/views/clue/clueHighseas/highseasStatistics'),
+        //           meta: {
+        //             title: '公海统计',
+        //           },
+        //         },
+        //         {
+        //           path: 'clueDetail',
+        //           hidden: true,
+        //           component: () => import('@/views/clue/clueHighseas/clueDetail'),
+        //           meta: {
+        //             title: '客户详情',
+        //           },
+        //         },
+        //       ],
+        //     },
+        //     {
+        //       path: 'clueTemplate',
+        //       component: () => import('@/views/clue/clueTemplate/index'),
+        //       meta: {
+        //         title: '线索模板',
+        //       },
+        //     },
+        //   ],
+        // },
+      ],
+    },
+  ]
+  fixedRoutes = fixedRoutes.concat(devRoutes)
 }
 
 // 公共路由
