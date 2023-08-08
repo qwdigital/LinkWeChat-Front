@@ -138,7 +138,7 @@
           })
       },
       getTabTotalFn() {
-        getTabData({ id: this.id, addWeUserState: this.addWeUserState }).then((res) => {
+        getTabData(this.id).then((res) => {
           this.cardData[0].value = res.data.tdNewCustomerScanNumber
           this.cardData[1].value = res.data.tdAddCustomerNumber
           this.cardData[2].value = res.data.tdOldCustomerScanNumber

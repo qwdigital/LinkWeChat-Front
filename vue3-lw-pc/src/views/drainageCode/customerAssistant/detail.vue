@@ -10,7 +10,7 @@
         <info></info>
       </template>
       <template v-if="activeIndex === 1">
-        <!-- <store-code-analyse></store-code-analyse> -->
+        <analyse></analyse>
       </template>
       <template>
         <div v-if="activeIndex === 2"></div>
@@ -20,7 +20,7 @@
 </template>
 <script>
   import Info from './info'
-  // import StoreCodeAnalyse from './store_code_analyse'
+  import Analyse from './info-total'
   export default {
     name: 'customer-assistant-detail',
     data() {
@@ -29,8 +29,8 @@
       }
     },
     components: {
-      Info
-      // StoreCodeAnalyse,
+      Info,
+      Analyse
     }
   }
 </script>
