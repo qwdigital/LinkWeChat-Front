@@ -92,12 +92,14 @@
                   {{ detail.linkUrl }}
                   <el-button text @click="copyFn(detail.linkUrl)">复制</el-button>
                 </div>
+                <div class="sub-des">企微官方的获客长链接，可直接使用</div>
               </el-form-item>
               <el-form-item label="获客短链:">
                 <div style="text-align: left;">
                   {{ detail.linkShortUrl }}
                   <el-button text @click="copyFn(detail.linkShortUrl)">复制</el-button>
                 </div>
+                <div class="sub-des">系统生成的获客短链，满足短链场景</div>
               </el-form-item>
             </el-form>
           </div>

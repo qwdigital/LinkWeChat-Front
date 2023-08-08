@@ -163,7 +163,6 @@
           .then((res) => {
             if (res.code === 200) {
               this.list = res.rows
-              this.list = [{ linkUrl: 'https://www.baidu.com' }]
               this.total = parseInt(res.total)
             }
             this.loading = false

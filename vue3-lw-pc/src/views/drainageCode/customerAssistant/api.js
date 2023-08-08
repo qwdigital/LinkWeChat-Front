@@ -41,3 +41,41 @@ export function editItem(data) {
     method: 'post'
   })
 }
+
+// 同步
+export function syncData(id) {
+  return request({
+    url: service + '/synchCustomerCount/' + id
+  })
+}
+
+//tab 数据
+export function getTabData(id) {
+  return request({
+    url: service + '/selectLinkCountTab/' + id
+  })
+}
+
+// 折线图
+export function getLineData(data) {
+  return request({
+    url: service + '/selectLinkCountTrend',
+    params: data
+  })
+}
+
+// 数据报表
+export function getTableData(data) {
+  return request({
+    url: service + '/selectLinkCountTable',
+    params: data
+  })
+}
+
+// 导出
+export function getTableExport(data) {
+  return request({
+    url: service + '',
+    params: data
+  })
+}
