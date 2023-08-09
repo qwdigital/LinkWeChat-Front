@@ -289,6 +289,9 @@ export default {
         case '5':
           return '海报'
           break
+        case '19':
+          return '外链'
+          break
       }
     },
     //表格拖动排序

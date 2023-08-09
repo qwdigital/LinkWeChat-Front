@@ -5,7 +5,8 @@
       style="width: 50px; height: 50px; flex: none"
       :src="objRow.coverUrl"
       fit="fill"
-      v-if="objRow.coverUrl"></el-image>
+      v-if="objRow.coverUrl"
+    ></el-image>
     <div class="icon" v-else-if="objRow.svgName">
       <svg-icon class="icon-style" :icon="objRow.svgName"></svg-icon>
     </div>
@@ -13,12 +14,16 @@
       <el-tooltip
         :content="objRow.materialName"
         placement="top"
-        :disabled="objRow.materialName ? objRow.materialName.length < titleNum : true">
+        :disabled="objRow.materialName ? objRow.materialName.length < titleNum : true"
+      >
         <p style="text-align: left">
           {{ coverContent(objRow.materialName, titleNum) }}
         </p>
       </el-tooltip>
-      <el-tooltip placement="top" :disabled="objRow.digest ? objRow.digest.length < contentNum : true">
+      <el-tooltip
+        placement="top"
+        :disabled="objRow.digest ? objRow.digest.length < contentNum : true"
+      >
         <template #content><p style="white-space: pre-line" v-html="objRow.digest"></p></template>
         <p style="color: var(--font-black-7); text-align: left">
           {{ coverContent(objRow.digest, contentNum) }}
@@ -115,6 +120,11 @@ export default {
         this.objRow.coverUrl = data.materialUrl
       } else if (this.objRow.mediaType === '4') {
         // 文本
+        this.objRow.digest = data.content
+      } else if (this.objRow.mediaType === '19') {
+        // 外链
+
+        this.objRow.svgName = 'outLine'
         this.objRow.digest = data.content
       }
     },
