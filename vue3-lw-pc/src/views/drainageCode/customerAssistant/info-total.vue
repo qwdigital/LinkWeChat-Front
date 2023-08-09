@@ -14,28 +14,28 @@
         <el-table-column
           label="累计新增客户数"
           align="center"
-          prop="newCustomerScanNumber"
+          prop="addWeCustomerNumber"
           min-width="100"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           label="累计活跃客户数"
           align="center"
-          prop="addCustomerNumber"
+          prop="weCustomerActiveNumber"
           min-width="100"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           label="今日新增客户数"
           align="center"
-          prop="oldCustomerScanNumber"
+          prop="tdAddWeCustomerNumber"
           min-width="100"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column
           label="今日活跃客户数"
           align="center"
-          prop="lostCustomerNumber"
+          prop="tdWeCustomerActiveNumber"
           min-width="120"
           show-overflow-tooltip
         ></el-table-column>
@@ -138,10 +138,10 @@
       },
       getTabTotalFn() {
         getTabData(this.id).then((res) => {
-          this.cardData[0].value = res.data.tdNewCustomerScanNumber
-          this.cardData[1].value = res.data.tdAddCustomerNumber
-          this.cardData[2].value = res.data.tdOldCustomerScanNumber
-          this.cardData[3].value = res.data.tdLostCustomerNumber
+          this.cardData[0].value = res.data.addWeCustomerNumber
+          this.cardData[1].value = res.data.weCustomerActiveNumber
+          this.cardData[2].value = res.data.tdAddWeCustomerNumber
+          this.cardData[3].value = res.data.tdWeCustomerActiveNumber
         })
       },
       getLineData(data) {
@@ -154,8 +154,8 @@
           if (res.data && res.data.length) {
             res.data.forEach((dd) => {
               this.xdata.push(dd.date)
-              arr1.push(dd.newCustomerScanNumber)
-              arr2.push(dd.addCustomerNumber)
+              arr1.push(dd.addWeCustomerNumber)
+              arr2.push(dd.weCustomerActiveNumber)
             })
             this.series = [arr1, arr2]
           }
