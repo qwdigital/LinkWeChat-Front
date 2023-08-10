@@ -22,7 +22,7 @@ import Mtext from './text'
 import Mimage from './image'
 import MimageText from './imageText'
 import Mapplet from './applet'
-let activeTab = 'text'
+let activeTab = ''
 export default {
   name: '',
   components: {
@@ -49,6 +49,9 @@ export default {
       <div>文本、图片等基础素材，可直接用于聊天话术、欢迎语等场景</div>
     `
     )
+    let first = 'text'
+    activeTab || (this.activeName = activeTab = first)
+    console.log(54, activeTab)
   },
 }
 </script>
