@@ -40,7 +40,6 @@ export default {
     }
   },
   created() {
-    this.activeName = 'text'
     this.$store.setBusininessDesc(
       `
       <div>文本、图片等基础素材，可直接用于聊天话术、欢迎语等场景</div>
