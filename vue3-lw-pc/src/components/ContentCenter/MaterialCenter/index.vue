@@ -197,6 +197,7 @@ export default {
         { list: [], label: '视频', name: 'video', type: '2' },
         { list: [], label: '文件', name: 'file', type: '3' },
         { list: [], label: '海报', name: 'poster', type: '5' },
+        { list: [], label: '外链', name: 'outChain', type: '19' },
       ]
       this.picindex = 1
       this.activeName = 'text'

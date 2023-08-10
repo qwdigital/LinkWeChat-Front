@@ -107,6 +107,9 @@
                         <el-dropdown-item :command="'5'">
                           <el-button text>海报</el-button>
                         </el-dropdown-item>
+                        <el-dropdown-item :command="'19'">
+                          <el-button text>外链</el-button>
+                        </el-dropdown-item>
                       </el-dropdown-menu>
                     </template>
                   </el-dropdown>
