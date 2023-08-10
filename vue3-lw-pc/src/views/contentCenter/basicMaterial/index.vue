@@ -2,12 +2,7 @@
   <div>
     <!-- 基础素材 -->
     <!-- <div class="g-card" style="padding: 10px"> -->
-    <el-tabs
-      v-model="activeName"
-      @tab-click="
-        (v) => ((activeTab = v.paneName) && opened.includes(v.paneName)) || opened.push(v.paneName)
-      "
-    >
+    <el-tabs v-model="activeName" @tab-click="tabClick">
       {{ activeTab }}
       <el-tab-pane v-for="(item, index) in list" :key="index" :label="item.label" :name="item.name">
         <component v-if="opened.includes(item.name)" :is="item.component"></component>
@@ -40,8 +35,14 @@ export default {
         { label: '图文', name: 'imageText', component: MimageText },
         { label: '小程序', name: 'applet', component: Mapplet },
       ],
-      opened: ['text'],
+      opened: [activeTab],
     }
+  },
+  methods: {
+    tabClick(v) {
+      activeTab = v.paneName
+      this.opened.includes(v.paneName) || this.opened.push(v.paneName)
+    },
   },
   created() {
     this.$store.setBusininessDesc(
@@ -51,7 +52,7 @@ export default {
     )
     let first = 'text'
     activeTab || (this.activeName = activeTab = first)
-    console.log(54, activeTab)
+    this.opened.push(activeTab)
   },
 }
 </script>
