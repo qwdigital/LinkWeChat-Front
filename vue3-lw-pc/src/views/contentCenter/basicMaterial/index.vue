@@ -4,8 +4,11 @@
     <!-- <div class="g-card" style="padding: 10px"> -->
     <el-tabs
       v-model="activeName"
-      @tab-click="(v) => opened.includes(v.paneName) || opened.push(v.paneName)"
+      @tab-click="
+        (v) => ((activeTab = v.paneName) && opened.includes(v.paneName)) || opened.push(v.paneName)
+      "
     >
+      {{ activeTab }}
       <el-tab-pane v-for="(item, index) in list" :key="index" :label="item.label" :name="item.name">
         <component v-if="opened.includes(item.name)" :is="item.component"></component>
       </el-tab-pane>
@@ -19,6 +22,7 @@ import Mtext from './text'
 import Mimage from './image'
 import MimageText from './imageText'
 import Mapplet from './applet'
+let activeTab = 'text'
 export default {
   name: '',
   components: {
@@ -29,7 +33,7 @@ export default {
   },
   data() {
     return {
-      activeName: 'text',
+      activeName: activeTab,
       list: [
         { label: '文本', name: 'text', component: Mtext },
         { label: '图片', name: 'image', component: Mimage },
