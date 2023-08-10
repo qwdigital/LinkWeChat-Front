@@ -75,7 +75,7 @@ export function getTableData(data) {
 // 导出
 export function getTableExport(data) {
   return request({
-    url: service + '',
+    url: service + '/exportLinkCount',
     params: data
   })
 }

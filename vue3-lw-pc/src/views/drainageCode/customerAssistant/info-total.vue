@@ -8,7 +8,10 @@
     </div>
     <div class="g-card">
       <div class="g-card-title">数据报表</div>
-      <el-button type="primary" @click="exportFn" v-loading="exportLoading">导出Excel</el-button>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <search-title :showMore="true" @search="getTableFn"></search-title>
+        <el-button type="primary" @click="exportFn" v-loading="exportLoading">导出Excel</el-button>
+      </div>
       <el-table v-loading="loading" :data="tableList" style="width: 100%;">
         <el-table-column label="日期" align="center" min-width="100" prop="date" show-overflow-tooltip />
         <el-table-column
@@ -145,7 +148,7 @@
         })
       },
       getLineData(data) {
-        data.id = this.id
+        data.linkId = this.id
         getLineData(data).then((res) => {
           this.xdata = []
           this.series = []
@@ -163,7 +166,7 @@
       },
       getTableChangeSize() {
         this.loading = true
-        this.query.id = this.id
+        this.query.linkId = this.id
         getTableData(Object.assign({}, this.query, this.tableSearch)).then((res) => {
           this.tableList = res.rows
           this.total = Number(res.total)
@@ -173,7 +176,7 @@
       getTableFn(data) {
         this.loading = true
         this.tableSearch = data
-        this.query.id = this.id
+        this.query.linkId = this.id
         getTableData(Object.assign({}, this.query, data)).then((res) => {
           this.tableList = res.rows
           this.total = Number(res.total)
@@ -184,7 +187,6 @@
     created() {
       this.id = this.$route.query.id
       this.getTabTotalFn()
-      this.getTableFn()
     }
   }
 </script>

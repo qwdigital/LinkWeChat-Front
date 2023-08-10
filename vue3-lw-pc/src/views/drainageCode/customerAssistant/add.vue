@@ -106,7 +106,7 @@
         </div>
       </template>
     </div>
-    <div class="g-card ac">
+    <div class="g-card ac g-footer-sticky">
       <template v-if="active === 0">
         <el-button @click="$router.back()">取消</el-button>
         <el-button type="primary" v-loading="loading" :disabled="loading" @click="submit">确定</el-button>
