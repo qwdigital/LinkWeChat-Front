@@ -1,6 +1,6 @@
 <template>
   <div class="g-card">
-    <search-title>
+    <search-title @search="getData">
       <template v-slot>
         <el-input :model-value="userNames" readonly @click="dialogVisible = true" placeholder="请选择添加员工" />
       </template>
@@ -79,6 +79,7 @@
       SearchTitle
     },
     methods: {
+      getData() {},
       goRoute(row) {
         let { externalUserid, firstUserId: userId } = row
         this.$router.push({
