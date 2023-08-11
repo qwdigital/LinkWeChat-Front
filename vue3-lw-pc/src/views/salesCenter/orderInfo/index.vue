@@ -43,96 +43,53 @@
         </el-scrollbar>
       </div>
       <div class="right">
-        <!-- <el-form :inline="true" label-width="" label-position="left" class="top-search fxnone">
-          <el-form-item label="活码名称">
-            <el-input
-              v-model="query.qrName"
-              placeholder="请输入活码名称"
-              clearable
-              @keyup.enter="search()"
-            />
-          </el-form-item>
-          <el-form-item label="选择员工" prop="qrUserName">
-            <el-input
-              :model-value="qrUserName"
-              readonly
-              @click="dialogVisible = true"
-              placeholder="请选择员工"
-            />
-          </el-form-item>
-          <el-form-item label-width="0">
-            <el-button type="primary" @click="search()">查询</el-button>
-            <el-button @click="resetQuery">重置</el-button>
-          </el-form-item>
-        </el-form> -->
         <div class="g-card">
           <div class="mid-action">
-            <el-button type="primary" @click="goRoute('staffAdd')">新建字段</el-button>
+            <el-button type="primary" @click="add">新建字段</el-button>
             <div>
               <el-button type="primary" plain @click="removeFn('mult')">批量删除</el-button>
             </div>
           </div>
 
           <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
-            <!-- height="calc(100vh - 325px)" -->
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column label="二维码" align="center" prop="qrCode" min-width="120">
-              <template #default="{ row }">
-                <el-image
-                  :src="row.qrCode"
-                  fit="fill"
-                  :preview-src-list="[row.qrCode]"
-                  style="width: 100px; height: 100px"
-                ></el-image>
-              </template>
-            </el-table-column>
             <el-table-column
-              label="活码名称"
+              label="字段名称"
               align="center"
               min-width="100"
               prop="name"
               show-overflow-tooltip
             />
             <el-table-column
-              label="活码分组"
+              label="字段类型"
               align="center"
               min-width="100"
-              prop="qrGroupName"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              label="使用员工"
-              align="center"
-              min-width="140"
-              prop="qrUserInfos"
+              prop="type"
               show-overflow-tooltip
             >
               <template #default="{ row }">
-                <!-- <template v-if="row.status === 1">
-                  <template v-for="(data, key) in row.weEmpleCodeUseScops" :key="key" >
-                    <span :key="key">{{data.businessName}}</span>  <span :key="key" v-if="key >0">','</span>
-                  </template>
-                </template> -->
-                <div v-for="(unit, key) in row.qrUserInfos" :key="key" style="display: inline">
-                  <template v-for="(item, index) in unit.weQrUserList" :key="index">
-                    <span>{{ item.userName + ' ' }}</span>
-                  </template>
-                </div>
+                {{ row.typeStr }}
               </template>
             </el-table-column>
-            <el-table-column label="标签" align="center" prop="qrTags" min-width="160px">
-              <template #default="{ row }">
-                <TagEllipsis :list="row.qrTags" defaultProps="tagName" />
-              </template>
-            </el-table-column>
-            <!-- <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180">
-            </el-table-column> -->
+
             <el-table-column
-              label="最近更新时间"
+              label="字段说明/字段值"
               align="center"
-              prop="updateTime"
-              width="180"
-            ></el-table-column>
+              min-width="100"
+              prop="type"
+              show-overflow-tooltip
+            >
+              <template #default="{ row }">
+                {{ row.expound ? row.expound : row.value ? row.value : '-' }}
+              </template>
+            </el-table-column>
+
+            <el-table-column label="最近操作记录" align="center" width="180">
+              <template #default="{ row }">
+                <div>{{}}</div>
+                <div>{{}}</div>
+              </template>
+            </el-table-column>
             <el-table-column
               label="操作"
               align="center"
@@ -141,48 +98,24 @@
               class-name="small-padding fixed-width"
             >
               <template #default="{ row }">
-                <el-button text @click="goRoute('staffAdd', row.id)">上移</el-button>
-                <el-button text @click="goRoute('staffAdd', row.id)">下移</el-button>
+                <el-button text @click="goRoute()" v-if="!row.isFirst">上移</el-button>
+                <el-button text @click="goRoute()" v-if="!row.isLast">下移</el-button>
                 <el-button text @click="goRoute('staffAdd', row.id)">编辑</el-button>
-                <!-- <el-button text @click="download(row.qrCode, row.name)">下载</el-button> -->
-                <el-button text @click="removeFn('single', row.id)">删除</el-button>
-                <!-- <el-dropdown style="margin-left: 10px">
-                  <el-button text>
-                    <el-icon-MoreFilled class="el-icon-MoreFilled"></el-icon-MoreFilled>
-                  </el-button>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>
-                      <el-button text @click="download(row.qrCode, row.name)">下载</el-button>
-                    </el-dropdown-item>
-                    <el-dropdown-item>
-                      <el-button text @click="removeFn('single', row.id)">删除</el-button>
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown> -->
+                <el-button text @click="removeFn('single', row.id)" v-if="row.fixed !== 1"
+                  >删除</el-button
+                >
               </template>
             </el-table-column>
           </el-table>
-          <!-- <div class="bottom"> -->
-
           <pagination
             :total="total"
             v-model:page="query.pageNum"
             v-model:limit="query.pageSize"
             @pagination="getList()"
           />
-          <!-- </div> -->
         </div>
       </div>
     </div>
-
-    <!-- 批量新建弹窗 -->
-    <!-- <SelectUser
-      v-model:visible="dialogVisible"
-      title="组织架构"
-      :defaultValues="userArray"
-      @success="getSelectUser"
-    ></SelectUser> -->
-
     <el-dialog :title="`${groupForm.id ? '修改' : '新建'}分组`" v-model="groupVisible" width="30%">
       <el-form :model="groupForm" :rules="rules" ref="groupForm">
         <el-form-item label="分组名称" prop="name" label-width="80px">
@@ -202,10 +135,12 @@
         </div>
       </template>
     </el-dialog>
+    <Add :visible="visible" :catalogueId="query.catalogueId" @close="handleClose" />
   </div>
 </template>
 
 <script>
+import Add from './add'
 import {
   getList,
   remove,
@@ -218,7 +153,7 @@ import {
 //
 export default {
   name: 'OrderInfo', // 订单信息
-  components: {},
+  components: { Add },
   data() {
     return {
       // 查询参数
@@ -268,6 +203,8 @@ export default {
         ],
       },
       groupIndex: 0,
+      visible: false,
+      typeList: [],
     }
   },
   created() {
@@ -280,6 +217,16 @@ export default {
   },
   mounted() {},
   methods: {
+    handleClose(val) {
+      if (val) {
+        // 新建字段提交
+        this.getList()
+      }
+      this.visible = val
+    },
+    add() {
+      this.visible = true
+    },
     move(direction, id) {
       let obj = { direction, id }
       moveCodeCategory(obj).then((res) => {
@@ -308,29 +255,16 @@ export default {
     switchGroup(index, data) {
       this.groupIndex = index
       this.query.catalogueId = data.id
+      this.getList()
       // this.search()
     },
-    // getSelectUser(data) {
-    //   this.userArray = data
-    //   this.qrUserName = this.userArray
-    //     .map(function (obj, index) {
-    //       return obj.name
-    //     })
-    //     .join(',')
-    //   this.query.qrUserIds = this.userArray
-    //     .map(function (obj, index) {
-    //       return obj.userId
-    //     })
-    //     .join(',')
-    // },
-    // search() {
-    //   this.query.pageNum = 1
-    //   this.getList()
-    // },
     getList() {
       this.loading = true
       getList(this.query)
         .then(({ rows, total }) => {
+          rows[0].isFirst = true
+          rows[rows.length - 1].isLast = true
+          console.log(268, rows)
           this.list = rows
           this.total = Number(total)
           this.loading = false

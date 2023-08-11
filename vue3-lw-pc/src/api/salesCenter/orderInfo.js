@@ -1,68 +1,19 @@
 import request from '@/utils/request'
 const base = window.lwConfig.services.wecom
-const groundBase = window.lwConfig.services.wecom + '/substitute/customer/order/catalogue'
-
-const service = window.lwConfig.services.wecom + '/category'
-
-export function download(data) {
-  // return request({
-  //   url: service + '/update',
-  //   method: 'put',
-  //   data
-  // })
-}
-export function getUserAddCustomerStat(data) {
-  // return request({
-  //   url: service + '/update',
-  //   method: 'put',
-  //   data
-  // })
-}
-
-/**
- * 批量新增员工活码
- * @param {*} data
- */
-export function batchAdd(data) {
-  return request({
-    url: service + '/batchAdd',
-    method: 'post',
-    data,
-  })
-}
-
-/**
- * 删除员工活码
- * @param {*} id
- */
-
-/**
- *获取员工二维码
- * @param {*} params
-{
-  userIds=员工id,多个逗号隔离&
-  departmentIds=部门id,多个逗号隔离
-}
- */
-export function getQrcode(params) {
-  return request({
-    url: service + '/getQrcode',
-    params,
-  })
-}
+const groundBase = window.lwConfig.services.wecom + '/substitute/customer/order'
 
 // 2.0
 // 分组list
 export function getCodeCategoryList() {
   return request({
-    url: groundBase,
+    url: groundBase + '/catalogue',
   })
 }
 
 // 新增分组
 export function addCodeCategory(data) {
   return request({
-    url: groundBase,
+    url: groundBase + '/catalogue',
     method: 'post',
     data: data,
   })
@@ -71,7 +22,7 @@ export function addCodeCategory(data) {
 // 更新分组
 export function updateCodeCategory(data) {
   return request({
-    url: groundBase,
+    url: groundBase + '/catalogue',
     method: 'put',
     data: data,
   })
@@ -80,7 +31,7 @@ export function updateCodeCategory(data) {
 // 删除分组
 export function removeCodeCategory(id) {
   return request({
-    url: groundBase + '/' + id,
+    url: groundBase + '/catalogue/' + id,
     method: 'delete',
   })
 }
@@ -88,56 +39,55 @@ export function removeCodeCategory(id) {
 // 移动分组
 export function moveCodeCategory(data) {
   return request({
-    url: groundBase + '/move',
+    url: groundBase + '/catalogue/move',
     method: 'put',
     data: data,
   })
 }
 
-// 活码列表
+// 列表
 export function getList(params) {
   return request({
-    url: base + '/qr/list',
+    url: groundBase + '/property',
     params,
   })
 }
 
-// 活码删除
+// 列表删除
 export function remove(id) {
   return request({
-    url: base + '/qr/del/' + id,
+    url: groundBase + '/property' + id,
     method: 'delete',
   })
 }
 
-// 活码新增
+// 列表新增
 export function add(data) {
   return request({
-    url: base + '/qr/add',
+    url: groundBase + '/property',
     method: 'post',
     data,
   })
 }
-
+// 列表修改
 export function update(data) {
   return request({
-    url: base + '/qr/update',
+    url: groundBase + '/property',
     method: 'put',
     data,
   })
 }
 
-// 活码详情
+// 列表详情
 export function getDetail(id) {
   return request({
-    url: base + '/qr/get/' + id,
+    url: groundBase + '/property' + id,
   })
 }
 
-// 活码统计
-export function getTotal(data) {
+// 字段类型列表
+export function getTypeList() {
   return request({
-    url: base + '/qr/scan/count',
-    params: data,
+    url: groundBase + '/property/type',
   })
 }
