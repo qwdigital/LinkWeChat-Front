@@ -66,7 +66,8 @@
         query: {
           pageSize: 10,
           pageNum: 1,
-          weUserId: ''
+          weUserId: '',
+          linkId: ''
         },
         total: 0,
         userNames: '',
@@ -77,6 +78,9 @@
     },
     components: {
       SearchTitle
+    },
+    created() {
+      this.query.linkId = this.$route.query.id
     },
     methods: {
       getData(data) {
