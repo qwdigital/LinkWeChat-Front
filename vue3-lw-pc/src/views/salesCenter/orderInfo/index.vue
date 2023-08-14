@@ -7,7 +7,7 @@
             <el-icon-arrow-up class="el-icon-arrow-up mr5"></el-icon-arrow-up>
             全部
           </div>
-          <div class="title-btn" @click="addGroup">添加</div>
+          <div class="title-btn" @click="addGroup(0)">添加</div>
         </div>
         <el-scrollbar class="item-list">
           <div
@@ -98,8 +98,12 @@
               class-name="small-padding fixed-width"
             >
               <template #default="{ row }">
-                <el-button text @click="goRoute()" v-if="!row.isFirst">上移</el-button>
-                <el-button text @click="goRoute()" v-if="!row.isLast">下移</el-button>
+                <el-button text @click="getListMove(row.catalogueId, row.id, 0)" v-if="!row.isFirst"
+                  >上移</el-button
+                >
+                <el-button text @click="getListMove(row.catalogueId, row.id, 1)" v-if="!row.isLast"
+                  >下移</el-button
+                >
                 <el-button text @click="goRoute('staffAdd', row.id)">编辑</el-button>
                 <el-button text @click="removeFn('single', row.id)" v-if="row.fixed !== 1"
                   >删除</el-button
@@ -144,6 +148,7 @@ import Add from './add'
 import {
   getList,
   remove,
+  listMove,
   getCodeCategoryList,
   addCodeCategory,
   updateCodeCategory,
@@ -217,6 +222,15 @@ export default {
   },
   mounted() {},
   methods: {
+    getListMove(catalogueId, id, direction) {
+      let obj = { id, direction, catalogueId }
+      listMove(obj).then((res) => {
+        console.log(res)
+        if (res.code === 200) {
+          this.getList()
+        }
+      })
+    },
     handleClose(val) {
       if (val) {
         // 新建字段提交
@@ -256,7 +270,6 @@ export default {
       this.groupIndex = index
       this.query.catalogueId = data.id
       this.getList()
-      // this.search()
     },
     getList() {
       this.loading = true
@@ -264,7 +277,6 @@ export default {
         .then(({ rows, total }) => {
           rows[0].isFirst = true
           rows[rows.length - 1].isLast = true
-          console.log(268, rows)
           this.list = rows
           this.total = Number(total)
           this.loading = false

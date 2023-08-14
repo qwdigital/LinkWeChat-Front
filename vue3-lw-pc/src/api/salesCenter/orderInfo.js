@@ -91,3 +91,12 @@ export function getTypeList() {
     url: groundBase + '/property/type',
   })
 }
+
+// 列表修改
+export function listMove(data) {
+  return request({
+    url: groundBase + '/property/move',
+    method: 'put',
+    data,
+  })
+}
