@@ -56,7 +56,7 @@ export function getList(params) {
 // 列表删除
 export function remove(id) {
   return request({
-    url: groundBase + '/property' + id,
+    url: groundBase + '/property/' + id,
     method: 'delete',
   })
 }
@@ -81,7 +81,7 @@ export function update(data) {
 // 列表详情
 export function getDetail(id) {
   return request({
-    url: groundBase + '/property' + id,
+    url: groundBase + '/property/' + id,
   })
 }
 

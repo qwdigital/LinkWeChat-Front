@@ -45,13 +45,18 @@
       <div class="right">
         <div class="g-card">
           <div class="mid-action">
-            <el-button type="primary" @click="add">新建字段</el-button>
+            <el-button type="primary" @click="add(0)">新建字段</el-button>
             <div>
               <el-button type="primary" plain @click="removeFn('mult')">批量删除</el-button>
             </div>
           </div>
 
-          <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
+          <el-table
+            v-loading="loading"
+            :data="list"
+            @selection-change="handleSelectionChange"
+            :default-sort="{ prop: 'sort', order: 'descending' }"
+          >
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column
               label="字段名称"
@@ -86,8 +91,8 @@
 
             <el-table-column label="最近操作记录" align="center" width="180">
               <template #default="{ row }">
-                <div>{{}}</div>
-                <div>{{}}</div>
+                <div>{{ row.updateBy }}</div>
+                <div>{{ row.updateTime }}</div>
               </template>
             </el-table-column>
             <el-table-column
@@ -104,7 +109,7 @@
                 <el-button text @click="getListMove(row.catalogueId, row.id, 1)" v-if="!row.isLast"
                   >下移</el-button
                 >
-                <el-button text @click="goRoute('staffAdd', row.id)">编辑</el-button>
+                <el-button text @click="add(row.id)">编辑</el-button>
                 <el-button text @click="removeFn('single', row.id)" v-if="row.fixed !== 1"
                   >删除</el-button
                 >
@@ -139,7 +144,12 @@
         </div>
       </template>
     </el-dialog>
-    <Add :visible="visible" :catalogueId="query.catalogueId" @close="handleClose" />
+    <Add
+      :visible="visible"
+      :catalogueId="query.catalogueId"
+      :editId="editId"
+      @close="handleClose"
+    />
   </div>
 </template>
 
@@ -210,6 +220,7 @@ export default {
       groupIndex: 0,
       visible: false,
       typeList: [],
+      editId: undefined,
     }
   },
   created() {
@@ -225,7 +236,6 @@ export default {
     getListMove(catalogueId, id, direction) {
       let obj = { id, direction, catalogueId }
       listMove(obj).then((res) => {
-        console.log(res)
         if (res.code === 200) {
           this.getList()
         }
@@ -238,8 +248,12 @@ export default {
       }
       this.visible = val
     },
-    add() {
+    add(id) {
       this.visible = true
+      if (id) {
+        // 编辑
+        this.editId = id
+      }
     },
     move(direction, id) {
       let obj = { direction, id }
@@ -318,8 +332,8 @@ export default {
           return remove(ids)
         })
         .then(() => {
-          // this.search()
           this.msgSuccess('删除成功')
+          this.getList()
         })
         .catch(function () {})
     },

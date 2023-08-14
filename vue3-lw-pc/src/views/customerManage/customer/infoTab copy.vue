@@ -223,9 +223,8 @@ export default {
   <div>
     <el-row :gutter="10">
       <el-col :span="24">
-        
         <div class="left">
-          <!-- <el-card class="mb10" shadow="never">
+          <el-card class="mb10" shadow="never">
             <template #header><div class="card-title">企业标签</div></template>
             <template v-if="portrayalSum.companyTags && portrayalSum.companyTags.length">
               <div
@@ -233,7 +232,7 @@ export default {
                 :key="index"
                 :class="['flex  ait', index && 'mt20']"
               >
-                汇总的场景显示名字
+                <!-- 汇总的场景显示名字 -->
                 <template v-if="!userId">
                   <div class="name oe g-bg-lg">{{ item.userName }}</div>
                 </template>
@@ -246,9 +245,9 @@ export default {
               </div>
             </template>
             <div v-else class="g-tip-color ac">暂无标签</div>
-          </el-card> -->
+          </el-card>
 
-          <!-- <el-card class="mb10" shadow="never">
+          <el-card class="mb10" shadow="never">
             <template #header><div class="card-title">个人标签</div></template>
             <template v-if="portrayalSum.personTags && portrayalSum.personTags.length">
               <div
@@ -256,7 +255,7 @@ export default {
                 :key="index"
                 :class="['flex aic', index && 'mt20']"
               >
-                汇总的场景显示名字
+                <!-- 汇总的场景显示名字 -->
                 <template v-if="!userId">
                   <div class="name oe g-bg-lg">{{ item.userName }}</div>
                 </template>
@@ -269,10 +268,10 @@ export default {
               </div>
             </template>
             <div v-else class="g-tip-color ac">暂无标签</div>
-          </el-card> -->
+          </el-card>
 
           <template v-if="userId">
-            <!-- <el-card class="mb10" shadow="never">
+            <el-card class="mb10" shadow="never">
               <template #header><div class="card-title">共同群聊</div></template>
               <template v-if="portrayalSum.commonGroupChat">
                 <el-tag
@@ -284,7 +283,7 @@ export default {
                 </el-tag>
               </template>
               <div v-else class="g-tip-color ac">暂无数据</div>
-            </el-card> -->
+            </el-card>
 
             <el-card class="mb10" shadow="never">
               <template #header><div class="card-title">详细资料</div></template>
@@ -393,7 +392,7 @@ export default {
                 :key="index"
                 :class="['flex aic', index && 'mt20']"
               >
-                汇总的场景显示名字
+                <!-- 汇总的场景显示名字 -->
                 <template v-if="!userId">
                   <div class="name oe g-bg-lg">{{ item.userName }}</div>
                 </template>
@@ -436,6 +435,8 @@ export default {
                     </template>
                   </el-steps>
                 </template>
+                <!-- </el-steps> -->
+                <!-- </template> -->
                 <div v-else class="g-tip-color ac">暂无数据</div>
               </div>
             </template>

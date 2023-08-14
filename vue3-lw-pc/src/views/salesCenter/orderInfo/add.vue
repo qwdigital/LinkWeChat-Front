@@ -107,11 +107,32 @@ export default {
       type: String,
       default: '',
     },
+    editId: {
+      type: String,
+      default: '',
+    },
   },
   watch: {
     visible: {
       handler(data) {
         this.dialogVisible = data
+        if (!data) {
+          this.ruleForm = {
+            type: 0,
+            money: 1,
+            required: 1,
+            multipleChoice: 0,
+            more: 0,
+            toTime: 0,
+          }
+          this.$refs['ruleForm'].resetFields()
+        }
+      },
+    },
+    editId: {
+      handler(val) {
+        this.id = val
+        this.getDetail(val)
       },
     },
   },
@@ -138,9 +159,15 @@ export default {
         value: [{ required: true, message: '请输入字段值', trigger: 'blur' }],
       },
       typeList: [],
+      id: undefined,
     }
   },
   methods: {
+    getDetail(id) {
+      getDetail(id).then((res) => {
+        this.ruleForm = res.data
+      })
+    },
     // 点击×按钮
     handleClose() {
       this.$emit('close', false)
@@ -153,7 +180,10 @@ export default {
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
           this.ruleForm.catalogueId = this.catalogueId
-          add(this.ruleForm).then((res) => {
+          if (this.id) {
+            this.ruleForm.id = this.id
+          }
+          ;(this.id ? update : add)(this.ruleForm).then((res) => {
             if (res.code === 200) {
               this.msgSuccess(res.msg)
               this.dialogVisible = false
