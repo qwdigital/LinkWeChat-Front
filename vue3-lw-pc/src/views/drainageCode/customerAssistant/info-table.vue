@@ -84,6 +84,7 @@
     },
     methods: {
       getData(data) {
+        this.query.linkId = this.$route.query.id
         getCustomerInLink(Object.assign({}, this.query, data)).then((res) => {
           this.list = res.rows
           this.total = res.total
