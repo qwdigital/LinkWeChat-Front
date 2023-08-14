@@ -89,7 +89,7 @@ export default {
     transformTitle(title) {
       // 对于详情和添加为同一个路由的面包屑处理
       // 匹配菜单标题中带有 {*} 的公用路由
-      let reg = /^\{(.*)\}$/gi
+      let reg = /^\{(.*)\}/gi
       if (reg.test(title)) {
         let query = this.$route.query
         if (query && query.id) {

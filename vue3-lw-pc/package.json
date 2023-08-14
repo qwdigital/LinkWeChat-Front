@@ -60,12 +60,14 @@
     "@vue/compat": "^3.2.47",
     "rollup-plugin-visualizer": "^5.9.2",
     "sass": "^1.62.1",
+    "sharp": "^0.32.4",
     "terser": "^5.17.7",
     "unplugin-auto-import": "^0.15.3",
     "unplugin-vue-components": "^0.24.1",
     "vite": "^4.1.4",
     "vite-plugin-cdn-import": "^0.3.5",
     "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-image-optimizer": "^1.1.6",
     "vite-plugin-require-transform": "^1.0.12"
   }
 }

@@ -6,7 +6,8 @@
         <el-tooltip
           :content="row.materialName"
           placement="top"
-          :disabled="row.materialName ? row.materialName.length < 12 : true">
+          :disabled="row.materialName ? row.materialName.length < 12 : true"
+        >
           <span class="title">{{ coverContent(row.materialName, 12) }}</span>
         </el-tooltip>
         <!-- 文本 -->
@@ -22,11 +23,20 @@
         </div>
         <!-- 图文 -->
         <div v-if="row.mediaType === '9'" style="display: flex">
-          <el-image :src="row.coverUrl" fit="contain" class="imgsize" v-if="row.coverUrl"></el-image>
+          <el-image
+            :src="row.coverUrl"
+            fit="contain"
+            class="imgsize"
+            v-if="row.coverUrl"
+          ></el-image>
           <div class="icon-style" v-else>
             <svg-icon class="icon-style" icon="imgText"></svg-icon>
           </div>
-          <el-tooltip :content="row.content" placement="top" :disabled="row.content ? row.content.length < 50 : true">
+          <el-tooltip
+            :content="row.content"
+            placement="top"
+            :disabled="row.content ? row.content.length < 50 : true"
+          >
             <span class="twosplice distStyle">{{ coverContent(row.content, 50) }}</span>
           </el-tooltip>
         </div>
@@ -36,18 +46,31 @@
         </div>
         <!-- 文章 -->
         <div v-if="row.mediaType === '12'" style="display: flex">
-          <el-image :src="row.coverUrl" fit="contain" class="imgsize" v-if="row.coverUrl"></el-image>
+          <el-image
+            :src="row.coverUrl"
+            fit="contain"
+            class="imgsize"
+            v-if="row.coverUrl"
+          ></el-image>
           <div class="icon-style" v-else>
             <svg-icon class="icon-style" icon="article"></svg-icon>
           </div>
-          <el-tooltip :content="row.digest" placement="top" :disabled="row.digest ? row.digest.length < 50 : true">
+          <el-tooltip
+            :content="row.digest"
+            placement="top"
+            :disabled="row.digest ? row.digest.length < 50 : true"
+          >
             <span class="twosplice distStyle">{{ coverContent(row.digest, 50) }}</span>
           </el-tooltip>
         </div>
         <!-- 视频 -->
         <div v-if="row.mediaType === '2'" style="display: flex">
           <el-image :src="row.coverUrl" fit="contain" class="imgsize"></el-image>
-          <el-tooltip :content="row.digest" placement="top" :disabled="row.digest ? row.digest.length < 50 : true">
+          <el-tooltip
+            :content="row.digest"
+            placement="top"
+            :disabled="row.digest ? row.digest.length < 50 : true"
+          >
             <span class="twosplice distStyle">{{ coverContent(row.digest, 50) }}</span>
           </el-tooltip>
         </div>
@@ -55,16 +78,27 @@
         <div v-if="row.mediaType === '3'" style="display: flex">
           <!-- <el-image :src="row.coverUrl" fit="contain" class="imgsize"></el-image> -->
           <div class="icon-style" v-if="row.materialUrl">
-            <svg-icon class="icon-style" :icon="row.materialUrl ? filType(row.materialUrl) : ''"></svg-icon>
+            <svg-icon
+              class="icon-style"
+              :icon="row.materialUrl ? filType(row.materialUrl) : ''"
+            ></svg-icon>
           </div>
-          <el-tooltip :content="row.digest" placement="top" :disabled="row.digest ? row.digest.length < 50 : true">
+          <el-tooltip
+            :content="row.digest"
+            placement="top"
+            :disabled="row.digest ? row.digest.length < 50 : true"
+          >
             <span class="twosplice distStyle">{{ coverContent(row.digest, 50) }}</span>
           </el-tooltip>
         </div>
         <!-- 海报 -->
         <div v-if="row.mediaType === '5'" style="display: flex">
           <el-image :src="row.materialUrl" fit="contain" class="imgsize"></el-image>
-          <el-tooltip :content="row.digest" placement="top" :disabled="row.digest ? row.digest.length < 50 : true">
+          <el-tooltip
+            :content="row.digest"
+            placement="top"
+            :disabled="row.digest ? row.digest.length < 50 : true"
+          >
             <span class="twosplice distStyle">{{ coverContent(row.digest, 50) }}</span>
           </el-tooltip>
         </div>
@@ -121,7 +155,7 @@ export default {
       return btoa(
         encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function toSolidBytes(match, p1) {
           return String.fromCharCode('0x' + p1)
-        }),
+        })
       )
     },
     preview(row) {
@@ -178,6 +212,9 @@ export default {
           break
         case '5':
           return '海报'
+          break
+        case '19':
+          return '外链'
           break
       }
     },

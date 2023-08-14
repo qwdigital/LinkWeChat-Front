@@ -1,11 +1,13 @@
-// import { request } from '@/utils/request'
-// const { get, post, put, del: _del } = request
+// import { requestOpen } from '@/utils/request'
+// const { get, post, put, del: _del } = requestOpen
+// const serve = '/serve'
+
 // /**
 //  * 列表
 //  * @param {*} data
 //  */
 // export function getList(data) {
-//   get(service + '/statistic', data)
+// return get(`${serve}/get/${id}`)
 // }
 
 // // 详情
@@ -15,7 +17,7 @@
 
 // // 删除
 // export function del(id) {
-//   return _del(service + '/delete/' + id)
+// return _del(`${serve}/delete/${id}`)
 // }
 
 // /**
@@ -24,12 +26,12 @@
 //  * @returns
 //  */
 // export function add(data) {
-//   return post(service + '/add', data)
+// return post(`${serve}/add`, data)
 // }
 
 // // 修改
 // export function update(data) {
-//   return put(service + '/update/' + id, data)
+// return put(`${serve}/update`, data)
 // }
 
 import { decryptAES } from '@/utils/jsencrypt'

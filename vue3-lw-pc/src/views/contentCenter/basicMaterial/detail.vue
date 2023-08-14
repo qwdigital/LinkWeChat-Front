@@ -6,16 +6,29 @@
           <el-form ref="form" :model="form" :rules="rules" label-width="100px">
             <div style="display: flex; justify-content: space-between; margin-bottom: 10px">
               <div style="display: flex">
-                <el-form-item :label="typeTitle[type] + '标题'" prop="materialName" v-if="!disabled && type !== '0'">
+                <el-form-item
+                  :label="typeTitle[type] + '标题'"
+                  prop="materialName"
+                  v-if="!disabled && type !== '0'"
+                >
                   <el-input
                     v-model="form.materialName"
                     placeholder="请输入标题"
                     :maxlength="titleLength"
                     show-word-limit
-                    :disabled="disabled"></el-input>
+                    :disabled="disabled"
+                  ></el-input>
                 </el-form-item>
-                <el-form-item :label="typeTitle[type] + '标题'" prop="materialName" v-if="!disabled && type === '0'">
-                  <el-input v-model="form.materialName" placeholder="请输入标题" :disabled="true"></el-input>
+                <el-form-item
+                  :label="typeTitle[type] + '标题'"
+                  prop="materialName"
+                  v-if="!disabled && type === '0'"
+                >
+                  <el-input
+                    v-model="form.materialName"
+                    placeholder="请输入标题"
+                    :disabled="true"
+                  ></el-input>
                 </el-form-item>
                 <div class="title" v-else-if="disabled">{{ form.materialName }}</div>
                 <el-form-item prop="categoryId" label="选择分组" v-if="!disabled">
@@ -23,7 +36,8 @@
                     v-model="form.categoryId"
                     :options="treeData[0].children"
                     :props="groupProps"
-                    :disabled="disabled"></el-cascader>
+                    :disabled="disabled"
+                  ></el-cascader>
                 </el-form-item>
                 <div v-else class="group">
                   {{ form.categoryId === '1' ? '默认分组' : form.categoryName }}
@@ -43,9 +57,16 @@
                   maxlength="1000"
                   show-word-limit
                   :disabled="disabled"
-                  :rows="4"></TextareaExtend>
+                  :rows="4"
+                ></TextareaExtend>
               </el-form-item>
-              <el-input v-model="form.content" type="textarea" :disabled="disabled" :rows="4" v-else></el-input>
+              <el-input
+                v-model="form.content"
+                type="textarea"
+                :disabled="disabled"
+                :rows="4"
+                v-else
+              ></el-input>
             </div>
             <!-- 图片 -->
             <div v-if="type === '0'">
@@ -68,7 +89,9 @@
                   <el-image
                     style="width: 200px; height: 200px; flex: none"
                     :src="form.materialUrl"
-                    fit="fill"></el-image>
+                    :preview-src-list="[form.materialUrl]"
+                    fit="fill"
+                  ></el-image>
                 </div>
               </div>
             </div>
@@ -87,13 +110,15 @@
                     :maxlength="128"
                     show-word-limit
                     :autosize="{ minRows: 3, maxRows: 50 }"
-                    placeholder="请输入图文描述"></el-input>
+                    placeholder="请输入图文描述"
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="图文地址" prop="materialUrl">
                   <el-input
                     v-model="form.materialUrl"
                     type="text"
-                    placeholder="请输入图文地址，以http://或https://开头"></el-input>
+                    placeholder="请输入图文地址，以http://或https://开头"
+                  ></el-input>
                 </el-form-item>
               </div>
               <div v-else>
@@ -102,14 +127,18 @@
                     style="width: 200px; height: 200px; flex: none"
                     :src="form.coverUrl"
                     fit="fill"
-                    v-if="form.coverUrl"></el-image>
+                    v-if="form.coverUrl"
+                    :preview-src-list="[form.coverUrl]"
+                  ></el-image>
                   <svg-icon v-else class="icon-style" icon="imgText"></svg-icon>
                   <div class="ml10">
                     <div style="text-align: left; over-flow: hidden; margin-bottom: 20px">
                       {{ form.content && form.content.toString() }}
                     </div>
                     <div>
-                      <a class="previewStyle" :href="form.materialUrl" target="_blank">{{ form.materialUrl }}</a>
+                      <a class="previewStyle" :href="form.materialUrl" target="_blank">{{
+                        form.materialUrl
+                      }}</a>
                     </div>
                   </div>
                 </div>
@@ -127,12 +156,19 @@
                   <el-input v-model="form.digest" placeholder="小程序AppID"></el-input>
                 </el-form-item>
                 <el-form-item label="页面路径" prop="materialUrl" :rules="rules.html">
-                  <el-input v-model="form.materialUrl" placeholder="请输入小程序路径，必须以 html 作为后缀"></el-input>
+                  <el-input
+                    v-model="form.materialUrl"
+                    placeholder="请输入小程序路径，必须以 html 作为后缀"
+                  ></el-input>
                 </el-form-item>
               </div>
               <div v-else>
                 <div class="cp flex">
-                  <el-image style="width: 200px; height: 200px; flex: none" :src="form.coverUrl" fit="fill"></el-image>
+                  <el-image
+                    style="width: 200px; height: 200px; flex: none"
+                    :src="form.coverUrl"
+                    fit="fill"
+                  ></el-image>
                   <div class="ml10">
                     <div style="text-align: left; over-flow: hidden; margin-bottom: 20px">
                       小程序ID：{{ form.digest }}
@@ -148,7 +184,12 @@
           <div class="g-card-title">数据趋势</div>
           <CardGroupIndex :data="cardData"></CardGroupIndex>
           <search-title @search="getLineData"></search-title>
-          <chart-line style="height: 300px" :legend="legend" :xData="xdata" :series="series"></chart-line>
+          <chart-line
+            style="height: 300px"
+            :legend="legend"
+            :xData="xdata"
+            :series="series"
+          ></chart-line>
         </div>
         <div class="g-card">
           <div class="g-card-title">
@@ -161,22 +202,34 @@
               <el-icon-QuestionFilled  slot="reference" class="el-icon-QuestionFilled"/>
             </el-popover> -->
           </div>
-          <search-title :showToday="true" @search="getTableData" style="margin-top: 20px"></search-title>
+          <search-title
+            :showToday="true"
+            @search="getTableData"
+            style="margin-top: 20px"
+          ></search-title>
           <el-table v-loading="loading" :data="tableList" style="width: 100%">
-            <el-table-column label="发送员工" align="center" min-width="100" prop="sendBy" show-overflow-tooltip />
+            <el-table-column
+              label="发送员工"
+              align="center"
+              min-width="100"
+              prop="sendBy"
+              show-overflow-tooltip
+            />
             <el-table-column
               label="发送次数"
               align="center"
               min-width="100"
               prop="sendTotalNum"
-              show-overflow-tooltip />
+              show-overflow-tooltip
+            />
           </el-table>
           <!-- <div class="bottom"> -->
           <pagination
             :total="total"
             v-model:page="query.pageNum"
             v-model:limit="query.pageSize"
-            @pagination="getTableChangeSize()" />
+            @pagination="getTableChangeSize()"
+          />
           <!-- </div> -->
         </div>
       </div>

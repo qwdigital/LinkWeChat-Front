@@ -130,6 +130,45 @@
             <div class="sub-des">必须以 http://或 https://开头</div>
           </el-form-item>
         </template>
+        <!-- 外链 -->
+        <template v-else-if="type === '19'">
+          <el-form-item label="外链地址" prop="materialUrl">
+            <el-input
+              v-model="form.materialUrl"
+              type="text"
+              placeholder="请输入外链地址，以http://或https://开头"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="外链标题" prop="materialName">
+            <el-input
+              v-model="form.materialName"
+              type="text"
+              :maxlength="32"
+              show-word-limit
+              placeholder="请输入外链标题"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="外链描述">
+            <el-input
+              v-model="form.content"
+              type="textarea"
+              :maxlength="128"
+              show-word-limit
+              :autosize="{ minRows: 3, maxRows: 50 }"
+              placeholder="请输入外链描述"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="外链封面">
+            <Upload
+              v-model:fileUrl="form.coverUrl"
+              v-model:imgSize="form.memorySize"
+              type="0"
+              v-if="dialogVisible"
+            >
+              <template #tip><div>支持jpg/jpeg/png格式，建议200*200</div></template>
+            </Upload>
+          </el-form-item>
+        </template>
 
         <!-- 小程序标题 -->
         <template v-else-if="type === '11'">
@@ -352,6 +391,11 @@ export default {
         '文章',
         '企业话术',
         '客服话术',
+        '智能表单',
+        'SOP模板',
+        '群发模板',
+        '收集表',
+        '外链',
       ],
       // 表单校验
       rules: Object.freeze({

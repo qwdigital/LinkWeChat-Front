@@ -1,3 +1,4 @@
+<!-- 服务包弹窗 -->
 <template>
   <div class="sidebar-container">
     <el-scrollbar wrap-class="scrollbar-wrapper">
@@ -12,7 +13,7 @@
           :key="route.path + index"
           :item="route"
           level="1"
-          :base-path="route.path" />
+          :base-path="resolvePath(route.path)" />
       </el-menu>
     </el-scrollbar>
 
@@ -69,10 +70,12 @@
 </template>
 
 <script>
+import path from 'path-browserify'
 import { mapState } from 'pinia'
 import stores from '@/stores'
 
 import SidebarItem from './SidebarItem'
+// import ServeDialog from './ServeDialog'
 
 export default {
   components: { SidebarItem },
@@ -95,9 +98,17 @@ export default {
       return false
     },
   },
+  // mounted() {
+  //   this.$nextTick(() => {
+  //     console.log(this.$refs.serveDialog)
+  //   })
+  // },
   methods: {
     goto(url) {
       window.open(url)
+    },
+    resolvePath(pathStr) {
+      return path.resolve(this.sidebarRouters.parentRoute.path, pathStr)
     },
   },
 }
@@ -250,6 +261,17 @@ export default {
   }
 }
 
+.serve-card {
+  margin: 0 24px 24px;
+  padding: 15px;
+  cursor: pointer;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+  color: var(--color);
+  background: var(--color-light-9);
+  border-radius: var(--border-radius);
+}
 .card {
   // color: var(--font-white, #fff);
   // padding: 20px;

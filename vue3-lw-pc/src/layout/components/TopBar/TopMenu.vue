@@ -23,7 +23,7 @@ export default {
     // 顶部显示菜单
     topMenus() {
       let topMenus = []
-      this.routers.map((menu) => {
+      this.topbarRouters.map((menu) => {
         if (menu.hidden !== true) {
           // 兼容顶部栏一级菜单内部跳转 (you bug)
           // if (menu.path === '/') {
@@ -35,8 +35,8 @@ export default {
       })
       return topMenus
     },
-    routers() {
-      console.log(this.$store.permission.topbarRouters)
+    topbarRouters() {
+      // console.log(this.$store.permission.topbarRouters)
       return this.$store.permission.topbarRouters
     },
     // 激活的/高亮的一级菜单路径 eg：/drainageCode
@@ -93,10 +93,11 @@ export default {
     },
     // 当前激活的侧边栏菜单
     activeRoutes(path) {
-      let activeRoute = this.routers.find((e) => e.path == path)
+      let activeRoute = this.topbarRouters.find((e) => e.path == path)
       let routes = (activeRoute && activeRoute.children) || []
       if (routes.length > 0) {
         this.$store.permission.sidebarRouters = routes
+        this.$store.permission.sidebarRouters.parentRoute = activeRoute
       }
       return routes
     },

@@ -98,24 +98,26 @@ export function selectDictLabels(datas, value, separator) {
 
 /**
  * 下载bolb文件
- * @param {*} blob bolo源数据
- * @param {*} type 文件类型
- * @param {*} downloadName 下载文件名，需含文件后缀名
+ * @param {*} blob bolo源数据 必需
+ * @param {*} type 文件类型 必需
+ * @param {*} downloadName 下载文件名，需含文件后缀名 可选
  */
-export function downloadBlob(blob, type, downloadName) {
-  const typeDict = {
-    excel: 'application/vnd.ms-excel',
-    zip: 'application/zip',
-    image: 'application/image',
+export function downloadBlob(blob, downloadName, type) {
+  if (blob && downloadName) {
+    const typeDict = {
+      excel: 'application/vnd.ms-excel',
+      zip: 'application/zip',
+      image: 'application/image',
+    }
+    type && (blob = new Blob([blob], { type: typeDict[type] || type }))
+    let url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a') // 创建a标签
+    a.href = url
+    a.download = dateFormat(new Date(), 'YYYY-MM-DD HH-mm-ss-') + downloadName // 下载文件名，不能包含英文 : 冒号
+    a.click()
+    a.remove()
+    URL.revokeObjectURL(url) // 释放内存
   }
-  blob = new Blob([blob], { type: typeDict[type] || type })
-  let url = window.URL.createObjectURL(blob)
-  const a = document.createElement('a') // 创建a标签
-  a.href = url
-  a.download = dateFormat(new Date(), 'YYYY-MM-DD HH：mm：ss-') + downloadName // 下载文件名，不能包含英文 : 冒号
-  a.click()
-  a.remove()
-  URL.revokeObjectURL(url) // 释放内存
 }
 
 // 通用下载方法 系统内部

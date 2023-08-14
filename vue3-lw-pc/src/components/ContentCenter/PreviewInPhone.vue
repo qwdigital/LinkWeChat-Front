@@ -6,7 +6,10 @@
         <div class="avatar222"><img src="../../assets/drainageCode/header.png" /></div>
         <div class="msg">
           <div class="word">
-            <p style="line-height: 18px" v-html="templateInfo?.replace(/\n|\r\n/g, '<br>').replace(/ /g, ' &nbsp')"></p>
+            <p
+              style="line-height: 18px"
+              v-html="templateInfo?.replace(/\n|\r\n/g, '<br>').replace(/ /g, ' &nbsp')"
+            ></p>
             <div v-if="liveUrl" style="margin-top: 10px">
               <p>直播链接:</p>
               {{ liveUrl }}
@@ -26,7 +29,7 @@
             <img :src="data.materialUrl" />
           </div>
         </div>
-        <div class="msg" v-if="data.mediaType === '9'">
+        <div class="msg" v-if="['9'].includes(data.mediaType)">
           <div class="word-and-image">
             <div>
               {{ data.materialName }}
@@ -38,6 +41,22 @@
               <div>
                 <img :src="data.coverUrl" v-if="data.coverUrl && data.coverUrl != ''" />
                 <svg-icon class="icon-style" icon="imgText" v-else></svg-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="msg" v-if="['19'].includes(data.mediaType)">
+          <div class="word-and-image">
+            <div>
+              {{ data.materialName }}
+            </div>
+            <div class="sub-content">
+              <div>
+                {{ data.content }}
+              </div>
+              <div>
+                <img :src="data.coverUrl" v-if="data.coverUrl && data.coverUrl != ''" />
+                <svg-icon class="icon-style" icon="outLine" v-else></svg-icon>
               </div>
             </div>
           </div>
@@ -103,7 +122,8 @@
                 <svg-icon
                   class="icon-style"
                   :icon="data.materialUrl ? filType(data.materialUrl) : ''"
-                  v-if="data.materialUrl"></svg-icon>
+                  v-if="data.materialUrl"
+                ></svg-icon>
               </div>
             </div>
           </div>

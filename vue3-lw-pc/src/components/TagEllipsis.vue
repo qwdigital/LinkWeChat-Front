@@ -1,6 +1,4 @@
 <script>
-import { del } from '@/views/clue/clueTemplate/api'
-
 export default {
   name: 'TagEllipsis',
   components: {},

@@ -17,8 +17,8 @@
           </keep-alive>
         </transition>
       </router-view>
-      <div v-loading="loading" class="micro-app-wrap height100" v-show="isActiveMicroApp">
-        <div id="micro-app" class="height100"></div>
+      <div v-loading="loading" class="micro-app-wrap h100" v-show="isActiveMicroApp">
+        <div id="micro-app" class="h100"></div>
       </div>
     </div>
   </div>
@@ -61,14 +61,12 @@ export default {
     //   start({
     //     sandbox: { experimentalStyleIsolation: true },
     //   })
-
     //   // 挂在window供下面微服务使用
     //   window.lwConfig.$store = {
     //     dispatch: (_, s) => {
     //       this.$store.setBusininessDesc(s)
     //     },
     //   }
-
     //   // 初始化 state
     //   // const actions = initGlobalState({ token: getToken() })
     //   // actions.onGlobalStateChange((state, prev) => {

@@ -420,7 +420,7 @@ export default {
         tip = formatDefault[this.type].tip
       }
 
-      const reg = new RegExp(`\\.(${this.format.join('|')})$`, 'ig') // /\.xlsx|.$/
+      const reg = new RegExp(`\\.(${format.join('|')})$`, 'ig') // /\.xlsx|.$/
       isFormat = format[0] === '*' || reg.test(file.name)
       if (!isFormat) {
         this.$message.error('文件格式错误，仅支持 ' + (tip || format.join('，')) + ' 格式!')
