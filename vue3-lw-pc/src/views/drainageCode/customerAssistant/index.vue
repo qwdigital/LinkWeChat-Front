@@ -83,7 +83,7 @@
               @click="
                 $router.push({
                   path: 'detail',
-                  query: { id: row.id }
+                  query: { linkId: row.linkId, id: row.id }
                 })
               "
             >

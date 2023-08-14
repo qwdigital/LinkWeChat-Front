@@ -196,6 +196,9 @@
               return
             }
             this.loading = true
+            if (this.form.attachments == null) {
+              this.form.attachments = []
+            }
             this.form.attachments.unshift({
               content: this.templateInfo,
               msgType: 'text'

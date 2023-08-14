@@ -185,7 +185,7 @@
       }
     },
     created() {
-      this.id = this.$route.query.id
+      this.id = this.$route.query.linkId
       this.getTabTotalFn()
     }
   }

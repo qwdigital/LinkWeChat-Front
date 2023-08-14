@@ -73,18 +73,20 @@
         userNames: '',
         dialogVisible: false,
         userArray: [],
-        list: []
+        list: [],
+        tableSearch: {}
       }
     },
     components: {
       SearchTitle
     },
     created() {
-      this.query.linkId = this.$route.query.id
+      this.query.linkId = this.$route.query.linkId
     },
     methods: {
       getData(data) {
-        this.query.linkId = this.$route.query.id
+        this.tableSearch = data
+        this.query.linkId = this.$route.query.linkId
         getCustomerInLink(Object.assign({}, this.query, data)).then((res) => {
           this.list = res.rows
           this.total = res.total
@@ -109,6 +111,11 @@
             return obj.userId
           })
           .join(',')
+        this.query.pageNum = 1
+        getCustomerInLink(Object.assign({}, this.query, this.tableSearch)).then((res) => {
+          this.list = res.rows
+          this.total = res.total
+        })
       }
     },
     created() {}
