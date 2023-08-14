@@ -79,3 +79,11 @@ export function getTableExport(data) {
     params: data
   })
 }
+
+// 数据明细
+export function getCustomerInLink(data) {
+  return request({
+    url: service + '/findLinkWeCustomer',
+    params: data
+  })
+}

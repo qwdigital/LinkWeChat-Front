@@ -59,27 +59,32 @@
 </template>
 <script>
   import SearchTitle from '../components/SearchTitle.vue'
-
+  import { getCustomerInLink } from './api'
   export default {
     data() {
       return {
-        manList: [],
         query: {
           pageSize: 10,
           pageNum: 1,
-          userIds: ''
+          weUserId: ''
         },
         total: 0,
         userNames: '',
         dialogVisible: false,
-        userArray: []
+        userArray: [],
+        list: []
       }
     },
     components: {
       SearchTitle
     },
     methods: {
-      getData() {},
+      getData(data) {
+        getCustomerInLink(Object.assign({}, this.query, data)).then((res) => {
+          this.list = res.rows
+          this.total = res.total
+        })
+      },
       goRoute(row) {
         let { externalUserid, firstUserId: userId } = row
         this.$router.push({
@@ -94,7 +99,7 @@
             return obj.name
           })
           .join(',')
-        this.query.userIds = this.userArray
+        this.query.weUserId = this.userArray
           .map(function (obj, index) {
             return obj.userId
           })
