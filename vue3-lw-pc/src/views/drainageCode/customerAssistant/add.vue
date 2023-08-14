@@ -205,7 +205,8 @@
                 .then((res) => {
                   if (res.code == 200) {
                     this.msgSuccess('操作成功')
-                    this.nextFn(res.data)
+                    this.detail = res.data
+                    this.active = 1
                   }
                   this.loading = false
                 })
@@ -217,7 +218,8 @@
                 .then((res) => {
                   if (res.code == 200) {
                     this.msgSuccess('操作成功')
-                    this.nextFn(res.data)
+                    this.detail = res.data
+                    this.active = 1
                   }
                   this.loading = false
                 })
