@@ -295,9 +295,9 @@
               })
               this.userList = arr
             }
-            if (this.form.attachments) {
+            if (this.form.linkAttachments) {
               let arr = []
-              this.form.attachments.forEach((dd) => {
+              this.form.linkAttachments.forEach((dd) => {
                 if (dd.msgType == 'text') {
                   this.templateInfo = dd.content
                 } else {
