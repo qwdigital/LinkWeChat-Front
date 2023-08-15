@@ -61,6 +61,14 @@ export function remove(id) {
   })
 }
 
+export function fnRemove(ids) {
+  return request({
+    url: groundBase + '/property',
+    method: 'delete',
+    params: { ids },
+  })
+}
+
 // 列表新增
 export function add(data) {
   return request({

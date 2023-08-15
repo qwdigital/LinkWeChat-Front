@@ -159,6 +159,7 @@ import {
   getList,
   remove,
   listMove,
+  fnRemove,
   getCodeCategoryList,
   addCodeCategory,
   updateCodeCategory,
@@ -322,14 +323,18 @@ export default {
         this.msgInfo('请选择要删除项！')
         return
       }
-      const ids = id || this.ids.join(',')
+      const ids = this.ids.join(',')
       this.$confirm('是否确认删除?', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       })
         .then(() => {
-          return remove(ids)
+          if (id) {
+            return remove(id)
+          } else {
+            return fnRemove(ids)
+          }
         })
         .then(() => {
           this.msgSuccess('删除成功')

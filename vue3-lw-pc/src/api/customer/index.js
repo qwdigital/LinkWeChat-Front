@@ -1,6 +1,7 @@
 import request from '@/utils/request'
 let getway = window.lwConfig.services.wecom
 const service = getway + '/customer'
+const order = getway + '/weSubstitute/customer/order'
 
 /**
  * 客户列表
@@ -278,5 +279,28 @@ export function findCustomerAddWay(params) {
   return request({
     url: service + '/findCustomerAddWay',
     params,
+  })
+}
+
+// 订单 - 订单状态
+export function orderStatus(params) {
+  return request({
+    url: getway + '/substitute/customer/order/property/order/status',
+    params,
+  })
+}
+
+// 订单 - 订单列表
+export function orderList(params) {
+  return request({
+    url: order,
+    params,
+  })
+}
+
+// 订单 - 详情
+export function orderDetail(id) {
+  return request({
+    url: order + '/' + id,
   })
 }
