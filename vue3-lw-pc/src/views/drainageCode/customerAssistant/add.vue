@@ -80,10 +80,11 @@
         </div>
       </template>
       <template v-else>
-        <div class="page">
+        <div class="g-card">
           <div class="code-wrapper">
             <div class="code-success">
-              <el-button type="success" icon="el-icon-check" circle></el-button>
+              <!-- <el-button type="success" icon="el-icon-check" circle></el-button> -->
+              <div class="check"><el-icon-Check class="el-icon-check"></el-icon-Check></div>
             </div>
             <div class="code-text">获客链接创建成功，支持复制链接即可使用</div>
             <el-form label-width="140px" style="display: inline-block;">
@@ -399,6 +400,16 @@
   }
 </script>
 <style lang="scss" scoped>
+  .check {
+    height: 40px;
+    width: 40px;
+    background-color: var(--color);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 20px;
+    line-height: 40px;
+    margin: 0 auto;
+  }
   .card-title {
     font-size: 16px;
     font-weight: 500;
@@ -409,6 +420,7 @@
     font-size: 12px;
     font-weight: 400;
     color: var(--font-black-6);
+    text-align: left;
   }
   .code-wrapper {
     text-align: center;

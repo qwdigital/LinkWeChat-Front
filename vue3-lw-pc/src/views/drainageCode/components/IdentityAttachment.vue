@@ -12,8 +12,7 @@
         placeholder="请输入"
         :autosize="{ minRows: 5, maxRows: 20 }"
         clearable
-        :autofocus="true"
-        @input="changeInfo"
+        :autofocus="false"
       />
     </el-form-item>
     <el-form-item>
