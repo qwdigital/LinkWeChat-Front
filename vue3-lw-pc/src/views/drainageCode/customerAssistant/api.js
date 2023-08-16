@@ -76,7 +76,8 @@ export function getTableData(data) {
 export function getTableExport(data) {
   return request({
     url: service + '/exportLinkCount',
-    params: data
+    params: data,
+    responseType: 'blob'
   })
 }
 
