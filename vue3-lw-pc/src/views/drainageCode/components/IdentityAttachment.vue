@@ -12,7 +12,8 @@
         placeholder="请输入"
         :autosize="{ minRows: 5, maxRows: 20 }"
         clearable
-        :autofocus="false"
+        :autofocus="true"
+        @input="changeInfo"
       />
     </el-form-item>
     <el-form-item>
@@ -294,12 +295,6 @@
       }
     },
     watch: {
-      talkForm: {
-        handler(val) {
-          this.changeInfo(val.templateInfo)
-        },
-        deep: true
-      },
       maxlengthTwo: {
         handler(val) {
           this.maxlength = val
@@ -351,6 +346,7 @@
         let arr = []
         this.talkList.forEach((item) => {
           let attachments = {}
+          attachments.materialId = item.id
           switch (item.mediaType) {
             case '0':
               // 图片
@@ -744,7 +740,7 @@
         this.talkList.forEach((item) => {
           let attachmentFrom = {}
           attachmentFrom.msgType = item.mediaType
-          attachmentFrom.mediaId = item.id
+          attachmentFrom.materialId = item.id
           if (item.mediaType != '0') {
             attachmentFrom.title = item.materialName
           }
@@ -852,12 +848,12 @@
   ::v-deep .el-button.is-disabled {
     color: var(--font-white, #fff);
     background-color: var(--bg-black-8);
-    border-color: #cccccc;
+    border-color: var(--border-black-8);
   }
   ::v-deep.el-dropdown [disabled] {
     color: var(--font-white, #fff);
     background-color: var(--bg-black-8);
-    border-color: #cccccc;
+    border-color: var(--border-black-8);
   }
   .footer {
     display: flex;
