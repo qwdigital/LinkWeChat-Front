@@ -157,7 +157,7 @@
     methods: {
       getData() {
         getDetail().then((res) => {
-          this.customerLinkMargin = res.data.customerLinkMargin
+          this.customerLinkMargin = Number(res.data.customerLinkMargin)
         })
       },
       refreshFn() {
