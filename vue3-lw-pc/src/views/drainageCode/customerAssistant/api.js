@@ -87,3 +87,9 @@ export function getCustomerInLink(data) {
     params: data
   })
 }
+
+export function refresh() {
+  return request({
+    url: service + '/synchAcquisitionQuota'
+  })
+}

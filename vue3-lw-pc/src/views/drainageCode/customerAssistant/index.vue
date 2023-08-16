@@ -12,7 +12,7 @@
     <div class="g-card">
       <div class="mid-action">
         <div style="display: flex; align-items: end;">
-          <template v-if="total < 3000">
+          <template v-if="customerLinkMargin">
             <el-button type="primary" @click="$router.push('./add')">新建链接</el-button>
           </template>
           <template v-else>
@@ -26,7 +26,12 @@
             </el-popover>
           </template>
           <span style="margin-left: 10px; font-size: 12px;"
-            >剩余可用量 <span style="font-size: 20px;">{{ 3000 - total }}</span>
+            >剩余可用量
+            <span style="font-size: 20px;"
+              >{{ customerLinkMargin }}
+              <span class="refresh" :class="{ rotate360: showAnimate }" @click="refreshFn">
+                <el-icon-Refresh class="el-icon-refresh"></el-icon-Refresh> </span
+            ></span>
           </span>
         </div>
         <el-button type="primary" plain :disabled="selected.length === 0" @click="handleRemove('mult')"
@@ -118,7 +123,8 @@
 </template>
 
 <script>
-  import { getList, remove } from './api.js'
+  import { getDetail } from '@/api/enterpriseId'
+  import { getList, remove, refresh } from './api.js'
   export default {
     components: {},
     data() {
@@ -131,7 +137,9 @@
         selected: [],
         loading: false,
         list: [],
-        total: 0 // 总数据量
+        total: 0, // 总数据量
+        customerLinkMargin: 0,
+        showAnimate: false
       }
     },
     watch: {},
@@ -143,9 +151,26 @@
         <div>唯一可以从全域添加好友的官方链路</div>
       `
       )
+      this.getData()
     },
     destroyed() {},
     methods: {
+      getData() {
+        getDetail().then((res) => {
+          this.customerLinkMargin = res.data.customerLinkMargin
+        })
+      },
+      refreshFn() {
+        this.showAnimate = true
+        refresh().then((res) => {
+          if (res.code == 200) {
+            this.getData()
+            // this.$message({ message: '操作成功', type: 'success' })
+            this.msgSuccess('操作成功')
+          }
+          this.showAnimate = false
+        })
+      },
       copyFn(text) {
         const input = document.createElement('input')
         input.style.cssText = 'opacity: 0;'
@@ -214,6 +239,24 @@
 </script>
 
 <style scoped lang="scss">
+  .refresh {
+    color: var(--color);
+    font-size: 16px;
+    cursor: pointer;
+    :hover {
+      opacity: 0.7;
+    }
+    display: inline-block;
+  }
+
+  .rotate360 {
+    animation: rotate360 1s ease-out 0s;
+  }
+  @keyframes rotate360 {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
   .overflow-ellipsis {
     white-space: nowrap;
     overflow: hidden;
