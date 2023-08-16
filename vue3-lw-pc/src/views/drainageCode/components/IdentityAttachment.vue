@@ -295,6 +295,12 @@
       }
     },
     watch: {
+      talkForm: {
+        handler(val) {
+          this.changeInfo(val.templateInfo)
+        },
+        deep: true
+      },
       maxlengthTwo: {
         handler(val) {
           this.maxlength = val
