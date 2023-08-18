@@ -245,6 +245,12 @@ export default defineConfig(async ({ command, mode }) => {
               var: 'OSS',
               path: 'https://gosspublic.alicdn.com/aliyun-oss-sdk-6.17.1.min.js',
             },
+            {
+              name: 'echarts',
+              var: 'echarts',
+              version: '5.4.2',
+              path: 'echarts.min.js',
+            },
           ],
         }),
       rollupPluginVisualizer({

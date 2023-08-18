@@ -34,7 +34,7 @@ export default {
     },
     imgSize: {
       type: Number,
-      default: '',
+      default: undefined,
     },
 
     // 多文件上传时使用，例如: [{name: 'food.jpg', url: 'https://xxx.cdn.com/xxx.jpg'}]
@@ -60,7 +60,7 @@ export default {
     // 图片的宽高像素限制 [width(number), height(number)],默认null不限制
     maxImgPx: {
       type: Array,
-      default: [1024, 1024], // () => [100, 100]
+      default: () => [1024, 1024], // () => [100, 100]
     },
     // 允许上传的文件格式后缀名 eg:["jpg", "png"]，['*']为不限制，各类型有默认限制 参见: formatDefault
     format: {
@@ -79,7 +79,7 @@ export default {
     },
     // multiple为true时有效，最多上传几个,默认不限制，最小为1
     limit: {
-      type: Number,
+      type: [Number, String],
       default: undefined,
     },
     // onProgress: {

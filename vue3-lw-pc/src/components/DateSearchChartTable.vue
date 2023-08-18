@@ -90,7 +90,7 @@ export default {
       timeRange: 7,
 
       total: 0,
-      // 表格数据
+      // 表格列表数据，或图表的series数据
       data: [],
       xData: [],
       // 日期范围
@@ -172,6 +172,7 @@ export default {
             this.total = +total
           } else {
             // 自定义echarts图表数据处理
+            // this.data = data
             this.dealDataFun && this.dealDataFun(data, this.data, this.xData)
           }
         })

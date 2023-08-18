@@ -10,11 +10,10 @@
     content="LinkWeChat,linkwechat开源SCRM,仟微助手,LinkWeChat私域,企业微信私域,linkwechat私域营销,企微营销,企微私域,私域SCRM,开源企业微信SCRM,全链路私域SCRM,全链路私域数字化营销增长解决方案">
   <meta name="description" content="LinkWeChat -- 全链路私域数字化营销增长解决方案">
   <link rel="icon" href="/favicon.png">
+  <link rel="stylesheet" href="/static/css/loading.css">
+  <script src="/static/config.js"></script>
   <title>%VITE_APP_TITLE%</title>
 
-  <link rel="stylesheet" href="/static/css/loading.css">
-
-  <script src="/static/config.js"></script>
 
 </head>
 
@@ -28,15 +27,13 @@
   </div>
   <script type="module" src="/src/main.js"></script>
   <script>
-    setTimeout(() => {
-      if (window.lwConfig && window.lwConfig._env !== 'development') {
-        var hm = document.createElement("script")
-        hm.src = "https://hm.baidu.com/hm.js?489a58fd4fcaf2347cee64a8827e7094";
-        var hm1 = document.createElement("script")
-        hm1.src = "https://hm.baidu.com/hm.js?8f5214f3a0f80a33eb32a0f890167cc1";
-        document.body.append(hm, hm1)
-      }
-    }, 1000);
+    if (window.lwConfig && !['development', 'test'].includes(window.lwConfig._env)) {
+      var hm = document.createElement("script")
+      hm.src = "https://hm.baidu.com/hm.js?489a58fd4fcaf2347cee64a8827e7094";
+      var hm1 = document.createElement("script")
+      hm1.src = "https://hm.baidu.com/hm.js?8f5214f3a0f80a33eb32a0f890167cc1";
+      document.body.append(hm, hm1)
+    }
   </script>
 </body>
 

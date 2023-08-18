@@ -61,7 +61,7 @@
   top: 0;
   width: 50%;
   height: 100%;
-  background: #07c160;
+  background: var(--color, #07c160);
   z-index: 1000;
   transform: translateX(0);
 }
