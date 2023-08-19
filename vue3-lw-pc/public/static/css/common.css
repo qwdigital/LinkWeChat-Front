@@ -100,6 +100,7 @@ li {
 .gap10 {
   display: flex;
   flex-wrap: wrap;
+  align-content: baseline;
   gap: 10px;
 }
 .gap5 {
