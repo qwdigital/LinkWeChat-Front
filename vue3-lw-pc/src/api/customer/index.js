@@ -304,3 +304,18 @@ export function orderDetail(id) {
     url: order + '/' + id,
   })
 }
+
+// 移动端-全部字段信息
+export function getProperties() {
+  return request({
+    url: getway + '/substitute/customer/order/property/properties',
+  })
+}
+
+// 获取与外部联系人会话列表
+export function chatList(params) {
+  return request({
+    url: getway + '/chat/msg/selectFullSearchChatList',
+    params,
+  })
+}
