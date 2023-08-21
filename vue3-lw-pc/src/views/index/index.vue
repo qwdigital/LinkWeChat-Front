@@ -515,7 +515,7 @@ export default {
   }
   //   企业动态
   .card-title {
-    background: linear-gradient(270deg, #07c160 0%, #90de45 100%);
+    background: linear-gradient(270deg, var(--color) 0%, var(--color-sub) 100%);
     padding-bottom: 10px;
   }
   .title-right-icon {

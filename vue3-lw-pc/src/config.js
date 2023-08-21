@@ -40,16 +40,16 @@ const common = {
       entry: env.DOMAIN + '/microStore/',
       container: '#micro-app',
       // activeRule: (location) => location.hash.startsWith('#/microStore'),
-      activeRule: env.BASE_URL.slice(env.BASE_URL.indexOf('/')) + 'microStore' // eg:/vue/microStore
-    }
-  }
+      activeRule: env.BASE_URL.slice(env.BASE_URL.indexOf('/')) + 'microStore', // eg:/vue/microStore
+    },
+  },
 }
 
 // 以下仅用于系统信息展示，不作为项目变量使用，请勿在代码中使用
 const project = {
   _version: 'v5.x', // 当前版本信息
   _packDateTime: __PACK_DATETIME__, // 打包时间
-  _env: process.env.VUE_APP_ENV // 前端系统环境模式
+  _env: process.env.VUE_APP_ENV, // 前端系统环境模式
 }
 
 let config = {
@@ -68,12 +68,12 @@ let config = {
   services: {
     wecom: '/open',
     // system: 'http://192.168.4.168:6180',
-    common: '/common'
+    common: '/common',
   },
 
   get headers() {
     return { Authorization: 'Bearer ' + getToken() }
-  }
+  },
 }
 
 const lwConfig = window.lwConfig || {} // 线上动态配置，用于覆盖系统默认常量的配置信息
@@ -98,6 +98,16 @@ if (h) {
 
 // 灰色主题
 // if (process.env.VUE_APP_ENV === 'production') document.documentElement.style.filter = 'grayscale(100%)'
+
+// el-button点击后自动失焦 去除焦点样式
+document.addEventListener('click', (target) => {
+  target = target.target
+  if (target.className.includes('el-button')) {
+    target.blur()
+  } else if (target.parentNode.className.includes('el-button')) {
+    target.parentNode.blur()
+  }
+})
 
 // 统一为img的src不是绝对地址的拼接接口地址
 // document.addEventListener(

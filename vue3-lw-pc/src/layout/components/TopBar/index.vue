@@ -104,7 +104,7 @@
     </div>
 
     <el-drawer v-model="setting" title="主题设置" size="300px" :modal="false">
-      <settings />
+      <settings v-if="setting" />
     </el-drawer>
 
     <el-popover placement="left" title="" trigger="hover">

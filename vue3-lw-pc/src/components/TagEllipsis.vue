@@ -34,6 +34,7 @@ export default {
     // 可传入 el-tag 的props
     this.elTagProps = Object.assign({}, this.$attrs)
     delete this.elTagProps.style
+    delete this.elTagProps.class
   },
   mounted() {},
   methods: {},
@@ -44,21 +45,21 @@ export default {
   <div class="tag-ellipsis" v-if="_list?.length || emptyText">
     <div v-if="!_list?.length">{{ emptyText }}</div>
 
-    <template v-else-if="_list.length <= +limit">
+    <div class="tags" v-else-if="_list.length <= +limit">
       <el-tag v-bind="elTagProps" v-for="(item, unique) in _list" :key="unique">
         {{ item[defaultProps] || item }}
       </el-tag>
-    </template>
+    </div>
 
     <el-popover v-else placement="bottom" trigger="hover">
       <!-- 插入到body，这里用css scoped calss无效，需使用style-->
-      <div class="tag-all" style="display: flex; flex-wrap: wrap; gap: 10px">
+      <div class="tags" style="display: flex; flex-wrap: wrap; gap: 10px">
         <el-tag v-bind="elTagProps" v-for="(item, unique) in _list" :key="unique" style="margin: 0">
           {{ item[defaultProps] || item }}
         </el-tag>
       </div>
       <template #reference>
-        <div>
+        <div class="tags">
           <el-tag v-bind="elTagProps" v-for="(item, unique) in _list.slice(0, +limit)" :key="unique">
             {{ item[defaultProps] || item }}
           </el-tag>
@@ -72,17 +73,14 @@ export default {
 <style lang="scss" scoped>
 .tag-ellipsis {
   display: inline-block;
-  line-height: 34px;
-  .el-tag {
-    vertical-align: middle;
+  // line-height: 34px;
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    .el-tag {
+      margin: 0;
+    }
   }
-  // .tag-all {
-  //   display: flex;
-  //   flex-wrap: wrap;
-  //   gap: 10px;
-  //   .el-tag {
-  //     margin: 0;
-  //   }
-  // }
 }
 </style>

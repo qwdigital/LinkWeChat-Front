@@ -5,9 +5,14 @@
 // /**
 //  * 列表
 //  * @param {*} data
+// {
+//   pageNum:
+//   pageSize:
+//   type:''
+//  }
 //  */
 // export function getList(data) {
-// return get(`${serve}/get/${id}`)
+// return get(`${serve}/get`)
 // }
 
 // // 详情

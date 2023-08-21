@@ -45,7 +45,6 @@
   border-radius: var(--border-radius-small);
 }
 .el-button.is-text {
-  color: var(--color);
   // padding: 2px;
   padding-left: 0;
   padding-right: 0;
@@ -53,6 +52,9 @@
   font-size: 12px;
   background-clip: content-box;
   outline: 0 !important;
+}
+.el-button.is-text:not([class*='el-button--']) {
+  --el-button-text-color: var(--color);
 }
 /* 定义 type 为 cyan 的按钮 */
 .el-button--cyan.is-active,

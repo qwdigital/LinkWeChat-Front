@@ -80,17 +80,20 @@ export default {
       })
     },
     download() {
-      let canvas = document.createElement('canvas')
+      let canvas = this.$refs.canvas || document.createElement('canvas')
+      canvas.width = '200'
+      canvas.height = '200'
       this.$refs.qrCode.setAttribute('crossOrigin', 'anonymous')
-      canvas.getContext('2d').drawImage(this.$refs.qrCode, 0, 0)
+      canvas.getContext('2d').drawImage(this.$refs.qrCode, 0, 0, 200, 200)
       canvas.toBlob((blob) => {
         let url = URL.createObjectURL(blob)
         const link = document.createElement('a') // 创建a标签
-        link.href = link.download = url
+        link.href = url
+        link.download = '短链二维码.png'
         link.click()
         link.remove()
         URL.revokeObjectURL(url)
-      })
+      }, 'image/png')
     },
   },
 }
@@ -157,7 +160,7 @@ export default {
       <div class="g-card" style="background: var(--bg-black-9); width: 50%; margin: 30px auto">
         <span>{{ data.shortUrl }}</span>
       </div>
-      <img ref="qrCode" style="width: 130px; height: 130px" :src="data.qrCode" fit="fill" crossOrigin="anonymous" />
+      <img ref="qrCode" style="width: 180px; height: 180px" :src="data.qrCode" fit="fill" crossOrigin="anonymous" />
       <div>
         <el-button text class="copy-btn" :data-clipboard-text="data.shortUrl">复制链接</el-button>
         <el-button text @click="download()">下载二维码</el-button>

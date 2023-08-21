@@ -68,15 +68,19 @@ li {
   flex: none !important;
 }
 .ais {
+  display: flex;
   align-items: stretch !important;
 }
 .ait {
+  display: flex;
   align-items: flex-start !important;
 }
 .aic {
+  display: flex;
   align-items: center !important;
 }
 .flwrap {
+  display: flex;
   flex-flow: wrap !important;
 }
 .fxbw {
@@ -89,13 +93,14 @@ li {
   align-items: center;
   justify-content: space-between;
 }
-.fxclo {
+.fxcol {
   display: flex;
-  flex-direction: column;
+  flex-direction: column !important;
 }
 .gap10 {
   display: flex;
   flex-wrap: wrap;
+  align-content: baseline;
   gap: 10px;
 }
 .gap5 {
@@ -291,6 +296,10 @@ li {
 
 .h100 {
   height: 100% !important;
+}
+
+.block {
+  display: block !important;
 }
 
 /* bfc模型 / 闭合清楚浮动 */
