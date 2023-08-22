@@ -165,7 +165,7 @@
       <el-dialog title="当前客群" v-model="detailDialog" append-to-body width="70%">
         <el-table v-loading="loading" :data="tableList" style="width: 100%;">
           <el-table-column label="客群名称" align="center" min-width="100" prop="groupName" show-overflow-tooltip />
-          <el-table-column>
+          <el-table-column label="关联状态">
             <template #default="{ row }">
               {{ row.status == 0 ? '未关联' : row.status == 1 ? '已关联' : '' }}
             </template>
