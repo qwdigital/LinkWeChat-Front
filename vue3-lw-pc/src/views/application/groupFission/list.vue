@@ -28,7 +28,8 @@
           width="55"
           align="center"
           fixed="left"
-          :selectable="selectable"></el-table-column>
+          :selectable="selectable"
+        ></el-table-column>
         <el-table-column prop="fassionName" label="任务名称" align="center" width="120" fixed="left"></el-table-column>
         <el-table-column prop="statusType" label="任务状态" align="center" width="100">
           <template #default="{ row }">
@@ -103,7 +104,8 @@
             <el-button
               text
               v-if="row.fassionState == 1"
-              @click="$router.push({ path: './add', query: { id: row.id } })">
+              @click="$router.push({ path: './add', query: { id: row.id } })"
+            >
               编辑
             </el-button>
             <el-button text v-if="row.fassionState !== 2" @click="deleteFn(row)">删除</el-button>
@@ -115,129 +117,130 @@
         :total="total"
         v-model:page="query.pageNum"
         v-model:limit="query.pageSize"
-        @pagination="getList" />
+        @pagination="getList"
+      />
     </div>
   </div>
 </template>
 <script>
-import { getList, deleteFassion, deleteMultFa } from '../taskGroup/api'
-export default {
-  name: 'task-group-list',
-  data() {
-    return {
-      statusType: [
-        { name: '待开始', key: 1 },
-        { name: '进行中', key: 2 },
-        { name: '已结束', key: 3 },
-      ],
-      query: {
-        fassionType: 2, //1 任务宝  2群裂变
-        pageSize: 10,
-        pageNum: 1,
-        fassionName: '',
-        fassionState: '',
+  import { getList, deleteFassion, deleteMultFa } from '../taskGroup/api'
+  export default {
+    name: 'task-group-list',
+    data() {
+      return {
+        statusType: [
+          { name: '待开始', key: 1 },
+          { name: '进行中', key: 2 },
+          { name: '已结束', key: 3 }
+        ],
+        query: {
+          fassionType: 2, //1 任务宝  2群裂变
+          pageSize: 10,
+          pageNum: 1,
+          fassionName: '',
+          fassionState: ''
+        },
+        total: 0,
+        loading: false,
+        list: [],
+        selectList: []
+      }
+    },
+    methods: {
+      selectable(row, index) {
+        if (row.fassionState !== 2) {
+          return true
+        }
       },
-      total: 0,
-      loading: false,
-      list: [],
-      selectList: [],
-    }
-  },
-  methods: {
-    selectable(row, index) {
-      if (row.fassionState !== 2) {
-        return true
+      setType(data) {
+        let str = ''
+        this.infoType.forEach((dd) => {
+          if (dd.key == data.type) {
+            str = dd.name
+          }
+        })
+        return str
+      },
+      setStatus(data) {
+        let str = ''
+        this.statusType.forEach((dd) => {
+          if (dd.key == data.fassionState) {
+            str = dd.name
+          }
+        })
+        return str
+      },
+      getList() {
+        this.loading = true
+        getList(this.query).then((res) => {
+          this.total = Number(res.total)
+          this.list = res.rows
+          this.loading = false
+        })
+      },
+      handleSearch() {
+        this.query.pageNum = 1
+        this.getList()
+      },
+      resetQuery() {
+        this.query.pageNum = 1
+        this.$refs['queryForm'].resetFields()
+        this.getList()
+      },
+      handleSelectionChange(e) {
+        this.selectList = e.map((dd) => dd.id)
+      },
+      deleteFn(data) {
+        this.$confirm('是否确认删除当前裂变任务？删除后不可撤销，请谨慎操作。', '删除', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(() => {
+            return deleteFassion(data.id)
+          })
+          .then(() => {
+            this.handleSearch()
+            this.msgSuccess('删除成功')
+          })
+      },
+      deleteMult() {
+        if (!this.selectList.length) {
+          this.msgInfo('请选择要删除项！')
+          return
+        }
+        const ids = this.selectList.join(',')
+        this.$confirm('是否确认删除当前裂变任务？删除后不可撤销，请谨慎操作。', '警告', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(() => {
+            return deleteMultFa(ids)
+          })
+          .then(() => {
+            this.handleSearch()
+            this.msgSuccess('删除成功')
+          })
+          .catch(function () {})
       }
     },
-    setType(data) {
-      let str = ''
-      this.infoType.forEach((dd) => {
-        if (dd.key == data.type) {
-          str = dd.name
-        }
-      })
-      return str
-    },
-    setStatus(data) {
-      let str = ''
-      this.statusType.forEach((dd) => {
-        if (dd.key == data.fassionState) {
-          str = dd.name
-        }
-      })
-      return str
-    },
-    getList() {
-      this.loading = true
-      getList(this.query).then((res) => {
-        this.total = Number(res.total)
-        this.list = res.rows
-        this.loading = false
-      })
-    },
-    handleSearch() {
-      this.query.pageNum = 1
+    created() {
       this.getList()
-    },
-    resetQuery() {
-      this.query.pageNum = 1
-      this.$refs['queryForm'].resetFields()
-      this.getList()
-    },
-    handleSelectionChange(e) {
-      this.selectList = e.map((dd) => dd.id)
-    },
-    deleteFn(data) {
-      this.$confirm('是否确认删除当前裂变任务？删除后不可撤销，请谨慎操作。', '删除', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          return deleteFassion(data.id)
-        })
-        .then(() => {
-          this.handleSearch()
-          this.msgSuccess('删除成功')
-        })
-    },
-    deleteMult() {
-      if (!this.selectList.length) {
-        this.msgInfo('请选择要删除项！')
-        return
-      }
-      const ids = this.selectList.join(',')
-      this.$confirm('是否确认删除当前裂变任务？删除后不可撤销，请谨慎操作。', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          return deleteMultFa(ids)
-        })
-        .then(() => {
-          this.handleSearch()
-          this.msgSuccess('删除成功')
-        })
-        .catch(function () {})
-    },
-  },
-  created() {
-    this.getList()
-    this.$store.setBusininessDesc(
-      `
+      this.$store.setBusininessDesc(
+        `
         <div>通过任务形式，引导老客裂变新客加群，实现客群增长</div>
-      `,
-    )
-  },
-}
+      `
+      )
+    }
+  }
 </script>
 <style lang="scss" scoped>
-.self_a {
-  color: var(--color);
-  text-decoration: underline;
-  &:hover {
-    opacity: 0.8;
+  .self_a {
+    color: var(--color);
+    text-decoration: underline;
+    &:hover {
+      opacity: 0.8;
+    }
   }
-}
 </style>
