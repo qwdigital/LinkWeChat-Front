@@ -113,11 +113,13 @@
                 <el-radio :label="2">自定义</el-radio>
               </el-radio-group>
               <template v-if="form.activeCoverType == 2">
-                <upload v-model:fileUrl="form.activeCoverUrl" type="0" :maxSize="10" :format="['jpg', 'png']">
-                  <template #tip
-                    ><div class="tip">支持JPG、PNG格式，较好的效果为大图 1068*455，小图150*150</div></template
-                  >
-                </upload>
+                <el-form-item prop="activeCoverUrl">
+                  <upload v-model:fileUrl="form.activeCoverUrl" type="0" :maxSize="10" :format="['jpg', 'png']">
+                    <template #tip
+                      ><div class="tip">支持JPG、PNG格式，较好的效果为大图 1068*455，小图150*150</div></template
+                    >
+                  </upload>
+                </el-form-item>
               </template>
             </el-form-item>
           </el-form>
@@ -230,7 +232,10 @@
           'addWeUserOrGroupCode.addGroupCode.roomBaseId': [
             { required: true, message: '请输入群起始序号', trigger: 'blur' }
           ],
-          content: [{ required: true, message: '请输入任务文案', trigger: 'blur' }]
+          content: [{ required: true, message: '请输入任务文案', trigger: 'blur' }],
+          activeTitle: [{ required: true, message: '请输入活动标题', trigger: 'blur' }],
+          activeDescr: [{ required: true, message: '请输入活动描述', trigger: 'blur' }],
+          activeCoverUrl: [{ required: true, message: '请选择活动封面', trigger: 'blur' }]
         },
         posterObj: {},
         groupList: [],
