@@ -70,7 +70,11 @@
             redemptionRule: '',
             weUserId: '',
             userName: ''
-          }
+          },
+          activeTitle: '',
+          activeDescr: '',
+          activeCoverType: 1,
+          activeCoverUrl: ''
         }
       }
     },
