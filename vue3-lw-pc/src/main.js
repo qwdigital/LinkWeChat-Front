@@ -43,6 +43,8 @@ let components = {
   CardGroupIndex: () => import('./components/CardGroupIndex.vue'),
   TextareaExtend: () => import('./components/TextareaExtend.vue'), // 带 插入 表情/客户昵称 等扩展工具栏的文本内容框
   DateSearchChartTable: () => import('./components/DateSearchChartTable.vue'),
+  RequestChartTable: () => import('./components/RequestChartTable.vue'),
+  SearchClearButton: () => import('./components/SearchClearButton.vue'),
 }
 for (const c in components) {
   app.component(c, defineAsyncComponent(components[c]))

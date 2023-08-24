@@ -11,7 +11,7 @@ export default {
     // 数据展示图表类型
     type: {
       type: String, // lineChart, barChart, table
-      default: 'lineChart',
+      default: 'table',
     },
     // 接口请求
     request: {
@@ -67,19 +67,30 @@ export default {
   },
   computed: {},
   watch: {},
-  created() {},
+  created() {
+    this.getList()
+  },
   mounted() {},
   methods: {
     getList(page) {
       this.loading = true
       if (this.type == 'table') {
-        this.query.pageSize || (this.query.pageSize = 10)
         page && (this.query.pageNum = page)
       }
 
       this.dealQueryFun && this.dealQueryFun(this.query)
 
-      this.request(this.query)
+      let query = JSON.parse(JSON.stringify(this.query))
+      if (query.dateRange) {
+        query.beginTime = query.dateRange[0]
+        query.endTime = query.dateRange[1]
+      } else {
+        delete query.beginTime
+        delete query.endTime
+      }
+      delete query.dateRange
+
+      this.request(query)
         .then(({ rows, total, data }) => {
           data = data || rows
           // if (!data) return
@@ -128,7 +139,7 @@ export default {
 
 <template>
   <div class="RequestChartTable g-card">
-    <div class="g-card-title" v-if="title">{{ title }}}</div>
+    <div class="g-card-title" v-if="title">{{ title }}</div>
 
     <div class="RequestChartTable-operation" v-if="requestExport || $slots.query">
       <slot name="operation" v-bind="query"></slot>
@@ -147,7 +158,7 @@ export default {
 
       <!-- 表格 -->
       <template v-else-if="type == 'table'">
-        <slot name="table" :data="data"></slot>
+        <slot :data="data"></slot>
 
         <pagination
           :total="total"

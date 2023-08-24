@@ -16,7 +16,7 @@ export default {
 <template>
   <div class="SearchClearButton bfc-d">
     <el-button type="primary" @click="search">查询</el-button>
-    <el-button @click="reset">重置</el-button>
+    <el-button @click="reset(), search(1)">重置</el-button>
   </div>
 </template>
 

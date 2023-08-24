@@ -343,6 +343,7 @@ export function $delConfirm(remove, callback) {
     })
     .then(() => {
       callback && callback()
+      // this.getList && this.getList()
       this.msgSuccess()
     })
     .catch(function () {})
