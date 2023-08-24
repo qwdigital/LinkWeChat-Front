@@ -80,14 +80,14 @@ Object.assign(app.config.globalProperties, methods, {
   // 日期时间控件快捷配置
   pickerOptions,
   ClipboardJS,
-  msgSuccess(msg) {
+  msgSuccess(msg = '操作成功') {
     this.$message({
       showClose: true,
       message: msg,
       type: 'success',
     })
   },
-  msgError(msg) {
+  msgError(msg = '操作失败') {
     this.$message({ showClose: true, message: msg, type: 'error' })
   },
   msgInfo(msg) {
