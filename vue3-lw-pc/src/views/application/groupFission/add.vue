@@ -64,7 +64,7 @@
           },
           content: '',
           exchangeTip: null,
-          exchangeType: 1,
+          exchangeType: 3,
           exchangeContent: {
             redemptionLink: '',
             redemptionRule: '',

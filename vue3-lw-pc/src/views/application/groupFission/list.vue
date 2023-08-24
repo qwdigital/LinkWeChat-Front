@@ -108,7 +108,18 @@
             >
               编辑
             </el-button>
-            <el-button text v-if="row.fassionState !== 2" @click="deleteFn(row)">删除</el-button>
+            <template v-if="row.fassionState == 2 || row.fassionState == 4">
+              <el-button text @click="setStateChange(3, row)">结束</el-button>
+            </template>
+            <template v-if="row.fassionState == 2">
+              <el-button text @click="setStateChange(4, row)">暂停</el-button>
+            </template>
+            <template v-if="row.fassionState == 4">
+              <el-button text @click="setStateChange(2, row)">启动</el-button>
+            </template>
+            <el-button text v-if="row.fassionState !== 2 && row.fassionState !== 4" @click="deleteFn(row)"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -131,7 +142,8 @@
         statusType: [
           { name: '待开始', key: 1 },
           { name: '进行中', key: 2 },
-          { name: '已结束', key: 3 }
+          { name: '已结束', key: 3 },
+          { name: '已暂停', key: 4 }
         ],
         query: {
           fassionType: 2, //1 任务宝  2群裂变
@@ -147,6 +159,30 @@
       }
     },
     methods: {
+      setStateChange(state, data) {
+        let str = ''
+        if (state == 3) {
+          str = '是否确定结束当前任务？结束后无法继续执行活动，该不可撤销，请谨慎操作。'
+        }
+        if (state == 2) {
+          str = '是否确定启动当前任务？启动后立即生效，请谨慎操作。'
+        }
+        if (state == 4) {
+          str = '是否确定暂停当前任务？暂停后需手动重启，该不可撤销，请谨慎操作。'
+        }
+        this.$confirm(str, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(() => {
+            return updateState({ id: data.id, fassionState: state })
+          })
+          .then(() => {
+            this.handleSearch()
+            this.msgSuccess('操作成功')
+          })
+      },
       selectable(row, index) {
         if (row.fassionState !== 2) {
           return true
