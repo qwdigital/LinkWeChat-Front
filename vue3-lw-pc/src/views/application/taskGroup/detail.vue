@@ -5,12 +5,13 @@
         <el-row :gutter="20" type="flex">
           <el-col>
             <div class="g-card">
-              <div style="display: flex; justify-content: space-between">
+              <div style="display: flex; justify-content: space-between;">
                 <div class="info_title">基本信息</div>
                 <el-button
                   v-if="form.fassionState == 1"
                   type="primary"
-                  @click="$router.push({ path: './add', query: { id: $route.query.id } })">
+                  @click="$router.push({ path: './add', query: { id: $route.query.id } })"
+                >
                   编辑
                 </el-button>
               </div>
@@ -33,11 +34,12 @@
               <FassionRules :baseData="form" :isDetail="true"></FassionRules>
             </div>
           </el-col>
-          <el-col style="flex-basis: 370px">
+          <el-col style="flex-basis: 370px;">
             <div class="g-card">
               <PreviewInPhone
                 :list="form.wematerial && [form.wematerial]"
-                :templateInfo="form.content"></PreviewInPhone>
+                :templateInfo="form.content"
+              ></PreviewInPhone>
             </div>
           </el-col>
         </el-row>
@@ -53,98 +55,99 @@
 </template>
 
 <script>
-import { getFassionDetail } from './api'
-import FassionBase from '../common/FassionBase.vue'
-import FassionSettingVue from '../common/FassionSetting.vue'
-import FassionRules from '../common/FassionRules.vue'
-import Statistics from '../common/Statistics.vue'
-import DetailTable from './detail-table.vue'
-import PreviewInPhone from '@/components/ContentCenter/PreviewInPhone'
+  import { getFassionDetail } from './api'
+  import FassionBase from '../common/FassionBase.vue'
+  import FassionSettingVue from '../common/FassionSetting.vue'
+  import FassionRules from '../common/FassionRules.vue'
+  import Statistics from '../common/Statistics.vue'
+  import DetailTable from './detail-table.vue'
+  import PreviewInPhone from '@/components/ContentCenter/PreviewInPhone'
 
-export default {
-  name: 'task-customer-detail',
-  components: {
-    FassionBase,
-    FassionSettingVue,
-    FassionRules,
-    Statistics,
-    DetailTable,
-    PreviewInPhone,
-  },
-  data() {
-    return {
-      activeName: 'first',
-      form: {
-        fassionType: 1,
-        fassionName: '',
-        fassionStartTime: '',
-        fassionEndTime: '',
-        executeUserOrGroup: null,
-        posterId: '',
-        posterUrl: '',
-        addWeUserOrGroupCode: {
-          addWeUser: {
-            executeUserCondit: {
-              change: false,
-              weUserIds: [],
-            },
-            executeDeptCondit: {
-              change: false,
-              deptIds: [],
-              posts: [],
-            },
-          },
-          addGroupCode: {
-            autoCreateRoom: 0,
-            roomBaseName: '',
-            roomBaseId: null,
-            chatIdList: '',
-            groupNames: '',
-          },
-        },
-        content: '',
-        exchangeTip: null,
-        exchangeType: 1,
-        exchangeContent: {
-          redemptionLink: '',
-          redemptionRule: '',
-          weUserId: '',
-          userName: '',
-        },
-      },
-      statusType: [
-        { name: '待开始', key: 1 },
-        { name: '进行中', key: 2 },
-        { name: '已结束', key: 3 },
-      ],
-    }
-  },
-  methods: {
-    setStatus(data) {
-      let str = ''
-      this.statusType.forEach((dd) => {
-        if (dd.key == data.fassionState) {
-          str = dd.name
-        }
-      })
-      return str
+  export default {
+    name: 'task-customer-detail',
+    components: {
+      FassionBase,
+      FassionSettingVue,
+      FassionRules,
+      Statistics,
+      DetailTable,
+      PreviewInPhone
     },
-  },
-  created() {
-    if (this.$route.query.id) {
-      getFassionDetail(this.$route.query.id).then((res) => {
-        this.form = res.data
-      })
+    data() {
+      return {
+        activeName: 'first',
+        form: {
+          fassionType: 1,
+          fassionName: '',
+          fassionStartTime: '',
+          fassionEndTime: '',
+          executeUserOrGroup: null,
+          posterId: '',
+          posterUrl: '',
+          addWeUserOrGroupCode: {
+            addWeUser: {
+              executeUserCondit: {
+                change: false,
+                weUserIds: []
+              },
+              executeDeptCondit: {
+                change: false,
+                deptIds: [],
+                posts: []
+              }
+            },
+            addGroupCode: {
+              autoCreateRoom: 0,
+              roomBaseName: '',
+              roomBaseId: null,
+              chatIdList: '',
+              groupNames: ''
+            }
+          },
+          content: '',
+          exchangeTip: null,
+          exchangeType: 3,
+          exchangeContent: {
+            redemptionLink: '',
+            redemptionRule: '',
+            weUserId: '',
+            userName: ''
+          }
+        },
+        statusType: [
+          { name: '待开始', key: 1 },
+          { name: '进行中', key: 2 },
+          { name: '已结束', key: 3 },
+          { name: '已暂停', key: 4 }
+        ]
+      }
+    },
+    methods: {
+      setStatus(data) {
+        let str = ''
+        this.statusType.forEach((dd) => {
+          if (dd.key == data.fassionState) {
+            str = dd.name
+          }
+        })
+        return str
+      }
+    },
+    created() {
+      if (this.$route.query.id) {
+        getFassionDetail(this.$route.query.id).then((res) => {
+          this.form = res.data
+        })
+      }
     }
-  },
-}
+  }
 </script>
 
 <style lang="scss" scoped>
-.info_title {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--font-black);
-  margin-bottom: 10px;
-}
+  .info_title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--font-black);
+    margin-bottom: 10px;
+  }
 </style>
