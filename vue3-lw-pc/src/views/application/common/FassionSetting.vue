@@ -287,12 +287,12 @@
         this.news.materialName = this.form.activeTitle
         this.news.coverUrl = this.form.activeCoverUrl
         if (this.form.posterId) {
-          getPosterInfo(this.form.posterId).then((res) => {
-            this.posterObj = res.data
-            if (this.form.activeCoverType == 1) {
-              this.news.coverUrl = this.posterObj.materialUrl
-            }
-          })
+          // getPosterInfo(this.form.posterId).then((res) => {
+          this.posterObj.materialUrl = this.form.posterUrl
+          if (this.form.activeCoverType == 1) {
+            this.news.coverUrl = this.posterObj.materialUrl
+          }
+          // })
         }
         if (!this.form.addWeUserOrGroupCode) {
           this.form.addWeUserOrGroupCode = {
