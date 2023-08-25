@@ -17,6 +17,11 @@ export default {
     request: {
       type: Function,
     },
+    // 是否在创建的时候自动调用request接口请求
+    isCreateRequest: {
+      type: Boolean,
+      default: true,
+    },
 
     // 自定义的查询参数处理方法，可用于添加和修改查询参数
     dealQueryFun: {
@@ -68,7 +73,7 @@ export default {
   computed: {},
   watch: {},
   created() {
-    this.getList()
+    this.isCreateRequest && this.getList()
   },
   mounted() {},
   methods: {
@@ -90,7 +95,7 @@ export default {
       }
       delete query.dateRange
 
-      this.request(query)
+      return this.request(query)
         .then(({ rows, total, data }) => {
           data = data || rows
           // if (!data) return
@@ -98,6 +103,7 @@ export default {
             // 表格
             this.data = data
             this.total = +total
+            this.dealDataFun && this.dealDataFun(data, this.data)
           } else {
             // 自定义echarts图表数据处理
             // this.data = data
