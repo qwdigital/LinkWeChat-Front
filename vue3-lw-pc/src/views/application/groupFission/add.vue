@@ -64,13 +64,17 @@
           },
           content: '',
           exchangeTip: null,
-          exchangeType: 1,
+          exchangeType: 3,
           exchangeContent: {
             redemptionLink: '',
             redemptionRule: '',
             weUserId: '',
             userName: ''
-          }
+          },
+          activeTitle: '',
+          activeDescr: '',
+          activeCoverType: 1,
+          activeCoverUrl: ''
         }
       }
     },

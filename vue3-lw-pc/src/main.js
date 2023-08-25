@@ -43,6 +43,8 @@ let components = {
   CardGroupIndex: () => import('./components/CardGroupIndex.vue'),
   TextareaExtend: () => import('./components/TextareaExtend.vue'), // 带 插入 表情/客户昵称 等扩展工具栏的文本内容框
   DateSearchChartTable: () => import('./components/DateSearchChartTable.vue'),
+  RequestChartTable: () => import('./components/RequestChartTable.vue'),
+  SearchResetButton: () => import('./components/SearchResetButton.vue'),
 }
 for (const c in components) {
   app.component(c, defineAsyncComponent(components[c]))
@@ -80,14 +82,14 @@ Object.assign(app.config.globalProperties, methods, {
   // 日期时间控件快捷配置
   pickerOptions,
   ClipboardJS,
-  msgSuccess(msg) {
+  msgSuccess(msg = '操作成功') {
     this.$message({
       showClose: true,
       message: msg,
       type: 'success',
     })
   },
-  msgError(msg) {
+  msgError(msg = '操作失败') {
     this.$message({ showClose: true, message: msg, type: 'error' })
   },
   msgInfo(msg) {

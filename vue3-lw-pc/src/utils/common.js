@@ -330,3 +330,24 @@ export function filType(file) {
     return ''
   }
 }
+
+// 通用删除确认弹窗
+export function $delConfirm(remove, callback) {
+  this.$confirm('是否确认删除?', '警告', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+    .then(() => {
+      return remove()
+    })
+    .then(() => {
+      callback && callback()
+      // this.getList && this.getList()
+      this.msgSuccess()
+    })
+    .catch(function () {})
+}
+/**
+ * 通用js方法封装处理，挂载到 Vue.prototype
+ */

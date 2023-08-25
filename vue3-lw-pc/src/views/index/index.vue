@@ -8,9 +8,9 @@
             <img class="portrait-img" :src="$store.user.avatar" alt="" v-if="$store.user.avatar" />
             <!-- <svg-icon icon="user" class="code-user" v-else></svg-icon> -->
           </div>
-          <div class="wel toe">
-            <span>{{ greetings }}，{{ $store.user.name }}</span>
-          </div>
+          <el-tooltip :content="$store.user.name" placement="top-end" effect="light">
+            <div class="wel toe">{{ greetings }}，{{ $store.user.name }}</div>
+          </el-tooltip>
           <div class="role toe g-bg-lg">{{ roleGroup || '管理员' }}</div>
         </div>
 
@@ -443,6 +443,7 @@ export default {
       font-size: 22px;
       font-weight: bold;
       margin: 2px 0 16px;
+      width: 100%;
     }
     .role {
       position: relative;

@@ -6,7 +6,7 @@ export function getList(data) {
   return request({
     url: wecom + '/list',
     method: 'get',
-    params: data,
+    params: data
   })
 }
 
@@ -14,7 +14,7 @@ export function getList(data) {
 export function deleteFassion(id) {
   return request({
     url: wecom + '/' + id,
-    method: 'delete',
+    method: 'delete'
   })
 }
 
@@ -22,7 +22,7 @@ export function deleteFassion(id) {
 export function deleteMultFa(ids) {
   return request({
     url: wecom + '/' + ids,
-    method: 'delete',
+    method: 'delete'
   })
 }
 
@@ -31,7 +31,7 @@ export function addFassion(data) {
   return request({
     url: wecom + '/add',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -40,21 +40,21 @@ export function editFassion(data) {
   return request({
     url: wecom + '/update',
     method: 'put',
-    data,
+    data
   })
 }
 
 // 获取任务详情
 export function getFassionDetail(id) {
   return request({
-    url: wecom + '/getWeFissionDetail/' + id,
+    url: wecom + '/getWeFissionDetail/' + id
   })
 }
 
 // 统计 头部
 export function getTotal(id) {
   return request({
-    url: wecom + '/findWeFissionTab/' + id,
+    url: wecom + '/findWeFissionTab/' + id
   })
 }
 
@@ -62,7 +62,7 @@ export function getTotal(id) {
 export function getLineData(data) {
   return request({
     url: wecom + '/findWeFissionTrend',
-    params: data,
+    params: data
   })
 }
 
@@ -70,7 +70,7 @@ export function getLineData(data) {
 export function getTableData(data) {
   return request({
     url: wecom + '/findWeFissionDataReport',
-    params: data,
+    params: data
   })
 }
 
@@ -79,7 +79,7 @@ export function getTableExport(data) {
   return request({
     url: wecom + '/exportWeFissionDataReport',
     params: data,
-    responseType: 'blob',
+    responseType: 'blob'
   })
 }
 
@@ -87,7 +87,7 @@ export function getTableExport(data) {
 export function getFissionCustomerTable(data) {
   return request({
     url: wecom + '/findWeTaskFissionDetail',
-    params: data,
+    params: data
   })
 }
 
@@ -95,7 +95,7 @@ export function getFissionCustomerTable(data) {
 export function getFissionGroupTable(data) {
   return request({
     url: wecom + '/findWeGroupFissionDetail',
-    params: data,
+    params: data
   })
 }
 
@@ -103,7 +103,7 @@ export function getFissionGroupTable(data) {
 export function getFissionSubTable(data) {
   return request({
     url: wecom + '/findWeFissionDetailSub',
-    params: data,
+    params: data
   })
 }
 
@@ -112,7 +112,7 @@ export function exportCustomerTable(data) {
   return request({
     url: wecom + '/exportWeTaskFissionDetail',
     params: data,
-    responseType: 'blob',
+    responseType: 'blob'
   })
 }
 
@@ -121,6 +121,15 @@ export function exportGroupTable(data) {
   return request({
     url: wecom + '/exportWeGroupFissionDetail',
     params: data,
-    responseType: 'blob',
+    responseType: 'blob'
+  })
+}
+
+// 任务状态
+export function updateState(data) {
+  return request({
+    url: wecom + '/updateFissionState',
+    data,
+    method: 'post'
   })
 }

@@ -297,6 +297,7 @@
 
 .el-form-item__content {
   display: block;
+  line-height: 30px; // 解决某些情况下行内块顶部不对齐，上下缝隙问题
 }
 .el-form:not(.el-form--inline) {
   // .el-form-item {
@@ -443,7 +444,6 @@
   max-height: calc(100% - 30px);
   max-width: calc(100% - 30px);
   border-radius: var(--border-radius-big);
-  padding: 20px 30px;
 }
 .el-dialog__title {
   font-weight: 500;
@@ -452,12 +452,18 @@
 .el-dialog__footer,
 .el-dialog__body {
   padding: 0;
+  margin: 20px 30px;
+}
+.el-dialog__header {
+  margin-bottom: 0;
+}
+.el-dialog__footer {
+  margin-top: 0;
 }
 .el-dialog__body {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  margin: 20px 0;
 }
 .el-dialog__headerbtn {
   // top: 18px;
