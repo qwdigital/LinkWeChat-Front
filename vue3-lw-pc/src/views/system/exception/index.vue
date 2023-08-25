@@ -23,9 +23,9 @@ let visible = ref(false)
           start-placeholder="开始日期"
           end-placeholder="结束日期"></el-date-picker>
       </el-form-item>
-      <SearchClearButton
+      <SearchResetButton
         :search="() => $refs.table.getList()"
-        :reset="() => $refs.queryForm.resetFields()"></SearchClearButton>
+        :reset="() => $refs.queryForm.resetFields()"></SearchResetButton>
     </el-form>
 
     <RequestChartTable ref="table" :request="getList" :dealQueryFun="(params) => Object.assign(params, query)">

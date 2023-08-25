@@ -1,4 +1,4 @@
-<!-- 搜索查询、清空按钮 -->
+<!-- 搜索查询、重置按钮 -->
 <script>
 export default {
   props: { search: { type: Function }, reset: { type: Function } },
