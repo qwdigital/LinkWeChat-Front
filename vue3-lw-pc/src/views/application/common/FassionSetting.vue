@@ -79,7 +79,7 @@
               <TextareaExtend
                 :disabled="isDetail"
                 v-model="form.content"
-                :toolbar="isDetail ? [] : ['emoji', 'insertCustomerNickName']"
+                :toolbar="isDetail ? [] : ['emoji']"
                 maxlength="2000"
                 show-word-limit
                 placeholder="请输入"
@@ -134,7 +134,7 @@
           <div class="info_title">消息预览</div>
           <PreviewInPhone
             :name="form.fassionType == 1 ? '客户' : '客群'"
-            :list="[posterObj, news]"
+            :list="[news]"
             :templateInfo="form.content"
           ></PreviewInPhone>
         </div>
