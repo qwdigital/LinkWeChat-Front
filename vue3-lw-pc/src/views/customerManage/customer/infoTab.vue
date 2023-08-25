@@ -13,6 +13,7 @@ import { dictTrackState } from '@/utils/dictionary'
 import record from './record'
 import RecordTable from './record-table'
 import Detail from './detail'
+import chatListClassTab from './chatListClassTab.vue'
 export default {
   name: '',
   props: {
@@ -34,6 +35,7 @@ export default {
     record,
     RecordTable,
     Detail,
+    chatListClassTab,
   },
   data() {
     return {
@@ -65,6 +67,15 @@ export default {
       list: [],
       visible: false,
       orderId: undefined,
+      chatTab: [
+        { checked: true, lable: '全部', type: 'all' },
+        { checked: false, lable: '图片&视频', type: 'image,video' },
+        { checked: false, lable: '文件', type: 'file' },
+        { checked: false, lable: '链接', type: 'link' },
+        { checked: false, lable: '语音', type: 'voice,meeting_voice_call' },
+      ],
+      queryChat: {},
+      tabType: 'all',
     }
   },
   computed: {},
@@ -83,6 +94,7 @@ export default {
     this.userId ? this.getCustomerInfoByUserId() : this.getSummary()
     this.getOrderStatus()
     this.getList()
+    this.getChatList()
   },
   mounted() {},
   methods: {
@@ -113,6 +125,9 @@ export default {
       orderStatus().then((res) => {
         this.orderStateList = res.data
       })
+    },
+    getChatList() {
+      this.queryChat = { fromId: this.userId, toList: this.$route.query.externalUserid }
     },
     setList(key) {
       let order = 0
@@ -265,6 +280,16 @@ export default {
     getDetail(id) {
       this.visible = true
       this.orderId = id
+    },
+    chatTabClick(i, type) {
+      this.tabType = type
+      this.chatTab = this.chatTab.map((item, j) => {
+        item.checked = false
+        if (i === j) {
+          item.checked = true
+        }
+        return item
+      })
     },
   },
 }
@@ -497,7 +522,7 @@ export default {
               <el-form-item label-width="0">
                 <el-button type="primary" @click="search">查询</el-button>
                 <el-button @click="resetFn">清空</el-button>
-                <el-button @click="getDetail(id)">详情</el-button>
+                <!-- <el-button @click="getDetail('1694259619920498688')">详情</el-button> -->
               </el-form-item>
             </el-form>
             <el-table
@@ -570,7 +595,19 @@ export default {
             />
             <Detail :visible="visible" @close="visible = false" :id="orderId" />
           </el-tab-pane>
-          <el-tab-pane label="会话" name="fourth"> </el-tab-pane>
+          <el-tab-pane label="会话" name="fourth">
+            <div class="flex track-tab-wrap mb15">
+              <div
+                :class="['track-tab', item.checked && 'active']"
+                v-for="(item, i) in chatTab"
+                :key="i"
+                @click="chatTabClick(i, item.type)"
+              >
+                {{ item.lable }}
+              </div>
+            </div>
+            <chatListClassTab :queryChat="queryChat" :type="tabType"></chatListClassTab>
+          </el-tab-pane>
         </el-tabs>
 
         <!-- <div class="left">
@@ -659,6 +696,25 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+.track-tab-wrap {
+  .track-tab {
+    background: var(--bg-black-8);
+    border-radius: 50px;
+    padding: 5px 10px;
+    cursor: pointer;
+    & + .track-tab {
+      margin-left: 30px;
+    }
+    &.active {
+      background: var(--color);
+      color: var(--font-white, #fff);
+    }
+  }
+}
+.content-box {
+  width: 80%;
+  border: 1px solid var(--bg-black-8);
+}
 .code-image {
   width: 50px;
   height: 50px;

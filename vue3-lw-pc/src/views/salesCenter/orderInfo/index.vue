@@ -247,7 +247,7 @@ export default {
         // 新建字段提交
         this.getList()
       }
-      this.visible = val
+      this.visible = false
     },
     add(id) {
       this.visible = true

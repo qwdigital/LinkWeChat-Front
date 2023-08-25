@@ -12,11 +12,23 @@
         <div class="content">
           <div class="content-item" v-for="(obj, i) in item.properties" :key="i">
             <template v-if="obj.type !== 7">
-              <span>{{ obj.name }}</span>
-              <span>{{ query[obj.code] }}</span>
+              <span>{{ obj.name }} ：</span>
+              <span>{{ obj.actualValue }}</span>
             </template>
             <template v-else>
               <!-- 附件 -->
+              <span>{{ obj.name }} ：</span>
+              <template v-for="(item2, j) in dealValue(obj.actualValue)" :key="j">
+                <!-- 图片 -->
+                <el-image
+                  :src="obj.actualValue"
+                  fit="contain"
+                  class="imgsize"
+                  v-if="item2 && chargeType(item2)"
+                ></el-image>
+                <!-- 文件/doc/xls/pdf -->
+                <a :href="obj.actualValue" v-else>{{ obj.actualValue }}</a>
+              </template>
             </template>
           </div>
         </div>
@@ -66,19 +78,36 @@ export default {
     // this.getDetail()
   },
   methods: {
+    dealValue(val) {
+      let url = []
+      if (val) {
+        url = val.split(',')
+      }
+      return url
+    },
+    chargeType(val) {
+      if (val) {
+        let url = val.split('.')
+        if (['jpg', 'jpeg', 'png'].includes(url[url.length - 1])) {
+          return true
+        } else {
+          return false
+        }
+      }
+    },
     // 点击×按钮
     handleClose() {
       this.$emit('close', false)
     },
     //  获取全部属性
-    getProperties(id) {
-      getProperties(id).then((res) => {
+    getProperties() {
+      getProperties().then((res) => {
         console.log(res)
         this.query = res.data
       })
     },
     // 获取详情
-    getDetail() {
+    getDetail(id) {
       orderDetail(id).then((res) => {
         console.log(res)
         this.detailList = res.data
@@ -88,4 +117,18 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.g-card {
+  .title {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+  .content-item {
+    line-height: 34px;
+  }
+}
+.imgsize {
+  width: 120px;
+  height: 120px;
+}
+</style>

@@ -21,11 +21,11 @@
             placeholder="请输入字段名称"
             maxlength="10"
             show-word-limit
-            :disabled="ruleForm.fixed"
+            :disabled="ruleForm.fixed || id"
           ></el-input>
         </el-form-item>
         <el-form-item label="字段类型：" prop="type">
-          <el-select v-model="ruleForm.type" :disabled="ruleForm.fixed">
+          <el-select v-model="ruleForm.type" :disabled="ruleForm.fixed || id">
             <el-option
               :label="item.value"
               :value="item.key"
@@ -65,7 +65,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="是否必填：" prop="required">
-          <el-radio-group v-model="ruleForm.required">
+          <el-radio-group v-model="ruleForm.required" :disabled="id">
             <el-radio :label="1">是</el-radio>
             <el-radio :label="0">否</el-radio>
           </el-radio-group>
@@ -126,6 +126,7 @@ export default {
             toTime: 0,
           }
           this.$refs['ruleForm'].resetFields()
+          this.id = 0
         }
       },
     },
@@ -182,6 +183,7 @@ export default {
           this.ruleForm.catalogueId = this.catalogueId
           if (this.id) {
             this.ruleForm.id = this.id
+            delete this.ruleForm.typeStr
           }
           ;(this.id ? update : add)(this.ruleForm).then((res) => {
             if (res.code === 200) {
