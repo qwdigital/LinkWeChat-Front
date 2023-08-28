@@ -319,3 +319,12 @@ export function chatList(params) {
     params,
   })
 }
+
+// 客户数据导出
+export function exportData(params) {
+  return request({
+    url: service + '/export',
+    params,
+    responseType: 'blob',
+  })
+}

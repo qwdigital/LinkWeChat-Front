@@ -425,6 +425,10 @@ export default {
       this.queryTag = []
       this.query.tagIds = ''
     },
+    // 导出客户
+    exportData() {
+      this.$exportData(api.exportData.bind(null, this.query), '导出客户.xlsx')
+    },
   },
 }
 </script>
@@ -505,6 +509,8 @@ export default {
           共
           <span class="g-color">{{ noRepeatCustomerTotal }}</span>
           位客户（去重）
+
+          <el-button type="primary" @click="exportData">导出客户</el-button>
         </div>
         <!-- 共
         <span class="g-color">{{ total }}</span> 位客户，实际客户
