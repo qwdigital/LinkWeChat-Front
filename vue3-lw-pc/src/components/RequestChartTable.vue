@@ -117,28 +117,6 @@ export default {
           this.loading = false
         })
     },
-
-    exprotTable() {
-      this.$confirm('是否确认导出吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          this.loading = true
-          let query = Object.assign({}, this.query, { pageNum: undefined, pageSize: undefined })
-          return this.requestExport(query)
-        })
-        .then((resBlob) => {
-          this.downloadBlob(resBlob, this.exportFileName)
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-        .finally(() => {
-          this.loading = false
-        })
-    },
   },
 }
 </script>
@@ -150,7 +128,11 @@ export default {
     <div class="RequestChartTable-operation" v-if="requestExport || $slots.query">
       <slot name="operation" v-bind="query"></slot>
 
-      <el-button v-if="requestExport" style="position: absolute; right: 0" type="primary" @click="exprotTable">
+      <el-button
+        v-if="requestExport"
+        style="position: absolute; right: 0"
+        type="primary"
+        @click="$exportData(requestExport.bind(null, query), exportFileName)">
         导出 Excel
       </el-button>
     </div>

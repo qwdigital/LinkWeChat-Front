@@ -99,11 +99,12 @@ export function selectDictLabels(datas, value, separator) {
 /**
  * 下载bolb文件
  * @param {*} blob bolo源数据 必需
- * @param {*} type 文件类型 必需
- * @param {*} downloadName 下载文件名，需含文件后缀名 可选
+ * @param {*} downloadName 下载文件名，需含文件后缀名 必需
+ * @param {*} type 文件类型 enum: excel,zip,image
+ * @param {*} callback 成功回调
  */
-export function downloadBlob(blob, downloadName, type) {
-  if (!blob || !downloadName) return
+export function downloadBlob(blob, downloadName, type, callback) {
+  if (!blob || !downloadName) throw '文件或文件名不存在'
   if (blob instanceof Blob) {
     const typeDict = {
       excel: 'application/vnd.ms-excel',
@@ -118,6 +119,7 @@ export function downloadBlob(blob, downloadName, type) {
     a.click()
     a.remove()
     URL.revokeObjectURL(url) // 释放内存
+    callback && callback()
   } else if (/^http/.test(blob) && type === 'image') {
     let image = new Image()
     image.setAttribute('crossOrigin', 'anonymous')
@@ -132,6 +134,8 @@ export function downloadBlob(blob, downloadName, type) {
         downloadBlob(blob, downloadName)
       })
     }
+  } else {
+    throw 'blob：文件类型错误'
   }
 }
 
@@ -146,7 +150,7 @@ export function download(fileName) {
     },
   }).then((res) => {
     const { data, headers } = res
-    downloadBlob(data, headers['content-type'], fileName)
+    downloadBlob(data, fileName, headers['content-type'])
 
     // const blob = new Blob([data], { type: headers['content-type'] })
     // let dom = document.createElement('a')
@@ -172,7 +176,7 @@ export function downloadNet(url, fileName) {
     },
   }).then((res) => {
     const { data, headers } = res
-    downloadBlob(data, headers['content-type'], fileName)
+    downloadBlob(data, fileName, headers['content-type'])
 
     // const blob = new Blob([data], { type: headers['content-type'] })
     // let dom = document.createElement('a')
@@ -346,7 +350,11 @@ export function filType(file) {
   }
 }
 
-// 通用删除确认弹窗
+/**
+ * 通用删除
+ * @param {*} remove 删除接口
+ * @param {*} callback 成功回调
+ */
 export function $delConfirm(remove, callback) {
   this.$confirm('是否确认删除?', '警告', {
     confirmButtonText: '确定',
@@ -361,9 +369,12 @@ export function $delConfirm(remove, callback) {
       // this.getList && this.getList()
       this.msgSuccess()
     })
-    .catch(function () {})
+    .catch((error) => {
+      console.error(error)
+    })
 }
 
+// 复制文字
 export function $copyText(txt) {
   let clipboard = new this.ClipboardJS(event.currentTarget.localName, {
     target: function (trigger) {
@@ -376,6 +387,45 @@ export function $copyText(txt) {
   setTimeout(() => {
     clipboard.destroy()
   }, 0)
+}
+
+/**
+ * 通用导出
+ * @param {*} requestExport 导出接口 必需
+ * @param {*} exportFileName 导出文件名 需含文件后缀名 必需
+ * @param {*} type 文件类型 enum: excel,zip,image 必需
+ * @param {*} callback 成功回调
+ */
+export function $exportData(requestExport, exportFileName = '导出.xlsx', callback, type) {
+  this.$confirm('是否确认导出吗?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+    .then(() => {
+      // debugger
+      return new Promise((resolve, reject) => {
+        this.$alert('正在导出，请稍等...', '提示', {
+          confirmButtonText: '取消导出',
+          confirmButtonClass: 'exportData',
+          showClose: false,
+        }).then(() => {
+          reject()
+        })
+        requestExport().then((resBlob) => {
+          resolve(resBlob)
+        })
+      })
+    })
+    .then((resBlob) => {
+      downloadBlob(resBlob, exportFileName, type, () => {
+        document.querySelector('.el-message-box__btns .exportData').click()
+        this.msgSuccess('操作成功')
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+    })
 }
 
 /**

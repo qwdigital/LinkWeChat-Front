@@ -100,8 +100,8 @@ if (h) {
 // if (process.env.VUE_APP_ENV === 'production') document.documentElement.style.filter = 'grayscale(100%)'
 
 // el-button点击后自动失焦 去除焦点样式
-document.addEventListener('click', (target) => {
-  target = target.target
+document.addEventListener('click', (event) => {
+  let target = event.target
   if (target.className.includes('el-button')) {
     target.blur()
   } else if (target.parentNode.className.includes('el-button')) {
