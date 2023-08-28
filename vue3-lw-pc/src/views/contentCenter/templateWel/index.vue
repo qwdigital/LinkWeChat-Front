@@ -22,7 +22,7 @@ export default {
   props: {},
   data() {
     return {
-      active: '1',
+      active: this.$route.query.index || '1',
       total1: 0,
       total2: 0,
       total3: 0,

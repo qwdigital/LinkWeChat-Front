@@ -103,7 +103,8 @@ export function selectDictLabels(datas, value, separator) {
  * @param {*} downloadName 下载文件名，需含文件后缀名 可选
  */
 export function downloadBlob(blob, downloadName, type) {
-  if (blob && downloadName) {
+  if (!blob || !downloadName) return
+  if (blob instanceof Blob) {
     const typeDict = {
       excel: 'application/vnd.ms-excel',
       zip: 'application/zip',
@@ -117,6 +118,20 @@ export function downloadBlob(blob, downloadName, type) {
     a.click()
     a.remove()
     URL.revokeObjectURL(url) // 释放内存
+  } else if (/^http/.test(blob) && type === 'image') {
+    let image = new Image()
+    image.setAttribute('crossOrigin', 'anonymous')
+    image.src = blob
+    image.onload = () => {
+      let canvas = document.createElement('canvas')
+      canvas.width = image.width
+      canvas.height = image.height
+      let ctx = canvas.getContext('2d')
+      ctx.drawImage(image, 0, 0, image.width, image.height)
+      canvas.toBlob((blob) => {
+        downloadBlob(blob, downloadName)
+      })
+    }
   }
 }
 
@@ -348,6 +363,21 @@ export function $delConfirm(remove, callback) {
     })
     .catch(function () {})
 }
+
+export function $copyText(txt) {
+  let clipboard = new this.ClipboardJS(event.currentTarget.localName, {
+    target: function (trigger) {
+      return trigger
+    },
+    text: function (trigger) {
+      return txt
+    },
+  })
+  setTimeout(() => {
+    clipboard.destroy()
+  }, 0)
+}
+
 /**
  * 通用js方法封装处理，挂载到 Vue.prototype
  */

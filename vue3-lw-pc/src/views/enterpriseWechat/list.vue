@@ -41,7 +41,7 @@ export default {
   props: {},
   data() {
     return {
-      currentActive: '1',
+      currentActive: this.$route.query.index || '1',
       form: {},
       disabled: false,
       loading: false,
