@@ -15,6 +15,7 @@
     "@element-plus/icons-vue": "^2.1.0",
     "@vuemap/vue-amap": "^2.0.10",
     "@vueup/vue-quill": "^1.1.1",
+    "@vueuse/core": "^10.4.1",
     "ali-oss": "^6.17.1",
     "awesome-qr": "^2.1.5-rc.0",
     "axios": "^1.4.0",
