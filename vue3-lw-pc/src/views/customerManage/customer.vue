@@ -505,9 +505,9 @@ export default {
 
     <div class="g-card">
       <div class="g-card-title mid-action">
-        <div>
+        <div class="flex aic">
           共
-          <span class="g-color">{{ noRepeatCustomerTotal }}</span>
+          <span class="g-color ml5 mr5">{{ noRepeatCustomerTotal }}</span>
           位客户（去重）
 
           <el-button type="primary" @click="exportData">导出客户</el-button>
