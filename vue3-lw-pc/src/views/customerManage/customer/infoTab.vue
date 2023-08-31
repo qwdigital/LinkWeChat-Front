@@ -561,7 +561,7 @@ export default {
               <el-table-column
                 label="订单金额(元)"
                 align="center"
-                prop="address"
+                prop="totalPrice"
                 width="180"
               ></el-table-column>
               <el-table-column

@@ -290,8 +290,10 @@ export default {
       this.loading = true
       getList(this.query)
         .then(({ rows, total }) => {
-          rows[0].isFirst = true
-          rows[rows.length - 1].isLast = true
+          if (rows[0]) {
+            rows[0].isFirst = true
+            rows[rows.length - 1].isLast = true
+          }
           this.list = rows
           this.total = Number(total)
           this.loading = false
