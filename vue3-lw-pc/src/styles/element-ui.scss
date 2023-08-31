@@ -291,6 +291,15 @@
 //   }
 // }
 // }
+
+// el-from 表单项间距，去除表单最后一项下面多余margin间距
+.gap-form {
+  display: flex;
+  gap: 18px;
+  .el-form-item {
+    margin-bottom: 0;
+  }
+}
 .el-form-item .el-form-item {
   margin-bottom: 18px;
 }

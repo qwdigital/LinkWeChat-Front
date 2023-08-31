@@ -132,6 +132,16 @@ li {
   text-align: right !important;
 }
 
+.sticky-t {
+  position: sticky !important;
+  top: 0;
+  z-index: 9;
+}
+.sticky-b {
+  position: sticky !important;
+  bottom: 0;
+}
+
 /* padding 5px series */
 .pt5 {
   padding-top: 5px;
@@ -358,6 +368,28 @@ li {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.sticky-padding {
+  --bg: var(--bg-black-8);
+  --pad: var(--card-margin);
+  background: var(--bg);
+  padding: 0 var(--pad);
+  overflow: auto;
+}
+.sticky-padding::before,
+.sticky-padding::after {
+  content: '';
+  display: block;
+  position: sticky;
+  height: var(--pad);
+  background: var(--bg);
+}
+.sticky-padding::before {
+  top: 0;
+}
+.sticky-padding::after {
+  bottom: 0;
 }
 
 /* pc端主体显示宽度区域 */
