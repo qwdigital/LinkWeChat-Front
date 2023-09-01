@@ -19,7 +19,6 @@ const common = {
   POST_QRCODE: env.BASE_URL + 'static/POST_QRCODE.png', // 海报占位二维码
   AGREEMENT: env.BASE_URL + 'static/AGREEMENT.pdf', // 用户协议pdf
   PRIVACY: env.BASE_URL + 'static/PRIVACY.pdf', // 隐私协议pdf
-  IS_PUBLISH_DIALOG: false, // 是否显示发布弹窗
   COOKIEEXPIRES: 0.5, // token在Cookie中存储的天数，默认0.5天
   WORK_WEIXIN_CONFIG_ROUTE_NAME: 'EnterpriseWechat', // 企业微信设置页面路由名称, 用于router 通过name判断与跳转，避免使用path不易于扩展
   CUSTOMER_DETAIL_ROUTE_NAME: 'customerDetail', // 客户详情页面路由name，同上
@@ -33,6 +32,8 @@ const common = {
   PRIVIEW_URL: env.VIEW_URL,
   PRIVIEW_PATH: window.location.origin + '/mobile/#/metrialDetail?materiaId=',
   BAIDU_MAP_KEY: '6fZIymhpgfnAHUT1baHeEF922lPIThOG', // 百度地图key
+  IS_PUBLISH_DIALOG: false, // 是否显示发布弹窗
+  IS_LINKWECHAT: true, // 是否显示linkwechat开源相关业务组件
 
   MICRO_APPS: {
     store: {

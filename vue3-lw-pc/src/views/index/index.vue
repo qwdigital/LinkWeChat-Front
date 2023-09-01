@@ -61,7 +61,7 @@
     <!-- 右侧 -->
     <div class="index-r">
       <div class="content-right">
-        <div class="g-card inedx-r-top">
+        <div class="g-card inedx-r-top" v-if="lwConfig.IS_LINKWECHAT">
           <div class="companyName">{{ $store.user.companyName }}</div>
           <div class="info">
             当前版本：
@@ -121,7 +121,7 @@
         </div>
 
         <!-- 帮助中心 -->
-        <div class="g-card help-center">
+        <div class="g-card help-center" v-if="lwConfig.IS_LINKWECHAT">
           <div class="g-card-title fxbw">
             <span>帮助中心</span>
             <a
@@ -218,7 +218,7 @@ export default {
       dynamicsFrom: {
         trajectoryType: '',
         // dataScope: false,
-        pageSize: 5,
+        pageSize: 10,
         pageNum: 1,
       },
       dialogTitle: '',

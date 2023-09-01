@@ -41,10 +41,12 @@
             <img class="login-code-img ml10" :src="codeUrl" @click="getCode" />
           </div>
         </el-form-item>
-        <el-checkbox class="g-margin-b" v-model="isDemonstrationLogin" @change="changeDemonAccount">
-          演示账号登录
-        </el-checkbox>
-        <el-checkbox class="fr" v-model="loginForm.rememberMe">记住密码</el-checkbox>
+        <div class="fxbw g-margin-b">
+          <el-checkbox v-if="lwConfig.IS_LINKWECHAT" v-model="isDemonstrationLogin" @change="changeDemonAccount">
+            演示账号登录
+          </el-checkbox>
+          <el-checkbox class="fr" v-model="loginForm.rememberMe">记住密码</el-checkbox>
+        </div>
         <el-form-item>
           <el-button :loading="loading" type="primary" style="width: 100%" @click.prevent="handleLogin">
             <span v-if="!loading">登 录</span>

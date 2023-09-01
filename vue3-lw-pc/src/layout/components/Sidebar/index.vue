@@ -17,7 +17,7 @@
       </el-menu>
     </el-scrollbar>
 
-    <div class="card">
+    <div class="card" v-if="lwConfig.IS_LINKWECHAT">
       <el-tooltip content="文档手册" effect="dark" placement="top">
         <div class="card-item">
           <svg-icon

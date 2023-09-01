@@ -107,7 +107,7 @@
       <settings v-if="setting" />
     </el-drawer>
 
-    <el-popover placement="left" title="" trigger="hover">
+    <el-popover v-if="lwConfig.IS_LINKWECHAT" placement="left" title="" trigger="hover">
       <template #reference>
         <div class="contact-us">
           <svg-icon class="contact-us-icon cc" icon="wechat" />
