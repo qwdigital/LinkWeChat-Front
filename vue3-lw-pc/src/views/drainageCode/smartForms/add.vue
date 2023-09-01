@@ -656,7 +656,7 @@ export default {
           }
           this.pageDataAll = JSON.parse(data.styles)
         }
-        this.baseFormUrl4 = window.lwConfig.DOMAIN + '/formsDetail?id=true&formId=' + this.formId
+        this.baseFormUrl4 = window.location.origin + '/formsDetail?id=true&formId=' + this.formId
 
         this.creatQrCode()
         // this.$forceUpdate()
@@ -743,7 +743,7 @@ export default {
       // }
       var qrcode = QRCode.toDataURL(
         this.$refs.qrCodeUrl,
-        window.lwConfig.DOMAIN + '/formsDetail?id=q&formId=' + that.formId, // 需要转换为二维码的内容
+        window.location.origin + '/formsDetail?id=q&formId=' + that.formId, // 需要转换为二维码的内容
         {
           width: 150,
           margin: 4,

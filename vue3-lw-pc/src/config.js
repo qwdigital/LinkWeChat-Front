@@ -24,20 +24,20 @@ const common = {
   WORK_WEIXIN_CONFIG_ROUTE_NAME: 'EnterpriseWechat', // 企业微信设置页面路由名称, 用于router 通过name判断与跳转，避免使用path不易于扩展
   CUSTOMER_DETAIL_ROUTE_NAME: 'customerDetail', // 客户详情页面路由name，同上
   GROUP_DETAIL_ROUTE_PATH: '/groupManage/customerGroupManage/groupDetail', // 客群详情
-  DEFAULT_H5_PIC: env.DOMAIN + '/static/PIC.png',
-  DEFAULT_H5_ART: env.DOMAIN + '/static/ARTICAL.png', // 文章默认封面
-  DEFAULT_H5_TP: env.DOMAIN + '/static/TEXT_PIC.png', // 图文默认封面
-  DEFAULT_H5_PDF: env.DOMAIN + '/static/PDF.png', // pdf默认封面
-  DEFAULT_H5_WORDE: env.DOMAIN + '/static/WORD.png',
-  DEFAULT_H5_PPT: env.DOMAIN + '/static/PPT.png',
+  DEFAULT_H5_PIC: env.BASE_URL + 'static/PIC.png',
+  DEFAULT_H5_ART: env.BASE_URL + 'static/ARTICAL.png', // 文章默认封面
+  DEFAULT_H5_TP: env.BASE_URL + 'static/TEXT_PIC.png', // 图文默认封面
+  DEFAULT_H5_PDF: env.BASE_URL + 'static/PDF.png', // pdf默认封面
+  DEFAULT_H5_WORDE: env.BASE_URL + 'static/WORD.png',
+  DEFAULT_H5_PPT: env.BASE_URL + 'static/PPT.png',
   PRIVIEW_URL: env.VIEW_URL,
-  PRIVIEW_PATH: env.DOMAIN + '/mobile/#/metrialDetail?materiaId=',
+  PRIVIEW_PATH: window.location.origin + '/mobile/#/metrialDetail?materiaId=',
   BAIDU_MAP_KEY: '6fZIymhpgfnAHUT1baHeEF922lPIThOG', // 百度地图key
 
   MICRO_APPS: {
     store: {
       name: 'microStore',
-      entry: env.DOMAIN + '/microStore/',
+      entry: window.location.origin + '/microStore/',
       container: '#micro-app',
       // activeRule: (location) => location.hash.startsWith('#/microStore'),
       activeRule: env.BASE_URL.slice(env.BASE_URL.indexOf('/')) + 'microStore', // eg:/vue/microStore
