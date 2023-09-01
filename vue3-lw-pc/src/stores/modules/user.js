@@ -6,7 +6,7 @@ const user = {
     token: getToken(),
     name: '',
     companyName: '',
-    avatar: import('@/assets/image/profile.jpg'),
+    avatar: new URL('@/assets/image/profile.jpg', import.meta.url).href,
     roles: [],
     permissions: [],
     configParamInfo: {},
