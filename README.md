@@ -46,7 +46,8 @@ vue2 技术栈版本（停止维护）可切换至 master 分支查看，具体�
     ├── jsconfig.json              # jsconfig 配置 快捷路径等
     ├── package.json               # package.json
     ├── vite.config.js             # vite 配置
-├── linkwe-mobile		// 移动端项目包含移动工作台、任务宝、群裂变等H5
+├── vue3-lw-mobile		// 移动端vue3项目，包含客服升级及2023.09.01之后的移动端新功能
+├── linkwe-mobile		// 移动端vue2项目，包含移动工作台、任务宝、群裂变等H5（2023.09.01之前的功能）
 ├── linkwe-uniapp		// uniapp短链小程序项目
 ```
 
@@ -56,7 +57,7 @@ vue2 技术栈版本（停止维护）可切换至 master 分支查看，具体�
 
 这里以 vue3-lw-pc 管理端项目运行示例
 
-linkwe-mobile 项目与 vue3-lw-pc 架构基本雷同
+linkwe-mobile、vue3-lw-mobile 项目与 vue3-lw-pc 架构基本雷同
 
 linkwe-uniapp 只有一个活码识别页面，属于基础的 uniapp 项目
 
