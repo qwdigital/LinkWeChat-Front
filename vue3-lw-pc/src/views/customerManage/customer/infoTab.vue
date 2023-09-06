@@ -113,6 +113,7 @@ export default {
     getList() {
       this.loading = true
       this.query.userId = this.userId
+      this.query.externalUserid = this.$route.query.externalUserid
       orderList(this.query)
         .then(({ rows, total }) => {
           this.list = rows
@@ -319,13 +320,7 @@ export default {
               <el-card class="mb10" shadow="never">
                 <template #header><div class="card-title">详细资料</div></template>
                 <div style="max-height: 450px; overflow: hidden auto">
-                  <el-row
-                    :gutter="20"
-                    type="type"
-                    class="pad10"
-                    justify="space-between"
-                    style="flex-wrap: wrap"
-                  >
+                  <el-row :gutter="20" type="type" class="pad10" justify="space-between" style="flex-wrap: wrap">
                     <template v-for="(item, index) in fieldList" :key="index">
                       <template v-if="!['address', 'customerFullName'].includes(item.labelVal)">
                         <el-col :span="12" v-if="item.isDefault == 1">
@@ -369,10 +364,7 @@ export default {
                             <el-col :span="6">{{ item.labelName }}</el-col>
                             <el-col :span="18">{{ portrayalSum.position || '无' }}</el-col>
                           </el-row>
-                          <el-row
-                            class="baseinfo-row"
-                            v-else-if="item.labelVal == 'remarkCorpName'"
-                          >
+                          <el-row class="baseinfo-row" v-else-if="item.labelVal == 'remarkCorpName'">
                             <!-- 公司 -->
                             <el-col :span="6">{{ item.labelName }}</el-col>
                             <el-col :span="18">{{ portrayalSum.corpName || '无' }}</el-col>
@@ -416,17 +408,13 @@ export default {
                   </el-row>
                 </div>
               </el-card>
-            </template></el-tab-pane
-          >
+            </template>
+          </el-tab-pane>
           <el-tab-pane label="跟进" name="second">
             <el-card class="mb10" shadow="never">
               <template #header><div class="card-title">商机阶段</div></template>
               <template v-if="trackUsers && trackUsers.length">
-                <div
-                  v-for="(item, index) of trackUsers"
-                  :key="index"
-                  :class="['flex aic', index && 'mt20']"
-                >
+                <div v-for="(item, index) of trackUsers" :key="index" :class="['flex aic', index && 'mt20']">
                   汇总的场景显示名字
                   <template v-if="!userId">
                     <div class="name oe g-bg-lg">{{ item.userName }}</div>
@@ -436,37 +424,21 @@ export default {
                       <el-step title="待跟进"></el-step>
                     </el-steps>
                   </template>
-                  <template
-                    v-else-if="
-                      item.trackState === 3 || item.trackState === 4 || item.trackState === 5
-                    "
-                  >
+                  <template v-else-if="item.trackState === 3 || item.trackState === 4 || item.trackState === 5">
                     <el-steps style="flex: auto" :active="setActive(item.trackState)">
                       <el-step title="待跟进"></el-step>
                       <template v-for="(data, or) in stage">
-                        <el-step
-                          :title="data.stageKey"
-                          :key="or"
-                          v-if="data.stageState == 2"
-                        ></el-step>
+                        <el-step :title="data.stageKey" :key="or" v-if="data.stageState == 2"></el-step>
                       </template>
                       <template v-for="(data, or) in stage">
-                        <el-step
-                          :title="data.stageKey"
-                          :key="or"
-                          v-if="item.trackState == data.stageVal"
-                        ></el-step>
+                        <el-step :title="data.stageKey" :key="or" v-if="item.trackState == data.stageVal"></el-step>
                       </template>
                     </el-steps>
                   </template>
                   <template v-else-if="item.trackState">
                     <el-steps style="flex: auto" :active="setList(item.trackState)">
                       <template v-for="(data, or) in stage">
-                        <el-step
-                          :title="data.stageKey"
-                          :key="or"
-                          v-if="setList(item.trackState) <= or + 1"
-                        ></el-step>
+                        <el-step :title="data.stageKey" :key="or" v-if="setList(item.trackState) <= or + 1"></el-step>
                       </template>
                     </el-steps>
                   </template>
@@ -481,33 +453,19 @@ export default {
               <!-- 单个人的场景 -->
               <record-table v-if="userId" :stageList="stage" :userId="userId"></record-table>
               <!-- 汇总的场景 -->
-              <el-tabs
-                v-else-if="trackUsers && trackUsers.length"
-                model-value="0"
-                @tab-click="changeTab"
-              >
-                <el-tab-pane
-                  v-for="(item, index) in trackUsers"
-                  :key="index"
-                  :label="item.userName"
-                >
+              <el-tabs v-else-if="trackUsers && trackUsers.length" model-value="0" @tab-click="changeTab">
+                <el-tab-pane v-for="(item, index) in trackUsers" :key="index" :label="item.userName">
                   <record-table
                     :stageList="stage"
                     v-if="openedTabs.includes(index + '')"
-                    :userId="item.trackUserId"
-                  ></record-table>
+                    :userId="item.trackUserId"></record-table>
                 </el-tab-pane>
               </el-tabs>
               <div v-else class="g-tip-color ac">暂无数据</div>
-            </el-card></el-tab-pane
-          >
+            </el-card>
+          </el-tab-pane>
           <el-tab-pane label="订单" name="third">
-            <el-form
-              :inline="true"
-              label-width="80px"
-              label-position="left"
-              class="top-search mt20"
-            >
+            <el-form :inline="true" label-width="80px" label-position="left" class="top-search mt20">
               <el-form-item label="" label-width="0px">
                 <el-select v-model="query.orderStatus" :popper-append-to-body="false">
                   <el-option label="全部状态" value=""></el-option>
@@ -515,8 +473,7 @@ export default {
                     :label="item"
                     :value="item"
                     v-for="(item, index) in orderStateList"
-                    :key="index"
-                  ></el-option>
+                    :key="index"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label-width="0">
@@ -525,19 +482,8 @@ export default {
                 <!-- <el-button @click="getDetail('1694259619920498688')">详情</el-button> -->
               </el-form-item>
             </el-form>
-            <el-table
-              v-loading="loading"
-              :data="list"
-              @selection-change="handleSelectionChange"
-              style="width: 100%"
-            >
-              <el-table-column
-                label="商品名称"
-                align="center"
-                min-width="100"
-                prop="productName"
-                show-overflow-tooltip
-              >
+            <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange" style="width: 100%">
+              <el-table-column label="商品名称" align="center" min-width="100" prop="productName" show-overflow-tooltip>
                 <template #default="{ row }">
                   <div class="flex">
                     <el-image :src="row.productUrl" class="code-image"></el-image>
@@ -545,31 +491,10 @@ export default {
                   </div>
                 </template>
               </el-table-column>
-              <el-table-column
-                label="商品数量"
-                align="center"
-                min-width="120"
-                prop="amount"
-                show-overflow-tooltip
-              />
-              <el-table-column
-                label="订单状态"
-                align="center"
-                prop="orderStatus"
-                width="180"
-              ></el-table-column>
-              <el-table-column
-                label="订单金额(元)"
-                align="center"
-                prop="totalPrice"
-                width="180"
-              ></el-table-column>
-              <el-table-column
-                label="购买人/下单时间"
-                align="center"
-                min-width="100"
-                show-overflow-tooltip
-              >
+              <el-table-column label="商品数量" align="center" min-width="120" prop="amount" show-overflow-tooltip />
+              <el-table-column label="订单状态" align="center" prop="orderStatus" width="180"></el-table-column>
+              <el-table-column label="订单金额(元)" align="center" prop="totalPrice" width="180"></el-table-column>
+              <el-table-column label="购买人/下单时间" align="center" min-width="100" show-overflow-tooltip>
                 <template #default="{ row }">
                   {{ row.purchaser }}
                   {{ row.orderTime }}
@@ -580,10 +505,9 @@ export default {
                 align="center"
                 fixed="right"
                 width="180"
-                class-name="small-padding fixed-width"
-              >
+                class-name="small-padding fixed-width">
                 <template #default="{ row }">
-                  <el-button text @click="getDetail(row.id)"> 详情 </el-button>
+                  <el-button text @click="getDetail(row.id)">详情</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -591,8 +515,7 @@ export default {
               :total="total"
               v-model:page="query.pageNum"
               v-model:limit="query.pageSize"
-              @pagination="getList()"
-            />
+              @pagination="getList()" />
             <Detail :visible="visible" @close="visible = false" :id="orderId" />
           </el-tab-pane>
           <el-tab-pane label="会话" name="fourth">
@@ -601,8 +524,7 @@ export default {
                 :class="['track-tab', item.checked && 'active']"
                 v-for="(item, i) in chatTab"
                 :key="i"
-                @click="chatTabClick(i, item.type)"
-              >
+                @click="chatTabClick(i, item.type)">
                 {{ item.lable }}
               </div>
             </div>
