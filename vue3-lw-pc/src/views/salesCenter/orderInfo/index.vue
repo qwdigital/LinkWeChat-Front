@@ -15,27 +15,18 @@
             :class="{ active: groupIndex == key }"
             v-for="(group, key) in groupList"
             :key="group.id"
-            @click="switchGroup(key, group)"
-          >
+            @click="switchGroup(key, group)">
             <div class="name">{{ group.name }}</div>
-            <el-dropdown
-              v-if="groupIndex == key"
-              class="dropdown"
-              @command="onGroupCommand($event, group)"
-            >
+            <el-dropdown v-if="groupIndex == key" class="dropdown" @command="onGroupCommand($event, group)">
               <span class="dot">
                 <el-icon-MoreFilled class="el-icon-MoreFilled"></el-icon-MoreFilled>
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item command="moveUp" v-if="key !== 0">上移</el-dropdown-item>
-                  <el-dropdown-item command="moveDown" v-if="key !== groupList.length - 1"
-                    >下移</el-dropdown-item
-                  >
+                  <el-dropdown-item command="moveDown" v-if="key !== groupList.length - 1">下移</el-dropdown-item>
                   <el-dropdown-item command="edit">修改分组</el-dropdown-item>
-                  <el-dropdown-item command="remove" v-if="group.fixed !== 1"
-                    >删除分组</el-dropdown-item
-                  >
+                  <el-dropdown-item command="remove" v-if="group.fixed !== 1">删除分组</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -45,7 +36,7 @@
       <div class="right">
         <div class="g-card">
           <div class="mid-action">
-            <el-button type="primary" @click="add(0)">新建字段</el-button>
+            <el-button type="primary" @click="add()">新建字段</el-button>
             <div>
               <el-button type="primary" plain @click="removeFn('mult')">批量删除</el-button>
             </div>
@@ -55,35 +46,16 @@
             v-loading="loading"
             :data="list"
             @selection-change="handleSelectionChange"
-            :default-sort="{ prop: 'sort', order: 'descending' }"
-          >
+            :default-sort="{ prop: 'sort', order: 'descending' }">
             <el-table-column type="selection" width="55" align="center" />
-            <el-table-column
-              label="字段名称"
-              align="center"
-              min-width="100"
-              prop="name"
-              show-overflow-tooltip
-            />
-            <el-table-column
-              label="字段类型"
-              align="center"
-              min-width="100"
-              prop="type"
-              show-overflow-tooltip
-            >
+            <el-table-column label="字段名称" align="center" min-width="100" prop="name" show-overflow-tooltip />
+            <el-table-column label="字段类型" align="center" min-width="100" prop="type" show-overflow-tooltip>
               <template #default="{ row }">
                 {{ row.typeStr }}
               </template>
             </el-table-column>
 
-            <el-table-column
-              label="字段说明/字段值"
-              align="center"
-              min-width="100"
-              prop="type"
-              show-overflow-tooltip
-            >
+            <el-table-column label="字段说明/字段值" align="center" min-width="100" prop="type" show-overflow-tooltip>
               <template #default="{ row }">
                 {{ row.expound ? row.expound : row.value ? row.value : '-' }}
               </template>
@@ -100,19 +72,12 @@
               align="center"
               fixed="right"
               width="180"
-              class-name="small-padding fixed-width"
-            >
+              class-name="small-padding fixed-width">
               <template #default="{ row }">
-                <el-button text @click="getListMove(row.catalogueId, row.id, 0)" v-if="!row.isFirst"
-                  >上移</el-button
-                >
-                <el-button text @click="getListMove(row.catalogueId, row.id, 1)" v-if="!row.isLast"
-                  >下移</el-button
-                >
+                <el-button text @click="getListMove(row.catalogueId, row.id, 0)" v-if="!row.isFirst">上移</el-button>
+                <el-button text @click="getListMove(row.catalogueId, row.id, 1)" v-if="!row.isLast">下移</el-button>
                 <el-button text @click="add(row.id)">编辑</el-button>
-                <el-button text @click="removeFn('single', row.id)" v-if="row.fixed !== 1"
-                  >删除</el-button
-                >
+                <el-button text @click="removeFn('single', row.id)" v-if="row.fixed !== 1">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -120,21 +85,14 @@
             :total="total"
             v-model:page="query.pageNum"
             v-model:limit="query.pageSize"
-            @pagination="getList()"
-          />
+            @pagination="getList()" />
         </div>
       </div>
     </div>
     <el-dialog :title="`${groupForm.id ? '修改' : '新建'}分组`" v-model="groupVisible" width="30%">
       <el-form :model="groupForm" :rules="rules" ref="groupForm">
         <el-form-item label="分组名称" prop="name" label-width="80px">
-          <el-input
-            v-model="groupForm.name"
-            clearable
-            autocomplete="off"
-            maxlength="15"
-            show-word-limit
-          ></el-input>
+          <el-input v-model="groupForm.name" clearable autocomplete="off" maxlength="15" show-word-limit></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -144,12 +102,7 @@
         </div>
       </template>
     </el-dialog>
-    <Add
-      :visible="visible"
-      :catalogueId="query.catalogueId"
-      :editId="editId"
-      @close="handleClose"
-    />
+    <Add v-model="visible" :catalogueId="query.catalogueId" :editId="editId" @success="getList()" />
   </div>
 </template>
 
@@ -229,32 +182,19 @@ export default {
     this.$store.setBusininessDesc(
       `
         <div>可自定义修改客户画像中的订单信息项供企业个性化使用</div>
-      `
+      `,
     )
   },
   mounted() {},
   methods: {
     getListMove(catalogueId, id, direction) {
-      let obj = { id, direction, catalogueId }
-      listMove(obj).then((res) => {
-        if (res.code === 200) {
-          this.getList()
-        }
-      })
-    },
-    handleClose(val) {
-      if (val) {
-        // 新建字段提交
+      listMove({ id, direction, catalogueId }).then((res) => {
         this.getList()
-      }
-      this.visible = false
+      })
     },
     add(id) {
       this.visible = true
-      if (id) {
-        // 编辑
-        this.editId = id
-      }
+      this.editId = id
     },
     move(direction, id) {
       let obj = { direction, id }
@@ -299,21 +239,9 @@ export default {
           this.loading = false
           this.ids = []
         })
-        .catch(() => {
+        .finally(() => {
           this.loading = false
         })
-    },
-    /** 重置按钮操作 */
-    resetQuery() {
-      // this.query.qrName = ''
-      this.userArray = []
-      // this.query.qrUserIds = ''
-      this.qrUserName = ''
-      // this.query.userArrayStr = ''
-      // this.search()
-    },
-    goRoute(path, id) {
-      this.$router.push({ path: path, query: { id, catalogueId: this.query.catalogueId } })
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
@@ -344,35 +272,6 @@ export default {
         })
         .catch(function () {})
     },
-    // download(qrCode, qrName) {
-    //   let name = qrName + '.png'
-    //   this.downloadByBlob(qrCode, name)
-    // },
-    // downloadByBlob(url, name) {
-    //   let image = new Image()
-    //   image.setAttribute('crossOrigin', 'anonymous')
-    //   image.src = url
-    //   image.onload = () => {
-    //     let canvas = document.createElement('canvas')
-    //     canvas.width = image.width
-    //     canvas.height = image.height
-    //     let ctx = canvas.getContext('2d')
-    //     ctx.drawImage(image, 0, 0, image.width, image.height)
-    //     canvas.toBlob((blob) => {
-    //       let url = URL.createObjectURL(blob)
-    //       this.downloadFn(url, name)
-    //       // 用完释放URL对象
-    //       URL.revokeObjectURL(url)
-    //     })
-    //   }
-    // },
-    // downloadFn(href, name) {
-    //   let eleLink = document.createElement('a')
-    //   eleLink.download = name
-    //   eleLink.href = href
-    //   eleLink.click()
-    //   eleLink.remove()
-    // },
     // 新增分组
     onAddOrUpdateGroup() {
       this.$refs.groupForm.validate((validate) => {
@@ -385,16 +284,14 @@ export default {
           this.groupForm = obj
         }
         if (validate) {
-          ;(this.groupForm.id ? updateCodeCategory : addCodeCategory)(this.groupForm).then(
-            (res) => {
-              this.groupVisible = false
-              this.groupForm = {
-                name: '',
-              }
-              this.$refs.groupForm.clearValidate()
-              this.getCodeCategoryListFn()
+          ;(this.groupForm.id ? updateCodeCategory : addCodeCategory)(this.groupForm).then((res) => {
+            this.groupVisible = false
+            this.groupForm = {
+              name: '',
             }
-          )
+            this.$refs.groupForm.clearValidate()
+            this.getCodeCategoryListFn()
+          })
         }
       })
     },
@@ -421,15 +318,11 @@ export default {
     },
     removeGroup(id) {
       // this.$confirm('确认删除当前分组? 删除后其下活码将移至默认分组！', '提示', {
-      this.$confirm(
-        '是否确认删除当前分组？删除后该分组下所有字段同步删除，该操作不可撤销，请谨慎操作。',
-        '提示',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        }
-      )
+      this.$confirm('是否确认删除当前分组？删除后该分组下所有字段同步删除，该操作不可撤销，请谨慎操作。', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
         .then(() => {
           removeCodeCategory(id).then((res) => {
             this.getCodeCategoryListFn()
