@@ -54,7 +54,6 @@
     </div>
     <SelectUser
       :defaultValues="selectedUserList"
-      :isWechat="false"
       v-model:visible="dialogVisibleSelectUser"
       title="选择员工"
       :isOnlyLeaf="true"
@@ -165,7 +164,8 @@ export default {
           arr.push(i.userId)
           return {
             name: i.userName,
-            userId: i.userId,
+            userId: i.weUserId,
+            userIdOrigin: i.userId,
           }
         })
         this.form.users = arr
@@ -200,7 +200,7 @@ export default {
     selectedUser(users) {
       this.selectedUserList = users
       let arr = users.map((i) => {
-        return i.userId
+        return i.userIdOrigin
       })
       this.form.users = arr
     },

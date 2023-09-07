@@ -4,6 +4,7 @@ export default {
   name: 'SelectUser',
   components: {},
   props: {
+    // 是否使用 weUserId 代替 userId
     isWechat: {
       type: Boolean,
       default: true,
@@ -235,6 +236,7 @@ export default {
     handleUser(data) {
       return data.map((i) => {
         if (i.userName) {
+          i.userIdOrigin = i.userId
           i.userId = this.isWechat ? i.weUserId : i.userId
           i.name = i.userName
         }
