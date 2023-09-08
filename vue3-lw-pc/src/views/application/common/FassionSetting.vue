@@ -260,7 +260,7 @@
       listenChange: {
         handler(val) {
           this.news.digest = val.activeDescr
-          this.news.materialName = val.activeDescr
+          this.news.materialName = val.activeTitle
           if (this.form.activeCoverType == 2) {
             this.news.coverUrl = val.activeCoverUrl
           }
