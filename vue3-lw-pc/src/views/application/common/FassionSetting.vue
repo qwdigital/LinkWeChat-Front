@@ -90,7 +90,7 @@
             </el-form-item>
             <el-form-item label="活动标题" prop="activeTitle">
               <el-input
-                @change="updateView"
+                :disabled="isDetail"
                 show-word-limit
                 maxlength="20"
                 v-model="form.activeTitle"
@@ -99,7 +99,7 @@
             </el-form-item>
             <el-form-item label="活动描述" prop="activeDescr">
               <el-input
-                @change="updateView"
+                :disabled="isDetail"
                 type="textarea"
                 show-word-limit
                 maxlength="30"
@@ -108,13 +108,19 @@
               ></el-input>
             </el-form-item>
             <el-form-item label="活动封面" prop="activeCoverType">
-              <el-radio-group v-model="form.activeCoverType" @change="chengeClear">
+              <el-radio-group v-model="form.activeCoverType" :disabled="isDetail" @change="chengeClear">
                 <el-radio :label="1">海报缩略图</el-radio>
                 <el-radio :label="2">自定义</el-radio>
               </el-radio-group>
               <template v-if="form.activeCoverType == 2">
                 <el-form-item prop="activeCoverUrl">
-                  <upload v-model:fileUrl="form.activeCoverUrl" type="0" :maxSize="10" :format="['jpg', 'png']">
+                  <upload
+                    :disabled="isDetail"
+                    v-model:fileUrl="form.activeCoverUrl"
+                    type="0"
+                    :maxSize="10"
+                    :format="['jpg', 'png']"
+                  >
                     <template #tip
                       ><div class="tip">支持JPG、PNG格式，较好的效果为大图 1068*455，小图150*150</div></template
                     >
