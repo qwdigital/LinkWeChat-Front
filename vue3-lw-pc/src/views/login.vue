@@ -56,9 +56,11 @@
         <div class="link" @click="changeLoginType('url')">企微登录</div>
       </template>
       <div v-else class="ac">
-        <img class="wechat-code" :src="wechatCodeUrl" alt="" />
-        <!-- <div class="desc al">企业注册后，员工可直接扫码登录，无需重复注册</div> -->
-        <div class="desc">扫码体验完整功能</div>
+        <template v-if="lwConfig.IS_LINKWECHAT">
+          <img class="wechat-code" :src="wechatCodeUrl" alt="" />
+          <!-- <div class="desc al">企业注册后，员工可直接扫码登录，无需重复注册</div> -->
+          <div class="desc">扫码体验完整功能</div>
+        </template>
         <a :href="authLink">
           <el-button :loading="loading" type="primary" style="width: 100%">企业微信登录</el-button>
           <!-- <img
