@@ -36,11 +36,7 @@
           </el-col>
           <el-col style="flex-basis: 370px;">
             <div class="g-card">
-              <PreviewInPhone
-                name="客群"
-                :list="form.wematerial && [form.wematerial]"
-                :templateInfo="form.content"
-              ></PreviewInPhone>
+              <PreviewInPhone name="客群" :list="[news]" :templateInfo="form.content"></PreviewInPhone>
             </div>
           </el-col>
         </el-row>
@@ -119,7 +115,13 @@
           { name: '进行中', key: 2 },
           { name: '已结束', key: 3 },
           { name: '已暂停', key: 4 }
-        ]
+        ],
+        news: {
+          materialName: '',
+          digest: '',
+          coverUrl: '',
+          mediaType: '12'
+        }
       }
     },
     methods: {
@@ -137,6 +139,13 @@
       if (this.$route.query.id) {
         getFassionDetail(this.$route.query.id).then((res) => {
           this.form = res.data
+          this.news.digest = this.form.activeDescr
+          this.news.materialName = this.form.activeTitle
+          if (this.form.activeCoverType == 2) {
+            this.news.coverUrl = this.form.activeCoverUrl
+          } else {
+            this.news.coverUrl = this.form.wematerial.materialUrl
+          }
         })
       }
     }
