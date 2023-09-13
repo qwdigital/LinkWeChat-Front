@@ -107,7 +107,7 @@ export default {
     <el-button @click="resetQuery">重置</el-button>
 
     <el-table v-loading="loading" :data="list">
-      <el-table-column label="消息标题" align="center" prop="msgTitle" />
+      <el-table-column label="消息标题" align="center" prop="title" />
       <el-table-column prop="msgType" label="类型" align="center">
         <template #default="{ row }">{{ typeDict[row.msgType] }}</template>
       </el-table-column>

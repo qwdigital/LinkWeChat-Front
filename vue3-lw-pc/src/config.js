@@ -29,11 +29,11 @@ const common = {
   DEFAULT_H5_PDF: env.BASE_URL + 'static/PDF.png', // pdf默认封面
   DEFAULT_H5_WORDE: env.BASE_URL + 'static/WORD.png',
   DEFAULT_H5_PPT: env.BASE_URL + 'static/PPT.png',
-  PRIVIEW_URL: env.VIEW_URL,
   PRIVIEW_PATH: window.location.origin + '/mobile/#/metrialDetail?materiaId=',
   BAIDU_MAP_KEY: '6fZIymhpgfnAHUT1baHeEF922lPIThOG', // 百度地图key
   IS_PUBLISH_DIALOG: false, // 是否显示发布弹窗
   IS_LINKWECHAT: true, // 是否显示linkwechat开源相关业务组件
+  PRIVIEW_URL: 'https://saas.linkwechat.net/file-view/onlinePreview?url=', // kkfileview，素材预览服务地址
 
   MICRO_APPS: {
     store: {

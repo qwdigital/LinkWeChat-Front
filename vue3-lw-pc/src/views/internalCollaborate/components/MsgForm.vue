@@ -62,10 +62,16 @@ export default {
     if (!this.form.toParty) {
       this.form.toParty = []
       this.form.toPartyName = []
+    } else if (typeof this.form.toParty === 'string') {
+      this.form.toParty = this.form.toParty.split(',')
+      this.form.toPartyName = this.form.toPartyName.split(',')
     }
     if (!this.form.toUser) {
       this.form.toUser = []
       this.form.toUserName = []
+    } else if (typeof this.form.toUser === 'string') {
+      this.form.toUser = this.form.toUser.split(',')
+      this.form.toUserName = this.form.toUserName.split(',')
     }
     if (this.form.robotId) {
       // 机器人消息没有视频类型
