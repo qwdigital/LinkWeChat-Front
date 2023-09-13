@@ -6,10 +6,7 @@
         <div class="avatar222"><img src="../../assets/drainageCode/header.png" /></div>
         <div class="msg">
           <div class="word">
-            <p
-              style="line-height: 18px"
-              v-html="templateInfo?.replace(/\n|\r\n/g, '<br>').replace(/ /g, ' &nbsp')"
-            ></p>
+            <p style="line-height: 18px" v-html="templateInfo?.replace(/\n|\r\n/g, '<br>').replace(/ /g, ' &nbsp')"></p>
             <div v-if="liveUrl" style="margin-top: 10px">
               <p>直播链接:</p>
               {{ liveUrl }}
@@ -19,50 +16,46 @@
       </div>
       <div class="item" v-for="(data, key) in list" :key="key">
         <div class="avatar222"><img src="../../assets/drainageCode/header.png" /></div>
-        <div class="msg" v-if="data.mediaType === '4'">
-          <div class="word">
+        <div class="msg">
+          <!-- 文本 -->
+          <div class="word" v-if="data.mediaType === '4'">
             <p style="white-space: pre-line">{{ data.content }}</p>
           </div>
-        </div>
-        <div class="msg" v-if="data.mediaType === '0'">
-          <div class="image">
+          <!-- 图片 -->
+          <div class="image" v-else-if="data.mediaType === '0'">
             <img :src="data.materialUrl" />
           </div>
-        </div>
-        <div class="msg" v-if="['9'].includes(data.mediaType)">
-          <div class="word-and-image">
-            <div>
+          <!-- 图文 -->
+          <div class="word-and-image" v-else-if="['9'].includes(data.mediaType)">
+            <div class="title" v-if="data.materialName">
               {{ data.materialName }}
             </div>
             <div class="sub-content">
-              <div>
+              <div v-if="data.content">
                 {{ data.content }}
               </div>
-              <div>
+              <div class="img-icon">
                 <img :src="data.coverUrl" v-if="data.coverUrl && data.coverUrl != ''" />
                 <svg-icon class="icon-style" icon="imgText" v-else></svg-icon>
               </div>
             </div>
           </div>
-        </div>
-        <div class="msg" v-if="['19'].includes(data.mediaType)">
-          <div class="word-and-image">
-            <div>
+          <!-- 外链 -->
+          <div class="word-and-image" v-else-if="['19'].includes(data.mediaType)">
+            <div class="title" v-if="data.materialName">
               {{ data.materialName }}
             </div>
             <div class="sub-content">
-              <div>
+              <div v-if="data.content">
                 {{ data.content }}
               </div>
-              <div>
+              <div class="img-icon">
                 <img :src="data.coverUrl" v-if="data.coverUrl && data.coverUrl != ''" />
                 <svg-icon class="icon-style" icon="outLine" v-else></svg-icon>
               </div>
             </div>
           </div>
-        </div>
-        <div class="msg" v-if="data.mediaType === '11'">
-          <div class="miniprogram">
+          <div class="miniprogram" v-else-if="data.mediaType === '11'">
             <div class="mini-header">
               <img src="../../assets/drainageCode/miniprogram-icon.png" alt="" />
               {{ data.materialName }}
@@ -73,72 +66,63 @@
               小程序
             </div>
           </div>
-        </div>
-        <!-- 文章 -->
-        <div class="msg" v-if="data.mediaType === '12'">
-          <div class="word-and-image">
-            <div>
+          <!-- 文章 -->
+          <div class="word-and-image" v-else-if="data.mediaType === '12'">
+            <div class="title" v-if="data.materialName">
               {{ data.materialName }}
             </div>
             <div class="sub-content">
               <div>
                 {{ data.digest }}
               </div>
-              <div>
+              <div class="img-icon">
                 <img :src="data.coverUrl" v-if="data.coverUrl && data.coverUrl != ''" />
                 <svg-icon class="icon-style" icon="article" v-else></svg-icon>
               </div>
             </div>
           </div>
-        </div>
-        <!-- 视频 -->
-        <div class="msg" v-if="data.mediaType === '2'">
-          <div class="word-and-image">
-            <div>
+          <!-- 视频 -->
+          <div class="word-and-image" v-else-if="data.mediaType === '2'">
+            <div class="title" v-if="data.materialName">
               {{ data.materialName }}
             </div>
             <div class="sub-content">
               <div>
                 {{ data.digest }}
               </div>
-              <div>
+              <div class="img-icon">
                 <img :src="data.coverUrl" v-if="data.coverUrl && data.coverUrl != ''" />
                 <svg-icon class="icon-style" icon="pic" v-else></svg-icon>
               </div>
             </div>
           </div>
-        </div>
-        <!-- 文件 -->
-        <div class="msg" v-if="data.mediaType === '3'">
-          <div class="word-and-image">
-            <div>
+          <!-- 文件 -->
+          <div class="word-and-image" v-else-if="data.mediaType === '3'">
+            <div class="title" v-if="data.materialName">
               {{ data.materialName }}
             </div>
             <div class="sub-content">
               <div>
                 {{ data.digest }}
               </div>
-              <div>
+              <div class="img-icon">
                 <svg-icon
                   class="icon-style"
                   :icon="data.materialUrl ? filType(data.materialUrl) : ''"
-                  v-if="data.materialUrl"
-                ></svg-icon>
+                  v-if="data.materialUrl"></svg-icon>
               </div>
             </div>
           </div>
-        </div>
-        <!-- 海报 -->
-        <div class="msg" v-if="data.mediaType === '5'">
-          <div class="word-and-image">
-            <div>
+          <!-- 海报 -->
+          <div class="word-and-image" v-else-if="data.mediaType === '5'">
+            <div class="title" v-if="data.materialName">
               {{ data.materialName }}
             </div>
             <div class="sub-content">
               <div>
                 {{ data.digest }}
               </div>
-              <div>
+              <div class="img-icon">
                 <img :src="data.materialUrl" v-if="data.materialUrl && data.materialUrl != ''" />
                 <svg-icon class="icon-style" icon="pic" v-else></svg-icon>
               </div>
@@ -305,10 +289,6 @@ export default {
     }
   }
 }
-.icon-style {
-  width: 40px;
-  height: 40px;
-}
 
 .content {
   padding: 15px;
@@ -335,7 +315,7 @@ export default {
       min-height: 26px;
       background: var(--bg-white);
       box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
-      border: 1px solid var(--color-light-9);
+      border: 1px solid var(--bg-white);
       display: inline-block;
       border-radius: 4px;
       box-sizing: border-box;
@@ -346,14 +326,14 @@ export default {
         content: ' ';
         display: block;
         position: absolute;
-        left: -5px;
+        left: -6px;
         box-shadow: 0px 2px 6px 0px rgba(60, 136, 240, 0.1);
-        border-width: 5px;
+        border-width: 6px;
         border-left: 0;
         width: 0;
         border-style: solid;
         border-color: transparent;
-        border-right-color: var(--border-white);
+        border-right-color: var(--bg-white);
         top: 8px;
         z-index: 888;
       }
@@ -373,15 +353,27 @@ export default {
 
       .word-and-image {
         padding: 12px;
+        .title {
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 1.25;
+          margin-bottom: 8px;
+        }
         .sub-content {
-          margin-top: 10px;
           display: flex;
           justify-content: space-between;
           font-size: 12px;
-
           font-weight: 400;
           color: var(--font-black-6);
-          img {
+          gap: 10px;
+          .img-icon {
+            border-radius: var(--border-radius-small);
+            overflow: hidden;
+            flex: none;
+            line-height: 0;
+          }
+          img,
+          .icon-style {
             height: 40px;
             width: 40px;
           }

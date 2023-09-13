@@ -145,9 +145,7 @@ export default {
         categoryId: [{ required: true, message: '不能为空', trigger: 'change' }],
         content: [{ required: true, message: '不能为空', trigger: 'blur' }],
         materialUrl: [{ required: true, message: '不能为空', trigger: 'change' }],
-        weMaterialImgAoList: [
-          { type: 'array', required: true, message: '不能为空', trigger: 'change' },
-        ],
+        weMaterialImgAoList: [{ type: 'array', required: true, message: '不能为空', trigger: 'change' }],
         digest: [{ required: true, message: '不能为空', trigger: 'blur' }],
         coverUrl: [{ required: true, message: '不能为空', trigger: 'blur' }],
         html: [
@@ -252,18 +250,16 @@ export default {
           this.groupForm = obj
         }
         if (validate) {
-          ;(this.groupForm.id ? updateCodeCategory : addCodeCategory)(this.groupForm).then(
-            (res) => {
-              this.groupVisible = false
-              this.groupForm = {
-                name: '',
-                mediaType: this.type,
-              }
-              this.$refs.groupForm.clearValidate()
-              // this.getCodeCategoryListFn()
-              this.getTree()
+          ;(this.groupForm.id ? updateCodeCategory : addCodeCategory)(this.groupForm).then((res) => {
+            this.groupVisible = false
+            this.groupForm = {
+              name: '',
+              mediaType: this.type,
             }
-          )
+            this.$refs.groupForm.clearValidate()
+            // this.getCodeCategoryListFn()
+            this.getTree()
+          })
         }
       })
     },
@@ -283,15 +279,11 @@ export default {
       this.groupVisible = true
     },
     removeGroup(id) {
-      this.$confirm(
-        '是否确认删除当前分组？删除后该分组下素材移动到默认分组中，该操作不可撤销，请谨慎操作。',
-        '提示',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        }
-      )
+      this.$confirm('是否确认删除当前分组？删除后该分组下素材移动到默认分组中，该操作不可撤销，请谨慎操作。', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
         .then(() => {
           this.delObj.ids = []
           this.delObj.ids.push(id)
@@ -501,15 +493,11 @@ export default {
     // 素材删除
     remove(id) {
       const Ids = id || this.selected + ''
-      this.$confirm(
-        '是否确认删除当前' + this.typeTitle[this.type] + '？该操作不可撤销，请谨慎操作。',
-        '警告',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        }
-      )
+      this.$confirm('是否确认删除当前' + this.typeTitle[this.type] + '？该操作不可撤销，请谨慎操作。', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
         .then(function () {
           return remove(Ids)
         })
@@ -596,14 +584,9 @@ export default {
             :class="{ active: groupIndex == index }"
             v-for="(group, index) in groupList"
             :key="group.id"
-            @click="switchGroup(index, group)"
-          >
+            @click="switchGroup(index, group)">
             <div class="name">{{ group.name + ' (' + group.number + ')' }}</div>
-            <el-dropdown
-              v-if="group.flag === 0"
-              class="dropdown"
-              @command="onGroupCommand($event, group)"
-            >
+            <el-dropdown v-if="group.flag === 0" class="dropdown" @command="onGroupCommand($event, group)">
               <span class="dot">
                 <el-icon-MoreFilled class="el-icon-MoreFilled content-icon"></el-icon-MoreFilled>
               </span>
@@ -626,20 +609,9 @@ export default {
             clearable
             prefix-icon="el-icon-search"
             style="width: 300px"
-            @keyup.enter="getList(1)"
-          />
-          <el-select
-            v-model="query.type"
-            placeholder="请选择海报类型"
-            class="ml20"
-            v-if="type === '5'"
-          >
-            <el-option
-              v-for="item in posterType"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
+            @keyup.enter="getList(1)" />
+          <el-select v-model="query.type" placeholder="请选择海报类型" class="ml20" v-if="type === '5'">
+            <el-option v-for="item in posterType" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
           <el-button style="margin-left: 10px" type="primary" @click="getList(1)">查询</el-button>
           <el-button @click="resetQuery">重置</el-button>
@@ -649,31 +621,21 @@ export default {
             <div class="mid-action">
               <div class="">
                 <!-- v-hasPermi="['wechat:material:add']" -->
-                <el-button type="primary" @click="edit(0, ~~type)"
-                  >新建{{ typeTitle[type] }}</el-button
-                >
+                <el-button type="primary" @click="edit(0, ~~type)">新建{{ typeTitle[type] }}</el-button>
                 <el-button @click="importText" plain v-if="type === '4'">导入文本</el-button>
               </div>
               <div class="">
                 <el-popover placement="top" width="260" v-model="groupDialogVisible">
                   <div>选择分组</div>
                   <div style="position: relative; margin: 10px 0">
-                    <el-cascader
-                      v-model="group"
-                      :options="treeData[0].children"
-                      :props="groupProps"
-                    ></el-cascader>
+                    <el-cascader v-model="group" :options="treeData[0].children" :props="groupProps"></el-cascader>
                   </div>
                   <div style="text-align: right">
                     <el-button @click="groupDialogVisible = false">取消</el-button>
                     <el-button type="primary" @click="moveGroup">确定</el-button>
                   </div>
                   <template #reference>
-                    <el-button
-                      style="margin-right: 10px"
-                      :disabled="selected.length === 0"
-                      type="primary"
-                    >
+                    <el-button style="margin-right: 10px" :disabled="selected.length === 0" type="primary">
                       批量分组
                     </el-button>
                   </template>
@@ -688,27 +650,16 @@ export default {
             :total="total"
             v-model:page="query.pageNum"
             v-model:limit="query.pageSize"
-            @pagination="getList()"
-          />
+            @pagination="getList()" />
         </div>
       </div>
     </div>
+
     <!-- 分组弹框 -->
-    <el-dialog
-      :title="`${groupForm.id ? '修改' : '新建'}分组`"
-      v-model="groupVisible"
-      width="30%"
-      v-if="groupVisible"
-    >
+    <el-dialog :title="`${groupForm.id ? '修改' : '新建'}分组`" v-model="groupVisible" width="30%" v-if="groupVisible">
       <el-form :model="groupForm" :rules="groupRules" ref="groupForm">
         <el-form-item label="分组名称" prop="name" label-width="80px">
-          <el-input
-            v-model="groupForm.name"
-            clearable
-            autocomplete="off"
-            maxlength="15"
-            show-word-limit
-          ></el-input>
+          <el-input v-model="groupForm.name" clearable autocomplete="off" maxlength="15" show-word-limit></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -718,25 +669,21 @@ export default {
         </div>
       </template>
     </el-dialog>
+
     <!-- 添加或修改素材对话框 -->
     <el-dialog
       :title="(form.id ? '编辑' : '新建') + typeTitle[type]"
       v-model="dialogVisible"
       width="1000px"
       append-to-body
-      :close-on-click-modal="false"
-    >
+      :close-on-click-modal="false">
       <el-alert type="warning" show-icon v-if="type === '11'">
         <template #title>
           <div style="display: flex">
             <div style="color: var(--font-black)">
               小程序必须已经绑定关联到企业微信，否则将无法在欢迎语、群发、话术中正常发送。
             </div>
-            <a
-              href="https://www.yuque.com/linkwechat/help/gy4ghv"
-              target="_blank"
-              style="color: var(--color)"
-            >
+            <a href="https://www.yuque.com/linkwechat/help/gy4ghv" target="_blank" style="color: var(--color)">
               如何关联绑定?
             </a>
           </div>
@@ -746,32 +693,28 @@ export default {
         <el-col :span="14">
           <el-form ref="form" :model="form" :rules="rules" label-width="100px">
             <el-form-item label="选择分组" prop="categoryId">
-              <el-cascader
-                v-model="form.categoryId"
-                :options="treeData[0].children"
-                :props="groupProps"
-              ></el-cascader>
+              <el-cascader v-model="form.categoryId" :options="treeData[0].children" :props="groupProps"></el-cascader>
             </el-form-item>
 
             <!-- 文本 -->
-            <el-form-item :label="typeTitle[type] + '标题'" prop="materialName" v-if="type === '4'">
-              <el-input
-                v-model="form.materialName"
-                placeholder="请输入标题"
-                maxlength="50"
-                show-word-limit
-              ></el-input>
-              <div class="tip">标题对客户不可见，仅用于查询场景</div>
-            </el-form-item>
-            <el-form-item label="文本内容" prop="content" v-if="type === '4'">
-              <TextareaExtend
-                v-model="form.content"
-                :autosize="{ minRows: 2, maxRows: 50 }"
-                placeholder="请输入内容"
-                maxlength="1000"
-                show-word-limit
-              ></TextareaExtend>
-            </el-form-item>
+            <template v-if="type === '4'">
+              <el-form-item :label="typeTitle[type] + '标题'" prop="materialName">
+                <el-input
+                  v-model="form.materialName"
+                  placeholder="请输入标题"
+                  maxlength="50"
+                  show-word-limit></el-input>
+                <div class="tip">标题对客户不可见，仅用于查询场景</div>
+              </el-form-item>
+              <el-form-item label="文本内容" prop="content">
+                <TextareaExtend
+                  v-model="form.content"
+                  :autosize="{ minRows: 2, maxRows: 50 }"
+                  placeholder="请输入内容"
+                  maxlength="1000"
+                  show-word-limit></TextareaExtend>
+              </el-form-item>
+            </template>
 
             <!-- 图片 -->
             <template v-else-if="type === '0'">
@@ -782,13 +725,8 @@ export default {
                   :maxSize="20"
                   type="0"
                   :multiple="true"
-                  :limit="10"
-                >
-                  <template #tip
-                    ><div>
-                      支持jpg/jpeg/png格式，图片大小不超过20M，支持最多10张批量上传
-                    </div></template
-                  >
+                  :limit="10">
+                  <template #tip><div>支持jpg/jpeg/png格式，图片大小不超过20M，支持最多10张批量上传</div></template>
                 </Upload>
               </el-form-item>
               <el-form-item label="图片标题" prop="materialName" v-else>
@@ -797,8 +735,7 @@ export default {
                   placeholder="请输入"
                   :maxlength="50"
                   show-word-limit
-                  :disabled="true"
-                ></el-input>
+                  :disabled="true"></el-input>
                 <div class="tip">标题对客户不可见，仅用于查询场景</div>
               </el-form-item>
             </template>
@@ -808,8 +745,7 @@ export default {
                 <el-input
                   v-model="form.materialUrl"
                   type="text"
-                  placeholder="请输入图文地址，以http://或https://开头"
-                ></el-input>
+                  placeholder="请输入图文地址，以http://或https://开头"></el-input>
               </el-form-item>
               <el-form-item label="图文标题" prop="materialName">
                 <el-input
@@ -817,8 +753,7 @@ export default {
                   type="text"
                   :maxlength="32"
                   show-word-limit
-                  placeholder="请输入图文标题"
-                ></el-input>
+                  placeholder="请输入图文标题"></el-input>
               </el-form-item>
               <el-form-item label="图文描述">
                 <el-input
@@ -827,16 +762,10 @@ export default {
                   :maxlength="128"
                   show-word-limit
                   :autosize="{ minRows: 3, maxRows: 50 }"
-                  placeholder="请输入图文描述"
-                ></el-input>
+                  placeholder="请输入图文描述"></el-input>
               </el-form-item>
               <el-form-item label="图文封面">
-                <Upload
-                  v-model:fileUrl="form.coverUrl"
-                  v-model:imgSize="form.memorySize"
-                  type="0"
-                  v-if="dialogVisible"
-                >
+                <Upload v-model:fileUrl="form.coverUrl" v-model:imgSize="form.memorySize" type="0" v-if="dialogVisible">
                   <template #tip><div>支持jpg/jpeg/png格式，建议200*200</div></template>
                 </Upload>
               </el-form-item>
@@ -854,8 +783,7 @@ export default {
                   type="text"
                   :maxlength="64"
                   show-word-limit
-                  placeholder="请输入链接标题"
-                ></el-input>
+                  placeholder="请输入链接标题"></el-input>
               </el-form-item>
               <el-form-item label="链接" prop="materialUrl" :rules="rules.http">
                 <el-input v-model="form.materialUrl" placeholder="请输入链接"></el-input>
@@ -869,17 +797,17 @@ export default {
                 <el-input
                   v-model="form.materialUrl"
                   type="text"
-                  placeholder="请输入外链地址，以http://或https://开头"
-                ></el-input>
+                  placeholder="请输入外链地址，以http://或https://开头"></el-input>
+                <div class="sub-des">若下方 外链预览 项未正常显示出页面，则该链可能开启了防盗功能，请勿使用</div>
               </el-form-item>
+
               <el-form-item label="外链标题" prop="materialName">
                 <el-input
                   v-model="form.materialName"
                   type="text"
                   :maxlength="32"
                   show-word-limit
-                  placeholder="请输入外链标题"
-                ></el-input>
+                  placeholder="请输入外链标题"></el-input>
               </el-form-item>
               <el-form-item label="外链描述">
                 <el-input
@@ -888,18 +816,15 @@ export default {
                   :maxlength="128"
                   show-word-limit
                   :autosize="{ minRows: 3, maxRows: 50 }"
-                  placeholder="请输入外链描述"
-                ></el-input>
+                  placeholder="请输入外链描述"></el-input>
               </el-form-item>
               <el-form-item label="外链封面">
-                <Upload
-                  v-model:fileUrl="form.coverUrl"
-                  v-model:imgSize="form.memorySize"
-                  type="0"
-                  v-if="dialogVisible"
-                >
+                <Upload v-model:fileUrl="form.coverUrl" v-model:imgSize="form.memorySize" type="0" v-if="dialogVisible">
                   <template #tip><div>支持jpg/jpeg/png格式，建议200*200</div></template>
                 </Upload>
+              </el-form-item>
+              <el-form-item label="外链预览">
+                <iframe class="iframe" :src="form.materialUrl"></iframe>
               </el-form-item>
             </template>
 
@@ -910,22 +835,16 @@ export default {
                   v-model="form.materialName"
                   placeholder="请输入小程序标题"
                   :maxlength="16"
-                  show-word-limit
-                ></el-input>
+                  show-word-limit></el-input>
               </el-form-item>
               <el-form-item label="小程序ID" prop="digest">
                 <el-input v-model="form.digest" placeholder="小程序AppID"></el-input>
                 <div class="sub-des">
-                  <a href="https://www.yuque.com/linkwechat/help/gy4ghv#cAwOh" target="_blank"
-                    >如何查询小程序ID?</a
-                  >
+                  <a href="https://www.yuque.com/linkwechat/help/gy4ghv#cAwOh" target="_blank">如何查询小程序ID?</a>
                 </div>
               </el-form-item>
               <el-form-item label="页面路径" prop="materialUrl" :rules="rules.html">
-                <el-input
-                  v-model="form.materialUrl"
-                  placeholder="请输入小程序路径，必须以 .html 作为后缀"
-                ></el-input>
+                <el-input v-model="form.materialUrl" placeholder="请输入小程序路径，必须以 .html 作为后缀"></el-input>
                 <div class="sub-des">
                   <a href="https://www.yuque.com/linkwechat/help/gy4ghv#a1bXG" target="_blank">
                     如何添加小程序页面路径?
@@ -933,12 +852,7 @@ export default {
                 </div>
               </el-form-item>
               <el-form-item label="封面" prop="coverUrl">
-                <Upload
-                  v-model:fileUrl="form.coverUrl"
-                  v-model:imgSize="form.memorySize"
-                  type="0"
-                  v-if="dialogVisible"
-                >
+                <Upload v-model:fileUrl="form.coverUrl" v-model:imgSize="form.memorySize" type="0" v-if="dialogVisible">
                   <template #tip><div>支持jpg/jpeg/png格式，建议520*416</div></template>
                 </Upload>
               </el-form-item>
@@ -951,13 +865,8 @@ export default {
                   v-model:fileUrl="form.materialUrl"
                   v-model:fileName="form.materialName"
                   :type="type"
-                  :format="audioType"
-                >
-                  <template #tip
-                    ><div>
-                      只能上传amr格式的语音文件。单个文件大小不超过2M，时长不超过1分钟
-                    </div></template
-                  >
+                  :format="audioType">
+                  <template #tip><div>只能上传amr格式的语音文件。单个文件大小不超过2M，时长不超过1分钟</div></template>
                 </Upload>
               </el-form-item>
               <el-form-item label="名称" prop="materialName">
@@ -971,8 +880,7 @@ export default {
                   v-model="form.materialName"
                   placeholder="请输入视频标题"
                   :maxlength="32"
-                  show-word-limit
-                ></el-input>
+                  show-word-limit></el-input>
               </el-form-item>
               <el-form-item label="视频描述">
                 <el-input
@@ -981,8 +889,7 @@ export default {
                   placeholder="请输入视频描述"
                   :autosize="{ minRows: 3, maxRows: 10 }"
                   :maxlength="128"
-                  show-word-limit
-                ></el-input>
+                  show-word-limit></el-input>
               </el-form-item>
               <el-form-item label="上传视频" prop="materialUrl" v-if="!form.id">
                 <Upload
@@ -991,8 +898,7 @@ export default {
                   v-model:fileName="form.materialName"
                   :format="['mp4', 'mov']"
                   @getPicUrl="getPicUrl"
-                  :type="type"
-                >
+                  :type="type">
                   <template #tip><div>支持mp4/mov格式，视频大小不超过100M</div></template>
                 </Upload>
               </el-form-item>
@@ -1010,8 +916,7 @@ export default {
                   v-model="form.materialName"
                   placeholder="请输入文件标题"
                   :maxlength="32"
-                  show-word-limit
-                ></el-input>
+                  show-word-limit></el-input>
               </el-form-item>
               <el-form-item label="文件描述">
                 <el-input
@@ -1020,8 +925,7 @@ export default {
                   placeholder="请输入文件描述"
                   :maxlength="100"
                   show-word-limit
-                  :autosize="{ minRows: 3, maxRows: 10 }"
-                ></el-input>
+                  :autosize="{ minRows: 3, maxRows: 10 }"></el-input>
               </el-form-item>
               <el-form-item label="上传文件" prop="materialUrl" v-if="!form.id">
                 <Upload
@@ -1029,24 +933,21 @@ export default {
                   v-model:fileUrl="form.materialUrl"
                   v-model:fileName="form.materialName"
                   :type="type"
-                  :format="['doc', 'docx', 'pdf', 'ppt', 'pptx', 'pps', 'pptsx']"
-                >
+                  :format="['doc', 'docx', 'pdf', 'ppt', 'pptx', 'pps', 'pptsx']">
                   <template #tip><div>支持pdf/ppt/word文件，单个文件大小不超过50M</div></template>
                 </Upload>
               </el-form-item>
             </template>
           </el-form>
         </el-col>
-        <el-col :span="10" v-if="!(type === '0' && form.id)">
+        <el-col class="ml10" :span="10" v-if="!(type === '0' && form.id)">
           <PreviewInPhone :list="mobForm" />
         </el-col>
       </el-row>
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" v-loading="submitLoading" :disabled="flag" @click="submit"
-            >确 定</el-button
-          >
+          <el-button type="primary" v-loading="submitLoading" :disabled="flag" @click="submit">确 定</el-button>
           <el-button @click="cancel">取 消</el-button>
         </div>
       </template>
@@ -1065,8 +966,7 @@ export default {
               :on-change="setFileData"
               :on-success="handleFileSuccess"
               :auto-upload="false"
-              :on-remove="removeFileData"
-            >
+              :on-remove="removeFileData">
               <!-- <el-icon-upload class="el-icon-upload"></el-icon-upload> -->
               <div style="font-size: 12px">
                 <!-- 将文件拖拽到此区域 -->
@@ -1075,9 +975,7 @@ export default {
               </div>
             </el-upload>
             <div>
-              <el-button style="margin-left: 10px" text plain @click="downloadFn" v-if="reUp"
-                >下载模板</el-button
-              >
+              <el-button style="margin-left: 10px" text plain @click="downloadFn" v-if="reUp">下载模板</el-button>
               <el-button plain text @click="reUploade" v-else>重新上传</el-button>
             </div>
           </div>
@@ -1136,10 +1034,19 @@ export default {
   // color: var(--font-black-7);
   color: var(--color);
   font-size: 12px;
+  line-height: 1.5;
+  margin-top: 5px;
 }
 
 ::v-deep .ql-editor {
   height: 300px;
+}
+
+.iframe {
+  width: 100%;
+  height: 255px;
+  border: 1px solid var(--border-black-9);
+  border-radius: var(--border-radius-small);
 }
 </style>
 <style>

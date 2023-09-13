@@ -29,7 +29,7 @@ export default {
   },
   data() {
     return {
-      activeName: activeTab,
+      activeName: '',
       list: [
         { label: '外链', name: 'outChain', component: OutChain },
         { label: '文章', name: 'article', component: Marticle },
@@ -37,7 +37,7 @@ export default {
         { label: '文件', name: 'file', component: Mfile },
         { label: '海报', name: 'poster', component: Mposter },
       ],
-      opened: [activeTab],
+      opened: [],
     }
   },
   methods: {
@@ -50,17 +50,11 @@ export default {
     this.$store.setBusininessDesc(
       `
       <div>支持智能记录客户访问行为，辅助运营把握客户动向。</div>
-    `
+    `,
     )
-    let activeName = this.$route.query.activeName
-    if (activeName) {
-      this.activeName = activeName
-      this.opened = ['poster']
-    } else {
-      let first = 'outChain'
-      activeTab || (this.activeName = activeTab = first)
-      this.opened.push(activeTab)
-    }
+
+    this.activeName = activeTab = this.$route.query.activeName || activeTab || this.list[0].name
+    this.opened = [activeTab]
   },
 }
 </script>
