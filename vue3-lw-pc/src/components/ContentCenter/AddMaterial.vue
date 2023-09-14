@@ -756,6 +756,13 @@ export default {
             attachments.picUrl = item.coverUrl
             attachments.msgType = 'news'
             break
+          case '19':
+            // 外链
+            attachments.linkUrl = item.materialUrl
+            attachments.content = item.content
+            attachments.picUrl = item.coverUrl
+            attachments.msgType = 'murl'
+            break
         }
         talkForm.attachments.push(attachments)
       })
@@ -793,7 +800,8 @@ export default {
             // 海报
             break
           case '9':
-            // 图文
+          case '19':
+            // 图文 外链
             attachmentFrom.content = item.content
             attachmentFrom.picUrl = item.coverUrl
             attachmentFrom.linkUrl = item.materialUrl
