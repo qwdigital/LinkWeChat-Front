@@ -690,88 +690,64 @@ export default {
       let arr = []
       if (list && list.length) {
         list.forEach((dd) => {
+          let common = { id: dd.materialId, mediaType: dd.realType + '' }
+          let obj = undefined
           if (dd.realType === 0) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '0',
+            obj = {
               materialUrl: dd.picUrl,
             }
-            arr.push(obj)
           } else if (dd.realType === 2) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '2',
+            obj = {
               materialUrl: dd.fileUrl,
               coverUrl: dd.picUrl,
               digest: dd.description,
               materialName: dd.title,
             }
-            arr.push(obj)
           } else if (dd.realType === 3) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '3',
+            obj = {
               materialUrl: dd.fileUrl,
               digest: dd.description,
               materialName: dd.title,
             }
-            arr.push(obj)
           } else if (dd.realType === 4) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '4',
+            obj = {
               content: dd.content,
             }
-            arr.push(obj)
-          } else if (dd.realType === 9) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '9',
+          } else if ([9, 19].includes(dd.realType)) {
+            obj = {
               content: dd.content,
               coverUrl: dd.picUrl,
               materialUrl: dd.linkUrl,
               materialName: dd.title,
             }
-            arr.push(obj)
           } else if (dd.realType === 8) {
-            let ob = {
-              id: dd.materialId,
-              mediaType: '8',
+            obj = {
               materialName: dd.title,
               materialUrl: dd.linkUrl,
               materialName: dd.title,
             }
-            arr.push(ob)
           } else if (dd.realType === 11) {
-            let ff = {
-              id: dd.materialId,
-              mediaType: '11',
+            obj = {
               digest: dd.appId,
               materialName: dd.title,
               coverUrl: dd.picUrl,
               materialUrl: dd.fileUrl,
             }
-            arr.push(ff)
           } else if (dd.realType === 12) {
-            let ff = {
-              id: dd.materialId,
-              mediaType: '12',
+            obj = {
               digest: dd.description,
               materialUrl: dd.fileUrl,
               coverUrl: dd.picUrl,
               content: dd.content,
               materialName: dd.title,
             }
-            arr.push(ff)
           } else if (dd.realType === 5) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '5',
+            obj = {
               materialUrl: dd.fileUrl,
               materialName: dd.title,
             }
-            arr.push(obj)
           }
+          obj && arr.push(Object.assign(common, obj))
         })
       }
       return arr

@@ -82,7 +82,7 @@ export default {
           <div class="step-text">
             请确保扫码并成功授权后点击
             <el-popover ref="popover1" placement="right" width="" trigger="hover">
-              <img class="auth-desc-img" src="@/assets/register/auth-desc-1.png" alt="" />
+              <!-- <img class="auth-desc-img" src="@/assets/register/auth-desc-1.png" alt="" /> -->
               <template #reference>
                 <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
               </template>
@@ -98,7 +98,7 @@ export default {
         <li>
           请使用管理员的企业微信进行授权；
           <el-popover ref="popover1" placement="right" width="" trigger="hover">
-            <img class="auth-desc-img" src="@/assets/register/auth-desc-1.png" alt="" />
+            <!-- <img class="auth-desc-img" src="@/assets/register/auth-desc-1.png" alt="" /> -->
             <template #reference>
               <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
             </template>
@@ -120,7 +120,7 @@ export default {
           <div class="step-text">
             已收到上线通知
             <el-popover ref="popover1" placement="right" width="" trigger="hover">
-              <img class="auth-desc-img" src="@/assets/register/auth-desc-2.png" alt="" />
+              <!-- <img class="auth-desc-img" src="@/assets/register/auth-desc-2.png" alt="" /> -->
               <template #reference>
                 <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
               </template>
@@ -136,7 +136,7 @@ export default {
         <li>
           配置过程中您将会收到权限变更通知，请点击确认授权；
           <el-popover ref="popover1" placement="right" width="" trigger="hover">
-            <img class="auth-desc-img" src="@/assets/register/auth-desc-3.png" alt="" />
+            <!-- <img class="auth-desc-img" src="@/assets/register/auth-desc-3.png" alt="" /> -->
             <template #reference>
               <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
             </template>
@@ -145,7 +145,7 @@ export default {
         <li>
           应用配置完成后，您将会收到代开发应用上线通知，快登录体验吧；
           <el-popover ref="popover1" placement="right" width="" trigger="hover">
-            <img class="auth-desc-img" src="@/assets/register/auth-desc-2.png" alt="" />
+            <!-- <img class="auth-desc-img" src="@/assets/register/auth-desc-2.png" alt="" /> -->
             <template #reference>
               <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
             </template>
