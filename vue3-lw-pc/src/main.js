@@ -1,4 +1,4 @@
-import '@/config.js'
+import '../config.js'
 import 'normalize.css/normalize.css'
 
 import { createApp, h, defineAsyncComponent } from 'vue'

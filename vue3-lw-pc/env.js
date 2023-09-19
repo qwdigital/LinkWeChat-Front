@@ -25,9 +25,6 @@ const envs = {
     _ISCDN: true,
   },
 }
-export const env = Object.assign(
-  { SYSTEM_NAME_ALL: 'LinkWeChat -- 全链路私域数字化营销增长解决方案' },
-  envs[process.env.VUE_APP_ENV],
-)
+export const env = envs[process.env.VUE_APP_ENV]
 // console.log(1, env)
 // module.exports = env

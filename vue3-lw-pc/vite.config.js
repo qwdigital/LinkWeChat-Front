@@ -27,7 +27,7 @@ export default defineConfig(async ({ command, mode }) => {
   // let env = envs[mode]
   // console.log(1, import.meta.env) // undefined
   // console.log(0, env)
-  process.env.VITE_APP_TITLE = env.SYSTEM_NAME_ALL
+  // process.env.VITE_APP_TITLE = env.SYSTEM_NAME_ALL
 
   return {
     define: {

@@ -1,11 +1,11 @@
 import { getToken } from '@/utils/auth'
-import { env } from '../env'
+import { env } from './env'
 
 // 系统内常量默认配置，只能从外部配置，内部不可修改
 const common = {
   SYSTEM_NAME: 'LinkWeChat', // 系统简称
   SYSTEM_NAME_MOBILE: 'LinkWeChat', // 移动端应用简称
-  // SYSTEM_NAME_ALL: 'LinkWeChat--全链路私域数字化营销增长解决方案', // 系统全称
+  SYSTEM_NAME_ALL: 'LinkWeChat -- 全链路私域数字化营销增长解决方案', // 系统全称
   COMPANY_NAME: 'LinkWeChat', // 公司简称
   COMPANY_NAME_ALL: 'LinkWeChat', // 公司全称
   COPYRIGHT:
@@ -82,6 +82,8 @@ const lwConfig = window.lwConfig || {} // 线上动态配置，用于覆盖系�
 // config 含有getter必须放在merge第一位
 window.lwConfig = Object.assign(config, env, common, lwConfig, project)
 // Object.defineProperties(window.lwConfig, {})
+
+document.title = window.lwConfig.SYSTEM_NAME_ALL
 
 // 主题回显
 const [h, s, l] = localStorage.hsl?.split(',')?.map((e) => e.trim()) || []
