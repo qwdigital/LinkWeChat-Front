@@ -260,7 +260,7 @@ export default {
       :close-on-click-modal="false">
       <div class="help">
         <div class="step">
-          <p>1、登录企业微信官方后台，进入应用管理，点击 LinkWeChat，再点击【配置到聊天工具栏】。</p>
+          <p>1、登录企业微信官方后台，进入应用管理，点击 {{ lwConfig.SYSTEM_NAME }}，再点击【配置到聊天工具栏】。</p>
           <el-image :src="'@/assets/example/keywordHelp1.png'"></el-image>
         </div>
         <div class="step">

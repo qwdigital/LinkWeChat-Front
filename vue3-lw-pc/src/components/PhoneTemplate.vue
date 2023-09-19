@@ -28,7 +28,7 @@ export default {
     },
     title: {
       type: String,
-      default: 'LinkWeChat',
+      default: window.lwConfig.SYSTEM_NAME,
     },
   },
   data() {

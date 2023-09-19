@@ -1,7 +1,7 @@
 <template>
   <div style="display: flex">
     <div class="preview">
-      <div class="title">LinkWeChat</div>
+      <div class="title">{{ lwConfig.SYSTEM_NAME }}</div>
       <div class="content">
         <div class="item">
           <div class="avatar222"><img src="@/assets/drainageCode/header.png" /></div>
