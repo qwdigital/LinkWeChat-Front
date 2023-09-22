@@ -76,28 +76,28 @@ export default {
       type: Boolean,
       default: false,
     },
-    watch: {
-      initData: {
-        handler(value) {
-          if (this.initData.area && !this.initData.address) {
-            this.form.address = ''
-            this.getPoint(this.initData.area)
-            this.initMap()
+  },
+  watch: {
+    initData: {
+      handler(value) {
+        if (this.initData.area && !this.initData.address) {
+          this.form.address = ''
+          this.getPoint(this.initData.area)
+          this.initMap()
+        }
+        if (this.initData.address) {
+          this.form.address = this.initData.address
+          if (this.initData.longitude && this.initData.latitude) {
+            this.form.addrPoint.lng = this.initData.longitude
+            this.form.addrPoint.lat = this.initData.latitude
+          } else {
+            let detailAddress = this.initData.area + this.initData.address
+            this.getPoint(detailAddress)
           }
-          if (this.initData.address) {
-            this.form.address = this.initData.address
-            if (this.initData.longitude && this.initData.latitude) {
-              this.form.addrPoint.lng = this.initData.longitude
-              this.form.addrPoint.lat = this.initData.latitude
-            } else {
-              let detailAddress = this.initData.area + this.initData.address
-              this.getPoint(detailAddress)
-            }
-            this.initMap()
-          }
-        },
-        deep: true,
+          this.initMap()
+        }
       },
+      deep: true,
     },
   },
   async mounted() {

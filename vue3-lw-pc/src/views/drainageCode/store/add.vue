@@ -36,7 +36,7 @@
             ref="tree"
             @change="handleTree"></el-cascader>
         </el-form-item>
-        <baidu-map @update="handleChange" @point="getPoint" :isDetail="isDetail" :initData="form"></baidu-map>
+        <BaiduMap @update="handleChange" @point="getPoint" :isDetail="isDetail" :initData="form"></BaiduMap>
       </div>
       <div class="g-card">
         <div class="card-title">门店设置</div>
