@@ -46,10 +46,8 @@ export default {
     background: var(--bg-black-11);
     border-radius: 32px 32px 32px 32px;
     font-size: 14px;
-    color: var(--font-black-7);
     line-height: 30px;
     text-align: center;
-    margin-top: 15px;
     margin-right: 12px;
     margin-bottom: 6px;
   }
