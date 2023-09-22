@@ -2,7 +2,7 @@
   <el-dialog
     :modelValue="modelValue"
     @update:modelValue="(val) => $emit('update:modelValue', val)"
-    :title="(editId ? '编辑' : '新建') + '字段'"
+    :title="(!!editId ? '编辑' : '新建') + '字段'"
     width="30%">
     <el-form
       v-loading="loading"
@@ -17,10 +17,10 @@
           placeholder="请输入字段名称"
           maxlength="10"
           show-word-limit
-          :disabled="ruleForm.fixed || editId"></el-input>
+          :disabled="ruleForm.fixed || !!editId"></el-input>
       </el-form-item>
       <el-form-item label="字段类型：" prop="type">
-        <el-select v-model="ruleForm.type" :disabled="ruleForm.fixed || editId">
+        <el-select v-model="ruleForm.type" :disabled="ruleForm.fixed || !!editId">
           <el-option :label="item.value" :value="item.key" v-for="(item, index) in typeList" :key="index"></el-option>
         </el-select>
       </el-form-item>
@@ -51,7 +51,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="是否必填：" prop="required">
-        <el-radio-group v-model="ruleForm.required" :disabled="editId">
+        <el-radio-group v-model="ruleForm.required" :disabled="!!editId">
           <el-radio :label="1">是</el-radio>
           <el-radio :label="0">否</el-radio>
         </el-radio-group>
