@@ -1,5 +1,5 @@
 <template>
-  <div class="left pad20" style="border-radius: 4px; background: var(--bg-white)">
+  <div class="left" style="border-radius: 4px; background: var(--bg-white)">
     <!--模板库  -->
     <div>
       <!-- v-hasPermi="['wecom:tlp:add']" -->
@@ -26,7 +26,7 @@
               style="color: rgb(65, 133, 244); font-size: 25px"></el-icon-check>
           </template>
         </el-table-column>
-        <el-table-column :label="isGroup ? '群发内容' : '欢迎语'" align="center" min-width="250" show-overflow-tooltip>
+        <el-table-column :label="isGroup ? '群发内容' : '欢迎语'" align="center" min-width="200" show-overflow-tooltip>
           <template #default="scope">
             {{ scope.row.templateInfo }}
           </template>
@@ -69,12 +69,6 @@
         </span>
       </template>
     </el-dialog>
-    <!-- 批量新建弹窗 -->
-    <SelectUser
-      v-model:visible="dialogVisible"
-      title="组织架构"
-      :defaultValues="userArray"
-      @success="getSelectUser"></SelectUser>
   </div>
 </template>
 
@@ -117,7 +111,6 @@ export default {
         // orderByColumn: 'wmt.create_time',
         // isAsc: 'desc',
       },
-      dialogVisible: false,
       loading: false,
       total: 0,
       list: [],
