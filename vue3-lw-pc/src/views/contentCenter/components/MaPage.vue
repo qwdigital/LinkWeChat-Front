@@ -148,17 +148,9 @@ export default {
         weMaterialImgAoList: [{ type: 'array', required: true, message: '不能为空', trigger: 'change' }],
         digest: [{ required: true, message: '不能为空', trigger: 'blur' }],
         coverUrl: [{ required: true, message: '不能为空', trigger: 'blur' }],
-        html: [
-          { required: true, message: '不能为空', trigger: 'blur' },
-          { validator: validateHtml, trigger: 'blur' },
-        ],
-        http: [
-          { required: true, message: '不能为空', trigger: 'blur' },
-          { validator: validateHttp, trigger: 'blur' },
-        ],
         materialUrl: [
           { required: true, message: '不能为空', trigger: 'blur' },
-          { validator: validateHttp, trigger: 'blur' },
+          { validator: this.type == 11 ? validateHtml : validateHttp, trigger: 'blur' },
         ],
       }),
       treeFormRules: {
@@ -785,7 +777,7 @@ export default {
                   show-word-limit
                   placeholder="请输入链接标题"></el-input>
               </el-form-item>
-              <el-form-item label="链接" prop="materialUrl" :rules="rules.http">
+              <el-form-item label="链接" prop="materialUrl">
                 <el-input v-model="form.materialUrl" placeholder="请输入链接"></el-input>
                 <div class="sub-des">必须以 http://或 https://开头</div>
               </el-form-item>
@@ -843,7 +835,7 @@ export default {
                   <a href="https://www.yuque.com/linkwechat/help/gy4ghv#cAwOh" target="_blank">如何查询小程序ID?</a>
                 </div>
               </el-form-item>
-              <el-form-item label="页面路径" prop="materialUrl" :rules="rules.html">
+              <el-form-item label="页面路径" prop="materialUrl">
                 <el-input v-model="form.materialUrl" placeholder="请输入小程序路径，必须以 .html 作为后缀"></el-input>
                 <div class="sub-des">
                   <a href="https://www.yuque.com/linkwechat/help/gy4ghv#a1bXG" target="_blank">
