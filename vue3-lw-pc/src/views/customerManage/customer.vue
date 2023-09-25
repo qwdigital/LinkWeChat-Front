@@ -284,10 +284,10 @@ export default {
       if (hasErrorTag.length > 0) {
         this.$notify({
           // title: '标题名称',
-          message: this.$createElement(
-            'i',
-            { style: 'color: red' },
-            '已有标签[' + hasErrorTag + ']不在标签库中，已被删除或存在异常',
+          message: h(
+            'div',
+            { style: 'color: red;word-break:break-all' },
+            '已有标签 [ ' + hasErrorTag + ' ] 不在标签库中，已被删除或存在异常',
           ),
           type: 'warning',
           customClass: 'mzindex',
