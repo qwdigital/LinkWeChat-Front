@@ -40,12 +40,23 @@ export default {
           <PicTitContent :row="row" />
         </template>
       </el-table-column>
-      <el-table-column
-        label="发送总次数"
-        align="center"
-        prop="sendNum"
-        :show-overflow-tooltip="true"
-      >
+      <el-table-column prop="tagNames" label="客户标签" align="center" width="">
+        <template #header>
+          <el-popover placement="top" trigger="hover">
+            <template #reference>
+              <div>
+                客户标签
+                <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
+              </div>
+            </template>
+            <div>客户查看素材时自动打标签</div>
+          </el-popover>
+        </template>
+        <template #default="{ row }">
+          <TagEllipsis :list="row.tagNames" emptyText="无标签"></TagEllipsis>
+        </template>
+      </el-table-column>
+      <el-table-column label="发送总次数" align="center" prop="sendNum" :show-overflow-tooltip="true">
         <template #header>
           <el-popover placement="top" trigger="hover">
             <template #reference>
@@ -61,12 +72,7 @@ export default {
           {{ row.sendNum }}
         </template>
       </el-table-column>
-      <el-table-column
-        label="查看总次数"
-        align="center"
-        prop="viewNum"
-        :show-overflow-tooltip="true"
-      >
+      <el-table-column label="查看总次数" align="center" prop="viewNum" :show-overflow-tooltip="true">
         <template #header>
           <el-popover placement="top" trigger="hover">
             <template #reference>
@@ -82,12 +88,7 @@ export default {
           {{ row.viewNum }}
         </template>
       </el-table-column>
-      <el-table-column
-        label="查看总人数"
-        align="center"
-        prop="viewByNum"
-        :show-overflow-tooltip="true"
-      >
+      <el-table-column label="查看总人数" align="center" prop="viewByNum" :show-overflow-tooltip="true">
         <template #header>
           <el-popover placement="top" trigger="hover">
             <template #reference>
@@ -110,18 +111,9 @@ export default {
         </template>
       </el-table-column>
 
-      <el-table-column
-        label="操作"
-        align="center"
-        class-name="small-padding fixed-width"
-        width="160px"
-      >
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="160px" fixed="right">
         <template #default="scope">
-          <el-button
-            text
-            @click="$refs.page.detail(scope.row)"
-            v-hasPermi="['wechat:material:detail']"
-          >
+          <el-button text @click="$refs.page.detail(scope.row)" v-hasPermi="['wechat:material:detail']">
             详情|统计
           </el-button>
           <el-button text @click="$refs.page.edit(scope.row)">编辑</el-button>

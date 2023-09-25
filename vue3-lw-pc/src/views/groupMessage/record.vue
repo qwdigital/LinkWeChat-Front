@@ -22,35 +22,31 @@
 
     <div class="g-card">
       <div class="mid-action">
-        <el-button type="primary" @click="goRoute('', '', '', 'add')">新建群发</el-button>
+        <el-button type="primary" @click="goRoute('add')">新建群发</el-button>
       </div>
       <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
         <el-table-column label="群发内容" align="center" prop="content" />
         <el-table-column label="群发类型" align="center">
-          <template #default="scope">
-            {{ pushType[scope.row.chatType] }}
+          <template #default="{ row }">
+            {{ pushType[row.chatType] }}
           </template>
         </el-table-column>
         <el-table-column label="发送类型" align="center">
-          <template #default="scope">
-            {{ timedTask[scope.row.isTask] }}
+          <template #default="{ row }">
+            {{ timedTask[row.isTask] }}
           </template>
         </el-table-column>
         <el-table-column label="发送时间" align="center" prop="sendTime" width="180"></el-table-column>
         <el-table-column label="最近更新时间" align="center" prop="createTime" width="180"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
-          <template #default="scope">
-            <!-- v-hasPermi="['enterpriseWechat:view']" -->
-            <el-button text @click="goRoute(scope.row.id, scope.row.isTask, scope.row.status, 'detail')">
-              详情
-            </el-button>
-            <el-button v-if="scope.row.isTask === 1 && scope.row.status === 0" text @click="cancelSend(scope.row)">
-              取消发送
-            </el-button>
+          <template #default="{ row }">
+            <el-button text @click="goRoute('detail', row.id, row.isTask, row.status)">详情</el-button>
+            <!-- <el-button text @click="goRoute('add', row.id)">复制</el-button> -->
+            <el-button v-if="row.isTask === 1 && row.status === 0" text @click="cancelSend(row)">取消发送</el-button>
             <!-- <el-button v-hasPermi="['enterpriseWechat:edit']"  text disabled=""
-							@click="goRoute(scope.row, 1)">编辑</el-button>
+							@click="goRoute(row, 1)">编辑</el-button>
 						<el-button v-hasPermi="['enterpriseWechat:edit']"  text
-							@click="syncMsg(scope.row)">同步</el-button> -->
+							@click="syncMsg(row)">同步</el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -156,7 +152,7 @@ export default {
         })
         .catch(function () {})
     },
-    goRoute(id, isTask, status, path) {
+    goRoute(path, id, isTask, status) {
       const query = {}
       if (id) {
         query.id = id

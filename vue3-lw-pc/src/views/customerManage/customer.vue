@@ -320,22 +320,6 @@ export default {
           console.log(fail)
         })
     },
-    // /** 导出按钮操作 */
-    // exportCustomer() {
-    //   const queryParams = this.query
-    //   this.$confirm('是否确认导出所有客户数据项?', '警告', {
-    //     confirmButtonText: '确定',
-    //     cancelButtonText: '取消',
-    //     type: 'warning'
-    //   })
-    //     .then(function() {
-    //       return api.exportCustomer(queryParams)
-    //     })
-    //     .then((response) => {
-    //       this.download(response.msg)
-    //     })
-    //     .catch(function() {})
-    // },
     selectedUser(list) {
       this.queryUser = list
     },
@@ -429,6 +413,24 @@ export default {
     exportData() {
       this.$exportData(api.exportData.bind(null, this.query), '导出客户.xlsx')
     },
+    // 设置客户黑名单
+    setBlackList(row) {
+      this.$confirm(row.isJoinBlacklist == 1 ? '是否确认拉黑，拉黑后客户无法收到群发消息' : '是否确认该操作', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          this.loading = true
+          return api.setBlackList({ isJoinBlacklist: row.isJoinBlacklist == 1 ? 0 : 1, customerIds: row.id })
+        })
+        .then((res) => {
+          this.msgSuccess('操作成功')
+          this.getList()
+          this.loading = false
+        })
+        .catch(function () {})
+    },
   },
 }
 </script>
@@ -487,19 +489,13 @@ export default {
       </el-form-item>
       <el-form-item>
         <el-checkbox v-model="query.noTagCheck" @change="setData">无标签客户</el-checkbox>
+        <el-checkbox v-model="query.isJoinBlacklist">黑名单客户</el-checkbox>
       </el-form-item>
 
       <el-form-item label="">
         <!-- v-hasPermi="['customerManage:customer:query']" -->
         <el-button type="primary" @click="getList(1)">查询</el-button>
         <el-button @click="resetForm()">重置</el-button>
-        <!-- v-hasPermi="['customerManage:customer:query']" -->
-        <!-- <el-button
-          v-hasPermi="['customerManage:customer:export']"
-          type="info"
-          @click="exportCustomer"
-          >导出列表</el-button
-        > -->
       </el-form-item>
     </el-form>
 
@@ -552,10 +548,7 @@ export default {
         </el-table-column>
         <el-table-column prop="tagNames" label="客户标签" align="center" width="220">
           <template #default="{ row }">
-            <div v-if="row.tagNames">
-              <TagEllipsis :list="row.tagNames"></TagEllipsis>
-            </div>
-            <span v-else>无标签</span>
+            <TagEllipsis :list="row.tagNames" emptyText="无标签"></TagEllipsis>
           </template>
         </el-table-column>
         <!-- <el-table-column prop="corpName" label="公司名称" align="center"></el-table-column> -->
@@ -584,13 +577,17 @@ export default {
         </el-table-column>
 
         <el-table-column label="操作" width="200" align="center">
-          <template #default="{ row }">
-            <!-- v-hasPermi="['customerManage:customer:view']" -->
-            <el-button @click="goRoute(row)" text>查看</el-button>
-            <el-button text @click="makeTag(row)">标签管理</el-button>
-            <!-- v-hasPermi="['customerManage/customer:makeTag']" -->
-            <el-button text :disabled="row.isTransfer" @click=";(dialogVisibleExtend = true), (currentEidt = row)">
-              在职继承
+          <template #default="{ row, $index }">
+            <el-button text @click="goRoute(row)">查看</el-button>
+            <template v-if="row.isJoinBlacklist == 1">
+              <el-button text @click="makeTag(row)">标签管理</el-button>
+              <!-- v-hasPermi="['customerManage/customer:makeTag']" -->
+              <el-button text :disabled="row.isTransfer" @click=";(dialogVisibleExtend = true), (currentEidt = row)">
+                在职继承
+              </el-button>
+            </template>
+            <el-button text @click="setBlackList(row)">
+              {{ row.isJoinBlacklist == 1 ? '拉黑' : '移出黑名单' }}
             </el-button>
           </template>
         </el-table-column>

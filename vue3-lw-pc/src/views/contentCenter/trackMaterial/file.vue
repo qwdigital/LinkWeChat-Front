@@ -57,6 +57,22 @@ export default {
           <PicTitContent :row="row" />
         </template>
       </el-table-column>
+      <el-table-column prop="tagNames" label="客户标签" align="center" width="">
+        <template #header>
+          <el-popover placement="top" trigger="hover">
+            <template #reference>
+              <div>
+                客户标签
+                <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
+              </div>
+            </template>
+            <div>客户查看素材时自动打标签</div>
+          </el-popover>
+        </template>
+        <template #default="{ row }">
+          <TagEllipsis :list="row.tagNames" emptyText="无标签"></TagEllipsis>
+        </template>
+      </el-table-column>
       <el-table-column label="发送总次数" align="center" prop="sendNum" :show-overflow-tooltip="true">
         <template #header>
           <el-popover placement="top" trigger="hover">

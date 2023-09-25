@@ -391,7 +391,7 @@ export default {
 </script>
 
 <template>
-  <div class="page height100">
+  <div class="page h100">
     <div class="g-left-right">
       <div class="left g-card">
         <div class="title">

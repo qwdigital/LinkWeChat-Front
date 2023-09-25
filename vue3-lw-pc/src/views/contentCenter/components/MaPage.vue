@@ -156,6 +156,9 @@ export default {
       treeFormRules: {
         name: [{ required: true, message: '不能为空', trigger: 'blur' }],
       },
+
+      dialogVisibleSelectTag: false,
+      selectedTagList: [],
     }
   },
   watch: {
@@ -324,6 +327,19 @@ export default {
       this.loading = true
       getList(this.query)
         .then(({ rows, total }) => {
+          rows.forEach((element) => {
+            if (element.tagIds && element.tagNames) {
+              element.tagIds = element.tagIds.split(',')
+              element.tagNames = element.tagNames.split(',')
+              element.tags = []
+              element.tagIds.forEach((unit, index) => {
+                element.tags.push({
+                  tagId: unit,
+                  name: element.tagNames[index],
+                })
+              })
+            }
+          })
           this.list = rows.sort((a, b) => +new Date(b.updateTime) - +new Date(a.updateTime))
           this.total = +total
           this.loading = false
@@ -446,6 +462,7 @@ export default {
           item.materialName = item.name
         })
       }
+      this.form.tagIds = this.form.tags?.map((item, index) => item.tagId) + ''
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.times = setTimeout(() => {
@@ -557,6 +574,13 @@ export default {
       this.form['height'] = data.height
       this.form['memorySize'] = data.memorySize
       this.form['pixelSize'] = data.pixelSize
+    },
+
+    submitSelectTag(data) {
+      this.form.tags = data.map((d) => ({
+        tagId: d.tagId,
+        name: d.name,
+      }))
     },
   },
 }
@@ -686,6 +710,21 @@ export default {
           <el-form ref="form" :model="form" :rules="rules" label-width="100px">
             <el-form-item label="选择分组" prop="categoryId">
               <el-cascader v-model="form.categoryId" :options="treeData[0].children" :props="groupProps"></el-cascader>
+            </el-form-item>
+
+            <el-form-item label="客户标签" v-if="[2, 3, 8, 9, 13, 19].includes(+type)">
+              <TagEllipsis :list="form.tags" limit="4"></TagEllipsis>
+              <div>
+                <el-button type="primary" @click="dialogVisibleSelectTag = true">
+                  {{ form.tags?.length ? '编辑' : '添加' }}标签
+                </el-button>
+                <!-- 选择标签弹窗 -->
+                <SelectTag
+                  v-model:visible="dialogVisibleSelectTag"
+                  :defaultValues="form.tags"
+                  @success="submitSelectTag"></SelectTag>
+              </div>
+              <div class="sub-des">素材打开后，该客户将会自动设置以上选择标签</div>
             </el-form-item>
 
             <!-- 文本 -->
@@ -820,7 +859,7 @@ export default {
               </el-form-item>
             </template>
 
-            <!-- 小程序标题 -->
+            <!-- 小程序 -->
             <template v-else-if="type === '11'">
               <el-form-item label="小程序标题" prop="materialName">
                 <el-input
@@ -850,6 +889,7 @@ export default {
               </el-form-item>
             </template>
 
+            <!-- 语音 -->
             <template v-else-if="type === '1'">
               <el-form-item label="语音" prop="materialUrl">
                 <Voice v-if="form.materialUrl" :amrUrl="form.materialUrl"></Voice>

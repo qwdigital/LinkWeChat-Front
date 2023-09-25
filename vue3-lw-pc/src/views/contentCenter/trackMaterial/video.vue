@@ -53,6 +53,22 @@ export default {
           </div> -->
         </template>
       </el-table-column>
+      <el-table-column prop="tagNames" label="客户标签" align="center" width="">
+        <template #header>
+          <el-popover placement="top" trigger="hover">
+            <template #reference>
+              <div>
+                客户标签
+                <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
+              </div>
+            </template>
+            <div>客户查看素材时自动打标签</div>
+          </el-popover>
+        </template>
+        <template #default="{ row }">
+          <TagEllipsis :list="row.tagNames" emptyText="无标签"></TagEllipsis>
+        </template>
+      </el-table-column>
       <el-table-column label="发送总次数" align="center" prop="sendNum" :show-overflow-tooltip="true">
         <template #header>
           <el-popover placement="top" trigger="hover">
@@ -108,7 +124,7 @@ export default {
         </template>
       </el-table-column>
 
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="160px">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="160px">
         <template #default="scope">
           <el-button text @click="$refs.page.detail(scope.row)" v-hasPermi="['wechat:material:detail']">
             详情|统计

@@ -97,6 +97,22 @@ export default {
           </div> -->
           </template>
         </el-table-column>
+        <el-table-column prop="tagNames" label="客户标签" align="center" width="">
+          <template #header>
+            <el-popover placement="top" trigger="hover">
+              <template #reference>
+                <div>
+                  客户标签
+                  <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
+                </div>
+              </template>
+              <div>客户查看素材时自动打标签</div>
+            </el-popover>
+          </template>
+          <template #default="{ row }">
+            <TagEllipsis :list="row.tagNames" emptyText="无标签"></TagEllipsis>
+          </template>
+        </el-table-column>
         <el-table-column label="海报类型" align="center" prop="materialName">
           <template #default="{ row }">
             {{ row.type === '1' ? '通用海报' : '裂变海报' }}
@@ -157,7 +173,7 @@ export default {
             <span>{{ parseTime(scope.row.updateTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="160px" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center" width="160px" class-name="small-padding fixed-width" fixed="right">
           <template #default="scope">
             <el-button text @click="$refs.page.detail(scope.row)" v-hasPermi="['wechat:material:detail']">
               详情|统计

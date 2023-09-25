@@ -230,13 +230,13 @@ export default {
     changeTab(tab) {
       this.openedTabs.includes(tab.index) || this.openedTabs.push(tab.index)
     },
-    changeTrack(type) {
-      this.openTrack.includes(type) || this.openTrack.push(type)
-      this.active = type
-    },
-    sync() {
-      this.$refs['record'][this.active].sync()
-    },
+    // changeTrack(type) {
+    //   this.openTrack.includes(type) || this.openTrack.push(type)
+    //   this.active = type
+    // },
+    // sync() {
+    //   this.$refs['record'][this.active].sync()
+    // },
     // 根据生日计算年龄
     jsGetAge(strBirthday) {
       if (!strBirthday) {

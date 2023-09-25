@@ -1,11 +1,5 @@
 <script>
-import {
-  updateBirthday,
-  getDetail,
-  getSummary,
-  getFollowUpRecord,
-  getCustomerInfoByUserId,
-} from '@/api/customer'
+import { updateBirthday, getDetail, getSummary, getFollowUpRecord, getCustomerInfoByUserId } from '@/api/customer'
 import { getList } from '@/api/salesCenter/businessConver.js'
 
 import { dictAddType, dictJoinGroupType, dictTrackState } from '@/utils/dictionary'
@@ -87,17 +81,15 @@ export default {
      * userId	是	当前跟进人id
      */
     getDetail() {
-      getDetail({ ...this.$route.query, delFlag: this.$route.query.isDelete ? 1 : 0 }).then(
-        ({ data }) => {
-          data.companyTags && (data.companyTags = data.companyTags.split(','))
-          this.customer = data
+      getDetail({ ...this.$route.query, delFlag: this.$route.query.isDelete ? 1 : 0 }).then(({ data }) => {
+        data.companyTags && (data.companyTags = data.companyTags.split(','))
+        this.customer = data
 
-          // if (data.trackUsers && data.trackUsers.length === 1) {
-          //   this.openedTabs = [data.trackUsers[0].trackUserId]
-          // }
-          this.birthday = data.birthday
-        }
-      )
+        // if (data.trackUsers && data.trackUsers.length === 1) {
+        //   this.openedTabs = [data.trackUsers[0].trackUserId]
+        // }
+        this.birthday = data.birthday
+      })
     },
     // changeTab(tab) {
     //   this.openedTabs.includes(tab.paneName) || this.openedTabs.push(tab.paneName)
@@ -110,9 +102,11 @@ export default {
     //   )
     // }
     changeTrack(type) {
-      console.log(114, type)
       this.openTrack.includes(type) || this.openTrack.push(type)
       this.active = type
+    },
+    sync() {
+      this.$refs['record'][this.active].sync()
     },
   },
 }
@@ -149,10 +143,7 @@ export default {
         <div class="g-card">
           <div class="g-card-title">社交关系</div>
           <el-tabs model-value="1">
-            <el-tab-pane
-              :label="`跟进员工(${customer.trackUsers ? customer.trackUsers.length : 0})`"
-              name="1"
-            >
+            <el-tab-pane :label="`跟进员工(${customer.trackUsers ? customer.trackUsers.length : 0})`" name="1">
               <el-table :data="customer.trackUsers">
                 <el-table-column label="员工" align="center" prop="userName" />
                 <el-table-column prop="addMethod" label="添加方式" align="center">
@@ -171,18 +162,13 @@ export default {
                 </el-table-column>
               </el-table>
             </el-tab-pane>
-            <el-tab-pane
-              :label="`所在客群(${customer.groups ? customer.groups.length : 0})`"
-              name="2"
-            >
+            <el-tab-pane :label="`所在客群(${customer.groups ? customer.groups.length : 0})`" name="2">
               <el-table :data="customer.groups">
                 <el-table-column label="群名" align="center" prop="groupName" />
                 <el-table-column label="群主" align="center" prop="leaderName" />
                 <el-table-column label="入群时间" align="center" prop="joinTime" />
                 <el-table-column prop="joinScene" label="入群方式" align="center">
-                  <template #default="{ row }">{{
-                    dictJoinGroupType[row.joinScene + '']
-                  }}</template>
+                  <template #default="{ row }">{{ dictJoinGroupType[row.joinScene + ''] }}</template>
                 </el-table-column>
               </el-table>
             </el-tab-pane>
@@ -205,21 +191,18 @@ export default {
               :key="index"
               :label="item.userName"
               lazy
-              :data-id="item.trackUserId"
-            >
+              :data-id="item.trackUserId">
               <info-tab :stageList="stageList" :userId="item.trackUserId"></info-tab>
             </el-tab-pane>
           </el-tabs>
         </div>
       </div>
       <div style="width: 425px; margin-top: 0">
-        <el-card>
+        <el-card class="g-card" style="padding: 0">
           <template #header>
-            <div class="fcbw">
-              <span class="card-title" @click="sync">客户轨迹</span>
-              <ButtonSync class="btn-sync" :lastSyncTime="lastSyncTime" @click="sync"
-                >同步</ButtonSync
-              >
+            <div class="g-card-title fcbw">
+              <span class="card-title">客户轨迹</span>
+              <ButtonSync class="btn-sync" :lastSyncTime="lastSyncTime" @click="sync">同步</ButtonSync>
             </div>
           </template>
           <div class="flex track-tab-wrap mb15">
@@ -233,13 +216,7 @@ export default {
               {{ type }}
             </div> -->
             <el-select v-model="active" placeholder="请选择" @change="changeTrack">
-              <el-option
-                v-for="(value, type) of trajectoryType"
-                :key="type"
-                :label="value"
-                :value="type"
-              >
-              </el-option>
+              <el-option v-for="(value, type) of trajectoryType" :key="type" :label="value" :value="type"></el-option>
             </el-select>
           </div>
           <template v-for="(item, index) in openTrack" :key="index">
@@ -250,8 +227,7 @@ export default {
               :userId="userId"
               :userIdAll="customer.trackUsers.map((e) => e.trackUserId).join()"
               v-model:lastSyncTime="lastSyncTime"
-              :trajectoryType="item == 0 ? null : item"
-            ></record>
+              :trajectoryType="item == 0 ? null : item"></record>
           </template>
         </el-card>
       </div>
