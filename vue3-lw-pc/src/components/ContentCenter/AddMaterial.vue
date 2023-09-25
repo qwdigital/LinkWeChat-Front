@@ -73,11 +73,11 @@
                 trigger="hover"
                 :content="'最多添加' + maxlength + '个' + fontType + '，如需修改请删除已有' + fontType + '后重新尝试'"
                 placement="top-start"
-                :disabled="talkList.length < maxlength">
+                :disabled="talkList?.length < maxlength">
                 <template #reference>
                   <el-dropdown
                     @command="moveGroup"
-                    :disabled="talkList.length > maxlength || talkList.length === maxlength">
+                    :disabled="talkList?.length > maxlength || talkList?.length === maxlength">
                     <el-button type="primary" v-show="!(moduleType === 4 && otherType === 3)">
                       + {{ '新建' + fontType }}
                     </el-button>
@@ -119,17 +119,17 @@
                 trigger="hover"
                 :content="'最多添加' + maxlength + '个' + fontType + '，如需修改请删除已有' + fontType + '后重新尝试'"
                 placement="top-start"
-                :disabled="talkList.length < maxlength">
+                :disabled="talkList?.length < maxlength">
                 <template #reference>
                   <div class="ml20">
-                    <el-button @click="choseCenter" :disabled="talkList.length >= maxlength">从素材中心选择</el-button>
+                    <el-button @click="choseCenter" :disabled="talkList?.length >= maxlength">从素材中心选择</el-button>
                   </div>
                 </template>
               </el-popover>
             </div>
           </div>
         </div>
-        <div class="g-card" style="margin-top: 10px" v-if="talkList.length">
+        <div class="g-card" style="margin-top: 10px" v-if="talkList?.length">
           <DragTable
             :tableData2="talkList"
             @setData="setData"
@@ -141,13 +141,13 @@
           class="g-card mt20 g-pad20"
           style="text-align: left"
           v-if="
-            ((talkList.length && moduleType === 2) ||
+            ((talkList?.length && moduleType === 2) ||
               (otherType !== 3 && moduleType !== 2) ||
               (otherType === 3 && moduleType !== 2)) &&
             !detail
           ">
           <!-- 话术中心，有列表才显示 -->
-          <template v-if="talkList.length && moduleType === 2">
+          <template v-if="talkList?.length && moduleType === 2">
             <el-button @click="getCancel">取消</el-button>
             <el-button type="primary" v-loading="talkLoading" @click="tackSubmit">确定</el-button>
           </template>
@@ -194,7 +194,7 @@
     </el-dialog>
     <MaterialCenter
       v-model:choseDialog="choseDialog"
-      :talkListLength="talkList.length"
+      :talkListLength="talkList?.length"
       @itemArry="getItemArry"
       pad20
       :templateType="templateType"
