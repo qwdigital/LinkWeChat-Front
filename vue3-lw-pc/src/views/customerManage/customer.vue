@@ -489,7 +489,7 @@ export default {
       </el-form-item>
       <el-form-item>
         <el-checkbox v-model="query.noTagCheck" @change="setData">无标签客户</el-checkbox>
-        <el-checkbox v-model="query.isJoinBlacklist">黑名单客户</el-checkbox>
+        <el-checkbox v-model="query.isJoinBlacklist" true-label="0" false-label="1">黑名单客户</el-checkbox>
       </el-form-item>
 
       <el-form-item label="">
