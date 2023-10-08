@@ -74,7 +74,7 @@
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <img :src="avatar" class="user-avatar" />
-          <div title="仟微" class="user-name toe">{{ name }}</div>
+          <div :title="name" class="user-name toe">{{ name }}</div>
           <el-icon-arrow-down class="el-icon-arrow-down" />
         </div>
         <template #dropdown>

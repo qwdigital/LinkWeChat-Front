@@ -198,7 +198,7 @@ export default {
             <el-radio label="label">开启</el-radio>
             <el-radio label="label">不开启</el-radio>
           </el-radio-group>
-          <div>开启后，可以将成员、部门的增删改以及成员的标签变更实时的同步到仟微SCRM，无需手动更新同步。</div>
+          <div>开启后，可以将成员、部门的增删改以及成员的标签变更实时的同步到SCRM，无需手动更新同步。</div>
         </el-form-item>-->
 
         <!-- <el-form-item label="通讯录事件服务">
@@ -206,7 +206,7 @@ export default {
             <el-radio label="label">开启</el-radio>
             <el-radio label="label">不开启</el-radio>
           </el-radio-group>
-          <div>开启后，可以将企业客户的添加、编辑以及主动删除客户和被动被客户删除实时的同步到仟微SCRM，无需手动更新同步。</div>
+          <div>开启后，可以将企业客户的添加、编辑以及主动删除客户和被动被客户删除实时的同步到SCRM，无需手动更新同步。</div>
         </el-form-item>
         <el-form-item label="企业微信扫码登陆回调地址" prop="wxQrLoginRedirectUri">
           <el-input v-model="form.wxQrLoginRedirectUri"></el-input>

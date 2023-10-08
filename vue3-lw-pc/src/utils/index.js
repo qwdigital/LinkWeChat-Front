@@ -634,7 +634,7 @@ export async function getWechatAuthUserInfo(appId) {
   let code = getQueryValue('code') //是否存在code
   // let query = param2Obj() //
   // let { code, appId, secret } = query
-  let local = window.location.origin.includes('localhost') ? 'http://h5.linkwechat.cn/test.html' : window.location.href
+  let local = window.location.href
   if (!code) {
     //不存在就打开上面的地址进行授权
     let url = ''
