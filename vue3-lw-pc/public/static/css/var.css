@@ -35,7 +35,7 @@
   --color-light-7: hsl(var(--h), var(--s), calc(var(--step) * 7 + var(--l))); /* hsl(149, 93%, 82%) */
   --color-light-8: hsl(var(--h), var(--s), calc(var(--step) * 8 + var(--l))); /* hsl(149, 93%, 88%) */
   --color-light-9: hsl(var(--h), var(--s), calc(var(--step) * 9 + var(--l))); /* hsl(149, 93%, 94%) */
-  --color-light-10: hsl(var(--h), var(--s), calc(var(--step) * 9.5 + var(--l))); /* :hsl(149, 93%, 97%) */
+  --color-light-10: hsl(var(--h), var(--s), calc(var(--step) * 9.5 + var(--l))); /* hsl(149, 93%, 97%) */
   /* --test: hsl(149, 93%, 88%); */
 
   /* ------ 通用字体白色 ------ */
@@ -92,6 +92,17 @@
 
 /* 暗黑模式 */
 html.dark {
+  --color-light-1: hsl(var(--h), var(--s), calc(var(--step) * 9 + var(--l)));
+  --color-light-2: hsl(var(--h), var(--s), calc(var(--step) * 8 + var(--l)));
+  --color-light-3: hsl(var(--h), var(--s), calc(var(--step) * 7 + var(--l)));
+  --color-light-4: hsl(var(--h), var(--s), calc(var(--step) * 6 + var(--l)));
+  --color-light-5: hsl(var(--h), var(--s), calc(var(--step) * 5 + var(--l)));
+  --color-light-6: hsl(var(--h), var(--s), calc(var(--step) * 4 + var(--l)));
+  --color-light-7: hsl(var(--h), var(--s), calc(var(--step) * 3 + var(--l)));
+  --color-light-8: hsl(var(--h), var(--s), calc(var(--step) * 2 + var(--l)));
+  --color-light-9: hsl(var(--h), var(--s), calc(var(--step) * 1 + var(--l)));
+  --color-light-10: hsl(var(--h), var(--s), calc(var(--step) * 0.5 + var(--l)));
+
   --font-white: #f2f2f2;
 
   --font-black: var(--font-white);
