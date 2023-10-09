@@ -46,6 +46,8 @@ export default {
         // .catch((e) => {
         //   this.$message.error('播放录音失败，或文件损坏')
         // })
+      } else {
+        this.msgError('语音文件不存在')
       }
       // this.audioSrc = [JSON.parse(this.message.contact)[type]]
     },
@@ -73,28 +75,15 @@ export default {
 
 <template>
   <div>
-    <el-icon-microphone
-      :class="['el-icon-microphone', actived && 'actived']"
-      style="font-size: 40px; color: var(--color)"
-      @click.stop="play('attachment')" />
-
-    <!-- <AudioPlayer
-          :audio-list="audioSrc"
-          ref="AudioPlayer"
-          :before-play="onBeforePlay"
-        /> -->
-    <!-- <el-dialog v-if="audioSrc[0]"  v-model="dialogVisible" width="30%" @close="close">
-      <div class="shabowboxvidoe shabowboxaudio">
-        <audio controls>
-          <source :src="audioSrc[0]" type="audio/mpeg" />
-        </audio>
-      </div>
-      <span slot="footer" class="dialog-footer"> </span>
-    </el-dialog> -->
+    <el-icon-microphone :class="['el-icon-microphone cp', actived && 'actived']" @click.stop="play('attachment')" />
   </div>
 </template>
 
 <style lang="scss" scoped>
+.el-icon-microphone {
+  font-size: 40px;
+  color: var(--color);
+}
 @keyframes play {
   from {
     // color: red;
@@ -105,5 +94,12 @@ export default {
 }
 .actived {
   animation: play 1s infinite alternate;
+}
+</style>
+<style>
+.message-right {
+  .el-icon-microphone {
+    color: inherit;
+  }
 }
 </style>

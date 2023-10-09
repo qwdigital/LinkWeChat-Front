@@ -54,7 +54,7 @@ export default {
 </script>
 
 <template>
-  <div :class="{ 'message-right': message.fromId === queryChat.fromId, message: message.fromId !== queryChat.fromId }">
+  <div :class="message.fromId === queryChat.fromId ? 'message-right' : 'message'">
     <template v-if="message.msgType === 'text'">
       <template v-if="setIndex(JSON.parse(message.contact).content) == -1">
         <div>
@@ -84,13 +84,13 @@ export default {
       target="_black">
       {{ content }}
     </a>
-    <div v-else-if="message.msgType === 'voice'">
+    <div v-else-if="message.msgType === 'voice'" class="ac">
       <voice :amrUrl="JSON.parse(message.contact)['attachment']"></voice>
-      <span style="font-size: 12px; color: var(--font-black-6)">语音消息</span>
+      <div style="font-size: 12px">语音消息</div>
     </div>
-    <div v-else-if="message.msgType === 'meeting_voice_call'">
+    <div v-else-if="message.msgType === 'meeting_voice_call'" class="ac">
       <voice :amrUrl="JSON.parse(message.contact)['attachment']"></voice>
-      <span style="font-size: 12px; color: var(--font-black-6)" v-if="JSON.parse(message.contact)['endtime']">
+      <span style="font-size: 12px" v-if="JSON.parse(message.contact)['endtime']">
         语音通话-结束时间：{{ setDate(JSON.parse(message.contact)['endtime']) }}
       </span>
     </div>
