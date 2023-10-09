@@ -92,15 +92,15 @@
 
 /* 暗黑模式 */
 html.dark {
-  --color-light-1: hsl(var(--h), var(--s), calc(var(--step) * 9 + var(--l)));
+  /* --color-light-1: hsl(var(--h), var(--s), calc(var(--step) * 9 + var(--l)));
   --color-light-2: hsl(var(--h), var(--s), calc(var(--step) * 8 + var(--l)));
   --color-light-3: hsl(var(--h), var(--s), calc(var(--step) * 7 + var(--l)));
   --color-light-4: hsl(var(--h), var(--s), calc(var(--step) * 6 + var(--l)));
-  --color-light-5: hsl(var(--h), var(--s), calc(var(--step) * 5 + var(--l)));
+  --color-light-5: hsl(var(--h), var(--s), calc(var(--step) * 5 + var(--l))); */
   --color-light-6: hsl(var(--h), var(--s), calc(var(--step) * 4 + var(--l)));
   --color-light-7: hsl(var(--h), var(--s), calc(var(--step) * 3 + var(--l)));
   --color-light-8: hsl(var(--h), var(--s), calc(var(--step) * 2 + var(--l)));
-  --color-light-9: hsl(var(--h), var(--s), calc(var(--step) * 1 + var(--l)));
+  --color-light-9: hsl(var(--h), var(--s), calc(var(--step) * 2 + var(--l)));
   --color-light-10: hsl(var(--h), var(--s), calc(var(--step) * 0.5 + var(--l)));
 
   --font-white: #f2f2f2;
