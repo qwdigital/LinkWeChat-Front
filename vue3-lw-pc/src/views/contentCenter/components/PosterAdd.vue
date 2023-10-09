@@ -86,15 +86,15 @@
                 <ul class="menu" v-show="activeObject && activeObject.type == 'textbox'">
                   <li class="menu-item">
                     <!-- <div>
-                      <button class="btn-text-style" data-style-type="b">Bold</button>
-                      <button class="btn-text-style" data-style-type="i">Italic</button>
-                      <button class="btn-text-style" data-style-type="u">Underline</button>
+                      <div class="btn-text-style" data-style-type="b">Bold</div>
+                      <div class="btn-text-style" data-style-type="i">Italic</div>
+                      <div class="btn-text-style" data-style-type="u">Underline</div>
                     </div> -->
                     <!-- <div> -->
                     <div>
-                      <button class="btn-text-style" @click="setAttr('textAlign', 'left')">左对齐</button>
-                      <button class="btn-text-style" @click="setAttr('textAlign', 'center')">居中</button>
-                      <button class="btn-text-style" @click="setAttr('textAlign', 'right')">右对齐</button>
+                      <div class="btn-text-style" @click="setAttr('textAlign', 'left')">左对齐</div>
+                      <div class="btn-text-style" @click="setAttr('textAlign', 'center')">居中</div>
+                      <div class="btn-text-style" @click="setAttr('textAlign', 'right')">右对齐</div>
                     </div>
                   </li>
                   <li class="menu-item">
@@ -1119,11 +1119,14 @@ export default {
 }
 
 .btn-text-style {
+  display: inline-block;
   padding: 5px;
-  margin: 3px 1px;
-  border: 1px dashed var(--border-black-7);
-  outline: 0;
+  margin: 0 2px;
+  border: 1px solid var(--border-black-7);
+  border-radius: var(--border-radius-small);
   background-color: var(--bg-black-9);
+  // background: var(--color);
+  // color: var(--font-white);
   cursor: pointer;
 }
 .disableClass {
