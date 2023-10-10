@@ -120,7 +120,7 @@ export function downloadBlob(blob, downloadName, type, callback) {
     a.remove()
     URL.revokeObjectURL(url) // 释放内存
     callback && callback()
-  } else if (/^http/.test(blob) && type === 'image') {
+  } else if (/^(http|data:image)/.test(blob) && type === 'image') {
     let image = new Image()
     image.setAttribute('crossOrigin', 'anonymous')
     image.src = blob
@@ -426,6 +426,21 @@ export function $exportData(requestExport, exportFileName = '导出.xlsx', callb
     .catch((error) => {
       console.error(error)
     })
+}
+
+// 文件预览路径处理
+export function $previewFile(url) {
+  if (!url) return
+
+  return window.lwConfig.PRIVIEW_URL ? window.lwConfig.PRIVIEW_URL + encodeURIComponent(base64Encode(url)) : url
+
+  function base64Encode(url) {
+    return btoa(
+      encodeURIComponent(url).replace(/%([0-9A-F]{2})/g, function toSolidBytes(match, p1) {
+        return String.fromCharCode('0x' + p1)
+      }),
+    )
+  }
 }
 
 /**
