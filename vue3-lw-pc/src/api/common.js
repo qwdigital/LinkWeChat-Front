@@ -56,7 +56,7 @@ export function getCosConfig(params) {
   return request({
     url: '/file/get/config',
     params,
-  }).then(({ 0 }) => {
+  }).then(({ data }) => {
     let res = {}
     Object.keys(data).forEach((key) => {
       res[key] = decryptAES(data[key])
