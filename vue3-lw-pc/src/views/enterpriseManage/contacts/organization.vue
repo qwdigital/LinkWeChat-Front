@@ -183,6 +183,7 @@ export default {
         deptId: 1,
         roleId: '',
         userName: '',
+        checkIsRoot: true,
       },
       loading: false,
       treeData: [],
