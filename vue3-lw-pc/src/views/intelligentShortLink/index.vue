@@ -125,14 +125,14 @@ export default {
       this.$refs['queryForm'].resetFields()
       this.getList(1)
     },
-    goRoute(row = {}, detail) {
-      if (this.needMoreInfo) {
+    goRoute(row, detail = 'addEdit') {
+      if (row || this.needMoreInfo) {
         this.dialogVisible = true
         return
       }
-      let { id } = row
+      let { id } = row || {}
       this.$router.push({
-        path: './' + (detail || 'addEdit'),
+        path: './' + detail,
         query: { id },
       })
     },
