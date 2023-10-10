@@ -52,11 +52,11 @@ export function upload(data) {
 }
 
 // 获取cos配置
-export function getCosConfig(data) {
+export function getCosConfig(params) {
   return request({
     url: '/file/get/config',
-    params: data,
-  }).then(({ data }) => {
+    params,
+  }).then(({ 0 }) => {
     let res = {}
     Object.keys(data).forEach((key) => {
       res[key] = decryptAES(data[key])

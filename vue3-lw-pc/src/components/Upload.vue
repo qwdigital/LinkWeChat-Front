@@ -148,23 +148,23 @@ export default {
   created() {
     getCosConfig().then((res) => {
       this.cosConfig = res
-      console.log(this.cosConfig)
-      if (this.cosConfig.fileObject == 'tencentOss') {
+      // console.log(this.cosConfig)
+      if (res.fileObject == 'tencentOss') {
         this.cosInstance = new Cos({
           SecretId: res.secretId,
           SecretKey: res.secretKey,
         })
-      } else if (this.cosConfig.fileObject == 'local') {
+      } else if (res.fileObject == 'local') {
       } else {
-        let region = this.cosConfig.region.split('//')[1]
+        // let region = res.region.split('//')[1]
         this.ossObj = new OSS({
           // yourRegion填写Bucket所在地域。Region填写为oss-cn-hangzhou。
-          region: region.split('.')[0],
+          region: res.region.split('.')[0],
           // 从STS服务获取的临时访问密钥（AccessKey ID和AccessKey Secret）。
-          accessKeyId: this.cosConfig.secretId,
-          accessKeySecret: this.cosConfig.secretKey,
+          accessKeyId: res.secretId,
+          accessKeySecret: res.secretKey,
           // 填写Bucket名称。
-          bucket: this.cosConfig.bucketName,
+          bucket: res.bucketName,
         })
       }
     })
