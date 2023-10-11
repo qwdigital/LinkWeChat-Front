@@ -391,7 +391,10 @@
   background-color: var(--bg-black-11);
 }
 
-.el-tabs__nav-wrap,
+.el-tabs__nav-wrap {
+  overflow: initial;
+  margin-bottom: initial;
+}
 .el-tabs__content {
   overflow: initial;
 }
