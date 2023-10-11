@@ -112,6 +112,11 @@ document.addEventListener('click', (event) => {
   }
 })
 
+// 阻止表单默认提交行为
+document.addEventListener('submit', (event) => {
+  event.preventDefault()
+})
+
 // 统一为img的src不是绝对地址的拼接接口地址
 // document.addEventListener(
 //   'error',
