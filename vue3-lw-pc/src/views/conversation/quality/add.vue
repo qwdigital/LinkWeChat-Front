@@ -53,24 +53,20 @@
                 <el-time-select
                   style="width: 130px;"
                   v-model="item.beginTime"
-                  :picker-options="{
-                    start: '00:00',
-                    end: '23:59',
-                    step: '00:30',
-                    maxTime: item.endTime
-                  }"
+                  start="00:00"
+                  end="23:59"
+                  step="00:30"
+                  :max-time="item.endTime"
                   @change="checkStartEnd($event, index)"
                   placeholder="任意时间点"
                 ></el-time-select>
                 --
                 <el-time-select
                   style="width: 130px;"
-                  :picker-options="{
-                    start: '00:00',
-                    end: '23:59',
-                    step: '00:30',
-                    minTime: item.beginTime
-                  }"
+                  start="00:00"
+                  end="23:59"
+                  step="00:30"
+                  :min-time="item.beginTime"
                   @change="checkStartEnd($event, index)"
                   v-model="item.endTime"
                   placeholder="任意时间点"

@@ -225,7 +225,7 @@ export default {
       this.searchResult = []
       apiOrg
         .getDeptUser({
-          deptId: this.defaultExpandedKeys[0],
+          // deptId: this.defaultExpandedKeys[0],
           userName: this.keywords,
         })
         .then((res) => {
