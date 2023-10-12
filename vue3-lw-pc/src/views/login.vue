@@ -115,6 +115,7 @@ export default {
     },
   },
   created() {
+    console.log(this.$route.query.redirect)
     getCodeInSyetem().then(({ data, code, msg }) => {
       if (code === 200) {
         this.authLink = data.loginQr
@@ -178,7 +179,7 @@ export default {
           this.$store
             .Login(loginForm)
             .then(() => {
-              this.$router.push({ path: this.redirect || window.lwConfig.BASE_URL })
+              this.$router.push(this.redirect || window.lwConfig.BASE_URL)
             })
             .catch(() => {
               this.loading = false
