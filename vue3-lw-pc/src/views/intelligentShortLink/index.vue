@@ -126,7 +126,7 @@ export default {
       this.getList(1)
     },
     goRoute(row, detail = 'addEdit') {
-      if (row || this.needMoreInfo) {
+      if (!row && this.needMoreInfo) {
         this.dialogVisible = true
         return
       }
