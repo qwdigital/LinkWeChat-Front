@@ -9,7 +9,7 @@
         </el-form-item>
         <el-form-item label="企业名称:" prop="companyName" required>
           <el-input style="width: 40%" v-model="form.companyName" placeholder="企业名称"></el-input>
-          <div class="tips">根据企业 ID 配置后回显</div>
+          <!-- <div class="tips">根据企业 ID 配置后回显</div> -->
         </el-form-item>
         <el-form-item label="企业logo" required prop="logoUrl">
           <upload class="image-uploader" v-model:fileUrl="form.logoUrl" type="0"></upload>
