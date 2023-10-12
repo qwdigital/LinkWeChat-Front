@@ -198,12 +198,21 @@ export default {
         <el-table-column label="短链地址" align="center" prop="shortLink" show-overflow-tooltip>
           <template #default="{ row }">
             <span>{{ row.shortLink }}</span>
-            <el-icon-copy-document
+            <!-- <el-icon-copy-document
               class="el-icon-copy-document copy-btn cp ml20"
+              title="复制"
+              :data-clipboard-text="row.shortLink"></el-icon-copy-document> -->
+          </template>
+        </el-table-column>
+        <el-table-column width="35" align="center">
+          <template #default="{ row }">
+            <el-icon-copy-document
+              class="el-icon-copy-document copy-btn cp"
               title="复制"
               :data-clipboard-text="row.shortLink"></el-icon-copy-document>
           </template>
         </el-table-column>
+
         <!-- <el-table-column label="状态" align="center" prop="status">
         <template #default="{ row }">{{ dictStatus[row.status + ''] }}</template>
       </el-table-column> -->
