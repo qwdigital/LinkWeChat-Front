@@ -51,7 +51,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label>
-            <el-button type="primary" @click="getList(1)">查询</el-button>
+            <el-button type="primary" @click="getList(1, true)">查询</el-button>
             <el-button @click="resetFn()">重置</el-button>
           </el-form-item>
         </el-form>
@@ -180,7 +180,7 @@ export default {
       query: {
         pageNum: 1,
         pageSize: 10,
-        deptId: 1,
+        deptId: '',
         roleId: '',
         userName: '',
         checkIsRoot: true,
@@ -366,11 +366,13 @@ export default {
         this.defaultShowNodes.push(this.query.deptId)
       })
     },
-    getList(page) {
+    getList(page, isSarch) {
       page && (this.query.pageNum = page)
       this.loading = true
+      let query = JSON.parse(JSON.stringify(this.query))
+      isSarch && delete query.deptId
       api
-        .getDeptUser(this.query)
+        .getDeptUser(query)
         .then(({ rows, total }) => {
           this.userList = rows
           this.total = +total
