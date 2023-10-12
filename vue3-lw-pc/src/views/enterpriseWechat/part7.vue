@@ -21,17 +21,17 @@
           <!-- <div class="tips">在微信公众号后台->开发管理->开发设置中获取</div> -->
         </el-form-item>
 
-        <div class="g-card-title">商城小程序配置</div>
+        <!-- <div class="g-card-title">商城小程序配置</div>
         <div>
           <el-form-item label="微信小程序APPID:" prop="shopAppId">
             <el-input v-model="form.shopAppId" placeholder="请输入APPID"></el-input>
-            <!-- <div class="tips">在微信公众号后台->开发管理->开发设置中获取</div> -->
+            <div class="tips">在微信公众号后台->开发管理->开发设置中获取</div>
           </el-form-item>
         </div>
         <div id="step2">
           <el-form-item label="微信小程序Secret:" prop="shopSecret">
             <el-input v-model="form.shopSecret" placeholder="请输入小程序Secret"></el-input>
-            <!-- <div class="tips">在微信公众号后台->开发管理->开发设置->开发者ID中获取</div> -->
+            <div class="tips">在微信公众号后台->开发管理->开发设置->开发者ID中获取</div>
           </el-form-item>
         </div>
 
@@ -51,7 +51,7 @@
           <div class="tips">
             将此段内容复制黏贴至微信公众号后台->开发管理->开发设置->消息推送中的【url服务器地址】处
           </div>
-        </el-form-item>
+        </el-form-item> -->
       </div>
       <el-form-item label="" class="ar">
         <el-button type="primary" @click="submit" id="step5">保存配置</el-button>
