@@ -116,7 +116,7 @@ export default {
             编辑
           </el-button>
         </div>
-        <Add v-if="data.type" :form="data" />
+        <Add v-if="data.type || data.type === 0" :form="data" />
       </div>
       <div class="g-card">
         <div class="g-card-title">数据趋势</div>
