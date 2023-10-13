@@ -1,28 +1,13 @@
 <template>
   <div>
-    <el-tabs v-model="currentActive" align-center>
-      <el-tab-pane label="基础配置" name="1">
-        <part1 @submit="savePart1" :data="form"></part1>
-      </el-tab-pane>
-      <el-tab-pane label="应用配置" name="2">
-        <part2 @submit="savePart1" :data="form"></part2>
-      </el-tab-pane>
-      <el-tab-pane label="客服配置" name="3">
-        <part3 @submit="savePart1" :data="form"></part3>
-      </el-tab-pane>
-      <el-tab-pane label="支付配置" name="4">
-        <part4 @submit="savePart1" :data="form"></part4>
-      </el-tab-pane>
-      <el-tab-pane label="公众号配置" name="5">
-        <part5 @submit="savePart1" :data="form"></part5>
-      </el-tab-pane>
-      <el-tab-pane label="直播配置" name="6">
-        <part6 @submit="savePart1" :data="form"></part6>
-      </el-tab-pane>
-      <el-tab-pane label="小程序配置" name="7">
-        <part7 @submit="savePart1" :data="form"></part7>
+    <el-tabs v-model="active">
+      <el-tab-pane v-for="(item, key) in tabs" :key="key" :label="item" :name="key">
+        <component :is="'part' + key" :ref="'part' + key" @submit="savePart" :data="form"></component>
       </el-tab-pane>
     </el-tabs>
+    <div class="g-footer-sticky">
+      <el-button type="primary" @click="$refs['part' + active]?.[0]?.submit()">保存配置</el-button>
+    </div>
   </div>
 </template>
 <script>
@@ -47,20 +32,18 @@ export default {
   props: {},
   data() {
     return {
-      currentActive: this.$route.query.index || '1',
+      active: this.$route.query.index || '1',
+      tabs: {
+        1: '基础配置',
+        2: '应用配置',
+        3: '客服配置',
+        4: '支付配置',
+        5: '公众号配置',
+        6: '直播配置',
+        7: '小程序配置',
+      },
       form: {},
-      disabled: false,
       loading: false,
-      rules: Object.freeze({
-        // companyName: [{ required: true, message: '必填项', trigger: 'blur' }],
-        corpId: [{ required: true, message: '必填项', trigger: 'blur' }],
-        corpSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
-        agentId: [{ required: true, message: '必填项', trigger: 'blur' }],
-        agentSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
-        contactSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
-        seasRedirectUrl: [{ required: true, message: '必填项', trigger: 'blur' }],
-        sopTagRedirectUrl: [{ required: true, message: '必填项', trigger: 'blur' }],
-      }),
     }
   },
   watch: {},
@@ -70,7 +53,7 @@ export default {
   },
   mounted() {},
   methods: {
-    savePart1(data) {
+    savePart(data) {
       api
         .addOrUpdate(data)
         .then(() => {
@@ -110,12 +93,12 @@ export default {
         }
       })
     },
-    start(corpId) {
-      api.start(corpId).then(({ rows, total }) => {
-        this.msgSuccess('操作成功')
-        this.getList()
-      })
-    },
+    // start(corpId) {
+    //   api.start(corpId).then(({ rows, total }) => {
+    //     this.msgSuccess('操作成功')
+    //     this.getList()
+    //   })
+    // },
   },
 }
 </script>

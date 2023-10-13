@@ -113,7 +113,7 @@
         </template>
         <!-- 外链 -->
         <template v-else-if="type === '19'">
-          <el-form-item label="外链地址" prop="materialUrl">
+          <el-form-item label="外链地址" prop="materialUrl" :rules="rules.http">
             <el-input
               v-model="form.materialUrl"
               type="text"
@@ -163,7 +163,7 @@
             </div>
           </el-form-item>
           <el-form-item label="页面路径" prop="materialUrl" :rules="rules.html">
-            <el-input v-model="form.materialUrl" placeholder="请输入小程序路径，必须以 .html 作为后缀"></el-input>
+            <el-input v-model="form.materialUrl" placeholder="请输入小程序路径，必须以 .htmld 作为后缀"></el-input>
             <div class="sub-des">
               <a href="https://www.yuque.com/linkwechat/help/gy4ghv#a1bXG" target="_blank">如何添加小程序页面路径?</a>
             </div>

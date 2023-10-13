@@ -48,9 +48,6 @@
           <div class="tips">用于校验支付环境，在微信支付后台->账户中心->账户设置->API安全中下载</div>
         </el-form-item>
       </div>
-      <el-form-item label="" class="ar">
-        <el-button type="primary" @click="submit">保存配置</el-button>
-      </el-form-item>
     </el-form>
   </div>
 </template>

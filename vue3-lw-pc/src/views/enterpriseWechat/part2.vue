@@ -66,9 +66,6 @@
           <div class="tips">用于同步企微会话，在企微后台->管理工具->会话存档中获取</div>
         </el-form-item>
       </div>
-      <el-form-item label="" class="ar">
-        <el-button type="primary" @click="submit">保存配置</el-button>
-      </el-form-item>
     </el-form>
   </div>
 </template>

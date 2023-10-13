@@ -53,10 +53,6 @@
           </div>
         </el-form-item> -->
       </div>
-      <el-form-item label="" class="ar">
-        <el-button type="primary" @click="submit" id="step5">保存配置</el-button>
-      </el-form-item>
-      <a href=""></a>
     </el-form>
   </div>
 </template>

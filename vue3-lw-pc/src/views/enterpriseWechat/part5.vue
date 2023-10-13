@@ -31,9 +31,6 @@
           </el-form-item>
         </div>
       </div>
-      <el-form-item label="" class="ar">
-        <el-button type="primary" @click="submit" id="item3">保存配置</el-button>
-      </el-form-item>
     </el-form>
   </div>
 </template>

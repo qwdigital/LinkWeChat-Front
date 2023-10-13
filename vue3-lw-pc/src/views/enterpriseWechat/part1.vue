@@ -79,9 +79,6 @@
           <el-input style="width: 40%" v-model="form.encodingAesKey" placeholder="请输入EncodingAESKey"></el-input>
         </el-form-item>
       </div>
-      <el-form-item label="" class="ar">
-        <el-button type="primary" @click="submit">保存配置</el-button>
-      </el-form-item>
     </el-form>
   </div>
 </template>
