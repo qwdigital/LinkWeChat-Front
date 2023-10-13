@@ -27,16 +27,22 @@
 </template>
 <script>
 import * as api from '@/api/enterpriseId'
-// import clipboard from "clipboard";
+import part1 from './part1.vue'
+import part2 from './part2.vue'
+import part3 from './part3.vue'
+import part4 from './part4.vue'
+import part5 from './part5.vue'
+import part6 from './part6.vue'
+import part7 from './part7.vue'
 export default {
   components: {
-    part1: defineAsyncComponent(() => import('./part1.vue')),
-    part2: defineAsyncComponent(() => import('./part2.vue')),
-    part3: defineAsyncComponent(() => import('./part3.vue')),
-    part4: defineAsyncComponent(() => import('./part4.vue')),
-    part5: defineAsyncComponent(() => import('./part5.vue')),
-    part6: defineAsyncComponent(() => import('./part6.vue')),
-    part7: defineAsyncComponent(() => import('./part7.vue')),
+    part1,
+    part2,
+    part3,
+    part4,
+    part5,
+    part6,
+    part7,
   },
   props: {},
   data() {
