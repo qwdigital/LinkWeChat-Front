@@ -227,7 +227,15 @@ export default {
         </el-form-item>
       </template> -->
         <el-form-item prop="longLink" label="小程序页面路径">
-          <el-input clearable v-model="form.longLink" placeholder="请输入" show-word-limit></el-input>
+          <el-input
+            clearable
+            v-model="form.longLink"
+            placeholder="请输入小程序页面路径（不含.html）"
+            show-word-limit></el-input>
+          <div v-if="!isDetail" class="tips">
+            示例：page/index/index、page/index/index?id=123；
+            <a href="https://www.yuque.com/linkwechat/help/gy4ghv#a1bXG" target="_blank">如何添加小程序页面路径?</a>
+          </div>
         </el-form-item>
       </template>
     </el-form>
