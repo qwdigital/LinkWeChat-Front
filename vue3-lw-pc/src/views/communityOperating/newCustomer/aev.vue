@@ -155,75 +155,80 @@ export default {
 </script>
 
 <template>
-  <div class="flex" v-loading="loading">
-    <el-form :model="form" ref="form" :rules="rules" label-width="100px" class="g-card fxauto mr20">
-      <el-form-item label="活码名称" prop="codeName">
-        <el-input v-model="form.codeName" maxlength="30" show-word-limit placeholder="请输入" clearable></el-input>
-      </el-form-item>
-      <el-form-item label="使用员工" prop="emplList">
-        <!-- closable -->
-        <el-tag v-for="(user, index) in users" :key="index">{{ user.businessName }}</el-tag>
-        <el-button
-          type="primary"
-          plain
-          :class="users.length > 0 ? 'ml10' : ''"
-          icon="el-icon-plus"
-          @click="onSelectUser">
-          {{ users.length ? '修改' : '添加' }}
-        </el-button>
-      </el-form-item>
-      <el-form-item label="加群引导语" prop="welcomeMsg">
-        <TextareaExtend
-          v-model="form.welcomeMsg"
-          maxlength="220"
-          show-word-limit
-          :autosize="{ minRows: 5, maxRows: 20 }"
-          placeholder="请输入"
-          clearable></TextareaExtend>
-      </el-form-item>
-      <el-form-item label="选择群活码" prop="groupCodeId">
-        <el-image
-          style="width: 160px; height: 160px"
-          v-if="groupQrCode && groupQrCode.codeUrl"
-          :src="groupQrCode.codeUrl"
-          class="code-image mr10"></el-image>
-        <el-button type="primary" plain icon="el-icon-plus" @click="dialogVisibleSelectQrCode = true">
-          {{ groupQrCode && groupQrCode.codeUrl ? '修改' : '选择' }}
-        </el-button>
-      </el-form-item>
-      <el-form-item label="新客户标签" prop="tags">
-        <!-- closable -->
-        <el-tag v-for="(tag, index) in tags" :key="index">{{ tag.tagName }}</el-tag>
-        <el-button
-          type="primary"
-          :class="tags.length > 0 ? 'ml10' : ''"
-          plain
-          :icon="plus"
-          @click="dialogVisibleSelectTag = true">
-          添加标签
-        </el-button>
-        <!-- <div class="tip">
-          根据使用场景做标签记录，扫码添加的客户，可自动打上标签
-        </div> -->
-      </el-form-item>
-      <el-form-item label="添加设置" prop="skipVerify">
-        <el-checkbox :true-label="1" :false-label="0" v-model="form.skipVerify">
-          客户添加时无需经过确认自动成为好友
-        </el-checkbox>
-      </el-form-item>
-      <el-form-item label=" ">
-        <el-button type="primary" @click="submit">保存</el-button>
-        <el-button @click="$router.back()">取消</el-button>
-      </el-form-item>
-    </el-form>
+  <div v-loading="loading">
+    <div class="flex">
+      <el-form :model="form" ref="form" :rules="rules" label-width="100px" class="fxauto g-margin-r">
+        <div class="g-card">
+          <div class="g-card-title">基础信息</div>
+          <el-form-item label="活码名称" prop="codeName">
+            <el-input v-model="form.codeName" maxlength="30" show-word-limit placeholder="请输入" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="使用员工" prop="emplList">
+            <!-- closable -->
+            <el-tag v-for="(user, index) in users" :key="index">{{ user.businessName }}</el-tag>
+            <el-button type="primary" plain :class="users.length > 0 ? 'ml10' : ''" @click="onSelectUser">
+              {{ users.length ? '修改' : '添加' }}
+            </el-button>
+          </el-form-item>
 
-    <div class="preview-wrap g-card mt0">
-      <!-- 预览 -->
-      <PhoneDialog
-        :message="form.welcomeMsg || '请输入加群引导语'"
-        :isOther="groupQrCode && groupQrCode.codeUrl ? true : false">
-        <el-image class="phone-dialog-image" :src="groupQrCode.codeUrl" fit="fill"></el-image>
-      </PhoneDialog>
+          <!-- <el-form-item label="选择群活码" prop="groupCodeId">
+            <el-image
+              style="width: 160px; height: 160px"
+              v-if="groupQrCode && groupQrCode.codeUrl"
+              :src="groupQrCode.codeUrl"
+              class="code-image mr10"></el-image>
+            <el-button type="primary" plain icon="el-icon-plus" @click="dialogVisibleSelectQrCode = true">
+              {{ groupQrCode && groupQrCode.codeUrl ? '修改' : '选择' }}
+            </el-button>
+          </el-form-item> -->
+          <el-form-item label="新客户标签" prop="tags">
+            <!-- closable -->
+            <el-tag v-for="(tag, index) in tags" :key="index">{{ tag.tagName }}</el-tag>
+            <el-button
+              type="primary"
+              :class="tags.length > 0 ? 'ml10' : ''"
+              plain
+              :icon="plus"
+              @click="dialogVisibleSelectTag = true">
+              添加标签
+            </el-button>
+            <!-- <div class="tip">根据使用场景做标签记录，扫码添加的客户，可自动打上标签</div> -->
+          </el-form-item>
+          <el-form-item label="添加设置" prop="skipVerify">
+            <el-checkbox :true-label="1" :false-label="0" v-model="form.skipVerify">
+              客户添加时无需经过确认自动成为好友
+            </el-checkbox>
+          </el-form-item>
+        </div>
+        <div class="g-card">
+          <div class="g-card-title">拉群设置</div>
+          <el-form-item label="加群引导语" prop="welcomeMsg">
+            <TextareaExtend
+              v-model="form.welcomeMsg"
+              maxlength="220"
+              show-word-limit
+              :autosize="{ minRows: 5, maxRows: 20 }"
+              placeholder="请输入"
+              clearable></TextareaExtend>
+          </el-form-item>
+        </div>
+      </el-form>
+      <div>
+        <div class="g-card" v-if="form.id"></div>
+        <div class="preview-wrap g-card">
+          <!-- 预览 -->
+          <PhoneDialog
+            :message="form.welcomeMsg || '请输入加群引导语'"
+            :isOther="groupQrCode && groupQrCode.codeUrl ? true : false">
+            <el-image class="phone-dialog-image" :src="groupQrCode.codeUrl" fit="fill"></el-image>
+          </PhoneDialog>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-footer-sticky">
+      <el-button type="primary" @click="submit">保存</el-button>
+      <el-button @click="$router.back()">取消</el-button>
     </div>
 
     <!-- 选择使用员工弹窗 -->

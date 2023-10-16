@@ -158,9 +158,9 @@ export default {
       <el-form-item label="活码名称" prop="emplCodeName">
         <el-input clearable v-model="query.emplCodeName" placeholder="请输入"></el-input>
       </el-form-item>
-      <el-form-item label="创建人" prop="createBy">
+      <!-- <el-form-item label="创建人" prop="createBy">
         <el-input clearable v-model="query.createBy" placeholder="请输入"></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="创建时间">
         <el-date-picker
           clearable
@@ -251,14 +251,55 @@ export default {
             <span v-else>无群聊</span>
           </template>
         </el-table-column>
-        <el-table-column label="添加好友数" align="center" prop="cusNumber" width="100"></el-table-column>
-        <el-table-column label="创建人" align="center" prop="createBy"></el-table-column>
+        <el-table-column label="添加客户数/进群客户数" align="center" prop="cusNumber" width="100">
+          <template #header>
+            <el-popover placement="top" trigger="hover">
+              <template #reference>
+                <div>
+                  添加客户数/进群客户数
+                  <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
+                </div>
+              </template>
+              <div>添加客户数：通过此活码添加的客户总数（去重）；</div>
+              <div>进群客户数：添加客户中成功进群的总数（去重）；</div>
+            </el-popover>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column label="创建人" align="center" prop="createBy"></el-table-column> -->
         <el-table-column label="创建时间" align="center" prop="createTime" width="160"></el-table-column>
         <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
           <template #default="{ row }">
-            <el-button text @click="goRoute(row.id)">编辑</el-button>
-            <el-button text @click="download(row)">下载</el-button>
-            <el-button text @click="remove(row.id)">删除</el-button>
+            <el-dropdown>
+              <el-button text>
+                <el-icon-MoreFilled class="el-icon-MoreFilled"></el-icon-MoreFilled>
+              </el-button>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>
+                    <el-button
+                      text
+                      @click="
+                        $router.push({
+                          path: 'groupAdd',
+                          query: {
+                            groupCodeId: row.id,
+                            obj: encodeURIComponent(JSON.stringify(row)),
+                          },
+                        })
+                      ">
+                      编辑
+                    </el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button text @click="goRoute(row.id)">详情|统计</el-button>
+                    <el-button text @click="goRoute(row.id)">编辑</el-button>
+                    <el-button text @click="download(row)">下载</el-button>
+                    <el-button text @click="download(row)">复制</el-button>
+                    <el-button text @click="remove(row.id)">删除</el-button>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
           </template>
         </el-table-column>
       </el-table>
