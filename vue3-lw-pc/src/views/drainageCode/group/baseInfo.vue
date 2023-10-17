@@ -1,68 +1,43 @@
 <template>
   <div>
-    <el-row>
-      <el-col :sm="24" :md="16" :lg="14">
-        <el-form :model="form" :rules="rules" ref="form" label-width="140px">
-          <el-row>
-            <el-col :sm="24" :md="18">
-              <el-form-item label="活码名称:" prop="activityName">
-                <el-input
-                  v-model="form.activityName"
-                  placeholder="请输入名称"
-                  show-word-limit
-                  maxlength="15"></el-input>
-              </el-form-item>
-              <el-form-item label="活码客群:" prop="chatIdList">
-                <template v-for="(item, index) in groupList" :key="index">
-                  <el-tag v-if="item.groupName" :key="index">{{ item.groupName }}</el-tag>
-                </template>
-                <div>
-                  <el-button type="primary" icon="el-icon-plus" @click="selectGroupFn">{{ '添加' }}客群</el-button>
-                </div>
-                <div class="sub-des">最多选择五个客群</div>
-              </el-form-item>
-              <el-form-item label="客群标签:" prop="tagIds">
-                <template v-for="(item, index) in tagList" :key="index">
-                  <el-tag v-if="item.name">{{ item.name }}</el-tag>
-                </template>
-                <div>
-                  <el-button type="primary" icon="el-icon-plus" @click="showSelectTag = true">
-                    {{ tagList.length ? '编辑' : '添加' }}标签
-                  </el-button>
-                </div>
-                <div class="sub-des">设置群活码的标签</div>
-              </el-form-item>
-              <el-form-item label="群满是否自动建群:">
-                <el-switch v-model="form.autoCreateRoom" :active-value="1" :inactive-value="0"></el-switch>
-                <div class="sub-des">默认以第一个群的群主作为新建群的群主</div>
-              </el-form-item>
-              <el-form-item v-if="form.autoCreateRoom" label="">
-                <el-card>
-                  <el-form-item label="群名前缀:" prop="roomBaseName">
-                    <el-input
-                      show-word-limit
-                      maxlength="20"
-                      v-model="form.roomBaseName"
-                      placeholder="请输入群名前缀"></el-input>
-                  </el-form-item>
-                  <el-form-item label="群起始序号:" prop="roomBaseId">
-                    <el-input-number v-model="form.roomBaseId" controls-position="right" :min="1"></el-input-number>
-                  </el-form-item>
-                </el-card>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-      </el-col>
-    </el-row>
-    <select-group v-model:visible="showSelectModal" :defaults="groupList" @submit="setSelectData"></select-group>
-    <select-tag v-model:visible="showSelectTag" type="2" :defaultValues="tagList" @success="getSelectTag"></select-tag>
+    <el-form :model="form" :rules="rules" ref="form" label-width="140px">
+      <el-form-item label="活码名称:" prop="activityName">
+        <el-input v-model="form.activityName" placeholder="请输入名称" show-word-limit maxlength="15"></el-input>
+      </el-form-item>
+      <el-form-item label="活码客群:" prop="chatIdList">
+        <el-button type="primary" @click="selectGroupFn">选择客群</el-button>
+        <div class="sub-des">最多选择五个客群</div>
+        <TagEllipsis :list="groupList" limit="10" defaultProps="groupName"></TagEllipsis>
+      </el-form-item>
+      <el-form-item label="入群标签:" prop="tagIds">
+        <el-button type="primary" @click="showSelectTag = true">选择标签</el-button>
+        <div class="sub-des">通过此群活码进群的客户自动设置以上标签</div>
+        <TagEllipsis :list="tagList" limit="10"></TagEllipsis>
+      </el-form-item>
+      <el-form-item label="群满是否自动建群:">
+        <el-switch v-model="form.autoCreateRoom" :active-value="1" :inactive-value="0"></el-switch>
+        <div class="sub-des">默认以第一个群的群主作为新建群的群主</div>
+        <el-card v-if="form.autoCreateRoom" style="width: 600px; margin-top: 10px">
+          <el-form-item label="群名前缀:" prop="roomBaseName">
+            <el-input
+              show-word-limit
+              maxlength="20"
+              v-model="form.roomBaseName"
+              placeholder="请输入群名前缀"></el-input>
+          </el-form-item>
+          <el-form-item label="群起始序号:" prop="roomBaseId">
+            <el-input-number v-model="form.roomBaseId" controls-position="right" :min="1"></el-input-number>
+          </el-form-item>
+        </el-card>
+      </el-form-item>
+    </el-form>
+    <SelectGroup v-model:visible="showSelectModal" :defaults="groupList" @submit="setSelectData"></SelectGroup>
+    <SelectTag v-model:visible="showSelectTag" type="2" :defaultValues="tagList" @success="getSelectTag"></SelectTag>
   </div>
 </template>
 
 <script>
 import { add, update, getDetail } from '@/api/drainageCode/group'
-import SelectTag from '@/components/SelectTag.vue'
 import SelectGroup from '../components/SelectGroup.vue'
 export default {
   props: {
@@ -74,7 +49,6 @@ export default {
   },
   components: {
     SelectGroup,
-    SelectTag,
   },
   data() {
     return {

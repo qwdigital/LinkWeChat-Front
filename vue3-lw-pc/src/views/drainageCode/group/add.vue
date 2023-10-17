@@ -7,24 +7,22 @@
       </el-steps>
     </div>
     <div class="g-card">
-      <div>
-        <div v-if="active === 0">
-          <BaseInfo ref="baseInfo" :groupCodeId="groupCodeId" @next="next"></BaseInfo>
-        </div>
-        <div v-if="active === 1">
-          <GroupCode :groupCodeId="groupCodeId" :data="baseInfo"></GroupCode>
-        </div>
+      <div v-if="active === 0">
+        <BaseInfo ref="baseInfo" :groupCodeId="groupCodeId" @next="next"></BaseInfo>
       </div>
-      <div class="ac">
-        <template v-if="active === 0">
-          <el-button @click="$router.back()">取消</el-button>
-          <el-button type="primary" v-loading="loading" :disabled="loading" @click="handleGroupCode">下一步</el-button>
-        </template>
-        <template v-else>
-          <!-- <el-button @click="prev"> 上一步 </el-button> -->
-          <el-button type="primary" @click="finished">完成</el-button>
-        </template>
+      <div v-if="active === 1">
+        <GroupCode :groupCodeId="groupCodeId" :data="baseInfo"></GroupCode>
       </div>
+    </div>
+    <div class="g-footer-sticky">
+      <template v-if="active === 0">
+        <el-button @click="$router.back()">取消</el-button>
+        <el-button type="primary" v-loading="loading" :disabled="loading" @click="handleGroupCode">下一步</el-button>
+      </template>
+      <template v-else>
+        <!-- <el-button @click="prev"> 上一步 </el-button> -->
+        <el-button type="primary" @click="finished">完成</el-button>
+      </template>
     </div>
   </div>
 </template>
