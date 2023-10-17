@@ -45,7 +45,7 @@
         </el-table-column>
         <el-table-column label="入群标签" width="180px">
           <template #default="{ row }">
-            <TagEllipsis :list="row.tags?.split(',')"></TagEllipsis>
+            <TagEllipsis :list="row.tags?.split(',')" emptyText></TagEllipsis>
           </template>
         </el-table-column>
         <el-table-column label="活码客群数" align="center" width="120px" prop="chatGroupNum">
@@ -160,7 +160,7 @@
       <el-dialog v-if="realCodeDialog" title="实际群码" v-model="realCodeDialog" append-to-body width="70%">
         <RealCode ref="realCode" :groupCodeId="openGroupCodeId" :status="openGroupCodeStatus"></RealCode>
       </el-dialog>
-      <select-tag v-model:visible="showSelectTag" type="2" :selected="tagList" @success="getSelectTag"></select-tag>
+      <SelectTag v-model:visible="showSelectTag" type="2" :selected="tagList" @success="getSelectTag"></SelectTag>
       <el-dialog title="当前客群" v-model="detailDialog" append-to-body width="70%">
         <el-table v-loading="loading" :data="tableList" style="width: 100%">
           <el-table-column label="客群名称" align="center" min-width="100" prop="groupName" show-overflow-tooltip />
@@ -220,10 +220,8 @@
 import RealCode from './realCode'
 import { getList, remove, downloadBatch, download, getTableTotal } from '@/api/drainageCode/group'
 
-import ShowTag from '@/components/common/ShowTag.vue'
-import SelectTag from '@/components/SelectTag.vue'
 export default {
-  components: { RealCode, ShowTag, SelectTag },
+  components: { RealCode },
   data() {
     return {
       query: {

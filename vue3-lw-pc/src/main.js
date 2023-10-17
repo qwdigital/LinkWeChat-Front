@@ -36,6 +36,7 @@ let components = {
   RightToolbar: () => import('./components/RightToolbar.vue'),
   ButtonSync: () => import('./components/ButtonSync.vue'),
   TagEllipsis: () => import('./components/TagEllipsis.vue'),
+  SelectTag: () => import('./components/SelectTag.vue'),
   SelectUser: () => import('./components/SelectUser.vue'),
   SelectStaffForm: () => import('./components/SelectStaffForm.vue'),
   CoRemoteSelect: () => import('./components/CoRemoteSelect.vue'),

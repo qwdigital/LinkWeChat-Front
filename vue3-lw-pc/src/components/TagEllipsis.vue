@@ -17,8 +17,7 @@ export default {
     },
     // 空数据时显示的文本内容
     emptyText: {
-      type: String,
-      default: '',
+      type: [Boolean, String], // Boolean必须在前，方便显式设置默认值， 具体规则参考vue3文档
     },
   },
   data() {
@@ -43,7 +42,7 @@ export default {
 
 <template>
   <div class="tag-ellipsis" v-if="_list?.length || emptyText">
-    <div v-if="!_list?.length">{{ emptyText }}</div>
+    <div v-if="!_list?.length">{{ typeof emptyText === 'string' ? emptyText : '暂无标签' }}</div>
 
     <div class="tags" v-else-if="_list.length <= +limit">
       <el-tag v-bind="elTagProps" v-for="(item, unique) in _list" :key="unique">
