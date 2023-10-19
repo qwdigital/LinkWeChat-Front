@@ -2,11 +2,10 @@
 import { getDetail, add, update } from '@/api/communityOperating/newCustomer'
 import PhoneDialog from '@/components/PhoneDialog'
 
-import SelectTag from '@/components/SelectTag'
 import SelectQrCode from '@/components/SelectQrCode'
 
 export default {
-  components: { PhoneDialog, SelectTag, SelectQrCode },
+  components: { PhoneDialog, SelectQrCode },
   data() {
     return {
       selectedUserList: [],
@@ -183,16 +182,9 @@ export default {
           </el-form-item> -->
           <el-form-item label="新客户标签" prop="tags">
             <!-- closable -->
-            <el-tag v-for="(tag, index) in tags" :key="index">{{ tag.tagName }}</el-tag>
-            <el-button
-              type="primary"
-              :class="tags.length > 0 ? 'ml10' : ''"
-              plain
-              :icon="plus"
-              @click="dialogVisibleSelectTag = true">
-              添加标签
-            </el-button>
-            <!-- <div class="tip">根据使用场景做标签记录，扫码添加的客户，可自动打上标签</div> -->
+            <el-button type="primary" :icon="plus" @click="dialogVisibleSelectTag = true">选择标签</el-button>
+            <div class="tip">通过此群活码进群的客户自动打上标签</div>
+            <TagEllipsis :list="tags" limit="10" defaultProps="tagName"></TagEllipsis>
           </el-form-item>
           <el-form-item label="添加设置" prop="skipVerify">
             <el-checkbox :true-label="1" :false-label="0" v-model="form.skipVerify">
@@ -211,16 +203,59 @@ export default {
               placeholder="请输入"
               clearable></TextareaExtend>
           </el-form-item>
+          <el-form-item label="活码客群:" prop="chatIdList">
+            <template v-for="(item, index) in form.groupList" :key="index">
+              <el-tag v-if="item.groupName" :key="index">{{ item.groupName }}</el-tag>
+            </template>
+            <div>
+              <el-button type="primary" @click="selectGroupFn">选择客群</el-button>
+            </div>
+            <div class="tip">最多选择五个客群</div>
+          </el-form-item>
+
+          <el-form-item label="群满自动建群:">
+            <el-switch v-model="form.autoCreateRoom" :active-value="1" :inactive-value="0"></el-switch>
+            <div class="sub-des">默认以第一个群的群主作为新建群的群主</div>
+          </el-form-item>
+          <el-form-item v-if="form.autoCreateRoom" label="">
+            <el-card>
+              <el-form-item label="群名前缀:" prop="roomBaseName">
+                <el-input
+                  show-word-limit
+                  maxlength="20"
+                  v-model="form.roomBaseName"
+                  placeholder="请输入群名前缀"></el-input>
+              </el-form-item>
+              <el-form-item label="群起始序号:" prop="roomBaseId">
+                <el-input-number v-model="form.roomBaseId" controls-position="right" :min="1"></el-input-number>
+              </el-form-item>
+            </el-card>
+          </el-form-item>
+          <el-form-item label="链接标题" prop="codeName">
+            <el-input v-model="form.codeName" maxlength="30" show-word-limit placeholder="请输入" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="链接描述" prop="codeName">
+            <el-input v-model="form.codeName" maxlength="30" show-word-limit placeholder="请输入" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="链接封面" prop="codeName">
+            <upload v-model:fileUrl="form.picture" type="0" :maxSize="2" :format="['jpg', 'jpeg', 'png']">
+              <template #tip><div>支持jpg/jpeg/png格式，图片大小不超过2M</div></template>
+            </upload>
+          </el-form-item>
         </div>
       </el-form>
       <div>
         <div class="g-card" v-if="form.id"></div>
         <div class="preview-wrap g-card">
           <!-- 预览 -->
-          <PhoneDialog
-            :message="form.welcomeMsg || '请输入加群引导语'"
-            :isOther="groupQrCode && groupQrCode.codeUrl ? true : false">
-            <el-image class="phone-dialog-image" :src="groupQrCode.codeUrl" fit="fill"></el-image>
+          <PhoneDialog :message="form.welcomeMsg || '请输入加群引导语'">
+            <div v-if="groupQrCode.picture ? true : false">
+              <div class="msg-title">{{ form.codeName }}</div>
+              <div>
+                <div class="msg-title">{{ form.codeName }}</div>
+                <el-image class="phone-dialog-image" :src="groupQrCode.picture" fit="fill"></el-image>
+              </div>
+            </div>
           </PhoneDialog>
         </div>
       </div>

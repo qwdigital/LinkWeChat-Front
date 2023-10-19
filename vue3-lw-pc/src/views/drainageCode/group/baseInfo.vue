@@ -11,7 +11,7 @@
       </el-form-item>
       <el-form-item label="入群标签:" prop="tagIds">
         <el-button type="primary" @click="showSelectTag = true">选择标签</el-button>
-        <div class="sub-des">通过此群活码进群的客户自动设置以上标签</div>
+        <div class="sub-des">通过此群活码进群的客户自动打上标签</div>
         <TagEllipsis :list="tagList" limit="10"></TagEllipsis>
       </el-form-item>
       <el-form-item label="群满是否自动建群:">
