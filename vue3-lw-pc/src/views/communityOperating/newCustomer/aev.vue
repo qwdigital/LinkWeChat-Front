@@ -2,10 +2,8 @@
 import { getDetail, add, update } from '@/api/communityOperating/newCustomer'
 import PhoneDialog from '@/components/PhoneDialog'
 
-import SelectQrCode from '@/components/SelectQrCode'
-
 export default {
-  components: { PhoneDialog, SelectQrCode },
+  components: { PhoneDialog },
   data() {
     return {
       selectedUserList: [],
@@ -163,11 +161,9 @@ export default {
             <el-input v-model="form.codeName" maxlength="30" show-word-limit placeholder="请输入" clearable></el-input>
           </el-form-item>
           <el-form-item label="使用员工" prop="emplList">
-            <!-- closable -->
-            <el-tag v-for="(user, index) in users" :key="index">{{ user.businessName }}</el-tag>
-            <el-button type="primary" plain :class="users.length > 0 ? 'ml10' : ''" @click="onSelectUser">
-              {{ users.length ? '修改' : '添加' }}
-            </el-button>
+            <el-button type="primary" @click="onSelectUser">选择员工</el-button>
+            <br />
+            <TagEllipsis :list="users" limit="10" defaultProps="businessName"></TagEllipsis>
           </el-form-item>
 
           <!-- <el-form-item label="选择群活码" prop="groupCodeId">
@@ -180,9 +176,9 @@ export default {
               {{ groupQrCode && groupQrCode.codeUrl ? '修改' : '选择' }}
             </el-button>
           </el-form-item> -->
-          <el-form-item label="新客户标签" prop="tags">
+          <el-form-item label="入群标签" prop="tags">
             <!-- closable -->
-            <el-button type="primary" :icon="plus" @click="dialogVisibleSelectTag = true">选择标签</el-button>
+            <el-button type="primary" @click="dialogVisibleSelectTag = true">选择标签</el-button>
             <div class="tip">通过此群活码进群的客户自动打上标签</div>
             <TagEllipsis :list="tags" limit="10" defaultProps="tagName"></TagEllipsis>
           </el-form-item>
@@ -231,14 +227,15 @@ export default {
               </el-form-item>
             </el-card>
           </el-form-item>
-          <el-form-item label="链接标题" prop="codeName">
-            <el-input v-model="form.codeName" maxlength="30" show-word-limit placeholder="请输入" clearable></el-input>
+
+          <el-form-item label="链接标题" prop="linkTitle">
+            <el-input v-model="form.linkTitle" maxlength="20" show-word-limit placeholder="请输入" clearable></el-input>
           </el-form-item>
-          <el-form-item label="链接描述" prop="codeName">
-            <el-input v-model="form.codeName" maxlength="30" show-word-limit placeholder="请输入" clearable></el-input>
+          <el-form-item label="链接描述" prop="linkDesc">
+            <el-input v-model="form.linkDesc" maxlength="30" show-word-limit placeholder="请输入" clearable></el-input>
           </el-form-item>
-          <el-form-item label="链接封面" prop="codeName">
-            <upload v-model:fileUrl="form.picture" type="0" :maxSize="2" :format="['jpg', 'jpeg', 'png']">
+          <el-form-item label="链接封面" prop="linkCoverUrl">
+            <upload v-model:fileUrl="form.linkCoverUrl" type="0" :maxSize="2" :format="['jpg', 'jpeg', 'png']">
               <template #tip><div>支持jpg/jpeg/png格式，图片大小不超过2M</div></template>
             </upload>
           </el-form-item>
@@ -249,11 +246,11 @@ export default {
         <div class="preview-wrap g-card">
           <!-- 预览 -->
           <PhoneDialog :message="form.welcomeMsg || '请输入加群引导语'">
-            <div v-if="groupQrCode.picture ? true : false">
-              <div class="msg-title">{{ form.codeName }}</div>
+            <div v-if="groupQrCode.linkCoverUrl">
+              <div class="msg-title">{{ form.linkTitle }}</div>
               <div>
-                <div class="msg-title">{{ form.codeName }}</div>
-                <el-image class="phone-dialog-image" :src="groupQrCode.picture" fit="fill"></el-image>
+                <div class="msg-title">{{ form.linkDesc }}</div>
+                <el-image class="phone-dialog-image" :src="groupQrCode.linkCoverUrl" fit="fill"></el-image>
               </div>
             </div>
           </PhoneDialog>
@@ -268,23 +265,20 @@ export default {
 
     <!-- 选择使用员工弹窗 -->
     <SelectUser
-      :key="form.codeType"
       :isWechat="false"
       v-model:visible="dialogVisibleSelectUser"
       title="选择使用员工"
       :defaultValues="selectedUserList"
-      :isOnlyLeaf="form.codeType !== 2"
-      :isSigleSelect="form.codeType == 1"
       @success="submitSelectUser"></SelectUser>
 
     <!-- 选择标签弹窗 -->
     <SelectTag v-model:visible="dialogVisibleSelectTag" :selected="tags" @success="submitSelectTag"></SelectTag>
 
     <!-- 选择二维码弹窗 -->
-    <SelectQrCode
+    <!-- <SelectQrCode
       v-model:visible="dialogVisibleSelectQrCode"
       @success="submitSelectQrCode"
-      :selected="codes"></SelectQrCode>
+      :selected="codes"></SelectQrCode> -->
   </div>
 </template>
 
