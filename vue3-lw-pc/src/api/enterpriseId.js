@@ -8,7 +8,7 @@ const service = window.lwConfig.services.wecom + '/corp'
 export function getList(params) {
   return request({
     url: service + '/list',
-    params,
+    params
   })
 }
 
@@ -30,7 +30,7 @@ export function add(data) {
   return request({
     url: service,
     method: 'post',
-    data,
+    data
   })
 }
 /**
@@ -56,7 +56,7 @@ export function update(data) {
   return request({
     url: service,
     method: 'put',
-    data,
+    data
   })
 }
 
@@ -67,14 +67,14 @@ export function update(data) {
 export function start(corpId) {
   return request({
     url: service + '/startVailWeCorpAccount/' + corpId,
-    method: 'put',
+    method: 'put'
   })
 }
 
 // 获取当前企业相关参数
 export function getDetail() {
   return request({
-    url: service + '/findCurrentCorpAccount',
+    url: service + '/findCurrentCorpAccount'
   })
 }
 
@@ -83,6 +83,22 @@ export function addOrUpdate(data) {
   return request({
     url: service + '/addOrUpdate',
     method: 'post',
-    data,
+    data
+  })
+}
+
+// 获取欢迎语配置
+export function getWecomeTemplate() {
+  return request({
+    url: service + '/findDefaultWelcomeMsg'
+  })
+}
+
+// 保存欢迎语配置
+export function setWecomeTemplate(data) {
+  return request({
+    url: service + '/editWelComeMsg',
+    method: 'post',
+    data
   })
 }
