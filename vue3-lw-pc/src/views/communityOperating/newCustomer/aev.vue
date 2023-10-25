@@ -3,7 +3,7 @@ import { getDetail, add, update } from '@/api/communityOperating/newCustomer'
 import PhoneDialog from '@/components/PhoneDialog'
 
 export default {
-  components: { PhoneDialog },
+  components: { PhoneDialog, SelectGroup: defineAsyncComponent(() => import('@/components/SelectGroup.vue')) },
   data() {
     return {
       selectedUserList: [],
@@ -26,7 +26,7 @@ export default {
       groupQrCode: {},
       rules: Object.freeze({
         codeName: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
-        emplList: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
+        users: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
         tagList: [{ required: true, message: '该项为必填项', trigger: 'change' }],
         groupCodeId: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
         welcomeMsg: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
@@ -34,24 +34,22 @@ export default {
     }
   },
   watch: {
-    tags: {
-      deep: true,
-      handler(tags) {
-        this.form.tagList = tags.map((t) => t.tagId)
-      },
-    },
-    users: {
-      deep: true,
-      handler(users) {
-        this.form.emplList = users.map((u) => u.businessId)
-        this.$refs.form.validateField('emplList')
-      },
-    },
+    // tags: {
+    //   deep: true,
+    //   handler(tags) {
+    //     this.form.tagList = tags.map((t) => t.tagId)
+    //   },
+    // },
+    // users: {
+    //   deep: true,
+    //   handler(users) {
+    //     this.form.emplList = users.map((u) => u.businessId)
+    //     this.$refs.form.validateField('emplList')
+    //   },
+    // },
   },
   created() {
-    this.newGroupId = this.$route.query.id
-    this.newGroupId && this.getDetail(this.newGroupId)
-    // this.$route.meta.title = (this.newGroupId ? '编辑' : '新建') + '新客自动拉群'
+    this.$route.query.id && this.getDetail(this.$route.query.id)
   },
   methods: {
     /** 获取详情 */
@@ -72,44 +70,33 @@ export default {
           this.form.groupCodeId = ''
         }
 
-        this.tags = data.tagList || []
-        this.users = data.emplList || []
-
         this.loading = false
       })
     },
     // 选择人员变化事件
     submitSelectUser(users) {
-      this.users = users.map((d) => {
+      this.form.users = users.map((d) => {
         return {
-          businessId: d.id || d.userId,
-          businessName: d.name,
-          businessIdType: d.userId ? 2 : 1,
-          mobile: d.mobile,
-          empleCodeId: d.empleCodeId,
+          id: d.id || d.userId,
+          name: d.name,
         }
       })
     },
     onSelectUser() {
-      this.selectedUserList = []
-      let arr = []
-      if (this.users && this.users.length) {
-        arr = this.users.map((dd, index) => {
-          return {
-            userId: dd.businessId,
-            name: dd.businessName,
-          }
-        })
-      }
-      this.selectedUserList = arr
+      this.selectedUserList = this.form.users?.map((dd, index) => {
+        return {
+          userId: dd.id,
+          name: dd.name,
+        }
+      })
       this.dialogVisibleSelectUser = true
     },
     // 客户标签选择
     submitSelectTag(tags) {
-      this.tags = tags.map((t) => {
+      this.form.tags = tags.map((t) => {
         return {
-          tagId: t.tagId,
-          tagName: t.name,
+          id: t.tagId,
+          name: t.name,
         }
       })
     },
@@ -123,8 +110,8 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.loading = true
-          if (this.newGroupId) {
-            update(this.newGroupId, this.form)
+          if (this.$route.query.id) {
+            update(this.$route.query.id, this.form)
               .then(() => {
                 this.msgSuccess('更新成功')
                 this.loading = false
@@ -160,10 +147,10 @@ export default {
           <el-form-item label="活码名称" prop="codeName">
             <el-input v-model="form.codeName" maxlength="30" show-word-limit placeholder="请输入" clearable></el-input>
           </el-form-item>
-          <el-form-item label="使用员工" prop="emplList">
+          <el-form-item label="使用员工" prop="users">
             <el-button type="primary" @click="onSelectUser">选择员工</el-button>
             <br />
-            <TagEllipsis :list="form.users" limit="10" defaultProps="businessName"></TagEllipsis>
+            <TagEllipsis :list="form.users" limit="10"></TagEllipsis>
           </el-form-item>
 
           <!-- <el-form-item label="选择群活码" prop="groupCodeId">
@@ -183,9 +170,7 @@ export default {
             <TagEllipsis :list="form.tags" limit="10" defaultProps="tagName"></TagEllipsis>
           </el-form-item>
           <el-form-item label="添加设置" prop="skipVerify">
-            <el-checkbox :true-label="1" :false-label="0" v-model="form.skipVerify">
-              客户添加时无需经过确认自动成为好友
-            </el-checkbox>
+            <el-checkbox v-model="form.skipVerify">客户添加时无需经过确认自动成为好友</el-checkbox>
           </el-form-item>
         </div>
         <div class="g-card">
@@ -261,14 +246,18 @@ export default {
 
     <!-- 选择使用员工弹窗 -->
     <SelectUser
-      :isWechat="false"
       v-model:visible="dialogVisibleSelectUser"
       title="选择使用员工"
       :defaultValues="selectedUserList"
       @success="submitSelectUser"></SelectUser>
 
     <!-- 选择标签弹窗 -->
-    <SelectTag v-model:visible="dialogVisibleSelectTag" :selected="tags" @success="submitSelectTag"></SelectTag>
+    <SelectTag v-model:visible="dialogVisibleSelectTag" :selected="form.tags" @success="submitSelectTag"></SelectTag>
+
+    <SelectGroup
+      v-model:visible="showSelectModal"
+      :defaults="form.groupList"
+      @submit="(data) => (form.groupList = data)"></SelectGroup>
 
     <!-- 选择二维码弹窗 -->
     <!-- <SelectQrCode

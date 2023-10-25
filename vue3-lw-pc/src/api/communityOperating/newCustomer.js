@@ -23,6 +23,19 @@ export function getDetail(id) {
   return request({
     url: service + '/' + id,
     method: 'get',
+  }).then((data) => {
+    if (data.emplList) {
+      let emplNames = data.emplNames?.split(',')
+      data.users = data.emplList?.split(',').map((e, i) => ({ id: e, name: emplNames[i] }))
+    }
+    if (data.tagList) {
+      let emplNames = data.emplNames?.split(',')
+      data.users = data.tagList?.split(',').map((e, i) => ({ id: e, name: emplNames[i] }))
+    }
+    if (data.emplList) {
+      let emplNames = data.emplNames?.split(',')
+      data.users = data.emplList?.split(',').map((e, i) => ({ id: e, name: emplNames[i] }))
+    }
   })
 }
 
@@ -68,6 +81,14 @@ export function getDetail(id) {
 }
  */
 export function add(data) {
+  data = Object.assign({}, data, {
+    emplList: data.users?.map((e) => e.id) + '',
+    emplNames: data.users?.map((e) => e.name) + '',
+    tagList: data.tags?.map((e) => e.id) + '',
+    tagNames: data.tags?.map((e) => e.name) + '',
+    chatIdList: data.chatList?.map((e) => e.id) + '',
+    chatIdListNames: data.chatList?.map((e) => e.name) + '',
+  })
   return request({
     url: service + '/add',
     method: 'post',
