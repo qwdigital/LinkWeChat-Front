@@ -19,9 +19,9 @@ export default {
         groupCodeId: undefined, // 群活码ID
         tagList: [], // 客户标签
         skipVerify: 0, // 无需确认自动加好友
+        users: [],
+        tags: [],
       },
-      tags: [],
-      users: [],
       codes: [],
       groupQrCode: {},
       rules: Object.freeze({
@@ -163,7 +163,7 @@ export default {
           <el-form-item label="使用员工" prop="emplList">
             <el-button type="primary" @click="onSelectUser">选择员工</el-button>
             <br />
-            <TagEllipsis :list="users" limit="10" defaultProps="businessName"></TagEllipsis>
+            <TagEllipsis :list="form.users" limit="10" defaultProps="businessName"></TagEllipsis>
           </el-form-item>
 
           <!-- <el-form-item label="选择群活码" prop="groupCodeId">
@@ -180,7 +180,7 @@ export default {
             <!-- closable -->
             <el-button type="primary" @click="dialogVisibleSelectTag = true">选择标签</el-button>
             <div class="tip">通过此群活码进群的客户自动打上标签</div>
-            <TagEllipsis :list="tags" limit="10" defaultProps="tagName"></TagEllipsis>
+            <TagEllipsis :list="form.tags" limit="10" defaultProps="tagName"></TagEllipsis>
           </el-form-item>
           <el-form-item label="添加设置" prop="skipVerify">
             <el-checkbox :true-label="1" :false-label="0" v-model="form.skipVerify">
@@ -200,13 +200,9 @@ export default {
               clearable></TextareaExtend>
           </el-form-item>
           <el-form-item label="活码客群:" prop="chatIdList">
-            <template v-for="(item, index) in form.groupList" :key="index">
-              <el-tag v-if="item.groupName" :key="index">{{ item.groupName }}</el-tag>
-            </template>
-            <div>
-              <el-button type="primary" @click="selectGroupFn">选择客群</el-button>
-            </div>
+            <el-button type="primary" @click="selectGroupFn">选择客群</el-button>
             <div class="tip">最多选择五个客群</div>
+            <TagEllipsis :list="form.groupList" limit="10" defaultProps="groupName"></TagEllipsis>
           </el-form-item>
 
           <el-form-item label="群满自动建群:">

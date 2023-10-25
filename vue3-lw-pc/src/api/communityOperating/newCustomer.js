@@ -30,12 +30,41 @@ export function getDetail(id) {
  * 新增新客自动拉群
  * @param {Object} data
 {
-  "codeName": "string",
-  "groupCodeId": 'string',
-  "skipVerify": true,
-  "tagList": [],
-  "emplList": [],
-  "welcomeMsg": "string"
+    "id": 0, //主键ID
+    "codeName": "", //活码名称
+    "emplList": "", //多个员工id，使用逗号隔开。
+    "tagList": "", //标签id，多个使用逗号隔开
+    "skipVerify": false, //是否跳过验证自动加好友
+    "emplCodeUrl": "", //员工活码图片地址
+    "emplCodeState": "", //员工活码渠道标识
+    "emplCodeConfigId": "", //员工活码configId
+    "welcomeMsg": "", //加群引导语
+    "chatIdList": "", //实际群id，多个实用逗号隔开
+    "autoCreateRoom": 0, //当群满了后，是否自动新建群。0-否；1-是。 默认为0
+    "roomBaseName": "", //自动建群的群名前缀，当auto_create_room为1时有效。最长40个utf8字符
+    "roomBaseId": 0, //自动建群的群起始序号，当auto_create_room为1时有效
+    "groupCodeConfigId": "", //群活码企微信的configId
+    "groupCodeState": "", //群活码渠道标识
+    "groupCodeUrl": "", //群活码图片地址
+    "delFlag": 0, //0 未删除 1 已删除
+    "linkTitle": "", //链接标题
+    "linkDesc": "", //链接描述
+    "linkCoverUrl": "", //链接封面
+    "tagNames": "", //标签名，多个使用逗号隔开
+    "groupNames": "", //群名，多个使用逗号隔开
+    "addCustomerNumber": 0, //添加客户数
+    "joinGroupNumber": 0, //进群客户数
+    "searchValue": "", //搜索值
+    "createBy": "", //创建者
+    "createById": 0, //创建者ID
+    "createTime": "", //创建时间
+    "updateBy": "", //更新者
+    "updateById": 0, //更新者ID
+    "updateTime": "", //更新时间
+    "remark": "", //备注
+    "params": { //请求参数
+        "key": {}
+    }
 }
  */
 export function add(data) {
