@@ -748,9 +748,10 @@ export default {
   word-break: initial;
 }
 .tip {
-  margin-top: 10px;
   color: var(--font-black-7);
   font-size: 12px;
+  line-height: 1.5;
+  margin-top: 5px;
 }
 .img-item {
   position: relative;

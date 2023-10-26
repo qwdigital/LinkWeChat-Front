@@ -224,7 +224,8 @@ div:focus {
   &tip {
     color: var(--font-black-6);
     font-size: 12px;
-    margin-top: 10px;
+    line-height: 1.5;
+    margin-top: 5px;
   }
   // 粘性底部
   &footer-sticky {

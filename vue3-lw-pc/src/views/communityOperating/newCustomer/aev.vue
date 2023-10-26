@@ -77,18 +77,13 @@ export default {
     submitSelectUser(users) {
       this.form.users = users.map((d) => {
         return {
-          id: d.id || d.userId,
+          id: d.userId,
           name: d.name,
         }
       })
     },
     onSelectUser() {
-      this.selectedUserList = this.form.users?.map((dd, index) => {
-        return {
-          userId: dd.id,
-          name: dd.name,
-        }
-      })
+      this.form.users?.forEach((e) => (e.userId = e.id))
       this.dialogVisibleSelectUser = true
     },
     // 客户标签选择
@@ -101,11 +96,11 @@ export default {
       })
     },
     // 选择二维码确认按钮
-    submitSelectQrCode(data) {
-      this.groupQrCode = data
-      this.form.groupCodeId = data.id
-      this.$refs.form.validateField('groupCodeId')
-    },
+    // submitSelectQrCode(data) {
+    //   this.groupQrCode = data
+    //   this.form.groupCodeId = data.id
+    //   this.$refs.form.validateField('groupCodeId')
+    // },
     submit() {
       this.$refs.form.validate((valid) => {
         if (valid) {
@@ -166,8 +161,8 @@ export default {
           <el-form-item label="入群标签" prop="tags">
             <!-- closable -->
             <el-button type="primary" @click="dialogVisibleSelectTag = true">选择标签</el-button>
-            <div class="tip">通过此群活码进群的客户自动打上标签</div>
-            <TagEllipsis :list="form.tags" limit="10" defaultProps="tagName"></TagEllipsis>
+            <div class="g-tip">通过此群活码进群的客户自动打上标签</div>
+            <TagEllipsis :list="form.tags" limit="10"></TagEllipsis>
           </el-form-item>
           <el-form-item label="添加设置" prop="skipVerify">
             <el-checkbox v-model="form.skipVerify">客户添加时无需经过确认自动成为好友</el-checkbox>
@@ -186,13 +181,13 @@ export default {
           </el-form-item>
           <el-form-item label="活码客群:" prop="groups">
             <el-button type="primary" @click="dialogVisibleSelectGroup = true">选择客群</el-button>
-            <div class="tip">最多选择五个客群</div>
-            <TagEllipsis :list="form.groupList" limit="10" defaultProps="groupName"></TagEllipsis>
+            <div class="g-tip">最多选择五个客群</div>
+            <TagEllipsis :list="form.groups" limit="5"></TagEllipsis>
           </el-form-item>
 
           <el-form-item label="群满自动建群:">
             <el-switch v-model="form.autoCreateRoom" :active-value="1" :inactive-value="0"></el-switch>
-            <div class="sub-des">默认以第一个群的群主作为新建群的群主</div>
+            <div class="g-tip">默认以第一个群的群主作为新建群的群主</div>
           </el-form-item>
           <el-form-item v-if="form.autoCreateRoom" label="">
             <el-card>
@@ -248,16 +243,19 @@ export default {
     <SelectUser
       v-model:visible="dialogVisibleSelectUser"
       title="选择使用员工"
-      :defaultValues="selectedUserList"
-      @success="submitSelectUser"></SelectUser>
+      :defaultValues="form.users"
+      @success="(data) => (form.users = data.map((e) => ((e.id = e.userId), e)))"></SelectUser>
 
     <!-- 选择标签弹窗 -->
-    <SelectTag v-model:visible="dialogVisibleSelectTag" :selected="form.tags" @success="submitSelectTag"></SelectTag>
+    <SelectTag
+      v-model:visible="dialogVisibleSelectTag"
+      :selected="form.tags"
+      @success="(data) => (form.tags = data.map((e) => ((e.id = e.tagId), e)))"></SelectTag>
 
     <SelectGroup
       v-model:visible="dialogVisibleSelectGroup"
       :defaults="form.groups"
-      @submit="(data) => (form.groups = data.map((e) => ({ id: e.chatId, name: e.groupName })))"></SelectGroup>
+      @submit="(data) => (form.groups = data.map((e) => ((e.id = e.chatId), (e.name = e.groupName), e)))"></SelectGroup>
 
     <!-- 选择二维码弹窗 -->
     <!-- <SelectQrCode
@@ -277,9 +275,6 @@ export default {
 }
 .preview-wrap {
   line-height: 26px;
-}
-.tip {
-  color: var(--font-black-6);
 }
 .welcome-input {
   display: table;
