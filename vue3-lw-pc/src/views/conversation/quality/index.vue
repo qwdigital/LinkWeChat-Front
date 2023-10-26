@@ -21,8 +21,7 @@
           range-separator="-"
           @change="setDateChange"
           start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        ></el-date-picker>
+          end-placeholder="结束日期"></el-date-picker>
       </el-form-item>
       <el-form-item label="">
         <el-button type="primary" @click="handleSearch">查询</el-button>
@@ -56,7 +55,7 @@
           </template>
         </el-table-column>
         <el-table-column label="操作时间" align="center" prop="updateTime" width="180"></el-table-column>
-        <el-table-column label="操作" align="center" fixed="right" width="180" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center" fixed="right" width="180">
           <template #default="{ row }">
             <el-button text @click="goRoute('statistic', row.id)">统计</el-button>
             <el-button text @click="goRoute('add', row.id)">编辑</el-button>
@@ -71,122 +70,121 @@
       v-model:visible="dialogVisible"
       title="组织架构"
       :defaultValues="userArray"
-      @success="getSelectUser"
-    ></SelectUser>
+      @success="getSelectUser"></SelectUser>
   </div>
 </template>
 
 <script>
-  import { getList, deleteQuality } from './api.js'
-  export default {
-    name: 'quality',
-    data() {
-      return {
-        query: {
-          pageSize: 10,
-          pageNum: 1,
-          name: '',
-          userIds: '',
-          startTime: '',
-          endTime: '',
-          chatType: 1
+import { getList, deleteQuality } from './api.js'
+export default {
+  name: 'quality',
+  data() {
+    return {
+      query: {
+        pageSize: 10,
+        pageNum: 1,
+        name: '',
+        userIds: '',
+        startTime: '',
+        endTime: '',
+        chatType: 1,
+      },
+      total: 0,
+      dialogVisible: false,
+      userName: '',
+      userArray: [],
+      searchDate: [],
+      list: [],
+      loading: false,
+      chatTypeArray: [
+        {
+          key: 1,
+          value: '全部',
         },
-        total: 0,
-        dialogVisible: false,
-        userName: '',
-        userArray: [],
-        searchDate: [],
-        list: [],
-        loading: false,
-        chatTypeArray: [
-          {
-            key: 1,
-            value: '全部'
-          },
-          {
-            key: 2,
-            value: '客户会话'
-          },
-          {
-            key: 3,
-            value: '客群会话'
-          }
-        ]
+        {
+          key: 2,
+          value: '客户会话',
+        },
+        {
+          key: 3,
+          value: '客群会话',
+        },
+      ],
+    }
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    getSelectUser(data) {
+      this.userArray = data
+      this.userName = this.userArray
+        .map(function (obj, index) {
+          return obj.name
+        })
+        .join(',')
+      this.query.userIds = this.userArray
+        .map(function (obj, index) {
+          return obj.userId
+        })
+        .join(',')
+    },
+    setDateChange(data) {
+      if (data && data[0]) {
+        this.query.beginTime = data[0]
+      } else {
+        this.query.beginTime = ''
+      }
+      if (data && data[1]) {
+        this.query.endTime = data[1]
+      } else {
+        this.query.endTime = ''
       }
     },
-    created() {
+    handleSearch() {
+      this.query.pageNum = 1
       this.getList()
     },
-    methods: {
-      getSelectUser(data) {
-        this.userArray = data
-        this.userName = this.userArray
-          .map(function (obj, index) {
-            return obj.name
-          })
-          .join(',')
-        this.query.userIds = this.userArray
-          .map(function (obj, index) {
-            return obj.userId
-          })
-          .join(',')
-      },
-      setDateChange(data) {
-        if (data && data[0]) {
-          this.query.beginTime = data[0]
-        } else {
-          this.query.beginTime = ''
-        }
-        if (data && data[1]) {
-          this.query.endTime = data[1]
-        } else {
-          this.query.endTime = ''
-        }
-      },
-      handleSearch() {
-        this.query.pageNum = 1
-        this.getList()
-      },
-      getList() {
-        getList(this.query).then((res) => {
-          this.total = Number(res.total)
-          this.list = res.rows
-        })
-      },
-      resetQuery() {
-        this.query = {
-          pageSize: 10,
-          pageNum: 1,
-          name: '',
-          userIds: '',
-          startTime: '',
-          endTime: '',
-          chatType: 1
-        }
-        this.userName = ''
-        this.userArray = []
-        this.getList()
-      },
-      goRoute(path, id) {
-        this.$router.push({ path: path, query: { id } })
-      },
-      removeFn(id) {
-        this.$confirm('是否确认删除当前质检规则？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        })
-          .then(() => {
-            return deleteQuality(id)
-          })
-          .then(() => {
-            this.handleSearch()
-            this.msgSuccess('删除成功')
-          })
-          .catch(function () {})
+    getList() {
+      getList(this.query).then((res) => {
+        this.total = Number(res.total)
+        this.list = res.rows
+      })
+    },
+    resetQuery() {
+      this.query = {
+        pageSize: 10,
+        pageNum: 1,
+        name: '',
+        userIds: '',
+        startTime: '',
+        endTime: '',
+        chatType: 1,
       }
-    }
-  }
+      this.userName = ''
+      this.userArray = []
+      this.getList()
+    },
+    goRoute(path, id) {
+      this.$router.push({ path: path, query: { id } })
+    },
+    removeFn(id) {
+      this.$confirm('是否确认删除当前质检规则？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          return deleteQuality(id)
+        })
+        .then(() => {
+          this.handleSearch()
+          this.msgSuccess('删除成功')
+        })
+        .catch(function () {})
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped></style>

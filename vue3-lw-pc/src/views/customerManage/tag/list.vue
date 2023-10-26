@@ -175,7 +175,7 @@ export default {
           <span>{{ parseTime(scope.row.operTime) }}</span>
         </template>
       </el-table-column>-->
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center">
           <template #default="scope">
             <!-- v-hasPermi="['customerManage:tag:edit']" -->
             <el-button text @click="edit(scope.row, scope.index)">编辑</el-button>

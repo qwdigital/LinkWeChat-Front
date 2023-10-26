@@ -44,7 +44,7 @@
             <span>{{ scope.row.createTime }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center">
           <template #default="scope">
             <el-button text @click="showPreview(scope.row)">预览</el-button>
           </template>

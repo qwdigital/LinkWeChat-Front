@@ -47,7 +47,7 @@
         <el-table-column label="累计已发放次数/金额" align="center" width="180">
           <template #default="{ row }">{{ row.totalIssuedNum }}/{{ row.totalIssuedAmount }}</template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center">
           <template #default="{ row }">
             <el-button text @click=";(batchUpdate = false), edit(row)">编辑</el-button>
             <el-button text @click="remove(row.id)">删除</el-button>

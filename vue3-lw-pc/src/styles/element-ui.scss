@@ -144,19 +144,19 @@
   display: none;
 }
 
-.small-padding {
-  .cell {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-}
+// .small-padding {
+//   .cell {
+//     padding-left: 5px;
+//     padding-right: 5px;
+//   }
+// }
 
-.fixed-width {
-  .el-button--mini {
-    padding: 7px 10px;
-    width: 60px;
-  }
-}
+// .fixed-width {
+//   .el-button--mini {
+//     padding: 7px 10px;
+//     width: 60px;
+//   }
+// }
 
 // .status-col {
 //   .cell {
@@ -389,6 +389,9 @@
 .el-input.is-disabled .el-input__inner,
 .el-image__error {
   background-color: var(--bg-black-11);
+}
+.el-image {
+  vertical-align: middle;
 }
 
 .el-tabs__nav-wrap {

@@ -34,7 +34,7 @@ let visible = ref(false)
           <el-table-column label="url" prop="url" align="center" width="500"></el-table-column>
           <el-table-column label="异常码" prop="errorCode" align="center"></el-table-column>
           <el-table-column label="异常信息" prop="errorMsg" align="center"></el-table-column>
-          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <el-table-column label="操作" align="center">
             <template #default="{ row }">
               <el-button text @click=";(visible = true), Object.assign(form, row)">详情</el-button>
               <!-- <el-button text @click="$delConfirm(del.bind(row.groupId))">删除</el-button> -->

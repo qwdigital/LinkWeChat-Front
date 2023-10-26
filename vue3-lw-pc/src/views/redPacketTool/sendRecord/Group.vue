@@ -215,7 +215,7 @@ export default {
         <el-table-column label="红包金额（元）" align="center" prop="redEnvelopeMoney"></el-table-column>
         <el-table-column label="发放时间" align="center" prop="createTime"></el-table-column>
 
-        <el-table-column label="领取详情" align="center" class-name="small-padding fixed-width">
+        <el-table-column label="领取详情" align="center">
           <template #default="scope">
             <!-- v-hasPermi="['enterpriseWechat:view']" -->
 

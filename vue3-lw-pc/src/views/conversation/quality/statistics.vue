@@ -43,7 +43,7 @@
           prop="createTime"
           width="180"
           show-overflow-tooltip></el-table-column>
-        <el-table-column label="操作" align="center" fixed="right" width="180" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center" fixed="right" width="180">
           <template #default="{ row }">
             <el-button text @click="showChatList(row)">查看</el-button>
           </template>

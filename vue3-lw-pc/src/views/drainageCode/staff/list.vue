@@ -92,12 +92,7 @@
             <!-- <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180">
             </el-table-column> -->
             <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180"></el-table-column>
-            <el-table-column
-              label="操作"
-              align="center"
-              fixed="right"
-              width="180"
-              class-name="small-padding fixed-width">
+            <el-table-column label="操作" align="center" fixed="right" width="180">
               <template #default="{ row }">
                 <el-button text @click="goRoute('staffDetail', row.id)">详情|统计</el-button>
                 <el-button text @click="goRoute('staffAdd', row.id)">编辑</el-button>

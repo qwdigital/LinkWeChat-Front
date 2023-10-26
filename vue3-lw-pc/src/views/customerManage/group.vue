@@ -244,7 +244,7 @@ export default {
           </template>
         </el-table-column>
         <el-table-column label="创建时间" align="center" prop="addTime" width="180"></el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center">
           <template #default="scope">
             <el-button
               text

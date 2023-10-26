@@ -1,44 +1,18 @@
 <template>
   <div>
     <el-table v-loading="loading" :data="tableList" style="width: 100%">
-      <el-table-column
-        label="查看用户"
-        align="center"
-        min-width="100"
-        prop="viewBy"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        label="是否是企业客户"
-        align="center"
-        min-width="100"
-        prop="isCustomer"
-        show-overflow-tooltip
-      >
+      <el-table-column label="查看用户" align="center" min-width="100" prop="viewBy" show-overflow-tooltip />
+      <el-table-column label="是否是企业客户" align="center" min-width="100" prop="isCustomer" show-overflow-tooltip>
         <template #default="scope">
           {{ scope.row.isCustomer ? '是' : '否' }}
         </template>
       </el-table-column>
-      <el-table-column
-        label="查看次数"
-        align="center"
-        min-width="100"
-        prop="viewTotalNum"
-        show-overflow-tooltip
-      />
-      <el-table-column
-        label="查看时长"
-        align="center"
-        min-width="100"
-        prop="viewDurationCpt"
-        show-overflow-tooltip
-      />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="查看次数" align="center" min-width="100" prop="viewTotalNum" show-overflow-tooltip />
+      <el-table-column label="查看时长" align="center" min-width="100" prop="viewDurationCpt" show-overflow-tooltip />
+      <el-table-column label="操作" align="center">
         <template #default="scope">
-          <el-button text @click="goDetail(scope.row.id)" v-if="scope.row.isCustomer"
-            >客户详情</el-button
-          >
-          <el-button text v-else> - </el-button>
+          <el-button text @click="goDetail(scope.row.id)" v-if="scope.row.isCustomer">客户详情</el-button>
+          <el-button text v-else>-</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -46,8 +20,7 @@
       :total="total"
       v-model:page="query.pageNum"
       v-model:limit="query.pageSize"
-      @pagination="getTableChangeSize()"
-    />
+      @pagination="getTableChangeSize()" />
   </div>
 </template>
 

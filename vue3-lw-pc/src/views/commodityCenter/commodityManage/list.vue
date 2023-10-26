@@ -181,7 +181,7 @@ export default {
         <el-table-column label="订单总额(元)" align="center" prop="orderTotalAmount" />
         <el-table-column label="创建人" align="center" prop="createBy" />
         <el-table-column label="最近操作时间" align="center" prop="updateTime" width="180"></el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center">
           <template #default="{ row, index }">
             <el-button text @click="goRoute(row)">详情</el-button>
             <el-button text @click="edit(row, index)">编辑</el-button>

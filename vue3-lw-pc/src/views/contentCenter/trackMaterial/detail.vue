@@ -247,7 +247,7 @@
                     min-width="100"
                     prop="viewDurationCpt"
                     show-overflow-tooltip />
-                  <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+                  <el-table-column label="操作" align="center">
                     <template #default="scope">
                       <el-button text @click="goDetail(scope.row)" v-if="scope.row.isCustomer">客户详情</el-button>
                     </template>

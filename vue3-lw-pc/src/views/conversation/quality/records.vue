@@ -25,7 +25,7 @@
           </template> -->
         </el-table-column>
         <el-table-column label="发送时间" align="center" prop="sendTime" width="180"></el-table-column>
-        <el-table-column label="操作" align="center" fixed="right" width="180" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center" fixed="right" width="180">
           <template #default="{ row }">
             <el-button text @click="goRoute('recordsStatistic', row.id)">统计</el-button>
           </template>

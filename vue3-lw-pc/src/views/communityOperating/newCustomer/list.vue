@@ -236,7 +236,7 @@ export default {
         </el-table-column>
         <!-- <el-table-column label="创建人" align="center" prop="createBy"></el-table-column> -->
         <el-table-column label="创建时间" align="center" prop="createTime" width="160"></el-table-column>
-        <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center" width="180">
           <template #default="{ row }">
             <el-tooltip effect="light">
               <el-icon-MoreFilled class="el-icon-MoreFilled g-color cp"></el-icon-MoreFilled>

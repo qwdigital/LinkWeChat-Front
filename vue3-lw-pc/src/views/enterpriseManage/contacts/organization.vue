@@ -83,12 +83,7 @@
                 </template>
               </template>
             </el-table-column>
-            <el-table-column
-              label="操作"
-              align="center"
-              fixed="right"
-              width="150"
-              class-name="small-padding fixed-width">
+            <el-table-column label="操作" align="center" fixed="right" width="150">
               <template #default="{ row }">
                 <!-- v-hasPermi="['contacts:organization:view']" -->
                 <el-button text @click="editRoles(row)" :disabled="setDisabled(row)">修改角色</el-button>

@@ -30,7 +30,7 @@
         <el-table-column v-if="type === '2'" label="员工" prop="userNames" align="center"></el-table-column>
         <el-table-column label="创建人" align="center" prop="createBy" />
         <el-table-column label="创建时间" align="center" prop="createTime" />
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center">
           <template #default="scope">
             <el-button text @click="showPreview(scope.row)">预览</el-button>
 

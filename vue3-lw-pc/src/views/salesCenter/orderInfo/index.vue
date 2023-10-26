@@ -67,12 +67,7 @@
                 <div>{{ row.updateTime }}</div>
               </template>
             </el-table-column>
-            <el-table-column
-              label="操作"
-              align="center"
-              fixed="right"
-              width="180"
-              class-name="small-padding fixed-width">
+            <el-table-column label="操作" align="center" fixed="right" width="180">
               <template #default="{ row }">
                 <el-button text @click="getListMove(row.catalogueId, row.id, 0)" v-if="!row.isFirst">上移</el-button>
                 <el-button text @click="getListMove(row.catalogueId, row.id, 1)" v-if="!row.isLast">下移</el-button>

@@ -229,7 +229,7 @@ export default {
 
         <el-table-column label="创建时间" align="center" prop="createTime"></el-table-column>
 
-        <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center" width="180">
           <template #default="scope">
             <el-button text @click="goRoute(scope.row.taskId)">编辑</el-button>
             <!-- <el-button

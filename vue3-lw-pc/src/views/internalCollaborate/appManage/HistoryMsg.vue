@@ -115,7 +115,7 @@ export default {
         <template #default="{ row }">{{ status[row.status] }}</template>
       </el-table-column>
       <el-table-column label="发送时间" align="center" prop="sendTime" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center">
         <template #default="{ row }">
           <el-button text @click="edit(row, 'detail')">详情</el-button>
           <el-button v-if="['0', '1'].includes(row.status + '')" text @click="edit(row, 'edit')">编辑</el-button>

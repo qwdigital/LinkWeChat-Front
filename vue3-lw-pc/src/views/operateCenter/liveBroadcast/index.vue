@@ -64,7 +64,7 @@
         <el-table-column label="预约持续时间" align="center" prop="livingDurationDesc" />
         <el-table-column label="创建人" align="center" prop="createBy" />
         <el-table-column label="创建时间" align="center" prop="createTime" />
-        <el-table-column label="操作" align="center" fixed="right" width="300" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center" fixed="right" width="300">
           <template #default="scope">
             <el-button text v-if="[0, 1].includes(scope.row.liveState)" @click="copyURL(scope.row.shareOrJoinUrl)">
               分享直播

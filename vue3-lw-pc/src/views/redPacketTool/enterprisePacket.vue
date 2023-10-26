@@ -60,7 +60,7 @@
           </template>
         </el-table-column>
         <el-table-column label="最近更新时间" align="center" width="180" prop="createTime"></el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" width="180" class-name="small-padding fixed-width">
+        <el-table-column fixed="right" label="操作" align="center" width="180">
           <template #default="{ row }">
             <el-button text @click="edit(row)">编辑</el-button>
             <el-button text @click="startOrStop(row)">

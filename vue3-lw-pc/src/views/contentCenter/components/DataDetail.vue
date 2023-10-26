@@ -16,12 +16,7 @@
             </div>
             <!-- 图文 -->
             <div v-if="row.mediaType === '9'" style="display: flex">
-              <el-image
-                v-if="row.coverUrl"
-                :src="row.coverUrl"
-                fit="contain"
-                class="imgsize"
-              ></el-image>
+              <el-image v-if="row.coverUrl" :src="row.coverUrl" fit="contain" class="imgsize"></el-image>
               <div class="icon-style" v-else>
                 <svg-icon class="icon-style" icon="imgText"></svg-icon>
               </div>
@@ -33,12 +28,7 @@
             </div>
             <!-- 文章 -->
             <div v-if="row.mediaType === '12'" style="display: flex">
-              <el-image
-                v-if="row.coverUrl"
-                :src="row.coverUrl"
-                fit="contain"
-                class="imgsize"
-              ></el-image>
+              <el-image v-if="row.coverUrl" :src="row.coverUrl" fit="contain" class="imgsize"></el-image>
               <div class="icon-style" v-else>
                 <svg-icon class="icon-style" icon="article"></svg-icon>
               </div>
@@ -55,8 +45,7 @@
               <svg-icon
                 class="icon-style"
                 :icon="row.materialUrl ? filType(row.materialUrl) : ''"
-                v-if="row.materialUrl"
-              ></svg-icon>
+                v-if="row.materialUrl"></svg-icon>
               <span class="twosplice mt10">{{ coverContent(row.digest) }}</span>
             </div>
             <!-- 海报 -->
@@ -101,8 +90,7 @@
       :title="send ? '发送明细' : '查看明细'"
       v-model="dialogVisible"
       :close-on-click-modal="false"
-      width="60%"
-    >
+      width="60%">
       <el-table v-loading="loading" :data="detailList" style="width: 100%">
         <!-- 发送明细 -->
         <template v-if="send">
@@ -111,53 +99,32 @@
         </template>
         <!-- 查看明细 -->
         <template v-else>
-          <el-table-column
-            label="查看用户"
-            align="center"
-            min-width="100"
-            prop="viewBy"
-            show-overflow-tooltip
-          >
+          <el-table-column label="查看用户" align="center" min-width="100" prop="viewBy" show-overflow-tooltip>
             <template #default="scope">
               <el-image
                 :src="scope.row.viewAvatar"
                 fit="contain"
                 class="imgsize"
-                v-if="scope.row.viewAvatar"
-              ></el-image>
+                v-if="scope.row.viewAvatar"></el-image>
               {{ scope.row.viewBy }}
             </template>
           </el-table-column>
-          <el-table-column
-            label="是否是企业客户"
-            align="center"
-            min-width="100"
-            show-overflow-tooltip
-          >
+          <el-table-column label="是否是企业客户" align="center" min-width="100" show-overflow-tooltip>
             <template #default="scope">
               {{ scope.row.isCustomer === 1 ? '是' : '否' }}
             </template>
           </el-table-column>
 
-          <el-table-column
-            label="查看次数"
-            align="center"
-            min-width="100"
-            prop="viewTotalNum"
-            show-overflow-tooltip
-          />
+          <el-table-column label="查看次数" align="center" min-width="100" prop="viewTotalNum" show-overflow-tooltip />
           <el-table-column
             label="查看时长"
             align="center"
             min-width="100"
             prop="viewDurationCpt"
-            show-overflow-tooltip
-          />
-          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+            show-overflow-tooltip />
+          <el-table-column label="操作" align="center">
             <template #default="scope">
-              <el-button text @click="goDetail(scope.row)" v-if="scope.row.isCustomer"
-                >客户详情</el-button
-              >
+              <el-button text @click="goDetail(scope.row)" v-if="scope.row.isCustomer">客户详情</el-button>
             </template>
           </el-table-column>
         </template>
@@ -167,8 +134,7 @@
           :total="total"
           v-model:page="query.pageNum"
           v-model:limit="query.pageSize"
-          @pagination="getTableChangeSize()"
-        />
+          @pagination="getTableChangeSize()" />
       </div>
     </el-dialog>
   </div>

@@ -294,7 +294,7 @@ export default {
         <el-table-column prop="createBy" label="创建人" align="center"></el-table-column>
         <el-table-column label="创建时间" align="center" prop="createTime" width="160"></el-table-column>
 
-        <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
+        <el-table-column label="操作" align="center" width="180">
           <template #default="scope">
             <el-button text @click="goRoute(scope.row.taskId)">编辑</el-button>
             <el-button text @click="handleRemove(scope.row.taskId)">删除</el-button>

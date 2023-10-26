@@ -173,12 +173,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column
-              label="操作"
-              align="center"
-              fixed="right"
-              width="260"
-              class-name="small-padding fixed-width">
+            <el-table-column label="操作" align="center" fixed="right" width="260">
               <template #default="{ row }">
                 <!-- <el-button text @click="goRoute('staffDetail', row.id)">详情|统计</el-button> -->
                 <el-button text @click.stop="openPreview(row.id)">预览</el-button>

@@ -55,7 +55,7 @@ export default {
           <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center">
         <template #default="scope">
           <el-button text @click="$refs.page.detail(scope.row)" v-hasPermi="['wechat:material:detail']">
             详情|统计

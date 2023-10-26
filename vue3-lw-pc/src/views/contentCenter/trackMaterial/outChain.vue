@@ -111,7 +111,7 @@ export default {
         </template>
       </el-table-column>
 
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="160px" fixed="right">
+      <el-table-column label="操作" align="center" width="160px" fixed="right">
         <template #default="scope">
           <el-button text @click="$refs.page.detail(scope.row)" v-hasPermi="['wechat:material:detail']">
             详情|统计
