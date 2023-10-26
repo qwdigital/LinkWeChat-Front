@@ -7,8 +7,7 @@
       width="60%"
       append-to-body
       :close-on-click-modal="false"
-      @close="dialogClose"
-    >
+      @close="dialogClose">
       <el-table :data="tableData" ref="singleTable" v-loading="loading">
         <!-- <el-table-column type="index" width="50" label="序号" align="center"></el-table-column> -->
         <el-table-column prop="name" align="center" label="素材" width="260">
@@ -23,32 +22,17 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column
-          label="发送总次数"
-          align="center"
-          prop="sendTotalNum"
-          :show-overflow-tooltip="true"
-        >
+        <el-table-column label="发送总次数" align="center" prop="sendTotalNum" :show-overflow-tooltip="true">
           <template #default="scope">
             {{ scope.row.sendTotalNum || '-' }}
           </template>
         </el-table-column>
-        <el-table-column
-          label="查看总次数"
-          align="center"
-          prop="viewTotalNum"
-          :show-overflow-tooltip="true"
-        >
+        <el-table-column label="查看总次数" align="center" prop="viewTotalNum" :show-overflow-tooltip="true">
           <template #default="scope">
             {{ scope.row.viewTotalNum || '-' }}
           </template>
         </el-table-column>
-        <el-table-column
-          label="查看总人数"
-          align="center"
-          prop="viewByTotalNum"
-          :show-overflow-tooltip="true"
-        >
+        <el-table-column label="查看总人数" align="center" prop="viewByTotalNum" :show-overflow-tooltip="true">
           <template #default="scope">
             {{ scope.row.viewByTotalNum || '-' }}
           </template>
@@ -62,7 +46,7 @@
             </el-button>
             <!-- 文件 -->
             <el-button text v-if="scope.row.mediaType == '3'">
-              <a :href="dealUrl(scope.row.materialUrl)" target="_blank">预览</a>
+              <a :href="$previewFile(scope.row.materialUrl)" target="_blank">预览</a>
             </el-button>
             <!-- 文章 -->
             <el-button text v-if="scope.row.mediaType == '12'" @click="preview(scope.row)">
@@ -137,19 +121,6 @@ export default {
     //     return ''
     //   }
     // },
-    dealUrl(url) {
-      return window.lwConfig.PRIVIEW_URL + encodeURIComponent(this.base64Encode(url))
-    },
-    base64Encode(str) {
-      if (str === undefined || str === '' || str === null) {
-        return str
-      }
-      return btoa(
-        encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function toSolidBytes(match, p1) {
-          return String.fromCharCode('0x' + p1)
-        })
-      )
-    },
     preview(row) {
       // let routeData = this.$router.resolve({
       //   path: '/preview',
