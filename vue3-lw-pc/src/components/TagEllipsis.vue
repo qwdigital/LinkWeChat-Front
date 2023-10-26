@@ -3,14 +3,17 @@ export default {
   name: 'TagEllipsis',
   components: {},
   props: {
+    // 可传入数组，或逗号隔开的数组字符串，示例：['1','2'] 或 [{defaultProps:1}] 或 '1,2'
     list: {
-      type: Array,
+      type: [Array, String],
       default: () => [],
     },
+    // 限制显示多少个元素后使用省略号，默认：2
     limit: {
       type: [String, Number],
       default: 2,
     },
+    // list对象数组形式元素的文字回显字段，默认：name
     defaultProps: {
       type: String,
       default: 'name',
@@ -25,7 +28,9 @@ export default {
   },
   computed: {
     _list() {
-      return this.list?.filter((e) => (typeof e === 'string' ? e : e[this.defaultProps]))
+      return (typeof this.list === 'string' ? this.list?.split(',') : this.list)?.filter((e) =>
+        typeof e === 'string' ? e : e[this.defaultProps],
+      )
     },
   },
   watch: {},
@@ -42,7 +47,7 @@ export default {
 
 <template>
   <div class="tag-ellipsis" v-if="_list?.length || emptyText">
-    <div v-if="!_list?.length">{{ typeof emptyText === 'string' ? emptyText : '暂无标签' }}</div>
+    <div v-if="!_list?.length">{{ typeof emptyText === 'string' ? emptyText : '无' }}</div>
 
     <div class="tags" v-else-if="_list.length <= +limit">
       <el-tag v-bind="elTagProps" v-for="(item, unique) in _list" :key="unique">
