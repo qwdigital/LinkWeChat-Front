@@ -1,10 +1,5 @@
 <template>
-  <div
-    :style="
-      Ifcontainer
-        ? 'height: 100%;'
-        : 'background:#666;display: flex;justify-content: center;height: 100%;padding: 30px;'
-    ">
+  <div :style="Ifcontainer ? 'height: 100%;' : 'background:#666;display: flex;justify-content: center;height: 100%;'">
     <div
       :class="Ifcontainer ? 'container' : 'container containerPC'"
       data-title="调查问卷"
@@ -907,7 +902,7 @@ export default {
   background: var(--bg-white);
 }
 .containerPC {
-  max-width: 350px;
+  max-width: 370px;
 }
 
 .formDetailPush {
@@ -938,5 +933,12 @@ export default {
 }
 ::v-deep .el-form--label-top .el-form-item__label {
   padding: 0 0 5px 0 !important;
+}
+</style>
+<style>
+/* 级联选择，宽度超出滚动 */
+.el-cascader__dropdown {
+  max-width: 100vw;
+  overflow: auto;
 }
 </style>
