@@ -25,16 +25,16 @@ export function getDetail(id) {
     method: 'get',
   }).then((data) => {
     if (data.emplList) {
-      let emplNames = data.emplNames?.split(',')
-      data.users = data.emplList?.split(',').map((e, i) => ({ id: e, name: emplNames[i] }))
+      let names = data.emplNames?.split(',')
+      data.users = data.emplList?.split(',').map((e, i) => ({ id: e, name: names[i] }))
     }
     if (data.tagList) {
-      let emplNames = data.emplNames?.split(',')
-      data.users = data.tagList?.split(',').map((e, i) => ({ id: e, name: emplNames[i] }))
+      let name = data.tagNames?.split(',')
+      data.tags = data.tagList?.split(',').map((e, i) => ({ id: e, name: names[i] }))
     }
-    if (data.emplList) {
-      let emplNames = data.emplNames?.split(',')
-      data.users = data.emplList?.split(',').map((e, i) => ({ id: e, name: emplNames[i] }))
+    if (data.chatIdList) {
+      let names = data.groupNames?.split(',')
+      data.groups = data.chatIdList?.split(',').map((e, i) => ({ id: e, name: names[i] }))
     }
   })
 }
@@ -86,8 +86,8 @@ export function add(data) {
     emplNames: data.users?.map((e) => e.name)?.join(','),
     tagList: data.tags?.map((e) => e.id)?.join(','),
     tagNames: data.tags?.map((e) => e.name)?.join(','),
-    chatIdList: data.groupList?.map((e) => e.id)?.join(','),
-    chatIdListNames: data.groupList?.map((e) => e.name)?.join(','),
+    chatIdList: data.groups?.map((e) => e.id)?.join(','),
+    groupNames: data.groups?.map((e) => e.name)?.join(','),
   })
   return request({
     url: service + '/add',

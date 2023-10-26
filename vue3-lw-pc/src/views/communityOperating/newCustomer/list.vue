@@ -202,53 +202,19 @@ export default {
           </el-image>
         </template> -->
         </el-table-column>
-        <el-table-column prop="emplList" label="使用员工" align="center">
+        <el-table-column prop="emplNames" label="使用员工" align="center">
           <template #default="{ row }">
-            <el-popover
-              v-if="row.emplList"
-              placement="bottom"
-              trigger="hover"
-              :content="row.emplList.map((d) => d.businessName).join()">
-              <template #reference>
-                <div class="table-desc toe">
-                  <!-- {{ getDisplayRealGroups(row) }} -->
-                  {{ row.emplList.map((d) => d.businessName).join() }}
-                </div>
-              </template>
-            </el-popover>
+            <TagEllipsis :list="row?.emplNames" emptyText></TagEllipsis>
           </template>
         </el-table-column>
         <el-table-column label="客户标签" align="center">
           <template #default="{ row }">
-            <div v-if="row.tagList">
-              <TagEllipsis :list="row?.tagList" defaultProps="tagName"></TagEllipsis>
-            </div>
-            <span v-else>无标签</span>
+            <TagEllipsis :list="row?.tagNames" emptyText></TagEllipsis>
           </template>
         </el-table-column>
         <el-table-column label="实际群聊" align="center">
           <template #default="{ row }">
-            <div v-if="row.actualGroupName">
-              <el-popover placement="bottom" trigger="hover" :disabled="row.tagList.length < 3">
-                <div>
-                  <el-tag type="primary" v-for="(unit, unique) in row?.actualGroupName.split(',')" :key="unique">
-                    {{ unit }}
-                  </el-tag>
-                </div>
-                <template #reference>
-                  <div>
-                    <el-tag
-                      type="primary"
-                      v-for="(unit, unique) in row.actualGroupName.split(',').slice(0, 2)"
-                      :key="unique">
-                      {{ unit }}
-                    </el-tag>
-                    <el-tag type="primary" key="a" v-if="row.tagList.length > 2">...</el-tag>
-                  </div>
-                </template>
-              </el-popover>
-            </div>
-            <span v-else>无群聊</span>
+            <TagEllipsis :list="row?.groupNames" emptyText></TagEllipsis>
           </template>
         </el-table-column>
         <el-table-column label="添加客户数/进群客户数" align="center" prop="cusNumber" width="100">
@@ -264,42 +230,37 @@ export default {
               <div>进群客户数：添加客户中成功进群的总数（去重）；</div>
             </el-popover>
           </template>
+          <template #default="{ row }">
+            <el-button text @click="goRoute(row.id)">{{ row.addCustomerNumber }}/{{ row.joinGroupNumber }}</el-button>
+          </template>
         </el-table-column>
         <!-- <el-table-column label="创建人" align="center" prop="createBy"></el-table-column> -->
         <el-table-column label="创建时间" align="center" prop="createTime" width="160"></el-table-column>
         <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
           <template #default="{ row }">
-            <el-dropdown>
-              <el-button text>
-                <el-icon-MoreFilled class="el-icon-MoreFilled"></el-icon-MoreFilled>
-              </el-button>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>
-                    <el-button
-                      text
-                      @click="
-                        $router.push({
-                          path: 'groupAdd',
-                          query: {
-                            groupCodeId: row.id,
-                            obj: encodeURIComponent(JSON.stringify(row)),
-                          },
-                        })
-                      ">
-                      编辑
-                    </el-button>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                    <el-button text @click="goRoute(row.id)">详情|统计</el-button>
-                    <el-button text @click="goRoute(row.id)">编辑</el-button>
-                    <el-button text @click="download(row)">下载</el-button>
-                    <el-button text @click="download(row)">复制</el-button>
-                    <el-button text @click="remove(row.id)">删除</el-button>
-                  </el-dropdown-item>
-                </el-dropdown-menu>
+            <el-tooltip effect="light">
+              <el-icon-MoreFilled class="el-icon-MoreFilled g-color cp"></el-icon-MoreFilled>
+              <template #content>
+                <!-- <el-button
+                  text
+                  @click="
+                    $router.push({
+                      path: 'groupAdd',
+                      query: {
+                        groupCodeId: row.id,
+                        obj: encodeURIComponent(JSON.stringify(row)),
+                      },
+                    })
+                  ">
+                  编辑
+                </el-button> -->
+                <el-button text @click="goRoute(row.id)">详情|统计</el-button>
+                <el-button text @click="goRoute(row.id)">编辑</el-button>
+                <el-button text @click="download(row)">下载</el-button>
+                <el-button text @click="download(row)">复制</el-button>
+                <el-button text @click="remove(row.id)">删除</el-button>
               </template>
-            </el-dropdown>
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>

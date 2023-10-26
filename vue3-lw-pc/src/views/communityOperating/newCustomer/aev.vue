@@ -27,6 +27,7 @@ export default {
         codeName: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
         users: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
         tags: [{ required: true, message: '该项为必填项', trigger: 'change' }],
+        groups: [{ required: true, message: '该项为必填项', trigger: 'change' }],
         groupCodeId: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
         welcomeMsg: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
       }),
@@ -183,7 +184,7 @@ export default {
               placeholder="请输入"
               clearable></TextareaExtend>
           </el-form-item>
-          <el-form-item label="活码客群:" prop="chatIdList">
+          <el-form-item label="活码客群:" prop="groups">
             <el-button type="primary" @click="dialogVisibleSelectGroup = true">选择客群</el-button>
             <div class="tip">最多选择五个客群</div>
             <TagEllipsis :list="form.groupList" limit="10" defaultProps="groupName"></TagEllipsis>
@@ -255,8 +256,8 @@ export default {
 
     <SelectGroup
       v-model:visible="dialogVisibleSelectGroup"
-      :defaults="form.groupList"
-      @submit="(data) => (form.groupList = data.map((e) => ({ id: e.chatId, name: e.groupName })))"></SelectGroup>
+      :defaults="form.groups"
+      @submit="(data) => (form.groups = data.map((e) => ({ id: e.chatId, name: e.groupName })))"></SelectGroup>
 
     <!-- 选择二维码弹窗 -->
     <!-- <SelectQrCode
