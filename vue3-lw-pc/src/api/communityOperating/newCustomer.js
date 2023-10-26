@@ -82,12 +82,12 @@ export function getDetail(id) {
  */
 export function add(data) {
   data = Object.assign({}, data, {
-    emplList: data.users?.map((e) => e.id) + '',
-    emplNames: data.users?.map((e) => e.name) + '',
-    tagList: data.tags?.map((e) => e.id) + '',
-    tagNames: data.tags?.map((e) => e.name) + '',
-    chatIdList: data.chatList?.map((e) => e.id) + '',
-    chatIdListNames: data.chatList?.map((e) => e.name) + '',
+    emplList: data.users?.map((e) => e.id)?.join(','),
+    emplNames: data.users?.map((e) => e.name)?.join(','),
+    tagList: data.tags?.map((e) => e.id)?.join(','),
+    tagNames: data.tags?.map((e) => e.name)?.join(','),
+    chatIdList: data.groupList?.map((e) => e.id)?.join(','),
+    chatIdListNames: data.groupList?.map((e) => e.name)?.join(','),
   })
   return request({
     url: service + '/add',

@@ -10,24 +10,23 @@ export default {
       newGroupId: '',
       dialogVisibleSelectUser: false, // 选择员工会话
       dialogVisibleSelectTag: false, // 选择客户标签会话
-      dialogVisibleSelectQrCode: false, // 选择群活码会话
+      dialogVisibleSelectGroup: false, // 选择群活码会话
       loading: false,
       form: {
         codeName: '', // 活码名称
         emplList: [], // 员工
         welcomeMsg: '', //加群引导语
         groupCodeId: undefined, // 群活码ID
-        tagList: [], // 客户标签
-        skipVerify: 0, // 无需确认自动加好友
-        users: [],
-        tags: [],
+        skipVerify: false, // 无需确认自动加好友
+        // users: [],
+        // tags: [], // 客户标签
       },
       codes: [],
       groupQrCode: {},
       rules: Object.freeze({
         codeName: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
         users: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
-        tagList: [{ required: true, message: '该项为必填项', trigger: 'change' }],
+        tags: [{ required: true, message: '该项为必填项', trigger: 'change' }],
         groupCodeId: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
         welcomeMsg: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
       }),
@@ -185,7 +184,7 @@ export default {
               clearable></TextareaExtend>
           </el-form-item>
           <el-form-item label="活码客群:" prop="chatIdList">
-            <el-button type="primary" @click="selectGroupFn">选择客群</el-button>
+            <el-button type="primary" @click="dialogVisibleSelectGroup = true">选择客群</el-button>
             <div class="tip">最多选择五个客群</div>
             <TagEllipsis :list="form.groupList" limit="10" defaultProps="groupName"></TagEllipsis>
           </el-form-item>
@@ -255,9 +254,9 @@ export default {
     <SelectTag v-model:visible="dialogVisibleSelectTag" :selected="form.tags" @success="submitSelectTag"></SelectTag>
 
     <SelectGroup
-      v-model:visible="showSelectModal"
+      v-model:visible="dialogVisibleSelectGroup"
       :defaults="form.groupList"
-      @submit="(data) => (form.groupList = data)"></SelectGroup>
+      @submit="(data) => (form.groupList = data.map((e) => ({ id: e.chatId, name: e.groupName })))"></SelectGroup>
 
     <!-- 选择二维码弹窗 -->
     <!-- <SelectQrCode
