@@ -1,5 +1,5 @@
 <script>
-import { getDetail, add, update } from '@/api/communityOperating/newCustomer'
+import { getDetail, add, update } from './api'
 import PhoneDialog from '@/components/PhoneDialog'
 
 export default {
@@ -33,6 +33,11 @@ export default {
       }),
     }
   },
+  computed: {
+    isDetail() {
+      return this.$route.path.endsWith('detail')
+    },
+  },
   watch: {
     // tags: {
     //   deep: true,
@@ -56,9 +61,7 @@ export default {
     getDetail(id) {
       this.loading = true
       getDetail(id).then(({ data }) => {
-        this.form.codeName = data.codeName || ''
-        this.form.skipVerify = data.skipVerify || 0
-        this.form.welcomeMsg = data.welcomeMsg || ''
+        this.form = data
 
         if (data.groupCodeInfo && data.groupCodeInfo.id) {
           this.codes = [data.groupCodeInfo]
@@ -106,7 +109,7 @@ export default {
         if (valid) {
           this.loading = true
           if (this.$route.query.id) {
-            update(this.$route.query.id, this.form)
+            update(this.form)
               .then(() => {
                 this.msgSuccess('更新成功')
                 this.loading = false
@@ -138,7 +141,20 @@ export default {
     <div class="flex">
       <el-form :model="form" ref="form" :rules="rules" label-width="100px" class="fxauto g-margin-r">
         <div class="g-card">
-          <div class="g-card-title">基础信息</div>
+          <div class="g-card-title fxbw">
+            基础信息
+            <el-button
+              v-if="isDetail"
+              type="primary"
+              @click="
+                $router.push({
+                  path: './aev',
+                  query: { id: $route.query.id },
+                })
+              ">
+              编辑
+            </el-button>
+          </div>
           <el-form-item label="活码名称" prop="codeName">
             <el-input v-model="form.codeName" maxlength="30" show-word-limit placeholder="请输入" clearable></el-input>
           </el-form-item>
@@ -168,6 +184,7 @@ export default {
             <el-checkbox v-model="form.skipVerify">客户添加时无需经过确认自动成为好友</el-checkbox>
           </el-form-item>
         </div>
+
         <div class="g-card">
           <div class="g-card-title">拉群设置</div>
           <el-form-item label="加群引导语" prop="welcomeMsg">
@@ -218,15 +235,15 @@ export default {
         </div>
       </el-form>
       <div>
-        <div class="g-card" v-if="form.id"></div>
+        <div class="g-card" v-if="isDetail"></div>
         <div class="preview-wrap g-card">
           <!-- 预览 -->
-          <PhoneDialog :message="form.welcomeMsg || '请输入加群引导语'">
-            <div v-if="groupQrCode.linkCoverUrl">
+          <PhoneDialog :message="form.welcomeMsg || '请输入加群引导语'" isOther>
+            <div style="line-height: 1.5">
               <div class="msg-title">{{ form.linkTitle }}</div>
-              <div>
-                <div class="msg-title">{{ form.linkDesc }}</div>
-                <el-image class="phone-dialog-image" :src="groupQrCode.linkCoverUrl" fit="fill"></el-image>
+              <div class="msg-content">
+                <div class="msg-desc">{{ form.linkDesc }}</div>
+                <el-image class="phone-dialog-image fxnone" :src="form.linkCoverUrl" fit="contain"></el-image>
               </div>
             </div>
           </PhoneDialog>
@@ -234,7 +251,7 @@ export default {
       </div>
     </div>
 
-    <div class="g-footer-sticky">
+    <div class="g-footer-sticky" v-if="!isDetail">
       <el-button type="primary" @click="submit">保存</el-button>
       <el-button @click="$router.back()">取消</el-button>
     </div>
@@ -285,8 +302,24 @@ export default {
   width: 100px;
   height: 100px;
 }
+
+.msg-title {
+  font-weight: 500;
+}
+.msg-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 2px;
+}
+.msg-desc {
+  font-size: 12px;
+  color: var(--font-black-6);
+}
 .phone-dialog-image {
+  width: 50px;
+  height: 50px;
   border-radius: 6px;
-  width: 100px;
+  border: 1px solid var(--border-black-11);
 }
 </style>

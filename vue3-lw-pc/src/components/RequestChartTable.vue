@@ -4,6 +4,7 @@ export default {
   components: {
     ChartLine: defineAsyncComponent(() => import('@/components/ChartLine')),
     ChartBar: defineAsyncComponent(() => import('@/components/ChartBar')),
+    SearchTitle: defineAsyncComponent(() => import('@/components/SearchTitle')),
   },
   props: {
     // 标题
@@ -21,6 +22,10 @@ export default {
     isCreateRequest: {
       type: Boolean,
       default: true,
+    },
+    // 是否显示时间查询
+    isTimeQuery: {
+      type: Boolean,
     },
 
     // 自定义的查询参数处理方法，可用于添加和修改查询参数
@@ -89,7 +94,7 @@ export default {
       if (query.dateRange) {
         query.beginTime = query.dateRange[0]
         query.endTime = query.dateRange[1]
-      } else {
+      } else if (!this.isTimeQuery) {
         delete query.beginTime
         delete query.endTime
       }
@@ -125,12 +130,23 @@ export default {
   <div class="RequestChartTable g-card">
     <div class="g-card-title" v-if="title">{{ title }}</div>
 
-    <div class="RequestChartTable-operation" v-if="requestExport || $slots.query">
-      <slot name="operation" v-bind="query"></slot>
+    <div class="RequestChartTable-operation" v-if="requestExport || isTimeQuery || $slots.query || $slots.operation">
+      <SearchTitle
+        style="display: inline-block"
+        v-if="isTimeQuery"
+        @search="(data) => (Object.assign(query, data), getList(1))"></SearchTitle>
+
+      <el-form v-if="$slots.query" :model="query" ref="queryForm" :inline="true" class="query-wrap">
+        <slot name="query" v-bind="{ query }"></slot>
+        <SearchResetButton :search="getList" :reset="() => $refs.queryForm.resetFields()"></SearchResetButton>
+      </el-form>
+      <!-- 操作slot -->
+
+      <slot name="operation"></slot>
 
       <el-button
         v-if="requestExport"
-        style="position: absolute; right: 0"
+        class="export fr"
         type="primary"
         @click="$exportData(requestExport.bind(null, query), exportFileName)">
         导出 Excel
@@ -161,8 +177,23 @@ export default {
 <style lang="scss" scoped>
 .RequestChartTable-operation {
   position: relative;
+  overflow: auto;
   // display: flex;
   // align-items: center;
   margin-bottom: var(--card-margin, 16px);
+}
+::v-deep.query-wrap {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  .el-input,
+  .el-select,
+  .el-date-editor--daterange {
+    width: 200px;
+  }
+  .el-form-item {
+    margin: 0 !important;
+    transition: all 0.2s;
+  }
 }
 </style>

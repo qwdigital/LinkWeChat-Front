@@ -40,31 +40,35 @@ export default {
         </div>
         <div class="msg">{{ message }}</div>
       </li>
+
+      <!-- 自定义消息 -->
       <li class="flex msg-li" v-if="isOther">
         <div class="avatar fxnone">
           <svg-icon icon="user" />
         </div>
 
-        <div class="msg" style="line-height: 0; padding: 5px">
+        <div class="msg" style="line-height: 0">
           <slot></slot>
         </div>
       </li>
+      <!-- 文字消息列表 -->
       <li class="flex msg-li" v-for="message in messageList" :key="message">
         <div class="avatar fxnone">
           <svg-icon icon="user" />
         </div>
 
         <div class="msg">
-          <slot name="text" v-bind:text="message"></slot>
+          <slot name="text" :text="message"></slot>
         </div>
       </li>
+      <!-- 图片消息列表 -->
       <li class="flex msg-li" v-for="image in imageList" :key="image">
         <div class="avatar fxnone">
           <svg-icon icon="user" />
         </div>
 
         <div class="msg" style="line-height: 0; padding: 5px">
-          <slot name="image" v-bind:image="image"></slot>
+          <slot name="image" :image="image"></slot>
         </div>
       </li>
     </ul>
@@ -97,9 +101,9 @@ export default {
   text-align: left;
   font-size: 14px;
   line-height: 22px;
-  padding: 3px 6px;
+  padding: 6px 12px;
   border-radius: 4px;
-  max-width: 90%;
+  max-width: 80%;
   min-width: 24px;
   box-sizing: border-box;
   word-break: break-all;

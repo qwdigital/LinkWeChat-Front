@@ -1,5 +1,5 @@
 <script>
-import { getList, remove, download, downloadBatch } from '@/api/communityOperating/newCustomer'
+import { getList, remove, download, downloadBatch } from './api'
 
 export default {
   components: {},
@@ -73,9 +73,9 @@ export default {
         })
     },
     // 新建/编辑新客数据
-    goRoute(id) {
+    goRoute(path = 'aev', id) {
       this.$router.push({
-        path: 'newCustomerAev',
+        path,
         query: { id },
       })
     },
@@ -231,7 +231,9 @@ export default {
             </el-popover>
           </template>
           <template #default="{ row }">
-            <el-button text @click="goRoute(row.id)">{{ row.addCustomerNumber }}/{{ row.joinGroupNumber }}</el-button>
+            <el-button text @click="goRoute('detail', row.id)">
+              {{ row.addCustomerNumber }}/{{ row.joinGroupNumber }}
+            </el-button>
           </template>
         </el-table-column>
         <!-- <el-table-column label="创建人" align="center" prop="createBy"></el-table-column> -->
@@ -254,8 +256,8 @@ export default {
                   ">
                   编辑
                 </el-button> -->
-                <el-button text @click="goRoute(row.id)">详情|统计</el-button>
-                <el-button text @click="goRoute(row.id)">编辑</el-button>
+                <el-button text @click="goRoute('detail', row.id)">详情|统计</el-button>
+                <el-button text @click="goRoute('aev', row.id)">编辑</el-button>
                 <el-button text @click="download(row)">下载</el-button>
                 <el-button text @click="download(row)">复制</el-button>
                 <el-button text @click="remove(row.id)">删除</el-button>

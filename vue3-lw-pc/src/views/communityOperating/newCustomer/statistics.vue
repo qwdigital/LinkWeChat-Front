@@ -1,109 +1,95 @@
 <template>
   <div>
-    <CardGroupIndex :data="$datas.cardData" />
+    <CardGroupIndex :data="cardData" />
 
-    <div class="g-card">
-      <div class="g-card-title">数据趋势</div>
-      <DateSearchChartTable
-        :request="api.getDataTrend"
-        :legend="['导入线索数', '添加客户数', '线索日跟进人数']"
-        :dealDataFun="dealDataTrend" />
-    </div>
+    <RequestChartTable
+      type="lineChart"
+      title="数据趋势"
+      isTimeQuery
+      :isCreateRequest="false"
+      :request="(query) => ((query.id = $route.query.id), api.getDataTrend(query))"
+      :legend="['今日添加客户数', '今日进群客户数']"
+      :dealDataFun="dealDataTrend" />
 
-    <div style="display: grid; grid: auto/auto auto; gap: 0 var(--card-margin); margin-top: var(--card-margin)">
-      <div class="g-card">
-        <div class="g-card-title">线索转化Top5</div>
-        <DateSearchChartTable
-          :request="api.getConversionTop"
-          type="barChart"
-          :option="{
-            xAxis: [{ type: 'value' }],
-            yAxis: [{ type: 'category', data: $datas.xDataConversionTop }],
-          }"
-          :dealDataFun="dealDataConversionTop" />
-      </div>
-      <div class="g-card mt0">
-        <div class="g-card-title">线索日跟进Top5</div>
-        <DateSearchChartTable :request="api.getFollowTop" type="barChart" :dealDataFun="dealDataFollowTop" />
-      </div>
-    </div>
+    <RequestChartTable
+      title="数据明细"
+      ref="importRecord"
+      :request="getDataDetail"
+      :requestExport="api.getDataDetailExport"
+      exportFileName="导入记录.xls">
+      <template #query="{ query }">
+        <el-form-item label="" prop="customerName">
+          <el-input v-model="query.customerName" placeholder="请输入客户名称"></el-input>
+        </el-form-item>
+        <el-form-item label="">
+          <el-date-picker
+            v-model="query.dateRangeAddTime"
+            value-format="YYYY-MM-DD"
+            type="daterange"
+            v-bind="pickerOptions"
+            range-separator="-"
+            start-placeholder="添加开始"
+            end-placeholder="结束日期"
+            align="right"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="" prop="isJoinGroup">
+          <el-select v-model="query.isJoinGroup" placeholder="请选择是否进群">
+            <el-option v-for="(item, index) in dictAddStatus" :key="index" :label="item" :value="index"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="">
+          <el-date-picker
+            v-model="query.dateRangeJoinTime"
+            value-format="YYYY-MM-DD"
+            type="daterange"
+            v-bind="pickerOptions"
+            range-separator="-"
+            start-placeholder="进群开始"
+            end-placeholder="结束日期"
+            align="right"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="" prop="chatId">
+          <el-select v-model="query.chatId" placeholder="请选择客群">
+            <el-option v-for="(item, index) in dictAddStatus" :key="index" :label="item" :value="index"></el-option>
+          </el-select>
+        </el-form-item>
+      </template>
 
-    <div class="g-card">
-      <div class="g-card-title">导入记录</div>
-      <DateSearchChartTable
-        ref="importRecord"
-        :isTimeQuery="false"
-        :request="api.getImportRecord"
-        :requestExport="api.getImportRecordExport"
-        exportFileName="导入记录.xls"
-        type="table">
-        <template #query="{ query }">
-          <el-input
-            style="width: 280px"
-            v-model="query.name"
-            placeholder="请输入表格名称"
-            @keyup.enter="$refs.importRecord.getList()">
-            <template #append>
-              <el-button icon="elIconSearch" @click="$refs.importRecord.getList()" />
+      <template #="{ data }">
+        <el-table :data="data">
+          <el-table-column align="center" prop="customerName" label="客户名称"></el-table-column>
+          <el-table-column align="center" prop="addUserId" label="添加员工"></el-table-column>
+          <el-table-column align="center" prop="addTime" label="添加时间"></el-table-column>
+          <el-table-column align="center" prop="isJoinGroup" label="是否进群">
+            <template #default="{ row }">{{ dictAddStatus[row.isJoinGroup] }}</template>
+          </el-table-column>
+          <el-table-column align="center" prop="groupName" label="进入客群"></el-table-column>
+          <el-table-column align="center" prop="joinTime" label="进群时间"></el-table-column>
+          <el-table-column label="操作" align="center">
+            <template #default="{ row }">
+              <el-button text @click="gotoRoute(row)">详情</el-button>
             </template>
-          </el-input>
-        </template>
-        <template #table="{ data }">
-          <el-table :data="data">
-            <el-table-column align="center" prop="importSourceFileName" label="导入来源"></el-table-column>
-            <el-table-column align="center" prop="num" label="导入线索总数"></el-table-column>
-            <el-table-column align="center" prop="importTime" label="导入时间"></el-table-column>
-            <el-table-column align="center" prop="seaName" label="所属公海池"></el-table-column>
-            <el-table-column align="center" prop="conversionRate" label="线索转化率"></el-table-column>
-            <el-table-column align="center" prop="returnRate" label="线索退回率"></el-table-column>
-            <el-table-column align="center" prop="followNum" label="线索日跟进人次"></el-table-column>
-            <el-table-column align="center" prop="customerNum" label="已添加客户数"></el-table-column>
-          </el-table>
-        </template>
-      </DateSearchChartTable>
-    </div>
-
-    <div class="g-card">
-      <div class="g-card-title">员工统计</div>
-      <DateSearchChartTable
-        :request="api.getStatisticUser"
-        :requestExport="api.getStatisticUserExport"
-        exportFileName="员工统计.xls"
-        isStaffQuery
-        type="table">
-        <template #table="{ data }">
-          <el-table :data="data">
-            <!-- <el-table-column align="center" prop="" label="日期"></el-table-column> -->
-            <el-table-column align="center" prop="userName" label="员工名称"></el-table-column>
-            <el-table-column align="center" prop="deptName" label="所属部门"></el-table-column>
-            <el-table-column align="center" prop="conversionRate" label="线索转化率"></el-table-column>
-            <el-table-column align="center" prop="returnRate" label="线索退回率"></el-table-column>
-            <el-table-column align="center" prop="followNum" label="线索日跟进人次"></el-table-column>
-            <el-table-column align="center" prop="customerNum" label="已添加客户数"></el-table-column>
-          </el-table>
-        </template>
-      </DateSearchChartTable>
-    </div>
+          </el-table-column>
+        </el-table>
+      </template>
+    </RequestChartTable>
   </div>
 </template>
 
 <script setup>
-import * as api from '@/views/clue/clueAnalysis/api'
-import { reactive } from 'vue'
-import stores from '@/stores'
+import { useRoute } from 'vue-router'
+import * as api from './api'
 
-stores().setBusininessDesc(`对全部公海池以及公海池内的线索数据进行数据解析并支持导入本地`)
-
-// 响应式变量统一放到$datas，避免繁琐的.value和遍地的ref、reactive定义
-let $datas = reactive({ loading: false })
-
+let loading = ref(false)
+let cardData = ref([])
+let dictAddStatus = { 0: '未进群', 1: '已进群' }
 // 获取指标数据
 ;(function getStatistic() {
-  $datas.loading = true
+  loading.value = true
   api
-    .getStatistic()
+    .getStatistic(useRoute().query.id)
     .then(({ data }) => {
-      $datas.cardData = [
+      cardData.value = [
         {
           title: '添加客户总数',
           tips: '通过此活码添加的客户总数(去重)',
@@ -129,7 +115,7 @@ let $datas = reactive({ loading: false })
       ]
     })
     .finally(() => {
-      $datas.loading = false
+      loading.value = false
     })
 })()
 
@@ -137,42 +123,42 @@ let $datas = reactive({ loading: false })
 function dealDataTrend(data, series, xData) {
   xData.length = 0
   series.length = 0
-  let _data = [[], [], []]
+  let _data = [[], []]
   data.forEach((element) => {
-    xData.push(element.dateStr)
-    _data[0].push(element.leadsNum) // 导入线索数
-    _data[1].push(element.customerNum) // 添加客户数
-    _data[2].push(element.followNum) // 线索日跟进人数
+    xData.push(element.date)
+    _data[0].push(element.addCustomerNumber)
+    _data[1].push(element.joinGroupCustomerNumber)
   })
   series.push(..._data)
 }
 
-// 线索转化Top5 数据处理
-function dealDataConversionTop(data, series, xData) {
-  series.length = 0
-  $datas.xDataConversionTop = []
-  if (data?.length) {
-    let _data = []
-    data.forEach((element) => {
-      $datas.xDataConversionTop.push(element.userName)
-      _data.push(element.rate)
-    })
-    series.push(_data)
+// 数据明细
+function getDataDetail(query) {
+  if (query.dateRangeAddTime) {
+    query.startAddTime = query.dateRangeAddTime[0]
+    query.endAddTime = query.dateRangeAddTime[1]
+  } else {
+    delete query.startAddTime
+    delete query.endAddTime
   }
+  delete query.dateRangeAddTime
+
+  if (query.dateRangeJoinTime) {
+    query.startJoinTime = query.dateRangeJoinTime[0]
+    query.endJoinTime = query.dateRangeJoinTime[1]
+  } else {
+    delete query.startJoinTime
+    delete query.endJoinTime
+  }
+  delete query.dateRangeJoinTime
+  return api.getDataDetail(query)
 }
 
-// 线索日跟进Top5 数据处理
-function dealDataFollowTop(data, series, xData) {
-  xData.length = 0
-  series.length = 0
-  if (data?.length) {
-    let _data = []
-    data.forEach((element) => {
-      xData.push(element.userName)
-      _data.push(element.followNum)
-    })
-    series.push(_data)
-  }
+function gotoRoute(row) {
+  this.$router.push({
+    name: window.lwConfig.CUSTOMER_DETAIL_ROUTE_NAME,
+    query: { externalUserid: row.externalUserid, userId: row.addUserId },
+  })
 }
 </script>
 
