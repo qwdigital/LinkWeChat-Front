@@ -186,8 +186,10 @@ export function getDataDetail(params) {
 /**
  * 数据明细导出
  */
-export function getDataDetailExport() {
+export function getDataDetailExport(params) {
   return request({
     url: service + '/exprotWeCommunityNewGroupTable',
+    params,
+    responseType: 'blob',
   })
 }

@@ -16,7 +16,7 @@
       ref="importRecord"
       :request="getDataDetail"
       :requestExport="api.getDataDetailExport"
-      exportFileName="导入记录.xls">
+      exportFileName="新客拉群数据明细导出.xls">
       <template #query="{ query }">
         <el-form-item label="" prop="customerName">
           <el-input v-model="query.customerName" placeholder="请输入客户名称"></el-input>
