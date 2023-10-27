@@ -35,7 +35,7 @@
                 <el-button
                   type="primary"
                   :class="selectCustomerGroupList.length == 1 && 'ml10'"
-                  :icon="circle - plus - outline"
+                  icon="circle-plus-outline"
                   plain
                   @click="onSelectCustomerGroup">
                   选择群主

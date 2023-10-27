@@ -175,7 +175,7 @@
           </el-form-item>
         </template>
 
-        <template v-else-if="type === '1'">
+        <!-- <template v-else-if="type === '1'">
           <el-form-item label="语音" prop="materialUrl">
             <Voice v-if="form.materialUrl" :amrUrl="form.materialUrl"></Voice>
             <Upload
@@ -189,7 +189,7 @@
           <el-form-item label="名称" prop="materialName">
             <el-input v-model="form.materialName" placeholder="请输入"></el-input>
           </el-form-item>
-        </template>
+        </template> -->
         <!-- 视频 -->
         <template v-else-if="type === '2'">
           <el-form-item label="视频标题" prop="materialName">

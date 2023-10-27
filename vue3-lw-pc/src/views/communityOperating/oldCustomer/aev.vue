@@ -29,7 +29,7 @@
           :src="groupQrCode.codeUrl"
           class="code-image"></el-image>
 
-        <el-button type="primary" plain class="ml10" icon="el-icon-plus" @click="dialogVisibleSelectQrCode = true">
+        <el-button type="primary" plain class="ml10" @click="dialogVisibleSelectQrCode = true">
           {{ groupQrCode && groupQrCode.codeUrl ? '修改' : '选择' }}
         </el-button>
       </el-form-item>
@@ -84,7 +84,6 @@
           type="primary"
           class="ml10"
           plain
-          :icon="plus"
           @click="dialogVisibleSelectTag = true"
           :disabled="form.sendScope == 0">
           添加标签
@@ -97,7 +96,6 @@
           type="primary"
           plain
           class="ml10"
-          :icon="plus"
           @click="dialogVisibleSelectUser = true"
           :disabled="form.sendScope == 0">
           {{ users.length ? '修改' : '添加' }}
