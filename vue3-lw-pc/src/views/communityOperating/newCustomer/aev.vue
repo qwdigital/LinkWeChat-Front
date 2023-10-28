@@ -139,19 +139,22 @@ export default {
 <template>
   <div v-loading="loading">
     <div class="flex">
-      <el-form :model="form" ref="form" :rules="rules" label-width="100px" class="fxauto g-margin-r">
+      <el-form
+        :model="form"
+        ref="form"
+        :rules="rules"
+        label-width="100px"
+        scroll-to-error
+        class="fxauto g-margin-r"
+        :class="isDetail && 'form-detail'"
+        :disabled="isDetail">
         <div class="g-card">
           <div class="g-card-title fxbw">
             基础信息
             <el-button
               v-if="isDetail"
               type="primary"
-              @click="
-                $router.push({
-                  path: './aev',
-                  query: { id: $route.query.id },
-                })
-              ">
+              @click="$router.push({ path: './aev', query: { id: $route.query.id } })">
               编辑
             </el-button>
           </div>
@@ -235,15 +238,24 @@ export default {
         </div>
       </el-form>
       <div>
-        <div class="g-card" v-if="isDetail"></div>
+        <div class="g-card" v-if="isDetail">
+          <div class="g-card-title">活码</div>
+          <div class="ac">
+            <el-image class="" :src="form.groupCodeUrl" fit="contain" style="width: 120px"></el-image>
+            <div class="mt10">
+              <el-button text @click="downloadBlob(form.groupCodeUrl, '新客拉群活码.png', 'image')">下载活码</el-button>
+              <el-button class="copy" text @click="$copyText(form.groupCodeUrl)">复制链接</el-button>
+            </div>
+          </div>
+        </div>
         <div class="preview-wrap g-card">
-          <!-- 预览 -->
+          <div class="g-card-title">预览</div>
           <PhoneDialog :message="form.welcomeMsg || '请输入加群引导语'" isOther>
             <div style="line-height: 1.5">
               <div class="msg-title">{{ form.linkTitle }}</div>
               <div class="msg-content">
                 <div class="msg-desc">{{ form.linkDesc }}</div>
-                <el-image class="phone-dialog-image fxnone" :src="form.linkCoverUrl" fit="contain"></el-image>
+                <el-image class="fxnone" :src="form.linkCoverUrl" fit="contain"></el-image>
               </div>
             </div>
           </PhoneDialog>

@@ -37,9 +37,10 @@
 // }
 .el-button:not(.el-button--small, .el-button--large) {
   padding: 9px 19px;
-}
-.el-button:not(.is-text) {
   font-size: 13px;
+}
+.el-button.is-circle {
+  padding: 9px;
 }
 .el-button:not(.is-text, .is-circle, .is-round) {
   border-radius: var(--border-radius-small);
@@ -49,7 +50,7 @@
   padding-left: 0;
   padding-right: 0;
   height: auto;
-  font-size: 12px;
+  font-size: 13px;
   background-clip: content-box;
   outline: 0 !important;
 }
@@ -348,6 +349,7 @@
 // 表单禁用详情数据展示
 .form-detail {
   .el-input.is-disabled .el-input__inner,
+  .el-input.is-disabled .el-input__wrapper,
   .el-textarea.is-disabled .el-textarea__inner {
     background-color: transparent;
     // border-color: transparent;

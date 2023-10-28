@@ -4,7 +4,7 @@
     ref="pagination"
     v-if="['false', 'undefined'].includes($attrs['hide-on-single-page'] + '') || $attrs.total > limit">
     <el-pagination
-      v-bind="$attrs"
+      v-bind="Object.assign({}, this.$attrs, { style: undefined, class: undefined })"
       :background="background"
       v-model:current-page="currentPage"
       v-model:page-size="pageSize"
