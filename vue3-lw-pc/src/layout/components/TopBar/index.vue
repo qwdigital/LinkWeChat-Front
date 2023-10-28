@@ -316,7 +316,7 @@ export default {
   top: 60%;
   width: 100px;
   height: 100px;
-  z-index: 9;
+  z-index: 99;
   right: 28px;
   width: 50px;
   height: 50px;

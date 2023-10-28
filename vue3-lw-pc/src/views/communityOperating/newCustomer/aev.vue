@@ -238,7 +238,7 @@ export default {
         </div>
       </el-form>
       <div>
-        <div class="g-card" v-if="isDetail">
+        <div class="g-card sticky-t" v-if="isDetail">
           <div class="g-card-title">活码</div>
           <div class="ac">
             <el-image class="" :src="form.groupCodeUrl" fit="contain" style="width: 120px"></el-image>
@@ -248,14 +248,14 @@ export default {
             </div>
           </div>
         </div>
-        <div class="preview-wrap g-card">
+        <div class="preview-wrap g-card sticky-t">
           <div class="g-card-title">预览</div>
-          <PhoneDialog :message="form.welcomeMsg || '请输入加群引导语'" isOther>
+          <PhoneDialog :message="form.welcomeMsg || '请输入加群引导语'">
             <div style="line-height: 1.5">
               <div class="msg-title">{{ form.linkTitle }}</div>
               <div class="msg-content">
                 <div class="msg-desc">{{ form.linkDesc }}</div>
-                <el-image class="fxnone" :src="form.linkCoverUrl" fit="contain"></el-image>
+                <el-image class="phone-dialog-image fxnone" :src="form.linkCoverUrl" fit="contain"></el-image>
               </div>
             </div>
           </PhoneDialog>
@@ -263,7 +263,7 @@ export default {
       </div>
     </div>
 
-    <div class="g-footer-sticky" v-if="!isDetail">
+    <div class="g-footer-sticky" style="z-index: 10" v-if="!isDetail">
       <el-button type="primary" @click="submit">保存</el-button>
       <el-button @click="$router.back()">取消</el-button>
     </div>
