@@ -76,28 +76,6 @@ export default {
         this.loading = false
       })
     },
-    // 选择人员变化事件
-    submitSelectUser(users) {
-      this.form.users = users.map((d) => {
-        return {
-          id: d.userId,
-          name: d.name,
-        }
-      })
-    },
-    onSelectUser() {
-      this.form.users?.forEach((e) => (e.userId = e.id))
-      this.dialogVisibleSelectUser = true
-    },
-    // 客户标签选择
-    submitSelectTag(tags) {
-      this.form.tags = tags.map((t) => {
-        return {
-          id: t.tagId,
-          name: t.name,
-        }
-      })
-    },
     // 选择二维码确认按钮
     // submitSelectQrCode(data) {
     //   this.groupQrCode = data
@@ -162,7 +140,7 @@ export default {
             <el-input v-model="form.codeName" maxlength="30" show-word-limit placeholder="请输入" clearable></el-input>
           </el-form-item>
           <el-form-item label="使用员工" prop="users">
-            <el-button type="primary" @click="onSelectUser">选择员工</el-button>
+            <el-button type="primary" @click="dialogVisibleSelectUser = true">选择员工</el-button>
             <br />
             <TagEllipsis :list="form.users" limit="10"></TagEllipsis>
           </el-form-item>
@@ -273,19 +251,34 @@ export default {
       v-model:visible="dialogVisibleSelectUser"
       title="选择使用员工"
       :defaultValues="form.users"
-      @success="(data) => (form.users = data.map((e) => ((e.id = e.userId), e)))"></SelectUser>
+      @success="
+        (data) => {
+          form.users = data.map((e) => ((e.id = e.userId), e))
+          $refs.form.validateField('users')
+        }
+      "></SelectUser>
 
     <!-- 选择标签弹窗 -->
     <SelectTag
       v-model:visible="dialogVisibleSelectTag"
       :selected="form.tags"
-      @success="(data) => (form.tags = data.map((e) => ((e.id = e.tagId), e)))"></SelectTag>
+      @success="
+        (data) => {
+          form.tags = data.map((e) => ((e.id = e.tagId), e))
+          $refs.form.validateField('tags')
+        }
+      "></SelectTag>
 
     <!-- 选择客群弹窗 -->
     <SelectGroup
       v-model:visible="dialogVisibleSelectGroup"
       :defaults="form.groups"
-      @submit="(data) => (form.groups = data.map((e) => ((e.id = e.chatId), (e.name = e.groupName), e)))"></SelectGroup>
+      @submit="
+        (data) => {
+          form.groups = data.map((e) => ((e.id = e.chatId), (e.name = e.groupName), e))
+          $refs.form.validateField('groups')
+        }
+      "></SelectGroup>
 
     <!-- 选择二维码弹窗 -->
     <!-- <SelectQrCode
