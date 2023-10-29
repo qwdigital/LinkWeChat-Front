@@ -283,6 +283,7 @@ export default {
       :selected="form.tags"
       @success="(data) => (form.tags = data.map((e) => ((e.id = e.tagId), e)))"></SelectTag>
 
+    <!-- 选择客群弹窗 -->
     <SelectGroup
       v-model:visible="dialogVisibleSelectGroup"
       :defaults="form.groups"

@@ -10,7 +10,7 @@ export default {
       query: {
         pageNum: 1,
         pageSize: 10,
-        emplCodeName: '', // 活码名称
+        codeName: '', // 活码名称
         createBy: '', // 创建人
         beginTime: '', // 开始日期
         endTime: '', // 结束日期
@@ -100,13 +100,13 @@ export default {
 <template>
   <div>
     <el-form ref="queryForm" :inline="true" :model="query" class="top-search">
-      <el-form-item label="活码名称" prop="emplCodeName">
-        <el-input clearable v-model="query.emplCodeName" placeholder="请输入"></el-input>
+      <el-form-item label="活码名称" prop="codeName">
+        <el-input clearable v-model="query.codeName" placeholder="请输入"></el-input>
       </el-form-item>
       <!-- <el-form-item label="创建人" prop="createBy">
         <el-input clearable v-model="query.createBy" placeholder="请输入"></el-input>
       </el-form-item> -->
-      <el-form-item label="创建时间">
+      <!-- <el-form-item label="创建时间">
         <el-date-picker
           clearable
           v-model="dateRange"
@@ -117,7 +117,7 @@ export default {
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           align="right"></el-date-picker>
-      </el-form-item>
+      </el-form-item> -->
       <SearchResetButton
         :search="() => $refs.table.getList()"
         :reset="() => $refs.queryForm.resetFields()"></SearchResetButton>
@@ -186,33 +186,19 @@ export default {
           </el-table-column>
           <!-- <el-table-column label="创建人" align="center" prop="createBy"></el-table-column> -->
           <el-table-column label="创建时间" align="center" prop="createTime" width="160"></el-table-column>
-          <el-table-column label="操作" align="center" width="180">
+          <el-table-column label="操作" align="center" width="280" fixed="right">
             <template #default="{ row }">
-              <el-tooltip effect="light">
+              <el-button text @click="goRoute('detail', row.id)">详情|统计</el-button>
+              <el-button text @click="goRoute('aev', row.id)">编辑</el-button>
+              <el-button text title="下载活码" @click="downloadBlob(row.groupCodeUrl, row.codeName + '.png', 'image')">
+                下载
+              </el-button>
+              <el-button text title="复制二维码链接" @click="$copyText(row.groupCodeUrl)">复制</el-button>
+              <el-button text @click="remove(row.id)">删除</el-button>
+              <!-- <el-tooltip effect="light">
                 <el-icon-MoreFilled class="el-icon-MoreFilled g-color cp"></el-icon-MoreFilled>
-                <template #content>
-                  <!-- <el-button
-                  text
-                  @click="
-                    $router.push({
-                      path: 'groupAdd',
-                      query: {
-                        groupCodeId: row.id,
-                        obj: encodeURIComponent(JSON.stringify(row)),
-                      },
-                    })
-                  ">
-                  编辑
-                </el-button> -->
-                  <el-button text @click="goRoute('detail', row.id)">详情|统计</el-button>
-                  <el-button text @click="goRoute('aev', row.id)">编辑</el-button>
-                  <el-button text @click="downloadBlob(row.emplCodeUrl, row.codeName + '.png', 'image')">
-                    下载
-                  </el-button>
-                  <el-button text @click="$copyText(row.groupCodeUrl)">复制</el-button>
-                  <el-button text @click="remove(row.id)">删除</el-button>
-                </template>
-              </el-tooltip>
+                <template #content></template>
+              </el-tooltip> -->
             </template>
           </el-table-column>
         </el-table>
