@@ -209,20 +209,18 @@ export default {
             <el-switch v-model="form.autoCreateRoom" :active-value="1" :inactive-value="0"></el-switch>
             <div class="g-tip">默认以第一个群的群主作为新建群的群主</div>
           </el-form-item>
-          <el-form-item v-if="form.autoCreateRoom" label="">
-            <el-card>
-              <el-form-item label="群名前缀:" prop="roomBaseName">
-                <el-input
-                  show-word-limit
-                  maxlength="20"
-                  v-model="form.roomBaseName"
-                  placeholder="请输入群名前缀"></el-input>
-              </el-form-item>
-              <el-form-item label="群起始序号:" prop="roomBaseId">
-                <el-input-number v-model="form.roomBaseId" controls-position="right" :min="1"></el-input-number>
-              </el-form-item>
-            </el-card>
-          </el-form-item>
+          <template v-if="form.autoCreateRoom">
+            <el-form-item label="群名前缀:" prop="roomBaseName">
+              <el-input
+                show-word-limit
+                maxlength="20"
+                v-model="form.roomBaseName"
+                placeholder="请输入群名前缀"></el-input>
+            </el-form-item>
+            <el-form-item label="群起始序号:" prop="roomBaseId">
+              <el-input-number v-model="form.roomBaseId" controls-position="right" :min="1"></el-input-number>
+            </el-form-item>
+          </template>
 
           <el-form-item label="链接标题" prop="linkTitle">
             <el-input v-model="form.linkTitle" maxlength="20" show-word-limit placeholder="请输入" clearable></el-input>
