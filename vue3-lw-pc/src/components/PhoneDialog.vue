@@ -6,10 +6,6 @@ export default {
       type: String,
       default: '',
     },
-    isOther: {
-      type: Boolean,
-      default: false,
-    },
     imageList: {
       type: Array,
       default: () => [],
@@ -25,7 +21,11 @@ export default {
   watch: {},
   computed: {},
   created() {},
-  mounted() {},
+  mounted() {
+    setTimeout(() => {
+      console.log(this.$slots.default())
+    }, 1000)
+  },
   methods: {},
 }
 </script>
@@ -42,7 +42,7 @@ export default {
       </li>
 
       <!-- 自定义消息 -->
-      <li class="flex msg-li" v-if="isOther">
+      <li class="flex msg-li" v-if="$slots.default && Array.isArray($slots.default()[0].children)">
         <div class="avatar fxnone">
           <svg-icon icon="user" />
         </div>

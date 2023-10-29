@@ -42,10 +42,11 @@
 
     <div class="preview-wrap g-card mt0">
       <!-- 预览 -->
-      <PhoneDialog
-        :message="form.welcomeMsg || '请输入加群引导语'"
-        :isOther="groupQrCode && groupQrCode.codeUrl ? true : false">
-        <el-image style="border-radius: 6px; width: 100px" :src="groupQrCode.codeUrl"></el-image>
+      <PhoneDialog :message="form.welcomeMsg || '请输入加群引导语'">
+        <el-image
+          style="border-radius: 6px; width: 100px"
+          v-if="groupQrCode?.codeUrl"
+          :src="groupQrCode.codeUrl"></el-image>
       </PhoneDialog>
     </div>
 
