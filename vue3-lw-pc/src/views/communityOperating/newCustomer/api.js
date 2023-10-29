@@ -27,17 +27,15 @@ export function getDetail(id) {
     // 统一处理数据结构
     if (data.emplList && data.emplNames) {
       let names = data.emplNames?.split(',')
-      data.users = data.emplList?.split(',').map((e, i) => ({ id: e, userId: e, name: names?.[i] }))
+      data.users = data.emplList?.split(',').map((e, i) => ({ userId: e, name: names?.[i] }))
     }
     if (data.tagList && data.tagNames) {
       let names = data.tagNames?.split(',')
-      data.tags = data.tagList?.split(',').map((e, i) => ({ id: e, tagId: e, name: names?.[i] }))
+      data.tags = data.tagList?.split(',').map((e, i) => ({ tagId: e, name: names?.[i] }))
     }
     if (data.chatIdList && data.groupNames) {
       let names = data.groupNames?.split(',')
-      data.groups = data.chatIdList
-        ?.split(',')
-        .map((e, i) => ({ id: e, chatId: e, name: names?.[i], groupName: names?.[i] }))
+      data.groups = data.chatIdList?.split(',').map((e, i) => ({ chatId: e, groupName: names?.[i] }))
     }
     return { data }
   })
@@ -86,12 +84,12 @@ export function getDetail(id) {
  */
 export function add(data) {
   data = Object.assign({}, data, {
-    emplList: data.users?.map((e) => e.id)?.join(','),
+    emplList: data.users?.map((e) => e.userId)?.join(','),
     emplNames: data.users?.map((e) => e.name)?.join(','),
-    tagList: data.tags?.map((e) => e.id)?.join(','),
+    tagList: data.tags?.map((e) => e.tagId)?.join(','),
     tagNames: data.tags?.map((e) => e.name)?.join(','),
-    chatIdList: data.groups?.map((e) => e.id)?.join(','),
-    groupNames: data.groups?.map((e) => e.name)?.join(','),
+    chatIdList: data.groups?.map((e) => e.chatId)?.join(','),
+    groupNames: data.groups?.map((e) => e.groupName)?.join(','),
   })
   return request({
     url: service + '/add',

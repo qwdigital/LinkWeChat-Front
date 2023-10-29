@@ -180,7 +180,7 @@ export default {
           <el-form-item label="活码客群:" prop="groups">
             <el-button type="primary" @click="dialogVisibleSelectGroup = true">选择客群</el-button>
             <div class="g-tip">最多选择五个客群</div>
-            <TagEllipsis :list="form.groups" limit="5"></TagEllipsis>
+            <TagEllipsis :list="form.groups" limit="5" defaultProps="groupName"></TagEllipsis>
           </el-form-item>
 
           <el-form-item label="群满自动建群:">
@@ -251,34 +251,19 @@ export default {
       v-model:visible="dialogVisibleSelectUser"
       title="选择使用员工"
       :defaultValues="form.users"
-      @success="
-        (data) => {
-          form.users = data.map((e) => ((e.id = e.userId), e))
-          $refs.form.validateField('users')
-        }
-      "></SelectUser>
+      @success="(data) => ((form.users = data), $refs.form.validateField('users'))"></SelectUser>
 
     <!-- 选择标签弹窗 -->
     <SelectTag
       v-model:visible="dialogVisibleSelectTag"
       :selected="form.tags"
-      @success="
-        (data) => {
-          form.tags = data.map((e) => ((e.id = e.tagId), e))
-          $refs.form.validateField('tags')
-        }
-      "></SelectTag>
+      @success="(data) => ((form.tags = data), $refs.form.validateField('tags'))"></SelectTag>
 
     <!-- 选择客群弹窗 -->
     <SelectGroup
       v-model:visible="dialogVisibleSelectGroup"
       :defaults="form.groups"
-      @submit="
-        (data) => {
-          form.groups = data.map((e) => ((e.id = e.chatId), (e.name = e.groupName), e))
-          $refs.form.validateField('groups')
-        }
-      "></SelectGroup>
+      @submit="(data) => ((form.groups = data), $refs.form.validateField('groups'))"></SelectGroup>
 
     <!-- 选择二维码弹窗 -->
     <!-- <SelectQrCode
