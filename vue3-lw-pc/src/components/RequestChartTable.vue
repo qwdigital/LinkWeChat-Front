@@ -127,18 +127,24 @@ export default {
 </script>
 
 <template>
+  <el-form v-if="$slots.query" :model="query" ref="queryForm" inline class="top-search">
+    <slot name="query" v-bind="{ query }"></slot>
+    <SearchResetButton :search="getList" :reset="() => $refs.queryForm.resetFields()"></SearchResetButton>
+  </el-form>
   <div class="RequestChartTable g-card">
     <div class="g-card-title" v-if="title">{{ title }}</div>
 
-    <div class="RequestChartTable-operation" v-if="requestExport || isTimeQuery || $slots.query || $slots.operation">
+    <div
+      class="RequestChartTable-operation"
+      v-if="requestExport || isTimeQuery || $slots.queryMiddle || $slots.operation">
       <SearchTitle
         style="display: inline-block"
         v-if="isTimeQuery"
         @search="(data) => (Object.assign(query, data), getList(1))"></SearchTitle>
 
-      <el-form v-if="$slots.query" :model="query" ref="queryForm" :inline="true" class="query-wrap">
-        <slot name="query" v-bind="{ query }"></slot>
-        <SearchResetButton :search="getList" :reset="() => $refs.queryForm.resetFields()"></SearchResetButton>
+      <el-form v-if="$slots.queryMiddle" :model="query" ref="queryFormMiddle" inline class="query-wrap">
+        <slot name="queryMiddle" v-bind="{ query }"></slot>
+        <SearchResetButton :search="getList" :reset="() => $refs.queryFormMiddle.resetFields()"></SearchResetButton>
       </el-form>
       <!-- 操作slot -->
 
