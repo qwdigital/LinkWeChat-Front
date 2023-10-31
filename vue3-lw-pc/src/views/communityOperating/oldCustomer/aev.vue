@@ -1,15 +1,25 @@
 <template>
-  <div class="flex" v-loading="loading">
-    <el-form :model="form" ref="form" :rules="rules" label-width="100px" class="fxauto g-margin-r">
+  <div class="flex">
+    <el-form
+      v-loading="loading"
+      :model="form"
+      ref="form"
+      :rules="rules"
+      label-width="100px"
+      class="fxauto g-margin-r"
+      :class="isDetail && 'form-detail'"
+      :disabled="isDetail">
       <div class="g-card">
         <div class="g-card-title fxbw">
           群发设置
-          <el-button
+          <el-tag
+            class="cp"
             v-if="isDetail"
-            type="primary"
+            size="large"
+            effect="dark"
             @click="$router.push({ path: './aev', query: { id: $route.query.id } })">
             同步
-          </el-button>
+          </el-tag>
         </div>
 
         <el-form-item label="任务名称" prop="taskName">
@@ -23,78 +33,8 @@
             </el-radio>
           </el-radio-group>
         </el-form-item>
-
         <template v-if="form.sendScope == 1">
-          <el-form-item label="添加人员">
-            <el-button type="primary" @click="dialogVisibleSelectUser = true" :disabled="form.sendScope == 0">
-              选择人员
-            </el-button>
-            <br />
-            <TagEllipsis :list="form.users" limit="10"></TagEllipsis>
-
-            <SelectUser
-              v-model:visible="dialogVisibleSelectUser"
-              title="选择人员"
-              @success="submitSelectUser"></SelectUser>
-          </el-form-item>
-
-          <el-form-item label="客户类型" prop="customerType">
-            <el-checkbox-group v-model="form.sendGender" :disabled="form.sendScope == 0">
-              <el-checkbox v-for="(item, index) in { 1: '微信用户', 2: '企业用户' }" :key="key" :label="key">
-                {{ item }}
-              </el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-
-          <el-form-item label="客户性别" prop="sendGender">
-            <el-checkbox-group v-model="form.sendGender" :disabled="form.sendScope == 0">
-              <el-checkbox v-for="(sendGender, index) in sendGenderOptions" :key="index" :label="sendGender.value">
-                {{ sendGender.label }}
-              </el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-
-          <el-form-item label="添加时间">
-            <el-date-picker
-              v-model="dateRange"
-              value-format="YYYY-MM-DD"
-              type="daterange"
-              v-bind="pickerOptions"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              align="right"
-              :disabled="form.sendScope == 0"></el-date-picker>
-          </el-form-item>
-
-          <el-form-item label="客户标签" prop="tagList">
-            <el-button type="primary" @click="dialogVisibleSelectTag = true" :disabled="form.sendScope == 0">
-              选择标签
-            </el-button>
-            <SelectTag v-model:visible="dialogVisibleSelectTag" :selected="tags" @success="submitSelectTag"></SelectTag>
-
-            <div>
-              <el-radio-group v-model="isContain" @change="">
-                <el-radio
-                  v-for="(item, key) in { 1: '包含全部选中标签', 2: '包含全部选中标签', 3: '包含全部选中标签' }"
-                  :key="key"
-                  :label="key">
-                  {{ item }}
-                </el-radio>
-              </el-radio-group>
-            </div>
-
-            <TagEllipsis :list="form.tags" limit="10"></TagEllipsis>
-          </el-form-item>
-          <el-form-item label="商机阶段" prop="sendType">
-            <el-select v-model="query.sendType" placeholder="请选择">
-              <el-option
-                v-for="(sendType, index) in sendTypeOptions"
-                :label="sendType.label"
-                :value="sendType.value"
-                :key="index"></el-option>
-            </el-select>
-          </el-form-item>
+          <CustomerRangeForm :form="form.weCustomersQuery" label-width="100px" />
         </template>
       </div>
 
@@ -147,25 +87,6 @@
             <template #tip><div>支持jpg/jpeg/png格式，图片大小不超过2M</div></template>
           </upload>
         </el-form-item>
-        <!-- <el-form-item label="发送方式" prop="sendType">
-        <el-radio-group v-model="form.sendType">
-          <el-radio
-            v-for="(sendType, index) in sendTypeOptions"
-            :key="index"
-            :label="sendType.value"
-            >{{ sendType.label }}</el-radio
-          >
-
-          <div class="tip">
-            注：客户每天只能接收来自一名成员的一条群发消息，每月最多接收来自同一企业的四条群发消息。
-          </div>
-        </el-radio-group>
-      </el-form-item> -->
-
-        <el-form-item label=" ">
-          <el-button type="primary" @click="submit">保存</el-button>
-          <el-button @click="$router.back()">取消</el-button>
-        </el-form-item>
       </div>
       <div class="g-footer-sticky" style="z-index: 10" v-if="!isDetail">
         <el-button type="primary" @click="submit">保存</el-button>
@@ -176,36 +97,33 @@
       <div class="preview-wrap g-card mt0 sticky-t">
         <div class="g-card-title">预览</div>
         <PhoneDialog :message="form.welcomeMsg || '请输入加群引导语'">
-          <el-image
-            style="border-radius: 6px; width: 100px"
-            v-if="groupQrCode?.codeUrl"
-            :src="groupQrCode?.codeUrl"></el-image>
+          <template v-if="form.linkTitle">
+            <div style="line-height: 1.5">
+              <div class="msg-title">{{ form.linkTitle }}</div>
+              <div class="msg-content">
+                <div class="msg-desc">{{ form.linkDesc }}</div>
+                <el-image class="phone-dialog-image fxnone" :src="form.linkCoverUrl" fit="contain"></el-image>
+              </div>
+            </div>
+          </template>
         </PhoneDialog>
       </div>
     </div>
-
-    <!-- 选择群活码弹窗 -->
-    <!-- <SelectQrCode
-      v-model:visible="dialogVisibleSelectQrCode"
-      @success="submitSelectQrCode"
-      :selected="codes"></SelectQrCode> -->
   </div>
 </template>
 
 <script>
-import { getDetail, add, update } from '@/api/communityOperating/oldCustomer'
+import { getDetail, add, update } from './api'
 import { getCustomerList } from '@/api/groupMessage'
+import { getList } from '@/api/salesCenter/businessConver.js'
 import PhoneDialog from '@/components/PhoneDialog'
-import SelectTag from '@/components/SelectTag'
-import SelectQrCode from '@/components/SelectQrCode'
 export default {
-  components: { PhoneDialog, SelectTag, SelectQrCode },
+  components: { PhoneDialog, SelectGroup: defineAsyncComponent(() => import('@/components/SelectGroup.vue')) },
   data() {
     return {
       taskId: '',
-      dialogVisibleSelectUser: false,
-      dialogVisibleSelectTag: false,
-      dialogVisibleSelectQrCode: false,
+
+      dialogVisibleSelectGroup: false,
       loading: false,
       // 表单参数
       form: {
@@ -216,9 +134,7 @@ export default {
         tagList: [], // 标签
         scopeList: [], // 员工
         sendScope: 0, // 发送范围
-        sendGender: null, // 发送性别
-        cusBeginTime: '', // 目标客户添加起始时间
-        cusEndTime: '', // 目标客户添加结束时间
+        weCustomersQuery: {},
       },
       tags: [],
       users: [],
@@ -229,26 +145,25 @@ export default {
       //   { label: '企业群发', value: 0 },
       //   { label: '个人群发', value: 1 }
       // ],
-      sendGenderOptions: [
-        // { label: '全部', value: null },
-        { label: '男', value: 1 },
-        { label: '女', value: 2 },
-        { label: '未知', value: 0 },
-      ],
       sendScopeOptions: [
         { label: '全部客户', value: 0 },
         { label: '部分客户', value: 1 },
       ],
       rules: Object.freeze({
-        taskName: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
-        welcomeMsg: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
-        groupCodeId: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
-        // sendType: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
-        sendScope: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
-        tagListValidate: [{ required: true, message: '该项为必填项', trigger: 'change' }],
-        scopeListValidate: [{ required: true, message: '该项为必填项', trigger: 'change' }],
+        taskName: [{ required: true, message: '必填项', trigger: 'blur' }],
+        welcomeMsg: [{ required: true, message: '必填项', trigger: 'blur' }],
+        groups: [{ required: true, message: '必填项', trigger: 'blur' }],
+        // sendType: [{ required: true, message: '必填项', trigger: 'blur' }],
+        sendScope: [{ required: true, message: '必填项', trigger: 'blur' }],
+        linkTitle: [{ required: true, message: '必填项', trigger: 'change' }],
+        linkDesc: [{ required: true, message: '必填项', trigger: 'change' }],
       }),
     }
+  },
+  computed: {
+    isDetail() {
+      return this.$route.path.endsWith('detail')
+    },
   },
   watch: {
     // 日期选择器数据同步至查询参数
@@ -285,6 +200,10 @@ export default {
   created() {
     this.taskId = this.$route.query.id
     this.taskId && this.getDetail(this.taskId)
+
+    getList().then((res) => {
+      this.stageList = res.data
+    })
   },
   methods: {
     /** 获取详情 */
@@ -313,10 +232,6 @@ export default {
 
         this.loading = false
       })
-    },
-    // 选择人员事件
-    submitSelectUser(users) {
-      this.users = users
     },
     // 选择tag事件
     submitSelectTag(tags) {

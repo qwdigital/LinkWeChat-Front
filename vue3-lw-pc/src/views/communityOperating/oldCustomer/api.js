@@ -23,6 +23,24 @@ export function getDetail(id) {
   return request({
     url: service + '/' + id,
     method: 'get',
+  }).then(({ data }) => {
+    // 统一处理数据结构
+
+    let ranges = data.weCustomersQuery
+    let userNames = ranges.userNames?.split(',')
+    let tagNames = ranges.tagNames?.split(',')
+    Object.assign(ranges, {
+      genders: ranges.genders?.split(','),
+      customerTypes: ranges.genders?.split(','),
+      users: ranges.userIds?.split(',').map((e, i) => ({ userId: e, name: userNames?.[i] })),
+      tags: ranges.tagIds?.split(',').map((e, i) => ({ tagId: e, name: tagNames?.[i] })),
+      dateRange: [ranges.beginTime, ranges.endTime],
+    })
+
+    let names = data.groupNames?.split(',')
+    data.groups = data.chatIdList?.split(',').map((e, i) => ({ chatId: e, groupName: names?.[i] }))
+
+    return { data }
   })
 }
 
@@ -47,10 +65,10 @@ export function getDetail(id) {
     "sendScope": 0, //发送范围 0: 全部客户 1：部分客户
     "isAll": false, //是否全部发送 true全部发送,false非全部发送
     "weCustomersQuery": { //客户查询条件
-        "gender": 0, //0-未知 1-男性 2-女性
+        "genders": 0, //0-未知 1-男性 2-女性
         "trackState": 0, //跟踪状态 1:待跟进;2:跟进中;3:已成交;4:无意向;5:已流失
         "addMethod": 0, //添加方式
-        "customerType": 0, //客户类型 1:微信用户，2:企业用户
+        "customerTypes": 0, //客户类型 1:微信用户，2:企业用户
         "externalUserid": "", //客户id
         "firstUserId": "", //跟进人id
         "delFlag": 0, //0正常；1:删除;
@@ -101,6 +119,23 @@ export function getDetail(id) {
 }
  */
 export function add(data) {
+  let ranges = data.weCustomersQuery
+  data = Object.assign({}, data, {
+    chatIdList: data.groups?.map((e) => e.chatId)?.join(','),
+    groupNames: data.groups?.map((e) => e.groupName)?.join(','),
+  })
+
+  data.weCustomersQuery = Object.assign({}, ranges, {
+    genders: ranges.genders?.join(','),
+    customerTypes: ranges.genders?.join(','),
+    tagIds: ranges.tags?.map((e) => e.tagId)?.join(','),
+    tagNames: ranges.tags?.map((e) => e.name)?.join(','),
+    userIds: ranges.users?.map((e) => e.userId)?.join(','),
+    userNames: ranges.users?.map((e) => e.name)?.join(','),
+    beginTime: ranges.dateRange?.[0],
+    endTime: ranges.dateRange?.[1],
+  })
+
   return request({
     url: service + '/add',
     method: 'post',
