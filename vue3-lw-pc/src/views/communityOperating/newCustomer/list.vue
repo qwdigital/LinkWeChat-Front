@@ -99,14 +99,15 @@ export default {
 
 <template>
   <div>
-    <el-form ref="queryForm" :inline="true" :model="query" class="top-search">
-      <el-form-item label="活码名称" prop="codeName">
-        <el-input clearable v-model="query.codeName" placeholder="请输入"></el-input>
-      </el-form-item>
-      <!-- <el-form-item label="创建人" prop="createBy">
+    <RequestChartTable ref="table" :request="(params) => (Object.assign(params, query), getList(params))">
+      <template #query="{ query }">
+        <el-form-item label="活码名称" prop="codeName">
+          <el-input clearable v-model="query.codeName" placeholder="请输入"></el-input>
+        </el-form-item>
+        <!-- <el-form-item label="创建人" prop="createBy">
         <el-input clearable v-model="query.createBy" placeholder="请输入"></el-input>
       </el-form-item> -->
-      <!-- <el-form-item label="创建时间">
+        <!-- <el-form-item label="创建时间">
         <el-date-picker
           clearable
           v-model="dateRange"
@@ -118,12 +119,8 @@ export default {
           end-placeholder="结束日期"
           align="right"></el-date-picker>
       </el-form-item> -->
-      <SearchResetButton
-        :search="() => $refs.table.getList()"
-        :reset="() => $refs.queryForm.resetFields()"></SearchResetButton>
-    </el-form>
+      </template>
 
-    <RequestChartTable ref="table" :request="(params) => (Object.assign(params, query), getList(params))">
       <template #operation>
         <div class="fxbw">
           <el-button type="primary" @click="goRoute()">新建活码</el-button>

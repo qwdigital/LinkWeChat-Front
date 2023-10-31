@@ -21,15 +21,17 @@ export default {
         // users: [],
         // tags: [], // 客户标签
       },
-      codes: [],
-      groupQrCode: {},
+      // codes: [],
+      // groupQrCode: {},
       rules: Object.freeze({
         codeName: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
         users: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
         tags: [{ required: true, message: '该项为必填项', trigger: 'change' }],
-        groups: [{ required: true, message: '该项为必填项', trigger: 'change' }],
-        groupCodeId: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
         welcomeMsg: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
+        groups: [{ required: true, message: '该项为必填项', trigger: 'change' }],
+        linkTitle: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
+        linkDesc: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
+        // groupCodeId: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
       }),
     }
   },
@@ -63,15 +65,15 @@ export default {
       getDetail(id).then(({ data }) => {
         this.form = data
 
-        if (data.groupCodeInfo && data.groupCodeInfo.id) {
-          this.codes = [data.groupCodeInfo]
-          this.groupQrCode = data.groupCodeInfo
-          this.form.groupCodeId = data.groupCodeInfo.id
-        } else {
-          this.codes = []
-          this.groupQrCode = {}
-          this.form.groupCodeId = ''
-        }
+        // if (data.groupCodeInfo && data.groupCodeInfo.id) {
+        //   this.codes = [data.groupCodeInfo]
+        //   this.groupQrCode = data.groupCodeInfo
+        //   this.form.groupCodeId = data.groupCodeInfo.id
+        // } else {
+        //   this.codes = []
+        //   this.groupQrCode = {}
+        //   this.form.groupCodeId = ''
+        // }
 
         this.loading = false
       })
@@ -129,20 +131,23 @@ export default {
         <div class="g-card">
           <div class="g-card-title fxbw">
             基础信息
-            <el-button
+            <el-tag
+              class="cp"
               v-if="isDetail"
-              type="primary"
+              size="large"
+              effect="dark"
               @click="$router.push({ path: './aev', query: { id: $route.query.id } })">
               编辑
-            </el-button>
+            </el-tag>
           </div>
           <el-form-item label="活码名称" prop="codeName">
             <el-input v-model="form.codeName" maxlength="30" show-word-limit placeholder="请输入" clearable></el-input>
           </el-form-item>
           <el-form-item label="使用员工" prop="users">
-            <el-button type="primary" @click="dialogVisibleSelectUser = true">选择员工</el-button>
-            <br />
-            <TagEllipsis :list="form.users" limit="10"></TagEllipsis>
+            <div v-if="!isDetail">
+              <el-button type="primary" @click="dialogVisibleSelectUser = true">选择员工</el-button>
+            </div>
+            <TagEllipsis :list="form.users" limit="10" emptyText></TagEllipsis>
           </el-form-item>
 
           <!-- <el-form-item label="选择群活码" prop="groupCodeId">
@@ -157,9 +162,11 @@ export default {
           </el-form-item> -->
           <el-form-item label="入群标签" prop="tags">
             <!-- closable -->
-            <el-button type="primary" @click="dialogVisibleSelectTag = true">选择标签</el-button>
-            <div class="g-tip">通过此群活码进群的客户自动打上标签</div>
-            <TagEllipsis :list="form.tags" limit="10"></TagEllipsis>
+            <template v-if="!isDetail">
+              <el-button type="primary" @click="dialogVisibleSelectTag = true">选择标签</el-button>
+              <div class="g-tip">通过此群活码进群的客户自动打上标签</div>
+            </template>
+            <TagEllipsis :list="form.tags" limit="10" emptyText></TagEllipsis>
           </el-form-item>
           <el-form-item label="添加设置" prop="skipVerify">
             <el-checkbox v-model="form.skipVerify">客户添加时无需经过确认自动成为好友</el-checkbox>
@@ -178,9 +185,11 @@ export default {
               clearable></TextareaExtend>
           </el-form-item>
           <el-form-item label="活码客群:" prop="groups">
-            <el-button type="primary" @click="dialogVisibleSelectGroup = true">选择客群</el-button>
-            <div class="g-tip">最多选择五个客群</div>
-            <TagEllipsis :list="form.groups" limit="5" defaultProps="groupName"></TagEllipsis>
+            <template v-if="!isDetail">
+              <el-button type="primary" @click="dialogVisibleSelectGroup = true">选择客群</el-button>
+              <div class="g-tip">最多选择五个客群</div>
+            </template>
+            <TagEllipsis :list="form.groups" limit="5" defaultProps="groupName" emptyText></TagEllipsis>
           </el-form-item>
 
           <el-form-item label="群满自动建群:">

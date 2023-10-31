@@ -127,39 +127,41 @@ export default {
 </script>
 
 <template>
-  <el-form v-if="$slots.query" :model="query" ref="queryForm" inline class="top-search">
-    <slot name="query" v-bind="{ query }"></slot>
-    <SearchResetButton :search="getList" :reset="() => $refs.queryForm.resetFields()"></SearchResetButton>
-  </el-form>
-  <div class="RequestChartTable g-card">
-    <div class="g-card-title" v-if="title">{{ title }}</div>
+  <div class="RequestChartTable" :class="$slots.query || 'g-card'" v-loading="loading">
+    <!-- 顶部查询框 -->
+    <el-form v-if="$slots.query" :model="query" ref="queryForm" inline class="top-search">
+      <slot name="query" v-bind="{ query }"></slot>
+      <SearchResetButton :search="getList" :reset="() => $refs.queryForm.resetFields()"></SearchResetButton>
+    </el-form>
 
-    <div
-      class="RequestChartTable-operation"
-      v-if="requestExport || isTimeQuery || $slots.queryMiddle || $slots.operation">
-      <SearchTitle
-        style="display: inline-block"
-        v-if="isTimeQuery"
-        @search="(data) => (Object.assign(query, data), getList(1))"></SearchTitle>
+    <div :class="$slots.query && 'g-card'">
+      <div class="g-card-title" v-if="title">{{ title }}</div>
 
-      <el-form v-if="$slots.queryMiddle" :model="query" ref="queryFormMiddle" inline class="query-wrap">
-        <slot name="queryMiddle" v-bind="{ query }"></slot>
-        <SearchResetButton :search="getList" :reset="() => $refs.queryFormMiddle.resetFields()"></SearchResetButton>
-      </el-form>
-      <!-- 操作slot -->
+      <div
+        class="RequestChartTable-operation"
+        v-if="requestExport || isTimeQuery || $slots.queryMiddle || $slots.operation">
+        <SearchTitle
+          style="display: inline-flex"
+          v-if="isTimeQuery"
+          @search="(data) => (Object.assign(query, data), getList(1))"></SearchTitle>
 
-      <slot name="operation"></slot>
+        <el-form v-if="$slots.queryMiddle" :model="query" ref="queryFormMiddle" inline class="query-wrap">
+          <slot name="queryMiddle" v-bind="{ query }"></slot>
+          <SearchResetButton :search="getList" :reset="() => $refs.queryFormMiddle.resetFields()"></SearchResetButton>
+        </el-form>
+        <!-- 操作slot -->
 
-      <el-button
-        v-if="requestExport"
-        class="export fr"
-        type="primary"
-        @click="$exportData(requestExport.bind(null, query), exportFileName)">
-        导出 Excel
-      </el-button>
-    </div>
+        <slot name="operation"></slot>
 
-    <div v-loading="loading">
+        <el-button
+          v-if="requestExport"
+          class="export fr"
+          type="primary"
+          @click="$exportData(requestExport.bind(null, query), exportFileName)">
+          导出 Excel
+        </el-button>
+      </div>
+
       <!-- 折线图 -->
       <ChartLine v-if="type == 'lineChart'" :xData="xData" :legend="legend" :series="data" :option="option"></ChartLine>
 
@@ -171,7 +173,7 @@ export default {
         <slot :data="data"></slot>
 
         <pagination
-          style="margin-bottom: -20px"
+          style="bottom: 0; margin-bottom: -20px"
           :total="total"
           v-model:page="query.pageNum"
           v-model:limit="query.pageSize"
@@ -182,6 +184,9 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+.g-card {
+  overflow: initial;
+}
 .RequestChartTable-operation {
   position: relative;
   overflow: auto;
