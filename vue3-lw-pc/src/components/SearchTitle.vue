@@ -74,7 +74,7 @@ export default {
   display: flex;
   align-items: center;
   .item {
-    margin-right: 20px;
+    margin-right: var(--card-margin);
   }
 }
 </style>

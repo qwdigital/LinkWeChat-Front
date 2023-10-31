@@ -15,9 +15,9 @@
       title="数据明细"
       ref="importRecord"
       :request="getDataDetail"
-      :requestExport="api.getDataDetailExport"
+      :requestExport="(query) => ((query.id = $route.query.id), api.getDataDetailExport(query))"
       exportFileName="新客拉群数据明细导出.xls">
-      <template #query="{ query }">
+      <template #queryMiddle="{ query }">
         <el-form-item label="" prop="customerName">
           <el-input v-model="query.customerName" placeholder="请输入客户名称"></el-input>
         </el-form-item>
@@ -50,7 +50,11 @@
         </el-form-item>
         <el-form-item label="" prop="chatId">
           <el-select v-model="query.chatId" placeholder="请选择客群">
-            <el-option v-for="(item, index) in dictAddStatus" :key="index" :label="item" :value="index"></el-option>
+            <el-option
+              v-for="(item, index) in groups"
+              :key="index"
+              :label="item.groupName"
+              :value="item.chatId"></el-option>
           </el-select>
         </el-form-item>
       </template>
@@ -81,13 +85,15 @@ import { useRoute } from 'vue-router'
 import * as api from './api'
 
 let loading = ref(false)
+let id = useRoute().query.id
 let cardData = ref([])
+let groups = []
 let dictAddStatus = { 0: '未进群', 1: '已进群' }
 // 获取指标数据
 ;(function getStatistic() {
   loading.value = true
   api
-    .getStatistic(useRoute().query.id)
+    .getStatistic(id)
     .then(({ data }) => {
       cardData.value = [
         {
@@ -134,6 +140,7 @@ function dealDataTrend(data, series, xData) {
 
 // 数据明细
 function getDataDetail(query) {
+  query.id = id
   if (query.dateRangeAddTime) {
     query.startAddTime = query.dateRangeAddTime[0]
     query.endAddTime = query.dateRangeAddTime[1]
@@ -160,6 +167,13 @@ function gotoRoute(row) {
     query: { externalUserid: row.externalUserid, userId: row.addUserId },
   })
 }
+
+/** 获取详情 */
+;(function getDetail() {
+  api.getDetail(id).then(({ data }) => {
+    groups = data.groups
+  })
+})()
 </script>
 
 <style lang="scss" scoped></style>
