@@ -26,7 +26,7 @@ export default {
       rules: Object.freeze({
         codeName: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
         users: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
-        tags: [{ required: true, message: '该项为必填项', trigger: 'change' }],
+        // tags: [{ required: true, message: '该项为必填项', trigger: 'change' }],
         welcomeMsg: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
         groups: [{ required: true, message: '该项为必填项', trigger: 'change' }],
         linkTitle: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
@@ -213,7 +213,14 @@ export default {
             <el-input v-model="form.linkTitle" maxlength="20" show-word-limit placeholder="请输入" clearable></el-input>
           </el-form-item>
           <el-form-item label="链接描述" prop="linkDesc">
-            <el-input v-model="form.linkDesc" maxlength="30" show-word-limit placeholder="请输入" clearable></el-input>
+            <el-input
+              v-model="form.linkDesc"
+              maxlength="30"
+              show-word-limit
+              placeholder="请输入"
+              clearable
+              type="textarea"
+              :autosize="{ minRows: 5, maxRows: 20 }"></el-input>
           </el-form-item>
           <el-form-item label="链接封面" prop="linkCoverUrl">
             <upload v-model:fileUrl="form.linkCoverUrl" type="0" :maxSize="2" :format="['jpg', 'jpeg', 'png']">
