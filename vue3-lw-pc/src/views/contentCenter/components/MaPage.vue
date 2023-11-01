@@ -535,6 +535,7 @@ export default {
         if (res.code === 200) {
           this.$message.success(res.msg)
           // this.getCodeCategoryListFn()
+          this.groupDialogVisible = false
           this.getTree()
           this.getList(1)
           this.group = ''
@@ -641,7 +642,7 @@ export default {
                 <el-button @click="importText" plain v-if="type === '4'">导入文本</el-button>
               </div>
               <div class="">
-                <el-popover placement="top" width="260" v-model="groupDialogVisible">
+                <el-popover placement="top" width="260" :visible="groupDialogVisible">
                   <div>选择分组</div>
                   <div style="position: relative; margin: 10px 0">
                     <el-cascader v-model="group" :options="treeData[0].children" :props="groupProps"></el-cascader>
@@ -651,7 +652,11 @@ export default {
                     <el-button type="primary" @click="moveGroup">确定</el-button>
                   </div>
                   <template #reference>
-                    <el-button style="margin-right: 10px" :disabled="selected.length === 0" type="primary">
+                    <el-button
+                      @click="groupDialogVisible = true"
+                      style="margin-right: 10px"
+                      :disabled="selected.length === 0"
+                      type="primary">
                       批量分组
                     </el-button>
                   </template>
@@ -855,7 +860,7 @@ export default {
                 </Upload>
               </el-form-item>
               <el-form-item label="外链预览">
-                <iframe class="iframe" :src="form.materialUrl"></iframe>
+                <iframe class="iframe" v-if="form.materialUrl" :src="form.materialUrl" :key="form.materialUrl"></iframe>
               </el-form-item>
             </template>
 
