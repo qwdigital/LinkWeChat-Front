@@ -625,12 +625,17 @@ export default {
             :placeholder="'请输入' + typeTitle[type] + '标题'"
             clearable
             prefix-icon="el-icon-search"
-            style="width: 300px"
+            style="width: 240px"
             @keyup.enter="getList(1)" />
-          <el-select v-model="query.type" placeholder="请选择海报类型" class="ml20" v-if="type === '5'">
+          <el-select
+            v-model="query.type"
+            style="width: 240px"
+            placeholder="请选择海报类型"
+            class="ml10"
+            v-if="type === '5'">
             <el-option v-for="item in posterType" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
-          <el-button style="margin-left: 10px" type="primary" @click="getList(1)">查询</el-button>
+          <el-button class="ml10" type="primary" @click="getList(1)">查询</el-button>
           <el-button @click="resetQuery">重置</el-button>
         </div>
         <div class="mt20 g-card pad20">
@@ -720,9 +725,7 @@ export default {
             <el-form-item label="客户标签" v-if="[2, 3, 8, 9, 13, 19].includes(+type)">
               <TagEllipsis :list="form.tags" limit="4"></TagEllipsis>
               <div>
-                <el-button type="primary" @click="dialogVisibleSelectTag = true">
-                  {{ form.tags?.length ? '编辑' : '添加' }}标签
-                </el-button>
+                <el-button type="primary" @click="dialogVisibleSelectTag = true">选择标签</el-button>
                 <!-- 选择标签弹窗 -->
                 <SelectTag
                   v-model:visible="dialogVisibleSelectTag"
