@@ -220,7 +220,7 @@ export default {
               placeholder="请输入"
               clearable
               type="textarea"
-              :autosize="{ minRows: 5, maxRows: 20 }"></el-input>
+              :autosize="{ minRows: 3, maxRows: 20 }"></el-input>
           </el-form-item>
           <el-form-item label="链接封面" prop="linkCoverUrl">
             <upload v-model:fileUrl="form.linkCoverUrl" type="0" :maxSize="2" :format="['jpg', 'jpeg', 'png']">
