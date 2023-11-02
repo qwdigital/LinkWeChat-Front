@@ -19,14 +19,12 @@ export default {
 </script>
 
 <template>
-  <el-tabs v-model="active">
-    <el-tab-pane label="活码信息">
-      <aev />
-    </el-tab-pane>
-    <el-tab-pane label="拉群统计">
-      <statistics />
-    </el-tab-pane>
+  <el-tabs class="sticky-t" v-model="active">
+    <el-tab-pane label="活码信息"></el-tab-pane>
+    <el-tab-pane label="拉群统计"></el-tab-pane>
   </el-tabs>
+  <aev v-show="active == 0" />
+  <statistics v-show="active == 1" />
 </template>
 
 <style lang="scss" scoped></style>

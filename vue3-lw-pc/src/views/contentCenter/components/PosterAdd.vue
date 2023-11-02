@@ -6,16 +6,16 @@
         <div class="g-card fxbw">
           <div style="width: 100%">
             <el-form ref="form" :rules="rules" :model="form" label-width="100px">
-              <el-form-item label="选择分组：" prop="categoryId" v-if="!moduleType">
+              <el-form-item label="选择分组" prop="categoryId" v-if="!moduleType">
                 <el-cascader
                   v-model="form.categoryId"
                   :options="treeData[0].children"
                   :props="groupProps"></el-cascader>
               </el-form-item>
-              <el-form-item label="海报标题：" prop="materialName">
+              <el-form-item label="海报标题" prop="materialName">
                 <el-input v-model="form.materialName" placeholder="海报标题" :maxlength="60" show-word-limit></el-input>
               </el-form-item>
-              <el-form-item label="海报描述：">
+              <el-form-item label="海报描述">
                 <el-input
                   v-model="form.digest"
                   type="textarea"
@@ -23,7 +23,19 @@
                   :maxlength="100"
                   show-word-limit></el-input>
               </el-form-item>
-              <el-form-item label="海报类型：" prop="type" v-if="!moduleType">
+              <el-form-item label="客户标签">
+                <TagEllipsis :list="form.tags" limit="4"></TagEllipsis>
+                <div>
+                  <el-button type="primary" @click="dialogVisibleSelectTag = true">选择标签</el-button>
+                  <!-- 选择标签弹窗 -->
+                  <SelectTag
+                    v-model:visible="dialogVisibleSelectTag"
+                    :defaultValues="form.tags"
+                    @success="(data) => (form.tags = data)"></SelectTag>
+                </div>
+                <div class="g-tip">素材打开后，该客户将会自动设置以上选择标签</div>
+              </el-form-item>
+              <el-form-item label="海报类型" prop="type" v-if="!moduleType">
                 <el-radio-group v-model="form.type" @change="radioChange">
                   <el-radio label="1">通用海报</el-radio>
                   <el-radio label="2">裂变海报</el-radio>
@@ -33,7 +45,7 @@
                   <span v-else>裂变海报主要用于全能营销裂变模块</span>
                 </div>
               </el-form-item>
-              <el-form-item label="上传海报：" :required="true" :error="rangeErrorMsg">
+              <el-form-item label="上传海报" :required="true" :error="rangeErrorMsg">
                 <!-- <div v-if="form.backgroundImgPath">
                   <el-image
                     style="width: 100px; height: 100px; cursor: pointer; border-radius: 6px"
@@ -213,7 +225,7 @@
     <!-- 点击图片按钮弹出弹框 -->
     <el-dialog title="添加图片" v-model="dialogVisible" width="30%" :before-close="imgCancel">
       <el-form :model="formDate" ref="picValidateForm" label-width="120px">
-        <el-form-item label="添加图片：" :required="true" :error="picErrorMsg">
+        <el-form-item label="添加图片" :required="true" :error="picErrorMsg">
           <div v-if="formDate.imgUrl">
             <el-image
               style="width: 100px; height: 100px; cursor: pointer; border-radius: 6px"
@@ -316,6 +328,9 @@ export default {
       },
       dialogVisible: false,
       flage: false, // 判断是否点击上传海报按钮
+
+      dialogVisibleSelectTag: false,
+      selectedTagList: [],
     }
   },
   props: {
@@ -424,6 +439,7 @@ export default {
           const res = await getPosterInfo(item)
           const data = res.data || {}
           // // console.log('getPosterInfo', data)
+          let tagNames = data.tagNames?.split(',')
           this.form = {
             id: data.id,
             title: data.title,
@@ -436,6 +452,7 @@ export default {
             posterJSON: JSON.parse(data.otherField),
             width: data.width,
             height: data.height,
+            tags: data.tagIds?.split(',').map((e, i) => ({ tagId: e, name: tagNames?.[i] })),
           }
           this.posterSubassemblyList = data.posterSubassemblyList || []
           let items = JSON.parse(JSON.stringify(JSON.parse(data.otherField).objects))
@@ -813,6 +830,8 @@ export default {
         if (valid) {
           let laoding = this.$loading()
           const form = this.form
+          debugger
+          form.tagIds = form.tags?.map((item, index) => item.tagId) + ''
           form.posterJSON = this.canvas.toJSON(['customType'])
           let list = form.posterJSON.objects
           form.otherField = JSON.stringify(form.posterJSON)

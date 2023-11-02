@@ -67,11 +67,24 @@
           <el-table-column align="center" prop="isJoinGroup" label="是否进群">
             <template #default="{ row }">{{ dictAddStatus[row.isJoinGroup] }}</template>
           </el-table-column>
-          <el-table-column align="center" prop="groupName" label="进入客群"></el-table-column>
-          <el-table-column align="center" prop="joinTime" label="进群时间"></el-table-column>
+          <el-table-column align="center" prop="groupName" label="进入客群">
+            <template #default="{ row }">{{ row.groupName || '—' }}</template>
+          </el-table-column>
+          <el-table-column align="center" prop="joinTime" label="进群时间">
+            <template #default="{ row }">{{ row.joinTime || '—' }}</template>
+          </el-table-column>
           <el-table-column label="操作" align="center">
             <template #default="{ row }">
-              <el-button text @click="gotoRoute(row)">详情</el-button>
+              <el-button
+                text
+                @click="
+                  $router.push({
+                    name: lwConfig.CUSTOMER_DETAIL_ROUTE_NAME,
+                    query: { externalUserid: row.externalUserid, userId: row.addUserId },
+                  })
+                ">
+                客户详情
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -81,7 +94,7 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import * as api from './api'
 
 let loading = ref(false)
@@ -99,23 +112,23 @@ let dictAddStatus = { 0: '未进群', 1: '已进群' }
         {
           title: '添加客户总数',
           tips: '通过此活码添加的客户总数(去重)',
-          value: data.totalNum,
+          value: data.addCustomerNumber,
         },
         {
           title: '进群客户总数',
           tips: '添加客户中成功进群的总数(去重)',
-          value: data.customerNum,
+          value: data.joinGroupCustomerNumber,
         },
         {
           title: '今日添加客户数',
           tips: '今日通过此活码添加的客户数(去重)',
           // tips: '当日内被员工产生过跟进行为的客户人数（去重）',
-          value: data.followNum,
+          value: data.tdAddCustomerNumber,
         },
         {
           title: '今日进群客户数',
           tips: '今日添加客户中成功进群数(去重)',
-          value: data.conversionRate,
+          value: data.tdJoinGroupCustomerNumber,
           // unit: '%',
         },
       ]
@@ -159,13 +172,6 @@ function getDataDetail(query) {
   }
   delete query.dateRangeJoinTime
   return api.getDataDetail(query)
-}
-
-function gotoRoute(row) {
-  this.$router.push({
-    name: window.lwConfig.CUSTOMER_DETAIL_ROUTE_NAME,
-    query: { externalUserid: row.externalUserid, userId: row.addUserId },
-  })
 }
 
 /** 获取详情 */

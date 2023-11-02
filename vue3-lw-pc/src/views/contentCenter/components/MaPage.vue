@@ -535,6 +535,7 @@ export default {
         if (res.code === 200) {
           this.$message.success(res.msg)
           // this.getCodeCategoryListFn()
+          this.groupDialogVisible = false
           this.getTree()
           this.getList(1)
           this.group = ''
@@ -624,12 +625,17 @@ export default {
             :placeholder="'请输入' + typeTitle[type] + '标题'"
             clearable
             prefix-icon="el-icon-search"
-            style="width: 300px"
+            style="width: 240px"
             @keyup.enter="getList(1)" />
-          <el-select v-model="query.type" placeholder="请选择海报类型" class="ml20" v-if="type === '5'">
+          <el-select
+            v-model="query.type"
+            style="width: 240px"
+            placeholder="请选择海报类型"
+            class="ml10"
+            v-if="type === '5'">
             <el-option v-for="item in posterType" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
-          <el-button style="margin-left: 10px" type="primary" @click="getList(1)">查询</el-button>
+          <el-button class="ml10" type="primary" @click="getList(1)">查询</el-button>
           <el-button @click="resetQuery">重置</el-button>
         </div>
         <div class="mt20 g-card pad20">
@@ -641,7 +647,7 @@ export default {
                 <el-button @click="importText" plain v-if="type === '4'">导入文本</el-button>
               </div>
               <div class="">
-                <el-popover placement="top" width="260" v-model="groupDialogVisible">
+                <el-popover placement="top" width="260" :visible="groupDialogVisible">
                   <div>选择分组</div>
                   <div style="position: relative; margin: 10px 0">
                     <el-cascader v-model="group" :options="treeData[0].children" :props="groupProps"></el-cascader>
@@ -651,7 +657,11 @@ export default {
                     <el-button type="primary" @click="moveGroup">确定</el-button>
                   </div>
                   <template #reference>
-                    <el-button style="margin-right: 10px" :disabled="selected.length === 0" type="primary">
+                    <el-button
+                      @click="groupDialogVisible = true"
+                      style="margin-right: 10px"
+                      :disabled="selected.length === 0"
+                      type="primary">
                       批量分组
                     </el-button>
                   </template>
@@ -715,9 +725,7 @@ export default {
             <el-form-item label="客户标签" v-if="[2, 3, 8, 9, 13, 19].includes(+type)">
               <TagEllipsis :list="form.tags" limit="4"></TagEllipsis>
               <div>
-                <el-button type="primary" @click="dialogVisibleSelectTag = true">
-                  {{ form.tags?.length ? '编辑' : '添加' }}标签
-                </el-button>
+                <el-button type="primary" @click="dialogVisibleSelectTag = true">选择标签</el-button>
                 <!-- 选择标签弹窗 -->
                 <SelectTag
                   v-model:visible="dialogVisibleSelectTag"
@@ -855,7 +863,7 @@ export default {
                 </Upload>
               </el-form-item>
               <el-form-item label="外链预览">
-                <iframe class="iframe" :src="form.materialUrl"></iframe>
+                <iframe class="iframe" v-if="form.materialUrl" :src="form.materialUrl" :key="form.materialUrl"></iframe>
               </el-form-item>
             </template>
 

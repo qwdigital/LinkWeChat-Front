@@ -1,5 +1,21 @@
 # 更新日志
 
+## v5.12.0
+
+2023.11.01
+
+1. 新客拉群全面升级
+2. 修复 识客活码复制问题
+3. 修复 素材中心批量分组弹窗问题
+4. 修复 iframe 导致的 history 返回问题
+5. 修复 素材中心-文章和海报的客户标签功能
+6. 修复 element button circle 样式重置问题
+7. 修复 移动端-识客活码页面-跳转链接导致接口取消报错问题
+8. TagEllipsis 优化扩展
+9. PhoneDialog 组件去除 isOther props 属性，优化为自动根据 slot 判断
+10. 删除 class-name="small-padding fixed-width"
+11. 其他已知 bug 修复和组件优化
+
 ## v5.11.0
 
 2023.10.26

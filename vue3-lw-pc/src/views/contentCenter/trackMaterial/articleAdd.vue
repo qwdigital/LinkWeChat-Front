@@ -7,28 +7,19 @@
           <el-form-item label-width="0px">
             <!-- 富文本content -->
             <!-- <quill-editor v-model="form.content" ref="myQuillEditor"></quill-editor> -->
-            <DefineQuillEditor
-              :value="form.content"
-              @change="getContent"
-              ref="myQuillEditor"
-            ></DefineQuillEditor>
+            <DefineQuillEditor :value="form.content" @change="getContent" ref="myQuillEditor"></DefineQuillEditor>
           </el-form-item>
         </el-col>
         <el-col :span="6" class="g-card">
           <el-form-item label="选择分组" prop="categoryId">
-            <el-cascader
-              v-model="form.categoryId"
-              :options="treeData[0].children"
-              :props="groupProps"
-            ></el-cascader>
+            <el-cascader v-model="form.categoryId" :options="treeData[0].children" :props="groupProps"></el-cascader>
           </el-form-item>
           <el-form-item label="文章标题" prop="materialName">
             <el-input
               v-model="form.materialName"
               placeholder="请输入文章标题"
               :maxlength="30"
-              show-word-limit
-            ></el-input>
+              show-word-limit></el-input>
           </el-form-item>
 
           <el-form-item label="文章描述">
@@ -37,8 +28,19 @@
               type="textarea"
               placeholder="请输入文章描述"
               :maxlength="100"
-              show-word-limit
-            ></el-input>
+              show-word-limit></el-input>
+          </el-form-item>
+          <el-form-item label="客户标签">
+            <TagEllipsis :list="form.tags" limit="4"></TagEllipsis>
+            <div>
+              <el-button type="primary" @click="dialogVisibleSelectTag = true">选择标签</el-button>
+              <!-- 选择标签弹窗 -->
+              <SelectTag
+                v-model:visible="dialogVisibleSelectTag"
+                :defaultValues="form.tags"
+                @success="(data) => (form.tags = data)"></SelectTag>
+            </div>
+            <div class="g-tip">素材打开后，该客户将会自动设置以上选择标签</div>
           </el-form-item>
           <el-form-item label="文章封面">
             <upload v-model:fileUrl="form.coverUrl" v-model:imgSize="form.memorySize" type="0">
@@ -90,6 +92,9 @@ export default {
         value: 'id',
         emitPath: false,
       },
+
+      dialogVisibleSelectTag: false,
+      selectedTagList: [],
     }
   },
   created() {
@@ -148,6 +153,7 @@ export default {
         if (valid) {
           this.times = setTimeout(() => {
             let form = JSON.parse(JSON.stringify(this.form))
+            form.tagIds = form.tags?.map((item, index) => item.tagId) + ''
             form.mediaType = 12
             if (form.coverUrl) {
               let img = new Image()
@@ -179,9 +185,12 @@ export default {
       let form = {}
       form.mediaType = this.$route.query.type
       form.materialId = this.$route.query.id
+
       getList(form)
         .then(({ rows, total }) => {
           this.form = rows[0]
+          let tagNames = this.form.tagNames?.split(',')
+          this.form.tags = this.form.tagIds?.split(',').map((e, i) => ({ tagId: e, name: tagNames?.[i] }))
           // 此处需要后端返回详情的值
           this.loading = false
         })
