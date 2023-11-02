@@ -26,7 +26,7 @@ export function getDetail(id) {
   }).then(({ data }) => {
     // 统一处理数据结构
 
-    let ranges = data.weCustomersQuery
+    let ranges = data.weCustomersQuery || {}
     let userNames = ranges.userNames?.split(',')
     let tagNames = ranges.tagNames?.split(',')
     Object.assign(ranges, {

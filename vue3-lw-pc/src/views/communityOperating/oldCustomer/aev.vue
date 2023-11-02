@@ -12,14 +12,7 @@
       <div class="g-card">
         <div class="g-card-title fxbw">
           群发设置
-          <el-tag
-            class="cp"
-            v-if="isDetail"
-            size="large"
-            effect="dark"
-            @click="$router.push({ path: './aev', query: { id: $route.query.id } })">
-            同步
-          </el-tag>
+          <el-tag class="cp" v-if="isDetail" size="large" effect="dark" @click="sync">同步</el-tag>
         </div>
 
         <el-form-item label="任务名称" prop="taskName">
@@ -113,15 +106,14 @@
 </template>
 
 <script>
-import { getDetail, add, update } from './api'
+import { getDetail, add, update, sync } from './api'
 import { getCustomerList } from '@/api/groupMessage'
-import { getList } from '@/api/salesCenter/businessConver.js'
 import PhoneDialog from '@/components/PhoneDialog'
 export default {
   components: { PhoneDialog, SelectGroup: defineAsyncComponent(() => import('@/components/SelectGroup.vue')) },
   data() {
     return {
-      taskId: '',
+      id: '',
 
       dialogVisibleSelectGroup: false,
       loading: false,
@@ -198,12 +190,8 @@ export default {
     },
   },
   created() {
-    this.taskId = this.$route.query.id
-    this.taskId && this.getDetail(this.taskId)
-
-    getList().then((res) => {
-      this.stageList = res.data
-    })
+    this.id = this.$route.query.id
+    this.id && this.getDetail(this.id)
   },
   methods: {
     /** 获取详情 */
@@ -233,15 +221,12 @@ export default {
         this.loading = false
       })
     },
-    // 选择tag事件
-    submitSelectTag(tags) {
-      this.tags = tags
-    },
-    // 选择二维码确认按钮
-    submitSelectQrCode(data) {
-      this.groupQrCode = data
-      this.form.groupCodeId = data.id
-      this.$refs.form.validateField('groupCodeId')
+    sync() {
+      this.loading = false
+      sync(this.id).then(() => {
+        this.msgSuccess('操作成功')
+        this.loading = false
+      })
     },
     submit() {
       this.$refs.form.validate((valid) => {
@@ -283,8 +268,8 @@ export default {
       })
     },
     sendData() {
-      if (this.taskId) {
-        update(this.taskId, this.form)
+      if (this.id) {
+        update(this.id, this.form)
           .then(() => {
             this.msgSuccess('更新成功')
             this.loading = false
