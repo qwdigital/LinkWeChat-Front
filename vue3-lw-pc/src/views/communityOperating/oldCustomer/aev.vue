@@ -110,12 +110,7 @@
 
     <div class="preview-wrap g-card mt0">
       <!-- 预览 -->
-      <PhoneDialog :message="form.welcomeMsg || '请输入加群引导语'">
-        <el-image
-          style="border-radius: 6px; width: 100px"
-          v-if="groupQrCode?.codeUrl"
-          :src="groupQrCode?.codeUrl"></el-image>
-      </PhoneDialog>
+      <PhoneDialog :list="[{ text: form.welcomeMsg || '请输入加群引导语' }, { image: groupQrCode.codeUrl }]" />
     </div>
 
     <!-- 选择使用员工弹窗 -->

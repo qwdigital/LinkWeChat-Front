@@ -219,9 +219,7 @@ export default {
       <div class="tip mb20">扫码标签样式</div>
 
       <!-- 预览 -->
-      <PhoneDialog :message="form.welcomeMsg || '请输入欢迎语'">
-        <el-image style="border-radius: 6px" v-if="materialSelected" :src="materialSelected" fit="fill"></el-image>
-      </PhoneDialog>
+      <PhoneDialog :list="[{ text: form.welcomeMsg || '请输入欢迎语' }, { image: materialSelected }]" />
       <div class="tip">欢迎语样式</div>
     </div>
 
