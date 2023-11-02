@@ -21,11 +21,7 @@ export default {
   watch: {},
   computed: {},
   created() {},
-  mounted() {
-    setTimeout(() => {
-      console.log(this.$slots.default())
-    }, 1000)
-  },
+  mounted() {},
   methods: {},
 }
 </script>
