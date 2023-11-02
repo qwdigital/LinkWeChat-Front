@@ -72,8 +72,12 @@
         <div class="g-card" style="height: 100%; display: flex">
           <template v-if="codeType === 1">
             <preview-store-client :showGuide="true" name="专属门店导购" :value="form"></preview-store-client>
-            <preview-client :list="materialData"></preview-client>
+            <PreviewInPhone
+              :list="materialData.attachments"
+              :templateInfo="materialData.welcomeMsg"
+              :liveUrl="liveUrl" />
           </template>
+          .
           <template v-if="codeType === 2">
             <preview-store-client key="1" :showStore="true" name="专属门店群" :value="form"></preview-store-client>
             <preview-store-client key="2" :showTip="true" name="专属门店群" :value="form"></preview-store-client>
@@ -85,7 +89,7 @@
 </template>
 
 <script>
-import PreviewClient from '@/components/previewInMobileClient.vue'
+import PreviewInPhone from '@/components/ContentCenter/PreviewInPhone'
 import PreviewStoreClient from '../components/PreviewInStore.vue'
 
 import { getCode, downloadUrl } from '@/api/drainageCode/store'
@@ -107,12 +111,12 @@ export default {
       },
       materialData: {
         welcomeMsg: '',
-        materialMsgList: [],
+        attachments: [],
       },
     }
   },
   components: {
-    PreviewClient,
+    PreviewInPhone,
     PreviewStoreClient,
   },
   props: {
@@ -156,28 +160,86 @@ export default {
       let arr = []
       if (list && list.length) {
         list.forEach((dd) => {
-          if (dd.msgType === 'image') {
+          if (dd.realType === 0) {
             let obj = {
-              msgType: '0',
+              id: dd.materialId,
+              mediaType: '0',
               materialUrl: dd.picUrl,
             }
             arr.push(obj)
-          } else if (dd.msgType === 'link') {
+          } else if (dd.realType === 2) {
+            let obj = {
+              id: dd.materialId,
+              mediaType: '2',
+              materialUrl: dd.fileUrl,
+              coverUrl: dd.picUrl,
+              digest: dd.description,
+              materialName: dd.title,
+            }
+            arr.push(obj)
+          } else if (dd.realType === 3) {
+            let obj = {
+              id: dd.materialId,
+              mediaType: '3',
+              materialUrl: dd.fileUrl,
+              digest: dd.description,
+              materialName: dd.title,
+            }
+            arr.push(obj)
+          } else if (dd.realType === 4) {
+            let obj = {
+              id: dd.materialId,
+              mediaType: '4',
+              content: dd.content,
+            }
+            arr.push(obj)
+          } else if (dd.realType === 9) {
+            let obj = {
+              id: dd.materialId,
+              mediaType: '9',
+              content: dd.content,
+              coverUrl: dd.picUrl,
+              materialUrl: dd.linkUrl,
+              materialName: dd.title,
+            }
+            arr.push(obj)
+          } else if (dd.realType === 8) {
             let ob = {
-              msgType: '8',
+              id: dd.materialId,
+              mediaType: '8',
               materialName: dd.title,
               materialUrl: dd.linkUrl,
             }
             arr.push(ob)
-          } else if (dd.msgType === 'miniprogram') {
+          } else if (dd.realType === 11) {
             let ff = {
-              msgType: '9',
+              id: dd.materialId,
+              mediaType: '11',
               digest: dd.appId,
               materialName: dd.title,
               coverUrl: dd.picUrl,
-              materialUrl: dd.linkUrl,
+              materialUrl: dd.fileUrl,
             }
             arr.push(ff)
+          } else if (dd.realType === 12) {
+            let ff = {
+              id: dd.materialId,
+              mediaType: '12',
+              digest: dd.description,
+              materialUrl: dd.fileUrl,
+              coverUrl: dd.picUrl,
+              content: dd.content,
+              materialName: dd.title,
+            }
+            arr.push(ff)
+          } else if (dd.realType === 5) {
+            let obj = {
+              id: dd.materialId,
+              mediaType: '5',
+              materialUrl: dd.picUrl,
+              materialName: dd.title,
+            }
+            arr.push(obj)
           }
         })
       }
@@ -197,7 +259,7 @@ export default {
           if (this.form.weQrAttachments && this.form.weQrAttachments.length) {
             this.materialData = {
               welcomeMsg: this.form.weQrAttachments ? this.form.weQrAttachments[0].content : '',
-              materialMsgList: this.form.weQrAttachments ? this.setEditList(this.form.weQrAttachments) : [],
+              attachments: this.form.weQrAttachments ? this.setEditList(this.form.weQrAttachments) : [],
             }
           }
           if (this.form.tagIds) {

@@ -130,16 +130,6 @@
       </el-form>
     </div>
     <div class="g-margin-t" v-if="currentActive === 2">
-      <!-- <welcome-detail
-        v-loading="loading"
-        showBack
-        :showTemplate="false"
-        showMorMaterial
-        isgroup
-         v-model:currentActive="currentActive"
-        @update="currentActive = 1"
-        @submit="save"
-      ></welcome-detail> -->
       <AddMaterial
         :showModle="true"
         :moduleType="4"
@@ -178,17 +168,13 @@ import { add, getCustomerList } from '@/api/groupMessage'
 import { getMaterialMediaId } from '@/api/material'
 import { getList } from '@/api/salesCenter/businessConver.js'
 
-import SelectTag from '@/components/SelectTag'
-import WelcomeDetail from '@/components/WelcomeContent.vue'
 import SelectCustomerGroup from '@/components/SelectCustomerGroup'
 import moment from 'moment'
 import { parseTime } from '@/utils/common'
 import AddMaterial from '@/components/ContentCenter/AddMaterial'
 export default {
   components: {
-    SelectTag,
     //
-    WelcomeDetail,
     SelectCustomerGroup,
     AddMaterial,
   },
