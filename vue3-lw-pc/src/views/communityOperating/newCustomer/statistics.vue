@@ -174,7 +174,7 @@ function getDataDetail(query) {
   return api.getDataDetail(query)
 }
 
-/** 获取详情 */
+/** 获取详情中客群列表 */
 ;(function getDetail() {
   api.getDetail(id).then(({ data }) => {
     groups = data.groups

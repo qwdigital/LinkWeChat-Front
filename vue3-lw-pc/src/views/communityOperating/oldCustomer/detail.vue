@@ -6,9 +6,7 @@ export default {
     statistics: defineAsyncComponent(() => import('./statistics')),
   },
   data() {
-    return {
-      active: this.$route.query.index || '0',
-    }
+    return {}
   },
   computed: {},
   watch: {},
@@ -19,14 +17,14 @@ export default {
 </script>
 
 <template>
-  <el-tabs v-model="active">
+  <CacheElTabs #="{ opened }">
     <el-tab-pane label="任务信息">
       <aev />
     </el-tab-pane>
     <el-tab-pane label="拉群统计">
-      <statistics />
+      <statistics v-if="opened.includes('1')" />
     </el-tab-pane>
-  </el-tabs>
+  </CacheElTabs>
 </template>
 
 <style lang="scss" scoped></style>
