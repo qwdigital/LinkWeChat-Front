@@ -90,7 +90,11 @@
     <div>
       <div class="preview-wrap g-card mt0 sticky-t">
         <div class="g-card-title">预览</div>
-        <PhoneDialog :list="[{ text: form.welcomeMsg || '请输入加群引导语' }, { image: groupQrCode.codeUrl }]" />
+        <PhoneDialog
+          :list="[
+            { text: form.welcomeMsg || '请输入加群引导语' },
+            { title: form.linkTitle, desc: form.linkDesc, image: form.linkCoverUrl },
+          ]" />
       </div>
     </div>
   </div>
@@ -122,7 +126,6 @@ export default {
       tags: [],
       users: [],
       codes: [],
-      groupQrCode: {}, // 选择的群活码链接
       dateRange: [],
       // sendTypeOptions: [
       //   { label: '企业群发', value: 0 },
@@ -189,26 +192,7 @@ export default {
     getDetail(id) {
       this.loading = true
       getDetail(id).then(({ data }) => {
-        this.form.taskName = data.taskName || ''
-        this.form.welcomeMsg = data.welcomeMsg || ''
-        this.form.sendType = data.sendType || 1
-        this.form.sendScope = data.sendScope || 0
-        this.form.sendGender = data.sendGender || 0
-
-        this.tags = data.tagList || []
-        this.users = data.scopeList || []
-        this.dateRange = [data.cusBeginTime || '', data.cusEndTime || '']
-
-        if (data.groupCodeInfo && data.groupCodeInfo.id) {
-          this.codes = [data.groupCodeInfo]
-          this.groupQrCode = data.groupCodeInfo
-          this.form.groupCodeId = this.groupQrCode.id
-        } else {
-          this.codes = []
-          this.groupQrCode = {}
-          this.form.groupCodeId = ''
-        }
-
+        this.form = data
         this.loading = false
       })
     },
@@ -259,27 +243,15 @@ export default {
       })
     },
     sendData() {
-      if (this.id) {
-        update(this.id, this.form)
-          .then(() => {
-            this.msgSuccess('更新成功')
-            this.loading = false
-            this.$router.back()
-          })
-          .catch(() => {
-            this.loading = false
-          })
-      } else {
-        add(this.form)
-          .then(() => {
-            this.msgSuccess('添加成功')
-            this.loading = false
-            this.$router.back()
-          })
-          .catch(() => {
-            this.loading = false
-          })
-      }
+      ;(this.id ? update : add)(this.form)
+        .then(() => {
+          this.msgSuccess('添加成功')
+          this.loading = false
+          this.$router.back()
+        })
+        .catch(() => {
+          this.loading = false
+        })
     },
   },
 }
