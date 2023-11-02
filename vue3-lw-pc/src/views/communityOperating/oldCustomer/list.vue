@@ -95,7 +95,7 @@ export default {
         <el-table-column label="操作" align="center" width="180">
           <template #default="{ row }">
             <el-button text @click="goRoute('detail', row.id)">详情</el-button>
-            <el-button text @click="handleRemove(row.id)">删除</el-button>
+            <el-button text @click="remove(row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
