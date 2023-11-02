@@ -287,17 +287,12 @@ import {
 } from '@/api/drainageCode/smartForms.js'
 import FormsDetail from './build/formsDetail.vue'
 
-import SelectTag from '@/components/SelectTag'
 import SelectMaterial from '@/components/SelectMaterial'
-import WelcomeContent from '@/components/WelcomeContent.vue'
 import Build from './build/index'
 import { dateFormat } from '@/utils/index'
 export default {
   components: {
-    SelectTag,
-
     SelectMaterial,
-    WelcomeContent,
     Build,
     FormsDetail,
   },

@@ -1,6 +1,5 @@
 <template>
-  <div class="preview">
-    <div class="title">{{ name }}</div>
+  <PhoneTemplate :title="name">
     <div class="content">
       <el-select style="width: 100%" disabled v-model="pro">
         <el-option label="安徽省合肥市蜀山区" :value="1"></el-option>
@@ -47,7 +46,7 @@
         </div>
       </template>
     </div>
-  </div>
+  </PhoneTemplate>
 </template>
 <script>
 export default {
@@ -95,51 +94,22 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.preview {
-  margin: 0 auto;
-  position: relative;
-  width: 300px;
-  height: 640px;
-  background: url(../../../assets/drainageCode/preview-bg.png);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-
-  .title {
-    position: absolute;
-    top: 37px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 14px;
-
-    font-weight: 400;
-    color: var(--font-black);
+.content {
+  // text-align: center;
+  padding: 50px 10% 0;
+  // background: #fff;
+  .tip {
+    font-size: 12px;
+    margin-top: 30px;
+    text-align: center;
   }
-
-  .content {
-    // text-align: center;
-    position: absolute;
-    height: 545px;
-    width: 280px;
-    overflow-y: auto;
-    top: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    padding: 20px 10px;
-    .tip {
-      font-size: 12px;
-      margin-top: 30px;
-      text-align: center;
-    }
-    .code_content {
-      margin-top: 10px;
-      text-align: center;
-      .code_img {
-        height: 180px;
-        width: 180px;
-        margin: 10px auto;
-      }
+  .code_content {
+    margin-top: 10px;
+    text-align: center;
+    .code_img {
+      height: 180px;
+      width: 180px;
+      margin: 10px auto;
     }
   }
 }

@@ -222,7 +222,6 @@
           </el-form>
         </el-col>
       </el-row>
-      <!-- <welcome-content v-loading="loading" :showBack="true" @update="currentActive = 2" :baseData="materialData" @submit="getWelData"></welcome-content> -->
       <AddMaterial
         v-if="currentActive === 3"
         :moduleType="4"
@@ -263,17 +262,13 @@
 
 <script>
 import { getDetail, add, update, getCodeCategoryList } from '@/api/drainageCode/staff'
-import SelectTag from '@/components/SelectTag'
 import SelectMaterial from '@/components/SelectMaterial'
-import WelcomeContent from '@/components/WelcomeContent.vue'
 import AddMaterial from '@/components/ContentCenter/AddMaterial'
 import MemeberList from './memberList.vue'
 export default {
   components: {
-    SelectTag,
     MemeberList,
     SelectMaterial,
-    WelcomeContent,
     AddMaterial,
   },
   data() {

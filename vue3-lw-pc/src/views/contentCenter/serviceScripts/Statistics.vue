@@ -37,7 +37,6 @@
 <script>
 import { getCount } from '@/api/contentCenter/common.js'
 import { getTalkMaterial } from '@/api/contentCenter/scriptCenter.js'
-import PreviewClient from '@/components/previewInMobileClient.vue'
 import ChartBar from '@/components/ChartBar.vue'
 import ChartLine from '@/components/ChartLine.vue'
 import SearchTitle from '../components/SearchTitle.vue'
@@ -48,7 +47,6 @@ export default {
     SearchTitle,
     ChartLine,
     ChartBar,
-    PreviewClient,
     DataDetail,
   },
   data() {

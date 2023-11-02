@@ -2,15 +2,9 @@
 export default {
   components: {},
   props: {
-    message: {
-      type: String,
-      default: '',
-    },
-    imageList: {
-      type: Array,
-      default: () => [],
-    },
-    messageList: {
+    // 消息列表 根据text（文字），title（图文），image（图片）字段自动判断类型
+    // 示例：[{ text: form.welcomeMsg || '请输入加群引导语' },{ title: form.linkTitle, desc: form.linkDesc, image: form.linkCoverUrl },]
+    list: {
       type: Array,
       default: () => [],
     },
@@ -27,46 +21,34 @@ export default {
 </script>
 
 <template>
-  <PhoneTemplate>
+  <PhoneTemplate class="PhoneDialog">
     <div class="time">13:14</div>
     <ul class="msg-ul">
-      <li class="flex msg-li">
-        <div class="avatar fxnone">
-          <svg-icon icon="user" />
-        </div>
-        <div class="msg">{{ message }}</div>
-      </li>
+      <template v-for="(item, index) in list" :key="index">
+        <li class="flex msg-li" v-if="item.text || item.image || item.title">
+          <div class="avatar fxnone">
+            <svg-icon icon="user" />
+          </div>
 
-      <!-- 自定义消息 -->
-      <li class="flex msg-li" v-if="$slots.default && Array.isArray($slots.default()[0].children)">
-        <div class="avatar fxnone">
-          <svg-icon icon="user" />
-        </div>
-
-        <div class="msg" style="line-height: 0">
-          <slot></slot>
-        </div>
-      </li>
-      <!-- 文字消息列表 -->
-      <li class="flex msg-li" v-for="message in messageList" :key="message">
-        <div class="avatar fxnone">
-          <svg-icon icon="user" />
-        </div>
-
-        <div class="msg">
-          <slot name="text" :text="message"></slot>
-        </div>
-      </li>
-      <!-- 图片消息列表 -->
-      <li class="flex msg-li" v-for="image in imageList" :key="image">
-        <div class="avatar fxnone">
-          <svg-icon icon="user" />
-        </div>
-
-        <div class="msg" style="line-height: 0; padding: 5px">
-          <slot name="image" :image="image"></slot>
-        </div>
-      </li>
+          <div class="msg">
+            <!-- 根据text（文字），title（图文），image（图片）字段自动判断类型 -->
+            <!-- 文字 -->
+            <span class="msg-text" v-if="item.text">{{ item.text }}</span>
+            <!-- 图文 -->
+            <slot v-else-if="item.title" name="imageText" :msg="item">
+              <div class="msg-image-text">
+                <div class="image-text-title">{{ item.title }}</div>
+                <div class="image-text-content">
+                  <div class="image-text-desc">{{ item.desc }}</div>
+                  <el-image class="image-text-image fxnone" :src="item.image" fit="contain"></el-image>
+                </div>
+              </div>
+            </slot>
+            <!-- 图片 -->
+            <el-image class="msg-image" v-else-if="item.image" :src="item.image" fit="contain" />
+          </div>
+        </li>
+      </template>
     </ul>
   </PhoneTemplate>
 </template>
@@ -129,5 +111,27 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.msg-image-text {
+  .image-text-title {
+    font-weight: 500;
+  }
+  .image-text-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 2px;
+  }
+  .image-text-desc {
+    font-size: 12px;
+    color: var(--font-black-6);
+  }
+  .image-text-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 6px;
+    border: 1px solid var(--border-black-11);
+  }
 }
 </style>

@@ -86,14 +86,11 @@
         <el-button @click="$router.back()">取消</el-button>
       </div>
     </el-form>
+
     <div>
       <div class="preview-wrap g-card mt0 sticky-t">
         <div class="g-card-title">预览</div>
-        <PhoneDialog
-          :imageTextList="[
-            { text: form.welcomeMsg || '请输入加群引导语' },
-            { title: form.linkTitle, desc: form.linkDesc, image: form.linkCoverUrl },
-          ]"></PhoneDialog>
+        <PhoneDialog :list="[{ text: form.welcomeMsg || '请输入加群引导语' }, { image: groupQrCode.codeUrl }]" />
       </div>
     </div>
   </div>

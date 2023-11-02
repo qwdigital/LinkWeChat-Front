@@ -71,7 +71,6 @@
       </el-row>
     </template>
     <template v-if="currentActive === 2">
-      <!-- <welcome-content v-loading="loading" :showBack="true" @update="currentActive = 1" :baseData="materialData" @submit="getWelData"></welcome-content> -->
       <AddMaterial
         :moduleType="4"
         :otherType="4"
@@ -95,9 +94,7 @@
 </template>
 <script>
 import PreviewClient from '../components/PreviewInStore.vue'
-import WelcomeContent from '@/components/WelcomeContent.vue'
 import { addOrUpdateCodeInStore, getCode } from '@/api/drainageCode/store'
-import SelectTag from '@/components/SelectTag'
 import AddMaterial from '@/components/ContentCenter/AddMaterial'
 function validateRadius(rule, value, callback) {
   if (value == '') {
@@ -144,8 +141,6 @@ export default {
   },
   components: {
     PreviewClient,
-    WelcomeContent,
-    SelectTag,
     AddMaterial,
   },
   methods: {
