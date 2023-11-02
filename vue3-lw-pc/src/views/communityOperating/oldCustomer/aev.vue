@@ -89,17 +89,11 @@
     <div>
       <div class="preview-wrap g-card mt0 sticky-t">
         <div class="g-card-title">预览</div>
-        <PhoneDialog :message="form.welcomeMsg || '请输入加群引导语'">
-          <template v-if="form.linkTitle">
-            <div style="line-height: 1.5">
-              <div class="msg-title">{{ form.linkTitle }}</div>
-              <div class="msg-content">
-                <div class="msg-desc">{{ form.linkDesc }}</div>
-                <el-image class="phone-dialog-image fxnone" :src="form.linkCoverUrl" fit="contain"></el-image>
-              </div>
-            </div>
-          </template>
-        </PhoneDialog>
+        <PhoneDialog
+          :imageTextList="[
+            { text: form.welcomeMsg || '请输入加群引导语' },
+            { title: form.linkTitle, desc: form.linkDesc, image: form.linkCoverUrl },
+          ]"></PhoneDialog>
       </div>
     </div>
   </div>
@@ -302,9 +296,5 @@ export default {
   display: table;
   width: 80%;
   margin: 0 auto 20px;
-}
-.phone-dialog-image {
-  border-radius: 6px;
-  width: 100px;
 }
 </style>
