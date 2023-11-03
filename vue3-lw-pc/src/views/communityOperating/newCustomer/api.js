@@ -193,3 +193,19 @@ export function getDataDetailExport(params) {
     responseType: 'blob',
   })
 }
+
+/**
+ * 获取当前客户对应的群
+{
+  id,string,false,,,新客拉群主键
+externalUserid,string,false,,,当前客户的id
+pageNum,integer,false,,,当前记录起始索引
+pageSize,integer,false,,,每页显示记录数
+}
+ */
+export function getCustomerToGroupList(params) {
+  return request({
+    url: service + '/findWeCommunityNewGroupChatTable',
+    params,
+  })
+}
