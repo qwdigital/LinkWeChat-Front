@@ -68,10 +68,11 @@
             <template #default="{ row }">{{ dictAddStatus[row.isJoinGroup] }}</template>
           </el-table-column>
           <el-table-column align="center" prop="groupName" label="进入客群">
-            <template #default="{ row }">{{ row.groupName || '—' }}</template>
-          </el-table-column>
-          <el-table-column align="center" prop="joinTime" label="进群时间">
-            <template #default="{ row }">{{ row.joinTime || '—' }}</template>
+            <template #default="{ row }">
+              <div class="g-color cp" @click=";(externalUserid = row.externalUserid), (dialogVisible = true)">
+                {{ row.joinGroupNumber }}
+              </div>
+            </template>
           </el-table-column>
           <el-table-column label="操作" align="center">
             <template #default="{ row }">
@@ -90,6 +91,26 @@
         </el-table>
       </template>
     </RequestChartTable>
+
+    <el-dialog title="进入客群" v-model="dialogVisible" :close-on-click-modal="false">
+      <RequestChartTable
+        ref="importRecord"
+        style="padding: 0"
+        :request="
+          (query) => (
+            (query.id = $route.query.id), (query.externalUserid = externalUserid), api.getCustomerToGroupList(query)
+          )
+        ">
+        <template #="{ data }">
+          <el-table :data="data">
+            <el-table-column label="客群名称" align="center" prop="groupName"></el-table-column>
+            <el-table-column align="center" prop="joinTime" label="进群时间">
+              <template #default="{ row }">{{ row.joinTime || '—' }}</template>
+            </el-table-column>
+          </el-table>
+        </template>
+      </RequestChartTable>
+    </el-dialog>
   </div>
 </template>
 
@@ -102,6 +123,7 @@ let id = useRoute().query.id
 let cardData = ref([])
 let groups = []
 let dictAddStatus = { 0: '未进群', 1: '已进群' }
+let dialogVisible = ref(false)
 // 获取指标数据
 ;(function getStatistic() {
   loading.value = true
