@@ -901,11 +901,7 @@ export default {
             <template v-else-if="type === '1'">
               <el-form-item label="语音" prop="materialUrl">
                 <Voice v-if="form.materialUrl" :amrUrl="form.materialUrl"></Voice>
-                <Upload
-                  v-model:fileUrl="form.materialUrl"
-                  v-model:fileName="form.materialName"
-                  :type="type"
-                  :format="audioType">
+                <Upload v-model:fileUrl="form.materialUrl" :type="type" :format="audioType">
                   <template #tip><div>只能上传amr格式的语音文件。单个文件大小不超过2M，时长不超过1分钟</div></template>
                 </Upload>
               </el-form-item>
@@ -935,7 +931,6 @@ export default {
                 <Upload
                   v-if="dialogVisible"
                   v-model:fileUrl="form.materialUrl"
-                  v-model:fileName="form.materialName"
                   :format="['mp4', 'mov']"
                   @getPicUrl="getPicUrl"
                   :type="type">
@@ -971,7 +966,6 @@ export default {
                 <Upload
                   v-if="dialogVisible"
                   v-model:fileUrl="form.materialUrl"
-                  v-model:fileName="form.materialName"
                   :type="type"
                   :format="['doc', 'docx', 'pdf', 'ppt', 'pptx', 'pps', 'pptsx']">
                   <template #tip><div>支持pdf/ppt/word文件，单个文件大小不超过50M</div></template>
