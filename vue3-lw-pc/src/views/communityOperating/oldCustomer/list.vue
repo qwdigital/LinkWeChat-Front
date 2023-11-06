@@ -114,7 +114,7 @@ export default {
     // 新增/编辑老客数据
     goRoute(id) {
       this.$router.push({
-        path: 'oldCustomerAev',
+        path: 'aev',
         query: { id: id },
       })
     },
