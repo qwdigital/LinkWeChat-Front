@@ -173,7 +173,7 @@ export default {
         <slot :data="data"></slot>
 
         <pagination
-          style="bottom: 0; margin-bottom: -20px"
+          style="margin-bottom: -20px"
           :total="total"
           v-model:page="query.pageNum"
           v-model:limit="query.pageSize"

@@ -266,11 +266,7 @@
               show-word-limit></el-input>
           </el-form-item>
           <!-- 富文本content -->
-          <DefineQuillEditor
-            style="margin: 10px 10px 0"
-            :value="form.content"
-            @change="getContent"
-            ref="myQuillEditor"></DefineQuillEditor>
+          <QuillEditor style="margin: 10px 10px 0" v-model="form.content" ref="myQuillEditor"></QuillEditor>
         </template>
         <!-- 海报 -->
         <template v-else-if="type === '5'">
@@ -289,7 +285,7 @@
 
 <script>
 import PosterAdd from '@/views/contentCenter/components/PosterAdd.vue'
-import DefineQuillEditor from '@/components/common/QuillEditor.vue'
+import QuillEditor from '@/components/common/QuillEditor.vue'
 import { add, update } from '@/api/material'
 var validateHtml = (rule, value, callback) => {
   if (/\.html$/gi.test(value)) {
@@ -309,7 +305,7 @@ export default {
   name: 'message-content-form',
   components: {
     PosterAdd,
-    DefineQuillEditor,
+    QuillEditor,
   },
   data() {
     return {
@@ -451,9 +447,6 @@ export default {
     },
   },
   methods: {
-    getContent(con) {
-      this.form.content = con
-    },
     getPicUrl(val) {
       this.form.coverUrl = val
     },
