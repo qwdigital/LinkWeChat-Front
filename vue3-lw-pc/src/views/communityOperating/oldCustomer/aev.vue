@@ -141,8 +141,8 @@ export default {
         groups: [{ required: true, message: '必填项', trigger: 'blur' }],
         // sendType: [{ required: true, message: '必填项', trigger: 'blur' }],
         sendScope: [{ required: true, message: '必填项', trigger: 'blur' }],
-        linkTitle: [{ required: true, message: '必填项', trigger: 'change' }],
-        linkDesc: [{ required: true, message: '必填项', trigger: 'change' }],
+        linkTitle: [{ required: true, message: '必填项', trigger: 'blur' }],
+        linkDesc: [{ required: true, message: '必填项', trigger: 'blur' }],
       }),
     }
   },
