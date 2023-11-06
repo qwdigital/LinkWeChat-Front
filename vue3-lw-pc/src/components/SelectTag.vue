@@ -15,7 +15,7 @@ export default {
     },
     title: {
       type: String,
-      default: '选择标签',
+      // default: '',
     },
     // "标签分组类型(1:客户标签;2:群标签)"
     type: {
@@ -78,7 +78,10 @@ export default {
 </script>
 
 <template>
-  <el-dialog :title="title" v-model="Pvisible" :destroy-on-close="destroyOnClose">
+  <el-dialog
+    :title="title || `选择${type == 1 ? '客户' : '客群'}标签`"
+    v-model="Pvisible"
+    :destroy-on-close="destroyOnClose">
     <div>
       <SelectTag1 :type="type" :isSingle="isSingle" v-model:selected="selectedList"></SelectTag1>
       <slot></slot>

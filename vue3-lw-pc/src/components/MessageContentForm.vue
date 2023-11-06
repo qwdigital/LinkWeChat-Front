@@ -143,7 +143,7 @@
             </Upload>
           </el-form-item>
           <el-form-item label="外链预览">
-            <iframe class="iframe" :src="form.materialUrl"></iframe>
+            <iframe class="iframe" v-if="form.materialUrl" :src="form.materialUrl" :key="form.materialUrl"></iframe>
           </el-form-item>
         </template>
 
