@@ -69,7 +69,13 @@
           </el-table-column>
           <el-table-column align="center" prop="groupName" label="进入客群">
             <template #default="{ row }">
-              <div class="g-color cp" @click=";(externalUserid = row.externalUserid), (dialogVisible = true)">
+              <div
+                class="g-color cp"
+                @click="
+                  ;(externalUserid = row.externalUserid),
+                    (dialogVisible = true),
+                    $refs.RequestChartTableDialog?.getList()
+                ">
                 {{ row.joinGroupNumber }}
               </div>
             </template>
@@ -94,8 +100,8 @@
 
     <el-dialog title="进入客群" v-model="dialogVisible" :close-on-click-modal="false">
       <RequestChartTable
-        ref="importRecord"
-        style="padding: 0"
+        ref="RequestChartTableDialog"
+        style="padding: 0 0 20px 0"
         :request="
           (query) => (
             (query.id = $route.query.id), (query.externalUserid = externalUserid), api.getCustomerToGroupList(query)
