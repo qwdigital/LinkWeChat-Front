@@ -6,8 +6,8 @@
         <el-col :span="18" class="g-card" style="margin-right: 16px; margin-top: 10px">
           <el-form-item label-width="0px">
             <!-- 富文本content -->
-            <!-- <quill-editor v-model="form.content" ref="myQuillEditor"></quill-editor> -->
-            <DefineQuillEditor :value="form.content" @change="getContent" ref="myQuillEditor"></DefineQuillEditor>
+            <QuillEditor v-model="form.content" ref="myQuillEditor"></QuillEditor>
+            <!-- <DefineQuillEditor :value="form.content" @change="getContent" ref="myQuillEditor"></DefineQuillEditor> -->
           </el-form-item>
         </el-col>
         <el-col :span="6" class="g-card">
@@ -65,12 +65,12 @@
 </template>
 
 <script>
-import DefineQuillEditor from '@/components/common/QuillEditor.vue'
+import QuillEditor from '@/components/common/QuillEditor.vue'
 import { getTree, add, update, getList } from '@/api/material'
 import PreviewInPhone from '@/components/ContentCenter/PreviewInPhone'
 // import * as Quill from 'quill'
 export default {
-  components: { DefineQuillEditor, PreviewInPhone },
+  components: { QuillEditor, PreviewInPhone },
   data() {
     return {
       form: {}, // 素材表单
@@ -116,9 +116,6 @@ export default {
     // Quill.register(Align, true)
   },
   methods: {
-    getContent(con) {
-      this.form.content = con
-    },
     preview() {
       this.dialogVisible = true
       this.mobForm = []

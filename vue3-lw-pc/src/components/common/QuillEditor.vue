@@ -19,14 +19,17 @@ import SelectEmoji from '@/components/SelectEmoji'
 export default {
   components: { QuillEditor, SelectEmoji },
   props: {
-    value: {
+    modelValue: {
       type: String,
     },
   },
-  emits: ['change'],
+  emits: ['update:modelValue'],
   watch: {
-    value(val) {
-      this.content = val
+    modelValue: {
+      immediate: true,
+      handler(val) {
+        this.content = val
+      },
     },
     imgUrl(val) {
       let quill = this.$refs.quill.getQuill()
@@ -89,7 +92,7 @@ export default {
   },
   methods: {
     onEditorChange() {
-      this.$emit('change', this.content)
+      this.$emit('update:modelValue', this.content)
     },
     onProgress(percent) {
       this.uploadLoading = percent > 0 && percent < 100
