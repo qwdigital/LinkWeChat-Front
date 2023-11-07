@@ -1,7 +1,7 @@
 <!-- 搜索查询、重置按钮 -->
 <script>
 export default {
-  props: { search: { type: Function }, reset: { type: Function } },
+  // props: {},
   // data() {
   //   return {}
   // },
@@ -15,8 +15,8 @@ export default {
 
 <template>
   <div class="SearchClearButton bfc-d">
-    <el-button type="primary" @click="search(1)">查询</el-button>
-    <el-button @click="reset(), search(1)">重置</el-button>
+    <el-button type="primary" @click="$emit('search')">查询</el-button>
+    <el-button @click="$emit('reset')">重置</el-button>
   </div>
 </template>
 
