@@ -56,7 +56,7 @@ export default {
     <template #operation>
       <div class="fxbw">
         <el-button type="primary" @click="goRoute()">新建任务</el-button>
-        <el-button :disabled="!ids.length" @click="remove" type="danger">批量删除</el-button>
+        <el-button :disabled="!ids.length" @click="remove()" type="danger">批量删除</el-button>
       </div>
     </template>
 
