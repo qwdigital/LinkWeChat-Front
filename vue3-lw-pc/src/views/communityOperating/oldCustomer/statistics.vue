@@ -23,7 +23,18 @@
         </el-form-item>
         <el-form-item label="">
           <el-date-picker
-            v-model="query.startJoinTime"
+            v-model="query.dateRangeAddTime"
+            value-format="YYYY-MM-DD"
+            type="daterange"
+            v-bind="pickerOptions"
+            range-separator="-"
+            start-placeholder="添加开始"
+            end-placeholder="结束日期"
+            align="right"></el-date-picker>
+        </el-form-item>
+        <!-- <el-form-item label="">
+          <el-date-picker
+            v-model="query.dateRangeJoinTime"
             value-format="YYYY-MM-DD"
             type="daterange"
             v-bind="pickerOptions"
@@ -31,13 +42,13 @@
             start-placeholder="进群开始"
             end-placeholder="结束日期"
             align="right"></el-date-picker>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="" prop="isJoinGroup">
           <el-select v-model="query.isJoinGroup" placeholder="请选择是否进群">
             <el-option v-for="(item, index) in dictAddStatus" :key="index" :label="item" :value="index"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="" prop="chatId">
+        <!-- <el-form-item label="" prop="chatId">
           <el-select v-model="query.chatId" placeholder="请选择客群">
             <el-option
               v-for="(item, index) in groups"
@@ -45,13 +56,14 @@
               :label="item.groupName"
               :value="item.chatId"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
       </template>
 
       <template #="{ data }">
         <el-table :data="data">
           <el-table-column align="center" prop="customerName" label="客户名称"></el-table-column>
-          <el-table-column align="center" prop="addTime" label="送达时间"></el-table-column>
+          <el-table-column align="center" prop="addUserId" label="添加员工"></el-table-column>
+          <el-table-column align="center" prop="addTime" label="添加时间"></el-table-column>
           <el-table-column align="center" prop="isJoinGroup" label="是否进群">
             <template #default="{ row }">{{ dictAddStatus[row.isJoinGroup] }}</template>
           </el-table-column>
@@ -120,7 +132,6 @@ let id = useRoute().query.id
 let cardData = ref([])
 let dictAddStatus = { 0: '未进群', 1: '已进群' }
 let dialogVisible = ref(false)
-let groups = []
 
 // 获取指标数据
 ;(function getStatistic() {
@@ -194,11 +205,12 @@ function getDataDetail(query) {
 }
 
 /** 获取详情中客群列表 */
-;(function getDetail() {
-  api.getDetail(id).then(({ data }) => {
-    groups = data.groups
-  })
-})()
+// let groups = []
+// ;(function getDetail() {
+//   api.getDetail(id).then(({ data }) => {
+//     groups = data.groups
+//   })
+// })()
 </script>
 
 <style lang="scss" scoped></style>
