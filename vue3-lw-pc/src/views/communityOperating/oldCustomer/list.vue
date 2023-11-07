@@ -7,6 +7,7 @@ export default {
   data() {
     return {
       getList,
+      remove,
       dateRange: [], // 创建日期[开始时间, 结束时间]
       ids: [], // 多选数据
     }
@@ -21,21 +22,6 @@ export default {
     // 新增/编辑老客数据
     goRoute(path = 'aev', id) {
       this.$router.push({ path, query: { id } })
-    },
-    // 批量删除
-    remove(id) {
-      this.$confirm('是否确认删除?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          remove(id || this.ids).then((res) => {
-            this.$refs.table.getList()
-            this.msgSuccess('删除成功')
-          })
-        })
-        .catch(() => {})
     },
     // 处理多选
     handleSelectionChange(selection) {
@@ -56,7 +42,9 @@ export default {
     <template #operation>
       <div class="fxbw">
         <el-button type="primary" @click="goRoute()">新建任务</el-button>
-        <el-button :disabled="!ids.length" @click="remove()" type="danger">批量删除</el-button>
+        <el-button :disabled="!ids.length" @click="$refs.table.remove(remove.bind(ids))" type="danger">
+          批量删除
+        </el-button>
       </div>
     </template>
 
@@ -95,7 +83,7 @@ export default {
         <el-table-column label="操作" align="center" width="180">
           <template #default="{ row }">
             <el-button text @click="goRoute('detail', row.id)">详情</el-button>
-            <el-button text @click="remove(row.id)">删除</el-button>
+            <el-button text @click="$refs.table.remove(remove.bind(row.id))">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
