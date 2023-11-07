@@ -32,7 +32,7 @@
       </el-form-item>
     </el-form>
     <SelectGroup v-model:visible="showSelectModal" :defaults="groupList" @submit="setSelectData"></SelectGroup>
-    <SelectTag v-model:visible="showSelectTag" type="2" :defaultValues="tagList" @success="getSelectTag"></SelectTag>
+    <SelectTag v-model:visible="showSelectTag" type="1" :selected="tagList" @success="getSelectTag"></SelectTag>
   </div>
 </template>
 
