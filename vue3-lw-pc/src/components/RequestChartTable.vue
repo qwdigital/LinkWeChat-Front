@@ -122,6 +122,27 @@ export default {
           this.loading = false
         })
     },
+    // (批量)删除
+    remove(remove) {
+      this.$confirm('是否确认删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          this.loading = true
+          return remove().then((res) => {
+            this.msgSuccess('删除成功')
+            this.getList()
+          })
+        })
+        .catch((e) => {
+          console.error(e)
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
   },
 }
 </script>
@@ -131,7 +152,7 @@ export default {
     <!-- 顶部查询框 -->
     <el-form v-if="$slots.query" :model="query" ref="queryForm" inline class="top-search">
       <slot name="query" v-bind="{ query }"></slot>
-      <SearchResetButton :search="getList" :reset="() => $refs.queryForm.resetFields()"></SearchResetButton>
+      <SearchResetButton @search="getList(1)" @reset="$refs.queryForm.resetFields()"></SearchResetButton>
     </el-form>
 
     <div :class="$slots.query && 'g-card'">
@@ -147,7 +168,7 @@ export default {
 
         <el-form v-if="$slots.queryMiddle" :model="query" ref="queryFormMiddle" inline class="query-wrap">
           <slot name="queryMiddle" v-bind="{ query }"></slot>
-          <SearchResetButton :search="getList" :reset="() => $refs.queryFormMiddle.resetFields()"></SearchResetButton>
+          <SearchResetButton @search="getList(1)" @reset="$refs.queryFormMiddle.resetFields()"></SearchResetButton>
         </el-form>
         <!-- 操作slot -->
 
