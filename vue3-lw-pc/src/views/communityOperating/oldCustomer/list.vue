@@ -9,7 +9,6 @@ export default {
       getList,
       remove,
       dateRange: [], // 创建日期[开始时间, 结束时间]
-      ids: [], // 多选数据
     }
   },
   watch: {},
@@ -39,54 +38,50 @@ export default {
       </el-form-item>
     </template>
 
-    <template #operation>
+    <template #operation="{ selectedIds }">
       <div class="fxbw">
         <el-button type="primary" @click="goRoute()">新建任务</el-button>
-        <el-button :disabled="!ids.length" @click="$refs.table.remove(remove.bind(ids))" type="danger">
+        <el-button :disabled="!selectedIds.length" @click="$refs.table.remove(remove)" type="danger">
           批量删除
         </el-button>
       </div>
     </template>
 
-    <template #="{ data }">
-      <el-table :data="data" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="50" align="center"></el-table-column>
-        <el-table-column label="任务名称" align="center" prop="taskName" show-overflow-tooltip></el-table-column>
-        <el-table-column label="实际群聊" align="center">
-          <template #default="{ row }">
-            <TagEllipsis :list="row.groupNames" emptyText></TagEllipsis>
-          </template>
-        </el-table-column>
-        <el-table-column label="送达客户数/进群客户数" align="center" prop="cusNumber" width="">
-          <template #header>
-            <el-popover placement="top" trigger="hover">
-              <template #reference>
-                <div>
-                  添加客户数/进群客户数
-                  <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
-                </div>
-              </template>
-              <div>送达客户数：建群任务送达的客户总数（去重）；</div>
-              <div>进群客户数：送达客户中成功进群的总数（去重）；</div>
-            </el-popover>
-          </template>
-          <template #default="{ row }">
-            <div class="g-color cp" @click="goRoute('detail', row.id)">
-              {{ row.touchWeCustomerNumber }}/{{ row.joinGroupCustomerNumber }}
-            </div>
-          </template>
-        </el-table-column>
+    <template #table>
+      <el-table-column label="实际群聊" align="center">
+        <template #default="{ row }">
+          <TagEllipsis :list="row.groupNames" emptyText></TagEllipsis>
+        </template>
+      </el-table-column>
+      <el-table-column label="送达客户数/进群客户数" align="center" prop="cusNumber" width="">
+        <template #header>
+          <el-popover placement="top" trigger="hover">
+            <template #reference>
+              <div>
+                添加客户数/进群客户数
+                <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
+              </div>
+            </template>
+            <div>送达客户数：建群任务送达的客户总数（去重）；</div>
+            <div>进群客户数：送达客户中成功进群的总数（去重）；</div>
+          </el-popover>
+        </template>
+        <template #default="{ row }">
+          <div class="g-color cp" @click="goRoute('detail', row.id)">
+            {{ row.touchWeCustomerNumber }}/{{ row.joinGroupCustomerNumber }}
+          </div>
+        </template>
+      </el-table-column>
 
-        <!-- <el-table-column prop="createBy" label="创建人" align="center"></el-table-column> -->
-        <el-table-column label="最近更新" align="center" prop="updateTime" width="160"></el-table-column>
+      <!-- <el-table-column prop="createBy" label="创建人" align="center"></el-table-column> -->
+      <el-table-column label="最近更新" align="center" prop="updateTime" width="160"></el-table-column>
 
-        <el-table-column label="操作" align="center" width="180">
-          <template #default="{ row }">
-            <el-button text @click="goRoute('detail', row.id)">详情</el-button>
-            <el-button text @click="$refs.table.remove(remove.bind(row.id))">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <el-table-column label="操作" align="center" width="180">
+        <template #default="{ row }">
+          <el-button text @click="goRoute('detail', row.id)">详情</el-button>
+          <el-button text @click="$refs.table.remove(() => remove(row.id))">删除</el-button>
+        </template>
+      </el-table-column>
     </template>
   </RequestChartTable>
 </template>
