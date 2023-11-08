@@ -184,6 +184,7 @@ function dealDataTrend(data, series, xData) {
 
 // 数据明细
 function getDataDetail(query) {
+  query.id = id
   if (query.dateRangeAddTime) {
     query.startAddTime = query.dateRangeAddTime[0]
     query.endAddTime = query.dateRangeAddTime[1]
