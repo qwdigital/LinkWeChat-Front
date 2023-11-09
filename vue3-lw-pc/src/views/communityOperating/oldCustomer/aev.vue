@@ -27,7 +27,11 @@
           </el-radio-group>
         </el-form-item>
         <template v-if="form.sendScope == 1">
-          <CustomerRangeForm :form="form.weCustomersQuery" label-width="100px" />
+          <CustomerRangeForm
+            :form="form.weCustomersQuery"
+            :disabled="isDetail"
+            :isDetail="isDetail"
+            label-width="100px" />
         </template>
       </div>
 
@@ -43,12 +47,14 @@
             clearable />
         </el-form-item>
         <el-form-item label="活码客群:" prop="groups">
-          <el-button type="primary" @click="dialogVisibleSelectGroup = true">选择客群</el-button>
-          <div class="g-tip">最多选择五个客群</div>
-          <SelectGroup
-            v-model:visible="dialogVisibleSelectGroup"
-            :defaults="form.groups"
-            @submit="(data) => ((form.groups = data), $refs.form.validateField('groups'))"></SelectGroup>
+          <template v-if="!isDetail">
+            <el-button type="primary" @click="dialogVisibleSelectGroup = true">选择客群</el-button>
+            <div class="g-tip">最多选择五个客群</div>
+            <SelectGroup
+              v-model:visible="dialogVisibleSelectGroup"
+              :defaults="form.groups"
+              @submit="(data) => ((form.groups = data), $refs.form.validateField('groups'))"></SelectGroup>
+          </template>
           <TagEllipsis :list="form.groups" limit="5" defaultProps="groupName"></TagEllipsis>
         </el-form-item>
 

@@ -30,6 +30,7 @@ export function getDetail(id) {
     let userNames = ranges.userNames?.split(',')
     let tagNames = ranges.tagNames?.split(',')
     Object.assign(ranges, {
+      isContain: ranges.isContain + '',
       genders: ranges.genders?.split(','),
       customerTypes: ranges.genders?.split(','),
       users: ranges.userIds?.split(',').map((e, i) => ({ userId: e, name: userNames?.[i] })),

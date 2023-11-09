@@ -8,6 +8,11 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    // 是否为详情展示（不显示选择按钮）
+    isDetail: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return { stageList: [], dialogVisibleSelectUser: false, dialogVisibleSelectTag: false }
@@ -34,15 +39,15 @@ export default {
 <template>
   <el-form :model="form" ref="form" v-if="form">
     <el-form-item label="添加人员">
-      <el-button type="primary" @click="dialogVisibleSelectUser = true">选择人员</el-button>
-      <br />
+      <div v-if="!isDetail">
+        <el-button type="primary" @click="dialogVisibleSelectUser = true">选择人员</el-button>
+        <SelectUser
+          v-model:visible="dialogVisibleSelectUser"
+          title="选择人员"
+          :defaultValues="form.users"
+          @success="(data) => ((form.users = data), $refs.form.validateField('users'))"></SelectUser>
+      </div>
       <TagEllipsis :list="form.users" limit="10"></TagEllipsis>
-
-      <SelectUser
-        v-model:visible="dialogVisibleSelectUser"
-        title="选择人员"
-        :defaultValues="form.users"
-        @success="(data) => ((form.users = data), $refs.form.validateField('users'))"></SelectUser>
     </el-form-item>
 
     <el-form-item label="客户类型" prop="customerTypes">
@@ -57,9 +62,9 @@ export default {
       <el-checkbox-group v-model="form.genders">
         <el-checkbox
           v-for="(sendGender, index) in [
-            { label: '男', value: 1 },
-            { label: '女', value: 2 },
-            { label: '未知', value: 0 },
+            { label: '男', value: '1' },
+            { label: '女', value: '2' },
+            { label: '未知', value: '0' },
           ]"
           :key="index"
           :label="sendGender.value">
@@ -81,24 +86,24 @@ export default {
     </el-form-item>
 
     <el-form-item label="客户标签" prop="tagList">
-      <el-button type="primary" @click="dialogVisibleSelectTag = true">选择标签</el-button>
-      <SelectTag
-        v-model:visible="dialogVisibleSelectTag"
-        :selected="form.tags"
-        @success="(data) => ((form.tags = data), $refs.form.validateField('tags'))"></SelectTag>
-
-      <div>
-        <el-radio-group v-model="form.isContain" @change="">
-          <el-radio
-            v-for="(item, key) in { 1: '包含全部选中标签', 2: '包含其中一个标签', 3: '不包含选中标签' }"
-            :key="key"
-            :label="key">
-            {{ item }}
-          </el-radio>
-        </el-radio-group>
+      <div v-if="!isDetail">
+        <el-button type="primary" @click="dialogVisibleSelectTag = true">选择标签</el-button>
+        <SelectTag
+          v-model:visible="dialogVisibleSelectTag"
+          :selected="form.tags"
+          @success="(data) => ((form.tags = data), $refs.form.validateField('tags'))"></SelectTag>
       </div>
 
-      <TagEllipsis :list="form.tags" limit="10"></TagEllipsis>
+      <TagEllipsis class="block mt5" :list="form.tags" limit="10"></TagEllipsis>
+
+      <el-radio-group v-model="form.isContain" @change="">
+        <el-radio
+          v-for="(item, key) in { 1: '包含全部选中标签', 2: '包含其中一个标签', 3: '不包含选中标签' }"
+          :key="key"
+          :label="key">
+          {{ item }}
+        </el-radio>
+      </el-radio-group>
     </el-form-item>
     <el-form-item label="商机阶段" prop="trackState">
       <el-select v-model="form.trackState" placeholder="请选择">
