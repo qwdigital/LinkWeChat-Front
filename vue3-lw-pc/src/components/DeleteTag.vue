@@ -65,12 +65,15 @@ export default {
   mounted() {},
   methods: {
     setData() {
+      this.list = []
       if (this.initList.length) {
         this.init.forEach((dd, index) => {
+          let once = false
           dd.weTags.forEach((ff) => {
             if (this.initList.includes(ff.tagId)) {
               ff.show = true
-              this.list[index] = dd
+              once || this.list.push(dd)
+              once = true
             }
           })
         })
@@ -128,7 +131,7 @@ export default {
   <el-dialog :title="title" v-model="Pvisible" :destroy-on-close="destroyOnClose">
     <div v-loading="loading">
       <section class="label-group">
-        <template v-for="item in list" :key="item.groupId">
+        <template v-for="(item, index) in list" :key="index">
           <div class="label-group-item" v-if="item">
             <div class="label-group-item-title">{{ item.groupName }}</div>
             <div v-if="item.weTags" class="label-group-item-body">

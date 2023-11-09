@@ -92,27 +92,12 @@ export default {
       })
       return str
     },
-    unique(arr) {
-      if (!Array.isArray(arr)) {
-        console.log('type error!')
-        return
-      }
-      let res = []
-      for (let i = 0; i < arr.length; i++) {
-        if (res.indexOf(arr[i]) === -1) {
-          res.push(arr[i])
-        }
-      }
-      return res
-    },
     openDeleteDialog() {
-      let str = ''
+      let tagIds = []
       this.multipleSelection.forEach((dd) => {
-        if (dd.tagIds) {
-          str = str + ',' + dd.tagIds
-        }
+        dd.tagIds && tagIds.push(...dd.tagIds)
       })
-      this.deleteData = this.unique(str.split(','))
+      this.deleteData = Array.from(new Set(tagIds))
       this.deleteDialog = true
     },
     getDeleteData(data) {
@@ -576,7 +561,7 @@ export default {
         }}</template> -->
         </el-table-column>
 
-        <el-table-column label="操作" width="200" align="center">
+        <el-table-column label="操作" width="220" align="center" fixed="right">
           <template #default="{ row, $index }">
             <el-button text @click="goRoute(row)">查看</el-button>
             <template v-if="row.isJoinBlacklist == 1">

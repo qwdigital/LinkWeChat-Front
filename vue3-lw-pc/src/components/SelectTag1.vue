@@ -20,6 +20,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       list: [],
       listOneArray: [],
       selectedList: [],
@@ -45,15 +46,20 @@ export default {
   mounted() {},
   methods: {
     getList() {
-      getList({ groupTagType: this.type }).then(({ rows }) => {
-        this.list = rows
-        this.listOneArray = []
-        this.list.forEach((element) => {
-          element.weTags.forEach((d) => {
-            this.listOneArray.push({ tagId: d.tagId, name: d.name })
+      this.loading = true
+      getList({ groupTagType: this.type })
+        .then(({ rows }) => {
+          this.list = rows
+          this.listOneArray = []
+          this.list.forEach((element) => {
+            element.weTags.forEach((d) => {
+              this.listOneArray.push({ tagId: d.tagId, name: d.name })
+            })
           })
         })
-      })
+        .finally(() => {
+          this.loading = false
+        })
     },
     submit() {
       // 统一数据格式
@@ -81,7 +87,7 @@ export default {
 </script>
 
 <template>
-  <section class="label-group">
+  <section class="label-group" v-loading="loading">
     <div v-for="item in list" :key="item.groupId" class="label-group-item">
       <div class="label-group-item-title">{{ item.groupName }}</div>
       <div v-if="item.weTags" class="label-group-item-body">
