@@ -48,6 +48,7 @@ export default {
     </template>
 
     <template #table>
+      <el-table-column label="任务名称" align="center" prop="taskName" show-overflow-tooltip></el-table-column>
       <el-table-column label="实际群聊" align="center">
         <template #default="{ row }">
           <TagEllipsis :list="row.groupNames" emptyText></TagEllipsis>

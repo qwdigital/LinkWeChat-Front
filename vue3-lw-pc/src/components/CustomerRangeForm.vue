@@ -32,7 +32,7 @@ export default {
 </script>
 
 <template>
-  <el-form :model="form" ref="form">
+  <el-form :model="form" ref="form" v-if="form">
     <el-form-item label="添加人员">
       <el-button type="primary" @click="dialogVisibleSelectUser = true">选择人员</el-button>
       <br />
@@ -47,7 +47,7 @@ export default {
 
     <el-form-item label="客户类型" prop="customerTypes">
       <el-checkbox-group v-model="form.customerTypes">
-        <el-checkbox v-for="(item, index) in { 1: '微信用户', 2: '企业用户' }" :key="key" :label="key">
+        <el-checkbox v-for="(item, key) in { 1: '微信用户', 2: '企业用户' }" :key="key" :label="key">
           {{ item }}
         </el-checkbox>
       </el-checkbox-group>
