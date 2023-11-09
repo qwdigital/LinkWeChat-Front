@@ -6,7 +6,7 @@ const envs = {
   development: {
     DOMAIN: 'https://dev.linkwechat.net', // 接口域名（站点域名请使用：window.location.origin）
     BASE_URL: '/', // 页面路由基础路径 /*/*/，eg：/lw/，不支持 ’./‘形式的路径
-    BASE_API: 'https://dev.linkwechat.net/linkwechat-dev-api', // 接口基础路径
+    BASE_API: 'https://dev.linkwechat.net/linkwechat-api', // 接口基础路径
     _ISGZIP: true,
     _ISCDN: true,
   },

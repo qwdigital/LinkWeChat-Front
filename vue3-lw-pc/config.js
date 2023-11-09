@@ -33,7 +33,7 @@ const common = {
   BAIDU_MAP_KEY: '6fZIymhpgfnAHUT1baHeEF922lPIThOG', // 百度地图key
   IS_PUBLISH_DIALOG: false, // 是否显示发布弹窗
   IS_LINKWECHAT: true, // 是否显示linkwechat开源相关业务组件
-  PRIVIEW_URL: 'https://saas.linkwechat.net/file-view/onlinePreview?url=', // kkfileview，素材预览服务地址
+  PRIVIEW_URL: 'https://dev.linkwechat.net/fileView/onlinePreview?url=', // kkfileview，素材预览服务地址
 
   MICRO_APPS: {
     store: {

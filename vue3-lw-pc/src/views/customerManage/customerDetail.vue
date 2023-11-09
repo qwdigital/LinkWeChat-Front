@@ -115,7 +115,7 @@ export default {
 <template>
   <div>
     <!-- <el-button slot="append" circle icon="el-icon-back" @click="$router.back()"></el-button>返回 -->
-    <div class="g-card flex aic mb20" @click="goRoute(customer)">
+    <div class="g-card flex aic mb20">
       <el-image class="avatar" :src="customer.avatar" fit="fill"></el-image>
       <div class="ml10">
         <div>
