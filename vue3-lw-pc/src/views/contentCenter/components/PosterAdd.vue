@@ -830,7 +830,6 @@ export default {
         if (valid) {
           let laoding = this.$loading()
           const form = this.form
-          debugger
           form.tagIds = form.tags?.map((item, index) => item.tagId) + ''
           form.posterJSON = this.canvas.toJSON(['customType'])
           let list = form.posterJSON.objects
