@@ -68,10 +68,12 @@ export default {
       this.list = []
       if (this.initList.length) {
         this.init.forEach((dd, index) => {
+          let once = false
           dd.weTags.forEach((ff) => {
             if (this.initList.includes(ff.tagId)) {
               ff.show = true
-              this.list[index] = dd
+              once || this.list.push(dd)
+              once = true
             }
           })
         })
