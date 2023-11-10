@@ -4,9 +4,9 @@ import { getList } from '@/api/salesCenter/businessConver.js'
 export default {
   components: {},
   props: {
-    form: {
+    data: {
       type: Object,
-      default: () => ({}),
+      default: () => ({ isContain: '1', customerTypes: ['1'] }),
     },
     // 是否为详情展示（不显示选择按钮）
     isDetail: {
@@ -15,14 +15,14 @@ export default {
     },
   },
   data() {
-    return { stageList: [], dialogVisibleSelectUser: false, dialogVisibleSelectTag: false }
+    return { form: this.data, stageList: [], dialogVisibleSelectUser: false, dialogVisibleSelectTag: false }
   },
   computed: {},
   watch: {
     form: {
       deep: true,
-      handle(val) {
-        this.$emit('change', val)
+      handler(val) {
+        this.$emit('update:data', val)
       },
     },
   },

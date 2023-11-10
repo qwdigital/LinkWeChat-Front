@@ -25,21 +25,23 @@ export function getDetail(id) {
     method: 'get',
   }).then(({ data }) => {
     // 统一处理数据结构
-
-    let ranges = data.weCustomersQuery || {}
+    // weCustomersQuery 为null 转为 undefined 便于前端组件统一赋默认值
+    let ranges = (data.weCustomersQuery = data.weCustomersQuery || undefined)
     let userNames = ranges.userNames?.split(',')
     let tagNames = ranges.tagNames?.split(',')
-    Object.assign(ranges, {
-      isContain: ranges.isContain + '',
-      genders: ranges.genders?.split(','),
-      customerTypes: ranges.genders?.split(','),
-      users: ranges.userIds?.split(',').map((e, i) => ({ userId: e, name: userNames?.[i] })),
-      tags: ranges.tagIds?.split(',').map((e, i) => ({ tagId: e, name: tagNames?.[i] })),
-      dateRange: [ranges.beginTime, ranges.endTime],
-    })
+    ranges &&
+      Object.assign(ranges, {
+        isContain: ranges.isContain + '',
+        genders: ranges.genders?.split(','),
+        customerTypes: ranges.genders?.split(','),
+        users: ranges.userIds?.split(',')?.map((e, i) => ({ userId: e, name: userNames?.[i] })),
+        tags: ranges.tagIds?.split(',')?.map((e, i) => ({ tagId: e, name: tagNames?.[i] })),
+        dateRange: [ranges.beginTime, ranges.endTime],
+      })
 
     let names = data.groupNames?.split(',')
     data.groups = data.chatIdList?.split(',').map((e, i) => ({ chatId: e, groupName: names?.[i] }))
+    data.sendScope += ''
 
     return { data }
   })
@@ -120,13 +122,15 @@ export function getDetail(id) {
 }
  */
 export function add(data) {
-  let ranges = data.weCustomersQuery
-  data = Object.assign({}, data, {
+  data = JSON.parse(JSON.stringify(data))
+
+  Object.assign(data, {
     chatIdList: data.groups?.map((e) => e.chatId)?.join(','),
     groupNames: data.groups?.map((e) => e.groupName)?.join(','),
   })
 
-  data.weCustomersQuery = Object.assign({}, ranges, {
+  let ranges = data.weCustomersQuery
+  Object.assign(ranges, {
     genders: ranges.genders?.join(','),
     customerTypes: ranges.genders?.join(','),
     tagIds: ranges.tags?.map((e) => e.tagId)?.join(','),

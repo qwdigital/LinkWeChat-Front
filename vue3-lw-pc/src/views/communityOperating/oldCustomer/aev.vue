@@ -21,14 +21,14 @@
 
         <el-form-item label="发送范围" prop="sendScope">
           <el-radio-group v-model="form.sendScope">
-            <el-radio v-for="(target, index) in sendScopeOptions" :key="index" :label="target.value">
-              {{ target.label }}
+            <el-radio v-for="(target, index) in { 0: '全部客户', 1: '部分客户' }" :key="index" :label="index">
+              {{ target }}
             </el-radio>
           </el-radio-group>
         </el-form-item>
         <template v-if="form.sendScope == 1">
           <CustomerRangeForm
-            :form="form.weCustomersQuery"
+            v-model:data="form.weCustomersQuery"
             :disabled="isDetail"
             :isDetail="isDetail"
             label-width="100px" />
@@ -122,30 +122,13 @@ export default {
       form: {
         taskName: '', // 任务名称
         welcomeMsg: '', // 加群引导语
-        sendType: 1, // 发送方式
-        groupCodeId: '', // 群活码ID
-        tagList: [], // 标签
-        scopeList: [], // 员工
-        sendScope: 0, // 发送范围
-        weCustomersQuery: {},
+        sendScope: '0', // 发送范围
+        // weCustomersQuery: {},
       },
-      tags: [],
-      users: [],
-      codes: [],
-      dateRange: [],
-      // sendTypeOptions: [
-      //   { label: '企业群发', value: 0 },
-      //   { label: '个人群发', value: 1 }
-      // ],
-      sendScopeOptions: [
-        { label: '全部客户', value: 0 },
-        { label: '部分客户', value: 1 },
-      ],
       rules: Object.freeze({
         taskName: [{ required: true, message: '必填项', trigger: 'blur' }],
         welcomeMsg: [{ required: true, message: '必填项', trigger: 'blur' }],
         groups: [{ required: true, message: '必填项', trigger: 'blur' }],
-        // sendType: [{ required: true, message: '必填项', trigger: 'blur' }],
         sendScope: [{ required: true, message: '必填项', trigger: 'blur' }],
         linkTitle: [{ required: true, message: '必填项', trigger: 'blur' }],
         linkDesc: [{ required: true, message: '必填项', trigger: 'blur' }],
@@ -157,38 +140,7 @@ export default {
       return this.$route.path.endsWith('detail')
     },
   },
-  watch: {
-    // 日期选择器数据同步至查询参数
-    dateRange: {
-      deep: true,
-      handler(val) {
-        if (!val || val.length !== 2) {
-          this.form.cusBeginTime = ''
-          this.form.cusEndTime = ''
-        } else {
-          ;[this.form.cusBeginTime, this.form.cusEndTime] = val
-        }
-      },
-    },
-    users: {
-      deep: true,
-      handler(val) {
-        this.form.scopeList = val.map((user) => {
-          return user.userId
-        })
-        this.$refs.form.validateField('scopeList')
-      },
-    },
-    tags: {
-      deep: true,
-      handler(val) {
-        this.form.tagList = val.map((tag) => {
-          return tag.tagId
-        })
-        this.$refs.form.validateField('tagList')
-      },
-    },
-  },
+  watch: {},
   created() {
     this.id = this.$route.query.id
     this.id && this.getDetail(this.id)
@@ -212,35 +164,32 @@ export default {
     submit() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.loading = true
-          if (this.form.sendScope) {
-            let data = {
-              userIds: '',
-              tagIds: '',
-              beginTime: '',
-              endTime: '',
-              gender: '',
-              customerType: 1,
+          if (this.form.sendScope == 1) {
+            let ranges = this.form.weCustomersQuery
+            let params = {
+              genders: ranges.genders?.join(','),
+              customerTypes: ranges.customerTypes?.join(','),
+              tagIds: ranges.tags?.map((e) => e.tagId)?.join(','),
+              tagNames: ranges.tags?.map((e) => e.name)?.join(','),
+              userIds: ranges.users?.map((e) => e.userId)?.join(','),
+              userNames: ranges.users?.map((e) => e.name)?.join(','),
+              beginTime: ranges.dateRange?.[0],
+              endTime: ranges.dateRange?.[1],
             }
-            data.gender = this.form.sendGender
-            data.beginTime = this.form.cusBeginTime
-            data.endTime = this.form.cusEndTime
-            data.tagIds = this.form.tagList.join(',')
-            data.userIds = this.form.scopeList.join(',')
-            getCustomerList(data).then((res) => {
-              if (res.code === 200) {
-                if (res.data && res.data.length) {
-                  this.form.externalUserIds = res.data.map((dd) => dd.externalUserid)
+            this.loading = true
+            getCustomerList(params)
+              .then(({ data }) => {
+                if (data?.length) {
+                  this.form.externalUserIds = data.map((dd) => dd.externalUserid)
                   this.sendData()
                 } else {
                   this.msgError('未找到可发送客户！')
                   this.loading = false
                 }
-              } else {
-                this.msgError(res.msg)
+              })
+              .finally(() => {
                 this.loading = false
-              }
-            })
+              })
           } else {
             delete this.form.externalUserIds
             this.sendData()
@@ -255,7 +204,7 @@ export default {
           this.loading = false
           this.$router.back()
         })
-        .catch(() => {
+        .finally(() => {
           this.loading = false
         })
     },
