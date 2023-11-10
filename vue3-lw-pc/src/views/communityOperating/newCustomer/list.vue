@@ -104,21 +104,6 @@ export default {
         <el-form-item label="活码名称" prop="codeName">
           <el-input clearable v-model="query.codeName" placeholder="请输入"></el-input>
         </el-form-item>
-        <!-- <el-form-item label="创建人" prop="createBy">
-        <el-input clearable v-model="query.createBy" placeholder="请输入"></el-input>
-      </el-form-item> -->
-        <!-- <el-form-item label="创建时间">
-        <el-date-picker
-          clearable
-          v-model="dateRange"
-          value-format="YYYY-MM-DD"
-          type="daterange"
-          v-bind="pickerOptions"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          align="right"></el-date-picker>
-      </el-form-item> -->
       </template>
 
       <template #operation>
@@ -142,10 +127,6 @@ export default {
                 <el-image :src="row.emplCodeUrl" class="code-image"></el-image>
               </el-popover>
             </template>
-            <!-- <template #default="{ row }">
-          <el-image v-if="row.emplCodeUrl" :src="row.emplCodeUrl" class="code-image">
-          </el-image>
-        </template> -->
           </el-table-column>
           <el-table-column prop="emplNames" label="使用员工" align="center">
             <template #default="{ row }">

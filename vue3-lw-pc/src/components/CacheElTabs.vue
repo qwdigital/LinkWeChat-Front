@@ -36,9 +36,9 @@ export default {
 
 <style lang="scss" scoped>
 .el-tabs--top {
-  z-index: 99;
-  position: sticky !important;
-  top: 0;
+  // z-index: 99;
+  // position: sticky !important;
+  // top: 0;
   ::v-deep .el-tabs__header {
     z-index: 99;
     position: sticky !important;
