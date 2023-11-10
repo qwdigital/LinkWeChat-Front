@@ -73,6 +73,8 @@ export default {
       xData: [],
 
       total: 0,
+
+      selectedIds: [], // 多选数据
     }
   },
   computed: {},
@@ -131,7 +133,7 @@ export default {
       })
         .then(() => {
           this.loading = true
-          return remove().then((res) => {
+          return remove(this.selectedIds).then((res) => {
             this.msgSuccess('删除成功')
             this.getList()
           })
@@ -172,7 +174,7 @@ export default {
         </el-form>
         <!-- 操作slot -->
 
-        <slot name="operation"></slot>
+        <slot name="operation" v-bind="{ selectedIds }"></slot>
 
         <el-button
           v-if="requestExport"
@@ -192,6 +194,11 @@ export default {
       <!-- 表格 -->
       <template v-else-if="type == 'table'">
         <slot :data="data"></slot>
+
+        <el-table v-if="$slots.table" :data="data" @selection-change="(val) => (selectedIds = val.map((e) => e.id))">
+          <el-table-column type="selection" width="50" align="center"></el-table-column>
+          <slot name="table"></slot>
+        </el-table>
 
         <pagination
           style="margin-bottom: -20px"

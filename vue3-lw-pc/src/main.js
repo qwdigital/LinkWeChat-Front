@@ -46,6 +46,8 @@ let components = {
   DateSearchChartTable: () => import('./components/DateSearchChartTable.vue'),
   RequestChartTable: () => import('./components/RequestChartTable.vue'),
   SearchResetButton: () => import('./components/SearchResetButton.vue'),
+  CustomerRangeForm: () => import('./components/CustomerRangeForm.vue'),
+  CacheElTabs: () => import('./components/CacheElTabs.vue'),
 }
 for (const c in components) {
   app.component(c, defineAsyncComponent(components[c]))

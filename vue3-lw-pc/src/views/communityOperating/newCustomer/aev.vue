@@ -10,7 +10,7 @@ export default {
       newGroupId: '',
       dialogVisibleSelectUser: false, // 选择员工会话
       dialogVisibleSelectTag: false, // 选择客户标签会话
-      dialogVisibleSelectGroup: false, // 选择群活码会话
+      dialogVisibleSelectGroup: false, // 选择客群弹窗
       loading: false,
       form: {
         codeName: '', // 活码名称
@@ -24,14 +24,14 @@ export default {
       // codes: [],
       // groupQrCode: {},
       rules: Object.freeze({
-        codeName: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
-        users: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
-        // tags: [{ required: true, message: '该项为必填项', trigger: 'change' }],
-        welcomeMsg: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
-        groups: [{ required: true, message: '该项为必填项', trigger: 'change' }],
-        linkTitle: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
-        linkDesc: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
-        // groupCodeId: [{ required: true, message: '该项为必填项', trigger: 'blur' }],
+        codeName: [{ required: true, message: '必填项', trigger: 'blur' }],
+        users: [{ required: true, message: '必填项', trigger: 'blur' }],
+        // tags: [{ required: true, message: '必填项', trigger: 'change' }],
+        welcomeMsg: [{ required: true, message: '必填项', trigger: 'blur' }],
+        groups: [{ required: true, message: '必填项', trigger: 'change' }],
+        linkTitle: [{ required: true, message: '必填项', trigger: 'blur' }],
+        linkDesc: [{ required: true, message: '必填项', trigger: 'blur' }],
+        // groupCodeId: [{ required: true, message: '必填项', trigger: 'blur' }],
       }),
     }
   },
@@ -88,27 +88,15 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.loading = true
-          if (this.$route.query.id) {
-            update(this.form)
-              .then(() => {
-                this.msgSuccess('更新成功')
-                this.loading = false
-                this.$router.back()
-              })
-              .catch(() => {
-                this.loading = false
-              })
-          } else {
-            add(this.form)
-              .then(() => {
-                this.msgSuccess('添加成功')
-                this.loading = false
-                this.$router.back()
-              })
-              .catch(() => {
-                this.loading = false
-              })
-          }
+          ;(this.$route.query.id ? update : add)(this.form)
+            .then(() => {
+              this.msgSuccess()
+              this.loading = false
+              this.$router.back()
+            })
+            .catch(() => {
+              this.loading = false
+            })
         }
       })
     },

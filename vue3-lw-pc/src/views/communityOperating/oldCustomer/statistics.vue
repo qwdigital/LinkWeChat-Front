@@ -8,7 +8,7 @@
       isTimeQuery
       :isCreateRequest="false"
       :request="(query) => ((query.id = $route.query.id), api.getDataTrend(query))"
-      :legend="['今日添加客户数', '今日进群客户数']"
+      :legend="['今日送达客户数', '今日进群客户数']"
       :dealDataFun="dealDataTrend" />
 
     <RequestChartTable
@@ -16,7 +16,7 @@
       ref="importRecord"
       :request="getDataDetail"
       :requestExport="(query) => ((query.id = $route.query.id), api.getDataDetailExport(query))"
-      exportFileName="新客拉群数据明细导出.xls">
+      exportFileName="标签建群数据明细导出.xls">
       <template #queryMiddle="{ query }">
         <el-form-item label="" prop="customerName">
           <el-input v-model="query.customerName" placeholder="请输入客户名称"></el-input>
@@ -32,12 +32,7 @@
             end-placeholder="结束日期"
             align="right"></el-date-picker>
         </el-form-item>
-        <el-form-item label="" prop="isJoinGroup">
-          <el-select v-model="query.isJoinGroup" placeholder="请选择是否进群">
-            <el-option v-for="(item, index) in dictAddStatus" :key="index" :label="item" :value="index"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="">
+        <!-- <el-form-item label="">
           <el-date-picker
             v-model="query.dateRangeJoinTime"
             value-format="YYYY-MM-DD"
@@ -47,8 +42,13 @@
             start-placeholder="进群开始"
             end-placeholder="结束日期"
             align="right"></el-date-picker>
+        </el-form-item> -->
+        <el-form-item label="" prop="isJoinGroup">
+          <el-select v-model="query.isJoinGroup" placeholder="请选择是否进群">
+            <el-option v-for="(item, index) in dictAddStatus" :key="index" :label="item" :value="index"></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="" prop="chatId">
+        <!-- <el-form-item label="" prop="chatId">
           <el-select v-model="query.chatId" placeholder="请选择客群">
             <el-option
               v-for="(item, index) in groups"
@@ -56,7 +56,7 @@
               :label="item.groupName"
               :value="item.chatId"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
       </template>
 
       <template #="{ data }">
@@ -79,6 +79,9 @@
                 {{ row.joinGroupNumber }}
               </div>
             </template>
+          </el-table-column>
+          <el-table-column align="center" prop="joinTime" label="进群时间">
+            <template #default="{ row }">{{ row.joinTime || '—' }}</template>
           </el-table-column>
           <el-table-column label="操作" align="center">
             <template #default="{ row }">
@@ -121,15 +124,15 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import * as api from './api'
 
 let loading = ref(false)
 let id = useRoute().query.id
 let cardData = ref([])
-let groups = []
 let dictAddStatus = { 0: '未进群', 1: '已进群' }
 let dialogVisible = ref(false)
+
 // 获取指标数据
 ;(function getStatistic() {
   loading.value = true
@@ -138,24 +141,24 @@ let dialogVisible = ref(false)
     .then(({ data }) => {
       cardData.value = [
         {
-          title: '添加客户总数',
-          tips: '通过此活码添加的客户总数(去重)',
-          value: data.addCustomerNumber,
+          title: '送达客户总数',
+          tips: '建群任务送达的客户总数(去重)',
+          value: data.touchWeCustomerNumber,
         },
         {
           title: '进群客户总数',
-          tips: '添加客户中成功进群的总数(去重)',
+          tips: '送达客户中成功进群的总数(去重)',
           value: data.joinGroupCustomerNumber,
         },
         {
-          title: '今日添加客户数',
-          tips: '今日通过此活码添加的客户数(去重)',
+          title: '今日送达客户数',
+          tips: '今日建群任务送达的客户数(去重)',
           // tips: '当日内被员工产生过跟进行为的客户人数（去重）',
-          value: data.tdAddCustomerNumber,
+          value: data.tdTouchWeCustomerNumber,
         },
         {
           title: '今日进群客户数',
-          tips: '今日添加客户中成功进群数(去重)',
+          tips: '今日送达客户中成功进群数(去重)',
           value: data.tdJoinGroupCustomerNumber,
           // unit: '%',
         },
@@ -173,7 +176,7 @@ function dealDataTrend(data, series, xData) {
   let _data = [[], []]
   data.forEach((element) => {
     xData.push(element.date)
-    _data[0].push(element.addCustomerNumber)
+    _data[0].push(element.touchWeCustomerNumber)
     _data[1].push(element.joinGroupCustomerNumber)
   })
   series.push(..._data)
@@ -203,11 +206,12 @@ function getDataDetail(query) {
 }
 
 /** 获取详情中客群列表 */
-;(function getDetail() {
-  api.getDetail(id).then(({ data }) => {
-    groups = data.groups
-  })
-})()
+// let groups = []
+// ;(function getDetail() {
+//   api.getDetail(id).then(({ data }) => {
+//     groups = data.groups
+//   })
+// })()
 </script>
 
 <style lang="scss" scoped></style>
