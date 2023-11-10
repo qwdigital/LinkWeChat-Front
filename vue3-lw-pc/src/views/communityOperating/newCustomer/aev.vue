@@ -164,7 +164,7 @@ export default {
             <!-- closable -->
             <template v-if="!isDetail">
               <el-button type="primary" @click="dialogVisibleSelectTag = true">选择标签</el-button>
-              <div class="g-tip">通过此群活码进群的客户自动打上标签</div>
+              <div class="g-tip">通过此群活码进群的客户自动打上选中的标签</div>
             </template>
             <TagEllipsis :list="form.tags" limit="10" emptyText></TagEllipsis>
           </el-form-item>
