@@ -14,6 +14,11 @@ export default {
       type: String, // lineChart, barChart, table
       default: 'table',
     },
+    // 查询参数
+    params: {
+      type: Object,
+      default: () => ({}),
+    },
     // 接口请求
     request: {
       type: Function,
@@ -23,7 +28,7 @@ export default {
       type: Boolean,
       default: true,
     },
-    // 是否显示时间查询
+    // 是否显示快捷时间查询
     isTimeQuery: {
       type: Boolean,
     },
@@ -62,12 +67,7 @@ export default {
   data() {
     return {
       loading: false,
-      // 查询参数
-      query: {
-        pageNum: 1,
-        pageSize: 10,
-      },
-
+      query: { pageNum: 1, pageSize: 10 },
       // 表格列表数据，或图表的series数据
       data: [],
       xData: [],
@@ -80,7 +80,7 @@ export default {
   computed: {},
   watch: {},
   created() {
-    this.isCreateRequest && this.getList()
+    this.isCreateRequest && !this.isTimeQuery && this.getList()
   },
   mounted() {},
   methods: {
@@ -89,6 +89,8 @@ export default {
       if (this.type == 'table') {
         page && (this.query.pageNum = page)
       }
+
+      Object.assign(this.query, this.params)
 
       this.dealQueryFun && this.dealQueryFun(this.query)
 
@@ -104,17 +106,17 @@ export default {
 
       return this.request(query)
         .then(({ rows, total, data }) => {
-          data = data || rows
+          let res = data || rows
           // if (!data) return
           if (this.type == 'table') {
             // 表格
-            this.data = data
+            this.data = JSON.parse(JSON.stringify(res))
             this.total = +total
-            this.dealDataFun && this.dealDataFun(data, this.data)
+            this.dealDataFun && this.dealDataFun(res, this.data)
           } else {
             // 自定义echarts图表数据处理
             // this.data = data
-            this.dealDataFun && this.dealDataFun(data, this.data, this.xData)
+            this.dealDataFun && this.dealDataFun(res, this.data, this.xData)
           }
         })
         .catch((e) => {
@@ -163,6 +165,7 @@ export default {
       <div
         class="RequestChartTable-operation"
         v-if="requestExport || isTimeQuery || $slots.queryMiddle || $slots.operation">
+        <!-- 快捷时间查询 -->
         <SearchTitle
           style="display: inline-flex"
           v-if="isTimeQuery"
