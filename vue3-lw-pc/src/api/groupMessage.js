@@ -20,21 +20,21 @@ export function getCustomerList(params, isTrans) {
     url: base + '/customer/findAllWeCustomerList',
     method: 'get',
     params,
-  }).then((res) => {
+  }).then(({ data }) => {
     if (isTrans) {
       let map = {}
-      let data = []
-      for (let i = 0; i < res.data?.length; i++) {
+      let _data = []
+      for (let i = 0; i < data.length; i++) {
         let ai = data[i]
         if (!map[ai.firstUserId]) {
-          data.push({
+          _data.push({
             userId: ai.firstUserId,
             customerList: [ai.externalUserid],
           })
           map[ai.firstUserId] = ai
         } else {
-          for (let j = 0; j < data.length; j++) {
-            let dj = data[j]
+          for (let j = 0; j < _data.length; j++) {
+            let dj = _data[j]
             if (dj.userId == ai.firstUserId) {
               dj.customerList.push(ai.externalUserid)
               break
@@ -42,9 +42,9 @@ export function getCustomerList(params, isTrans) {
           }
         }
       }
-      return { data }
+      return { data: _data }
     } else {
-      return res
+      return { data }
     }
   })
 }

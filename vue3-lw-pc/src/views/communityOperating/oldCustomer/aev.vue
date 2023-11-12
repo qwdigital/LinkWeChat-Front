@@ -149,17 +149,23 @@ export default {
     /** 获取详情 */
     getDetail(id) {
       this.loading = true
-      getDetail(id).then(({ data }) => {
-        this.form = data
-        this.loading = false
-      })
+      getDetail(id)
+        .then(({ data }) => {
+          this.form = data
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     sync() {
       this.loading = false
-      sync(this.id).then(() => {
-        this.msgSuccess('操作成功')
-        this.loading = false
-      })
+      sync(this.id)
+        .then(() => {
+          this.msgSuccess('操作成功')
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     submit() {
       this.$refs.form.validate((valid) => {
@@ -179,20 +185,18 @@ export default {
               trackState: ranges.trackState,
               isContain: ranges.tags?.length ? ranges.isContain : undefined,
             }
-            debugger
             this.loading = true
-            getCustomerList(params)
+            getCustomerList(params, 1)
               .then(({ data }) => {
                 if (data?.length) {
                   form.senderList = data
-
-                  return this.sendData(form)
+                  this.sendData(form)
                 } else {
                   this.msgError('未找到可发送客户！')
                   this.loading = false
                 }
               })
-              .finally(() => {
+              .catch(() => {
                 this.loading = false
               })
           } else {
@@ -202,10 +206,10 @@ export default {
       })
     },
     sendData(form) {
+      this.loading = true
       ;(this.id ? update : add)(form)
         .then(() => {
           this.msgSuccess('添加成功')
-          this.loading = false
           this.$router.back()
         })
         .finally(() => {
