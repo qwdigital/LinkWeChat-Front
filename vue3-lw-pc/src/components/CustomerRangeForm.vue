@@ -27,6 +27,7 @@ export default {
     },
   },
   created() {
+    this.$emit('update:data', this.data)
     getList().then((res) => {
       this.stageList = res.data
     })
@@ -38,7 +39,7 @@ export default {
 
 <template>
   <el-form :model="form" ref="form" v-if="form">
-    <el-form-item label="添加人员">
+    <el-form-item label="添加人员" prop="users">
       <div v-if="!isDetail">
         <el-button type="primary" @click="dialogVisibleSelectUser = true">选择人员</el-button>
         <SelectUser
@@ -85,7 +86,7 @@ export default {
         align="right"></el-date-picker>
     </el-form-item>
 
-    <el-form-item label="客户标签" prop="tagList">
+    <el-form-item label="客户标签" prop="tags">
       <div v-if="!isDetail">
         <el-button type="primary" @click="dialogVisibleSelectTag = true">选择标签</el-button>
         <SelectTag

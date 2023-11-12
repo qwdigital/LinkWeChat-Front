@@ -164,9 +164,10 @@ export default {
     submit() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          if (this.form.sendScope == 1) {
-            let ranges = this.form.weCustomersQuery
-            let params = {
+          let form = JSON.parse(JSON.stringify(this.form))
+          if (form.sendScope == 1) {
+            let ranges = form.weCustomersQuery
+            let params = ranges && {
               genders: ranges.genders?.join(','),
               customerTypes: ranges.customerTypes?.join(','),
               tagIds: ranges.tags?.map((e) => e.tagId)?.join(','),
@@ -175,13 +176,17 @@ export default {
               userNames: ranges.users?.map((e) => e.name)?.join(','),
               beginTime: ranges.dateRange?.[0],
               endTime: ranges.dateRange?.[1],
+              trackState: ranges.trackState,
+              isContain: ranges.tags?.length ? ranges.isContain : undefined,
             }
+            debugger
             this.loading = true
             getCustomerList(params)
               .then(({ data }) => {
                 if (data?.length) {
-                  this.form.externalUserIds = data.map((dd) => dd.externalUserid)
-                  this.sendData()
+                  form.senderList = data
+
+                  return this.sendData(form)
                 } else {
                   this.msgError('未找到可发送客户！')
                   this.loading = false
@@ -191,14 +196,13 @@ export default {
                 this.loading = false
               })
           } else {
-            delete this.form.externalUserIds
-            this.sendData()
+            this.sendData(form)
           }
         }
       })
     },
-    sendData() {
-      ;(this.id ? update : add)(this.form)
+    sendData(form) {
+      ;(this.id ? update : add)(form)
         .then(() => {
           this.msgSuccess('添加成功')
           this.loading = false

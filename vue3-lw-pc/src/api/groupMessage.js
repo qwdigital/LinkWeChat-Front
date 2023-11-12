@@ -15,11 +15,37 @@ export function add(data) {
 }
 
 // 根据发送条件查询客户
-export function getCustomerList(params) {
+export function getCustomerList(params, isTrans) {
   return request({
     url: base + '/customer/findAllWeCustomerList',
     method: 'get',
     params,
+  }).then((res) => {
+    if (isTrans) {
+      let map = {}
+      let data = []
+      for (let i = 0; i < res.data?.length; i++) {
+        let ai = data[i]
+        if (!map[ai.firstUserId]) {
+          data.push({
+            userId: ai.firstUserId,
+            customerList: [ai.externalUserid],
+          })
+          map[ai.firstUserId] = ai
+        } else {
+          for (let j = 0; j < data.length; j++) {
+            let dj = data[j]
+            if (dj.userId == ai.firstUserId) {
+              dj.customerList.push(ai.externalUserid)
+              break
+            }
+          }
+        }
+      }
+      return { data }
+    } else {
+      return res
+    }
   })
 }
 

@@ -33,7 +33,7 @@ export function getDetail(id) {
       Object.assign(ranges, {
         isContain: ranges.isContain + '',
         genders: ranges.genders?.split(','),
-        customerTypes: ranges.genders?.split(','),
+        customerTypes: ranges.customerTypes?.split(','),
         users: ranges.userIds?.split(',')?.map((e, i) => ({ userId: e, name: userNames?.[i] })),
         tags: ranges.tagIds?.split(',')?.map((e, i) => ({ tagId: e, name: tagNames?.[i] })),
         dateRange: [ranges.beginTime, ranges.endTime],
@@ -130,16 +130,17 @@ export function add(data) {
   })
 
   let ranges = data.weCustomersQuery
-  Object.assign(ranges, {
-    genders: ranges.genders?.join(','),
-    customerTypes: ranges.genders?.join(','),
-    tagIds: ranges.tags?.map((e) => e.tagId)?.join(','),
-    tagNames: ranges.tags?.map((e) => e.name)?.join(','),
-    userIds: ranges.users?.map((e) => e.userId)?.join(','),
-    userNames: ranges.users?.map((e) => e.name)?.join(','),
-    beginTime: ranges.dateRange?.[0],
-    endTime: ranges.dateRange?.[1],
-  })
+  ranges &&
+    Object.assign(ranges, {
+      genders: ranges.genders?.join(','),
+      customerTypes: ranges.customerTypes?.join(','),
+      tagIds: ranges.tags?.map((e) => e.tagId)?.join(','),
+      tagNames: ranges.tags?.map((e) => e.name)?.join(','),
+      userIds: ranges.users?.map((e) => e.userId)?.join(','),
+      userNames: ranges.users?.map((e) => e.name)?.join(','),
+      beginTime: ranges.dateRange?.[0],
+      endTime: ranges.dateRange?.[1],
+    })
 
   return request({
     url: service + '/add',
