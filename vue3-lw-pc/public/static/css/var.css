@@ -25,7 +25,7 @@
   --top-nav-heght: 64px; /* 顶部导航条高度 */
 
   /* ------ 主题色 递浅色阶 ------  */
-  --step: calc((100% - var(--l)) / 10); /* 100 - 39  / 10 = 6.1 */
+  --step: calc((100% - var(--l)) / 10); /* 100 - 39 / 10 = 6.1 */
   --color-light-1: hsl(var(--h), var(--s), calc(var(--step) * 1 + var(--l))); /* hsl(149, 93%, 45%) */
   --color-light-2: hsl(var(--h), var(--s), calc(var(--step) * 2 + var(--l))); /* hsl(149, 93%, 51%) */
   --color-light-3: hsl(var(--h), var(--s), calc(var(--step) * 3 + var(--l))); /* hsl(149, 93%, 57%) */
@@ -92,16 +92,18 @@
 
 /* 暗黑模式 */
 html.dark {
-  /* --color-light-1: hsl(var(--h), var(--s), calc(var(--step) * 9 + var(--l)));
-  --color-light-2: hsl(var(--h), var(--s), calc(var(--step) * 8 + var(--l)));
-  --color-light-3: hsl(var(--h), var(--s), calc(var(--step) * 7 + var(--l)));
-  --color-light-4: hsl(var(--h), var(--s), calc(var(--step) * 6 + var(--l)));
-  --color-light-5: hsl(var(--h), var(--s), calc(var(--step) * 5 + var(--l))); */
-  --color-light-6: hsl(var(--h), var(--s), calc(var(--step) * 4 + var(--l)));
-  --color-light-7: hsl(var(--h), var(--s), calc(var(--step) * 3 + var(--l)));
-  --color-light-8: hsl(var(--h), var(--s), calc(var(--step) * 2 + var(--l)));
-  --color-light-9: hsl(var(--h), var(--s), calc(var(--step) * 2 + var(--l)));
-  --color-light-10: hsl(var(--h), var(--s), calc(var(--step) * 0.5 + var(--l)));
+  /* ------ 主题色 递浅色阶 ------  */
+  --step: calc(var(--l) / 12); /* 39 / 12  */
+  --color-light-1: hsl(var(--h), var(--s), calc(var(--l) - var(--step) * 1));
+  --color-light-2: hsl(var(--h), var(--s), calc(var(--l) - var(--step) * 2));
+  --color-light-3: hsl(var(--h), var(--s), calc(var(--l) - var(--step) * 3));
+  --color-light-4: hsl(var(--h), var(--s), calc(var(--l) - var(--step) * 4));
+  --color-light-5: hsl(var(--h), var(--s), calc(var(--l) - var(--step) * 5));
+  --color-light-6: hsl(var(--h), var(--s), calc(var(--l) - var(--step) * 6));
+  --color-light-7: hsl(var(--h), var(--s), calc(var(--l) - var(--step) * 7));
+  --color-light-8: hsl(var(--h), var(--s), calc(var(--l) - var(--step) * 8));
+  --color-light-9: hsl(var(--h), var(--s), calc(var(--l) - var(--step) * 9));
+  --color-light-10: hsl(var(--h), var(--s), calc(var(--l) - var(--step) * 10));
 
   --font-white: #f2f2f2;
 
