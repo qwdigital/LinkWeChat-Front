@@ -5,7 +5,7 @@
         <web-view :src="data.longLink"></web-view>
       </div>
     </template> -->
-    <div class="g-card g-pad20 cc ac">
+    <div class="cc ac" style="max-width: 68vw">
       <!-- 个人小程序，企业小程序 -->
       <template v-if="[7, 9].includes(+data.type)">
         <div class="">{{ data.name || '小程序' }}</div>
@@ -29,10 +29,7 @@
           <div class="tips mt20 toe">{{ data.describe || '描述' }}</div>
         </div>
 
-        <image
-          style="width: 200px; height: 200px; margin: 20px 0 30px"
-          :src="data.qrCode"
-          show-menu-by-longpress></image>
+        <image style="width: 68vw; height: 68vw; margin: 20px 0 30px" :src="data.qrCode" show-menu-by-longpress></image>
 
         <div v-if="[5, 6, 8].includes(+data.type)" class="toe">长按二维码保存后，使用微信扫一扫打开</div>
         <div v-else class="">长按二维码{{ touchTypeDict[data.type].previewMobileTitle }}</div>
