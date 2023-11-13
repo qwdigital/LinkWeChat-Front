@@ -49,7 +49,7 @@
       </div>
       <div class="g-card">
         <div class="my-title">商品图册</div>
-        <el-form-item label="对外收款Secret:" prop="bill_secret">
+        <el-form-item label="对外收款Secret:" prop="billSecret">
           <el-input v-model="form.bill_secret" type="password" placeholder="请输入"></el-input>
           <div class="tips">用于通过API收款，在企微管理后台->应用管理->对外收款API中获取</div>
         </el-form-item>
