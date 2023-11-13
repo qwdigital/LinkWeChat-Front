@@ -4,20 +4,19 @@
       <div class="g-card">
         <div class="my-title">微信支付</div>
         <el-form-item label="商户名称:" prop="merChantName">
-          <el-input style="width: 40%" v-model="form.merChantName" placeholder="请输入商户名称"></el-input>
+          <el-input v-model="form.merChantName" placeholder="请输入"></el-input>
           <!-- <div class="tips"></div> -->
         </el-form-item>
         <el-form-item label="商户号:" prop="merChantNumber">
-          <el-input style="width: 40%" v-model="form.merChantNumber" placeholder="请输入商户号"></el-input>
+          <el-input v-model="form.merChantNumber" placeholder="请输入"></el-input>
           <div class="tips">用于通过API支付商户，在微信支付后台->账号中心->个人信息中获取</div>
         </el-form-item>
         <el-form-item label="商户支付Secret:" prop="merChantSecret">
           <el-input
             :disabled="!merChantSecretEditState"
-            style="width: 40%"
             :type="merChantSecretEditState ? 'text' : 'password'"
             v-model="form.merChantSecret"
-            placeholder="请输入商户支付Secret"></el-input>
+            placeholder="请输入"></el-input>
           <el-button style="margin-left: 20px" plain v-if="merChantSecretEditState" @click="cancelEditMerChantSecret">
             取消
           </el-button>
@@ -48,6 +47,13 @@
           <div class="tips">用于校验支付环境，在微信支付后台->账户中心->账户设置->API安全中下载</div>
         </el-form-item>
       </div>
+      <div class="g-card">
+        <div class="my-title">商品图册</div>
+        <el-form-item label="对外收款Secret:" prop="bill_secret">
+          <el-input v-model="form.bill_secret" type="password" placeholder="请输入"></el-input>
+          <div class="tips">用于通过API收款，在企微管理后台->应用管理->对外收款API中获取</div>
+        </el-form-item>
+      </div>
     </el-form>
   </div>
 </template>
@@ -65,6 +71,7 @@ export default {
         merChantNumber: [{ required: true, message: '必填项', trigger: 'blur' }],
         merChantSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
         certP12Url: [{ required: true, message: '必填项', trigger: 'blur' }],
+        bill_secret: [{ required: true, message: '必填项', trigger: 'blur' }],
       },
     }
   },
