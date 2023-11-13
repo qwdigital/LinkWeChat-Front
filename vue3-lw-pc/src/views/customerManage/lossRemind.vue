@@ -1,7 +1,5 @@
 <script>
 import { getListNew, exportCustomer, lossRemind, getLossRemindStatus } from '@/api/customer'
-// import { getList as getListTag } from '@/api/customer/tag'
-// import { getList as getListOrganization } from '@/api/organization'
 
 import SelectTag from '@/components/SelectTag'
 
@@ -33,17 +31,9 @@ export default {
         weTags: [],
       },
       list: [], // 客户列表
-      listOrganization: [], // 组织架构列表
       multipleSelection: [], // 多选数组
       dialogVisible: false, // 选择标签弹窗显隐
       dialogVisibleSelectUser: false, // 选择添加人弹窗显隐
-      selectedGroup: '', // 选择的标签分组
-      selectedTag: [], // 选择的标签
-      removeTag: [], // 可移除的标签
-      tagDialogType: {
-        title: '', // 选择标签弹窗标题
-        type: '', // 弹窗类型
-      },
       isNotice: '0',
     }
   },
@@ -51,8 +41,6 @@ export default {
   computed: {},
   created() {
     this.getList()
-    // this.getListTag()
-    // this.getListOrganization()
     this.getLossRemindStatus()
 
     this.$store.setBusininessDesc(
@@ -64,7 +52,6 @@ export default {
   mounted() {},
   methods: {
     getList(page) {
-      // console.log(this.dateRange);
       if (this.dateRange) {
         this.query.beginTime = this.dateRange[0]
         this.query.endTime = this.dateRange[1]
@@ -72,6 +59,9 @@ export default {
         this.query.beginTime = ''
         this.query.endTime = ''
       }
+      this.query.userIds = this.queryUser.map((d) => d.userId)?.join(',')
+      this.query.tagIds = this.queryTag.map((d) => d.tagId)?.join(',')
+
       page && (this.query.pageNum = page)
       this.loading = true
       getListNew(this.query)
@@ -85,33 +75,10 @@ export default {
           this.loading = false
         })
     },
-    // getListTag() {
-    //   getListTag().then(({ rows }) => {
-    //     this.listTagOneArray = []
-    //     rows.forEach((element) => {
-    //       element.weTags.forEach((d) => {
-    //         this.listTagOneArray.push(d)
-    //       })
-    //     })
-    //   })
-    // },
-    // getListOrganization() {
-    //   getListOrganization().then(({ rows }) => {
-    //     this.listOrganization = Object.freeze(rows)
-    //   })
-    // },
     getLossRemindStatus() {
       getLossRemindStatus().then(({ data }) => {
         this.isNotice = data
       })
-    },
-    showTagDialog() {
-      this.selectedTag = this.queryTag
-      this.tagDialogType = {
-        title: '选择标签',
-        type: '1',
-      }
-      this.dialogVisible = true
     },
     // /** 导出按钮操作 */
     // exportCustomer() {
@@ -129,28 +96,12 @@ export default {
     //     })
     //     .catch(function() {})
     // },
-    selectedUser(list) {
-      this.queryUser = list
-      this.query.userIds = list.map((d) => d.userId) + ''
-    },
-    submitSelectTag(selected) {
-      if (this.tagDialogType.type === '1') {
-        this.query.tagIds = selected.map((d) => d.tagId) + ''
-        // debugger;
-        this.queryTag = selected
-        this.dialogVisible = false
-      }
-    },
     resetForm() {
       this.dateRange = []
       this.queryTag = []
       this.queryUser = []
       this.$refs['queryForm'].resetFields()
       this.getList(1)
-    },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.multipleSelection = selection
     },
     // 流失提醒开关事件
     remindSwitch(val) {
@@ -189,7 +140,7 @@ export default {
           align="right"></el-date-picker>
       </el-form-item>
       <el-form-item label="标签">
-        <div class="tag-input" @click="showTagDialog">
+        <div class="tag-input" @click="dialogVisible = true">
           <span class="tag-place" v-if="!queryTag.length">请选择</span>
           <template v-else>
             <el-tag type="info" v-for="(unit, unique) in queryTag" :key="unique">{{ unit.name }}</el-tag>
@@ -226,13 +177,7 @@ export default {
         <!-- v-hasPermi="['customerManage/customer:makeTag']" -->
       </div>
 
-      <el-table
-        v-loading="loading"
-        ref="multipleTable"
-        :data="list"
-        tooltip-effect="dark"
-        style="width: 100%"
-        @selection-change="handleSelectionChange">
+      <el-table v-loading="loading" ref="multipleTable" :data="list" tooltip-effect="dark">
         <!-- <el-table-column type="selection" align="center" width="55"></el-table-column> -->
         <el-table-column label="客户" prop="name" align="center">
           <template #default="scope">
@@ -300,15 +245,13 @@ export default {
     </div>
 
     <!-- 选择标签弹窗 -->
-    <SelectTag
-      v-model:visible="dialogVisible"
-      :title="tagDialogType.title"
-      :selected="selectedTag"
-      :type="tagDialogType.type"
-      @success="submitSelectTag"></SelectTag>
+    <SelectTag v-model:visible="dialogVisible" :selected="queryTag" @success="(list) => (queryTag = list)"></SelectTag>
 
     <!-- 选择添加人弹窗 -->
-    <SelectUser v-model:visible="dialogVisibleSelectUser" title="选择添加人" @success="selectedUser"></SelectUser>
+    <SelectUser
+      v-model:visible="dialogVisibleSelectUser"
+      title="选择添加人"
+      @success="(list) => (queryUser = list)"></SelectUser>
   </div>
 </template>
 
