@@ -11,17 +11,14 @@ export default {
   computed: {},
   watch: {},
   created() {
-    if (this.$route.path != sessionStorage.activeTabPagePath) {
-      sessionStorage.activeTabIndex = ''
-    }
-    this.active = sessionStorage.activeTabIndex = this.$route.query.index || sessionStorage.activeTabIndex || '0'
-    sessionStorage.activeTabPagePath = this.$route.path
+    this.active = this.$route.query.index || '0'
     this.opened.push(this.active)
   },
   mounted() {},
   methods: {
     tabClick(v) {
-      this.active = sessionStorage.activeTabIndex = v.paneName
+      this.active = v.paneName
+      this.$router.replace({ path: this.$route.path, query: { ...this.$route.query, index: v.paneName } })
       this.opened.includes(v.paneName) || this.opened.push(v.paneName)
     },
   },
