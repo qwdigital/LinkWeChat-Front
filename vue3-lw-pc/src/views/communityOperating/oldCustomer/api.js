@@ -27,9 +27,10 @@ export function getDetail(id) {
     // 统一处理数据结构
     // weCustomersQuery 为null 转为 undefined 便于前端组件统一赋默认值
     let ranges = (data.weCustomersQuery = data.weCustomersQuery || undefined)
-    let userNames = ranges.userNames?.split(',')
-    let tagNames = ranges.tagNames?.split(',')
-    ranges &&
+
+    if (ranges) {
+      let userNames = ranges.userNames?.split(',')
+      let tagNames = ranges.tagNames?.split(',')
       Object.assign(ranges, {
         isContain: ranges.isContain + '',
         genders: ranges.genders?.split(','),
@@ -38,6 +39,7 @@ export function getDetail(id) {
         tags: ranges.tagIds?.split(',')?.map((e, i) => ({ tagId: e, name: tagNames?.[i] })),
         dateRange: [ranges.beginTime, ranges.endTime],
       })
+    }
 
     let names = data.groupNames?.split(',')
     data.groups = data.chatIdList?.split(',').map((e, i) => ({ chatId: e, groupName: names?.[i] }))
