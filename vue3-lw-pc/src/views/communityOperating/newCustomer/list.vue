@@ -50,15 +50,8 @@ export default {
   mounted() {},
   methods: {
     // 新建/编辑新客数据
-    goRoute(path = 'aev', id) {
-      this.$router.push({
-        path,
-        query: { id },
-      })
-    },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id)
+    goRoute(path = 'aev', query) {
+      this.$router.push({ path, query })
     },
     /** 删除按钮操作 */
     remove(id) {
@@ -117,7 +110,7 @@ export default {
       </template>
 
       <template #="{ data }">
-        <el-table :data="data" @selection-change="handleSelectionChange">
+        <el-table :data="data" @selection-change="(selection) => (ids = selection.map((item) => item.id))">
           <el-table-column type="selection" width="50" align="center"></el-table-column>
           <el-table-column prop="codeName" label="活码名称" align="center"></el-table-column>
           <el-table-column prop="emplList" label="活码" align="center" width="130">
@@ -157,7 +150,7 @@ export default {
               </el-popover>
             </template>
             <template #default="{ row }">
-              <div class="g-color cp" @click="goRoute('detail', row.id)">
+              <div class="g-color cp" @click="goRoute('detail', { id: row.id, index: 1 })">
                 {{ row.addCustomerNumber }}/{{ row.joinGroupNumber }}
               </div>
             </template>
@@ -166,8 +159,8 @@ export default {
           <el-table-column label="创建时间" align="center" prop="createTime" width="160"></el-table-column>
           <el-table-column label="操作" align="center" width="280" fixed="right">
             <template #default="{ row }">
-              <el-button text @click="goRoute('detail', row.id)">详情|统计</el-button>
-              <el-button text @click="goRoute('aev', row.id)">编辑</el-button>
+              <el-button text @click="goRoute('detail', { id: row.id })">详情|统计</el-button>
+              <el-button text @click="goRoute('aev', { id: row.id })">编辑</el-button>
               <el-button text title="下载活码" @click="downloadBlob(row.groupCodeUrl, row.codeName + '.png', 'image')">
                 下载
               </el-button>

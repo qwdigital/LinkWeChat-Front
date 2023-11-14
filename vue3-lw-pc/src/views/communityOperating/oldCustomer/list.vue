@@ -19,12 +19,8 @@ export default {
   },
   methods: {
     // 新增/编辑老客数据
-    goRoute(path = 'aev', id) {
-      this.$router.push({ path, query: { id } })
-    },
-    // 处理多选
-    handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id)
+    goRoute(path = 'aev', query) {
+      this.$router.push({ path, query })
     },
   },
 }
@@ -68,7 +64,7 @@ export default {
           </el-popover>
         </template>
         <template #default="{ row }">
-          <div class="g-color cp" @click="goRoute('detail', row.id)">
+          <div class="g-color cp" @click="goRoute('detail', { id: row.id, index: 1 })">
             {{ row.touchWeCustomerNumber }}/{{ row.joinGroupCustomerNumber }}
           </div>
         </template>
@@ -79,7 +75,7 @@ export default {
 
       <el-table-column label="操作" align="center" width="180">
         <template #default="{ row }">
-          <el-button text @click="goRoute('detail', row.id)">详情</el-button>
+          <el-button text @click="goRoute('detail', { id: row.id })">详情</el-button>
           <el-button text @click="$refs.table.remove(() => remove(row.id))">删除</el-button>
         </template>
       </el-table-column>
