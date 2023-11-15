@@ -1,4 +1,4 @@
-import Request from '@/js_sdk/luch-request/luch-request/index.js'
+import Request from 'luch-request'
 import cfg from '@/config.js'
 
 const http = new Request()
@@ -14,8 +14,7 @@ http.interceptors.request.use(
     // if (config.custom.auth) {
     //   config.header.token = 'token'
     // }
-    config.header['Authorization'] =
-      'eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX3R5cGUiOiIwMCIsInVzZXJfaWQiOjEsImxvZ2luX3R5cGUiOiJMaW5rV2VDaGF0QVBJIiwidXNlcl9uYW1lIjoiYWRtaW4iLCJ1c2VyX2tleSI6IjYyZjRiYWZmLWY2NzYtNGNlOS1iNDNhLTZhMjhlM2QwYTEwNiIsImNvcnBfbmFtZSI6IuS7n-W-ruenkeaKgCIsImNvcnBfaWQiOiJ3dzYyMmZjODUyZjc5YzNmMTMifQ.CvkoSw7K1eT-AjmfFYX5e2MlxKFNjfqzPpIwPlEuNDRL3ZASTW7t6UlGUl5CbYGI-F-3EPcVvFm9PcEk_YKtlQ'
+    // config.header['Authorization'] =''
     // if (config.custom.loading) {
     //  uni.showLoading()
     // }
@@ -69,7 +68,7 @@ export async function get(url, params) {
   })
 }
 
-export default function(config = {}) {
+export default function (config = {}) {
   config.baseURL = cfg.BASE_API
   // 兼容get方法使用data传参
   if ((config.method || 'get').toLowerCase() === 'get' && !config.params) {
