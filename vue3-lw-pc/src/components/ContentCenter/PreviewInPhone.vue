@@ -14,7 +14,7 @@
           </div>
         </div>
       </div>
-      <div class="item" v-for="(data, key) in list" :key="key">
+      <div class="item" v-for="(data, key) in list?.length ? list : data" :key="key">
         <div class="avatar222"><img src="../../assets/drainageCode/header.png" /></div>
         <div class="msg">
           <!-- 文本 -->
@@ -195,19 +195,21 @@ export default {
       type: Object,
       default: null,
     },
+
+    originList: {
+      type: Array,
+      default: () => [],
+    },
   },
-  watch: {
-    // list: {
-    //   handler(val) {
-    //     // console.log(144, val)
-    //   },
-    //   immediate: true,
-    // },
-  },
+  watch: {},
   data() {
     return {}
   },
-  computed: {},
+  computed: {
+    data() {
+      return this.setEditList(this.originList)
+    },
+  },
   created() {},
   mounted() {},
   methods: {
@@ -225,6 +227,72 @@ export default {
       } else {
         return ''
       }
+    },
+    setEditList(list) {
+      let arr = []
+      if (list && list.length) {
+        list.forEach((dd) => {
+          let common = { id: dd.materialId, mediaType: dd.realType + '' }
+          let obj = undefined
+          if (dd.realType === 0) {
+            obj = {
+              materialUrl: dd.picUrl,
+            }
+          } else if (dd.realType === 2) {
+            obj = {
+              materialUrl: dd.fileUrl,
+              coverUrl: dd.picUrl,
+              digest: dd.description,
+              materialName: dd.title,
+            }
+          } else if (dd.realType === 3) {
+            obj = {
+              materialUrl: dd.fileUrl,
+              digest: dd.description,
+              materialName: dd.title,
+            }
+          } else if (dd.realType === 4) {
+            obj = {
+              content: dd.content,
+            }
+          } else if ([9, 19].includes(dd.realType)) {
+            obj = {
+              content: dd.content,
+              coverUrl: dd.picUrl,
+              materialUrl: dd.linkUrl,
+              materialName: dd.title,
+            }
+          } else if (dd.realType === 8) {
+            obj = {
+              materialName: dd.title,
+              materialUrl: dd.linkUrl,
+              materialName: dd.title,
+            }
+          } else if (dd.realType === 11) {
+            obj = {
+              digest: dd.appId,
+              materialName: dd.title,
+              coverUrl: dd.picUrl,
+              materialUrl: dd.fileUrl,
+            }
+          } else if (dd.realType === 12) {
+            obj = {
+              digest: dd.description,
+              materialUrl: dd.fileUrl,
+              coverUrl: dd.picUrl,
+              content: dd.content,
+              materialName: dd.title,
+            }
+          } else if (dd.realType === 5) {
+            obj = {
+              materialUrl: dd.fileUrl,
+              materialName: dd.title,
+            }
+          }
+          obj && arr.push(Object.assign(common, obj))
+        })
+      }
+      return arr
     },
   },
 }

@@ -2,15 +2,12 @@
   <div>
     <!-- 新建欢迎语 -->
     <el-row type="flex" justify="space-between">
-      <el-col :span="!showPhone ? 24 : 16" :class="!showPhone ? 'mt10' : 'boxClass'" class="left radius">
+      <el-col :span="!showPhone ? 24 : 16" :class="!showPhone ? 'g-margin-t' : 'boxClass'" class="left radius">
         <div class="g-card" v-if="showModle">
           <el-button type="primary" @click="welcomVisible = true">从模板库中选择</el-button>
         </div>
         <div class="g-card" v-if="!detail">
-          <div
-            class="g-card-title"
-            v-if="iswelcom || (moduleType === 4 && otherType !== 3)"
-            style="margin-bottom: 20px">
+          <div class="g-card-title g-margin-b" v-if="iswelcom || (moduleType === 4 && otherType !== 3)">
             {{ titleOne }}
             <el-popover trigger="hover" content="最多发送1条文字信息" placement="top-start">
               <template #reference>
@@ -129,7 +126,7 @@
             </div>
           </div>
         </div>
-        <div class="g-card" style="margin-top: 10px" v-if="talkList?.length">
+        <div class="g-card" v-if="talkList?.length">
           <DragTable
             :tableData2="talkList"
             @setData="setData"
@@ -358,18 +355,24 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    isTransData: Boolean,
   },
   watch: {
     baseData: {
       handler(val) {
+        val = JSON.parse(JSON.stringify(val))
         if (val.templateInfo || val.attachments) {
-          this.form.templateInfo = val.templateInfo ? val.templateInfo : ''
+          this.isTransData && (val.attachments = this.setEditList(val.attachments))
+          this.form.templateInfo = val.templateInfo || ''
           this.form.attachments = val.attachments
+          this.talkForm = val
+          this.talkList = val.attachments
           // this.$forceUpdate()
-          if (this.otherType === 3 && this.detail) {
-            this.talkForm = val
-            this.talkList = val.attachments
-          }
+          // if (this.otherType === 3 && this.detail) {
+          //   this.talkForm = val
+          //   this.talkList = val.attachments
+          // }
         }
       },
       deep: true,
@@ -695,6 +698,72 @@ export default {
         }
       })
     },
+    setEditList(list) {
+      let arr = []
+      if (list && list.length) {
+        list.forEach((dd) => {
+          let common = { id: dd.materialId, mediaType: dd.realType + '' }
+          let obj = undefined
+          if (dd.realType === 0) {
+            obj = {
+              materialUrl: dd.picUrl,
+            }
+          } else if (dd.realType === 2) {
+            obj = {
+              materialUrl: dd.fileUrl,
+              coverUrl: dd.picUrl,
+              digest: dd.description,
+              materialName: dd.title,
+            }
+          } else if (dd.realType === 3) {
+            obj = {
+              materialUrl: dd.fileUrl,
+              digest: dd.description,
+              materialName: dd.title,
+            }
+          } else if (dd.realType === 4) {
+            obj = {
+              content: dd.content,
+            }
+          } else if ([9, 19].includes(dd.realType)) {
+            obj = {
+              content: dd.content,
+              coverUrl: dd.picUrl,
+              materialUrl: dd.linkUrl,
+              materialName: dd.title,
+            }
+          } else if (dd.realType === 8) {
+            obj = {
+              materialName: dd.title,
+              materialUrl: dd.linkUrl,
+              materialName: dd.title,
+            }
+          } else if (dd.realType === 11) {
+            obj = {
+              digest: dd.appId,
+              materialName: dd.title,
+              coverUrl: dd.picUrl,
+              materialUrl: dd.fileUrl,
+            }
+          } else if (dd.realType === 12) {
+            obj = {
+              digest: dd.description,
+              materialUrl: dd.fileUrl,
+              coverUrl: dd.picUrl,
+              content: dd.content,
+              materialName: dd.title,
+            }
+          } else if (dd.realType === 5) {
+            obj = {
+              materialUrl: dd.fileUrl,
+              materialName: dd.title,
+            }
+          }
+          obj && arr.push(Object.assign(common, obj))
+        })
+      }
+      return arr
+    },
     dealOtherModleType(talkForm) {
       this.talkList.forEach((item) => {
         let attachments = {}
@@ -846,11 +915,11 @@ export default {
     if (this.templateType != 1 && this.moduleType != 4) {
       this.getTree()
     }
-    if (this.form.templateInfo) {
-      // this.form.templateInfo = this.baseData.templateInfo
-      this.talkForm = this.baseData
-      this.talkList = this.baseData.attachments
-    }
+    // if (this.form.templateInfo) {
+    //   // this.form.templateInfo = this.baseData.templateInfo
+    //   this.talkForm = this.baseData
+    //   this.talkList = this.baseData.attachments
+    // }
     this.dealType()
     if (this.tplType == 3) {
       this.maxlength = 1

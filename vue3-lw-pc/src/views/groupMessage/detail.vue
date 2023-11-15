@@ -138,7 +138,7 @@
         </div>
       </div>
       <div class="g-card" style="width: 425px; margin-top: 0">
-        <PreviewInPhone :templateInfo="form.welcomeMsg" :list="form.materialMsgList"></PreviewInPhone>
+        <PreviewInPhone :templateInfo="form.welcomeMsg" :originList="form.materialMsgList"></PreviewInPhone>
       </div>
     </div>
   </div>
@@ -284,124 +284,6 @@ export default {
       this.queryMember.pageNum = e.page
       this.getMemberList()
     },
-    setEditList(list) {
-      // let arr = []
-      // if (list && list.length) {
-      //   list.forEach(dd => {
-      //     if (dd.msgType === 'image') {
-      //       let obj = {
-      //         msgType: '0',
-      //         materialUrl: dd.picUrl
-      //       }
-      //       arr.push(obj)
-      //     } else if (dd.msgType === 'link') {
-      //       let ob = {
-      //         msgType: '8',
-      //         materialName: dd.title,
-      //         materialUrl: dd.linkUrl
-      //       }
-      //       arr.push(ob)
-      //     } else if (dd.msgType === 'miniprogram') {
-      //       let ff = {
-      //         msgType: '9',
-      //         digest: dd.appId,
-      //         materialName: dd.title,
-      //         coverUrl: dd.picUrl,
-      //         materialUrl: dd.linkUrl
-      //       }
-      //       arr.push(ff)
-      //     }
-      //   })
-      // }
-      // return arr
-      let arr = []
-      if (list && list.length) {
-        list.forEach((dd) => {
-          if (dd.realType === 0) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '0',
-              materialUrl: dd.picUrl,
-            }
-            arr.push(obj)
-          } else if (dd.realType === 2) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '2',
-              materialUrl: dd.fileUrl,
-              coverUrl: dd.picUrl,
-              digest: dd.description,
-              materialName: dd.title,
-            }
-            arr.push(obj)
-          } else if (dd.realType === 3) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '3',
-              materialUrl: dd.fileUrl,
-              digest: dd.description,
-              materialName: dd.title,
-            }
-            arr.push(obj)
-          } else if (dd.realType === 4) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '4',
-              content: dd.content,
-            }
-            arr.push(obj)
-          } else if (dd.realType === 9) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '9',
-              content: dd.content,
-              coverUrl: dd.picUrl,
-              materialUrl: dd.linkUrl,
-              materialName: dd.title,
-            }
-            arr.push(obj)
-          } else if (dd.realType === 8) {
-            let ob = {
-              id: dd.materialId,
-              mediaType: '8',
-              materialName: dd.title,
-              materialUrl: dd.linkUrl,
-            }
-            arr.push(ob)
-          } else if (dd.realType === 11) {
-            let ff = {
-              id: dd.materialId,
-              mediaType: '11',
-              digest: dd.appId,
-              materialName: dd.title,
-              coverUrl: dd.picUrl,
-              materialUrl: dd.fileUrl,
-            }
-            arr.push(ff)
-          } else if (dd.realType === 12) {
-            let ff = {
-              id: dd.materialId,
-              mediaType: '12',
-              digest: dd.description,
-              materialUrl: dd.fileUrl,
-              coverUrl: dd.picUrl,
-              content: dd.content,
-              materialName: dd.title,
-            }
-            arr.push(ff)
-          } else if (dd.realType === 5) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '5',
-              materialUrl: dd.fileUrl,
-              materialName: dd.title,
-            }
-            arr.push(obj)
-          }
-        })
-      }
-      return arr
-    },
     getDetail() {
       getDetail(this.msgId).then((res) => {
         if (res.code == 200) {
@@ -409,7 +291,7 @@ export default {
           this.form.welcomeMsg = res.data.content
           // this.form.materialMsgList = res.data.attachments
           // this.form.welcomeMsg = res.data.attachments ? res.data.attachments[0].content : '',
-          this.form.materialMsgList = res.data.attachments ? this.setEditList(res.data.attachments) : []
+          this.form.materialMsgList = res.data.attachments || []
           // this.$forceUpdate()
         } else {
           this.msgError(res.msg || '获取失败')

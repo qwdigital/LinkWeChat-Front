@@ -77,6 +77,7 @@
         @update="currentActive = 1"
         @submit="getWelData"
         :baseData="materialData"
+        isTransData
         :showModle="true"></AddMaterial>
     </template>
     <SelectUser
@@ -251,95 +252,6 @@ export default {
         this.loading = false
       })
     },
-    setEditList(list) {
-      let arr = []
-      if (list && list.length) {
-        list.forEach((dd) => {
-          if (dd.realType === 0) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '0',
-              materialUrl: dd.picUrl,
-            }
-            arr.push(obj)
-          } else if (dd.realType === 2) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '2',
-              materialUrl: dd.fileUrl,
-              coverUrl: dd.picUrl,
-              digest: dd.description,
-              materialName: dd.title,
-            }
-            arr.push(obj)
-          } else if (dd.realType === 3) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '3',
-              materialUrl: dd.fileUrl,
-              digest: dd.description,
-              materialName: dd.title,
-            }
-            arr.push(obj)
-          } else if (dd.realType === 4) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '4',
-              content: dd.content,
-            }
-            arr.push(obj)
-          } else if (dd.realType === 9) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '9',
-              content: dd.content,
-              coverUrl: dd.picUrl,
-              materialUrl: dd.linkUrl,
-              materialName: dd.title,
-            }
-            arr.push(obj)
-          } else if (dd.realType === 8) {
-            let ob = {
-              id: dd.materialId,
-              mediaType: '8',
-              materialName: dd.title,
-              materialUrl: dd.linkUrl,
-            }
-            arr.push(ob)
-          } else if (dd.realType === 11) {
-            let ff = {
-              id: dd.materialId,
-              mediaType: '11',
-              digest: dd.appId,
-              materialName: dd.title,
-              coverUrl: dd.picUrl,
-              materialUrl: dd.fileUrl,
-            }
-            arr.push(ff)
-          } else if (dd.realType === 12) {
-            let ff = {
-              id: dd.materialId,
-              mediaType: '12',
-              digest: dd.description,
-              materialUrl: dd.fileUrl,
-              coverUrl: dd.picUrl,
-              content: dd.content,
-              materialName: dd.title,
-            }
-            arr.push(ff)
-          } else if (dd.realType === 5) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '5',
-              materialUrl: dd.picUrl,
-              materialName: dd.title,
-            }
-            arr.push(obj)
-          }
-        })
-      }
-      return arr
-    },
     init() {
       getCode(1).then((res) => {
         if (res.code === 200 && res.data) {
@@ -353,7 +265,7 @@ export default {
           }
           this.materialData = {
             templateInfo: this.form.weQrAttachments ? this.form.weQrAttachments[0].content : '',
-            attachments: this.form.weQrAttachments ? this.setEditList(this.form.weQrAttachments) : [],
+            attachments: this.form.weQrAttachments,
           }
           if (this.form.tagIds) {
             this.selectedTagList = []

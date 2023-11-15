@@ -1,215 +1,197 @@
 <template>
-  <div>
+  <div v-loading="saveLoading">
     <div class="g-card">
       <el-steps :active="currentActive" align-center finish-status="success">
         <el-step title="直播设置"></el-step>
         <el-step title="分享设置"></el-step>
       </el-steps>
     </div>
-    <div class="g-card" v-if="currentActive === 1">
-      <div class="g-card">
-        <div class="pad20">
-          <el-row>
-            <el-col :span="10">
-              <el-form ref="liveForm" :rules="liveRules" :model="liveForm" label-position="right" label-width="100px">
-                <el-form-item label="直播标题" label-width="120px" prop="liveTitle">
-                  <el-input
-                    v-model="liveForm.liveTitle"
-                    maxlength="20"
-                    show-word-limit
-                    clearable
-                    placeholder="请输入直播标题"></el-input>
-                </el-form-item>
-                <el-form-item
-                  label="直播成员"
-                  label-width="120px"
-                  v-if="!this.liveForm.id"
-                  required
-                  :error="liveUserInfo">
-                  <div v-if="users.length > 0">
-                    <el-tag v-for="(item, index) in users" :key="index">{{ item.name }}</el-tag>
-                  </div>
-                  <el-button type="primary" plain @click="onSelectUser">
-                    {{ users.length ? '修改' : '选择' }}员工
-                  </el-button>
-                </el-form-item>
-                <el-form-item label="直播开始时间" label-width="120px" required>
-                  <div class="pickerStyle">
-                    <el-form-item prop="liveStartDate">
-                      <el-date-picker
-                        v-model="liveForm.liveStartDate"
-                        v-bind="pickerOptions"
-                        type="date"
-                        placeholder="选择年月日"
-                        style="width: 150px; margin-right: 30px"
-                        format="YYYY-MM-DD"
-                        value-format="YYYY-MM-DD"
-                        @change="liveStartDateChange"></el-date-picker>
-                    </el-form-item>
-                    <el-form-item prop="liveStartTime">
-                      <el-time-select
-                        v-model="liveForm.liveStartTime"
-                        style="width: 150px"
-                        v-bind="{
-                          start: '00:00',
-                          step: '00:15',
-                          end: '23:59',
-                          minTime: minTime,
-                          maxTime: maxTime,
-                        }"
-                        placeholder="选择时分"
-                        @click="liveStartTimeChange"></el-time-select>
-                    </el-form-item>
-                  </div>
-                </el-form-item>
-                <el-form-item label="直播结束时间" label-width="120px" required>
-                  <div class="pickerStyle">
-                    <el-form-item prop="liveEndDate">
-                      <el-date-picker
-                        v-model="liveForm.liveEndDate"
-                        v-bind="pickerOptions"
-                        type="date"
-                        placeholder="选择年月日"
-                        style="width: 150px; margin-right: 30px"
-                        format="YYYY-MM-DD"
-                        value-format="YYYY-MM-DD"
-                        @change="liveEndDateChange"></el-date-picker>
-                    </el-form-item>
-                    <el-form-item prop="liveEndTime">
-                      <el-time-select
-                        v-model="liveForm.liveEndTime"
-                        style="width: 150px"
-                        v-bind="{
-                          start: '00:00',
-                          step: '00:15',
-                          end: '23:59',
-                          minTime: minEndTime,
-                        }"
-                        placeholder="选择时分"
-                        @click="liveEndTimeChange"></el-time-select>
-                    </el-form-item>
-                  </div>
-                </el-form-item>
-                <el-form-item label="直播简介" label-width="120px">
-                  <el-input
-                    type="textarea"
-                    :rows="6"
-                    maxlength="150"
-                    show-word-limit
-                    placeholder="请输入内容"
-                    v-model="liveForm.liveDesc"></el-input>
-                </el-form-item>
-                <el-form-item label="开播提醒" label-width="120px">
-                  <el-select v-model="liveForm.startReminder" placeholder="请选择提醒时间">
-                    <el-option
-                      v-for="item in options"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"></el-option>
-                  </el-select>
-                  <div class="sub-des">选择后会在开播前发送应用消息提醒员工开播</div>
-                </el-form-item>
-                <el-form-item>
-                  <el-button plain @click="cancelFn">取消</el-button>
-                  <el-button type="primary" @click="nextStep(2)">下一步</el-button>
-                  <el-button type="primary" :loading="saveLoading" @click="submit(false)" v-if="liveForm.id">
-                    保存
-                  </el-button>
-                </el-form-item>
-              </el-form>
-            </el-col>
-          </el-row>
-        </div>
-      </div>
+    <div class="g-card" v-show="currentActive === 1">
+      <el-form ref="liveForm" :rules="liveRules" :model="liveForm" label-position="right" label-width="100px">
+        <el-form-item label="直播标题" label-width="120px" prop="liveTitle">
+          <el-input
+            v-model="liveForm.liveTitle"
+            maxlength="20"
+            show-word-limit
+            clearable
+            placeholder="请输入直播标题"></el-input>
+        </el-form-item>
+        <el-form-item label="直播成员" label-width="120px" v-if="!$route.query.id" required :error="liveUserInfo">
+          <div v-if="users.length > 0">
+            <el-tag v-for="(item, index) in users" :key="index">{{ item.name }}</el-tag>
+          </div>
+          <el-button type="primary" plain @click="onSelectUser">{{ users.length ? '修改' : '选择' }}员工</el-button>
+        </el-form-item>
+        <el-form-item label="直播开始时间" label-width="120px" required class="mb0">
+          <div class="pickerStyle">
+            <el-form-item prop="liveStartDate">
+              <el-date-picker
+                v-model="liveForm.liveStartDate"
+                v-bind="pickerOptions"
+                type="date"
+                placeholder="选择年月日"
+                style="width: 150px; margin-right: 30px"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                @change="liveStartDateChange"></el-date-picker>
+            </el-form-item>
+            <el-form-item prop="liveStartTime">
+              <el-time-select
+                v-model="liveForm.liveStartTime"
+                style="width: 150px"
+                v-bind="{
+                  start: '00:00',
+                  step: '00:15',
+                  end: '23:59',
+                  minTime: minTime,
+                  maxTime: maxTime,
+                }"
+                placeholder="选择时分"
+                @click="liveStartTimeChange"></el-time-select>
+            </el-form-item>
+          </div>
+        </el-form-item>
+        <el-form-item label="直播结束时间" label-width="120px" required class="mb0">
+          <div class="pickerStyle">
+            <el-form-item prop="liveEndDate">
+              <el-date-picker
+                v-model="liveForm.liveEndDate"
+                v-bind="pickerOptions"
+                type="date"
+                placeholder="选择年月日"
+                style="width: 150px; margin-right: 30px"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                @change="liveEndDateChange"></el-date-picker>
+            </el-form-item>
+            <el-form-item prop="liveEndTime">
+              <el-time-select
+                v-model="liveForm.liveEndTime"
+                style="width: 150px"
+                v-bind="{
+                  start: '00:00',
+                  step: '00:15',
+                  end: '23:59',
+                  minTime: minEndTime,
+                }"
+                placeholder="选择时分"
+                @click="liveEndTimeChange"></el-time-select>
+            </el-form-item>
+          </div>
+        </el-form-item>
+        <el-form-item label="直播简介" label-width="120px">
+          <el-input
+            type="textarea"
+            :rows="6"
+            maxlength="150"
+            show-word-limit
+            placeholder="请输入内容"
+            v-model="liveForm.liveDesc"></el-input>
+        </el-form-item>
+        <el-form-item label="开播提醒" label-width="120px">
+          <el-select v-model="liveForm.startReminder" placeholder="请选择提醒时间">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+          <div class="sub-des">选择后会在开播前发送应用消息提醒员工开播</div>
+        </el-form-item>
+        <el-form-item>
+          <el-button plain @click="cancelFn">取消</el-button>
+          <el-button type="primary" @click="nextStep(2)">下一步</el-button>
+          <el-button type="primary" @click="submit(false)" v-if="$route.query.id">保存</el-button>
+        </el-form-item>
+      </el-form>
     </div>
-    <div v-if="currentActive === 2">
-      <el-row type="flex" justify="space-between">
-        <el-col :span="18" style="margin-top: 10px; margin-right: 10px; min-height: 680px">
-          <el-form ref="shareForm" :rules="shareRules" :model="shareForm" label-position="right" label-width="100px">
-            <div class="g-card">
-              <el-form-item label="发送目标" prop="targetType" required>
-                <el-radio-group v-model="shareForm.targetType">
-                  <el-radio :label="1">客户</el-radio>
-                  <el-radio :label="2">客户群</el-radio>
-                </el-radio-group>
+    <div class="g-margin-t" style="display: flex" v-show="currentActive === 2">
+      <el-form
+        class="fxauto g-margin-r"
+        ref="shareForm"
+        :rules="shareRules"
+        :model="shareForm"
+        label-position="right"
+        label-width="100px">
+        <div class="g-card">
+          <el-form-item label="发送目标" prop="targetType" required>
+            <el-radio-group v-model="shareForm.targetType">
+              <el-radio :label="1">客户</el-radio>
+              <el-radio :label="2">客户群</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <!-- 客户 -->
+          <template v-if="shareForm.targetType === 1">
+            <el-form-item label="发送成员" required :error="userInfo">
+              <el-radio-group v-model="sendUser" @input="radioChange">
+                <el-radio :label="1">全部成员</el-radio>
+                <el-radio :label="2">部分成员</el-radio>
+              </el-radio-group>
+              <el-form-item prop="sendWeUser" v-if="sendUser === 2">
+                <div v-if="sendUsers.length > 0">
+                  <el-tag v-for="(item, index) in sendUsers" :key="index">{{ item.name }}</el-tag>
+                </div>
+                <el-button type="primary" plain @click="onSendSelectUser">
+                  {{ sendUsers.length ? '修改' : '选择' }}员工
+                </el-button>
               </el-form-item>
-              <!-- 客户 -->
-              <template v-if="shareForm.targetType === 1">
-                <el-form-item label="发送成员" required :error="userInfo">
-                  <el-radio-group v-model="sendUser" @input="radioChange">
-                    <el-radio :label="1">全部成员</el-radio>
-                    <el-radio :label="2">部分成员</el-radio>
-                  </el-radio-group>
-                  <el-form-item prop="sendWeUser" v-if="sendUser === 2">
-                    <div v-if="sendUsers.length > 0">
-                      <el-tag v-for="(item, index) in sendUsers" :key="index">{{ item.name }}</el-tag>
-                    </div>
-                    <el-button type="primary" plain @click="onSendSelectUser">
-                      {{ sendUsers.length ? '修改' : '选择' }}员工
-                    </el-button>
-                  </el-form-item>
-                </el-form-item>
-                <!-- 发送客户 -->
-                <el-form-item label="发送客户" required :error="customerInfo">
-                  <el-radio-group v-model="sendCustomer" @input="customerRadioChange">
-                    <el-radio :label="1">全部客户</el-radio>
-                    <el-radio :label="2">部分客户</el-radio>
-                  </el-radio-group>
-                  <el-form-item v-if="sendCustomer === 2">
-                    <div v-if="sendCustomers.length > 0">
-                      <el-tag v-for="(item, index) in sendCustomers" :key="index">
-                        {{ item.tagName }}
-                      </el-tag>
-                    </div>
-                    <div>
-                      <el-button type="primary" icon="el-icon-plus" @click="selectedFn">
-                        {{ sendCustomer.length == 0 ? '选择' : '编辑' }}标签
-                      </el-button>
-                    </div>
-                  </el-form-item>
-                </el-form-item>
-              </template>
-              <!-- 客户群 -->
-              <template v-else>
-                <!-- 发送客群 -->
-                <el-form-item label="发送客户" required :error="groupInfo">
-                  <el-radio-group v-model="sendCustomer" @input="customerRadioChange">
-                    <el-radio :label="1">全部客群</el-radio>
-                    <el-radio :label="2">部分客群</el-radio>
-                  </el-radio-group>
-                  <el-form-item v-if="sendCustomer === 2">
-                    <div v-if="sendGroupCustomers.length > 0">
-                      <el-tag v-for="(item, index) in sendGroupCustomers" :key="index">
-                        {{ item.name }}
-                      </el-tag>
-                    </div>
-                    <div>
-                      <el-button type="primary" icon="el-icon-plus" @click="onGroupSelectUser">
-                        {{ sendGroupCustomers.length == 0 ? '选择' : '编辑' }}群主
-                      </el-button>
-                    </div>
-                  </el-form-item>
-                </el-form-item>
-              </template>
-            </div>
+            </el-form-item>
+            <!-- 发送客户 -->
+            <el-form-item label="发送客户" required :error="customerInfo">
+              <el-radio-group v-model="sendCustomer" @input="customerRadioChange">
+                <el-radio :label="1">全部客户</el-radio>
+                <el-radio :label="2">部分客户</el-radio>
+              </el-radio-group>
+              <el-form-item v-if="sendCustomer === 2">
+                <div v-if="sendCustomers.length > 0">
+                  <el-tag v-for="(item, index) in sendCustomers" :key="index">
+                    {{ item.tagName }}
+                  </el-tag>
+                </div>
+                <div>
+                  <el-button type="primary" icon="el-icon-plus" @click="selectedFn">
+                    {{ sendCustomer.length == 0 ? '选择' : '编辑' }}标签
+                  </el-button>
+                </div>
+              </el-form-item>
+            </el-form-item>
+          </template>
+          <!-- 客户群 -->
+          <template v-else>
+            <!-- 发送客群 -->
+            <el-form-item label="发送客户" required :error="groupInfo">
+              <el-radio-group v-model="sendCustomer" @input="customerRadioChange">
+                <el-radio :label="1">全部客群</el-radio>
+                <el-radio :label="2">部分客群</el-radio>
+              </el-radio-group>
+              <el-form-item v-if="sendCustomer === 2">
+                <div v-if="sendGroupCustomers.length > 0">
+                  <el-tag v-for="(item, index) in sendGroupCustomers" :key="index">
+                    {{ item.name }}
+                  </el-tag>
+                </div>
+                <div>
+                  <el-button type="primary" icon="el-icon-plus" @click="onGroupSelectUser">
+                    {{ sendGroupCustomers.length == 0 ? '选择' : '编辑' }}群主
+                  </el-button>
+                </div>
+              </el-form-item>
+            </el-form-item>
+          </template>
+        </div>
 
-            <AddMaterial
-              :moduleType="4"
-              :otherType="2"
-              @update="updateData"
-              @submit="getWelData"
-              :baseData="materialData"
-              :liveUrl="liveUrl"
-              :showPhone="false"
-              :showFooter="false"
-              @phoneData="getPhoneData"
-              @changeInfo="changeInfo"></AddMaterial>
-          </el-form>
-        </el-col>
-        <el-col :span="6" class="g-card" style="padding-bottom: 20px">
-          <PreviewInPhone :templateInfo="materialData.templateInfo" :list="talkList" :liveUrl="liveUrl" />
-        </el-col>
-      </el-row>
+        <AddMaterial
+          :moduleType="4"
+          :otherType="2"
+          @update="updateData"
+          @submit="getWelData"
+          :baseData="materialData"
+          isTransData
+          :liveUrl="liveUrl"
+          :showPhone="false"
+          :showFooter="false"
+          @phoneData="getPhoneData"
+          @changeInfo="changeInfo"></AddMaterial>
+      </el-form>
+      <div class="g-card mt0 fxnone">
+        <PreviewInPhone :templateInfo="materialData.templateInfo" :originList="talkList" :liveUrl="liveUrl" />
+      </div>
     </div>
     <!-- <div class="mt20 g-card" v-if="currentActive === 2">
       <div class="fr">
@@ -300,48 +282,12 @@ export default {
         },
       },
       liveRules: {
-        liveTitle: [
-          {
-            required: true,
-            message: '请输入直播标题',
-            trigger: 'blur',
-          },
-        ],
-        liveWeUserid: [
-          {
-            required: true,
-            message: '请选择直播成员',
-            trigger: 'change',
-          },
-        ],
-        liveStartDate: [
-          {
-            required: true,
-            message: '请选择年月日',
-            trigger: 'blur',
-          },
-        ],
-        liveStartTime: [
-          {
-            required: true,
-            message: '请选择时分',
-            trigger: 'blur',
-          },
-        ],
-        liveEndDate: [
-          {
-            required: true,
-            message: '请选择年月日',
-            trigger: 'blur',
-          },
-        ],
-        liveEndTime: [
-          {
-            required: true,
-            message: '请选择时分',
-            trigger: 'blur',
-          },
-        ],
+        liveTitle: [{ required: true, message: '请输入直播标题', trigger: 'blur' }],
+        liveWeUserid: [{ required: true, message: '请选择直播成员', trigger: 'change' }],
+        liveStartDate: [{ required: true, message: '请选择年月日', trigger: 'blur' }],
+        liveStartTime: [{ required: true, message: '请选择时分', trigger: 'blur' }],
+        liveEndDate: [{ required: true, message: '请选择年月日', trigger: 'blur' }],
+        liveEndTime: [{ required: true, message: '请选择时分', trigger: 'blur' }],
       },
       shareRules: {},
       options: [
@@ -369,19 +315,13 @@ export default {
     if (this.$route.query.id) {
       this.getDeatil(this.$route.query.id)
     }
-    this.getDetail()
+    api.getDetail().then(({ data }) => {
+      if (data.liveSecret === null) {
+        this.$message.error('直播秘钥为空,请于 管理中心->企微配置->直播 中配置')
+      }
+    })
   },
   methods: {
-    getDetail() {
-      api
-        .getDetail()
-        .then(({ data }) => {
-          if (data.liveSecret === null) {
-            this.$message.error('直播秘钥为空,请于 管理中心->企微配置->直播 中配置')
-          }
-        })
-        .catch(() => {})
-    },
     getPhoneData(val) {
       this.talkList = [...val]
     },
@@ -389,10 +329,11 @@ export default {
       this.materialData.templateInfo = val
     },
     updateData(val) {
+      debugger
       this.currentActive = 1
       this.materialData = {
         templateInfo: val.templateInfo,
-        attachments: this.setEditList(val.attachments),
+        attachments: val.attachments,
       }
       this.weLiveAttachments = [...val.attachments]
     },
@@ -542,17 +483,18 @@ export default {
                 this.$router.back()
               }
             })
-            .catch()
+            .finally((error) => {
+              this.saveLoading = false
+            })
         })
       } else {
         addOrUpdate(query)
           .then((res) => {
             if (res.code === 200) {
               this.$router.back()
-              this.saveLoading = false
             }
           })
-          .catch((error) => {
+          .finally((error) => {
             this.saveLoading = false
           })
       }
@@ -734,150 +676,58 @@ export default {
     // 获取直播详情
     getDeatil(id) {
       detailLive(id)
-        .then((res) => {
-          this.liveEndDateChange(res.data.liveEndDate)
-          this.liveStartDateChange(res.data.liveStartDate)
+        .then(({ data }) => {
+          this.liveEndDateChange(data.liveEndDate)
+          this.liveStartDateChange(data.liveStartDate)
           this.liveForm = {}
           let liveForm = {}
-          liveForm.id = res.data.id
-          liveForm.liveTitle = res.data.liveTitle
-          liveForm.liveStartDate = res.data.liveStartDate
-          liveForm.liveStartTime = res.data.liveStartTime
-          liveForm.liveEndDate = res.data.liveEndDate
-          liveForm.liveEndTime = res.data.liveEndTime
-          liveForm.liveDesc = res.data.liveDesc
-          liveForm.startReminder = res.data.startReminder === 0 ? '' : res.data.startReminder
-          liveForm.liveWeUserid = res.data.liveWeUserid
-          liveForm.liveUserName = res.data.liveUserName
+          liveForm.id = data.id
+          liveForm.liveTitle = data.liveTitle
+          liveForm.liveStartDate = data.liveStartDate
+          liveForm.liveStartTime = data.liveStartTime
+          liveForm.liveEndDate = data.liveEndDate
+          liveForm.liveEndTime = data.liveEndTime
+          liveForm.liveDesc = data.liveDesc
+          liveForm.startReminder = data.startReminder === 0 ? '' : data.startReminder
+          liveForm.liveWeUserid = data.liveWeUserid
+          liveForm.liveUserName = data.liveUserName
           this.liveForm = JSON.parse(JSON.stringify(liveForm))
-          this.shareForm = JSON.parse(JSON.stringify(res.data))
-          this.liveUrl = res.data.shareOrJoinUrl
-          if (res.data.targetType === 1) {
+          this.shareForm = JSON.parse(JSON.stringify(data))
+          this.liveUrl = data.shareOrJoinUrl
+          if (data.targetType === 1) {
             // 客群
-            if (res.data.sendWeUser && res.data.sendWeUser.weUserIds === []) {
-              // 全部成员
-              this.sendUser = 1
-            } else if (res.data.sendWeUser && res.data.sendWeUser.weUserIds && res.data.sendWeUser.weUserIds.length) {
+            // if (data.sendWeUser?.weUserIds?.length == 0) {
+            //   // 全部成员
+            //   this.sendUser = 1
+            // } else
+            if (data.sendWeUser?.weUserIds?.length) {
               // 部分成员
               this.sendUser = 2
             }
           }
-          if (this.shareForm.sendTarget && this.shareForm.sendTarget.tagIdsOrOwnerIds === []) {
-            // 全部客户
-            this.sendCustomer = 1
-          } else if (
-            this.shareForm.sendTarget &&
-            this.shareForm.sendTarget.tagIdsOrOwnerIds &&
-            this.shareForm.sendTarget.tagIdsOrOwnerIds.length
-          ) {
+          // if (this.shareForm.sendTarget?.tagIdsOrOwnerIds?.length == 0) {
+          //   // 全部客户
+          //   this.sendCustomer = 1
+          // } else
+          if (this.shareForm.sendTarget?.tagIdsOrOwnerIds?.length) {
             // 部分客户
             this.sendCustomer = 2
           }
           this.materialData = {
-            templateInfo: res.data.weLiveAttachments ? res.data.weLiveAttachments[0].content : '',
-            attachments: res.data.weLiveAttachments ? this.setEditList(res.data.weLiveAttachments) : [],
+            templateInfo: data.weLiveAttachments ? data.weLiveAttachments[0].content : '',
+            attachments: data.weLiveAttachments,
           }
           this.talkList = this.materialData.attachments
           // 获取员工列表
           this.setUserData()
-          this.setSendUserData(res.data)
-          if (res.data.targetType === 1) {
-            this.setTargeData(res.data)
-          } else if (res.data.targetType === 2) {
-            this.setGroupUserData(res.data)
+          this.setSendUserData(data)
+          if (data.targetType === 1) {
+            this.setTargeData(data)
+          } else if (data.targetType === 2) {
+            this.setGroupUserData(data)
           }
         })
         .catch(() => {})
-    },
-    setEditList(list) {
-      let arr = []
-      if (list && list.length) {
-        list.forEach((dd) => {
-          if (dd.realType === 0) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '0',
-              materialUrl: dd.picUrl,
-            }
-            arr.push(obj)
-          } else if (dd.realType === 2) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '2',
-              materialUrl: dd.fileUrl,
-              coverUrl: dd.picUrl,
-              digest: dd.description,
-              materialName: dd.title,
-            }
-            arr.push(obj)
-          } else if (dd.realType === 3) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '3',
-              materialUrl: dd.fileUrl,
-              digest: dd.description,
-              materialName: dd.title,
-            }
-            arr.push(obj)
-          } else if (dd.realType === 4) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '4',
-              content: dd.content,
-            }
-            arr.push(obj)
-          } else if (dd.realType === 9) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '9',
-              content: dd.content,
-              coverUrl: dd.picUrl,
-              materialUrl: dd.linkUrl,
-              materialName: dd.title,
-            }
-            arr.push(obj)
-          } else if (dd.realType === 8) {
-            let ob = {
-              id: dd.materialId,
-              mediaType: '8',
-              materialName: dd.title,
-              materialUrl: dd.linkUrl,
-              materialName: dd.title,
-            }
-            arr.push(ob)
-          } else if (dd.realType === 11) {
-            let ff = {
-              id: dd.materialId,
-              mediaType: '11',
-              digest: dd.appId,
-              materialName: dd.title,
-              coverUrl: dd.picUrl,
-              materialUrl: dd.fileUrl,
-            }
-            arr.push(ff)
-          } else if (dd.realType === 12) {
-            let ff = {
-              id: dd.materialId,
-              mediaType: '12',
-              digest: dd.description,
-              materialUrl: dd.fileUrl,
-              coverUrl: dd.picUrl,
-              content: dd.content,
-              materialName: dd.title,
-            }
-            arr.push(ff)
-          } else if (dd.realType === 5) {
-            let obj = {
-              id: dd.materialId,
-              mediaType: '5',
-              materialUrl: dd.fileUrl,
-              materialName: dd.title,
-            }
-            arr.push(obj)
-          }
-        })
-      }
-      return arr
     },
     setUserData() {
       this.selectedUserList = []
