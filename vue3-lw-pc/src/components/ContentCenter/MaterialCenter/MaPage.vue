@@ -87,24 +87,6 @@ export default {
         value: 'id',
         emitPath: false,
       },
-      // 0 图片（image）、1 语音（voice）、2 视频（video），3 普通文件(file)， 4 文本， 5 海报， 6 活码， 7 人群， 8 旅程，9 图文，10 链接，11 小程序
-      typeTitle: [
-        '图片',
-        '语音',
-        '视频',
-        '文件',
-        '文本',
-        '海报',
-        '活码',
-        '人群',
-        '旅程',
-        '图文',
-        '链接',
-        '小程序',
-        '文章',
-        '企业话术',
-        '客服话术',
-      ],
       form: {}, // 素材表单
     }
   },
@@ -200,13 +182,9 @@ export default {
   <div class="page">
     <div style="margin-top: 16px">
       <el-row type="flex" justify="space-between">
-        <el-col
-          :span="5"
-          class="left pad20"
-          style="border-radius: 4px; background: var(--bg-white)"
-        >
+        <el-col :span="5" class="left pad20" style="border-radius: 4px; background: var(--bg-white)">
           <div class="title">
-            <div class="title-name">{{ typeTitle[type] }}分组</div>
+            <div class="title-name">素材分组</div>
           </div>
           <div class="item-list">
             <div
@@ -214,8 +192,7 @@ export default {
               :class="{ active: groupIndex == key }"
               v-for="(group, key) in groupList"
               :key="group.id"
-              @click="switchGroup(key, group)"
-            >
+              @click="switchGroup(key, group)">
               <div class="name">{{ group.name + ' (' + group.number + ')' }}</div>
             </div>
           </div>
@@ -225,12 +202,11 @@ export default {
           <div class="g-card" style="padding-bottom: 0">
             <el-input
               v-model="query.materialName"
-              :placeholder="'请输入' + typeTitle[type] + '标题'"
+              :placeholder="'请输入素材标题'"
               clearable
               prefix-icon="el-icon-search"
               style="width: 300px"
-              @keyup.enter="search()"
-            />
+              @keyup.enter="search()" />
             <el-button class="ml10" @click="getList(1)" type="primary">查询</el-button>
             <!-- v-hasPermi="['wecom:material:list']" -->
             <el-button @click="resetQuery">重置</el-button>
@@ -244,8 +220,7 @@ export default {
               :total="total"
               v-model:page="query.pageNum"
               v-model:limit="query.pageSize"
-              @pagination="getList()"
-            />
+              @pagination="getList()" />
           </div>
         </el-col>
       </el-row>

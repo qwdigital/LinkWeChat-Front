@@ -36,6 +36,16 @@
               <span class="twosplice distStyle">{{ coverContent(row.content, 50) }}</span>
             </el-tooltip>
           </div>
+          <!-- 图文 -->
+          <div v-if="row.mediaType === '19'" style="display: flex">
+            <el-image :src="row.coverUrl" fit="contain" class="imgsize" v-if="row.coverUrl"></el-image>
+            <div class="icon-style" v-else>
+              <svg-icon class="icon-style" icon="outLine"></svg-icon>
+            </div>
+            <el-tooltip :content="row.content" placement="top" :disabled="row.content ? row.content.length < 50 : true">
+              <span class="twosplice distStyle">{{ coverContent(row.content, 50) }}</span>
+            </el-tooltip>
+          </div>
           <!-- 小程序 -->
           <div v-if="row.mediaType === '11'">
             <el-image :src="row.coverUrl" fit="contain" class="imgsize"></el-image>

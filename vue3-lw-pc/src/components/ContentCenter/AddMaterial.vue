@@ -193,7 +193,6 @@
       v-model:choseDialog="choseDialog"
       :talkListLength="talkList?.length"
       @itemArry="getItemArry"
-      pad20
       :templateType="templateType"
       :tplType="tplType"
       :moduleType="moduleType"
