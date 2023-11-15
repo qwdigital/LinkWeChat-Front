@@ -1,5 +1,5 @@
 <script>
-import { getListNew, exportCustomer, lossRemind, getLossRemindStatus } from '@/api/customer'
+import { getListNew, lossRemind, getLossRemindStatus } from '@/api/customer'
 
 import SelectTag from '@/components/SelectTag'
 
