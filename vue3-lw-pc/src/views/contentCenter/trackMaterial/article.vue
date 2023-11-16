@@ -108,7 +108,7 @@ export default {
           <el-button text @click="$refs.page.detail(scope.row)" v-hasPermi="['wechat:material:detail']">
             详情|统计
           </el-button>
-          <el-button text @click="$refs.page.edit(scope.row, 12)">编辑</el-button>
+          <el-button text @click="$refs.page.edit(scope.row)">编辑</el-button>
           <el-button text @click="$refs.page.remove(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>

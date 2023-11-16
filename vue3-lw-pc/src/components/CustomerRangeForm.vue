@@ -27,7 +27,7 @@ export default {
     },
   },
   created() {
-    this.$emit('update:data', this.data)
+    this.$emit('update:data', this.data) // 赋默认值
     getList().then((res) => {
       this.stageList = res.data
     })

@@ -924,8 +924,7 @@ export default {
               }
 
               if (isBack) {
-                this.$refs.page.getList(1)
-                // this.beforeCloseDialog()
+                this.$refs.page?.getList(1)
               }
             })
             .catch(() => {

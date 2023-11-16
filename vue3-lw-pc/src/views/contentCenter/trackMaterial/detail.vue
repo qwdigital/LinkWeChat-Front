@@ -3,173 +3,87 @@
     <div class="flex">
       <div style="width: calc(100% - 425px); padding-right: var(--card-margin)">
         <div class="g-card">
-          <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 10px">
-              <div style="display: flex">
-                <el-form-item :label="typeTitle[type] + '标题'" prop="materialName" v-if="!disabled">
-                  <el-input
-                    v-model="form.materialName"
-                    placeholder="请输入标题"
-                    :maxlength="titleLength"
-                    show-word-limit
-                    :disabled="disabled"
-                    :autosize="{ minRows: 3, maxRows: 10 }"></el-input>
-                </el-form-item>
-                <div class="title" v-else>{{ form.materialName }}</div>
-                <el-form-item prop="categoryId" label="选择分组" v-if="!disabled">
-                  <el-cascader
-                    v-model="form.categoryId"
-                    :options="treeData[0].children"
-                    :props="groupProps"
-                    :disabled="disabled"></el-cascader>
-                </el-form-item>
-                <div v-else class="group">
-                  {{ form.categoryId === '1' ? '默认分组' : form.categoryName }}
-                </div>
-                <div v-if="disabled && type === '5'" class="group groupred">
-                  {{ form.type === '1' ? '通用海报' : '裂变海报' }}
-                </div>
+          <div class="fxbw mb10">
+            <div class="flex">
+              <div class="title">{{ form.materialName }}</div>
+              <div class="group">
+                {{ form.categoryId === '1' ? '默认分组' : form.categoryName }}
               </div>
-              <el-button text @click="saveInfo" v-loading="submitLoading">
-                {{ disabled ? '编辑' : '保存' }}
-              </el-button>
-            </div>
-            <!-- 视频 -->
-            <div v-if="type === '2'">
-              <div v-if="!disabled">
-                <!-- <el-form-item label="上传视频" prop="materialUrl">
-                  <Upload
-                     v-model:fileUrl="form.materialUrl"
-                     v-model:fileName="form.materialName"
-                    :type="type"
-                  >
-                    <template #tip><div>支持mp4/mov格式，视频大小不超过100M</div></template>
-                  </Upload>
-                </el-form-item> -->
-                <el-form-item label="视频描述">
-                  <el-input
-                    v-model="form.digest"
-                    type="textarea"
-                    placeholder="请输入视频描述"
-                    :autosize="{ minRows: 3, maxRows: 10 }"
-                    :maxlength="128"
-                    show-word-limit></el-input>
-                </el-form-item>
-              </div>
-              <div v-else>
-                <div class="cp flex">
-                  <el-image style="width: 200px; height: 200px; flex: none" :src="form.coverUrl" fit="fill"></el-image>
-                  <div class="ml10">
-                    <div style="text-align: left; over-flow: hidden; margin-bottom: 20px">
-                      {{ form.digest && form.digest.toString() }}
-                    </div>
-                    <a style="color: var(--color)" :href="H5Url(form.id)" target="_blank">
-                      {{ H5Url(form.id) }}
-                    </a>
-                  </div>
-                </div>
+              <div v-if="type === '5'" class="group groupred">
+                {{ form.type === '1' ? '通用海报' : '裂变海报' }}
               </div>
             </div>
-            <!-- 文件 -->
-            <div v-if="type === '3'">
-              <div v-if="!disabled">
-                <!-- <el-form-item label="上传文件" prop="materialUrl">
-                  <Upload
-                     v-model:fileUrl="form.materialUrl"
-                     v-model:fileName="form.materialName"
-                    :type="type"
-                  >
-                    <template #tip><div>支持pdf/ppt/word文件，单个文件大小不超过50M</div></template>
-                  </Upload>
-                </el-form-item> -->
-                <el-form-item label="文件描述">
-                  <el-input
-                    v-model="form.digest"
-                    type="textarea"
-                    placeholder="请输入文件描述"
-                    :maxlength="100"
-                    show-word-limit
-                    :autosize="{ minRows: 3, maxRows: 10 }"></el-input>
-                </el-form-item>
+            <el-button text @click="saveInfo">编辑</el-button>
+            <!-- 修改素材对话框 -->
+            <AddOrEditMaterialDialog
+              :type="type"
+              :data="form"
+              title="编辑"
+              v-model="dialogVisible"
+              @success="getDeatil()"></AddOrEditMaterialDialog>
+          </div>
+          <!-- 视频 -->
+          <div class="cp flex" v-if="type === '2'">
+            <el-image style="width: 200px; height: 200px; flex: none" :src="form.coverUrl" fit="fill"></el-image>
+            <div class="ml10">
+              <div style="text-align: left; over-flow: hidden; margin-bottom: 20px">
+                {{ form.digest && form.digest.toString() }}
               </div>
-              <div v-else>
-                <div class="cp flex">
-                  <!-- <el-image
+              <a style="color: var(--color)" :href="H5Url(form.id)" target="_blank">
+                {{ H5Url(form.id) }}
+              </a>
+            </div>
+          </div>
+          <!-- 文件 -->
+          <div class="cp flex" v-if="type === '3'">
+            <!-- <el-image
                     style="width: 200px; height: 200px; flex: none"
                     :src="form.coverUrl"
                     fit="fill"
                   ></el-image> -->
-                  <svg-icon
-                    class="icon-style"
-                    :icon="form.materialUrl ? filType(form.materialUrl) : ''"
-                    v-if="form.materialUrl"></svg-icon>
-                  <div class="ml10">
-                    <div style="text-align: left; over-flow: hidden; margin-bottom: 20px">
-                      {{ form.digest && form.digest.toString() }}
-                    </div>
-                    <a style="color: var(--color)" :href="H5Url(form.id)" target="_blank">
-                      {{ H5Url(form.id) }}
-                    </a>
-                  </div>
-                </div>
+            <svg-icon
+              class="icon-style"
+              :icon="form.materialUrl ? filType(form.materialUrl) : ''"
+              v-if="form.materialUrl"></svg-icon>
+            <div class="ml10">
+              <div style="text-align: left; over-flow: hidden; margin-bottom: 20px">
+                {{ form.digest && form.digest.toString() }}
               </div>
+              <a style="color: var(--color)" :href="H5Url(form.id)" target="_blank">
+                {{ H5Url(form.id) }}
+              </a>
             </div>
-            <!-- 文章 -->
-            <div v-if="type === '12'">
-              <div class="cp flex">
-                <el-image
-                  style="width: 200px; height: 200px; flex: none"
-                  :src="form.coverUrl"
-                  fit="fill"
-                  v-if="form.coverUrl"></el-image>
-                <svg-icon class="icon-style" icon="article" v-else></svg-icon>
-                <div class="ml10">
-                  <div style="text-align: left; over-flow: hidden; margin-bottom: 20px">
-                    {{ form.digest && form.digest.toString() }}
-                  </div>
-                  <a style="color: var(--color)" :href="H5Url(form.id)" target="_blank">
-                    {{ H5Url(form.id) }}
-                    <!-- H5链接要支持点击在新页面中直接打开 -->
-                  </a>
-                </div>
+          </div>
+          <!-- 文章 -->
+          <div class="cp flex" v-if="type === '12'">
+            <el-image
+              style="width: 200px; height: 200px; flex: none"
+              :src="form.coverUrl"
+              fit="fill"
+              v-if="form.coverUrl"></el-image>
+            <svg-icon class="icon-style" icon="article" v-else></svg-icon>
+            <div class="ml10">
+              <div style="text-align: left; over-flow: hidden; margin-bottom: 20px">
+                {{ form.digest && form.digest.toString() }}
               </div>
+              <a style="color: var(--color)" :href="H5Url(form.id)" target="_blank">
+                {{ H5Url(form.id) }}
+                <!-- H5链接要支持点击在新页面中直接打开 -->
+              </a>
             </div>
-            <!-- 海报 -->
-            <div v-if="type === '5'">
-              <div v-if="!disabled">
-                <el-form-item label="封面" prop="materialUrl">
-                  <Upload v-model:fileUrl="form.materialUrl" v-model:fileName="form.materialName" :type="type">
-                    <template #tip><div>支持pdf/ppt/word文件，单个文件大小不超过50M</div></template>
-                  </Upload>
-                </el-form-item>
-                <el-form-item label="文件描述">
-                  <el-input
-                    v-model="form.digest"
-                    type="textarea"
-                    placeholder="请输入文件描述"
-                    :maxlength="100"
-                    show-word-limit
-                    :autosize="{ minRows: 3, maxRows: 10 }"></el-input>
-                </el-form-item>
+          </div>
+          <!-- 海报 -->
+          <div class="cp flex" v-if="type === '5'">
+            <el-image style="width: 200px; height: 200px; flex: none" :src="form.materialUrl" fit="fill"></el-image>
+            <div class="ml10">
+              <div style="text-align: left; over-flow: hidden; margin-bottom: 20px">
+                {{ form.digest && form.digest.toString() }}
               </div>
-              <div v-else>
-                <div class="cp flex">
-                  <el-image
-                    style="width: 200px; height: 200px; flex: none"
-                    :src="form.materialUrl"
-                    fit="fill"></el-image>
-                  <div class="ml10">
-                    <div style="text-align: left; over-flow: hidden; margin-bottom: 20px">
-                      {{ form.digest && form.digest.toString() }}
-                    </div>
-                    <a style="color: var(--color)" :href="H5Url(form.id)" target="_blank">
-                      {{ H5Url(form.id) }}
-                    </a>
-                  </div>
-                </div>
-              </div>
+              <a style="color: var(--color)" :href="H5Url(form.id)" target="_blank">
+                {{ H5Url(form.id) }}
+              </a>
             </div>
-          </el-form>
+          </div>
         </div>
         <div class="g-card">
           <div class="g-card-title">数据趋势</div>
@@ -273,10 +187,11 @@
 <script>
 import { getCount, getTableDetail } from '@/api/contentCenter/common.js'
 import PreviewInPhone from '@/components/ContentCenter/PreviewInPhone'
-import { getTree, update, getList } from '@/api/material'
+import { getList } from '@/api/material'
 import ChartBar from '@/components/ChartBar.vue'
 import ChartLine from '@/components/ChartLine.vue'
 import SearchTitle from '../components/SearchTitle.vue'
+import AddOrEditMaterialDialog from '../components/AddOrEditMaterialDialog'
 
 export default {
   components: {
@@ -284,37 +199,17 @@ export default {
     ChartLine,
     ChartBar,
     PreviewInPhone,
+    AddOrEditMaterialDialog,
   },
   data() {
     return {
-      titleLength: 60,
-      detailForm: {}, //详情请求参数
-      submitLoading: false,
-      typeTitle: [
-        '图片',
-        '语音',
-        '视频',
-        '文件',
-        '文本',
-        '海报',
-        '活码',
-        '人群',
-        '旅程',
-        '图文',
-        '链接',
-        '小程序',
-        '文章',
-      ],
-      disabled: true,
+      dialogVisible: false,
       mobForm: {
         // welcomeMsg: '',
         // materialMsgList: [],
         // userIds: '',
         // userNames: '',
       },
-      exportLoading: false,
-      // barLegend1: ['访问客户总数'],
-      // barLegend2: ['咨询客户总数'],
       form: {}, // 素材表单
       legend: ['发送次数', '查看次数', '查看人数'],
       xdata: [],
@@ -355,72 +250,26 @@ export default {
       },
       tableList: [],
       loading: false,
-      searchData: {},
-      bar1: [],
-      bar2: [],
-      value1: [],
-      value2: [],
-      tableSearch: {},
-      // 分组props
-      groupProps: {
-        expandTrigger: 'hover',
-        checkStrictly: true,
-        children: 'children',
-        label: 'name',
-        value: 'id',
-        emitPath: false,
-      },
-      treeData: [{}], // 树
       type: '',
-      // 表单校验
-      rules: Object.freeze({
-        categoryId: [{ required: true, message: '不能为空', trigger: 'change' }],
-        content: [{ required: true, message: '不能为空', trigger: 'blur' }],
-        materialUrl: [{ required: true, message: '不能为空', trigger: 'change' }],
-        materialName: [{ required: true, message: '不能为空', trigger: 'blur' }],
-        digest: [{ required: true, message: '不能为空', trigger: 'blur' }],
-        coverUrl: [{ required: true, message: '不能为空', trigger: 'blur' }],
-        // html: [
-        //   { required: true, message: '不能为空', trigger: 'blur' },
-        //   { validator: validateHtml, trigger: 'blur' },
-        // ],
-        // http: [
-        //   { required: true, message: '不能为空', trigger: 'blur' },
-        //   { validator: validateHttp, trigger: 'blur' },
-        // ],
-      }),
     }
   },
+  mounted() {},
+  created() {
+    this.type = this.$route.query.type
+    this.getDeatil()
+  },
+  watch: {},
   methods: {
-    dealLength() {
-      switch (this.type) {
-        case '12':
-          this.titleLength = 30
-          break
-        case '2':
-          this.titleLength = 32
-          break
-        case '3':
-          this.titleLength = 32
-          break
-        case '5':
-          this.titleLength = 60
-          break
-        default:
-          break
-      }
-    },
     H5Url(id) {
-      let linkUrl = window.document.location.origin + '/mobile/#/metrialDetail?materiaId=' + id
-      return linkUrl
+      return window.document.location.origin + '/mobile/#/metrialDetail?materiaId=' + id
     },
-    preview(row) {
-      let obj = {
-        materialName: row.materialName,
-        content: row.content,
-      }
-      return window.document.location.origin + '/#/preview?obj=' + encodeURIComponent(JSON.stringify(obj))
-    },
+    // preview(row) {
+    //   let obj = {
+    //     materialName: row.materialName,
+    //     content: row.content,
+    //   }
+    //   return window.document.location.origin + '/#/preview?obj=' + encodeURIComponent(JSON.stringify(obj))
+    // },
     // 处理文件类型
     filType(file) {
       if (file) {
@@ -439,110 +288,51 @@ export default {
       }
     },
     saveInfo() {
-      if (!this.disabled) {
-        // 点击保存
-        this.submitLoading = true
-        if (this.times) {
-          clearTimeout(this.times)
-        }
-        this.$refs['form'].validate((valid) => {
-          if (valid) {
-            this.times = setTimeout(() => {
-              let form = JSON.parse(JSON.stringify(this.form))
-              form.mediaType = this.type
-              ;(form.id ? update : add)(form)
-                .then(() => {
-                  this.msgSuccess('操作成功')
-                  this.disabled = !this.disabled
-                  this.dialogVisible = false
-                  this.getDeatil()
-                  this.$refs['form'].resetFields()
-                  this.submitLoading = false
-                })
-                .catch(() => {
-                  this.dialogVisible = false
-                  this.submitLoading = false
-                })
-            }, 300)
-          } else {
-            this.submitLoading = false
-          }
+      if (this.type === '12') {
+        // 文章
+        this.$router.push({
+          path: 'articleAdd',
+          query: {
+            type: this.type,
+            id: this.$route.query.id,
+          },
+        })
+      } else if (this.type === '5') {
+        // 海报
+        this.$router.push({
+          path: 'posterAdd',
+          query: {
+            type: this.type,
+            id: this.$route.query.id,
+            detail: true,
+          },
         })
       } else {
-        if (this.type === '12') {
-          // 文章
-          this.$router.push({
-            path: 'articleAdd',
-            query: {
-              type: this.type,
-              id: JSON.parse(decodeURIComponent(this.$route.query.obj)).id,
-            },
-          })
-        } else if (this.type === '5') {
-          // 海报
-          this.$router.push({
-            path: 'posterAdd',
-            query: {
-              type: this.type,
-              id: JSON.parse(decodeURIComponent(this.$route.query.obj)).id,
-              detail: true,
-            },
-          })
-        } else {
-          this.disabled = !this.disabled
-        }
+        this.dialogVisible = true
       }
     },
     // 获取详情
     getDeatil() {
       this.loading = true
-      this.detailForm.mediaType = this.type
-      this.detailForm.materialId = JSON.parse(decodeURIComponent(this.$route.query.obj)).id
-      getList(this.detailForm)
+      getList({ mediaType: this.type, materialId: this.$route.query.id })
         .then(({ rows, total }) => {
-          // debugger
-          // console.log(rows)
           this.form = rows[0]
-          // 此处需要后端返回详情的值
+          this.mobForm = []
+          this.mobForm.push(this.form)
           this.loading = false
         })
         .catch(() => {
           this.loading = false
         })
     },
-    // 获取类目树
-    getTree() {
-      getTree(this.type).then(({ data }) => {
-        data.forEach((item) => {
-          item.children = null
-        })
-        this.treeData = [
-          {
-            id: '',
-            name: '全部',
-            parentId: '0',
-            hasParent: false,
-            hasChildren: true,
-            children: data || [],
-          },
-        ]
-      })
-    },
-    numClick(id) {
-      this.$router.push({
-        url: '',
-        id,
-      })
-    },
     getTableData(data) {
-      this.query.contentId = JSON.parse(decodeURIComponent(this.$route.query.obj)).id
+      this.query.contentId = this.$route.query.id
       this.query.beginTime = data.beginTime
       this.query.endTime = data.endTime
       this.getTableChangeSize()
     },
     getLineData(data) {
-      // this.searchData = data
-      data.contentId = JSON.parse(decodeURIComponent(this.$route.query.obj)).id
+      data.contentId = this.$route.query.id
       data.moduleType = 1
       this.legend = ['发送次数', '查看次数', '查看人数']
       // this.$forceUpdate()
@@ -590,25 +380,6 @@ export default {
         name: window.lwConfig.CUSTOMER_DETAIL_ROUTE_NAME,
         query: { externalUserid, userId },
       })
-    },
-  },
-  mounted() {
-    this.dealLength()
-  },
-  created() {
-    this.type = this.$route.query.type
-    // this.form = JSON.parse(decodeURIComponent(this.$route.query.obj))
-    this.getDeatil()
-    this.getTree()
-  },
-  watch: {
-    form: {
-      handler(val) {
-        this.mobForm = []
-        this.mobForm.push(val)
-      },
-      deep: true,
-      immediate: true,
     },
   },
 }
