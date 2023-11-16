@@ -329,7 +329,6 @@ export default {
       this.materialData.templateInfo = val
     },
     updateData(val) {
-      debugger
       this.currentActive = 1
       this.materialData = {
         templateInfo: val.templateInfo,

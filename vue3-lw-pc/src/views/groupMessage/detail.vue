@@ -97,7 +97,10 @@
           </div>
           <el-form :model="queryCustomer" ref="queryForm" :inline="true" label-position="left" label-width="">
             <el-form-item :label="data.chatType === 1 ? '发送客户' : '发送客户群'" prop="customerName">
-              <el-input v-model="queryCustomer.customerName" style="width: 150px" placeholder="请输入" />
+              <el-input
+                v-model="queryCustomer[data.chatType === 1 ? 'customerName' : 'chatName']"
+                style="width: 150px"
+                placeholder="请输入" />
             </el-form-item>
             <el-form-item label="发送状态" prop="status">
               <el-select v-model="queryCustomer.status" placeholder="请选择发送状态">
