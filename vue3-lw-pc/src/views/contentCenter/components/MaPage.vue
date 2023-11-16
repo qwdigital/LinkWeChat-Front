@@ -557,7 +557,8 @@ export default {
           this.msgSuccess(res.data)
           this.textVisible = false
           // this.$emit('update')
-          this.getList()
+          this.getTree()
+          this.getList(1)
         }
       })
     },
