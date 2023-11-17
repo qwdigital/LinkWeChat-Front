@@ -85,18 +85,15 @@
     <SelectTag
       v-model:visible="dialogVisibleSelectTag"
       title="选择标签"
-      :defaultValues="selectedTagList"
+      :selected="selectedTagList"
       @success="submitSelectTag"></SelectTag>
   </div>
 </template>
 <script>
 import { getList } from '@/api/salesCenter/businessConver.js'
-import SelectTag from '@/components/SelectTag'
 export default {
   name: 'select-customer',
-  components: {
-    SelectTag,
-  },
+  components: {},
   props: {
     isDetail: {
       type: Boolean,

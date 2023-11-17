@@ -149,7 +149,7 @@
     <SelectTag
       v-model:visible="dialogVisibleSelectTag"
       title="选择标签"
-      :defaultValues="form.tag"
+      :selected="form.tag"
       @success="submitSelectTag"></SelectTag>
 
     <!-- 选择客户群聊 -->

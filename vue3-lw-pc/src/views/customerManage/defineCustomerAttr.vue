@@ -135,20 +135,17 @@
       ref="selectTag"
       v-model:visible="showSelectTag"
       title="选择标签"
-      :defaultValues="tagList"
+      :selected="tagList"
       @success="submitSelectTag"
       :isSingle="true"></SelectTag>
   </div>
 </template>
 <script>
 import Sortable from 'sortablejs'
-import SelectTag from '@/components/SelectTag'
 import { getList, addField, updateField, deleteField, multiField } from '@/api/customer/defineAttr.js'
 export default {
   name: 'define-customer-attr',
-  components: {
-    SelectTag,
-  },
+  components: {},
   data() {
     return {
       queryTag: [],

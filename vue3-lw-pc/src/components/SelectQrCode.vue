@@ -171,7 +171,7 @@ export default {
       </template>
       <div style="z-index: 9999999"></div>
     </el-dialog>
-    <select-tag v-model:visible="showSelectTag" type="2" :selected="tagList" @success="getSelectTag"></select-tag>
+    <SelectTag v-model:visible="showSelectTag" type="2" :selected="tagList" @success="getSelectTag"></SelectTag>
   </div>
 </template>
 

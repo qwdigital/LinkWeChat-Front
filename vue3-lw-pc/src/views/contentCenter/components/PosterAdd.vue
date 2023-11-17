@@ -30,7 +30,7 @@
                   <!-- 选择标签弹窗 -->
                   <SelectTag
                     v-model:visible="dialogVisibleSelectTag"
-                    :defaultValues="form.tags"
+                    :selected="form.tags"
                     @success="(data) => (form.tags = data)"></SelectTag>
                 </div>
                 <div class="g-tip">素材打开后，该客户将会自动设置以上选择标签</div>

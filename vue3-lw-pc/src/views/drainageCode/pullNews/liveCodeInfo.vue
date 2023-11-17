@@ -71,12 +71,12 @@
                 </el-form>
               </el-col>
             </el-row>
-            <!-- <select-tag
+            <!-- <SelectTag
                v-model:visible="showSelectTag"
               type="2"
               :defaultValues="tagList"
               @success="getSelectTag"
-            ></select-tag> -->
+            ></SelectTag> -->
           </div>
         </div>
       </el-col>

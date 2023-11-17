@@ -65,7 +65,7 @@
         </div>
       </template>
     </el-dialog>
-    <select-tag v-model:visible="showSelectTag" type="2" :selected="tagList" @success="getSelectTag"></select-tag>
+    <SelectTag v-model:visible="showSelectTag" type="2" :selected="tagList" @success="getSelectTag"></SelectTag>
   </div>
 </template>
 <script>

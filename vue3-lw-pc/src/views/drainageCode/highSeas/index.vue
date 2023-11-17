@@ -78,7 +78,7 @@
     <div v-if="dialogVisibleSelectTag">
       <SelectTag
         v-model:visible="dialogVisibleSelectTag"
-        :defaultValues="selectedTagList"
+        :selected="selectedTagList"
         @success="submitSelectTagFn"></SelectTag>
     </div>
 
@@ -134,12 +134,9 @@
 import { getList, downloadTemplate, remove, upload, detail, alertFn } from '@/api/drainageCode/seas'
 import { download } from '@/utils/common'
 
-import SelectTag from '@/components/SelectTag'
 export default {
   name: 'CodeStaff',
-  components: {
-    SelectTag,
-  },
+  components: {},
   data() {
     return {
       submitLoading: false,

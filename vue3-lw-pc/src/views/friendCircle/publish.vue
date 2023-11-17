@@ -2,13 +2,7 @@
   <div>
     <el-row :gutter="10" type="flex" style="margin-top: 10px">
       <el-col>
-        <el-form
-          label-width="110px"
-          label-position="right"
-          :model="form"
-          :rules="rules"
-          ref="ruleForm"
-        >
+        <el-form label-width="110px" label-position="right" :model="form" :rules="rules" ref="ruleForm">
           <div class="g-card">
             <el-form-item label="任务名称：" prop="name" v-if="![2, 3].includes(firendType)">
               <el-input
@@ -16,27 +10,24 @@
                 placeholder="请输入任务名称"
                 maxlength="20"
                 show-word-limit
-                :disabled="!!firendId"
-              ></el-input>
+                :disabled="!!firendId"></el-input>
             </el-form-item>
             <el-form-item label="发送方式：" prop="sendType">
               <span v-if="firendType === 3">个人发送</span>
               <el-radio-group v-model="form.sendType" :disabled="!!firendId" v-else>
-                <el-radio :label="0"
-                  >企微群发
+                <el-radio :label="0">
+                  企微群发
                   <el-popover placement="top" trigger="hover">
                     <template #reference>
                       <div class="question">
                         <div class="question-content" v-if="!firendId">?</div>
                       </div>
                     </template>
-                    <div>
-                      员工可一键执行，但同一条朋友圈对相同客户仅会展示第一位成员发送的朋友圈
-                    </div>
-                  </el-popover></el-radio
-                >
-                <el-radio :label="2"
-                  >成员群发
+                    <div>员工可一键执行，但同一条朋友圈对相同客户仅会展示第一位成员发送的朋友圈</div>
+                  </el-popover>
+                </el-radio>
+                <el-radio :label="2">
+                  成员群发
                   <el-popover placement="top" trigger="hover">
                     <template #reference>
                       <div class="question">
@@ -54,7 +45,8 @@
                 <el-radio :label="1">按条件筛选</el-radio>
               </el-radio-group>
               <div class="customer-num">
-                <span>朋友圈预计可见客户数（不去重）：</span><span>{{ form.customerNum }}</span>
+                <span>朋友圈预计可见客户数（不去重）：</span>
+                <span>{{ form.customerNum }}</span>
               </div>
               <SelectMember
                 ref="selectMember"
@@ -62,8 +54,7 @@
                 @update="getExecuteData"
                 :show="true"
                 v-if="form.scopeType === 1"
-                :isDetail="!!firendId"
-              ></SelectMember>
+                :isDetail="!!firendId"></SelectMember>
             </el-form-item>
             <!-- <el-form-item label="选择客户标签" v-if="form.scopeType === 0">
               <el-tag sizi="mini" v-for="(unit, key) in selectedTagList" :key="key">{{
@@ -83,35 +74,23 @@
                 placeholder="选择年月日时分"
                 format="YYYY-MM-DD HH:mm"
                 v-bind="pickerOptions"
-                :disabled="!!firendId"
-              >
-              </el-date-picker>
+                :disabled="!!firendId"></el-date-picker>
             </el-form-item>
-            <el-form-item
-              label="结束时间："
-              prop="executeEndTime"
-              v-if="![2, 3].includes(firendType)"
-            >
-              <div class="tips" v-if="!firendId">
-                朋友圈任务可设置截止时间，则未完成的成员不允许再执行本条任务
-              </div>
+            <el-form-item label="结束时间：" prop="executeEndTime" v-if="![2, 3].includes(firendType)">
+              <div class="tips" v-if="!firendId">朋友圈任务可设置截止时间，则未完成的成员不允许再执行本条任务</div>
               <el-date-picker
                 v-model="form.executeEndTime"
                 type="datetime"
                 placeholder="选择年月日时分"
                 format="YYYY-MM-DD HH:mm"
                 v-bind="pickerOptions"
-                :disabled="!!firendId"
-              >
-              </el-date-picker>
+                :disabled="!!firendId"></el-date-picker>
             </el-form-item>
             <el-form-item label="自动标签：" v-if="![2, 3].includes(firendType)">
               <div class="tips">可根据客户的点赞或评论行为分别打上对应标签</div>
               <div>点赞自动打标签：</div>
               <div v-if="likeTagList.length">
-                <el-tag sizi="mini" v-for="(unit, key) in likeTagList" :key="key">{{
-                  unit.name
-                }}</el-tag>
+                <el-tag sizi="mini" v-for="(unit, key) in likeTagList" :key="key">{{ unit.name }}</el-tag>
               </div>
               <div class="tips" v-if="!likeTagList.length && firendId">未选择标签</div>
               <div v-if="!firendId">
@@ -119,9 +98,7 @@
               </div>
               <div class="mt10">评论自动打标签：</div>
               <div v-if="commentTagList.length">
-                <el-tag sizi="mini" v-for="(unit, key) in commentTagList" :key="key">{{
-                  unit.name
-                }}</el-tag>
+                <el-tag sizi="mini" v-for="(unit, key) in commentTagList" :key="key">{{ unit.name }}</el-tag>
               </div>
               <div class="tips" v-if="!commentTagList.length && firendId">未选择标签</div>
               <div v-if="!firendId">
@@ -135,8 +112,7 @@
                 :disabled="true"
                 type="textarea"
                 :rows="4"
-                v-if="firendType === 1"
-              ></el-input>
+                v-if="firendType === 1"></el-input>
               <div class="firend-box" v-else>
                 <FirendContent :list="friendsList" :content="form.content" />
               </div>
@@ -151,8 +127,7 @@
             :showPhone="false"
             :detail="firendId !== undefined"
             v-if="!firendId || (firendId && firendType === 1)"
-            :baseData="baseData"
-          ></AddMaterial>
+            :baseData="baseData"></AddMaterial>
 
           <!-- <el-form-item label-width="0" style="margin-top: 20px; margin-bottom: 0">
             <el-button @click="onBackStep">取消</el-button>
@@ -162,16 +137,11 @@
       </el-col>
     </el-row>
     <!-- 选择标签弹窗 -->
-    <SelectTag
-      v-model:visible="dialogVisibleSelectTag"
-      :defaultValues="likeTagList"
-      @success="submitSelectTag"
-    ></SelectTag>
+    <SelectTag v-model:visible="dialogVisibleSelectTag" :selected="likeTagList" @success="submitSelectTag"></SelectTag>
     <SelectTag
       v-model:visible="dialogVisibleSelectTag2"
-      :defaultValues="commentTagList"
-      @success="submitSelectTag2"
-    ></SelectTag>
+      :selected="commentTagList"
+      @success="submitSelectTag2"></SelectTag>
     <!-- <SelectUser
       :defaultValues="selectedUserList"
       v-model:visible="dialogVisibleSelectUser"
@@ -237,9 +207,7 @@ export default {
       rules: {
         name: [{ required: true, message: '请输入任务名称', trigger: 'blur' }],
         sendType: [{ required: true, message: '请选择发送方式', trigger: 'change' }],
-        executeEndTime: [
-          { type: 'date', required: true, message: '请选择结束时间', trigger: 'change' },
-        ],
+        executeEndTime: [{ type: 'date', required: true, message: '请选择结束时间', trigger: 'change' }],
       },
       firendId: undefined,
       firendType: undefined,
@@ -431,7 +399,7 @@ export default {
           //     })
           //     .join(',')
           // }
-          if (this.form.executeTime && typeof this.form.executeTime !== 'string' ) {
+          if (this.form.executeTime && typeof this.form.executeTime !== 'string') {
             let time = this.form.executeTime.getTime()
             let time2 = Date.now()
             if (time2 > time) {

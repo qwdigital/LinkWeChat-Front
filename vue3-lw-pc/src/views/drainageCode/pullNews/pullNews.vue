@@ -64,7 +64,6 @@
 </template>
 
 <script>
-import SelectTag from '@/components/SelectTag.vue'
 import IdentityAttachment from '../components/IdentityAttachment.vue'
 import IdentitySelect from '../components/IdentitySelect.vue'
 import PreviewInPhone from '@/components/ContentCenter/PreviewInPhone'
@@ -137,7 +136,6 @@ export default {
     },
   },
   components: {
-    SelectTag,
     IdentityAttachment,
     IdentitySelect,
     PreviewInPhone,

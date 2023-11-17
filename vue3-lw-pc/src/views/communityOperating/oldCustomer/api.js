@@ -156,6 +156,25 @@ export function add(data) {
  * @param {*} data
  */
 export function update(data) {
+  data = JSON.parse(JSON.stringify(data))
+
+  Object.assign(data, {
+    chatIdList: data.groups?.map((e) => e.chatId)?.join(','),
+    groupNames: data.groups?.map((e) => e.groupName)?.join(','),
+  })
+
+  let ranges = data.weCustomersQuery
+  ranges &&
+    Object.assign(ranges, {
+      genders: ranges.genders?.join(','),
+      customerTypes: ranges.customerTypes?.join(','),
+      tagIds: ranges.tags?.map((e) => e.tagId)?.join(','),
+      tagNames: ranges.tags?.map((e) => e.name)?.join(','),
+      userIds: ranges.users?.map((e) => e.userId)?.join(','),
+      userNames: ranges.users?.map((e) => e.name)?.join(','),
+      beginTime: ranges.dateRange?.[0],
+      endTime: ranges.dateRange?.[1],
+    })
   return request({
     url: service + '/edit',
     method: 'put',

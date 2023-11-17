@@ -6,9 +6,9 @@
         <div class="lable_text">选择成员来源：</div>
         <div>
           <div class="select_unit">
-            <el-button @click="dialogVisibleSelectDept = true" v-show="!isDetail"
-              >{{ selectedDeptList.length ? '修改' : '选择' }}部门范围</el-button
-            >
+            <el-button @click="dialogVisibleSelectDept = true" v-show="!isDetail">
+              {{ selectedDeptList.length ? '修改' : '选择' }}部门范围
+            </el-button>
             <!-- <el-popover
             style="display: inline-block; margin-left: 10px"
             placement="top"
@@ -31,9 +31,7 @@
               {{ selectedPostList.length ? '修改' : '选择' }}岗位
             </el-button>
             <div v-if="selectedPostList.length > 0">
-              <el-tag size="small" v-for="(item, index) in selectedPostList" :key="index">{{
-                item
-              }}</el-tag>
+              <el-tag size="small" v-for="(item, index) in selectedPostList" :key="index">{{ item }}</el-tag>
             </div>
             <span class="tips" v-else-if="isDetail">未选择标签</span>
           </div>
@@ -43,9 +41,9 @@
       <div class="flex">
         <div class="lable_text"></div>
         <div class="select_unit">
-          <el-button @click="dialogVisibleSelectUser = true" v-show="!isDetail"
-            >{{ selectedUserList.length ? '修改' : '选择' }}员工</el-button
-          >
+          <el-button @click="dialogVisibleSelectUser = true" v-show="!isDetail">
+            {{ selectedUserList.length ? '修改' : '选择' }}员工
+          </el-button>
           <div v-if="selectedUserList.length > 0">
             <el-tag size="small" v-for="(item, index) in selectedUserList" :key="index">
               {{ item.name }}
@@ -58,13 +56,11 @@
       <div class="flex mt10">
         <div class="lable_text">选择客户标签：</div>
         <div class="select_unit">
-          <el-button plain @click="dialogVisibleSelectTag = true" v-show="!isDetail"
-            >{{ selectedTagList.length ? '修改' : '选择' }}标签</el-button
-          >
+          <el-button plain @click="dialogVisibleSelectTag = true" v-show="!isDetail">
+            {{ selectedTagList.length ? '修改' : '选择' }}标签
+          </el-button>
           <div v-if="selectedTagList.length > 0">
-            <el-tag sizi="mini" v-for="(unit, key) in selectedTagList" :key="key">{{
-              unit.name
-            }}</el-tag>
+            <el-tag sizi="mini" v-for="(unit, key) in selectedTagList" :key="key">{{ unit.name }}</el-tag>
           </div>
           <span class="tips" v-else-if="isDetail">未选择标签</span>
         </div>
@@ -73,26 +69,22 @@
         :defaultValues="selectedDeptList"
         v-model:visible="dialogVisibleSelectDept"
         title="选择部门"
-        @success="selectedDept"
-      ></SelectDept>
+        @success="selectedDept"></SelectDept>
       <SelectPost
         :defaultValues="selectedPostList"
         v-model:visible="dialogVisibleSelectPost"
         title="选择岗位"
-        @success="selectedPost"
-      ></SelectPost>
+        @success="selectedPost"></SelectPost>
       <SelectWeUser
         :defaultValues="selectedUserList"
         v-model:visible="dialogVisibleSelectUser"
         title="选择使用员工"
         :isOnlyLeaf="true"
-        @success="selectedUser"
-      ></SelectWeUser>
+        @success="selectedUser"></SelectWeUser>
       <SelectTag
         v-model:visible="dialogVisibleSelectTag"
-        :defaultValues="selectedTagList"
-        @success="submitSelectTag"
-      ></SelectTag>
+        :selected="selectedTagList"
+        @success="submitSelectTag"></SelectTag>
     </div>
   </div>
 </template>

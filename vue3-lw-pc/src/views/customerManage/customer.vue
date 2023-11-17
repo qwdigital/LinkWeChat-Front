@@ -2,14 +2,13 @@
 import * as api from '@/api/customer'
 import { getList as getListTag } from '@/api/customer/tag'
 import AddTag from '@/components/AddTag'
-import SelectTag from '@/components/SelectTag'
 import DeleteTag from '@/components/DeleteTag'
 import { dictAddType, dictTrackState } from '@/utils/dictionary'
 import { getList } from '@/api/salesCenter/businessConver.js'
 
 export default {
   name: 'Customer',
-  components: { AddTag, SelectTag, DeleteTag },
+  components: { AddTag, DeleteTag },
   props: {},
   data() {
     return {
@@ -591,7 +590,7 @@ export default {
       ref="selectTag"
       v-model:visible="dialogVisible"
       :title="tagDialogType.title"
-      :defaultValues="selectedTag"
+      :selected="selectedTag"
       @success="submitSelectTag">
       <!-- <el-button class="ml20" type="primary" @click="dialogVisibleAddTag = true"
         >添加标签</el-button

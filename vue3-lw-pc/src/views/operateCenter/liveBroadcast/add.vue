@@ -218,7 +218,7 @@
     <!-- 选择标签弹窗 -->
     <SelectTag
       v-model:visible="dialogVisibleSelectTag"
-      :defaultValues="selectedTagList"
+      :selected="selectedTagList"
       @success="submitSelectTag"></SelectTag>
     <!-- 发送客群弹框 -->
     <SelectUser
@@ -230,14 +230,12 @@
 </template>
 
 <script>
-import SelectTag from '@/components/SelectTag'
 import AddMaterial from '@/components/ContentCenter/AddMaterial'
 import PreviewInPhone from '@/components/ContentCenter/PreviewInPhone'
 import { addOrUpdate, detailLive } from '@/api/operateCenter/liveBroadcast'
 import * as api from '@/api/enterpriseId'
 export default {
   components: {
-    SelectTag,
     AddMaterial,
     PreviewInPhone,
   },

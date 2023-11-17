@@ -3,10 +3,9 @@ import { getDetail, add, update, getQrcode } from '@/api/drainageCode/staff'
 import { getList } from '@/api/drainageCode/welcome'
 import PhoneDialog from '@/components/PhoneDialog'
 
-import SelectTag from '@/components/SelectTag'
 import SelectMaterial from '@/components/SelectMaterial'
 export default {
-  components: { PhoneDialog, SelectTag, SelectMaterial },
+  components: { PhoneDialog, SelectMaterial },
   data() {
     return {
       dialogVisibleSelectUser: false,
@@ -233,10 +232,7 @@ export default {
       @success="selectedUser"></SelectUser>
 
     <!-- 选择标签弹窗 -->
-    <SelectTag
-      v-model:visible="dialogVisibleSelectTag"
-      :defaultValues="form.toTag"
-      @success="submitSelectTag"></SelectTag>
+    <SelectTag v-model:visible="dialogVisibleSelectTag" :selected="form.toTag" @success="submitSelectTag"></SelectTag>
 
     <!-- 选择素材弹窗 -->
     <SelectMaterial

@@ -89,7 +89,7 @@
       @success="selectedUser"></SelectUser>
     <SelectTag
       v-model:visible="dialogVisibleSelectTag"
-      :defaultValues="selectedTagList"
+      :selected="selectedTagList"
       @success="submitSelectTag"></SelectTag>
   </div>
 </template>

@@ -224,7 +224,7 @@ export default {
               <!-- 选择标签弹窗 -->
               <SelectTag
                 v-model:visible="dialogVisibleSelectTag"
-                :defaultValues="form.tags"
+                :selected="form.tags"
                 @success="
                   (data) => {
                     form.tags = data.map((d) => ({

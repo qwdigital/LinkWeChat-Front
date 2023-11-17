@@ -225,7 +225,7 @@ export default {
       type="2"
       v-model:visible="dialogVisible"
       :title="tagDialogType.title"
-      :defaultValues="selectedTag"
+      :selected="selectedTag"
       @success="submitSelectTag"></SelectTag>
   </div>
 </template>

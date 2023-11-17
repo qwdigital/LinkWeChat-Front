@@ -28,11 +28,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    // 已选中的标签，一般用于回显，(下一主版本弃用)
-    defaultValues: {
-      type: Array,
-      default: () => [],
-    },
   },
   data() {
     return {
@@ -41,14 +36,6 @@ export default {
   },
   watch: {
     selected: {
-      handler(val = []) {
-        this.selectedList = [...val]
-      },
-      immediate: true,
-      deep: true,
-    },
-    // 下一主版本弃用
-    defaultValues: {
       handler(val = []) {
         this.selectedList = [...val]
       },

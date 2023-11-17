@@ -111,6 +111,14 @@ export function add(data) {
 }
    */
 export function update(data) {
+  data = Object.assign({}, data, {
+    emplList: data.users?.map((e) => e.userId)?.join(','),
+    emplNames: data.users?.map((e) => e.name)?.join(','),
+    tagList: data.tags?.map((e) => e.tagId)?.join(','),
+    tagNames: data.tags?.map((e) => e.name)?.join(','),
+    chatIdList: data.groups?.map((e) => e.chatId)?.join(','),
+    groupNames: data.groups?.map((e) => e.groupName)?.join(','),
+  })
   return request({
     url: service + '/edit',
     method: 'put',

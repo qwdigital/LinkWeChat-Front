@@ -227,7 +227,7 @@
     <!-- 选择标签弹窗 -->
     <SelectTag
       v-model:visible="dialogVisibleSelectTag"
-      :defaultValues="selectedTagList"
+      :selected="selectedTagList"
       @success="submitSelectTag"></SelectTag>
 
     <!-- 选择使用员工弹窗 -->

@@ -61,13 +61,12 @@
         </el-form>
       </el-col>
     </el-row>
-    <select-tag v-model:visible="showSelectTag" type="2" :defaultValues="tagList" @success="getSelectTag"></select-tag>
+    <SelectTag v-model:visible="showSelectTag" type="2" :selected="tagList" @success="getSelectTag"></SelectTag>
   </div>
 </template>
 
 <script>
 // import { add, update, getDetail } from '@/api/drainageCode/group'
-import SelectTag from '@/components/SelectTag.vue'
 import SelectMember from '../components/SelectMember.vue'
 export default {
   props: {
@@ -82,7 +81,6 @@ export default {
     },
   },
   components: {
-    SelectTag,
     SelectMember,
   },
   watch: {

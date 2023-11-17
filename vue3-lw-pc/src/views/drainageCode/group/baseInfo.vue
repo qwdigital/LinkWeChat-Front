@@ -148,6 +148,7 @@ export default {
     // 获取群活码信息
     getGroupDetail() {
       if (!this.groupCodeId) return
+      debugger
       // 编辑回显
       let arr = []
       let names = this.form.tags ? this.form.tags.split(',') : []
