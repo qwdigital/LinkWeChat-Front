@@ -117,15 +117,6 @@ export function updateBirthday(data) {
   })
 }
 
-// 导出用户
-export function exportCustomer(query) {
-  return request({
-    url: service + '/export',
-    method: 'get',
-    params: query,
-  })
-}
-
 /**
  * 客户流失通知开关
  * @param {*} status [string]	是	客户流失通知开关 0:关闭 1:开启
@@ -326,5 +317,21 @@ export function exportData(params) {
     url: service + '/export',
     params,
     responseType: 'blob',
+  })
+}
+
+/**
+ * 客户加入或移除黑名单
+ * @param {*} params
+{
+     isJoinBlacklist:1. //0:加入黑名单;1:不加入黑名单;
+     “customerIds”:  12323213, //客户id多个使用逗号隔开
+}
+ */
+export function setBlackList(data) {
+  return request({
+    url: service + '/joinOrRemoveBlackList',
+    data,
+    method: 'post',
   })
 }

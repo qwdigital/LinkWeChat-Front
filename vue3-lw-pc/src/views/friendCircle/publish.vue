@@ -165,7 +165,6 @@ export default {
     AddMaterial,
     SelectMember,
     FirendContent,
-    SelectTag: defineAsyncComponent(() => import('@/components/SelectTag')),
     FriendCircleContent: defineAsyncComponent(() => import('@/components/FriendCircleContent')),
   },
   data() {

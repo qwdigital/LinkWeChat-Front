@@ -1,11 +1,10 @@
 <script>
 import * as api from '@/api/customer/group'
 // import * as api from '@/api/customer/tag'
-import SelectTag from '@/components/SelectTag'
 
 export default {
   name: 'Group',
-  components: { SelectTag },
+  components: {},
   data() {
     return {
       // 查询参数

@@ -1,9 +1,8 @@
 <script>
 import { getList } from '@/api/drainageCode/group'
-import SelectTag from '@/components/SelectTag.vue'
 
 export default {
-  components: { SelectTag },
+  components: {},
   props: {
     // 添加标签显隐
     visible: {

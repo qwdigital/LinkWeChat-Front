@@ -97,7 +97,6 @@ export default {
     SelectDept: defineAsyncComponent(() => import('@/components/SelectDept')),
     SelectWeUser: defineAsyncComponent(() => import('@/components/SelectUser')),
     SelectPost: defineAsyncComponent(() => import('@/components/SelectPost')),
-    SelectTag: defineAsyncComponent(() => import('@/components/SelectTag')),
   },
   props: {
     initData: {

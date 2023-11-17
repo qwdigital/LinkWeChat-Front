@@ -316,11 +316,11 @@ export default {
       }
     }
     console.log('14', this.pageData)
-    const clipboard = new this.ClipboardJS('#copyNode', {
-      text: (trigger) => {
-        return this.generateCode()
-      },
-    })
+    // const clipboard = new this.ClipboardJS('#copyNode', {
+    //   text: (trigger) => {
+    //     return this.generateCode()
+    //   },
+    // })
     this.Updates()
     // this.$forceUpdate()
   },

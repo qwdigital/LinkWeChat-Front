@@ -133,9 +133,8 @@
 import { getList, remove, downloadBatch, download } from '@/api/drainageCode/pullNews'
 
 import ShowTag from '@/components/common/ShowTag.vue'
-import SelectTag from '@/components/SelectTag.vue'
 export default {
-  components: { ShowTag, SelectTag },
+  components: { ShowTag },
   data() {
     return {
       query: {
@@ -278,7 +277,7 @@ export default {
     },
     // 批量删除
     handleBulkRemove() {
-      this.$confirm('确认删除当前群活码?删除操作无法撤销，请谨慎操作。', '警告', {
+      this.$confirm('确认删除当前拉新活码?删除操作无法撤销，请谨慎操作。', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',

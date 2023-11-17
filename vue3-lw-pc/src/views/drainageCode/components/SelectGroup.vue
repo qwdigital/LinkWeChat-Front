@@ -70,7 +70,6 @@
 </template>
 <script>
 import * as api from '@/api/customer/group'
-import SelectTag from '@/components/SelectTag.vue'
 
 export default {
   name: 'select-group',
@@ -88,7 +87,7 @@ export default {
       default: () => [],
     },
   },
-  components: { SelectTag },
+  components: {},
   data() {
     return {
       query: {

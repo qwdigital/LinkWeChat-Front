@@ -290,3 +290,14 @@ export function getQualityTableExport(params) {
     params,
   })
 }
+
+// 获取微信客服升级服务配置信息
+// pull 是否拉取企业微信最新客服服务数据  true 拉取 false 不拉取
+export function getConfig(pull) {
+  return request({
+    url: service + '/get/upgrade/service/config',
+    params: {
+      pull,
+    },
+  })
+}

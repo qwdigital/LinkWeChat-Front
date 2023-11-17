@@ -90,6 +90,8 @@ export default {
     flex-direction: column;
   }
   .breadcrumb-wrap {
+    display: flex;
+    align-items: center;
     background: var(--bg-white);
     border-top: 1px solid var(--border-black-9);
   }

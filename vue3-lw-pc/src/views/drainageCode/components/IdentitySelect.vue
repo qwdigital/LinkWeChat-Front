@@ -232,7 +232,7 @@ export default {
     height: 210px;
     margin-bottom: 20px;
     margin-right: 2%;
-    border: 1px solid #eaeaea;
+    border: 1px solid var(--border-black-9);
     .img {
       width: 100%;
       height: 180px;

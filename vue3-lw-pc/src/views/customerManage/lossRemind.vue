@@ -1,11 +1,9 @@
 <script>
 import { getListNew, lossRemind, getLossRemindStatus } from '@/api/customer'
 
-import SelectTag from '@/components/SelectTag'
-
 export default {
   name: 'LossRemind',
-  components: { SelectTag },
+  components: {},
   props: {},
   data() {
     return {

@@ -1,11 +1,10 @@
 <script>
 import { dictJoinGroupType } from '@/utils/dictionary'
 import * as api from '@/api/customer/group'
-import SelectTag from '@/components/SelectTag'
 
 export default {
   // name: 'GroupDetail',
-  components: { SelectTag },
+  components: {},
   data() {
     return {
       // 遮罩层

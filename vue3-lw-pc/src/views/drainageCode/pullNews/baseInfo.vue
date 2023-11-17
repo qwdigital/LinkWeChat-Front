@@ -61,7 +61,7 @@
         </el-form>
       </el-col>
     </el-row>
-    <SelectTag v-model:visible="showSelectTag" type="2" :selected="tagList" @success="getSelectTag"></SelectTag>
+    <SelectTag v-model:visible="showSelectTag" type="1" :selected="tagList" @success="getSelectTag"></SelectTag>
   </div>
 </template>
 
