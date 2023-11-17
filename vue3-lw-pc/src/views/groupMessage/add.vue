@@ -129,7 +129,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="g-margin-t" v-if="currentActive === 2">
+    <div class="g-margin-t" v-show="currentActive === 2">
       <AddMaterial
         :showModle="true"
         :moduleType="4"

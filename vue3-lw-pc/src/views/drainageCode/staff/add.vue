@@ -8,115 +8,117 @@
       </el-steps>
     </div>
     <div class="g-card">
-      <el-row v-if="currentActive === 1">
-        <el-col :span="10">
-          <el-form ref="baseForm" :rules="baseRules" :model="baseForm" label-position="right" label-width="100px">
-            <el-form-item label="活码名称" prop="qrName">
-              <el-input v-model="baseForm.qrName" maxlength="15" show-word-limit clearable></el-input>
-              <!-- <div class="sub-des">活码名称创建完成后不可修改</div> -->
-            </el-form-item>
-            <el-form-item label="活码分组" prop="qrGroupId">
-              <el-select v-model="baseForm.qrGroupId">
-                <el-option
-                  v-for="item in codeCategoryList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="自动通过好友">
-              <el-switch v-model="baseForm.qrAutoAdd" :active-value="1" :inactive-value="0"></el-switch>
-              <div class="sub-des">开启后，客户添加该企业微信时，无需好友验证，将会自动添加成功</div>
-            </el-form-item>
-            <el-form-item label="新客户标签">
-              <template v-for="(item, index) in baseForm.weEmpleCodeTags">
-                <el-tag v-if="item.tagName" :key="index">{{ item.tagName }}</el-tag>
-              </template>
-              <div>
-                <el-button type="primary" icon="el-icon-plus" @click="selectedFn">
-                  {{ baseForm.weEmpleCodeTags.length == 0 ? '添加' : '编辑' }}标签
-                </el-button>
-              </div>
-              <div class="sub-des">添加成功后，该客户将会自动设置以上选择标签</div>
-            </el-form-item>
-            <el-form-item>
-              <el-button plain @click="cancelFn">取消</el-button>
-              <el-button type="primary" @click="nextStep(2)">下一步</el-button>
-            </el-form-item>
-          </el-form>
-        </el-col>
-      </el-row>
-      <el-row v-if="currentActive === 2">
-        <el-col :span="15">
-          <el-form ref="codeForm" :rules="codeRules" :model="codeForm" label-position="right" label-width="100px">
-            <el-form-item label="活码类型" prop="qrType">
-              <el-radio-group v-model="codeForm.qrType" @change="changeType">
-                <el-radio :label="1">单人</el-radio>
-                <el-radio :label="2">多人</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="排班类型" prop="qrRuleType">
-              <el-radio-group v-model="codeForm.qrRuleType">
-                <el-radio :label="1">全天在线</el-radio>
-                <el-radio :label="2" :disabled="codeForm.qrType === 1">自动排班</el-radio>
-              </el-radio-group>
-              <div class="sub-des">
-                <span v-if="codeForm.qrRuleType == 1">多人全天在线时随机分配，单人活码不支持排班</span>
-                <span v-else-if="codeForm.qrRuleType == 2">
-                  选择自动排班时，默认生成一条全天在线规则，不可删除，保证有员工全天在线
-                </span>
-              </div>
-            </el-form-item>
-            <el-form-item label="排班方式" prop="qrRuleMode" v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
-              <el-radio-group v-model="codeForm.qrRuleMode">
-                <el-radio :label="1">
-                  <el-popover placement="top" trigger="hover">
-                    <template #reference>
-                      <span>
-                        轮询
-                        <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
-                      </span>
-                    </template>
-                    <div>根据二维码的优先级顺序，平均展示给访问用户。</div>
-                  </el-popover>
-                </el-radio>
-                <el-radio :label="2">
-                  <el-popover placement="top" trigger="hover">
-                    <template #reference>
-                      <span>
-                        顺序
-                        <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
-                      </span>
-                    </template>
-                    <div>二维码访问人数达到访问上限后，自动切换至下一个二维码。</div>
-                  </el-popover>
-                </el-radio>
-                <el-radio :label="3">
-                  <el-popover placement="top" trigger="hover">
-                    <template #reference>
-                      <span>
-                        随机
-                        <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
-                      </span>
-                    </template>
-                    <div>用户扫描二维码后，将在上线的员工中随机一个进行展示。</div>
-                  </el-popover>
-                </el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="活码员工" prop="weEmpleCodeUseScops" v-if="codeForm.qrRuleType == 1">
-              <div v-if="codeForm.weEmpleCodeUseScops.length > 0 && codeForm.qrType == 1">
-                <el-tag v-for="(item, index) in codeForm.weEmpleCodeUseScops" :key="index">
-                  {{ item.businessName }}
-                </el-tag>
-              </div>
-              <el-button type="primary" plain @click="onSelectUser">
-                {{ codeForm.weEmpleCodeUseScops.length ? '修改' : '选择' }}员工
-              </el-button>
-              <div class="sub-des">单人活码只能选择一个员工，多人活码支持选择多个员工</div>
-              <div v-if="codeForm.weEmpleCodeUseScops.length > 0 && codeForm.qrType == 2">
-                <MemeberList :list="codeForm.weEmpleCodeUseScops" @update="getList"></MemeberList>
-                <!-- <el-tag
+      <el-form
+        v-if="currentActive === 1"
+        ref="baseForm"
+        :rules="baseRules"
+        :model="baseForm"
+        label-position="right"
+        label-width="100px">
+        <el-form-item label="活码名称" prop="qrName">
+          <el-input v-model="baseForm.qrName" maxlength="15" show-word-limit clearable></el-input>
+          <!-- <div class="sub-des">活码名称创建完成后不可修改</div> -->
+        </el-form-item>
+        <el-form-item label="活码分组" prop="qrGroupId">
+          <el-select v-model="baseForm.qrGroupId">
+            <el-option v-for="item in codeCategoryList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="自动通过好友">
+          <el-switch v-model="baseForm.qrAutoAdd" :active-value="1" :inactive-value="0"></el-switch>
+          <div class="sub-des">开启后，客户添加该企业微信时，无需好友验证，将会自动添加成功</div>
+        </el-form-item>
+        <el-form-item label="新客户标签">
+          <template v-for="(item, index) in baseForm.weEmpleCodeTags">
+            <el-tag v-if="item.tagName" :key="index">{{ item.tagName }}</el-tag>
+          </template>
+          <div>
+            <el-button type="primary" icon="el-icon-plus" @click="selectedFn">
+              {{ baseForm.weEmpleCodeTags.length == 0 ? '添加' : '编辑' }}标签
+            </el-button>
+          </div>
+          <div class="sub-des">添加成功后，该客户将会自动设置以上选择标签</div>
+        </el-form-item>
+        <el-form-item>
+          <el-button plain @click="cancelFn">取消</el-button>
+          <el-button type="primary" @click="nextStep(2)">下一步</el-button>
+        </el-form-item>
+      </el-form>
+      <el-form
+        v-if="currentActive === 2"
+        ref="codeForm"
+        :rules="codeRules"
+        :model="codeForm"
+        label-position="right"
+        label-width="100px">
+        <el-form-item label="活码类型" prop="qrType">
+          <el-radio-group v-model="codeForm.qrType" @change="changeType">
+            <el-radio :label="1">单人</el-radio>
+            <el-radio :label="2">多人</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="排班类型" prop="qrRuleType">
+          <el-radio-group v-model="codeForm.qrRuleType">
+            <el-radio :label="1">全天在线</el-radio>
+            <el-radio :label="2" :disabled="codeForm.qrType === 1">自动排班</el-radio>
+          </el-radio-group>
+          <div class="sub-des">
+            <span v-if="codeForm.qrRuleType == 1">多人全天在线时随机分配，单人活码不支持排班</span>
+            <span v-else-if="codeForm.qrRuleType == 2">
+              选择自动排班时，默认生成一条全天在线规则，不可删除，保证有员工全天在线
+            </span>
+          </div>
+        </el-form-item>
+        <el-form-item label="排班方式" prop="qrRuleMode" v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
+          <el-radio-group v-model="codeForm.qrRuleMode">
+            <el-radio :label="1">
+              <el-popover placement="top" trigger="hover">
+                <template #reference>
+                  <span>
+                    轮询
+                    <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
+                  </span>
+                </template>
+                <div>根据二维码的优先级顺序，平均展示给访问用户。</div>
+              </el-popover>
+            </el-radio>
+            <el-radio :label="2">
+              <el-popover placement="top" trigger="hover">
+                <template #reference>
+                  <span>
+                    顺序
+                    <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
+                  </span>
+                </template>
+                <div>二维码访问人数达到访问上限后，自动切换至下一个二维码。</div>
+              </el-popover>
+            </el-radio>
+            <el-radio :label="3">
+              <el-popover placement="top" trigger="hover">
+                <template #reference>
+                  <span>
+                    随机
+                    <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
+                  </span>
+                </template>
+                <div>用户扫描二维码后，将在上线的员工中随机一个进行展示。</div>
+              </el-popover>
+            </el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="活码员工" prop="weEmpleCodeUseScops" v-if="codeForm.qrRuleType == 1">
+          <div v-if="codeForm.weEmpleCodeUseScops.length > 0 && codeForm.qrType == 1">
+            <el-tag v-for="(item, index) in codeForm.weEmpleCodeUseScops" :key="index">
+              {{ item.businessName }}
+            </el-tag>
+          </div>
+          <el-button type="primary" plain @click="onSelectUser">
+            {{ codeForm.weEmpleCodeUseScops.length ? '修改' : '选择' }}员工
+          </el-button>
+          <div class="sub-des">单人活码只能选择一个员工，多人活码支持选择多个员工</div>
+          <div v-if="codeForm.weEmpleCodeUseScops.length > 0 && codeForm.qrType == 2">
+            <MemeberList :list="codeForm.weEmpleCodeUseScops" @update="getList"></MemeberList>
+            <!-- <el-tag
                   class="user-el-tag"
 
                   v-for="(item, index) in codeForm.weEmpleCodeUseScops"
@@ -130,98 +132,87 @@
                     :max="100"
                   ></el-input-number>
                 </el-tag> -->
+          </div>
+        </el-form-item>
+        <el-form-item label="备用员工" prop="weSpareUseScops" v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
+          <div v-if="codeForm.weSpareUseScops.length > 0">
+            <el-tag v-for="(item, index) in codeForm.weSpareUseScops" :key="index">
+              {{ item.businessName }}
+            </el-tag>
+          </div>
+          <el-button type="primary" plain @click="onSelectSpareUser">
+            {{ codeForm.weSpareUseScops.length ? '修改' : '选择' }}备用员工
+          </el-button>
+        </el-form-item>
+        <el-form-item label="开启备用员工" prop="openSpareUser" v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
+          <el-switch v-model="codeForm.openSpareUser" :active-value="1" :inactive-value="0"></el-switch>
+          <div class="sub-des">员工当日添加用户数达每日上限后添加至备用员工。若如关闭，则自动循环下一个上限</div>
+        </el-form-item>
+        <el-form-item label="添加同一员工" prop="openSpareUser" v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
+          <el-switch v-model="codeForm.isExclusive" :active-value="1" :inactive-value="0"></el-switch>
+          <div class="sub-des">开启后，相同客户会优先添加到同一个员工。</div>
+        </el-form-item>
+        <el-form-item v-if="codeForm.qrRuleType == 2" label="活码排班" prop="empleCodeRosterDto">
+          <template v-for="(item, index) in codeForm.empleCodeRosterDto" :key="item.id">
+            <el-card class="box-card roster-card">
+              <div style="display: flex; justify-content: flex-end">
+                <el-button v-if="index !== 0" type="text" icon="el-icon-delete" @click="onRemoveRoster(index)">
+                  删除
+                </el-button>
               </div>
-            </el-form-item>
-            <el-form-item
-              label="备用员工"
-              prop="weSpareUseScops"
-              v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
-              <div v-if="codeForm.weSpareUseScops.length > 0">
-                <el-tag v-for="(item, index) in codeForm.weSpareUseScops" :key="index">
-                  {{ item.businessName }}
+              <el-form-item label="排班员工">
+                <el-tag v-for="(tag, key) in item.weEmpleCodeUseScops" :key="key">
+                  {{ tag.businessName }}
                 </el-tag>
-              </div>
-              <el-button type="primary" plain @click="onSelectSpareUser">
-                {{ codeForm.weSpareUseScops.length ? '修改' : '选择' }}备用员工
-              </el-button>
-            </el-form-item>
-            <el-form-item
-              label="开启备用员工"
-              prop="openSpareUser"
-              v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
-              <el-switch v-model="codeForm.openSpareUser" :active-value="1" :inactive-value="0"></el-switch>
-              <div class="sub-des">员工当日添加用户数达每日上限后添加至备用员工。若如关闭，则自动循环下一个上限</div>
-            </el-form-item>
-            <el-form-item
-              label="添加同一员工"
-              prop="openSpareUser"
-              v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
-              <el-switch v-model="codeForm.isExclusive" :active-value="1" :inactive-value="0"></el-switch>
-              <div class="sub-des">开启后，相同客户会优先添加到同一个员工。</div>
-            </el-form-item>
-            <el-form-item v-if="codeForm.qrRuleType == 2" label="活码排班" prop="empleCodeRosterDto">
-              <template v-for="(item, index) in codeForm.empleCodeRosterDto" :key="item.id">
-                <el-card class="box-card roster-card">
-                  <div style="display: flex; justify-content: flex-end">
-                    <el-button v-if="index !== 0" type="text" icon="el-icon-delete" @click="onRemoveRoster(index)">
-                      删除
-                    </el-button>
-                  </div>
-                  <el-form-item label="排班员工">
-                    <el-tag v-for="(tag, key) in item.weEmpleCodeUseScops" :key="key">
-                      {{ tag.businessName }}
-                    </el-tag>
-                    <el-button style="margin-left: 10px" type="primary" plain @click="onSelectUser(index)">
-                      {{ item.weEmpleCodeUseScops.length ? '修改' : '选择' }}员工
-                    </el-button>
-                  </el-form-item>
-                  <el-form-item label="工作周期">
-                    <el-checkbox-group v-model="item.weekday" @change="checkStartEnd($event, index)">
-                      <el-checkbox :label="1" :disabled="index === 0">周一</el-checkbox>
-                      <el-checkbox :label="2" :disabled="index === 0">周二</el-checkbox>
-                      <el-checkbox :label="3" :disabled="index === 0">周三</el-checkbox>
-                      <el-checkbox :label="4" :disabled="index === 0">周四</el-checkbox>
-                      <el-checkbox :label="5" :disabled="index === 0">周五</el-checkbox>
-                      <el-checkbox :label="6" :disabled="index === 0">周六</el-checkbox>
-                      <el-checkbox :label="7" :disabled="index === 0">周日</el-checkbox>
-                    </el-checkbox-group>
-                  </el-form-item>
-                  <el-form-item label="在线时间">
-                    <el-time-select
-                      style="width: 40%"
-                      v-model="item.startDate"
-                      :disabled="index === 0"
-                      start="00:00"
-                      end="23:59"
-                      step="00:30"
-                      :max-time="item.endDate"
-                      @change="checkStartEnd($event, index)"
-                      placeholder="任意时间点"></el-time-select>
-                    -
-                    <el-time-select
-                      style="width: 40%"
-                      start="00:00"
-                      end="23:59"
-                      step="00:30"
-                      :min-time="item.startDate"
-                      @change="checkStartEnd($event, index)"
-                      v-model="item.endDate"
-                      :disabled="index === 0"
-                      placeholder="任意时间点"></el-time-select>
-                  </el-form-item>
-                </el-card>
-              </template>
-              <div class="mt20">
-                <el-button type="primary" plain @click="onAddRoster">添加工作周期</el-button>
-              </div>
-            </el-form-item>
-            <el-form-item>
-              <el-button @click="currentActive = 1">上一步</el-button>
-              <el-button type="primary" @click="nextStep(3)">下一步</el-button>
-            </el-form-item>
-          </el-form>
-        </el-col>
-      </el-row>
+                <el-button style="margin-left: 10px" type="primary" plain @click="onSelectUser(index)">
+                  {{ item.weEmpleCodeUseScops.length ? '修改' : '选择' }}员工
+                </el-button>
+              </el-form-item>
+              <el-form-item label="工作周期">
+                <el-checkbox-group v-model="item.weekday" @change="checkStartEnd($event, index)">
+                  <el-checkbox :label="1" :disabled="index === 0">周一</el-checkbox>
+                  <el-checkbox :label="2" :disabled="index === 0">周二</el-checkbox>
+                  <el-checkbox :label="3" :disabled="index === 0">周三</el-checkbox>
+                  <el-checkbox :label="4" :disabled="index === 0">周四</el-checkbox>
+                  <el-checkbox :label="5" :disabled="index === 0">周五</el-checkbox>
+                  <el-checkbox :label="6" :disabled="index === 0">周六</el-checkbox>
+                  <el-checkbox :label="7" :disabled="index === 0">周日</el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+              <el-form-item label="在线时间">
+                <el-time-select
+                  style="width: 40%"
+                  v-model="item.startDate"
+                  :disabled="index === 0"
+                  start="00:00"
+                  end="23:59"
+                  step="00:30"
+                  :max-time="item.endDate"
+                  @change="checkStartEnd($event, index)"
+                  placeholder="任意时间点"></el-time-select>
+                -
+                <el-time-select
+                  style="width: 40%"
+                  start="00:00"
+                  end="23:59"
+                  step="00:30"
+                  :min-time="item.startDate"
+                  @change="checkStartEnd($event, index)"
+                  v-model="item.endDate"
+                  :disabled="index === 0"
+                  placeholder="任意时间点"></el-time-select>
+              </el-form-item>
+            </el-card>
+          </template>
+          <div class="mt20">
+            <el-button type="primary" plain @click="onAddRoster">添加工作周期</el-button>
+          </div>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="currentActive = 1">上一步</el-button>
+          <el-button type="primary" @click="nextStep(3)">下一步</el-button>
+        </el-form-item>
+      </el-form>
       <AddMaterial
         v-if="currentActive === 3"
         :moduleType="4"
