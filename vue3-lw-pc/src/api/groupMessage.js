@@ -20,9 +20,10 @@ export function getCustomerList(params, isTrans) {
     url: base + '/customer/findAllWeCustomerList',
     method: 'get',
     params,
-  }).then(({ data }) => {
+  }).then((res) => {
     if (isTrans) {
       let map = {}
+      let data = res.data
       let _data = []
       for (let i = 0; i < data.length; i++) {
         let ai = data[i]
@@ -44,7 +45,7 @@ export function getCustomerList(params, isTrans) {
       }
       return { data: _data }
     } else {
-      return { data }
+      return res
     }
   })
 }
