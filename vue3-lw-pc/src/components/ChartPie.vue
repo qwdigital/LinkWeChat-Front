@@ -50,6 +50,9 @@ export default {
   methods: {
     drawChart() {
       // eslint-disable-next-line
+      if (!this.series?.length) {
+        return
+      }
       this.myChart = echarts.init(this.$refs.chart)
       let option = {
         color: echartColors,

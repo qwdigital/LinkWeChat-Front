@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     drawChart() {
-      if (!(this.series && this.series.length)) {
+      if (!(this.xData?.length && this.series?.length)) {
         return
       }
       // eslint-disable-next-line
