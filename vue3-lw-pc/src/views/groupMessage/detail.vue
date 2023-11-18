@@ -55,7 +55,7 @@
             </el-form-item>
             <el-form-item label-width="0">
               <el-button type="primary" @click="getMemberList(1)">查询</el-button>
-              <el-button @click="resetMemberQuery">重置</el-button>
+              <el-button @click="$refs.queryMemberForm.resetFields()">重置</el-button>
             </el-form-item>
           </el-form>
           <div>
@@ -96,7 +96,9 @@
             <div class="">{{ data.chatType === 1 ? '客户' : '客户群' }}详情</div>
           </div>
           <el-form :model="queryCustomer" ref="queryForm" :inline="true" label-position="left" label-width="">
-            <el-form-item :label="data.chatType === 1 ? '发送客户' : '发送客户群'" prop="customerName">
+            <el-form-item
+              :label="data.chatType === 1 ? '发送客户' : '发送客户群'"
+              :prop="data.chatType === 1 ? 'customerName' : 'chatName'">
               <el-input
                 v-model="queryCustomer[data.chatType === 1 ? 'customerName' : 'chatName']"
                 style="width: 150px"
@@ -114,7 +116,7 @@
             </el-form-item>
             <el-form-item label-width="0">
               <el-button type="primary" @click="getCustomerList(1)">查询</el-button>
-              <el-button @click="resetCustomerQuery">重置</el-button>
+              <el-button @click="$refs.queryForm.resetFields()">重置</el-button>
             </el-form-item>
           </el-form>
           <div>
@@ -252,14 +254,6 @@ export default {
           },
         )
         .catch(() => {})
-    },
-    resetCustomerQuery() {
-      this.queryCustomer.customerName = ''
-      this.queryCustomer.status = ''
-    },
-    resetMemberQuery() {
-      this.queryMember.userName = ''
-      this.queryMember.status = ''
     },
     getMemberList(page) {
       page && (this.queryMember.pageNum = page)
