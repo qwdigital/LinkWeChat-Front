@@ -194,15 +194,12 @@ export default {
           <!-- <template #default="scope">{{ scope.row.weFlowerCustomerRels[0].createTime }}</template> -->
         </el-table-column>
         <el-table-column label="留存天数" prop="retentionDays" align="center"></el-table-column>
-        <el-table-column prop="updateTime" label="流失时间" align="center">
+        <el-table-column prop="lossTime" label="流失时间" align="center">
           <!-- <template #default="scope">{{ scope.row.weFlowerCustomerRels[0].createTime }}</template> -->
         </el-table-column>
         <el-table-column prop="address" label="标签" align="center">
           <template #default="{ row }">
-            <div v-if="row.tagNames">
-              <TagEllipsis :list="row.tagNames?.split(',')"></TagEllipsis>
-            </div>
-            <span v-else>无标签</span>
+            <TagEllipsis :list="row.tagNames?.split(',')" emptyText="无标签"></TagEllipsis>
             <!-- <el-tag type="info" v-for="(unit, unique) in row?.tagNames?.split(',')" :key="unique">{{ unit }}</el-tag> -->
 
             <!-- <div v-for="(item, index) in row.weFlowerCustomerRels" :key="index">
