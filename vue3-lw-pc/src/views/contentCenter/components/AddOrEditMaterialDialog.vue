@@ -1,5 +1,5 @@
 <!-- 由透传属性，可直接使用 el-dialog 的所有props，
-用法示例：<ImportDialog v-model="dialogVisible" title="title"/> -->
+用法示例：<AddOrEditMaterialDialog v-model="dialogVisible" title="title"/> -->
 <script>
 import { getTree, add, update } from '@/api/material'
 
@@ -23,6 +23,10 @@ export default {
     PreviewInPhone: defineAsyncComponent(() => import('@/components/ContentCenter/PreviewInPhone')),
   },
   props: {
+    modelValue: {
+      type: Boolean,
+      default: false,
+    },
     // 0 图片（image）、1 语音（voice）、2 视频（video），3 普通文件(file)， 4 文本， 5 海报， 6 活码， 7 人群， 8 旅程，9 图文，10 链接，11 小程序
     type: {
       type: String,
@@ -73,6 +77,13 @@ export default {
   },
   computed: {},
   watch: {
+    modelValue: {
+      deep: true,
+      immediate: true,
+      handler(val) {
+        val && this.getTree()
+      },
+    },
     data: {
       deep: true,
       immediate: true,
@@ -91,9 +102,7 @@ export default {
       },
     },
   },
-  created() {
-    this.getTree()
-  },
+  created() {},
   mounted() {
     this.mobForm[0].mediaType = this.type
   },
@@ -197,7 +206,13 @@ export default {
 
 <template>
   <!-- 添加或修改素材对话框 -->
-  <el-dialog width="1000px" destroy-on-close append-to-body :close-on-click-modal="false">
+  <el-dialog
+    width="1000px"
+    :modelValue="modelValue"
+    @update:modelValue="(val) => $emit('update:modelValue', val)"
+    destroy-on-close
+    append-to-body
+    :close-on-click-modal="false">
     <el-alert type="warning" show-icon v-if="type === '11'">
       <template #title>
         <div style="display: flex">
@@ -391,7 +406,7 @@ export default {
           </template>
 
           <!-- 语音 -->
-          <template v-else-if="type === '1'">
+          <!-- <template v-else-if="type === '1'">
             <el-form-item label="语音" prop="materialUrl">
               <Voice v-if="form.materialUrl" :amrUrl="form.materialUrl"></Voice>
               <Upload v-model:fileUrl="form.materialUrl" :type="type" :format="['amr']">
@@ -401,7 +416,7 @@ export default {
             <el-form-item label="名称" prop="materialName">
               <el-input v-model="form.materialName" placeholder="请输入"></el-input>
             </el-form-item>
-          </template>
+          </template> -->
           <!-- 视频 -->
           <template v-else-if="type === '2'">
             <el-form-item label="视频标题" prop="materialName">

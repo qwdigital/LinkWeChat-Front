@@ -1,6 +1,5 @@
 <script>
 import { getTree, getList, add, update, remove } from '@/api/material'
-import Voice from '@/components/Voice'
 import AddOrEditMaterialDialog from './AddOrEditMaterialDialog'
 
 import { addCodeCategory, updateCodeCategory } from '@/api/drainageCode/staff'
@@ -13,7 +12,6 @@ export default {
   name: 'MaPage',
   components: {
     // QuillEditor,
-    Voice,
     AddOrEditMaterialDialog,
     // AddOrEditMaterialDialog: defineAsyncComponent(() => import('./AddOrEditMaterialDialog')),
   },

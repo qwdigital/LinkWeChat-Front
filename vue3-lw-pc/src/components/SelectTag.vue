@@ -46,6 +46,7 @@ export default {
   computed: {
     Pvisible: {
       get() {
+        this.selectedList = [...this.selected]
         return this.visible
       },
       set(val) {
