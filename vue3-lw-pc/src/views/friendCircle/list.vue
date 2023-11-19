@@ -1,13 +1,6 @@
 <template>
   <div>
-    <el-form
-      :model="query"
-      label-position="left"
-      ref="queryForm"
-      :inline="true"
-      label-width="70px"
-      class="top-search"
-    >
+    <el-form :model="query" label-position="left" ref="queryForm" :inline="true" label-width="70px" class="top-search">
       <el-form-item prop="name">
         <el-input v-model="query.name" placeholder="请输入任务名称"></el-input>
       </el-form-item>
@@ -17,12 +10,7 @@
       <el-form-item prop="sendType">
         <!-- <el-input v-model="query" placeholder="请输入创建人"></el-input> -->
         <el-select clearable v-model="query.sendType" placeholder="请选择发送方式">
-          <el-option
-            v-for="(item, index) in sendType"
-            :key="index"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
+          <el-option v-for="(item, index) in sendType" :key="index" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item prop="creator">
@@ -31,8 +19,7 @@
             v-for="(item, index) in taskStatus"
             :key="index"
             :label="item.label"
-            :value="item.value"
-          ></el-option>
+            :value="item.value"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -45,8 +32,7 @@
           range-separator="—"
           start-placeholder="执行开始时间"
           end-placeholder="执行结束时间"
-          style="width: 240px"
-        ></el-date-picker>
+          style="width: 240px"></el-date-picker>
       </el-form-item>
       <el-form-item>
         <!-- v-hasPermi="['wecom:code:list']" -->
@@ -56,21 +42,17 @@
     </el-form>
     <div class="g-card">
       <div class="mid-action">
-        <div>
-          <!-- <span class="desc" v-if="lastSyncTime">最近同步：{{ lastSyncTime }}</span>
-          <span class="desc" v-else>暂无记录，请手动点击同步</span> -->
+        <!-- <div>
           <ButtonSync @click="syncFn">同步</ButtonSync>
-        </div>
+        </div> -->
         <div>
+          <el-button type="primary" @click="gotoRoute" style="margin-right: 10px">新建朋友圈</el-button>
           <el-popover placement="top" trigger="hover">
             <template #reference>
               <el-icon-QuestionFilled class="el-icon-QuestionFilled mr5"></el-icon-QuestionFilled>
             </template>
             <div>企业每分钟创建朋友圈的频率：10条/分钟</div>
           </el-popover>
-          <el-button type="primary" @click="gotoRoute" style="margin-right: 10px"
-            >新建朋友圈</el-button
-          >
         </div>
       </div>
       <el-table ref="table" v-loading="loading" :data="tableData">
@@ -100,29 +82,22 @@
         <el-table-column show-overflow-tooltip prop="finishRate" label="完成率"></el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <template #default="{ row }">
-            <el-button text @click="remind(row.id)" v-if="row.status === 2 && row.sendType !== 0"
-              >提醒执行</el-button
-            >
+            <el-button text @click="remind(row.id)" v-if="row.status === 2 && row.sendType !== 0">提醒执行</el-button>
+            <el-button text @click="syncFn(row.id)" v-if="row.sendType == 0">同步</el-button>
             <el-button text @click="statistics(row)">统计</el-button>
             <el-button text @click="detailFn(row)">查看</el-button>
             <el-button text @click="cease(row.id)" v-if="row.status !== 3">停止</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <pagination
-        :total="total"
-        v-model:page="query.pageNum"
-        v-model:limit="query.pageSize"
-        @pagination="getList()"
-      />
+      <pagination :total="total" v-model:page="query.pageNum" v-model:limit="query.pageSize" @pagination="getList()" />
     </div>
 
     <SelectUser
       v-model:visible="dialogVisible"
       title="组织架构"
       :defaultValues="userArray"
-      @success="getSelectUser"
-    ></SelectUser>
+      @success="getSelectUser"></SelectUser>
   </div>
 </template>
 <script>
@@ -206,7 +181,7 @@ export default {
         {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-        }
+        },
       )
         .then(() => {
           cancelMoments(id).then((res) => {
@@ -274,8 +249,8 @@ export default {
         },
       })
     },
-    syncFn() {
-      syncHMoments(2).then((res) => {
+    syncFn(id) {
+      syncHMoments(id).then((res) => {
         if (res.code === 200) {
           this.msgSuccess(res.data)
           this.getList()
@@ -344,7 +319,7 @@ export default {
     this.$store.setBusininessDesc(
       `
         <div>可对企业的朋友圈资源进行统一运营，联动互动功能进行自动打标签，统计成员朋友圈执行效率功能等等</div>
-      `
+      `,
     )
   },
 }

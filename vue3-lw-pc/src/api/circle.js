@@ -17,9 +17,9 @@ export function getEnterpriceList(data) {
 //   })
 // }
 // 朋友圈 全部 同步
-export function syncHMoments(data) {
+export function syncHMoments(id) {
   return request({
-    url: service + '/moments/sync/' + data,
+    url: service + '/moments/sync/' + id,
   })
 }
 

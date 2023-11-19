@@ -1,11 +1,9 @@
 <template>
-  <div class="g-card">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="员工统计" name="first" v-if="this.type !== 3"><Staff /></el-tab-pane>
-      <el-tab-pane label="客户统计" name="second"><Custom /></el-tab-pane>
-      <el-tab-pane label="互动统计" name="third"><Interaction /></el-tab-pane>
-    </el-tabs>
-  </div>
+  <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tab-pane label="员工统计" name="first" v-if="this.type !== 3"><Staff /></el-tab-pane>
+    <el-tab-pane label="客户统计" name="second"><Custom /></el-tab-pane>
+    <!-- <el-tab-pane label="互动统计" name="third"><Interaction /></el-tab-pane> -->
+  </el-tabs>
 </template>
 <script>
 import Staff from './components/Staff.vue'
@@ -14,7 +12,6 @@ import Interaction from './components/Interaction.vue'
 export default {
   components: { Staff, Custom, Interaction },
   mounted() {
-
     this.type = this.$route.query.type
     if (this.type === 3) {
       this.activeName = 'second'

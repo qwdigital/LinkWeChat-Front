@@ -4,7 +4,7 @@
       <el-col>
         <el-form label-width="110px" label-position="right" :model="form" :rules="rules" ref="ruleForm">
           <div class="g-card">
-            <el-form-item label="任务名称：" prop="name" v-if="![2, 3].includes(firendType)">
+            <el-form-item label="任务名称" prop="name" v-if="![2, 3].includes(firendType)">
               <el-input
                 v-model="form.name"
                 placeholder="请输入任务名称"
@@ -12,7 +12,7 @@
                 show-word-limit
                 :disabled="!!firendId"></el-input>
             </el-form-item>
-            <el-form-item label="发送方式：" prop="sendType">
+            <el-form-item label="发送方式" prop="sendType">
               <span v-if="firendType === 3">个人发送</span>
               <el-radio-group v-model="form.sendType" :disabled="!!firendId" v-else>
                 <el-radio :label="0">
@@ -39,23 +39,24 @@
                 </el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="发送范围：" required @change="scopeTypeChange">
-              <el-radio-group v-model="form.scopeType" :disabled="!!firendId">
+            <el-form-item label="发送范围" required>
+              <el-radio-group v-model="form.scopeType" :disabled="!!firendId" @change="scopeTypeChange">
                 <el-radio :label="0">全部客户</el-radio>
                 <el-radio :label="1">按条件筛选</el-radio>
               </el-radio-group>
               <div class="customer-num">
-                <span>朋友圈预计可见客户数（不去重）：</span>
+                <span>朋友圈预计可见客户数（不去重）</span>
                 <span>{{ form.customerNum }}</span>
               </div>
-              <SelectMember
-                ref="selectMember"
-                :initData="addWeUser"
-                @update="getExecuteData"
-                :show="true"
-                v-if="form.scopeType === 1"
-                :isDetail="!!firendId"></SelectMember>
             </el-form-item>
+
+            <template v-if="form.scopeType == 1">
+              <CustomerRangeForm
+                v-model:data="form.weCustomersQuery"
+                :disabled="!!firendId"
+                :isDetail="!!firendId"
+                label-width="110px" />
+            </template>
             <!-- <el-form-item label="选择客户标签" v-if="form.scopeType === 0">
               <el-tag sizi="mini" v-for="(unit, key) in selectedTagList" :key="key">{{
                 unit.name
@@ -64,7 +65,7 @@
                 <el-button type="primary" plain @click="selectedFn">选择标签</el-button>
               </div>
             </el-form-item> -->
-            <el-form-item label="执行时间：">
+            <el-form-item label="执行时间">
               <div class="tips" v-if="!firendId">
                 可自由设定该朋友圈任务下发通知的开始时间，如未设置则默认创建时间即开始执行时间
               </div>
@@ -76,7 +77,7 @@
                 v-bind="pickerOptions"
                 :disabled="!!firendId"></el-date-picker>
             </el-form-item>
-            <el-form-item label="结束时间：" prop="executeEndTime" v-if="![2, 3].includes(firendType)">
+            <el-form-item label="结束时间" prop="executeEndTime" v-if="![2, 3].includes(firendType)">
               <div class="tips" v-if="!firendId">朋友圈任务可设置截止时间，则未完成的成员不允许再执行本条任务</div>
               <el-date-picker
                 v-model="form.executeEndTime"
@@ -86,9 +87,9 @@
                 v-bind="pickerOptions"
                 :disabled="!!firendId"></el-date-picker>
             </el-form-item>
-            <el-form-item label="自动标签：" v-if="![2, 3].includes(firendType)">
+            <!-- <el-form-item label="自动标签" v-if="![2, 3].includes(firendType)">
               <div class="tips">可根据客户的点赞或评论行为分别打上对应标签</div>
-              <div>点赞自动打标签：</div>
+              <div>点赞自动打标签</div>
               <div v-if="likeTagList.length">
                 <el-tag sizi="mini" v-for="(unit, key) in likeTagList" :key="key">{{ unit.name }}</el-tag>
               </div>
@@ -96,7 +97,7 @@
               <div v-if="!firendId">
                 <el-button type="primary" plain @click="selectedFn">选择标签</el-button>
               </div>
-              <div class="mt10">评论自动打标签：</div>
+              <div class="mt10">评论自动打标签</div>
               <div v-if="commentTagList.length">
                 <el-tag sizi="mini" v-for="(unit, key) in commentTagList" :key="key">{{ unit.name }}</el-tag>
               </div>
@@ -104,8 +105,8 @@
               <div v-if="!firendId">
                 <el-button type="primary" plain @click="selectedFn2">选择标签</el-button>
               </div>
-            </el-form-item>
-            <el-form-item label="朋友圈内容：" v-if="[1, 2, 3].includes(firendType)">
+            </el-form-item> -->
+            <el-form-item label="朋友圈内容" v-if="[1, 2, 3].includes(firendType)">
               <el-input
                 v-model="form.content"
                 placeholder="未填写文本内容"
@@ -137,11 +138,11 @@
       </el-col>
     </el-row>
     <!-- 选择标签弹窗 -->
-    <SelectTag v-model:visible="dialogVisibleSelectTag" :selected="likeTagList" @success="submitSelectTag"></SelectTag>
+    <!-- <SelectTag v-model:visible="dialogVisibleSelectTag" :selected="likeTagList" @success="submitSelectTag"></SelectTag>
     <SelectTag
       v-model:visible="dialogVisibleSelectTag2"
       :selected="commentTagList"
-      @success="submitSelectTag2"></SelectTag>
+      @success="submitSelectTag2"></SelectTag> -->
     <!-- <SelectUser
       :defaultValues="selectedUserList"
       v-model:visible="dialogVisibleSelectUser"
@@ -154,16 +155,15 @@
 <script>
 import { addMoments, numMoments, getDetail } from '@/api/circle'
 import AddMaterial from '@/components/ContentCenter/AddMaterial'
-import SelectMember from './components/SelectMember.vue'
 import FirendContent from './components/FirendContent.vue'
 import moment from 'moment'
 import { getList } from '@/api/customer/tag'
+import { getCustomerList } from '@/api/groupMessage'
 
 export default {
   name: 'publish-detail',
   components: {
     AddMaterial,
-    SelectMember,
     FirendContent,
     FriendCircleContent: defineAsyncComponent(() => import('@/components/FriendCircleContent')),
   },
@@ -193,10 +193,10 @@ export default {
       loading: false,
       // selectedUserList: [],
       // dialogVisibleSelectUser: false,
-      dialogVisibleSelectTag: false,
-      dialogVisibleSelectTag2: false,
-      likeTagList: [],
-      commentTagList: [],
+      // dialogVisibleSelectTag: false,
+      // dialogVisibleSelectTag2: false,
+      // likeTagList: [],
+      // commentTagList: [],
       addWeUser: {
         userIds: [],
         deptIds: [],
@@ -228,8 +228,8 @@ export default {
     }
   },
   methods: {
-    scopeTypeChange(a) {
-      if (a.target.value === '0') {
+    scopeTypeChange(value) {
+      if (value == 0) {
         this.addWeUser = {
           userIds: [],
           deptIds: [],
@@ -237,11 +237,11 @@ export default {
           customerTag: [],
         }
       }
-      if (['0', '1'].includes(a.target.value)) {
+      if ([0, 1].includes(value)) {
         let form = {
-          scopeType: +a.target.value,
+          scopeType: +value,
         }
-        form = Object.assign(form, this.addWeUser)
+        form = Object.assign(form, this.form.weCustomersQuery)
         this.getNumMoments(form)
       }
     },
@@ -260,47 +260,45 @@ export default {
               attachments: res.data.materialList ? res.data.materialList : [],
             }
             this.baseData = JSON.parse(JSON.stringify(obj))
-            this.setEditTag()
+            // this.setEditTag()
           }
         })
         .catch()
     },
     // 处理详情页面里的点赞/评论自动打标签
-    setEditTag() {
-      this.likeTagList = []
-      this.commentTagList = []
-      if (this.form.likeTagIds && this.form.likeTagIds.length) {
-        getList({ groupTagType: 1 }).then(({ rows }) => {
-          this.form.likeTagIds.forEach((dd) => {
-            rows.forEach((inx) => {
-              let index = inx.weTags.findIndex((item) => item.tagId === dd)
-              if (inx.weTags[index] !== undefined) {
-                this.likeTagList.push(inx.weTags[index])
-              }
-            })
-          })
-        })
-      }
-      if (this.form.commentTagIds && this.form.commentTagIds.length) {
-        getList({ groupTagType: 1 }).then(({ rows }) => {
-          this.form.commentTagIds.forEach((dd) => {
-            rows.forEach((inx) => {
-              let index = inx.weTags.findIndex((item) => item.tagId === dd)
-              if (inx.weTags[index] !== undefined) {
-                this.commentTagList.push(inx.weTags[index])
-              }
-            })
-          })
-        })
-      }
-    },
+    // setEditTag() {
+    //   this.likeTagList = []
+    //   this.commentTagList = []
+    //   if (this.form.likeTagIds && this.form.likeTagIds.length) {
+    //     getList({ groupTagType: 1 }).then(({ rows }) => {
+    //       this.form.likeTagIds.forEach((dd) => {
+    //         rows.forEach((inx) => {
+    //           let index = inx.weTags.findIndex((item) => item.tagId === dd)
+    //           if (inx.weTags[index] !== undefined) {
+    //             this.likeTagList.push(inx.weTags[index])
+    //           }
+    //         })
+    //       })
+    //     })
+    //   }
+    //   if (this.form.commentTagIds && this.form.commentTagIds.length) {
+    //     getList({ groupTagType: 1 }).then(({ rows }) => {
+    //       this.form.commentTagIds.forEach((dd) => {
+    //         rows.forEach((inx) => {
+    //           let index = inx.weTags.findIndex((item) => item.tagId === dd)
+    //           if (inx.weTags[index] !== undefined) {
+    //             this.commentTagList.push(inx.weTags[index])
+    //           }
+    //         })
+    //       })
+    //     })
+    //   }
+    // },
     // 获取可见客户数
     getNumMoments(data) {
       numMoments(data)
         .then((res) => {
-          if (res.code === 200) {
-            this.form.customerNum = res.data
-          }
+          this.form.customerNum = res.data
         })
         .catch()
     },
@@ -310,26 +308,26 @@ export default {
       this.getNumMoments(form)
       this.addWeUser = data
     },
-    selectedFn() {
-      this.dialogVisibleSelectTag = true
-    },
-    selectedFn2() {
-      this.dialogVisibleSelectTag2 = true
-    },
-    submitSelectTag(data) {
-      this.form.likeTagIds = []
-      data.forEach((el) => {
-        this.form.likeTagIds.push(el.tagId)
-      })
-      this.likeTagList = data
-    },
-    submitSelectTag2(data) {
-      this.form.commentTagIds = []
-      data.forEach((el) => {
-        this.form.commentTagIds.push(el.tagId)
-      })
-      this.commentTagList = data
-    },
+    // selectedFn() {
+    //   this.dialogVisibleSelectTag = true
+    // },
+    // selectedFn2() {
+    //   this.dialogVisibleSelectTag2 = true
+    // },
+    // submitSelectTag(data) {
+    //   this.form.likeTagIds = []
+    //   data.forEach((el) => {
+    //     this.form.likeTagIds.push(el.tagId)
+    //   })
+    //   this.likeTagList = data
+    // },
+    // submitSelectTag2(data) {
+    //   this.form.commentTagIds = []
+    //   data.forEach((el) => {
+    //     this.form.commentTagIds.push(el.tagId)
+    //   })
+    //   this.commentTagList = data
+    // },
     // onSelectUser() {
     //   this.dialogVisibleSelectUser = true
     // },
@@ -358,19 +356,37 @@ export default {
     submit(data) {
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
-          if (this.form.scopeType === 1) {
-            if (
-              this.addWeUser.userIds.length ||
-              this.addWeUser.posts.length ||
-              this.addWeUser.deptIds.length ||
-              this.addWeUser.customerTag.length
-            ) {
-              this.form = Object.assign(this.form, this.addWeUser)
-            } else {
-              this.msgError('请选择按条件筛选时的发送范围！')
-              return false
+          let form = JSON.parse(JSON.stringify(this.form))
+          if (form.scopeType === 1) {
+            let ranges = form.weCustomersQuery
+            let params = ranges && {
+              genders: ranges.genders?.join(','),
+              customerTypes: ranges.customerTypes?.join(','),
+              tagIds: ranges.tags?.map((e) => e.tagId)?.join(','),
+              tagNames: ranges.tags?.map((e) => e.name)?.join(','),
+              userIds: ranges.users?.map((e) => e.userId)?.join(','),
+              userNames: ranges.users?.map((e) => e.name)?.join(','),
+              beginTime: ranges.dateRange?.[0],
+              endTime: ranges.dateRange?.[1],
+              trackState: ranges.trackState,
+              isContain: ranges.tags?.length ? ranges.isContain : undefined,
             }
+            this.loading = true
+            getCustomerList(params, 1)
+              .then(({ data }) => {
+                if (data?.length) {
+                  form.senderList = data
+                  this.sendData(form)
+                } else {
+                  this.msgError('未找到可发送客户！')
+                  this.loading = false
+                }
+              })
+              .catch(() => {
+                this.loading = false
+              })
           }
+
           this.form.materialIds = []
           data.attachments.forEach((item) => {
             this.form.materialIds.push(item.materialId)
