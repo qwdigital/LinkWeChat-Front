@@ -195,7 +195,7 @@ export default {
     },
     gotoRoute() {
       this.$router.push({
-        path: '/customerMaintain/friendCircle/publish',
+        path: './publish',
       })
     },
     setTimeChange(e) {
@@ -228,7 +228,7 @@ export default {
       // 朋友圈类型 1：非同步型  2：企业同步型 3：个人同步型
       let type = this.determineType(row)
       this.$router.push({
-        path: '/customerMaintain/friendCircle/publish',
+        path: './publish',
         query: {
           type,
           id: row.id,
@@ -240,7 +240,7 @@ export default {
       // 朋友圈类型 1：非同步型  2：企业同步型 3：个人同步型
       let type = this.determineType(row)
       this.$router.push({
-        path: '/customerMaintain/friendCircle/statistics',
+        path: './statistics',
         query: {
           type,
           id: row.id,

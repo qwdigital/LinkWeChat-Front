@@ -1,63 +1,65 @@
 <template>
   <div>
-    <el-row :gutter="10" type="flex" style="margin-top: 10px">
-      <el-col>
-        <el-form label-width="110px" label-position="right" :model="form" :rules="rules" ref="ruleForm">
-          <div class="g-card">
-            <el-form-item label="任务名称" prop="name" v-if="![2, 3].includes(firendType)">
-              <el-input
-                v-model="form.name"
-                placeholder="请输入任务名称"
-                maxlength="20"
-                show-word-limit
-                :disabled="!!firendId"></el-input>
-            </el-form-item>
-            <el-form-item label="发送方式" prop="sendType">
-              <span v-if="firendType === 3">个人发送</span>
-              <el-radio-group v-model="form.sendType" :disabled="!!firendId" v-else>
-                <el-radio :label="0">
-                  企微群发
-                  <el-popover placement="top" trigger="hover">
-                    <template #reference>
-                      <div class="question">
-                        <div class="question-content" v-if="!firendId">?</div>
-                      </div>
-                    </template>
-                    <div>员工可一键执行，但同一条朋友圈对相同客户仅会展示第一位成员发送的朋友圈</div>
-                  </el-popover>
-                </el-radio>
-                <el-radio :label="2">
-                  成员群发
-                  <el-popover placement="top" trigger="hover">
-                    <template #reference>
-                      <div class="question">
-                        <div class="question-content" v-if="!firendId">?</div>
-                      </div>
-                    </template>
-                    <div>需要成员手动发送，但同一条朋友圈对相同客户会展示每个成员发送的朋友圈</div>
-                  </el-popover>
-                </el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="发送范围" required>
-              <el-radio-group v-model="form.scopeType" :disabled="!!firendId" @change="scopeTypeChange">
-                <el-radio :label="0">全部客户</el-radio>
-                <el-radio :label="1">按条件筛选</el-radio>
-              </el-radio-group>
-              <div class="customer-num">
-                <span>朋友圈预计可见客户数（不去重）</span>
-                <span>{{ form.customerNum }}</span>
-              </div>
-            </el-form-item>
+    <el-form
+      :class="firendId && 'formDetail'"
+      :disabled="!!firendId"
+      label-width="110px"
+      label-position="right"
+      :model="form"
+      :rules="rules"
+      ref="ruleForm">
+      <div class="g-card">
+        <el-form-item label="任务名称" prop="name" v-if="![2, 3].includes(firendType)">
+          <el-input v-model="form.name" placeholder="请输入任务名称" maxlength="20" show-word-limit></el-input>
+        </el-form-item>
+        <el-form-item label="发送方式" prop="sendType">
+          <span v-if="firendType === 3">个人发送</span>
+          <el-radio-group v-model="form.sendType" v-else>
+            <el-radio :label="0">
+              企微群发
+              <el-popover placement="top" trigger="hover">
+                <template #reference>
+                  <div class="question">
+                    <div class="question-content" v-if="!firendId">?</div>
+                  </div>
+                </template>
+                <div>员工可一键执行，但同一条朋友圈对相同客户仅会展示第一位成员发送的朋友圈</div>
+              </el-popover>
+            </el-radio>
+            <el-radio :label="2">
+              成员群发
+              <el-popover placement="top" trigger="hover">
+                <template #reference>
+                  <div class="question">
+                    <div class="question-content" v-if="!firendId">?</div>
+                  </div>
+                </template>
+                <div>需要成员手动发送，但同一条朋友圈对相同客户会展示每个成员发送的朋友圈</div>
+              </el-popover>
+            </el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="发送范围" required>
+          <el-radio-group v-model="form.scopeType" @change="(val) => val == 0 && getNumMoments(form)">
+            <el-radio :label="0">全部客户</el-radio>
+            <el-radio :label="1">按条件筛选</el-radio>
+          </el-radio-group>
+          <div class="customer-num">
+            <span>朋友圈预计可见客户数（不去重）</span>
+            <span>{{ form.customerNum }}</span>
+          </div>
+          <template v-if="form.scopeType == 1">
+            <CustomerRangeForm
+              class="mt15"
+              isTrans
+              :data="form.weCustomersQuery"
+              @update:data="customerRangeFormChange"
+              :isDetail="!!firendId"
+              :disabled="!!firendId" />
+          </template>
+        </el-form-item>
 
-            <template v-if="form.scopeType == 1">
-              <CustomerRangeForm
-                v-model:data="form.weCustomersQuery"
-                :disabled="!!firendId"
-                :isDetail="!!firendId"
-                label-width="110px" />
-            </template>
-            <!-- <el-form-item label="选择客户标签" v-if="form.scopeType === 0">
+        <!-- <el-form-item label="选择客户标签" v-if="form.scopeType === 0">
               <el-tag sizi="mini" v-for="(unit, key) in selectedTagList" :key="key">{{
                 unit.name
               }}</el-tag>
@@ -65,29 +67,27 @@
                 <el-button type="primary" plain @click="selectedFn">选择标签</el-button>
               </div>
             </el-form-item> -->
-            <el-form-item label="执行时间">
-              <div class="tips" v-if="!firendId">
-                可自由设定该朋友圈任务下发通知的开始时间，如未设置则默认创建时间即开始执行时间
-              </div>
-              <el-date-picker
-                v-model="form.executeTime"
-                type="datetime"
-                placeholder="选择年月日时分"
-                format="YYYY-MM-DD HH:mm"
-                v-bind="pickerOptions"
-                :disabled="!!firendId"></el-date-picker>
-            </el-form-item>
-            <el-form-item label="结束时间" prop="executeEndTime" v-if="![2, 3].includes(firendType)">
-              <div class="tips" v-if="!firendId">朋友圈任务可设置截止时间，则未完成的成员不允许再执行本条任务</div>
-              <el-date-picker
-                v-model="form.executeEndTime"
-                type="datetime"
-                placeholder="选择年月日时分"
-                format="YYYY-MM-DD HH:mm"
-                v-bind="pickerOptions"
-                :disabled="!!firendId"></el-date-picker>
-            </el-form-item>
-            <!-- <el-form-item label="自动标签" v-if="![2, 3].includes(firendType)">
+        <el-form-item label="执行时间">
+          <div class="tips" v-if="!firendId">
+            可自由设定该朋友圈任务下发通知的开始时间，如未设置则默认创建时间即开始执行时间
+          </div>
+          <el-date-picker
+            v-model="form.executeTime"
+            type="datetime"
+            placeholder="选择年月日时分"
+            format="YYYY-MM-DD HH:mm"
+            v-bind="pickerOptions"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="结束时间" prop="executeEndTime" v-if="![2, 3].includes(firendType)">
+          <div class="tips" v-if="!firendId">朋友圈任务可设置截止时间，则未完成的成员不允许再执行本条任务</div>
+          <el-date-picker
+            v-model="form.executeEndTime"
+            type="datetime"
+            placeholder="选择年月日时分"
+            format="YYYY-MM-DD HH:mm"
+            v-bind="pickerOptions"></el-date-picker>
+        </el-form-item>
+        <!-- <el-form-item label="自动标签" v-if="![2, 3].includes(firendType)">
               <div class="tips">可根据客户的点赞或评论行为分别打上对应标签</div>
               <div>点赞自动打标签</div>
               <div v-if="likeTagList.length">
@@ -106,37 +106,35 @@
                 <el-button type="primary" plain @click="selectedFn2">选择标签</el-button>
               </div>
             </el-form-item> -->
-            <el-form-item label="朋友圈内容" v-if="[1, 2, 3].includes(firendType)">
-              <el-input
-                v-model="form.content"
-                placeholder="未填写文本内容"
-                :disabled="true"
-                type="textarea"
-                :rows="4"
-                v-if="firendType === 1"></el-input>
-              <div class="firend-box" v-else>
-                <FirendContent :list="friendsList" :content="form.content" />
-              </div>
-            </el-form-item>
+        <el-form-item label="朋友圈内容" v-if="[1, 2, 3].includes(firendType)">
+          <el-input
+            v-model="form.content"
+            placeholder="未填写文本内容"
+            :disabled="true"
+            type="textarea"
+            :rows="4"
+            v-if="firendType === 1"></el-input>
+          <div class="firend-box" v-else>
+            <FirendContent :list="friendsList" :content="form.content" />
           </div>
-          <!-- <FriendCircleContent ref="friendCircleContent" :data="form"></FriendCircleContent> -->
-          <AddMaterial
-            :moduleType="4"
-            @update="onBackStep"
-            @submit="submit"
-            :otherType="3"
-            :showPhone="false"
-            :detail="firendId !== undefined"
-            v-if="!firendId || (firendId && firendType === 1)"
-            :baseData="baseData"></AddMaterial>
+        </el-form-item>
+      </div>
+      <!-- <FriendCircleContent ref="friendCircleContent" :data="form"></FriendCircleContent> -->
+      <AddMaterial
+        :moduleType="4"
+        @update="onBackStep"
+        @submit="submit"
+        :otherType="3"
+        :showPhone="false"
+        :detail="firendId !== undefined"
+        v-if="!firendId || (firendId && firendType === 1)"
+        :baseData="baseData"></AddMaterial>
 
-          <!-- <el-form-item label-width="0" style="margin-top: 20px; margin-bottom: 0">
+      <!-- <el-form-item label-width="0" style="margin-top: 20px; margin-bottom: 0">
             <el-button @click="onBackStep">取消</el-button>
             <el-button type="primary" @click="submit">保存</el-button>
           </el-form-item> -->
-        </el-form>
-      </el-col>
-    </el-row>
+    </el-form>
     <!-- 选择标签弹窗 -->
     <!-- <SelectTag v-model:visible="dialogVisibleSelectTag" :selected="likeTagList" @success="submitSelectTag"></SelectTag>
     <SelectTag
@@ -157,7 +155,7 @@ import { addMoments, numMoments, getDetail } from '@/api/circle'
 import AddMaterial from '@/components/ContentCenter/AddMaterial'
 import FirendContent from './components/FirendContent.vue'
 import moment from 'moment'
-import { getList } from '@/api/customer/tag'
+// import { getList } from '@/api/customer/tag'
 import { getCustomerList } from '@/api/groupMessage'
 
 export default {
@@ -197,12 +195,12 @@ export default {
       // dialogVisibleSelectTag2: false,
       // likeTagList: [],
       // commentTagList: [],
-      addWeUser: {
-        userIds: [],
-        deptIds: [],
-        posts: [],
-        customerTag: [],
-      },
+      // addWeUser: {
+      //   userIds: [],
+      //   deptIds: [],
+      //   posts: [],
+      //   customerTag: [],
+      // },
       rules: {
         name: [{ required: true, message: '请输入任务名称', trigger: 'blur' }],
         sendType: [{ required: true, message: '请选择发送方式', trigger: 'change' }],
@@ -228,32 +226,15 @@ export default {
     }
   },
   methods: {
-    scopeTypeChange(value) {
-      if (value == 0) {
-        this.addWeUser = {
-          userIds: [],
-          deptIds: [],
-          posts: [],
-          customerTag: [],
-        }
-      }
-      if ([0, 1].includes(value)) {
-        let form = {
-          scopeType: +value,
-        }
-        form = Object.assign(form, this.form.weCustomersQuery)
-        this.getNumMoments(form)
-      }
-    },
     // 获取页面详情
     getDetail(id) {
       getDetail(id)
         .then((res) => {
           if (res.code === 200) {
             this.form = res.data
-            this.addWeUser = res.data
-            this.likeTagList = res.data.likeTagIds ? res.data.likeTagIds : []
-            this.commentTagList = res.data.commentTagIds ? res.data.commentTagIds : []
+            // this.addWeUser = res.data
+            // this.likeTagList = res.data.likeTagIds ? res.data.likeTagIds : []
+            // this.commentTagList = res.data.commentTagIds ? res.data.commentTagIds : []
             this.friendsList = res.data.materialList ? res.data.materialList : []
             let obj = {
               templateInfo: res.data.content ? res.data.content : '',
@@ -302,11 +283,24 @@ export default {
         })
         .catch()
     },
-    getExecuteData(data) {
-      let form = data
-      form.scopeType = 1
-      this.getNumMoments(form)
-      this.addWeUser = data
+    customerRangeFormChange(params) {
+      this.form.weCustomersQuery = params
+      if (this.form.scopeType == 1 && !this.firendId) {
+        this.loading = true
+        getCustomerList(params, 1)
+          .then(({ data }) => {
+            if (data?.length) {
+              this.form.senderList = data
+              this.getNumMoments(this.form)
+            } else {
+              this.msgError('未找到可发送客户！')
+              this.loading = false
+            }
+          })
+          .catch(() => {
+            this.loading = false
+          })
+      }
     },
     // selectedFn() {
     //   this.dialogVisibleSelectTag = true
@@ -354,39 +348,12 @@ export default {
     },
 
     submit(data) {
+      if (!this.form.customerNum) {
+        this.msgError('未找到可发送客户！')
+        return
+      }
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
-          let form = JSON.parse(JSON.stringify(this.form))
-          if (form.scopeType === 1) {
-            let ranges = form.weCustomersQuery
-            let params = ranges && {
-              genders: ranges.genders?.join(','),
-              customerTypes: ranges.customerTypes?.join(','),
-              tagIds: ranges.tags?.map((e) => e.tagId)?.join(','),
-              tagNames: ranges.tags?.map((e) => e.name)?.join(','),
-              userIds: ranges.users?.map((e) => e.userId)?.join(','),
-              userNames: ranges.users?.map((e) => e.name)?.join(','),
-              beginTime: ranges.dateRange?.[0],
-              endTime: ranges.dateRange?.[1],
-              trackState: ranges.trackState,
-              isContain: ranges.tags?.length ? ranges.isContain : undefined,
-            }
-            this.loading = true
-            getCustomerList(params, 1)
-              .then(({ data }) => {
-                if (data?.length) {
-                  form.senderList = data
-                  this.sendData(form)
-                } else {
-                  this.msgError('未找到可发送客户！')
-                  this.loading = false
-                }
-              })
-              .catch(() => {
-                this.loading = false
-              })
-          }
-
           this.form.materialIds = []
           data.attachments.forEach((item) => {
             this.form.materialIds.push(item.materialId)

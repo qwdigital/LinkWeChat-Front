@@ -6,10 +6,15 @@ export default {
   props: {
     data: {
       type: Object,
-      default: () => ({ isContain: '1', customerTypes: ['1'] }),
+      default: () => ({ isContain: '1' }),
     },
     // 是否为详情展示（不显示选择按钮）
     isDetail: {
+      type: Boolean,
+      default: false,
+    },
+    // 是否转换数据
+    isTrans: {
       type: Boolean,
       default: false,
     },
@@ -21,12 +26,43 @@ export default {
   watch: {
     form: {
       deep: true,
-      handler(val) {
-        this.$emit('update:data', val)
+      handler(data) {
+        data = JSON.parse(JSON.stringify(data))
+        if (this.isTrans) {
+          data = {
+            genders: data.genders?.join(','),
+            customerTypes: data.customerTypes?.join(','),
+            tagIds: data.tags?.map((e) => e.tagId)?.join(','),
+            tagNames: data.tags?.map((e) => e.name)?.join(','),
+            userIds: data.users?.map((e) => e.userId)?.join(','),
+            userNames: data.users?.map((e) => e.name)?.join(','),
+            beginTime: data.dateRange?.[0],
+            endTime: data.dateRange?.[1],
+            trackState: data.trackState,
+            isContain: data.tags?.length ? data.isContain : undefined,
+          }
+        }
+        this.$emit('update:data', data)
       },
     },
   },
   created() {
+    if (this.isTrans) {
+      let data = this.data
+      if (data) {
+        data = JSON.parse(JSON.stringify(data))
+        let userNames = data.userNames?.split(',')
+        let tagNames = data.tagNames?.split(',')
+        this.form = Object.assign(data, {
+          isContain: data.isContain + '',
+          genders: data.genders?.split(','),
+          customerTypes: data.customerTypes?.split(','),
+          users: data.userIds?.split(',')?.map((e, i) => ({ userId: e, name: userNames?.[i] })),
+          tags: data.tagIds?.split(',')?.map((e, i) => ({ tagId: e, name: tagNames?.[i] })),
+          dateRange: [data.beginTime, data.endTime],
+        })
+      }
+    }
     this.$emit('update:data', this.data) // 赋默认值
     getList().then((res) => {
       this.stageList = res.data
@@ -48,7 +84,7 @@ export default {
           :defaultValues="form.users"
           @success="(data) => ((form.users = data), $refs.form.validateField('users'))"></SelectUser>
       </div>
-      <TagEllipsis :list="form.users" limit="10"></TagEllipsis>
+      <TagEllipsis :list="form.users" limit="10" :emptyText="isDetail"></TagEllipsis>
     </el-form-item>
 
     <el-form-item label="客户类型" prop="customerTypes">
