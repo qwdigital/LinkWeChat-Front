@@ -57,6 +57,7 @@ export default {
               value: data.memberTotalCnt,
               title1: '含员工',
               value1: data.memberUserCnt,
+              noArrow: true,
             },
             {
               title: '今日新增客群成员',
