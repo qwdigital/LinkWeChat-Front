@@ -246,6 +246,7 @@ export default {
           id: row.id,
           name: row.name,
           showRemaind: row.status === 2 && row.sendType !== 0 ? 1 : 0,
+          sendType: row.sendType,
         },
       })
     },

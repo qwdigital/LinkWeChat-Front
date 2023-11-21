@@ -87,25 +87,25 @@
             format="YYYY-MM-DD HH:mm"
             v-bind="pickerOptions"></el-date-picker>
         </el-form-item>
-        <!-- <el-form-item label="自动标签" v-if="![2, 3].includes(firendType)">
-              <div class="tips">可根据客户的点赞或评论行为分别打上对应标签</div>
-              <div>点赞自动打标签</div>
-              <div v-if="likeTagList.length">
-                <el-tag sizi="mini" v-for="(unit, key) in likeTagList" :key="key">{{ unit.name }}</el-tag>
-              </div>
-              <div class="tips" v-if="!likeTagList.length && firendId">未选择标签</div>
-              <div v-if="!firendId">
-                <el-button type="primary" plain @click="selectedFn">选择标签</el-button>
-              </div>
-              <div class="mt10">评论自动打标签</div>
-              <div v-if="commentTagList.length">
-                <el-tag sizi="mini" v-for="(unit, key) in commentTagList" :key="key">{{ unit.name }}</el-tag>
-              </div>
-              <div class="tips" v-if="!commentTagList.length && firendId">未选择标签</div>
-              <div v-if="!firendId">
-                <el-button type="primary" plain @click="selectedFn2">选择标签</el-button>
-              </div>
-            </el-form-item> -->
+        <el-form-item label="自动标签" v-if="[0].includes(form.sendType)">
+          <div class="tips">可根据客户的点赞或评论行为分别打上对应标签</div>
+          <div>点赞自动打标签</div>
+          <div v-if="likeTagList.length">
+            <el-tag sizi="mini" v-for="(unit, key) in likeTagList" :key="key">{{ unit.name }}</el-tag>
+          </div>
+          <div class="tips" v-if="!likeTagList.length && firendId">未选择标签</div>
+          <div v-if="!firendId">
+            <el-button type="primary" plain @click="selectedFn">选择标签</el-button>
+          </div>
+          <div class="mt10">评论自动打标签</div>
+          <div v-if="commentTagList.length">
+            <el-tag sizi="mini" v-for="(unit, key) in commentTagList" :key="key">{{ unit.name }}</el-tag>
+          </div>
+          <div class="tips" v-if="!commentTagList.length && firendId">未选择标签</div>
+          <div v-if="!firendId">
+            <el-button type="primary" plain @click="selectedFn2">选择标签</el-button>
+          </div>
+        </el-form-item>
         <el-form-item label="朋友圈内容" v-if="[1, 2, 3].includes(firendType)">
           <el-input
             v-model="form.content"
@@ -136,11 +136,11 @@
           </el-form-item> -->
     </el-form>
     <!-- 选择标签弹窗 -->
-    <!-- <SelectTag v-model:visible="dialogVisibleSelectTag" :selected="likeTagList" @success="submitSelectTag"></SelectTag>
+    <SelectTag v-model:visible="dialogVisibleSelectTag" :selected="likeTagList" @success="submitSelectTag"></SelectTag>
     <SelectTag
       v-model:visible="dialogVisibleSelectTag2"
       :selected="commentTagList"
-      @success="submitSelectTag2"></SelectTag> -->
+      @success="submitSelectTag2"></SelectTag>
     <!-- <SelectUser
       :defaultValues="selectedUserList"
       v-model:visible="dialogVisibleSelectUser"
@@ -155,7 +155,7 @@ import { addMoments, numMoments, getDetail } from '@/api/circle'
 import AddMaterial from '@/components/ContentCenter/AddMaterial'
 import FirendContent from './components/FirendContent.vue'
 import moment from 'moment'
-// import { getList } from '@/api/customer/tag'
+import { getList } from '@/api/customer/tag'
 import { getCustomerList } from '@/api/groupMessage'
 
 export default {
@@ -191,10 +191,10 @@ export default {
       loading: false,
       // selectedUserList: [],
       // dialogVisibleSelectUser: false,
-      // dialogVisibleSelectTag: false,
-      // dialogVisibleSelectTag2: false,
-      // likeTagList: [],
-      // commentTagList: [],
+      dialogVisibleSelectTag: false,
+      dialogVisibleSelectTag2: false,
+      likeTagList: [],
+      commentTagList: [],
       // addWeUser: {
       //   userIds: [],
       //   deptIds: [],
@@ -233,48 +233,48 @@ export default {
           if (res.code === 200) {
             this.form = res.data
             // this.addWeUser = res.data
-            // this.likeTagList = res.data.likeTagIds ? res.data.likeTagIds : []
-            // this.commentTagList = res.data.commentTagIds ? res.data.commentTagIds : []
+            this.likeTagList = res.data.likeTagIds ? res.data.likeTagIds : []
+            this.commentTagList = res.data.commentTagIds ? res.data.commentTagIds : []
             this.friendsList = res.data.materialList ? res.data.materialList : []
             let obj = {
               templateInfo: res.data.content ? res.data.content : '',
               attachments: res.data.materialList ? res.data.materialList : [],
             }
             this.baseData = JSON.parse(JSON.stringify(obj))
-            // this.setEditTag()
+            this.setEditTag()
           }
         })
         .catch()
     },
     // 处理详情页面里的点赞/评论自动打标签
-    // setEditTag() {
-    //   this.likeTagList = []
-    //   this.commentTagList = []
-    //   if (this.form.likeTagIds && this.form.likeTagIds.length) {
-    //     getList({ groupTagType: 1 }).then(({ rows }) => {
-    //       this.form.likeTagIds.forEach((dd) => {
-    //         rows.forEach((inx) => {
-    //           let index = inx.weTags.findIndex((item) => item.tagId === dd)
-    //           if (inx.weTags[index] !== undefined) {
-    //             this.likeTagList.push(inx.weTags[index])
-    //           }
-    //         })
-    //       })
-    //     })
-    //   }
-    //   if (this.form.commentTagIds && this.form.commentTagIds.length) {
-    //     getList({ groupTagType: 1 }).then(({ rows }) => {
-    //       this.form.commentTagIds.forEach((dd) => {
-    //         rows.forEach((inx) => {
-    //           let index = inx.weTags.findIndex((item) => item.tagId === dd)
-    //           if (inx.weTags[index] !== undefined) {
-    //             this.commentTagList.push(inx.weTags[index])
-    //           }
-    //         })
-    //       })
-    //     })
-    //   }
-    // },
+    setEditTag() {
+      this.likeTagList = []
+      this.commentTagList = []
+      if (this.form.likeTagIds && this.form.likeTagIds.length) {
+        getList({ groupTagType: 1 }).then(({ rows }) => {
+          this.form.likeTagIds.forEach((dd) => {
+            rows.forEach((inx) => {
+              let index = inx.weTags.findIndex((item) => item.tagId === dd)
+              if (inx.weTags[index] !== undefined) {
+                this.likeTagList.push(inx.weTags[index])
+              }
+            })
+          })
+        })
+      }
+      if (this.form.commentTagIds && this.form.commentTagIds.length) {
+        getList({ groupTagType: 1 }).then(({ rows }) => {
+          this.form.commentTagIds.forEach((dd) => {
+            rows.forEach((inx) => {
+              let index = inx.weTags.findIndex((item) => item.tagId === dd)
+              if (inx.weTags[index] !== undefined) {
+                this.commentTagList.push(inx.weTags[index])
+              }
+            })
+          })
+        })
+      }
+    },
     // 获取可见客户数
     getNumMoments(data) {
       numMoments(data)
@@ -302,26 +302,26 @@ export default {
           })
       }
     },
-    // selectedFn() {
-    //   this.dialogVisibleSelectTag = true
-    // },
-    // selectedFn2() {
-    //   this.dialogVisibleSelectTag2 = true
-    // },
-    // submitSelectTag(data) {
-    //   this.form.likeTagIds = []
-    //   data.forEach((el) => {
-    //     this.form.likeTagIds.push(el.tagId)
-    //   })
-    //   this.likeTagList = data
-    // },
-    // submitSelectTag2(data) {
-    //   this.form.commentTagIds = []
-    //   data.forEach((el) => {
-    //     this.form.commentTagIds.push(el.tagId)
-    //   })
-    //   this.commentTagList = data
-    // },
+    selectedFn() {
+      this.dialogVisibleSelectTag = true
+    },
+    selectedFn2() {
+      this.dialogVisibleSelectTag2 = true
+    },
+    submitSelectTag(data) {
+      this.form.likeTagIds = []
+      data.forEach((el) => {
+        this.form.likeTagIds.push(el.tagId)
+      })
+      this.likeTagList = data
+    },
+    submitSelectTag2(data) {
+      this.form.commentTagIds = []
+      data.forEach((el) => {
+        this.form.commentTagIds.push(el.tagId)
+      })
+      this.commentTagList = data
+    },
     // onSelectUser() {
     //   this.dialogVisibleSelectUser = true
     // },
