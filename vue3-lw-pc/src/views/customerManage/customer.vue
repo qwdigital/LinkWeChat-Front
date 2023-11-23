@@ -91,6 +91,7 @@ export default {
       })
       return str
     },
+
     openDeleteDialog() {
       let tagIds = []
       this.multipleSelection.forEach((dd) => {
@@ -99,6 +100,7 @@ export default {
       this.deleteData = Array.from(new Set(tagIds))
       this.deleteDialog = true
     },
+    // 批量删标签
     getDeleteData(data) {
       let arr = []
       this.multipleSelection.forEach((dd) => {
@@ -111,7 +113,7 @@ export default {
       })
       this.loading = true
       api
-        .multiMakeTag({ addOrRemove: false, weMakeCustomerTagList: arr })
+        .multiMakeTag({ removeTag: arr })
         .then((res) => {
           this.getList(1)
           this.msgSuccess('批量删除标签成功')
@@ -123,15 +125,17 @@ export default {
           this.loading = false
         })
     },
-    multiOperation(state) {
-      this.multiObj.state = state
-      if (state === 'add') {
-        this.multiObj.title = '批量打标签'
-      } else {
-        this.multiObj.title = '批量删标签'
-      }
-      this.multiObj.showDialog = true
-    },
+
+    // multiOperation(state) {
+    //   this.multiObj.state = state
+    //   if (state === 'add') {
+    //     this.multiObj.title = '批量打标签'
+    //   } else {
+    //     this.multiObj.title = '批量删标签'
+    //   }
+    //   this.multiObj.showDialog = true
+    // },
+    // 批量打标签
     getMultiOperation(data) {
       let arr = []
       this.multipleSelection.forEach((dd) => {
@@ -144,10 +148,14 @@ export default {
       })
       this.loading = true
       api
-        .multiMakeTag({ addOrRemove: this.multiObj.state === 'add' ? true : false, weMakeCustomerTagList: arr })
+        .multiMakeTag({
+          // addOrRemove: this.multiObj.state === 'add' ? true : false,
+          // weMakeCustomerTagList: arr,
+          addTag: arr,
+        })
         .then((res) => {
           this.getList(1)
-          this.msgSuccess(this.multiObj.state === 'add' ? '批量设置标签成功' : '批量删除标签成功')
+          this.msgSuccess('批量设置标签成功')
           this.multiObj.showDialog = false
           this.multipleSelection = []
           this.loading = false
@@ -499,7 +507,11 @@ export default {
           <span class="desc">最近同步：{{ lastSyncTime }}</span>
           <ButtonSync :lastSyncTime="lastSyncTime" @click="sync">同步客户</ButtonSync>
           <!-- <el-button v-hasPermi="['customerManage:customer:checkRepeat']" type="primary">查看重复客户</el-button> -->
-          <el-button class="ml10" type="primary" :disabled="!multipleSelection.length" @click="multiOperation('add')">
+          <el-button
+            class="ml10"
+            type="primary"
+            :disabled="!multipleSelection.length"
+            @click="multiObj.showDialog = true">
             批量打标签
           </el-button>
           <el-button type="primary" :disabled="!multipleSelection.length" @click="openDeleteDialog()">
@@ -614,6 +626,7 @@ export default {
       </template>
     </el-dialog>
 
+    <!-- 批量打标签 -->
     <SelectTag
       v-if="multiObj.showDialog"
       ref="multiTag"
@@ -621,6 +634,7 @@ export default {
       v-model:visible="multiObj.showDialog"
       :title="multiObj.title"
       @success="getMultiOperation"></SelectTag>
+    <!-- 批量删标签 -->
     <DeleteTag
       v-if="deleteDialog"
       ref="deleteTag"
