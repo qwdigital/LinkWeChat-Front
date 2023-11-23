@@ -345,6 +345,7 @@ div:focus {
       display: flex;
       flex-direction: column;
       flex: none;
+      overflow: auto !important;
     }
   }
 }
