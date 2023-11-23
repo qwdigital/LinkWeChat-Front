@@ -1,7 +1,7 @@
 <template>
   <el-tabs v-model="activeName" @tab-click="handleClick">
     <el-tab-pane label="员工统计" name="first" v-if="type !== 3"><Staff /></el-tab-pane>
-    <el-tab-pane label="客户统计" name="second"><Custom /></el-tab-pane>
+    <el-tab-pane v-if="$route.query.sendType == 0" label="客户统计" name="second"><Custom /></el-tab-pane>
     <el-tab-pane v-if="$route.query.sendType == 0" label="互动统计" name="third"><Interaction /></el-tab-pane>
   </el-tabs>
 </template>
