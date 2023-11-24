@@ -1,7 +1,7 @@
 <template>
   <!-- <el-scrollbar class="page-scrollbar"> -->
   <div class="app-main">
-    <div class="page-wrap">
+    <div class="page-wrap" v-loading="$store.loading">
       <!-- <transition name="fade-transform" mode="out-in" v-if="!isActiveMicroApp">
         <RouterView class="page container" id="page-container" :key="key" />
       </transition> -->
@@ -93,7 +93,7 @@ export default {
 // }
 .app-main {
   position: relative;
-  flex: auto;
+  flex: 0 1 auto;
   // overflow: hidden;
   overflow-y: auto;
   overflow-x: hidden;
@@ -105,7 +105,11 @@ export default {
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  padding: 0 15px 0 20px;
+  --gap: 0 15px 0 20px;
+  padding: var(--gap);
+  ::v-deep .el-loading-mask {
+    margin: var(--gap);
+  }
 }
 .page {
   position: initial !important; // 用以解决加载遮罩层随内容滚动问题
