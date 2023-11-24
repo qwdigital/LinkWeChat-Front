@@ -92,6 +92,7 @@ export default {
       return str
     },
 
+    // 批量删标签Dialog
     openDeleteDialog() {
       let tagIds = []
       this.multipleSelection.forEach((dd) => {
@@ -106,14 +107,14 @@ export default {
       this.multipleSelection.forEach((dd) => {
         let obj = {
           externalUserid: dd.externalUserid,
-          addTag: data,
+          removeTag: data,
           userId: dd.firstUserId,
         }
         arr.push(obj)
       })
       this.loading = true
       api
-        .multiMakeTag({ removeTag: arr })
+        .multiMakeTag({ addOrRemove: false, weMakeCustomerTagList: arr })
         .then((res) => {
           this.getList(1)
           this.msgSuccess('批量删除标签成功')
@@ -126,15 +127,6 @@ export default {
         })
     },
 
-    // multiOperation(state) {
-    //   this.multiObj.state = state
-    //   if (state === 'add') {
-    //     this.multiObj.title = '批量打标签'
-    //   } else {
-    //     this.multiObj.title = '批量删标签'
-    //   }
-    //   this.multiObj.showDialog = true
-    // },
     // 批量打标签
     getMultiOperation(data) {
       let arr = []
@@ -149,9 +141,8 @@ export default {
       this.loading = true
       api
         .multiMakeTag({
-          // addOrRemove: this.multiObj.state === 'add' ? true : false,
-          // weMakeCustomerTagList: arr,
-          addTag: arr,
+          addOrRemove: this.multiObj.state === 'add',
+          weMakeCustomerTagList: arr,
         })
         .then((res) => {
           this.getList(1)
