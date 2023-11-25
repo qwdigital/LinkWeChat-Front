@@ -1,39 +1,36 @@
 <template>
   <div>
-    <el-form ref="queryForm" :model="query" inline class="top-search" label-position="left" label-width="">
-      <el-form-item label="活码名称" prop="activityName">
-        <el-input clearable v-model="query.activityName" placeholder="请输入活码名称"></el-input>
-      </el-form-item>
-      <el-form-item label="客群标签" prop="tagIds">
-        <el-input :model-value="tagNames" readonly @click="showSelectTag = true" placeholder="请选择客群标签" />
-      </el-form-item>
-      <!-- <      label="创建人" prop="createBy">
+    <RequestChartTable ref="table" :request="(params) => (Object.assign(params, query), getList(params))">
+      <template #query="{ query }">
+        <el-form-item label="活码名称" prop="activityName">
+          <el-input clearable v-model="query.activityName" placeholder="请输入活码名称"></el-input>
+        </el-form-item>
+        <el-form-item label="客群标签" prop="tagIds">
+          <el-input :model-value="tagNames" readonly @click="showSelectTag = true" placeholder="请选择客群标签" />
+        </el-form-item>
+        <!-- <      label="创建人" prop="createBy">
         <el-input v-model="query.createBy" placeholder="请输入创建人"></el-input>
       </>
       <el-form-item label="创建时间">
         <el-date-picker v-model="searchDate" format="YYYY-MM-DD" value-format="YYYYMMDD" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
       </el-form-item> -->
-      <el-form-item label="">
-        <el-button type="primary" @click="handleSearch">查询</el-button>
-        <el-button @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+      </template>
 
-    <div class="g-card">
-      <div class="mid-action">
-        <el-button type="primary" @click="$router.push('./groupAdd')">新建活码</el-button>
-        <div>
-          <el-button type="primary" plain :disabled="multiGroupCode.length === 0" @click="handleBulkDownload">
-            批量下载
-          </el-button>
-          <el-button type="primary" plain :disabled="multiGroupCode.length === 0" @click="handleBulkRemove">
-            批量删除
-          </el-button>
+      <template #operation>
+        <div class="mid-action mb0">
+          <el-button type="primary" @click="$router.push('./groupAdd')">新建活码</el-button>
+          <div>
+            <el-button type="primary" plain :disabled="multiGroupCode.length === 0" @click="handleBulkDownload">
+              批量下载
+            </el-button>
+            <el-button type="primary" plain :disabled="multiGroupCode.length === 0" @click="handleBulkRemove">
+              批量删除
+            </el-button>
+          </div>
         </div>
-      </div>
+      </template>
 
-      <el-table :data="groupCodes" v-loading="loading" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" align="center"></el-table-column>
+      <template #table="{ data }">
         <el-table-column prop="activityName" label="活码名称" align="center"></el-table-column>
         <el-table-column prop="codeUrl" label="二维码" align="center" width="130">
           <template #default="{ row }">
@@ -107,9 +104,9 @@
         </el-table-column>
         <el-table-column prop="createBy" label="创建人" align="center"></el-table-column>
         <el-table-column prop="updateTime" label="最近操作时间" align="center" width="150"></el-table-column>
-        <el-table-column label="操作" align="center" width="180" fixed="right">
+        <el-table-column label="操作" align="center" width="220" fixed="right">
           <template #default="{ row }">
-            <el-button
+            <!-- <el-button
               text
               @click="
                 $router.push({
@@ -118,10 +115,37 @@
                 })
               ">
               统计
+            </el-button> -->
+            <el-button
+              text
+              @click="
+                $router.push({
+                  path: 'detail',
+                  query: {
+                    id: row.id,
+                    obj: encodeURIComponent(JSON.stringify(row)),
+                  },
+                })
+              ">
+              详情|统计
             </el-button>
-            <el-button text @click="handleDownload(row.id, row.activityName)">下载</el-button>
-            <el-button text class="copy-btn" :data-clipboard-text="row.codeUrl">复制</el-button>
-            <el-dropdown style="margin-left: 10px">
+            <el-button
+              text
+              @click="
+                $router.push({
+                  path: 'groupAdd',
+                  query: {
+                    groupCodeId: row.id,
+                    obj: encodeURIComponent(JSON.stringify(row)),
+                  },
+                })
+              ">
+              编辑
+            </el-button>
+            <el-button text @click=";(share.visible = true), (share.data = row)">分享</el-button>
+            <el-button text @click="handleRemove(row.id)">删除</el-button>
+
+            <!-- <el-dropdown style="margin-left: 10px">
               <el-button text>
                 <el-icon-MoreFilled class="el-icon-MoreFilled"></el-icon-MoreFilled>
               </el-button>
@@ -147,83 +171,89 @@
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
-            </el-dropdown>
+            </el-dropdown> -->
+          </template>
+        </el-table-column>
+      </template>
+    </RequestChartTable>
+
+    <!-- <el-dialog v-if="realCodeDialog" title="实际群码" v-model="realCodeDialog" append-to-body width="70%">
+        <RealCode ref="realCode" :groupCodeId="openGroupCodeId" :status="openGroupCodeStatus"></RealCode>
+      </el-dialog> -->
+    <select-tag v-model:visible="showSelectTag" type="2" :selected="tagList" @success="getSelectTag"></select-tag>
+
+    <el-dialog title="当前客群" v-model="detailDialog" append-to-body width="70%">
+      <el-table v-loading="loading" :data="tableList" style="width: 100%">
+        <el-table-column label="客群名称" align="center" min-width="100" prop="groupName" show-overflow-tooltip />
+        <el-table-column label="关联状态">
+          <template #default="{ row }">
+            {{ row.status == 0 ? '未关联' : row.status == 1 ? '已关联' : '' }}
+          </template>
+        </el-table-column>
+        <el-table-column label="群主" align="center" min-width="100" prop="groupOwner" show-overflow-tooltip />
+        <el-table-column
+          label="群总人数"
+          align="center"
+          prop="chatGroupMemberTotalNum"
+          min-width="100"
+          show-overflow-tooltip></el-table-column>
+        <el-table-column
+          label="进群人数"
+          align="center"
+          prop="joinChatGroupTotalMemberNum"
+          min-width="100"
+          show-overflow-tooltip></el-table-column>
+        <el-table-column
+          label="退群人数"
+          align="center"
+          prop="exitChatGroupTotalMemberNum"
+          min-width="100"
+          show-overflow-tooltip></el-table-column>
+        <el-table-column label="操作" align="center" width="180">
+          <template #default="{ row }">
+            <el-button
+              text
+              @click="
+                $router.push({
+                  path: '/groupManage/customerGroupManage/group/groupDetail',
+                  query: {
+                    chatId: row.chatId,
+                  },
+                })
+              ">
+              查看详情
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
-      <pagination
-        v-show="total > 0"
-        :total="total"
-        v-model:page="query.pageNum"
-        v-model:limit="query.pageSize"
-        @pagination="getGroupCodes" />
-      <el-dialog v-if="realCodeDialog" title="实际群码" v-model="realCodeDialog" append-to-body width="70%">
-        <RealCode ref="realCode" :groupCodeId="openGroupCodeId" :status="openGroupCodeStatus"></RealCode>
-      </el-dialog>
-      <SelectTag v-model:visible="showSelectTag" type="2" :selected="tagList" @success="getSelectTag"></SelectTag>
-      <el-dialog title="当前客群" v-model="detailDialog" append-to-body width="70%">
-        <el-table v-loading="loading" :data="tableList" style="width: 100%">
-          <el-table-column label="客群名称" align="center" min-width="100" prop="groupName" show-overflow-tooltip />
-          <el-table-column label="关联状态">
-            <template #default="{ row }">
-              {{ row.status == 0 ? '未关联' : row.status == 1 ? '已关联' : '' }}
-            </template>
-          </el-table-column>
-          <el-table-column label="群主" align="center" min-width="100" prop="groupOwner" show-overflow-tooltip />
-          <el-table-column
-            label="群总人数"
-            align="center"
-            prop="chatGroupMemberTotalNum"
-            min-width="100"
-            show-overflow-tooltip></el-table-column>
-          <el-table-column
-            label="进群人数"
-            align="center"
-            prop="joinChatGroupTotalMemberNum"
-            min-width="100"
-            show-overflow-tooltip></el-table-column>
-          <el-table-column
-            label="退群人数"
-            align="center"
-            prop="exitChatGroupTotalMemberNum"
-            min-width="100"
-            show-overflow-tooltip></el-table-column>
-          <el-table-column label="操作" align="center" width="180">
-            <template #default="{ row }">
-              <el-button
-                text
-                @click="
-                  $router.push({
-                    path: '/groupManage/customerGroupManage/group/groupDetail',
-                    query: {
-                      chatId: row.chatId,
-                    },
-                  })
-                ">
-                查看详情
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <template #footer>
-          <div>
-            <el-button @click="detailDialog = false">取 消</el-button>
-            <el-button type="primary" @click="detailDialog = false">确 定</el-button>
-          </div>
-        </template>
-      </el-dialog>
-    </div>
+      <template #footer>
+        <div>
+          <el-button @click="detailDialog = false">取 消</el-button>
+          <el-button type="primary" @click="detailDialog = false">确 定</el-button>
+        </div>
+      </template>
+    </el-dialog>
+
+    <!-- 分享活码 -->
+    <el-dialog title="分享活码" v-model="share.visible" width="666px">
+      <div style="background: var(--bg-black-8); padding: var(--card-margin); border-radius: var(--border-radius-big)">
+        <CodeLink :data="share.data" />
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import RealCode from './realCode'
 import { getList, remove, downloadBatch, download, getTableTotal } from '@/api/drainageCode/group'
 
 export default {
-  components: { RealCode },
+  components: {
+    // RealCode: defineAsyncComponent(() => import('./components/RealCode')),
+    CodeLink: defineAsyncComponent(() => import('../components/CodeLink')),
+  },
   data() {
     return {
+      getList,
       query: {
         pageNum: 1,
         pageSize: 10,
@@ -246,6 +276,7 @@ export default {
       tableList: [],
       loading: false,
       detailDialog: false,
+      share: {},
     }
   },
   watch: {
@@ -315,19 +346,6 @@ export default {
           this.loading = false
         })
     },
-    // 查询
-    handleSearch() {
-      this.getGroupCodes()
-    },
-    // 搜索栏清空
-    resetQuery() {
-      this.$refs['queryForm'].resetFields()
-      this.tagNames = ''
-      this.tagList = []
-      this.$nextTick(() => {
-        this.getGroupCodes()
-      })
-    },
     // 批量下载
     handleBulkDownload() {
       const ids = this.multiGroupCode.map((group) => group.id)
@@ -370,21 +388,6 @@ export default {
         })
         .catch(() => {})
     },
-    // 下载
-    handleDownload(codeId, activityName) {
-      const name = activityName + '.png'
-      download(codeId).then((res) => {
-        if (res != null) {
-          let blob = new Blob([res], { type: 'application/zip' })
-          let url = window.URL.createObjectURL(blob)
-          const link = document.createElement('a') // 创建a标签
-          link.href = url
-          link.download = name // 重命名文件
-          link.click()
-          URL.revokeObjectURL(url) // 释放内存
-        }
-      })
-    },
     // 删除
     handleRemove(codeId) {
       this.$confirm('确认删除当前群活码?删除操作无法撤销，请谨慎操作。', '警告', {
@@ -407,11 +410,11 @@ export default {
       this.multiGroupCode = val
     },
     // 打开实际群码窗口
-    handleRealCodeDialogOpen(groupCodeId, status) {
-      this.openGroupCodeId = groupCodeId
-      this.openGroupCodeStatus = status
-      this.realCodeDialog = true
-    },
+    // handleRealCodeDialogOpen(groupCodeId, status) {
+    //   this.openGroupCodeId = groupCodeId
+    //   this.openGroupCodeStatus = status
+    //   this.realCodeDialog = true
+    // },
   },
 }
 </script>

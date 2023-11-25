@@ -30,9 +30,7 @@
               <div>
                 <el-button type="primary" plain @click="onSelectUser" :error="userInfo">选择员工</el-button>
               </div>
-              <div class="sub-des">
-                员工被设置多个欢迎语时，以最新设置或修改的为准，如果通过活码添加，则只推送活码欢迎语
-              </div>
+              <div class="sub-des">员工被设置多个欢迎语时，以最新设置或修改的为准</div>
             </el-form-item>
             <el-form-item
               :label="lableOne"

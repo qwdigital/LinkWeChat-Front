@@ -133,3 +133,45 @@ export function getGroupDetail(id) {
     url: service + '/findWeGroupCodeById/' + id,
   })
 }
+
+// 活码统计
+export function getTotal(data) {
+  return request({
+    url: base + '/qr/scan/count',
+    params: data,
+  })
+}
+
+/**
+ * 获取活码折线图统计
+ * @param {*} data
+ * {
+ * groupId,string,false,,,分组id
+qrId,integer,false,,,活码Id
+qrName,string,false,,,活码名称
+qrUserIds,string,false,,,员工ID
+}
+ */
+export function getStatisticsLine(data) {
+  return request({
+    url: base + '/qr/scan/line',
+    params: data,
+  })
+}
+
+/**
+ * 获取活码表格统计
+ * @param {*} data
+ * {
+ * groupId,string,false,,,分组id
+qrId,integer,false,,,活码Id
+qrName,string,false,,,活码名称
+qrUserIds,string,false,,,员工ID
+}
+ */
+export function getStatisticsTable(data) {
+  return request({
+    url: base + '/qr/scan/sheet',
+    params: data,
+  })
+}

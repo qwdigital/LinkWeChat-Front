@@ -17,7 +17,7 @@
         label-width="100px">
         <el-form-item label="活码名称" prop="qrName">
           <el-input v-model="baseForm.qrName" maxlength="15" show-word-limit clearable></el-input>
-          <!-- <div class="sub-des">活码名称创建完成后不可修改</div> -->
+          <!-- <div class="g-tip">活码名称创建完成后不可修改</div> -->
         </el-form-item>
         <el-form-item label="活码分组" prop="qrGroupId">
           <el-select v-model="baseForm.qrGroupId">
@@ -26,22 +26,16 @@
         </el-form-item>
         <el-form-item label="自动通过好友">
           <el-switch v-model="baseForm.qrAutoAdd" :active-value="1" :inactive-value="0"></el-switch>
-          <div class="sub-des">开启后，客户添加该企业微信时，无需好友验证，将会自动添加成功</div>
+          <div class="g-tip">开启后，客户添加该企业微信时，无需好友验证，将会自动添加成功</div>
         </el-form-item>
-        <el-form-item label="新客户标签">
-          <template v-for="(item, index) in baseForm.weEmpleCodeTags">
-            <el-tag v-if="item.tagName" :key="index">{{ item.tagName }}</el-tag>
-          </template>
-          <div>
-            <el-button type="primary" icon="el-icon-plus" @click="selectedFn">
-              {{ baseForm.weEmpleCodeTags.length == 0 ? '添加' : '编辑' }}标签
-            </el-button>
-          </div>
-          <div class="sub-des">添加成功后，该客户将会自动设置以上选择标签</div>
+        <el-form-item label="新客标签">
+          <el-button type="primary" @click="selectedFn">选择标签</el-button>
+          <div class="g-tip">添加成功后，该客户将会自动打上选中的标签</div>
+          <TagEllipsis :list="baseForm.weEmpleCodeTags" limit="10" defaultProps="tagName"></TagEllipsis>
         </el-form-item>
         <el-form-item>
           <el-button plain @click="cancelFn">取消</el-button>
-          <el-button type="primary" @click="nextStep(2)">下一步</el-button>
+          <el-button type="primary" @click="nextStep(active + 1)">下一步</el-button>
         </el-form-item>
       </el-form>
       <el-form
@@ -62,7 +56,7 @@
             <el-radio :label="1">全天在线</el-radio>
             <el-radio :label="2" :disabled="codeForm.qrType === 1">自动排班</el-radio>
           </el-radio-group>
-          <div class="sub-des">
+          <div class="g-tip">
             <span v-if="codeForm.qrRuleType == 1">多人全天在线时随机分配，单人活码不支持排班</span>
             <span v-else-if="codeForm.qrRuleType == 2">
               选择自动排班时，默认生成一条全天在线规则，不可删除，保证有员工全天在线
@@ -115,7 +109,7 @@
           <el-button type="primary" plain @click="onSelectUser">
             {{ codeForm.weEmpleCodeUseScops.length ? '修改' : '选择' }}员工
           </el-button>
-          <div class="sub-des">单人活码只能选择一个员工，多人活码支持选择多个员工</div>
+          <div class="g-tip">单人活码只能选择一个员工，多人活码支持选择多个员工</div>
           <div v-if="codeForm.weEmpleCodeUseScops.length > 0 && codeForm.qrType == 2">
             <MemeberList :list="codeForm.weEmpleCodeUseScops" @update="getList"></MemeberList>
             <!-- <el-tag
@@ -146,11 +140,11 @@
         </el-form-item>
         <el-form-item label="开启备用员工" prop="openSpareUser" v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
           <el-switch v-model="codeForm.openSpareUser" :active-value="1" :inactive-value="0"></el-switch>
-          <div class="sub-des">员工当日添加用户数达每日上限后添加至备用员工。若如关闭，则自动循环下一个上限</div>
+          <div class="g-tip">员工当日添加用户数达每日上限后添加至备用员工。若如关闭，则自动循环下一个上限</div>
         </el-form-item>
         <el-form-item label="添加同一员工" prop="openSpareUser" v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
           <el-switch v-model="codeForm.isExclusive" :active-value="1" :inactive-value="0"></el-switch>
-          <div class="sub-des">开启后，相同客户会优先添加到同一个员工。</div>
+          <div class="g-tip">开启后，相同客户会优先添加到同一个员工。</div>
         </el-form-item>
         <el-form-item v-if="codeForm.qrRuleType == 2" label="活码排班" prop="empleCodeRosterDto">
           <template v-for="(item, index) in codeForm.empleCodeRosterDto" :key="item.id">
@@ -209,19 +203,51 @@
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button @click="active = 0">上一步</el-button>
-          <el-button type="primary" @click="nextStep(2)">下一步</el-button>
+          <el-button @click="currentActive--">上一步</el-button>
+          <el-button type="primary" @click="nextStep(active + 1)">下一步</el-button>
         </el-form-item>
       </el-form>
-      <AddMaterial
-        v-if="active === 2"
-        :moduleType="4"
-        :otherType="1"
-        @update="active = 1"
-        @submit="getWelData"
-        :baseData="materialData"
-        isTransData
-        :showModle="true"></AddMaterial>
+      <!-- <welcome-content v-loading="loading" :showBack="true" @update="active = 2" :baseData="materialData" @submit="getWelData"></welcome-content> -->
+      <template v-if="active == 2">
+        <div class="g-card overhide">
+          <div class="g-card-title">欢迎语设置</div>
+          <el-form label-position="right" label-width="100px">
+            <el-form-item style="margin-bottom: 10px" label="欢迎语类型">
+              <el-radio-group v-model="codeForm.qrWelcomeOpen">
+                <el-radio :label="1">不发送欢迎语</el-radio>
+                <el-radio :label="2">
+                  活码欢迎语
+                  <div class="bfc-p" v-if="codeForm.qrWelcomeOpen == 2">
+                    <el-checkbox v-model="codeForm.qrPriorityUserWelcome" :true-label="0" :false-label="1">
+                      如果员工有员工欢迎语，则优先发送员工欢迎语
+                      <el-button
+                        text
+                        size="default"
+                        @click="$router.push({ name: 'templateWelAdd', query: { tplType: 2 } })">
+                        去设置
+                      </el-button>
+                    </el-checkbox>
+                  </div>
+                </el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-form>
+        </div>
+        <template v-if="codeForm.qrWelcomeOpen == 1">
+          <el-button @click="currentActive--">上一步</el-button>
+          <el-button type="primary" size="default" @click="submit()">确定</el-button>
+        </template>
+
+        <AddMaterial
+          v-else
+          :moduleType="4"
+          :otherType="1"
+          @update="active = 1"
+          @submit="getWelData"
+          :baseData="materialData"
+          isTransData
+          :showModle="true"></AddMaterial>
+      </template>
     </div>
 
     <!-- 选择标签弹窗 -->
@@ -296,6 +322,7 @@ export default {
         ],
       },
       codeForm: {
+        qrWelcomeOpen: 1,
         qrType: 1,
         qrRuleType: 1,
         qrRuleMode: 1,
@@ -862,16 +889,21 @@ export default {
     },
     submit(data) {
       this.loading = true
-      let list = data.attachments
       let myObj = {
-        attachments: [
-          {
-            content: data.templateInfo,
-            msgType: 'text',
-          },
-        ],
+        attachments: [],
       }
-      myObj.attachments.push(...list)
+      if (data) {
+        let list = data.attachments
+        myObj = {
+          attachments: [
+            {
+              content: data.templateInfo,
+              msgType: 'text',
+            },
+          ],
+        }
+        myObj.attachments.push(...list)
+      }
       if (this.codeForm.qrRuleType === 1) {
         let qrUserInfosDetail = []
         this.codeForm.weEmpleCodeUseScops.forEach((uu) => {
@@ -936,13 +968,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.sub-des {
-  font-size: 12px;
-
-  font-weight: 400;
-  color: var(--font-black-6);
-}
-
 .add-continue {
   cursor: pointer;
   font-size: 14px;

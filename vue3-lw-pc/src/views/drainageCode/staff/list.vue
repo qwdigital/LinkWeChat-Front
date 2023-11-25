@@ -34,95 +34,80 @@
           </div>
         </el-scrollbar>
       </div>
+
       <div class="right">
-        <el-form :inline="true" label-width="" label-position="left" class="top-search fxnone">
-          <el-form-item label="活码名称">
-            <el-input v-model="query.qrName" placeholder="请输入活码名称" clearable @keyup.enter="search()" />
-          </el-form-item>
-          <el-form-item label="选择员工" prop="qrUserName">
-            <el-input :model-value="qrUserName" readonly @click="dialogVisible = true" placeholder="请选择员工" />
-          </el-form-item>
-          <el-form-item label-width="0">
-            <el-button type="primary" @click="search()">查询</el-button>
-            <el-button @click="resetQuery">重置</el-button>
-          </el-form-item>
-        </el-form>
-        <div class="g-card">
-          <div class="mid-action">
-            <el-button type="primary" @click="goRoute('staffAdd')">新建员工活码</el-button>
-            <div>
-              <el-button type="primary" plain @click="removeFn('mult')">删除</el-button>
-              <el-button type="primary" plain @click="downloadBatch()">批量下载</el-button>
+        <RequestChartTable
+          ref="table"
+          :isCreateRequest="false"
+          :request="(params) => (Object.assign(params, query), getList(params))">
+          <template #query="{ query }">
+            <el-form-item label="活码名称">
+              <el-input v-model="query.qrName" placeholder="请输入活码名称" clearable />
+            </el-form-item>
+            <el-form-item label="选择员工" prop="qrUserName">
+              <el-input :model-value="qrUserName" readonly @click="dialogVisible = true" placeholder="请选择员工" />
+            </el-form-item>
+            <el-form-item label="分配方式" prop="isJoinGroup">
+              <el-select v-model="query.isJoinGroup" placeholder="请选择分配方式">
+                <el-option v-for="(item, index) in dictAddStatus" :key="index" :label="item" :value="index"></el-option>
+              </el-select>
+            </el-form-item>
+          </template>
+
+          <template #operation>
+            <div class="mid-action mb0">
+              <el-button type="primary" @click="goRoute('staffAdd')">新建活码</el-button>
+              <div>
+                <el-button type="primary" plain @click="downloadBatch()">批量下载</el-button>
+                <el-button type="primary" plain @click="removeFn('mult')">批量删除</el-button>
+              </div>
             </div>
-          </div>
+          </template>
 
-          <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
-            <!-- height="calc(100vh - 325px)" -->
-            <el-table-column type="selection" width="55" align="center" />
-            <el-table-column label="二维码" align="center" prop="qrCode" min-width="120">
-              <template #default="{ row }">
-                <el-image
-                  :src="row.qrCode"
-                  fit="fill"
-                  :preview-src-list="[row.qrCode]"
-                  style="width: 100px; height: 100px"></el-image>
-              </template>
-            </el-table-column>
-            <el-table-column label="活码名称" align="center" min-width="100" prop="name" show-overflow-tooltip />
-            <el-table-column label="活码分组" align="center" min-width="100" prop="qrGroupName" show-overflow-tooltip />
-            <el-table-column label="使用员工" align="center" min-width="140" prop="qrUserInfos" show-overflow-tooltip>
-              <template #default="{ row }">
-                <!-- <template v-if="row.status === 1">
-                  <template v-for="(data, key) in row.weEmpleCodeUseScops" :key="key" >
-                    <span :key="key">{{data.businessName}}</span>  <span :key="key" v-if="key >0">','</span>
-                  </template>
-                </template> -->
-                <div v-for="(unit, key) in row.qrUserInfos" :key="key" style="display: inline">
-                  <template v-for="(item, index) in unit.weQrUserList" :key="index">
-                    <span>{{ item.userName + ' ' }}</span>
-                  </template>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column label="标签" align="center" prop="qrTags" min-width="160px">
-              <template #default="{ row }">
-                <TagEllipsis :list="row.qrTags" defaultProps="tagName" />
-              </template>
-            </el-table-column>
-            <!-- <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180">
-            </el-table-column> -->
-            <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180"></el-table-column>
-            <el-table-column label="操作" align="center" fixed="right" width="180">
-              <template #default="{ row }">
-                <el-button text @click="goRoute('staffDetail', row.id)">详情|统计</el-button>
-                <el-button text @click="goRoute('staffAdd', row.id)">编辑</el-button>
-                <el-button text @click="download(row.qrCode, row.name)">下载</el-button>
-                <el-button text @click="removeFn('single', row.id)">删除</el-button>
-                <!-- <el-dropdown style="margin-left: 10px">
-                  <el-button text>
-                    <el-icon-MoreFilled class="el-icon-MoreFilled"></el-icon-MoreFilled>
-                  </el-button>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>
-                      <el-button text @click="download(row.qrCode, row.name)">下载</el-button>
-                    </el-dropdown-item>
-                    <el-dropdown-item>
-                      <el-button text @click="removeFn('single', row.id)">删除</el-button>
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown> -->
-              </template>
-            </el-table-column>
-          </el-table>
-          <!-- <div class="bottom"> -->
-
-          <pagination
-            :total="total"
-            v-model:page="query.pageNum"
-            v-model:limit="query.pageSize"
-            @pagination="getList()" />
-          <!-- </div> -->
-        </div>
+          <template #="{ data }">
+            <el-table v-loading="loading" :data="data" @selection-change="handleSelectionChange">
+              <el-table-column type="selection" width="55" align="center" />
+              <el-table-column label="二维码" align="center" prop="qrCode" min-width="120">
+                <template #default="{ row }">
+                  <el-image
+                    :src="row.qrCode"
+                    fit="fill"
+                    :preview-src-list="[row.qrCode]"
+                    style="width: 100px; height: 100px"></el-image>
+                </template>
+              </el-table-column>
+              <el-table-column label="活码名称" align="center" min-width="100" prop="name" show-overflow-tooltip />
+              <!-- <el-table-column label="活码分组" align="center" min-width="100" prop="qrGroupName" show-overflow-tooltip /> -->
+              <el-table-column label="使用员工" align="center" min-width="140" prop="qrUserInfos" show-overflow-tooltip>
+                <template #default="{ row }">
+                  <div v-for="(unit, key) in row.qrUserInfos" :key="key" style="display: inline">
+                    <template v-for="(item, index) in unit.weQrUserList" :key="index">
+                      <span>{{ item.userName + ' ' }}</span>
+                    </template>
+                  </div>
+                  <!-- <TagEllipsis :list="row.qrUserInfos.f" defaultProps="userName" emptyText /> -->
+                </template>
+              </el-table-column>
+              <el-table-column label="标签" align="center" prop="qrTags" min-width="160px">
+                <template #default="{ row }">
+                  <TagEllipsis :list="row.qrTags" defaultProps="tagName" emptyText />
+                </template>
+              </el-table-column>
+              <el-table-column align="center" prop="isJoinGroup" label="分配方式">
+                <template #default="{ row }">{{ dictAddStatus[row.isJoinGroup] }}</template>
+              </el-table-column>
+              <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180"></el-table-column>
+              <el-table-column label="操作" align="center" fixed="right" width="220">
+                <template #default="{ row }">
+                  <el-button text @click="goRoute('staffDetail', row.id)">详情|统计</el-button>
+                  <el-button text @click=";(share.visible = true), (share.data = row)">分享</el-button>
+                  <el-button text @click="goRoute('staffAdd', row.id)">编辑</el-button>
+                  <el-button text @click="removeFn('single', row.id)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+        </RequestChartTable>
       </div>
     </div>
 
@@ -146,6 +131,13 @@
         </div>
       </template>
     </el-dialog>
+
+    <!-- 分享活码 -->
+    <el-dialog title="分享活码" v-model="share.visible" width="666px">
+      <div style="background: var(--bg-black-8); padding: var(--card-margin); border-radius: var(--border-radius-big)">
+        <CodeLink :data="share.data" />
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -162,9 +154,10 @@ import {
 //
 export default {
   name: 'CodeStaff',
-  components: {},
+  components: { CodeLink: defineAsyncComponent(() => import('../components/CodeLink')) },
   data() {
     return {
+      getList,
       // 查询参数
       query: {
         pageNum: 1,
@@ -217,6 +210,9 @@ export default {
         ],
       },
       groupIndex: 0,
+
+      share: {},
+      dictAddStatus: { 0: '未进群', 1: '已进群' },
     }
   },
   created() {
@@ -238,13 +234,11 @@ export default {
     },
     getCodeCategoryListFn() {
       getCodeCategoryList({ mediaType: 6 }).then((res) => {
-        if (res.code == 200) {
-          this.groupList = res.data
-          this.query.groupId = this.groupList[0].id
-          this.groupIndex = 0
-          this.query.pageNum = 1
-          this.getList()
-        }
+        this.groupList = res.data
+        this.query.groupId = this.groupList[0].id
+        this.groupIndex = 0
+        this.query.pageNum = 1
+        this.$refs.table.getList()
       })
     },
     switchGroup(index, data) {
@@ -264,32 +258,6 @@ export default {
           return obj.userId
         })
         .join(',')
-    },
-    search() {
-      this.query.pageNum = 1
-      this.getList()
-    },
-    getList() {
-      this.loading = true
-      getList(this.query)
-        .then(({ rows, total }) => {
-          this.list = rows
-          this.total = Number(total)
-          this.loading = false
-          this.ids = []
-        })
-        .catch(() => {
-          this.loading = false
-        })
-    },
-    /** 重置按钮操作 */
-    resetQuery() {
-      this.query.qrName = ''
-      this.userArray = []
-      this.query.qrUserIds = ''
-      this.qrUserName = ''
-      // this.query.userArrayStr = ''
-      this.search()
     },
     goRoute(path, id) {
       this.$router.push({ path: path, query: { id, groupId: this.query.groupId } })
@@ -319,50 +287,7 @@ export default {
         })
         .catch(function () {})
     },
-    download(qrCode, qrName) {
-      let name = qrName + '.png'
-      this.downloadByBlob(qrCode, name)
 
-      // let name = userName + '-' + qrName + '.png'
-      // downloadBatch(id).then((res) => {
-      //   if (res != null) {
-      //     let blob = new Blob([res], {
-      //       type: 'application/zip',
-      //     })
-      //     let url = window.URL.createObjectURL(blob)
-      //     const link = document.createElement('a') // 创建a标签
-      //     link.href = url
-      //     link.download = name // 重命名文件
-      //     link.click()
-      //     URL.revokeObjectURL(url) // 释放内存
-      //   }
-      // })
-    },
-    downloadByBlob(url, name) {
-      let image = new Image()
-      image.setAttribute('crossOrigin', 'anonymous')
-      image.src = url
-      image.onload = () => {
-        let canvas = document.createElement('canvas')
-        canvas.width = image.width
-        canvas.height = image.height
-        let ctx = canvas.getContext('2d')
-        ctx.drawImage(image, 0, 0, image.width, image.height)
-        canvas.toBlob((blob) => {
-          let url = URL.createObjectURL(blob)
-          this.downloadFn(url, name)
-          // 用完释放URL对象
-          URL.revokeObjectURL(url)
-        })
-      }
-    },
-    downloadFn(href, name) {
-      let eleLink = document.createElement('a')
-      eleLink.download = name
-      eleLink.href = href
-      eleLink.click()
-      eleLink.remove()
-    },
     /** 下载 */
     downloadBatch(qrCode) {
       if (!this.ids.length) {
@@ -379,15 +304,7 @@ export default {
         })
         .then((res) => {
           if (res != null) {
-            let blob = new Blob([res], {
-              type: 'application/zip',
-            })
-            let url = window.URL.createObjectURL(blob)
-            const link = document.createElement('a') // 创建a标签
-            link.href = url
-            link.download = '批量员工活码.zip' // 重命名文件
-            link.click()
-            URL.revokeObjectURL(url) // 释放内存
+            this.downloadBlob(blob, '批量员工活码.zip', 'zip')
           }
         })
         .catch(function () {})

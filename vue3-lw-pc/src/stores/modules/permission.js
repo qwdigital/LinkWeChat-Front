@@ -121,7 +121,8 @@ export const loadView = (route) => {
         'drainageCode/store/list': 'storeCode', //门店活码
         'drainageCode/identity/list': 'identityCode', //识客码
         'drainageCode/pullNews/list': 'pullNewsCode', //拉新活码
-        'contentCenter/templateWel/index': 'templateWel', //拉新活码
+        'contentCenter/templateWel/index': 'templateWel', //欢迎语模板列表
+        'contentCenter/templateWel/index': 'templateWelAdd', //欢迎语模板新增
         'enterpriseWechat/list': window.lwConfig.WORK_WEIXIN_CONFIG_ROUTE_NAME, //企微配置
       }
       routeNames[route.component] && (route.name = routeNames[route.component])
