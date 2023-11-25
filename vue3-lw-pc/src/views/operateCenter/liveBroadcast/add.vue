@@ -1,12 +1,12 @@
 <template>
   <div v-loading="saveLoading">
     <div class="g-card">
-      <el-steps :active="currentActive" align-center finish-status="success">
+      <el-steps :active="active" align-center finish-status="success">
         <el-step title="直播设置"></el-step>
         <el-step title="分享设置"></el-step>
       </el-steps>
     </div>
-    <div class="g-card" v-show="currentActive === 1">
+    <div class="g-card" v-show="active == 0">
       <el-form ref="liveForm" :rules="liveRules" :model="liveForm" label-position="right" label-width="100px">
         <el-form-item label="直播标题" label-width="120px" prop="liveTitle">
           <el-input
@@ -96,12 +96,12 @@
         </el-form-item>
         <el-form-item>
           <el-button plain @click="cancelFn">取消</el-button>
-          <el-button type="primary" @click="nextStep(2)">下一步</el-button>
+          <el-button type="primary" @click="nextStep(1)">下一步</el-button>
           <el-button type="primary" @click="submit(false)" v-if="$route.query.id">保存</el-button>
         </el-form-item>
       </el-form>
     </div>
-    <div class="g-margin-t" style="display: flex" v-show="currentActive === 2">
+    <div class="g-margin-t" style="display: flex" v-show="active == 1">
       <el-form
         class="fxauto g-margin-r"
         ref="shareForm"
@@ -193,10 +193,10 @@
         <PreviewInPhone :templateInfo="materialData.templateInfo" :originList="talkList" :liveUrl="liveUrl" />
       </div>
     </div>
-    <!-- <div class="mt20 g-card" v-if="currentActive === 2">
+    <!-- <div class="mt20 g-card" v-if="active === 1">
       <div class="fr">
-        <el-button @click="currentActive = 1">上一步</el-button>
-        <el-button type="primary" @click="nextStep(3)">确定</el-button>
+        <el-button @click="active = 0">上一步</el-button>
+        <el-button type="primary" @click="nextStep(2)">确定</el-button>
       </div>
     </div> -->
     <!-- 直播成员弹框 -->
@@ -267,7 +267,7 @@ export default {
       sendGroupCustomers: [],
       minTime: '',
       minEndTime: '',
-      currentActive: 1,
+      active: 0,
       liveUrl: 'http://demo.linkwechat.net/mobile/#/***', // 直播链接
       talkList: [],
       userInfo: '',
@@ -327,7 +327,7 @@ export default {
       this.materialData.templateInfo = val
     },
     updateData(val) {
-      this.currentActive = 1
+      this.active = 0
       this.materialData = {
         templateInfo: val.templateInfo,
         attachments: val.attachments,
@@ -519,9 +519,9 @@ export default {
     },
     nextStep(nextStep) {
       let form = ''
-      if (nextStep == 2) {
+      if (nextStep == 1) {
         form = 'liveForm'
-      } else if (nextStep == 3) {
+      } else if (nextStep == 2) {
         form = 'shareForm'
       }
 
@@ -542,9 +542,9 @@ export default {
             this.$message.error('开始时间必须早于结束时间')
             return
           }
-          if (nextStep === 3) {
+          if (nextStep === 2) {
           } else {
-            this.currentActive = nextStep
+            this.active = nextStep
           }
         }
       })

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="g-card">
-      <el-steps :active="currentActive" align-center finish-status="success">
+      <el-steps :active="active" align-center finish-status="success">
         <el-step title="基础信息"></el-step>
         <el-step title="活码员工"></el-step>
         <el-step title="欢迎语"></el-step>
@@ -9,7 +9,7 @@
     </div>
     <div class="g-card">
       <el-form
-        v-if="currentActive === 1"
+        v-if="active == 0"
         ref="baseForm"
         :rules="baseRules"
         :model="baseForm"
@@ -45,7 +45,7 @@
         </el-form-item>
       </el-form>
       <el-form
-        v-if="currentActive === 2"
+        v-if="active == 1"
         ref="codeForm"
         :rules="codeRules"
         :model="codeForm"
@@ -209,15 +209,15 @@
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button @click="currentActive = 1">上一步</el-button>
-          <el-button type="primary" @click="nextStep(3)">下一步</el-button>
+          <el-button @click="active = 0">上一步</el-button>
+          <el-button type="primary" @click="nextStep(2)">下一步</el-button>
         </el-form-item>
       </el-form>
       <AddMaterial
-        v-if="currentActive === 3"
+        v-if="active === 2"
         :moduleType="4"
         :otherType="1"
-        @update="currentActive = 2"
+        @update="active = 1"
         @submit="getWelData"
         :baseData="materialData"
         isTransData
@@ -272,7 +272,7 @@ export default {
         materialMsgList: [],
       },
       title: '新建',
-      currentActive: 1,
+      active: 0,
       baseForm: {
         qrName: '',
         qrGroupId: '',
@@ -559,14 +559,14 @@ export default {
     },
     nextStep(nextStep) {
       let form = ''
-      if (nextStep == 2) {
+      if (nextStep == 1) {
         form = 'baseForm'
-      } else if (nextStep == 3) {
+      } else if (nextStep == 2) {
         form = 'codeForm'
       }
       this.$refs[form].validate((validate) => {
         if (validate) {
-          if (nextStep === 3) {
+          if (nextStep === 2) {
             if (this.codeForm.qrRuleType === 2) {
               let go = true
               let week = true
@@ -588,7 +588,7 @@ export default {
                     if (this.timeConflict) {
                       this.msgError('排班存在冲突！')
                     } else {
-                      this.currentActive = nextStep
+                      this.active = nextStep
                     }
                   } else {
                     this.msgError('请选择活码排班每项的在线时间！')
@@ -600,10 +600,10 @@ export default {
                 this.msgError('活码排班每项至少选择一名员工！')
               }
             } else {
-              this.currentActive = nextStep
+              this.active = nextStep
             }
           } else {
-            this.currentActive = nextStep
+            this.active = nextStep
           }
         }
       })
