@@ -353,7 +353,7 @@ export default {
     },
 
     submit(data) {
-      if (!this.form.customerNum) {
+      if (this.form.sendType != 2 && !this.form.customerNum) {
         this.msgError('未找到可发送客户！')
         return
       }
