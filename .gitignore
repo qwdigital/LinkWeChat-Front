@@ -27,3 +27,4 @@ linkwe-pc/discard/
 node_modules/
 report.html
 vue3-lw-mobile/mobile3
+deploy.config.js
