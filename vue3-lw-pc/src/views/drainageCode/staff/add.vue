@@ -41,7 +41,7 @@
         </el-form-item>
         <el-form-item>
           <el-button plain @click="cancelFn">取消</el-button>
-          <el-button type="primary" @click="nextStep(2)">下一步</el-button>
+          <el-button type="primary" @click="nextStep(1)">下一步</el-button>
         </el-form-item>
       </el-form>
       <el-form
