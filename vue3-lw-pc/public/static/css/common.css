@@ -104,13 +104,13 @@ li {
   gap: 10px;
 }
 .gap5 {
-  gap: 5px;
+  gap: 5px !important;
 }
 .gap15 {
-  gap: 15px;
+  gap: 15px !important;
 }
 .gap20 {
-  gap: 20px;
+  gap: 20px !important;
 }
 
 /* align */
@@ -144,121 +144,121 @@ li {
 
 /* padding 5px series */
 .pt5 {
-  padding-top: 5px;
+  padding-top: 5px !important;
 }
 .pr5 {
-  padding-right: 5px;
+  padding-right: 5px !important;
 }
 .pb5 {
-  padding-bottom: 5px;
+  padding-bottom: 5px !important;
 }
 .pl5 {
-  padding-left: 5px;
+  padding-left: 5px !important;
 }
 .pad5 {
-  padding: 5px;
+  padding: 5px !important;
 }
 
 /* padding 10px series */
 .pt10 {
-  padding-top: 10px;
+  padding-top: 10px !important;
 }
 .pr10 {
-  padding-right: 10px;
+  padding-right: 10px !important;
 }
 .pb10 {
-  padding-bottom: 10px;
+  padding-bottom: 10px !important;
 }
 .pl10 {
-  padding-left: 10px;
+  padding-left: 10px !important;
 }
 .pad10 {
-  padding: 10px;
+  padding: 10px !important;
 }
 
 /* padding 20px series */
 .pt20 {
-  padding-top: 20px;
+  padding-top: 20px !important;
 }
 .pr20 {
-  padding-right: 20px;
+  padding-right: 20px !important;
 }
 .pb20 {
-  padding-bottom: 20px;
+  padding-bottom: 20px !important;
 }
 .pl20 {
-  padding-left: 20px;
+  padding-left: 20px !important;
 }
 .pad20 {
-  padding: 20px;
+  padding: 20px !important;
 }
 
 /* margin 5px series */
 .mt5 {
-  margin-top: 5px;
+  margin-top: 5px !important;
 }
 .mr5 {
-  margin-right: 5px;
+  margin-right: 5px !important;
 }
 .mb5 {
-  margin-bottom: 5px;
+  margin-bottom: 5px !important;
 }
 .ml5 {
-  margin-left: 5px;
+  margin-left: 5px !important;
 }
 .mar5 {
-  margin: 5px;
+  margin: 5px !important;
 }
 
 /* margin 10px series */
 .mt10 {
-  margin-top: 10px;
+  margin-top: 10px !important;
 }
 .mr10 {
-  margin-right: 10px;
+  margin-right: 10px !important;
 }
 .mb10 {
-  margin-bottom: 10px;
+  margin-bottom: 10px !important;
 }
 .ml10 {
-  margin-left: 10px;
+  margin-left: 10px !important;
 }
 .mar10 {
-  margin: 10px;
+  margin: 10px !important;
 }
 
 /* margin 15px series */
 .mt15 {
-  margin-top: 15px;
+  margin-top: 15px !important;
 }
 .mr15 {
-  margin-right: 15px;
+  margin-right: 15px !important;
 }
 .mb15 {
-  margin-bottom: 15px;
+  margin-bottom: 15px !important;
 }
 .ml15 {
-  margin-left: 15px;
+  margin-left: 15px !important;
 }
 .ml15 {
-  margin-left: 15px;
+  margin-left: 15px !important;
 }
 
 /* margin 20px series */
 .mt20 {
-  margin-top: 20px;
+  margin-top: 20px !important;
 }
 .mr20 {
-  margin-right: 20px;
+  margin-right: 20px !important;
 }
 .mb20 {
-  margin-bottom: 20px;
+  margin-bottom: 20px !important;
 }
 .ml20 {
-  margin-left: 20px;
+  margin-left: 20px !important;
 }
 .mar20 {
-  margin: 20px;
+  margin: 20px !important;
 }
 
 /* . */

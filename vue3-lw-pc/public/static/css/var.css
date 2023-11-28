@@ -135,33 +135,33 @@ html.dark {
 
 /* 项目定制原子类 */
 .g-radius {
-  border-radius: 8px;
+  border-radius: 8px !important;
 }
 .g-radius-small {
-  border-radius: 16px;
+  border-radius: 16px !important;
 }
 .g-radius-big {
-  border-radius: 16px;
+  border-radius: 16px !important;
 }
 
 .g-margin {
-  margin: var(--card-margin);
+  margin: var(--card-margin) !important;
 }
 .g-margin-t {
-  margin-top: var(--card-margin);
+  margin-top: var(--card-margin) !important;
 }
 .g-margin-r {
-  margin-right: var(--card-margin);
+  margin-right: var(--card-margin) !important;
 }
 .g-margin-b {
-  margin-bottom: var(--card-margin);
+  margin-bottom: var(--card-margin) !important;
 }
 .g-margin-l {
-  margin-left: var(--card-margin);
+  margin-left: var(--card-margin) !important;
 }
 
 .g-color {
-  color: var(--color);
+  color: var(--color) !important;
 }
 
 /* 渐变背景 */
