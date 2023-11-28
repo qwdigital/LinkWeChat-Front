@@ -44,7 +44,7 @@
             <el-radio :label="0">全部客户</el-radio>
             <el-radio :label="1">按条件筛选</el-radio>
           </el-radio-group>
-          <div class="customer-num">
+          <div class="customer-num" v-if="form.sendType != 2">
             <span>朋友圈预计可见客户数（不去重）</span>
             <span>{{ form.customerNum }}</span>
           </div>
@@ -277,6 +277,11 @@ export default {
     },
     // 获取可见客户数
     getNumMoments(data) {
+      if (this.form.sendType == 2) {
+        this.form.customerNum = undefined
+        return
+      }
+
       numMoments(data)
         .then((res) => {
           this.form.customerNum = res.data
@@ -348,7 +353,7 @@ export default {
     },
 
     submit(data) {
-      if (!this.form.customerNum) {
+      if (this.form.sendType != 2 && !this.form.customerNum) {
         this.msgError('未找到可发送客户！')
         return
       }
