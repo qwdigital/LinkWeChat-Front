@@ -41,6 +41,7 @@ let components = {
   SelectStaffForm: () => import('./components/SelectStaffForm.vue'),
   CoRemoteSelect: () => import('./components/CoRemoteSelect.vue'),
   PhoneTemplate: () => import('./components/PhoneTemplate.vue'),
+  PhoneDialog: () => import('./components/PhoneDialog.vue'),
   CardGroupIndex: () => import('./components/CardGroupIndex.vue'),
   TextareaExtend: () => import('./components/TextareaExtend.vue'), // 带 插入 表情/客户昵称 等扩展工具栏的文本内容框
   DateSearchChartTable: () => import('./components/DateSearchChartTable.vue'),

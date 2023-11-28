@@ -23,12 +23,19 @@ export default {
 <template>
   <PhoneTemplate class="PhoneDialog">
     <div class="time">13:14</div>
+
     <ul class="msg-ul">
+      <li class="flex msg-li" v-if="$slots.default && Array.isArray($slots.default()[0].children)">
+        <div class="avatar fxnone"><svg-icon icon="user" /></div>
+
+        <div class="msg">
+          <slot />
+        </div>
+      </li>
+
       <template v-for="(item, index) in list" :key="index">
         <li class="flex msg-li" v-if="item.text || item.image || item.title">
-          <div class="avatar fxnone">
-            <svg-icon icon="user" />
-          </div>
+          <div class="avatar fxnone"><svg-icon icon="user" /></div>
 
           <div class="msg">
             <!-- 根据text（文字），title（图文），image（图片）字段自动判断类型 -->

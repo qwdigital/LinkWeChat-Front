@@ -109,9 +109,8 @@
 <script>
 import { getDetail, add, update, sync } from './api'
 import { getCustomerList } from '@/api/groupMessage'
-import PhoneDialog from '@/components/PhoneDialog'
 export default {
-  components: { PhoneDialog, SelectGroup: defineAsyncComponent(() => import('@/components/SelectGroup.vue')) },
+  components: { SelectGroup: defineAsyncComponent(() => import('@/components/SelectGroup.vue')) },
   data() {
     return {
       id: '',

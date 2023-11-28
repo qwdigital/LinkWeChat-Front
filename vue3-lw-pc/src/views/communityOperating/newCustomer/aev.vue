@@ -1,9 +1,8 @@
 <script>
 import { getDetail, add, update } from './api'
-import PhoneDialog from '@/components/PhoneDialog'
 
 export default {
-  components: { PhoneDialog, SelectGroup: defineAsyncComponent(() => import('@/components/SelectGroup.vue')) },
+  components: { SelectGroup: defineAsyncComponent(() => import('@/components/SelectGroup.vue')) },
   data() {
     return {
       selectedUserList: [],

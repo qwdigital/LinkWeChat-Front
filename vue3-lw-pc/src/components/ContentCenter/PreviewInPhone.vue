@@ -3,7 +3,8 @@
     <div class="content">
       <!-- 欢迎语 -->
       <div class="item" v-if="templateInfo">
-        <div class="avatar222"><img src="../../assets/drainageCode/header.png" /></div>
+        <div class="avatar fxnone"><svg-icon icon="user" /></div>
+
         <div class="msg">
           <div class="word">
             <p style="line-height: 18px" v-html="templateInfo?.replace(/\n|\r\n/g, '<br>').replace(/ /g, ' &nbsp')"></p>
@@ -15,7 +16,8 @@
         </div>
       </div>
       <div class="item" v-for="(data, key) in list?.length ? list : data" :key="key">
-        <div class="avatar222"><img src="../../assets/drainageCode/header.png" /></div>
+        <div class="avatar fxnone"><svg-icon icon="user" /></div>
+
         <div class="msg">
           <!-- 文本 -->
           <div class="word" v-if="data.mediaType === '4'">
@@ -132,7 +134,8 @@
       </div>
       <!-- 拉新 -->
       <div class="item" v-if="pullnewsInfo">
-        <div class="avatar222"><img src="../../assets/drainageCode/header.png" /></div>
+        <div class="avatar fxnone"><svg-icon icon="user" /></div>
+
         <!-- 红包 -->
         <div class="redBox" v-if="pullnewsInfo.qrType === 1">
           <div class="red-box">
@@ -372,10 +375,15 @@ export default {
     &:first-child {
       margin-top: 0;
     }
-
-    .avatar222 {
-      // align-self: center;
-      margin-right: 5px;
+    .avatar {
+      border: 1px solid var(--border-white);
+      background: var(--bg-white);
+      border-radius: 6px;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .msg {
