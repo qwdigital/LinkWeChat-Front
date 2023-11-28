@@ -198,3 +198,21 @@ export function getStatisticsTable(data) {
     params: data,
   })
 }
+
+/**
+ * 导出活码表格统计
+ * @param {*} data
+ * {
+ * groupId,string,false,,,分组id
+qrId,integer,false,,,活码Id
+qrName,string,false,,,活码名称
+qrUserIds,string,false,,,员工ID
+}
+ */
+export function exportStatisticsTable(data) {
+  return request({
+    url: base + '/qr/scan/sheet/export',
+    params: data,
+    responseType: 'blob',
+  })
+}
