@@ -81,21 +81,21 @@ export default {
           })
           this.userList = checkedUserList
         }
-        setTimeout(() => {
-          this.Pvisible && this.$refs.tree?.setCheckedKeys(value.map((e) => e.userId || e.id))
-        }, 300)
+        // setTimeout(() => {
+        //   this.Pvisible && this.$refs.tree?.setCheckedKeys(value.map((e) => e.userId || e.id))
+        // }, 300)
       },
       immediate: true,
       deep: true,
     },
-    // Pvisible(val) {
-    //   val && this.$refs.tree && this.$refs.tree.setCheckedKeys(this.defaultValues.map((e) => e.userId || e.id))
-    //   if (!this.$refs.tree) {
-    //     setTimeout(() => {
-    //       this.$refs.tree && this.$refs.tree.setCheckedKeys(this.defaultValues.map((e) => e.userId || e.id))
-    //     }, 300)
-    //   }
-    // },
+    Pvisible(val) {
+      // val && this.$refs.tree?.setCheckedKeys(this.defaultValues.map((e) => e.userId || e.id))
+      // if (!this.$refs.tree) {
+      setTimeout(() => {
+        val && this.$refs.tree?.setCheckedKeys(this.defaultValues.map((e) => e.userId || e.id))
+      }, 300)
+      // }
+    },
   },
   computed: {
     Pvisible: {
