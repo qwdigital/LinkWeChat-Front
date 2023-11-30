@@ -63,7 +63,7 @@ export default {
   data() {
     return {
       id: '',
-      groupId: '',
+      state: '',
       exportLoading: false,
       legend: ['进群人数', '退群人数'],
       xdata: [],
@@ -97,10 +97,6 @@ export default {
           value1: 0,
         },
       ],
-      total: 0,
-      query: {
-        id: '',
-      },
       tableList: [],
       loading: false,
       searchData: {},
@@ -110,7 +106,7 @@ export default {
   },
   methods: {
     getCardData() {
-      getGroupDetail(this.groupId).then((res) => {
+      getGroupDetail(this.id).then((res) => {
         if (res.code === 200) {
           let data = res.data
           this.cardData[0].value = data.chatGroupNum
@@ -128,7 +124,7 @@ export default {
     },
     getLineData(data) {
       // this.$forceUpdate()
-      getLineChartTotal({ ...data, state: this.id }).then((res) => {
+      getLineChartTotal({ ...data, state: this.state }).then((res) => {
         this.xdata = []
         this.series = []
         let arr1 = []
@@ -145,7 +141,7 @@ export default {
     },
     getTableFn() {
       this.loading = true
-      getTableTotal(this.groupId).then((res) => {
+      getTableTotal(this.id).then((res) => {
         this.tableList = res.data
         this.loading = false
       })
@@ -153,7 +149,7 @@ export default {
   },
   created() {
     this.id = this.$route.query.id
-    this.groupId = this.$route.query.groupId
+    this.state = this.$route.query.state
     this.getCardData()
     this.getTableFn()
   },

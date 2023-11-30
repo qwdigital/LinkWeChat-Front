@@ -134,10 +134,10 @@ export function getGroupDetail(id) {
   })
 }
 
-// 活码统计
+// 获取群活码总数统计
 export function getTotal(data) {
   return request({
-    url: base + '/qr/scan/count',
+    url: service + '/scan/total',
     params: data,
   })
 }
@@ -146,15 +146,12 @@ export function getTotal(data) {
  * 获取活码折线图统计
  * @param {*} data
  * {
- * groupId,string,false,,,分组id
-qrId,integer,false,,,活码Id
-qrName,string,false,,,活码名称
-qrUserIds,string,false,,,员工ID
+id,integer,false,,,活码Id
 }
  */
 export function getStatisticsLine(data) {
   return request({
-    url: base + '/qr/scan/line',
+    url: service + '/scan/line',
     params: data,
   })
 }
@@ -163,15 +160,27 @@ export function getStatisticsLine(data) {
  * 获取活码表格统计
  * @param {*} data
  * {
- * groupId,string,false,,,分组id
-qrId,integer,false,,,活码Id
-qrName,string,false,,,活码名称
-qrUserIds,string,false,,,员工ID
+id,integer,false,,,活码Id
 }
  */
 export function getStatisticsTable(data) {
   return request({
-    url: base + '/qr/scan/sheet',
+    url: service + '/scan/sheet',
     params: data,
+  })
+}
+
+/**
+ * 导出活码表格统计
+ * @param {*} data
+ * {
+id,integer,false,,,活码Id
+}
+ */
+export function exportStatisticsTable(data) {
+  return request({
+    url: service + '/scan/sheet/export',
+    params: data,
+    responseType: 'blob',
   })
 }

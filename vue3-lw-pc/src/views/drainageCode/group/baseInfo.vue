@@ -4,7 +4,21 @@
       <el-form :model="form" :rules="rules" ref="form" label-width="140px">
         <el-form-item label="活码名称:" prop="activityName">
           <el-input v-model="form.activityName" placeholder="请输入名称" show-word-limit maxlength="15"></el-input>
-          <el-button type="primary" class="fr" @click="editFn" v-if="$route.path.includes('detail')">编辑</el-button>
+          <el-button
+            type="primary"
+            class="fr"
+            @click="
+              $router.push({
+                path: 'add',
+                query: {
+                  id: form.id,
+                  obj: encodeURIComponent(JSON.stringify(form)),
+                },
+              })
+            "
+            v-if="$route.path.includes('detail')">
+            编辑
+          </el-button>
         </el-form-item>
         <el-form-item label="活码客群:" prop="chatIdList">
           <el-button type="primary" @click="selectGroupFn">选择客群</el-button>
@@ -93,7 +107,7 @@ export default {
     }
   },
   created() {
-    this.getGroupDetail(this.$route.query.groupCodeId)
+    this.getGroupDetail(this.$route.query.id)
   },
   methods: {
     selectGroupFn() {
@@ -167,6 +181,7 @@ export default {
     // 获取群活码信息
     getGroupDetail(id) {
       if (id) this.form = JSON.parse(decodeURIComponent(this.$route.query.obj))
+      this.form.qrCode = this.form.codeUrl
       // 编辑回显
       let arr = []
       let names = this.form.tags ? this.form.tags.split(',') : []

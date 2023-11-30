@@ -18,7 +18,7 @@
 
       <template #operation>
         <div class="mid-action mb0">
-          <el-button type="primary" @click="$router.push('./groupAdd')">新建活码</el-button>
+          <el-button type="primary" @click="$router.push('./add')">新建活码</el-button>
           <div>
             <el-button type="primary" plain :disabled="multiGroupCode.length === 0" @click="handleBulkDownload">
               批量下载
@@ -123,6 +123,7 @@
                   path: 'detail',
                   query: {
                     id: row.id,
+                    state: row.state,
                     obj: encodeURIComponent(JSON.stringify(row)),
                   },
                 })
@@ -133,9 +134,9 @@
               text
               @click="
                 $router.push({
-                  path: 'groupAdd',
+                  path: 'add',
                   query: {
-                    groupCodeId: row.id,
+                    id: row.id,
                     obj: encodeURIComponent(JSON.stringify(row)),
                   },
                 })

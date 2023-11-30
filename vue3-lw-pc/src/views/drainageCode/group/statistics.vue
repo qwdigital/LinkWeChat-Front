@@ -7,7 +7,8 @@
       isTimeQuery
       :isCreateRequest="false"
       :legend="['累计扫码总数', '今日扫码数', '今日短链访问数', '今日短链访问人数']"
-      :request="getStatisticsLine.bind(null, query)"
+      :params="query"
+      :request="getStatisticsLine"
       :dealDataFun="dealDataFun"></RequestChartTable>
 
     <RequestChartTable
@@ -15,17 +16,17 @@
       isTimeQuery
       :request="getStatisticsTable"
       :params="query"
-      :requestExport="(query) => ((query.id = $route.query.id), api.getDataDetailExport(query))"
+      :requestExport="exportStatisticsTable"
       exportFileName="客群活码数据报表导出.xls">
       <template #="{ data }">
         <el-table :data="data">
           <el-table-column label="日期" prop="dateTime" align="center"></el-table-column>
-          <el-table-column label="累计扫码总数" prop="errorCode" align="center"></el-table-column>
+          <el-table-column label="累计扫码总数" prop="total" align="center"></el-table-column>
           <el-table-column label="今日扫码数" prop="today" align="center"></el-table-column>
           <!-- <el-table-column label="今日H5访问数" prop="errorMsg" align="center"></el-table-column>
           <el-table-column label="今日H5访问人数" prop="linkVisitsPeopleTotal" align="center"></el-table-column> -->
-          <el-table-column label="今日短链访问数" prop="linkVisitsTotal" align="center"></el-table-column>
-          <el-table-column label="今日短链访问人数" prop="errorMsg" align="center"></el-table-column>
+          <el-table-column label="今日短链访问数" prop="todayLinkVisitsTotal" align="center"></el-table-column>
+          <el-table-column label="今日短链访问人数" prop="todayLinkVisitsPeopleTotal" align="center"></el-table-column>
         </el-table>
       </template>
     </RequestChartTable>
@@ -33,20 +34,18 @@
 </template>
 
 <script setup>
-import { getTotal, getStatisticsLine, getStatisticsTable } from '@/api/drainageCode/group'
+import { getTotal, getStatisticsLine, getStatisticsTable, exportStatisticsTable } from '@/api/drainageCode/group'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 
 let query = {
-  groupId: route.query.groupId,
-  qrId: route.query.id,
-  // qrUserIds: router.query.groupId,
+  id: route.query.id,
 }
 
-let cardData = reactive([])
+let cardData = ref([])
 ;(function () {
   getTotal(query).then(({ data }) => {
-    cardData = [
+    cardData.value = [
       {
         title: '累计扫码总数',
         tips: '当前累计扫码添加成功的总数(去重)',
@@ -85,10 +84,10 @@ function dealDataFun(res, series, xData) {
   series.length = 0
   xData.length = 0
   res.array.forEach((e) => {
-    ;(series[0] = series[0] || []).push(e.total)
-    ;(series[1] = series[1] || []).push(e.today)
-    ;(series[2] = series[2] || []).push(e.linkVisitsTotal)
-    ;(series[3] = series[3] || []).push(e.linkVisitsPeopleTotal)
+    ;(series[0] ??= []).push(e.total)
+    ;(series[1] ??= []).push(e.today)
+    ;(series[2] ??= []).push(e.todayLinkVisitsTotal)
+    ;(series[3] ??= []).push(e.todayLinkVisitsPeopleTotal)
     xData.push(e.dateTime)
   })
 }

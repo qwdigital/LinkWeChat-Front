@@ -198,7 +198,7 @@ export default {
   methods: {
     editFn() {
       this.$router.push({
-        path: '/drainageCode/qrCode/staff/' + 'staffAdd',
+        path: 'add',
         query: {
           id: this.form.id,
         },

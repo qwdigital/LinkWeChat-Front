@@ -56,7 +56,7 @@
 
           <template #operation>
             <div class="mid-action mb0">
-              <el-button type="primary" @click="goRoute('staffAdd')">新建活码</el-button>
+              <el-button type="primary" @click="goRoute('add')">新建活码</el-button>
               <div>
                 <el-button type="primary" plain @click="downloadBatch()">批量下载</el-button>
                 <el-button type="primary" plain @click="removeFn('mult')">批量删除</el-button>
@@ -99,9 +99,9 @@
               <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180"></el-table-column>
               <el-table-column label="操作" align="center" fixed="right" width="220">
                 <template #default="{ row }">
-                  <el-button text @click="goRoute('staffDetail', row.id)">详情|统计</el-button>
+                  <el-button text @click="goRoute('detail', row.id)">详情|统计</el-button>
                   <el-button text @click=";(share.visible = true), (share.data = row)">分享</el-button>
-                  <el-button text @click="goRoute('staffAdd', row.id)">编辑</el-button>
+                  <el-button text @click="goRoute('add', row.id)">编辑</el-button>
                   <el-button text @click="removeFn('single', row.id)">删除</el-button>
                 </template>
               </el-table-column>
