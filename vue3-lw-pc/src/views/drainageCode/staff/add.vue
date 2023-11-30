@@ -395,7 +395,6 @@ export default {
       dialogVisibleSelectTag: false,
       dialogVisibleSelectMaterial: false,
       dialogVisibleSelectWel: false,
-      loading: false,
       codeCategoryList: [], // 活码分组
       selectedUserList: [], // 需要回显的选中员工
       selectedSpareUserList: [], // 需要回显的选中备用员工
@@ -881,7 +880,6 @@ export default {
       return arr
     },
     submit(data) {
-      this.loading = true
       let myObj = {
         attachments: [],
       }
@@ -946,14 +944,14 @@ export default {
         obj.qrId = this.form.id
         obj.configId = this.form.configId
       }
+      this.$store.loading = true
       ;(this.form.id ? update : add)(obj)
         .then(({ data }) => {
           this.msgSuccess('操作成功')
-          this.loading = false
           this.$router.back()
         })
-        .catch(() => {
-          this.loading = false
+        .finally(() => {
+          this.$store.loading = false
         })
     },
   },

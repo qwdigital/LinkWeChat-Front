@@ -90,7 +90,6 @@ export default {
       showSelectModal: false,
       groupList: [],
       tagList: [],
-      loading: false,
     }
   },
   created() {
@@ -126,23 +125,26 @@ export default {
         })
         .join(',')
     },
-    // 新增群活码
     submit() {
       this.$refs.form.validate((valid) => {
         if (!valid) return
-        ;(this.form.id ? update : add)(this.form).then((res) => {
-          this.$router.back()
-
-          // if (res.code === 200) {
-          //   this.$emit('next', res.data.id, res.data)
-          // } else if (res.code === 433) {
-          //   this.$refs['form'].fields[0].validateMessage = res.msg
-          //   this.$refs['form'].fields[0].validateState = 'error'
-          //   this.$emit('next')
-          // } else {
-          //   this.$emit('next')
-          // }
-        })
+        this.$store.loading = true
+        ;(this.form.id ? update : add)(this.form)
+          .then((res) => {
+            this.$router.back()
+            // if (res.code === 200) {
+            //   this.$emit('next', res.data.id, res.data)
+            // } else if (res.code === 433) {
+            //   this.$refs['form'].fields[0].validateMessage = res.msg
+            //   this.$refs['form'].fields[0].validateState = 'error'
+            //   this.$emit('next')
+            // } else {
+            //   this.$emit('next')
+            // }
+          })
+          .finally(() => {
+            this.$store.loading = false
+          })
       })
     },
     // 更新群活码
