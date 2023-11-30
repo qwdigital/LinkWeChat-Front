@@ -1,33 +1,16 @@
 <template>
   <div>
-    <el-form-item label="选择客群" required>
-      <el-radio-group v-model="currentType" @change="clearData" :disabled="isDetail">
-        <el-radio :label="0">全部</el-radio>
-        <el-radio :label="1">选择群主</el-radio>
-      </el-radio-group>
-    </el-form-item>
-    <el-form-item v-if="currentType == 1">
+    <div class="item-magin aic">
       <div>
-        <div class="item-magin aic">
-          <div>
-            <el-tag v-for="item in selectCustomerGroupList" :key="item.userId">{{ item.name }}</el-tag>
-          </div>
-          <el-button
-            v-if="!isDetail"
-            icon="el-icon-plus"
-            type="primary"
-            class="mr10"
-            plain
-            @click="onSelectCustomerGroup">
-            {{ form.weUserIds ? '编辑' : '选择' }}群主
-          </el-button>
-        </div>
+        <el-tag v-for="item in selectCustomerGroupList" :key="item.userId">{{ item.name }}</el-tag>
       </div>
-    </el-form-item>
+      <el-button v-if="!isDetail" icon="el-icon-plus" type="primary" class="mr10" plain @click="onSelectCustomerGroup">
+        选择群主
+      </el-button>
+    </div>
     <SelectUser
       v-model:visible="dialogVisibleSelectCustomerGroup"
       title="选择群主"
-      destroyOnClose
       :defaultValues="selectCustomerGroupList"
       @success="submitSelectCustomerGroup"></SelectUser>
   </div>
@@ -118,7 +101,7 @@ export default {
       this.changeFn()
     },
     checkData() {
-      if (this.currentType == 1 && !this.form.weUserIds) {
+      if (!this.form.weUserIds) {
         this.msgError('请选择群主！')
         return false
       } else {
@@ -126,7 +109,7 @@ export default {
       }
     },
     changeFn() {
-      this.$emit('update', this.currentType == 1 ? this.form : null)
+      this.$emit('update', this.form)
     },
   },
 }

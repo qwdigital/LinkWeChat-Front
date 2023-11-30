@@ -1,6 +1,7 @@
 <!-- 选择部分条件范围客户表单 -->
 <script>
 import { getList } from '@/api/salesCenter/businessConver.js'
+import { getCustomerList } from '@/api/groupMessage'
 export default {
   components: {},
   props: {
@@ -17,6 +18,11 @@ export default {
     isTrans: {
       type: Boolean,
       default: false,
+    },
+    // 是否开启查询空结果提示
+    isEmptyTips: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {
@@ -42,34 +48,49 @@ export default {
             isContain: data.tags?.length ? data.isContain : undefined,
           }
         }
-        this.$emit('update:data', data)
+        this.change(data)
       },
     },
   },
   created() {
-    if (this.isTrans) {
-      let data = this.data
-      if (data) {
-        data = JSON.parse(JSON.stringify(data))
-        let userNames = data.userNames?.split(',')
-        let tagNames = data.tagNames?.split(',')
-        this.form = Object.assign(data, {
-          isContain: data.isContain + '',
-          genders: data.genders?.split(','),
-          customerTypes: data.customerTypes?.split(','),
-          users: data.userIds?.split(',')?.map((e, i) => ({ userId: e, name: userNames?.[i] })),
-          tags: data.tagIds?.split(',')?.map((e, i) => ({ tagId: e, name: tagNames?.[i] })),
-          dateRange: [data.beginTime, data.endTime],
-        })
-      }
+    if (this.isTrans && this.data) {
+      let data = JSON.parse(JSON.stringify(this.data))
+      let userNames = data.userNames?.split(',')
+      let tagNames = data.tagNames?.split(',')
+      this.form = Object.assign(data, {
+        isContain: data.isContain ? data.isContain + '' : undefined,
+        genders: data.genders?.split(','),
+        customerTypes: data.customerTypes?.split(','),
+        users: data.userIds?.split(',')?.map((e, i) => ({ userId: e, name: userNames?.[i] })),
+        tags: data.tagIds?.split(',')?.map((e, i) => ({ tagId: e, name: tagNames?.[i] })),
+        dateRange: [data.beginTime, data.endTime],
+      })
     }
-    this.$emit('update:data', this.data) // 赋默认值
+    this.change(this.data) // 赋默认值
     getList().then((res) => {
       this.stageList = res.data
     })
   },
   mounted() {},
-  methods: {},
+  methods: {
+    change(val) {
+      this.$emit('update:data', val)
+
+      this.$attrs.onGetCustomers && this.getCustomerList(val)
+    },
+    // 供父组件手动调用
+    getCustomerList(params = this.data) {
+      return getCustomerList(params, 1).then(({ data }) => {
+        if (data?.length) {
+          this.$attrs.onGetCustomers && this.$emit('getCustomers', data)
+        } else if (this.isEmptyTips) {
+          this.msgError('未找到符合条件的客户!')
+          return Promise.reject()
+        }
+        return data
+      })
+    },
+  },
 }
 </script>
 

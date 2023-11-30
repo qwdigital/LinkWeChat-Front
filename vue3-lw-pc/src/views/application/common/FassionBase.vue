@@ -26,17 +26,35 @@
             value-format="YYYY-MM-DD HH:mm:ss"></el-date-picker>
         </el-form-item>
         <template v-if="form.fassionType == 1">
-          <SelectFassionCustomerVue
-            :isDetail="isDetail"
-            :dataObj="form.executeUserOrGroup"
-            @update="getData"></SelectFassionCustomerVue>
+          <el-form-item label="选择老客" required>
+            <el-radio-group v-model="form.scopeType" :disabled="isDetail">
+              <el-radio :label="0">全部客户</el-radio>
+              <el-radio :label="1">部分客户</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item v-if="form.scopeType == 1">
+            <CustomerRangeForm
+              ref="customerRangeForm"
+              isTrans
+              v-model:data="form.weCustomersQuery"
+              :disabled="isDetail"
+              :isDetail="isDetail" />
+          </el-form-item>
         </template>
         <template v-if="form.fassionType == 2">
-          <SelectFassionGroup
-            :isDetail="isDetail"
-            ref="fassionGroup"
-            :dataObj="form.executeUserOrGroup"
-            @update="getData"></SelectFassionGroup>
+          <el-form-item label="选择客群" required>
+            <el-radio-group v-model="form.scopeType" :disabled="isDetail">
+              <el-radio :label="0">全部</el-radio>
+              <el-radio :label="1">选择群主</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item v-if="form.scopeType == 1">
+            <SelectFassionGroup
+              :isDetail="isDetail"
+              ref="fassionGroup"
+              :dataObj="form.executeUserOrGroup"
+              @update="getData"></SelectFassionGroup>
+          </el-form-item>
         </template>
       </el-form>
     </div>
@@ -48,18 +66,17 @@
 </template>
 <script>
 import { dateFormat } from '@/utils/index'
-import SelectFassionCustomerVue from './SelectFassionCustomer.vue'
 import SelectFassionGroup from './SelectFassionGroup.vue'
 export default {
   name: 'task-steps-base',
   components: {
-    SelectFassionCustomerVue,
     SelectFassionGroup,
   },
   data() {
     return {
       form: {
         fassionType: 1,
+        scopeType: 1,
         fassionName: '',
         fassionStartTime: '',
         fassionEndTime: '',
@@ -122,9 +139,24 @@ export default {
     gotoNext() {
       this.$refs.ruleForm.validate((validate) => {
         if (validate) {
-          if (this.form.fassionType == 2) {
-            if (this.$refs.fassionGroup.checkData()) {
-              this.$emit('next', 1)
+          if (this.form.scopeType == 1) {
+            if (this.form.fassionType == 1) {
+              this.$store.loading = true
+              this.$refs.customerRangeForm
+                .getCustomerList()
+                .then((data) => {
+                  if (data?.length) {
+                    this.form.senderList = data
+                    this.$emit('next', 1)
+                  }
+                })
+                .finally(() => {
+                  this.$store.loading = false
+                })
+            } else if (this.form.fassionType == 2) {
+              if (this.$refs.fassionGroup.checkData()) {
+                this.$emit('next', 1)
+              }
             }
           } else {
             this.$emit('next', 1)
