@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="g-card">
+    <div class="g-card g-margin-b">
       <el-steps :active="active" align-center finish-status="success">
         <el-step title="活码设置"></el-step>
         <el-step title="生成活码"></el-step>
@@ -9,7 +9,7 @@
     <div v-if="active === 0">
       <BaseInfo ref="baseInfo" :groupCodeId="groupCodeId" @next="next"></BaseInfo>
     </div>
-    <div v-if="active === 1">
+    <div class="g-card" v-if="active === 1">
       <GroupCode :groupCodeId="groupCodeId" :data="baseInfo"></GroupCode>
     </div>
     <div class="g-footer-sticky">

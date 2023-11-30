@@ -38,7 +38,7 @@ export default {
       type: Function,
       default: null,
     },
-    // 自定义的返回数据处理方法，可用于添加和修改查询参数
+    // 自定义的返回数据处理方法
     dealDataFun: {
       type: Function,
       default: null,
@@ -110,9 +110,9 @@ export default {
           // if (!data) return
           if (this.type == 'table') {
             // 表格
-            this.data = JSON.parse(JSON.stringify(res))
+            this.dealDataFun && this.dealDataFun(res)
+            this.data = res
             this.total = +total
-            this.dealDataFun && this.dealDataFun(res, this.data)
           } else {
             // 自定义echarts图表数据处理
             // this.data = data

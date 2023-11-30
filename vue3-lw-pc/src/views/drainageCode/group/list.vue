@@ -142,7 +142,9 @@
               ">
               编辑
             </el-button>
-            <el-button text @click=";(share.visible = true), (share.data = row)">分享</el-button>
+            <el-button text @click=";(share.visible = true), (row.qrCode = row.codeUrl), (share.data = row)">
+              分享
+            </el-button>
             <el-button text @click="handleRemove(row.id)">删除</el-button>
 
             <!-- <el-dropdown style="margin-left: 10px">
@@ -296,20 +298,15 @@ export default {
       if (val === false) this.getGroupCodes()
     },
   },
-  mounted() {
-    this.clipboard = new this.ClipboardJS('.copy-btn')
-  },
+  mounted() {},
   created() {
-    this.getGroupCodes()
     this.$store.setBusininessDesc(
       `
         <div>生成永久二维码，根据规则自动切换企微客群，支持群满自动建群</div>
       `,
     )
   },
-  unmounted() {
-    this.clipboard.destroy()
-  },
+  unmounted() {},
   methods: {
     getDetail(id) {
       this.detailDialog = true
@@ -329,22 +326,6 @@ export default {
       })
       this.tagNames = arr.join(',')
       this.query.tagIds = arr1.join(',')
-    },
-    // 获取活码数据
-    getGroupCodes() {
-      const params = Object.assign({}, this.query)
-      this.loading = true
-      getList(params)
-        .then((res) => {
-          if (res.code === 200) {
-            this.groupCodes = res.rows
-            this.total = parseInt(res.total)
-          }
-          this.loading = false
-        })
-        .catch(() => {
-          this.loading = false
-        })
     },
     // 批量下载
     handleBulkDownload() {

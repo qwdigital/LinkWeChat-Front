@@ -1,9 +1,10 @@
 <template>
-  <el-row style="margin-top: 10px" type="flex">
-    <el-col class="g-card">
+  <div class="flex">
+    <div class="g-card fxauto">
       <el-form :model="form" :rules="rules" ref="form" label-width="140px">
         <el-form-item label="活码名称:" prop="activityName">
           <el-input v-model="form.activityName" placeholder="请输入名称" show-word-limit maxlength="15"></el-input>
+          <el-button type="primary" class="fr" @click="editFn" v-if="$route.path.includes('detail')">编辑</el-button>
         </el-form-item>
         <el-form-item label="活码客群:" prop="chatIdList">
           <el-button type="primary" @click="selectGroupFn">选择客群</el-button>
@@ -40,11 +41,15 @@
           </el-form-item>
         </template>
       </el-form>
-    </el-col>
-    <el-col style="flex-basis: auto">
+    </div>
+    <div class="fxnone g-margin-l" v-if="$route.path.includes('detail')">
       <CodeLink :data="form" />
-    </el-col>
-  </el-row>
+    </div>
+  </div>
+  <div class="g-footer-sticky">
+    <el-button @click="$router.back()">取消</el-button>
+    <el-button type="primary" @click="submit">确定</el-button>
+  </div>
 </template>
 
 <script>
@@ -89,8 +94,7 @@ export default {
     }
   },
   created() {
-    if (this.groupCodeId) this.form = JSON.parse(decodeURIComponent(this.$route.query.obj))
-    this.getGroupDetail()
+    this.getGroupDetail(this.$route.query.groupCodeId)
   },
   methods: {
     selectGroupFn() {
@@ -123,20 +127,21 @@ export default {
         .join(',')
     },
     // 新增群活码
-    add() {
+    submit() {
       this.$refs.form.validate((valid) => {
         if (!valid) return
-        // 新增群活码数据至数据库
-        add(this.form).then((res) => {
-          if (res.code === 200) {
-            this.$emit('next', res.data.id, res.data)
-          } else if (res.code === 433) {
-            this.$refs['form'].fields[0].validateMessage = res.msg
-            this.$refs['form'].fields[0].validateState = 'error'
-            this.$emit('next')
-          } else {
-            this.$emit('next')
-          }
+        ;(this.form.id ? update : add)(this.form).then((res) => {
+          this.$router.back()
+
+          // if (res.code === 200) {
+          //   this.$emit('next', res.data.id, res.data)
+          // } else if (res.code === 433) {
+          //   this.$refs['form'].fields[0].validateMessage = res.msg
+          //   this.$refs['form'].fields[0].validateState = 'error'
+          //   this.$emit('next')
+          // } else {
+          //   this.$emit('next')
+          // }
         })
       })
     },
@@ -158,8 +163,8 @@ export default {
       })
     },
     // 获取群活码信息
-    getGroupDetail() {
-      if (!this.groupCodeId) return
+    getGroupDetail(id) {
+      if (id) this.form = JSON.parse(decodeURIComponent(this.$route.query.obj))
       // 编辑回显
       let arr = []
       let names = this.form.tags ? this.form.tags.split(',') : []
@@ -184,11 +189,6 @@ export default {
       })
       this.groupList = arr2
       // // this.$forceUpdate()
-    },
-    // 提交
-    submit() {
-      if (!this.groupCodeId) return this.add()
-      this.update()
     },
   },
 }
