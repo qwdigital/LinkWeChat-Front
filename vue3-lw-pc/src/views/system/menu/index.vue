@@ -64,6 +64,8 @@
               <el-tree-select
                 v-model="form.parentId"
                 :data="menuOptions"
+                check-strictly="true"
+                show-checkbox
                 node-key="menuId"
                 :props="{ label: 'menuName' }"
                 placeholder="选择上级菜单" />
