@@ -182,6 +182,7 @@ export default {
     getGroupDetail(id) {
       if (id) this.form = JSON.parse(decodeURIComponent(this.$route.query.obj))
       this.form.qrCode = this.form.codeUrl
+      this.form.name = this.form.activityName
       // 编辑回显
       let arr = []
       let names = this.form.tags ? this.form.tags.split(',') : []

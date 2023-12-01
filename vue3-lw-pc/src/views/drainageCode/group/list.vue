@@ -143,7 +143,11 @@
               ">
               编辑
             </el-button>
-            <el-button text @click=";(share.visible = true), (row.qrCode = row.codeUrl), (share.data = row)">
+            <el-button
+              text
+              @click="
+                ;(share.visible = true), (row.qrCode = row.codeUrl), (row.name = row.activityName)((share.data = row))
+              ">
               分享
             </el-button>
             <el-button text @click="handleRemove(row.id)">删除</el-button>
