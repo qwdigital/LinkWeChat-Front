@@ -60,7 +60,7 @@
       <CodeLink :data="form" />
     </div>
   </div>
-  <div class="g-footer-sticky">
+  <div class="g-footer-sticky" v-if="!$route.path.includes('detail')">
     <el-button @click="$router.back()">取消</el-button>
     <el-button type="primary" @click="submit">确定</el-button>
   </div>
