@@ -35,7 +35,7 @@
               text
               @click="
                 $router.push({
-                  path: '/groupManage/customerGroupManage/group/groupDetail',
+                  name: lwConfig.GROUP_DETAIL_ROUTE_NAME,
                   query: {
                     chatId: row.chatId,
                   },
