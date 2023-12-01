@@ -2,12 +2,13 @@
 <script>
 import { getList } from '@/api/salesCenter/businessConver.js'
 import { getCustomerList } from '@/api/groupMessage'
+const defaultData = { isContain: '1' }
 export default {
   components: {},
   props: {
     data: {
       type: Object,
-      default: () => ({ isContain: '1' }),
+      // default: () => JSON.parse(JSON.stringify(defaultData)), 处理不了null值情况下的默认值
     },
     // 是否为详情展示（不显示选择按钮）
     isDetail: {
@@ -26,7 +27,12 @@ export default {
     },
   },
   data() {
-    return { form: this.data, stageList: [], dialogVisibleSelectUser: false, dialogVisibleSelectTag: false }
+    return {
+      form: this.data || JSON.parse(JSON.stringify(defaultData)),
+      stageList: [],
+      dialogVisibleSelectUser: false,
+      dialogVisibleSelectTag: false,
+    }
   },
   computed: {},
   watch: {
@@ -66,7 +72,7 @@ export default {
         dateRange: [data.beginTime, data.endTime],
       })
     }
-    this.change(this.data) // 赋默认值
+    this.change(this.data || JSON.parse(JSON.stringify(defaultData))) // 赋默认值
     getList().then((res) => {
       this.stageList = res.data
     })
