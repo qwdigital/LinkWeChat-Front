@@ -116,13 +116,15 @@ export const loadView = (route) => {
       let routeNames = {
         // 组件路径: route name
         'customerManage/customerDetail': window.lwConfig.CUSTOMER_DETAIL_ROUTE_NAME, //  客户详情
+        'customerManage/groupDetail': window.lwConfig.GROUP_DETAIL_ROUTE_NAME, //  客群详情
+        'enterpriseWechat/list': window.lwConfig.WORK_WEIXIN_CONFIG_ROUTE_NAME, //企微配置
         'drainageCode/staff/list': 'staffCode', //  员工活码
         'drainageCode/group/list': 'customerGroupCode', // 群活码
         'drainageCode/store/list': 'storeCode', //门店活码
         'drainageCode/identity/list': 'identityCode', //识客码
         'drainageCode/pullNews/list': 'pullNewsCode', //拉新活码
-        'contentCenter/templateWel/index': 'templateWel', //拉新活码
-        'enterpriseWechat/list': window.lwConfig.WORK_WEIXIN_CONFIG_ROUTE_NAME, //企微配置
+        'contentCenter/templateWel/index': 'templateWel', //欢迎语模板列表
+        'contentCenter/templateWel/index': 'templateWelAdd', //欢迎语模板新增
       }
       routeNames[route.component] && (route.name = routeNames[route.component])
 

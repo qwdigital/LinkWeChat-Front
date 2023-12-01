@@ -66,7 +66,7 @@ export default {
         })
       } else {
         this.$router.push({
-          path: window.lwConfig.GROUP_DETAIL_ROUTE_PATH,
+          name: window.lwConfig.GROUP_DETAIL_ROUTE_NAME,
           query: { chatId: row.chatId },
         })
       }

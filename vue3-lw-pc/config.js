@@ -20,9 +20,9 @@ const common = {
   AGREEMENT: env.BASE_URL + 'static/AGREEMENT.pdf', // 用户协议pdf
   PRIVACY: env.BASE_URL + 'static/PRIVACY.pdf', // 隐私协议pdf
   COOKIEEXPIRES: 0.5, // token在Cookie中存储的天数，默认0.5天
-  WORK_WEIXIN_CONFIG_ROUTE_NAME: 'EnterpriseWechat', // 企业微信设置页面路由名称, 用于router 通过name判断与跳转，避免使用path不易于扩展
-  CUSTOMER_DETAIL_ROUTE_NAME: 'customerDetail', // 客户详情页面路由name，同上
-  GROUP_DETAIL_ROUTE_PATH: '/groupManage/customerGroupManage/groupDetail', // 客群详情
+  WORK_WEIXIN_CONFIG_ROUTE_NAME: Symbol(), // 企业微信设置页面路由名称, 用于router 通过name判断与跳转，避免使用path不易于扩展
+  CUSTOMER_DETAIL_ROUTE_NAME: Symbol(), // 客户详情页面路由name，同上
+  GROUP_DETAIL_ROUTE_NAME: Symbol(), // 客群详情
   DEFAULT_H5_PIC: env.BASE_URL + 'static/PIC.png',
   DEFAULT_H5_ART: env.BASE_URL + 'static/ARTICAL.png', // 文章默认封面
   DEFAULT_H5_TP: env.BASE_URL + 'static/TEXT_PIC.png', // 图文默认封面
