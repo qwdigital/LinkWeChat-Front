@@ -20,80 +20,81 @@
 </template>
 
 <script>
-  import FassionBase from '../common/FassionBase.vue'
-  import FassionSettingVue from '../common/FassionSetting.vue'
-  import FassionRules from '../common/FassionRules.vue'
-  import { getFassionDetail } from './api'
-  export default {
-    name: 'task-customer-add',
-    components: {
-      FassionBase,
-      FassionSettingVue,
-      FassionRules
-    },
-    data() {
-      return {
-        currentActive: 0,
-        form: {
-          fassionType: 1,
-          fassionName: '',
-          fassionStartTime: '',
-          fassionEndTime: '',
-          executeUserOrGroup: null,
-          posterId: '',
-          posterUrl: '',
-          addWeUserOrGroupCode: {
-            addWeUser: {
-              executeUserCondit: {
-                change: false,
-                weUserIds: []
-              },
-              executeDeptCondit: {
-                change: false,
-                deptIds: [],
-                posts: []
-              }
+import FassionBase from '../common/FassionBase.vue'
+import FassionSettingVue from '../common/FassionSetting.vue'
+import FassionRules from '../common/FassionRules.vue'
+import { getFassionDetail } from './api'
+export default {
+  name: 'task-customer-add',
+  components: {
+    FassionBase,
+    FassionSettingVue,
+    FassionRules,
+  },
+  data() {
+    return {
+      currentActive: 0,
+      form: {
+        scopeType: 0,
+        fassionType: 1,
+        fassionName: '',
+        fassionStartTime: '',
+        fassionEndTime: '',
+        executeUserOrGroup: null,
+        posterId: '',
+        posterUrl: '',
+        addWeUserOrGroupCode: {
+          addWeUser: {
+            executeUserCondit: {
+              change: false,
+              weUserIds: [],
             },
-            addGroupCode: {
-              autoCreateRoom: 0,
-              roomBaseName: '',
-              roomBaseId: null,
-              chatIdList: '',
-              groupNames: ''
-            }
+            executeDeptCondit: {
+              change: false,
+              deptIds: [],
+              posts: [],
+            },
           },
-          content: '',
-          exchangeTip: null,
-          exchangeType: 3,
-          exchangeContent: {
-            redemptionLink: '',
-            redemptionRule: '',
-            weUserId: '',
-            userName: ''
+          addGroupCode: {
+            autoCreateRoom: 0,
+            roomBaseName: '',
+            roomBaseId: null,
+            chatIdList: '',
+            groupNames: '',
           },
-          activeTitle: '',
-          activeDescr: '',
-          activeCoverType: 1,
-          activeCoverUrl: ''
-        }
-      }
-    },
-    methods: {
-      getData(data) {
-        this.form = data
+        },
+        content: '',
+        exchangeTip: null,
+        exchangeType: 3,
+        exchangeContent: {
+          redemptionLink: '',
+          redemptionRule: '',
+          weUserId: '',
+          userName: '',
+        },
+        activeTitle: '',
+        activeDescr: '',
+        activeCoverType: 1,
+        activeCoverUrl: '',
       },
-      getNext(data) {
-        this.currentActive = data
-      }
-    },
-    created() {
-      if (this.$route.query.id) {
-        getFassionDetail(this.$route.query.id).then((res) => {
-          this.form = res.data
-        })
-      }
     }
-  }
+  },
+  methods: {
+    getData(data) {
+      this.form = data
+    },
+    getNext(data) {
+      this.currentActive = data
+    },
+  },
+  created() {
+    if (this.$route.query.id) {
+      getFassionDetail(this.$route.query.id).then((res) => {
+        this.form = res.data
+      })
+    }
+  },
+}
 </script>
 
 <style lang="scss" scoped></style>

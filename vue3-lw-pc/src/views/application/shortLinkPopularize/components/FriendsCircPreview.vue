@@ -1,29 +1,26 @@
 <template>
-  <div class="preview">
-    <!-- <div class="title">{{ name }}</div> -->
-    <div class="content">
-      <div class="header_bg">
-        <img class="header" src="@/assets/image/header_b.png" alt="" />
-      </div>
-      <div class="header_con">
-        <div class="img">
-          <div>
-            <img width="32px" src="@/assets/image/header_a.png" alt="" />
-          </div>
-          <div class="name">运营部-小王</div>
+  <PhoneTemplate>
+    <div class="header_bg">
+      <img class="header" src="@/assets/image/header_b.png" alt="" />
+    </div>
+    <div class="header_con">
+      <div class="img">
+        <div>
+          <img width="32px" src="@/assets/image/header_a.png" alt="" />
         </div>
-        <div class="circle_con">
-          <div class="word">
-            {{ value }}
-          </div>
-          <div>
-            <img class="code_img" v-if="poster" :src="poster" alt="" />
-            <img v-else class="code_img" src="@/assets/drainageCode/code.png" alt="" />
-          </div>
+        <div class="name">运营部-小王</div>
+      </div>
+      <div class="circle_con">
+        <div class="word">
+          {{ value }}
+        </div>
+        <div>
+          <img class="code_img" v-if="poster" :src="poster" alt="" />
+          <img v-else class="code_img" src="@/assets/drainageCode/code.png" alt="" />
         </div>
       </div>
     </div>
-  </div>
+  </PhoneTemplate>
 </template>
 <script>
 export default {
@@ -63,85 +60,44 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.preview {
-  margin: 0 auto;
+.header_bg {
+  height: 200px;
+  background-color: #cdf3df;
   position: relative;
-  width: 300px;
-  height: 640px;
-  background: url(../../../../assets/drainageCode/preview-bg.png);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-
-  .title {
+  .header {
+    height: 48px;
+    width: 48px;
     position: absolute;
-    top: 37px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 14px;
-
-    font-weight: 400;
-    color: var(--font-black);
-  }
-
-  .content {
-    // text-align: center;
-    position: absolute;
-    height: 545px;
-    width: 280px;
-    overflow-y: auto;
-    top: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-
-    .header_bg {
-      height: 200px;
-      background-color: #cdf3df;
-      position: relative;
-      .header {
-        height: 48px;
-        width: 48px;
-        position: absolute;
-        bottom: -25px;
-        right: 16px;
-      }
-    }
-    .header_con {
-      padding: 0 20px;
-      margin-top: 60px;
-      .img {
-        display: flex;
-        align-items: center;
-        .name {
-          margin-left: 10px;
-          font-size: 14px;
-          font-weight: 600;
-          color: #596c94;
-        }
-      }
-      .circle_con {
-        margin-left: 42px;
-        // margin-top: 10px;
-        .word {
-          font-size: 14px;
-          font-weight: 400;
-          color: var(--font-black);
-        }
-        .code_img {
-          height: 140px;
-          width: 140px;
-          margin: 5px auto;
-        }
-      }
-    }
+    bottom: -25px;
+    right: 16px;
   }
 }
-.sub-des {
-  text-align: center;
-  font-size: 12px;
-
-  font-weight: 400;
-  color: var(--font-black-6);
+.header_con {
+  padding: 0 20px;
+  margin-top: 60px;
+  .img {
+    display: flex;
+    align-items: center;
+    .name {
+      margin-left: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #596c94;
+    }
+  }
+  .circle_con {
+    margin-left: 42px;
+    // margin-top: 10px;
+    .word {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--font-black);
+    }
+    .code_img {
+      height: 140px;
+      width: 140px;
+      margin: 5px auto;
+    }
+  }
 }
 </style>

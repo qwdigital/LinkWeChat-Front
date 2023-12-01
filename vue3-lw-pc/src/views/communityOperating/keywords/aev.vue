@@ -54,11 +54,10 @@
 
 <script>
 import { getDetail, add, update } from '@/api/communityOperating/keywords'
-import PhoneDialog from '@/components/PhoneDialog'
 import SelectQrCode from '@/components/SelectQrCode'
 
 export default {
-  components: { PhoneDialog, SelectQrCode },
+  components: { SelectQrCode },
   data() {
     return {
       taskId: '',

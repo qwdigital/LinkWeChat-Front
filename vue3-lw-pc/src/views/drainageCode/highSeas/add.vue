@@ -1,11 +1,10 @@
 <script>
 import { getDetail, add, update, getQrcode } from '@/api/drainageCode/staff'
 import { getList } from '@/api/drainageCode/welcome'
-import PhoneDialog from '@/components/PhoneDialog'
 
 import SelectMaterial from '@/components/SelectMaterial'
 export default {
-  components: { PhoneDialog, SelectMaterial },
+  components: { SelectMaterial },
   data() {
     return {
       dialogVisibleSelectUser: false,
