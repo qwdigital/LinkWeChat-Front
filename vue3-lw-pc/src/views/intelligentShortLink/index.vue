@@ -48,7 +48,7 @@ export default {
     },
     gotoSetting() {
       this.$router.push({
-        path: '/enterpriseManage/enterpriseWechat',
+        name: lwConfig.WORK_WEIXIN_CONFIG_ROUTE_NAME,
       })
     },
     setState() {

@@ -1,12 +1,20 @@
 <template>
   <div class="flex">
     <div class="g-card fxauto">
-      <el-form :model="form" :rules="rules" ref="form" label-width="140px">
+      <el-form
+        :model="form"
+        :rules="rules"
+        ref="form"
+        label-width="140px"
+        :class="isDetail && 'form-detail'"
+        :disabled="isDetail">
         <el-form-item label="活码名称:" prop="activityName">
           <el-input v-model="form.activityName" placeholder="请输入名称" show-word-limit maxlength="15"></el-input>
-          <el-button
-            type="primary"
-            class="fr"
+          <el-tag
+            class="fr cp"
+            v-if="isDetail"
+            size="large"
+            effect="dark"
             @click="
               $router.push({
                 path: 'add',
@@ -15,28 +23,31 @@
                   obj: encodeURIComponent(JSON.stringify(form)),
                 },
               })
-            "
-            v-if="$route.path.includes('detail')">
+            ">
             编辑
-          </el-button>
+          </el-tag>
         </el-form-item>
         <el-form-item label="活码客群:" prop="chatIdList">
-          <el-button type="primary" @click="selectGroupFn">选择客群</el-button>
-          <SelectGroup v-model:visible="showSelectModal" :defaults="groupList" @submit="setSelectData"></SelectGroup>
-          <div class="sub-des">最多选择五个客群</div>
+          <template v-if="!isDetail">
+            <el-button type="primary" @click="selectGroupFn">选择客群</el-button>
+            <SelectGroup v-model:visible="showSelectModal" :defaults="groupList" @submit="setSelectData"></SelectGroup>
+            <div class="sub-des">最多选择五个客群</div>
+          </template>
 
-          <TagEllipsis :list="groupList" limit="10" defaultProps="groupName"></TagEllipsis>
+          <TagEllipsis :list="groupList" limit="10" defaultProps="groupName" emptyText></TagEllipsis>
         </el-form-item>
         <el-form-item label="入群标签:" prop="tagIds">
-          <el-button type="primary" @click="showSelectTag = true">选择标签</el-button>
-          <SelectTag
-            v-model:visible="showSelectTag"
-            type="1"
-            :defaultValues="tagList"
-            @success="getSelectTag"></SelectTag>
+          <template v-if="!isDetail">
+            <el-button type="primary" @click="showSelectTag = true">选择标签</el-button>
+            <SelectTag
+              v-model:visible="showSelectTag"
+              type="1"
+              :defaultValues="tagList"
+              @success="getSelectTag"></SelectTag>
+            <div class="sub-des">通过此群活码进群的客户自动打上标签</div>
+          </template>
 
-          <div class="sub-des">通过此群活码进群的客户自动打上标签</div>
-          <TagEllipsis :list="tagList" limit="10"></TagEllipsis>
+          <TagEllipsis :list="tagList" limit="10" emptyText></TagEllipsis>
         </el-form-item>
         <el-form-item label="群满是否自动建群:">
           <el-switch v-model="form.autoCreateRoom" :active-value="1" :inactive-value="0"></el-switch>
@@ -56,11 +67,11 @@
         </template>
       </el-form>
     </div>
-    <div class="fxnone g-margin-l" v-if="$route.path.includes('detail')">
+    <div class="fxnone g-margin-l" v-if="isDetail">
       <CodeLink :data="form" />
     </div>
   </div>
-  <div class="g-footer-sticky" v-if="!$route.path.includes('detail')">
+  <div class="g-footer-sticky" v-if="!isDetail">
     <el-button @click="$router.back()">取消</el-button>
     <el-button type="primary" @click="submit">确定</el-button>
   </div>
@@ -105,6 +116,11 @@ export default {
       groupList: [],
       tagList: [],
     }
+  },
+  computed: {
+    isDetail() {
+      return this.$route.path.endsWith('detail')
+    },
   },
   created() {
     this.getGroupDetail(this.$route.query.id)

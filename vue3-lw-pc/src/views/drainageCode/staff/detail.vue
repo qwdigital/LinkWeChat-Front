@@ -110,20 +110,15 @@
 
           <div class="g-card overhide">
             <div class="g-card-title">欢迎语设置</div>
-            <el-form label-position="right" label-width="100px">
+            <el-form label-position="right" label-width="100px" disabled>
               <el-form-item label="欢迎语类型">
                 <el-radio-group v-model="form.qrWelcomeOpen" @change="">
-                  <el-radio :label="1">不发送欢迎语</el-radio>
-                  <el-radio :label="2">
+                  <el-radio :label="1" v-if="form.qrWelcomeOpen == 1">不发送欢迎语</el-radio>
+                  <el-radio :label="2" v-if="form.qrWelcomeOpen == 2">
                     活码欢迎语
-                    <div class="bfc-p" v-if="form.qrWelcomeOpen == 2">
+                    <div class="bfc-p">
                       <el-checkbox v-model="form.qrPriorityUserWelcome" :true-label="0" :false-label="1">
                         如果员工有员工欢迎语，则优先发送员工欢迎语
-                        <a
-                          class="g-color"
-                          @click.stop="$router.push({ name: 'templateWelAdd', query: { tplType: 2 } })">
-                          去设置
-                        </a>
                       </el-checkbox>
                     </div>
                   </el-radio>

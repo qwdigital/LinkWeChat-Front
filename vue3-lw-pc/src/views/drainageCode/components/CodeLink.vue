@@ -40,7 +40,9 @@ const props = defineProps({
     </div>
     <div class="g-tip">
       注：必须在管理中心->企微配置->小程序配置中配置短链小程序，
-      <el-button text @click="$router.push({ name: 'EnterpriseWechat', query: { index: 7 } })">去配置</el-button>
+      <el-button text @click="$router.push({ name: lwConfig.WORK_WEIXIN_CONFIG_ROUTE_NAME, query: { index: 7 } })">
+        去配置
+      </el-button>
     </div>
   </div>
 </template>
