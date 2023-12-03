@@ -19,8 +19,8 @@
             </div>
           </div>
         </div>
-        <el-form :model="form" ref="form" label-width="120px" label-position="right">
-          <div class="g-card">
+        <div class="g-card">
+          <el-form :model="form" ref="form" label-width="120px" label-position="right">
             <el-form-item label="门店范围：" prop="raidus">
               距离门店半径{{ form.raidus }}公里范围内，客户可扫码添加{{ codeType === 1 ? '门店导购' : '门店群' }}
             </el-form-item>
@@ -65,8 +65,8 @@
                   添加成功后，该客户将会自动设置以上选择标签
                 </div> -->
             </el-form-item>
-          </div>
-        </el-form>
+          </el-form>
+        </div>
       </el-col>
       <el-col style="min-width: 750px">
         <div class="g-card" style="height: 100%; display: flex">

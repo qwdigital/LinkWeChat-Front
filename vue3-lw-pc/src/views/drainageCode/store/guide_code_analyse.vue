@@ -3,10 +3,8 @@
     <CardGroupIndex :data="cardData"></CardGroupIndex>
     <div class="g-card">
       <div class="g-card-title">数据趋势</div>
-      <div class="mid-action">
-        <search-title :showMore="true" @search="getLineData"></search-title>
-        <chart-line style="height: 300px" :legend="legend" :xData="xdata" :series="series"></chart-line>
-      </div>
+      <search-title :showMore="true" @search="getLineData"></search-title>
+      <chart-line style="height: 300px" :legend="legend" :xData="xdata" :series="series"></chart-line>
     </div>
     <div class="g-card">
       <div class="g-card-title">门店新增客户Top10</div>
