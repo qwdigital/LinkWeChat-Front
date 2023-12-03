@@ -74,7 +74,7 @@ export default {
 
       total: 0,
 
-      selectedIds: '', // 多选数据
+      selectedIds: [], // 多选数据
     }
   },
   computed: {},
@@ -138,7 +138,7 @@ export default {
       })
         .then(() => {
           this.loading = true
-          return remove(this.selectedIds).then((res) => {
+          return remove(this.selectedIds?.join?.(',')).then((res) => {
             this.msgSuccess('删除成功')
             this.getList()
           })
@@ -167,7 +167,7 @@ export default {
         type: 'warning',
       })
         .then(() => {
-          return download(this.selectedIds)
+          return download(this.selectedIds?.join?.(','))
         })
         .then((res) => {
           this.downloadBlob(res, filename, type)
