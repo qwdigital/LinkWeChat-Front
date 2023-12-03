@@ -131,7 +131,7 @@ export function downloadBlob(blob, downloadName, type, callback) {
       let ctx = canvas.getContext('2d')
       ctx.drawImage(image, 0, 0, image.width, image.height)
       canvas.toBlob((blob) => {
-        downloadBlob(blob, downloadName)
+        downloadBlob(blob, downloadName, callback)
       })
     }
   } else {
@@ -393,10 +393,10 @@ export function $copyText(txt) {
  * 通用导出
  * @param {*} requestExport 导出接口 必需
  * @param {*} exportFileName 导出文件名 需含文件后缀名 必需
- * @param {*} type 文件类型 enum: excel,zip,image 必需
+ * @param {*} type 文件类型 enum: excel,zip,image
  * @param {*} callback 成功回调
  */
-export function $exportData(requestExport, exportFileName = '导出.xlsx', callback, type) {
+export function $exportData(requestExport, exportFileName = '导出.xlsx', type, callback) {
   this.$confirm('是否确认导出吗?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',

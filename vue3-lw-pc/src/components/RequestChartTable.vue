@@ -74,7 +74,7 @@ export default {
 
       total: 0,
 
-      selectedIds: [], // 多选数据
+      selectedIds: '', // 多选数据
     }
   },
   computed: {},
@@ -126,8 +126,11 @@ export default {
           this.loading = false
         })
     },
-    // (批量)删除
+    // (批量)删除 供父组件调用
     remove(remove) {
+      if (!remove) {
+        return
+      }
       this.$confirm('是否确认删除?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -146,6 +149,30 @@ export default {
         .finally(() => {
           this.loading = false
         })
+    },
+    /**
+     * (批量)下载 供父组件调用
+     * @param {*} download 下载接口函数 必需
+     * @param {*} filename 文件名 需含文件后缀名 必需
+     * @param {*} tips 弹窗提示语
+     * @param {*} type 文件类型 enum: excel,zip,image
+     */
+    download(download, filename, tips = '是否确认下载', type = 'zip') {
+      if (!(download && filename)) {
+        return
+      }
+      this.$confirm(tips, '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          return download(this.selectedIds)
+        })
+        .then((res) => {
+          this.downloadBlob(res, filename, type)
+        })
+        .catch(function () {})
     },
   },
 }

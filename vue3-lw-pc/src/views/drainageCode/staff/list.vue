@@ -54,58 +54,63 @@
             </el-form-item>
           </template>
 
-          <template #operation>
+          <template #operation="{ selectedIds }">
             <div class="mid-action mb0">
               <el-button type="primary" @click="goRoute('add')">新建活码</el-button>
               <div>
-                <el-button type="primary" plain @click="downloadBatch()">批量下载</el-button>
-                <el-button type="primary" plain @click="removeFn('mult')">批量删除</el-button>
+                <el-button
+                  type="primary"
+                  plain
+                  :disabled="!selectedIds?.length"
+                  @click="$refs.table?.download(downloadBatch, '批量员工活码.zip', '确认下载所有图片吗?')">
+                  批量下载
+                </el-button>
+                <el-button type="primary" plain :disabled="!selectedIds?.length" @click="$refs.table?.remove(remove)">
+                  批量删除
+                </el-button>
               </div>
             </div>
           </template>
 
-          <template #="{ data }">
-            <el-table v-loading="loading" :data="data" @selection-change="handleSelectionChange">
-              <el-table-column type="selection" width="55" align="center" />
-              <el-table-column label="二维码" align="center" prop="qrCode" min-width="120">
-                <template #default="{ row }">
-                  <el-image
-                    :src="row.qrCode"
-                    fit="fill"
-                    :preview-src-list="[row.qrCode]"
-                    style="width: 100px; height: 100px"></el-image>
-                </template>
-              </el-table-column>
-              <el-table-column label="活码名称" align="center" min-width="100" prop="name" show-overflow-tooltip />
-              <!-- <el-table-column label="活码分组" align="center" min-width="100" prop="qrGroupName" show-overflow-tooltip /> -->
-              <el-table-column label="使用员工" align="center" min-width="140" prop="qrUserInfos" show-overflow-tooltip>
-                <template #default="{ row }">
-                  <div v-for="(unit, key) in row.qrUserInfos" :key="key" style="display: inline">
-                    <template v-for="(item, index) in unit.weQrUserList" :key="index">
-                      <span>{{ item.userName + ' ' }}</span>
-                    </template>
-                  </div>
-                  <!-- <TagEllipsis :list="row.qrUserInfos.f" defaultProps="userName" emptyText /> -->
-                </template>
-              </el-table-column>
-              <el-table-column label="标签" align="center" prop="qrTags" min-width="160px">
-                <template #default="{ row }">
-                  <TagEllipsis :list="row.qrTags" defaultProps="tagName" emptyText />
-                </template>
-              </el-table-column>
-              <el-table-column align="center" prop="isJoinGroup" label="分配方式">
-                <template #default="{ row }">{{ dictAddStatus[row.isJoinGroup] }}</template>
-              </el-table-column>
-              <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180"></el-table-column>
-              <el-table-column label="操作" align="center" fixed="right" width="220">
-                <template #default="{ row }">
-                  <el-button text @click="goRoute('detail', row.id)">详情|统计</el-button>
-                  <el-button text @click=";(share.visible = true), (share.data = row)">分享</el-button>
-                  <el-button text @click="goRoute('add', row.id)">编辑</el-button>
-                  <el-button text @click="removeFn('single', row.id)">删除</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
+          <template #table="{ data }">
+            <el-table-column label="二维码" align="center" prop="qrCode" min-width="120">
+              <template #default="{ row }">
+                <el-image
+                  :src="row.qrCode"
+                  fit="fill"
+                  :preview-src-list="[row.qrCode]"
+                  style="width: 100px; height: 100px"></el-image>
+              </template>
+            </el-table-column>
+            <el-table-column label="活码名称" align="center" min-width="100" prop="name" show-overflow-tooltip />
+            <!-- <el-table-column label="活码分组" align="center" min-width="100" prop="qrGroupName" show-overflow-tooltip /> -->
+            <el-table-column label="使用员工" align="center" min-width="140" prop="qrUserInfos" show-overflow-tooltip>
+              <template #default="{ row }">
+                <div v-for="(unit, key) in row.qrUserInfos" :key="key" style="display: inline">
+                  <template v-for="(item, index) in unit.weQrUserList" :key="index">
+                    <span>{{ item.userName + ' ' }}</span>
+                  </template>
+                </div>
+                <!-- <TagEllipsis :list="row.qrUserInfos.f" defaultProps="userName" emptyText /> -->
+              </template>
+            </el-table-column>
+            <el-table-column label="标签" align="center" prop="qrTags" min-width="160px">
+              <template #default="{ row }">
+                <TagEllipsis :list="row.qrTags" defaultProps="tagName" emptyText />
+              </template>
+            </el-table-column>
+            <el-table-column align="center" prop="isJoinGroup" label="分配方式">
+              <template #default="{ row }">{{ dictAddStatus[row.isJoinGroup] }}</template>
+            </el-table-column>
+            <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180"></el-table-column>
+            <el-table-column label="操作" align="center" fixed="right" width="220">
+              <template #default="{ row }">
+                <el-button text @click="goRoute('detail', row.id)">详情|统计</el-button>
+                <el-button text @click=";(share.visible = true), (share.data = row)">分享</el-button>
+                <el-button text @click="goRoute('add', row.id)">编辑</el-button>
+                <el-button text @click="$refs.table?.remove(() => remove(row.id))">删除</el-button>
+              </template>
+            </el-table-column>
           </template>
         </RequestChartTable>
       </div>
@@ -158,6 +163,8 @@ export default {
   data() {
     return {
       getList,
+      remove,
+      downloadBatch,
       // 查询参数
       query: {
         pageNum: 1,
@@ -174,8 +181,6 @@ export default {
       dialogVisible: false,
       // 遮罩层
       loading: false,
-      // 选中数组
-      ids: [],
       // 总条数
       total: 0,
       // 表格数据
@@ -244,7 +249,7 @@ export default {
     switchGroup(index, data) {
       this.groupIndex = index
       this.query.groupId = data.id
-      this.search()
+      this.$refs.table?.getList()
     },
     getSelectUser(data) {
       this.userArray = data
@@ -262,53 +267,7 @@ export default {
     goRoute(path, id) {
       this.$router.push({ path: path, query: { id, groupId: this.query.groupId } })
     },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id)
-    },
-    /** 删除按钮操作 */
-    removeFn(type, id) {
-      if (type === 'mult' && !this.ids.length) {
-        this.msgInfo('请选择要删除项！')
-        return
-      }
-      const ids = id || this.ids.join(',')
-      this.$confirm('是否确认删除?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          return remove(ids)
-        })
-        .then(() => {
-          this.search()
-          this.msgSuccess('删除成功')
-        })
-        .catch(function () {})
-    },
 
-    /** 下载 */
-    downloadBatch(qrCode) {
-      if (!this.ids.length) {
-        this.msgInfo('请先勾选下载项！')
-        return
-      }
-      this.$confirm('是否确认下载所有图片吗?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          return downloadBatch(this.ids.join(','))
-        })
-        .then((res) => {
-          if (res != null) {
-            this.downloadBlob(blob, '批量员工活码.zip', 'zip')
-          }
-        })
-        .catch(function () {})
-    },
     // 新增分组
     onAddOrUpdateGroup() {
       this.$refs.groupForm.validate((validate) => {

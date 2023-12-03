@@ -16,14 +16,18 @@
       </el-form-item> -->
       </template>
 
-      <template #operation>
+      <template #operation="{ selectedIds }">
         <div class="mid-action mb0">
           <el-button type="primary" @click="$router.push('./add')">新建活码</el-button>
           <div>
-            <el-button type="primary" plain :disabled="multiGroupCode.length === 0" @click="handleBulkDownload">
+            <el-button
+              type="primary"
+              plain
+              :disabled="!selectedIds?.length"
+              @click="$refs.table?.download(downloadBatch, '批量群活码.zip', '确认下载所有图片吗?')">
               批量下载
             </el-button>
-            <el-button type="primary" plain :disabled="multiGroupCode.length === 0" @click="handleBulkRemove">
+            <el-button type="primary" plain :disabled="!selectedIds?.length" @click="$refs.table?.remove(remove)">
               批量删除
             </el-button>
           </div>
@@ -150,7 +154,7 @@
               ">
               分享
             </el-button>
-            <el-button text @click="handleRemove(row.id)">删除</el-button>
+            <el-button text @click="$refs.table?.remove(() => remove(row.id))">删除</el-button>
 
             <!-- <el-dropdown style="margin-left: 10px">
               <el-button text>
@@ -174,7 +178,7 @@
                     </el-button>
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <el-button text @click="handleRemove(row.id)">删除</el-button>
+                    <el-button text @click="$refs.table?.remove(() => remove(row.id))">删除</el-button>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -261,6 +265,8 @@ export default {
   data() {
     return {
       getList,
+      remove,
+      downloadBatch,
       query: {
         pageNum: 1,
         pageSize: 10,
@@ -270,7 +276,6 @@ export default {
       tagNames: '',
       loading: false,
       searchDate: '', // 查询日期
-      multiGroupCode: [], // 多选数据
       groupCodes: [], // 群活码数据
       total: 0, // 总数据量
       realCodeDialog: false, // 实际群码总数dialog
@@ -300,7 +305,7 @@ export default {
     },
     // 如果实际群码弹出框关闭,刷新数据
     realCodeDialog(val) {
-      if (val === false) this.getGroupCodes()
+      if (val === false) this.$refs.table?.getList()
     },
   },
   mounted() {},
@@ -331,69 +336,6 @@ export default {
       })
       this.tagNames = arr.join(',')
       this.query.tagIds = arr1.join(',')
-    },
-    // 批量下载
-    handleBulkDownload() {
-      const ids = this.multiGroupCode.map((group) => group.id)
-      this.$confirm('是否确认下载所有图片吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          return downloadBatch(ids + '')
-        })
-        .then((res) => {
-          if (res != null) {
-            let blob = new Blob([res], { type: 'application/zip' })
-            let url = window.URL.createObjectURL(blob)
-            const link = document.createElement('a') // 创建a标签
-            link.href = url
-            link.download = '批量群活码.zip' // 重命名文件
-            link.click()
-            URL.revokeObjectURL(url) // 释放内存
-          }
-        })
-        .catch(function () {})
-    },
-    // 批量删除
-    handleBulkRemove() {
-      this.$confirm('确认删除当前群活码?删除操作无法撤销，请谨慎操作。', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          const ids = this.multiGroupCode.map((group) => group.id)
-          remove(ids + '').then((res) => {
-            if (res.code === 200) {
-              this.getGroupCodes()
-            } else {
-            }
-          })
-        })
-        .catch(() => {})
-    },
-    // 删除
-    handleRemove(codeId) {
-      this.$confirm('确认删除当前群活码?删除操作无法撤销，请谨慎操作。', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          remove(codeId).then((res) => {
-            if (res.code === 200) {
-              this.getGroupCodes()
-            } else {
-            }
-          })
-        })
-        .catch(() => {})
-    },
-    // 处理多选
-    handleSelectionChange(val) {
-      this.multiGroupCode = val
     },
     // 打开实际群码窗口
     // handleRealCodeDialogOpen(groupCodeId, status) {
