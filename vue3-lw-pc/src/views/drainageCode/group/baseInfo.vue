@@ -1,23 +1,59 @@
 <template>
-  <div>
-    <el-form :model="form" :rules="rules" ref="form" label-width="140px">
-      <el-form-item label="活码名称:" prop="activityName">
-        <el-input v-model="form.activityName" placeholder="请输入名称" show-word-limit maxlength="15"></el-input>
-      </el-form-item>
-      <el-form-item label="活码客群:" prop="chatIdList">
-        <el-button type="primary" @click="selectGroupFn">选择客群</el-button>
-        <div class="sub-des">最多选择五个客群</div>
-        <TagEllipsis :list="groupList" limit="10" defaultProps="groupName"></TagEllipsis>
-      </el-form-item>
-      <el-form-item label="入群标签:" prop="tagIds">
-        <el-button type="primary" @click="showSelectTag = true">选择标签</el-button>
-        <div class="sub-des">通过此群活码进群的客户自动打上标签</div>
-        <TagEllipsis :list="tagList" limit="10"></TagEllipsis>
-      </el-form-item>
-      <el-form-item label="群满是否自动建群:">
-        <el-switch v-model="form.autoCreateRoom" :active-value="1" :inactive-value="0"></el-switch>
-        <div class="sub-des">默认以第一个群的群主作为新建群的群主</div>
-        <el-card v-if="form.autoCreateRoom" style="width: 600px; margin-top: 10px">
+  <div class="flex">
+    <div class="g-card fxauto">
+      <el-form
+        :model="form"
+        :rules="rules"
+        ref="form"
+        label-width="140px"
+        :class="isDetail && 'form-detail'"
+        :disabled="isDetail">
+        <el-form-item label="活码名称:" prop="activityName">
+          <el-input v-model="form.activityName" placeholder="请输入名称" show-word-limit maxlength="15"></el-input>
+          <el-tag
+            class="fr cp"
+            v-if="isDetail"
+            size="large"
+            effect="dark"
+            @click="
+              $router.push({
+                path: 'add',
+                query: {
+                  id: form.id,
+                  obj: encodeURIComponent(JSON.stringify(form)),
+                },
+              })
+            ">
+            编辑
+          </el-tag>
+        </el-form-item>
+        <el-form-item label="活码客群:" prop="chatIdList">
+          <template v-if="!isDetail">
+            <el-button type="primary" @click="selectGroupFn">选择客群</el-button>
+            <SelectGroup v-model:visible="showSelectModal" :defaults="groupList" @submit="setSelectData"></SelectGroup>
+            <div class="sub-des">最多选择五个客群</div>
+          </template>
+
+          <TagEllipsis :list="groupList" limit="10" defaultProps="groupName" emptyText></TagEllipsis>
+        </el-form-item>
+        <el-form-item label="入群标签:" prop="tagIds">
+          <template v-if="!isDetail">
+            <el-button type="primary" @click="showSelectTag = true">选择标签</el-button>
+            <SelectTag
+              v-model:visible="showSelectTag"
+              type="1"
+              :defaultValues="tagList"
+              @success="getSelectTag"></SelectTag>
+            <div class="sub-des">通过此群活码进群的客户自动打上标签</div>
+          </template>
+
+          <TagEllipsis :list="tagList" limit="10" emptyText></TagEllipsis>
+        </el-form-item>
+        <el-form-item label="群满是否自动建群:">
+          <el-switch v-model="form.autoCreateRoom" :active-value="1" :inactive-value="0"></el-switch>
+          <div class="sub-des">默认以第一个群的群主作为新建群的群主</div>
+        </el-form-item>
+        <template v-if="form.autoCreateRoom" label="">
           <el-form-item label="群名前缀:" prop="roomBaseName">
             <el-input
               show-word-limit
@@ -28,11 +64,16 @@
           <el-form-item label="群起始序号:" prop="roomBaseId">
             <el-input-number v-model="form.roomBaseId" controls-position="right" :min="1"></el-input-number>
           </el-form-item>
-        </el-card>
-      </el-form-item>
-    </el-form>
-    <SelectGroup v-model:visible="showSelectModal" :defaults="groupList" @submit="setSelectData"></SelectGroup>
-    <SelectTag v-model:visible="showSelectTag" type="1" :selected="tagList" @success="getSelectTag"></SelectTag>
+        </template>
+      </el-form>
+    </div>
+    <div class="fxnone g-margin-l" v-if="isDetail">
+      <CodeLink :data="form" />
+    </div>
+  </div>
+  <div class="g-footer-sticky" v-if="!isDetail">
+    <el-button @click="$router.back()">取消</el-button>
+    <el-button type="primary" @click="submit">确定</el-button>
   </div>
 </template>
 
@@ -49,6 +90,7 @@ export default {
   },
   components: {
     SelectGroup,
+    CodeLink: defineAsyncComponent(() => import('../components/CodeLink')),
   },
   data() {
     return {
@@ -73,12 +115,15 @@ export default {
       showSelectModal: false,
       groupList: [],
       tagList: [],
-      loading: false,
     }
   },
+  computed: {
+    isDetail() {
+      return this.$route.path.endsWith('detail')
+    },
+  },
   created() {
-    if (this.groupCodeId) this.form = JSON.parse(decodeURIComponent(this.$route.query.obj))
-    this.getGroupDetail()
+    this.getGroupDetail(this.$route.query.id)
   },
   methods: {
     selectGroupFn() {
@@ -110,22 +155,26 @@ export default {
         })
         .join(',')
     },
-    // 新增群活码
-    add() {
+    submit() {
       this.$refs.form.validate((valid) => {
         if (!valid) return
-        // 新增群活码数据至数据库
-        add(this.form).then((res) => {
-          if (res.code === 200) {
-            this.$emit('next', res.data.id, res.data)
-          } else if (res.code === 433) {
-            this.$refs['form'].fields[0].validateMessage = res.msg
-            this.$refs['form'].fields[0].validateState = 'error'
-            this.$emit('next')
-          } else {
-            this.$emit('next')
-          }
-        })
+        this.$store.loading = true
+        ;(this.form.id ? update : add)(this.form)
+          .then((res) => {
+            this.$router.back()
+            // if (res.code === 200) {
+            //   this.$emit('next', res.data.id, res.data)
+            // } else if (res.code === 433) {
+            //   this.$refs['form'].fields[0].validateMessage = res.msg
+            //   this.$refs['form'].fields[0].validateState = 'error'
+            //   this.$emit('next')
+            // } else {
+            //   this.$emit('next')
+            // }
+          })
+          .finally(() => {
+            this.$store.loading = false
+          })
       })
     },
     // 更新群活码
@@ -146,8 +195,10 @@ export default {
       })
     },
     // 获取群活码信息
-    getGroupDetail() {
-      if (!this.groupCodeId) return
+    getGroupDetail(id) {
+      if (id) this.form = JSON.parse(decodeURIComponent(this.$route.query.obj))
+      this.form.qrCode = this.form.codeUrl
+      this.form.name = this.form.activityName
       // 编辑回显
       let arr = []
       let names = this.form.tags ? this.form.tags.split(',') : []
@@ -172,11 +223,6 @@ export default {
       })
       this.groupList = arr2
       // // this.$forceUpdate()
-    },
-    // 提交
-    submit() {
-      if (!this.groupCodeId) return this.add()
-      this.update()
     },
   },
 }
@@ -212,9 +258,5 @@ export default {
     width: 120px;
     height: 120px;
   }
-}
-
-.el-form-item {
-  margin-bottom: 30px;
 }
 </style>

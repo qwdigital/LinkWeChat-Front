@@ -12,65 +12,59 @@
         v-if="active == 0"
         ref="baseForm"
         :rules="baseRules"
-        :model="baseForm"
+        :model="form"
         label-position="right"
         label-width="100px">
         <el-form-item label="活码名称" prop="qrName">
-          <el-input v-model="baseForm.qrName" maxlength="15" show-word-limit clearable></el-input>
-          <!-- <div class="sub-des">活码名称创建完成后不可修改</div> -->
+          <el-input v-model="form.qrName" maxlength="15" show-word-limit clearable></el-input>
+          <!-- <div class="g-tip">活码名称创建完成后不可修改</div> -->
         </el-form-item>
         <el-form-item label="活码分组" prop="qrGroupId">
-          <el-select v-model="baseForm.qrGroupId">
+          <el-select v-model="form.qrGroupId">
             <el-option v-for="item in codeCategoryList" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="自动通过好友">
-          <el-switch v-model="baseForm.qrAutoAdd" :active-value="1" :inactive-value="0"></el-switch>
-          <div class="sub-des">开启后，客户添加该企业微信时，无需好友验证，将会自动添加成功</div>
+          <el-switch v-model="form.qrAutoAdd" :active-value="1" :inactive-value="0"></el-switch>
+          <div class="g-tip">开启后，客户添加该企业微信时，无需好友验证，将会自动添加成功</div>
         </el-form-item>
-        <el-form-item label="新客户标签">
-          <template v-for="(item, index) in baseForm.weEmpleCodeTags">
-            <el-tag v-if="item.tagName" :key="index">{{ item.tagName }}</el-tag>
-          </template>
-          <div>
-            <el-button type="primary" icon="el-icon-plus" @click="selectedFn">
-              {{ baseForm.weEmpleCodeTags.length == 0 ? '添加' : '编辑' }}标签
-            </el-button>
-          </div>
-          <div class="sub-des">添加成功后，该客户将会自动设置以上选择标签</div>
+        <el-form-item label="新客标签">
+          <el-button type="primary" @click="selectedFn">选择标签</el-button>
+          <div class="g-tip">添加成功后，该客户将会自动打上选中的标签</div>
+          <TagEllipsis :list="form.weEmpleCodeTags" limit="10" defaultProps="tagName"></TagEllipsis>
         </el-form-item>
         <el-form-item>
           <el-button plain @click="cancelFn">取消</el-button>
-          <el-button type="primary" @click="nextStep(1)">下一步</el-button>
+          <el-button type="primary" @click="nextStep(active + 1)">下一步</el-button>
         </el-form-item>
       </el-form>
       <el-form
         v-if="active == 1"
         ref="codeForm"
         :rules="codeRules"
-        :model="codeForm"
+        :model="form"
         label-position="right"
         label-width="100px">
         <el-form-item label="活码类型" prop="qrType">
-          <el-radio-group v-model="codeForm.qrType" @change="changeType">
+          <el-radio-group v-model="form.qrType" @change="changeType">
             <el-radio :label="1">单人</el-radio>
             <el-radio :label="2">多人</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="排班类型" prop="qrRuleType">
-          <el-radio-group v-model="codeForm.qrRuleType">
+          <el-radio-group v-model="form.qrRuleType">
             <el-radio :label="1">全天在线</el-radio>
-            <el-radio :label="2" :disabled="codeForm.qrType === 1">自动排班</el-radio>
+            <el-radio :label="2" :disabled="form.qrType === 1">自动排班</el-radio>
           </el-radio-group>
-          <div class="sub-des">
-            <span v-if="codeForm.qrRuleType == 1">多人全天在线时随机分配，单人活码不支持排班</span>
-            <span v-else-if="codeForm.qrRuleType == 2">
+          <div class="g-tip">
+            <span v-if="form.qrRuleType == 1">多人全天在线时随机分配，单人活码不支持排班</span>
+            <span v-else-if="form.qrRuleType == 2">
               选择自动排班时，默认生成一条全天在线规则，不可删除，保证有员工全天在线
             </span>
           </div>
         </el-form-item>
-        <el-form-item label="排班方式" prop="qrRuleMode" v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
-          <el-radio-group v-model="codeForm.qrRuleMode">
+        <el-form-item label="排班方式" prop="qrRuleMode" v-if="form.qrType == 2 && form.qrRuleType == 1">
+          <el-radio-group v-model="form.qrRuleMode">
             <el-radio :label="1">
               <el-popover placement="top" trigger="hover">
                 <template #reference>
@@ -106,54 +100,54 @@
             </el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="活码员工" prop="weEmpleCodeUseScops" v-if="codeForm.qrRuleType == 1">
-          <div v-if="codeForm.weEmpleCodeUseScops.length > 0 && codeForm.qrType == 1">
-            <el-tag v-for="(item, index) in codeForm.weEmpleCodeUseScops" :key="index">
+        <el-form-item label="活码员工" prop="weEmpleCodeUseScops" v-if="form.qrRuleType == 1">
+          <div v-if="form.weEmpleCodeUseScops.length > 0 && form.qrType == 1">
+            <el-tag v-for="(item, index) in form.weEmpleCodeUseScops" :key="index">
               {{ item.businessName }}
             </el-tag>
           </div>
           <el-button type="primary" plain @click="onSelectUser">
-            {{ codeForm.weEmpleCodeUseScops.length ? '修改' : '选择' }}员工
+            {{ form.weEmpleCodeUseScops.length ? '修改' : '选择' }}员工
           </el-button>
-          <div class="sub-des">单人活码只能选择一个员工，多人活码支持选择多个员工</div>
-          <div v-if="codeForm.weEmpleCodeUseScops.length > 0 && codeForm.qrType == 2">
-            <MemeberList :list="codeForm.weEmpleCodeUseScops" @update="getList"></MemeberList>
+          <div class="g-tip">单人活码只能选择一个员工，多人活码支持选择多个员工</div>
+          <div v-if="form.weEmpleCodeUseScops.length > 0 && form.qrType == 2">
+            <MemeberList :list="form.weEmpleCodeUseScops" @update="getList"></MemeberList>
             <!-- <el-tag
                   class="user-el-tag"
 
-                  v-for="(item, index) in codeForm.weEmpleCodeUseScops"
+                  v-for="(item, index) in form.weEmpleCodeUseScops"
                   :key="index"
                 >
                   {{ item.businessName }}
                   <el-input-number
                     size="mini"
-                    v-model="codeForm.weEmpleCodeUseScops[index].businessNumber"
+                    v-model="form.weEmpleCodeUseScops[index].businessNumber"
                     :min="0"
                     :max="100"
                   ></el-input-number>
                 </el-tag> -->
           </div>
         </el-form-item>
-        <el-form-item label="备用员工" prop="weSpareUseScops" v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
-          <div v-if="codeForm.weSpareUseScops.length > 0">
-            <el-tag v-for="(item, index) in codeForm.weSpareUseScops" :key="index">
+        <el-form-item label="备用员工" prop="weSpareUseScops" v-if="form.qrType == 2 && form.qrRuleType == 1">
+          <div v-if="form.weSpareUseScops.length > 0">
+            <el-tag v-for="(item, index) in form.weSpareUseScops" :key="index">
               {{ item.businessName }}
             </el-tag>
           </div>
           <el-button type="primary" plain @click="onSelectSpareUser">
-            {{ codeForm.weSpareUseScops.length ? '修改' : '选择' }}备用员工
+            {{ form.weSpareUseScops.length ? '修改' : '选择' }}备用员工
           </el-button>
         </el-form-item>
-        <el-form-item label="开启备用员工" prop="openSpareUser" v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
-          <el-switch v-model="codeForm.openSpareUser" :active-value="1" :inactive-value="0"></el-switch>
-          <div class="sub-des">员工当日添加用户数达每日上限后添加至备用员工。若如关闭，则自动循环下一个上限</div>
+        <el-form-item label="开启备用员工" prop="openSpareUser" v-if="form.qrType == 2 && form.qrRuleType == 1">
+          <el-switch v-model="form.openSpareUser" :active-value="1" :inactive-value="0"></el-switch>
+          <div class="g-tip">员工当日添加用户数达每日上限后添加至备用员工。若如关闭，则自动循环下一个上限</div>
         </el-form-item>
-        <el-form-item label="添加同一员工" prop="openSpareUser" v-if="codeForm.qrType == 2 && codeForm.qrRuleType == 1">
-          <el-switch v-model="codeForm.isExclusive" :active-value="1" :inactive-value="0"></el-switch>
-          <div class="sub-des">开启后，相同客户会优先添加到同一个员工。</div>
+        <el-form-item label="添加同一员工" prop="openSpareUser" v-if="form.qrType == 2 && form.qrRuleType == 1">
+          <el-switch v-model="form.isExclusive" :active-value="1" :inactive-value="0"></el-switch>
+          <div class="g-tip">开启后，相同客户会优先添加到同一个员工。</div>
         </el-form-item>
-        <el-form-item v-if="codeForm.qrRuleType == 2" label="活码排班" prop="empleCodeRosterDto">
-          <template v-for="(item, index) in codeForm.empleCodeRosterDto" :key="item.id">
+        <el-form-item v-if="form.qrRuleType == 2" label="活码排班" prop="empleCodeRosterDto">
+          <template v-for="(item, index) in form.empleCodeRosterDto" :key="item.id">
             <el-card class="box-card roster-card">
               <div style="display: flex; justify-content: flex-end">
                 <el-button v-if="index !== 0" type="text" icon="el-icon-delete" @click="onRemoveRoster(index)">
@@ -209,19 +203,51 @@
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button @click="active = 0">上一步</el-button>
-          <el-button type="primary" @click="nextStep(2)">下一步</el-button>
+          <el-button @click="active--">上一步</el-button>
+          <el-button type="primary" @click="nextStep(active + 1)">下一步</el-button>
         </el-form-item>
       </el-form>
-      <AddMaterial
-        v-if="active === 2"
-        :moduleType="4"
-        :otherType="1"
-        @update="active = 1"
-        @submit="getWelData"
-        :baseData="materialData"
-        isTransData
-        :showModle="true"></AddMaterial>
+      <!-- <welcome-content v-loading="loading" :showBack="true" @update="active = 2" :baseData="materialData" @submit="getWelData"></welcome-content> -->
+      <template v-if="active == 2">
+        <div class="g-card overhide">
+          <div class="g-card-title">欢迎语设置</div>
+          <el-form label-position="right" label-width="100px">
+            <el-form-item style="margin-bottom: 10px" label="欢迎语类型">
+              <el-radio-group v-model="form.qrWelcomeOpen">
+                <el-radio :label="1">不发送欢迎语</el-radio>
+                <el-radio :label="2">
+                  活码欢迎语
+                  <div class="bfc-p" v-if="form.qrWelcomeOpen == 2">
+                    <el-checkbox v-model="form.qrPriorityUserWelcome" :true-label="0" :false-label="1">
+                      如果员工有员工欢迎语，则优先发送员工欢迎语
+                      <el-button
+                        text
+                        size="default"
+                        @click="$router.push({ name: 'templateWelAdd', query: { tplType: 2 } })">
+                        去设置
+                      </el-button>
+                    </el-checkbox>
+                  </div>
+                </el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-form>
+        </div>
+        <template v-if="form.qrWelcomeOpen == 1">
+          <el-button @click="active--">上一步</el-button>
+          <el-button type="primary" size="default" @click="submit()">确定</el-button>
+        </template>
+
+        <AddMaterial
+          v-else
+          :moduleType="4"
+          :otherType="1"
+          @update="active = 1"
+          @submit="getWelData"
+          :baseData="materialData"
+          isTransData
+          :showModle="true"></AddMaterial>
+      </template>
     </div>
 
     <!-- 选择标签弹窗 -->
@@ -232,22 +258,22 @@
 
     <!-- 选择使用员工弹窗 -->
     <SelectUser
-      :key="codeForm.qrType"
+      :key="form.qrType"
       :defaultValues="selectedUserList"
       v-model:visible="dialogVisibleSelectUser"
       title="选择使用员工"
       :isOnlyLeaf="true"
-      :isSigleSelect="codeForm.qrType == 1"
+      :isSigleSelect="form.qrType == 1"
       @success="selectedUser"></SelectUser>
 
     <!-- 选择使用备用员工弹窗 -->
     <SelectUser
-      :key="codeForm.qrType + '-only'"
+      :key="form.qrType + '-only'"
       :defaultValues="selectedSpareUserList"
       v-model:visible="dialogVisibleSelectSpareUser"
       title="选择使用备用员工"
       :isOnlyLeaf="true"
-      :isSigleSelect="codeForm.qrType == 1"
+      :isSigleSelect="form.qrType == 1"
       @success="selectedSpareUser"></SelectUser>
   </div>
 </template>
@@ -266,19 +292,12 @@ export default {
   data() {
     return {
       operationIndex: null,
-      formTemp: {}, // 编辑基础数据
       materialData: {
         templateInfo: '',
         materialMsgList: [],
       },
       title: '新建',
       active: 0,
-      baseForm: {
-        qrName: '',
-        qrGroupId: '',
-        qrAutoAdd: 1, // 自动通过
-        weEmpleCodeTags: [], // 标签
-      },
       baseRules: {
         qrName: [
           {
@@ -295,7 +314,12 @@ export default {
           },
         ],
       },
-      codeForm: {
+      form: {
+        qrName: '',
+        qrGroupId: '',
+        qrAutoAdd: 1, // 自动通过
+        weEmpleCodeTags: [], // 标签
+        qrWelcomeOpen: 1,
         qrType: 1,
         qrRuleType: 1,
         qrRuleMode: 1,
@@ -371,7 +395,6 @@ export default {
       dialogVisibleSelectTag: false,
       dialogVisibleSelectMaterial: false,
       dialogVisibleSelectWel: false,
-      loading: false,
       codeCategoryList: [], // 活码分组
       selectedUserList: [], // 需要回显的选中员工
       selectedSpareUserList: [], // 需要回显的选中备用员工
@@ -383,7 +406,7 @@ export default {
     let id = this.$route.query.id
     let groupId = this.$route.query.groupId
     if (groupId) {
-      this.baseForm.qrGroupId = groupId
+      this.form.qrGroupId = groupId
     }
     this.getCodeCategoryList()
     if (id) {
@@ -393,7 +416,7 @@ export default {
   },
   methods: {
     getList(data) {
-      this.codeForm.weEmpleCodeUseScops = data
+      this.form.weEmpleCodeUseScops = data
     },
     checkStartEnd(e, index) {
       this.timeConflict = false
@@ -403,9 +426,9 @@ export default {
       if (goto) {
         // if (this.operationIndex > 0) {
         if (
-          this.codeForm.empleCodeRosterDto[this.operationIndex].weekday.length &&
-          (this.codeForm.empleCodeRosterDto[this.operationIndex].endDate ||
-            this.codeForm.empleCodeRosterDto[this.operationIndex].startDate)
+          this.form.empleCodeRosterDto[this.operationIndex].weekday.length &&
+          (this.form.empleCodeRosterDto[this.operationIndex].endDate ||
+            this.form.empleCodeRosterDto[this.operationIndex].startDate)
         ) {
           this.someTimeConflict()
         }
@@ -417,10 +440,10 @@ export default {
       let userList = [] // 当前重复人员
       let passList = [] // 当前之前的人员 不包含默认的第一条
 
-      let current = this.codeForm.empleCodeRosterDto[this.operationIndex].weEmpleCodeUseScops.map((i) => {
+      let current = this.form.empleCodeRosterDto[this.operationIndex].weEmpleCodeUseScops.map((i) => {
         return { userId: i.businessId, name: i.businessName }
       })
-      this.codeForm.empleCodeRosterDto.forEach((data, key) => {
+      this.form.empleCodeRosterDto.forEach((data, key) => {
         data.weEmpleCodeUseScops.map((i, index) => {
           if (key != this.operationIndex) {
             passList.push({
@@ -443,9 +466,9 @@ export default {
       })
       // 重复人员下的时间校验
       let repeatWeek = []
-      let currentWeekday = this.codeForm.empleCodeRosterDto[this.operationIndex].weekday
+      let currentWeekday = this.form.empleCodeRosterDto[this.operationIndex].weekday
       userList.forEach((user) => {
-        const arr = this.codeForm.empleCodeRosterDto[user.index].weekday
+        const arr = this.form.empleCodeRosterDto[user.index].weekday
         for (var i = 0; i < arr.length; i++) {
           if (currentWeekday.indexOf(arr[i]) != -1) {
             user.week.push(arr[i])
@@ -454,18 +477,14 @@ export default {
       })
       userList.forEach((ddd) => {
         if (ddd.week.length) {
-          let start = this.codeForm.empleCodeRosterDto[ddd.index].startDate
-          let end = this.codeForm.empleCodeRosterDto[ddd.index].endDate
+          let start = this.form.empleCodeRosterDto[ddd.index].startDate
+          let end = this.form.empleCodeRosterDto[ddd.index].endDate
           if (start && end) {
-            if (this.codeForm.empleCodeRosterDto[this.operationIndex].startDate) {
-              ddd.goto1 = this.checkAuditTime(
-                start,
-                end,
-                this.codeForm.empleCodeRosterDto[this.operationIndex].startDate,
-              )
+            if (this.form.empleCodeRosterDto[this.operationIndex].startDate) {
+              ddd.goto1 = this.checkAuditTime(start, end, this.form.empleCodeRosterDto[this.operationIndex].startDate)
             }
-            if (this.codeForm.empleCodeRosterDto[this.operationIndex].endDate) {
-              ddd.goto2 = this.checkAuditTime(start, end, this.codeForm.empleCodeRosterDto[this.operationIndex].endDate)
+            if (this.form.empleCodeRosterDto[this.operationIndex].endDate) {
+              ddd.goto2 = this.checkAuditTime(start, end, this.form.empleCodeRosterDto[this.operationIndex].endDate)
             }
           }
         }
@@ -490,10 +509,10 @@ export default {
       if (this.operationIndex === 0) {
         return true
       }
-      let current = this.codeForm.empleCodeRosterDto[this.operationIndex].weEmpleCodeUseScops.map((i) => {
+      let current = this.form.empleCodeRosterDto[this.operationIndex].weEmpleCodeUseScops.map((i) => {
         return { userId: i.businessId, name: i.businessName }
       })
-      let first = this.codeForm.empleCodeRosterDto[0].weEmpleCodeUseScops.map((i) => {
+      let first = this.form.empleCodeRosterDto[0].weEmpleCodeUseScops.map((i) => {
         return { userId: i.businessId, name: i.businessName }
       })
       let result = []
@@ -554,7 +573,7 @@ export default {
     },
     changeType(e) {
       if (e === 1) {
-        this.codeForm.qrRuleType = 1
+        this.form.qrRuleType = 1
       }
     },
     nextStep(nextStep) {
@@ -567,11 +586,11 @@ export default {
       this.$refs[form].validate((validate) => {
         if (validate) {
           if (nextStep === 2) {
-            if (this.codeForm.qrRuleType === 2) {
+            if (this.form.qrRuleType === 2) {
               let go = true
               let week = true
               let time = true
-              this.codeForm.empleCodeRosterDto.forEach((ddd) => {
+              this.form.empleCodeRosterDto.forEach((ddd) => {
                 if (!ddd.weEmpleCodeUseScops.length) {
                   go = false
                 }
@@ -611,19 +630,19 @@ export default {
     /** 获取详情 */
     getDetailFn(id) {
       getDetail(id).then((res) => {
-        this.formTemp = res.data
+        this.form = res.data
         let base = JSON.parse(JSON.stringify(res.data))
-        this.baseForm = {
+        Object.assign(this.form, {
           qrName: base.name,
           qrGroupId: base.groupId,
           qrAutoAdd: base.autoAdd, // 自动通过
           weEmpleCodeTags: base.qrTags, // 标签
-        }
-        this.codeForm.qrType = base.type
-        this.codeForm.qrRuleType = base.ruleType
-        this.codeForm.qrRuleMode = base.ruleMode
-        this.codeForm.openSpareUser = base.openSpareUser
-        this.codeForm.isExclusive = base.isExclusive
+        })
+        this.form.qrType = base.type
+        this.form.qrRuleType = base.ruleType
+        this.form.qrRuleMode = base.ruleMode
+        this.form.openSpareUser = base.openSpareUser
+        this.form.isExclusive = base.isExclusive
         if (base.ruleType === 1) {
           let arr = []
           let spareArr = []
@@ -645,8 +664,8 @@ export default {
               spareArr.push(obj)
             }
           })
-          this.codeForm.weEmpleCodeUseScops = arr
-          this.codeForm.weSpareUseScops = spareArr
+          this.form.weEmpleCodeUseScops = arr
+          this.form.weSpareUseScops = spareArr
         } else {
           let arr = []
           base.qrUserInfos.forEach((dd) => {
@@ -662,7 +681,7 @@ export default {
             }
             arr.push(obj)
           })
-          this.codeForm.empleCodeRosterDto = arr
+          this.form.empleCodeRosterDto = arr
         }
         this.materialData = {
           templateInfo: base.qrAttachments ? base.qrAttachments[0].content : '',
@@ -698,11 +717,11 @@ export default {
       params.userIds += ''
       params.departmentIds += ''
       // 全天排班
-      if (this.codeForm.qrRuleType == 1) {
-        this.codeForm.weEmpleCodeUseScops = selectedUserList
+      if (this.form.qrRuleType == 1) {
+        this.form.weEmpleCodeUseScops = selectedUserList
       } else {
         // 自动排班
-        this.codeForm.empleCodeRosterDto[this.selectedRosterIndex].weEmpleCodeUseScops = selectedUserList
+        this.form.empleCodeRosterDto[this.selectedRosterIndex].weEmpleCodeUseScops = selectedUserList
         this.checkStartEnd(null, this.selectedRosterIndex)
       }
     },
@@ -724,11 +743,11 @@ export default {
       params.spareUserIds += ''
       params.departmentIds += ''
       // 全天排班
-      if (this.codeForm.qrRuleType == 1) {
-        this.codeForm.weSpareUseScops = selectedSpareUserList
+      if (this.form.qrRuleType == 1) {
+        this.form.weSpareUseScops = selectedSpareUserList
       } else {
         // 自动排班
-        this.codeForm.empleCodeRosterDto[this.selectedRosterIndex].weSpareUseScops = selectedSpareUserList
+        this.form.empleCodeRosterDto[this.selectedRosterIndex].weSpareUseScops = selectedSpareUserList
         this.checkStartEnd(null, this.selectedRosterIndex)
       }
     },
@@ -736,10 +755,10 @@ export default {
     onSelectUser(index) {
       // 设置回显数据
       this.selectedUserList = []
-      if (this.codeForm.qrRuleType == 2) {
+      if (this.form.qrRuleType == 2) {
         this.selectedRosterIndex = index
         let arr = []
-        arr = this.codeForm.empleCodeRosterDto[this.selectedRosterIndex].weEmpleCodeUseScops.map((dd) => {
+        arr = this.form.empleCodeRosterDto[this.selectedRosterIndex].weEmpleCodeUseScops.map((dd) => {
           return {
             userId: dd.businessId,
             // id: dd.businessIdType === 1 ? dd.businessId:'',
@@ -747,11 +766,11 @@ export default {
           }
         })
         this.selectedUserList = arr
-        // this.selectedUserList = [...this.codeForm.weEmpleCodeUseScops[index]]
+        // this.selectedUserList = [...this.form.weEmpleCodeUseScops[index]]
       } else {
-        // this.selectedUserList = [...this.codeForm.weEmpleCodeUseScops]
+        // this.selectedUserList = [...this.form.weEmpleCodeUseScops]
         let arr = []
-        arr = this.codeForm.weEmpleCodeUseScops.map((dd) => {
+        arr = this.form.weEmpleCodeUseScops.map((dd) => {
           return {
             userId: dd.businessId,
             // id: dd.businessIdType === 1 ? dd.businessId:'',
@@ -766,10 +785,10 @@ export default {
     onSelectSpareUser(index) {
       // 设置回显数据
       this.selectedSpareUserList = []
-      if (this.codeForm.qrRuleType == 2) {
+      if (this.form.qrRuleType == 2) {
         this.selectedRosterIndex = index
         let arr = []
-        arr = this.codeForm.empleCodeRosterDto[this.selectedRosterIndex].weSpareUseScops.map((dd) => {
+        arr = this.form.empleCodeRosterDto[this.selectedRosterIndex].weSpareUseScops.map((dd) => {
           return {
             userId: dd.businessId,
             // id: dd.businessIdType === 1 ? dd.businessId:'',
@@ -777,11 +796,11 @@ export default {
           }
         })
         this.selectedSpareUserList = arr
-        // this.selectedSpareUserList = [...this.codeForm.weSpareUseScops[index]]
+        // this.selectedSpareUserList = [...this.form.weSpareUseScops[index]]
       } else {
-        // this.selectedSpareUserList = [...this.codeForm.weSpareUseScops]
+        // this.selectedSpareUserList = [...this.form.weSpareUseScops]
         let arr = []
-        arr = this.codeForm.weSpareUseScops.map((dd) => {
+        arr = this.form.weSpareUseScops.map((dd) => {
           return {
             userId: dd.businessId,
             // id: dd.businessIdType === 1 ? dd.businessId:'',
@@ -794,7 +813,7 @@ export default {
     },
     // 添加工作周期
     onAddRoster() {
-      this.codeForm.empleCodeRosterDto.push({
+      this.form.empleCodeRosterDto.push({
         weEmpleCodeUseScops: [], // 员工
         weekday: [], // 周期
         type: 1,
@@ -805,18 +824,18 @@ export default {
     // 删除工作周期
     onRemoveRoster(index) {
       this.timeConflict = false
-      this.codeForm.empleCodeRosterDto.splice(index, 1)
+      this.form.empleCodeRosterDto.splice(index, 1)
     },
     // 工作周期时间变化
     onRosterTimeChange(e, index) {
       const [startTime, endTime] = e
-      this.codeForm.empleCodeRosterDto[index].startDate = startTime
-      this.codeForm.empleCodeRosterDto[index].endDate = endTime
-      this.codeForm.empleCodeRosterDto[index].time = e
+      this.form.empleCodeRosterDto[index].startDate = startTime
+      this.form.empleCodeRosterDto[index].endDate = endTime
+      this.form.empleCodeRosterDto[index].time = e
     },
     selectedFn() {
-      if (this.baseForm.weEmpleCodeTags) {
-        this.selectedTagList = this.baseForm.weEmpleCodeTags.map((dd) => ({
+      if (this.form.weEmpleCodeTags) {
+        this.selectedTagList = this.form.weEmpleCodeTags.map((dd) => ({
           tagId: dd.tagId,
           name: dd.tagName,
         }))
@@ -824,7 +843,7 @@ export default {
       this.dialogVisibleSelectTag = true
     },
     submitSelectTag(data) {
-      this.baseForm.weEmpleCodeTags = data.map((d) => ({
+      this.form.weEmpleCodeTags = data.map((d) => ({
         tagId: d.tagId,
         tagName: d.name,
       }))
@@ -861,20 +880,24 @@ export default {
       return arr
     },
     submit(data) {
-      this.loading = true
-      let list = data.attachments
       let myObj = {
-        attachments: [
-          {
-            content: data.templateInfo,
-            msgType: 'text',
-          },
-        ],
+        attachments: [],
       }
-      myObj.attachments.push(...list)
-      if (this.codeForm.qrRuleType === 1) {
+      if (data) {
+        let list = data.attachments
+        myObj = {
+          attachments: [
+            {
+              content: data.templateInfo,
+              msgType: 'text',
+            },
+          ],
+        }
+        myObj.attachments.push(...list)
+      }
+      if (this.form.qrRuleType === 1) {
         let qrUserInfosDetail = []
-        this.codeForm.weEmpleCodeUseScops.forEach((uu) => {
+        this.form.weEmpleCodeUseScops.forEach((uu) => {
           let objDetail = {
             userId: uu.businessId,
             schedulingNum: uu.businessNumber,
@@ -883,15 +906,15 @@ export default {
         })
         let obj = {
           type: 0,
-          scopeId: this.codeForm.weEmpleCodeUseScops[0].scopeId ? this.codeForm.weEmpleCodeUseScops[0].scopeId : '',
-          userIds: this.codeForm.weEmpleCodeUseScops.map((dd) => dd.businessId),
-          spareUserIds: this.codeForm.weSpareUseScops.map((ss) => ss.businessId),
+          scopeId: this.form.weEmpleCodeUseScops[0].scopeId ? this.form.weEmpleCodeUseScops[0].scopeId : '',
+          userIds: this.form.weEmpleCodeUseScops.map((dd) => dd.businessId),
+          spareUserIds: this.form.weSpareUseScops.map((ss) => ss.businessId),
           qrUserInfosDetail: qrUserInfosDetail,
         }
-        this.codeForm.qrUserInfos = [obj]
+        this.form.qrUserInfos = [obj]
       } else {
-        this.codeForm.qrUserInfos = []
-        this.codeForm.empleCodeRosterDto.forEach((fff) => {
+        this.form.qrUserInfos = []
+        this.form.empleCodeRosterDto.forEach((fff) => {
           let qrUserInfosDetail = []
           fff.weEmpleCodeUseScops.forEach((uu) => {
             let objDetail = {
@@ -909,26 +932,26 @@ export default {
             workCycle: fff.weekday,
             qrUserInfosDetail: qrUserInfosDetail,
           }
-          this.codeForm.qrUserInfos.push(obj)
+          this.form.qrUserInfos.push(obj)
         })
       }
-      this.baseForm.qrTags = this.baseForm.weEmpleCodeTags.map((ccc) => ccc.tagId)
-      let obj = Object.assign({}, this.baseForm, this.codeForm, myObj)
+      this.form.qrTags = this.form.weEmpleCodeTags.map((ccc) => ccc.tagId)
+      let obj = Object.assign({}, this.form, myObj)
       delete obj.weEmpleCodeTags
       delete obj.weEmpleCodeUseScops
       delete obj.empleCodeRosterDto
-      if (this.formTemp.id) {
-        obj.qrId = this.formTemp.id
-        obj.configId = this.formTemp.configId
+      if (this.form.id) {
+        obj.qrId = this.form.id
+        obj.configId = this.form.configId
       }
-      ;(this.formTemp.id ? update : add)(obj)
+      this.$store.loading = true
+      ;(this.form.id ? update : add)(obj)
         .then(({ data }) => {
           this.msgSuccess('操作成功')
-          this.loading = false
           this.$router.back()
         })
-        .catch(() => {
-          this.loading = false
+        .finally(() => {
+          this.$store.loading = false
         })
     },
   },
@@ -936,13 +959,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.sub-des {
-  font-size: 12px;
-
-  font-weight: 400;
-  color: var(--font-black-6);
-}
-
 .add-continue {
   cursor: pointer;
   font-size: 14px;

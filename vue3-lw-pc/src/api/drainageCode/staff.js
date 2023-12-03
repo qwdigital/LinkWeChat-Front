@@ -164,3 +164,55 @@ export function getTotal(data) {
     params: data,
   })
 }
+
+/**
+ * 获取活码折线图统计
+ * @param {*} data
+ * {
+ * groupId,string,false,,,分组id
+qrId,integer,false,,,活码Id
+qrName,string,false,,,活码名称
+qrUserIds,string,false,,,员工ID
+}
+ */
+export function getStatisticsLine(data) {
+  return request({
+    url: base + '/qr/scan/line',
+    params: data,
+  })
+}
+
+/**
+ * 获取活码表格统计
+ * @param {*} data
+ * {
+ * groupId,string,false,,,分组id
+qrId,integer,false,,,活码Id
+qrName,string,false,,,活码名称
+qrUserIds,string,false,,,员工ID
+}
+ */
+export function getStatisticsTable(data) {
+  return request({
+    url: base + '/qr/scan/sheet',
+    params: data,
+  })
+}
+
+/**
+ * 导出活码表格统计
+ * @param {*} data
+ * {
+ * groupId,string,false,,,分组id
+qrId,integer,false,,,活码Id
+qrName,string,false,,,活码名称
+qrUserIds,string,false,,,员工ID
+}
+ */
+export function exportStatisticsTable(data) {
+  return request({
+    url: base + '/qr/scan/sheet/export',
+    params: data,
+    responseType: 'blob',
+  })
+}

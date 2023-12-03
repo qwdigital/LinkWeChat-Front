@@ -2,32 +2,30 @@
 import BaseInfo from './baseInfo'
 
 export default {
-  components: { BaseInfo },
+  components: {
+    BaseInfo,
+    analyse: defineAsyncComponent(() => import('./analyse')),
+    statistics: defineAsyncComponent(() => import('./statistics')),
+    CodeLink: defineAsyncComponent(() => import('../components/CodeLink')),
+  },
   data() {
-    return {
-      groupCode: null,
-      groupCodeId: ''
-    }
+    return {}
   },
-  created() {
-    this.groupCodeId = this.$route.query.groupCodeId
-  },
-  methods: {
-    save() {
-      this.$refs.baseInfo.submit()
-      this.$router.back()
-    }
-  }
+  created() {},
+  methods: {},
 }
 </script>
 
 <template>
-  <div class="page">
-    <BaseInfo ref="baseInfo" :groupCodeId="groupCodeId"></BaseInfo>
-
-    <div class="ac">
-      <el-button @click="$router.back()"> 取消 </el-button>
-      <el-button type="primary" @click="save"> 保存 </el-button>
-    </div>
-  </div>
+  <CacheElTabs #="{ opened }">
+    <el-tab-pane label="活码信息">
+      <BaseInfo />
+    </el-tab-pane>
+    <el-tab-pane label="客群统计">
+      <analyse v-if="opened.includes('1')" />
+    </el-tab-pane>
+    <el-tab-pane label="活码统计">
+      <statistics v-if="opened.includes('2')" />
+    </el-tab-pane>
+  </CacheElTabs>
 </template>
