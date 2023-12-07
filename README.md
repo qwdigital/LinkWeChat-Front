@@ -2,7 +2,7 @@
 
 本仓库为 LinkWeChat 的前端源码库，技术栈采用 [vue3](https://cn.vuejs.org/) [vite](https://cn.vitejs.dev/) [pinia](https://pinia.vuejs.org/zh/) [element-plus](https://element-plus.gitee.io/zh-CN/)
 
-vue2 技术栈版本（停止维护）可切换至 master 分支查看，具体说明参见[更新日志](./RELEASES.md)中 v5.0.0 版本说明
+vue2 技术栈版本（停止维护）可切换至 master-vue2 分支查看，具体说明参见[更新日志](./RELEASES.md)中 v5.0.0 版本说明
 
 具体项目说明及后端库请移步至 [LinkWeChat](https://gitee.com/LinkWeChat/link-wechat) 查看。
 
@@ -53,7 +53,7 @@ vue2 技术栈版本（停止维护）可切换至 master 分支查看，具体�
 
 # 安装与运行
 
-**关于 Node，推荐 16.x 版本**
+**关于 Node，推荐 16.x 及以上版本**
 
 这里以 vue3-lw-pc 管理端项目运行示例
 
