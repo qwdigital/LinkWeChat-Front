@@ -41,7 +41,7 @@
 
 <script>
 // const jsQR = require('jsqr')
-import { getDetail } from '@/api/intelligentShortLink'
+import { getDetail } from './api'
 import { touchTypeDict } from './mixin'
 
 export default {
@@ -52,16 +52,18 @@ export default {
       touchTypeDict,
       id: '',
       promotionId: '',
+      type: '',
       // qrCodeUrl: '',
     }
   },
   onLoad(options) {
-    console.log('onLoad options', options)
+    // console.log('onLoad options', options)
     this.id = options.id
     this.promotionId = options.promotionId
+    this.type = options.sence
   },
   onReady() {
-    this.getDetail(this.id + (this.promotionId ? '/' + this.promotionId : ''))
+    this.getDetail(this.id + (this.promotionId ? '/' + this.promotionId : ''), this.type)
   },
   created() {
     // let id = this.$route.query.id
@@ -71,10 +73,10 @@ export default {
   },
   mounted() {},
   methods: {
-    getDetail(path) {
+    getDetail(path, type) {
       console.log('path', path)
       this.loading = true
-      getDetail(path)
+      getDetail(path, type)
         .then(({ data }) => {
           // if ([5, 6].includes(+data.type)) {
           //   var query = uni.createSelectorQuery().in(this)
@@ -131,6 +133,12 @@ export default {
           //       img.src = data.qrCode
           //     })
           // }
+
+          if (type == 'qr') {
+            data.type = 4
+          } else if (type == 'gqr') {
+            data.type = 5
+          }
           this.data = data
           console.log('data', data)
           uni.setNavigationBarTitle({
