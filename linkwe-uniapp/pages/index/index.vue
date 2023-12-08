@@ -138,9 +138,10 @@ export default {
             data.type = 4
           } else if (type == 'gqr') {
             data.type = 5
+            data.qrCode = data.codeUrl
           }
           this.data = data
-          console.log('data', data)
+          // console.log('data', data)
           uni.setNavigationBarTitle({
             title: touchTypeDict[data.type].previewMobileTitle,
             // title: data.shortLinkName
