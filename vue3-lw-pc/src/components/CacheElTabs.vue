@@ -46,10 +46,10 @@ export default {
     overflow: hidden;
   }
   ::v-deep .el-tabs__item.is-top:nth-child(2) {
-    padding-left: 20px;
+    margin-left: 20px;
   }
   ::v-deep .el-tabs__item.is-top:last-child {
-    padding-right: 20px;
+    margin-right: 20px;
   }
 }
 </style>
