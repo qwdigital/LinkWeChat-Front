@@ -52,6 +52,27 @@ function requestFactory(getway = '') {
             location.href = window.lwConfig.BASE_URL
           })
         })
+      } else if ([-10007, -10008].includes(code) && location.host == 'demo.linkwechat.net') {
+        MessageBox.alert(
+          `
+          <div><h3>${msg}</h3></div>
+          <div class="mt20 ac">
+            <img style="width: 280px" src="${window.lwConfig.QRCODE_CONTACT_US}" alt="" />
+          </div>
+        `,
+          '系统提示',
+          {
+            confirmButtonText: '我知道了',
+            // cancelButtonText: '取消',
+            // type: 'warning',
+            dangerouslyUseHTMLString: true,
+          },
+        ).then(() => {
+          code == -10007 &&
+            store.LogOut().then(() => {
+              location.href = window.lwConfig.BASE_URL
+            })
+        })
       } else {
         if (process.env.NODE_ENV === 'development') {
           Message({
