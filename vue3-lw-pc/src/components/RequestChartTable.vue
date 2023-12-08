@@ -105,18 +105,19 @@ export default {
       delete query.dateRange
 
       return this.request(query)
-        .then(({ rows, total, data }) => {
+        .then((resp) => {
+          let { rows, total, data } = resp
           let res = data || rows
           // if (!data) return
           if (this.type == 'table') {
             // 表格
-            this.dealDataFun && this.dealDataFun(res)
+            this.dealDataFun && this.dealDataFun(res, resp)
             this.data = res
             this.total = +total
           } else {
             // 自定义echarts图表数据处理
             // this.data = data
-            this.dealDataFun && this.dealDataFun(res, this.data, this.xData)
+            this.dealDataFun && this.dealDataFun(res, this.data, this.xData, resp)
           }
         })
         .catch((e) => {
