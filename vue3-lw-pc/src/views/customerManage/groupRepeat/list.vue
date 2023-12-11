@@ -7,7 +7,7 @@ export default {
   data() {
     return {
       getList,
-      lastSyncTime: '',
+      // lastSyncTime: '',
     }
   },
   watch: {},
@@ -28,9 +28,7 @@ export default {
       )
         .then(() => {
           this.loading = true
-          return remindDuplicateMembers({
-            externalUserids: selectedIds + '',
-          })
+          return remindDuplicateMembers(selectedIds + '')
         })
         .then((res) => {
           this.msgSuccess('操作成功')
@@ -68,15 +66,15 @@ export default {
           this.loading = false
         })
     },
-    dealDataFun(res, result) {
-      this.lastSyncTime = result.lastSyncTime
-    },
+    // dealDataFun(res, result) {
+    //   this.lastSyncTime = result.lastSyncTime
+    // },
   },
 }
 </script>
 
 <template>
-  <RequestChartTable ref="table" :request="getList" :dealDataFun="dealDataFun">
+  <RequestChartTable ref="table" :request="getList">
     <template #query="{ query }">
       <el-form-item label="客户名称" prop="memberName">
         <el-input clearable v-model="query.memberName" placeholder="请输入"></el-input>
@@ -85,10 +83,10 @@ export default {
 
     <template #operation="{ selectedIds }">
       <div class="fxbw">
-        <div>
+        <!-- <div>
           <ButtonSync :lastSyncTime="lastSyncTime" @click="sync">同步</ButtonSync>
           <span class="ml10 desc">最近同步：{{ lastSyncTime }}</span>
-        </div>
+        </div> -->
         <el-button :disabled="!selectedIds.length" @click="remind(selectedIds)" type="primary">批量提醒</el-button>
       </div>
     </template>
@@ -108,7 +106,7 @@ export default {
       <!-- <el-table-column prop="createBy" label="创建人" align="center"></el-table-column> -->
       <el-table-column label="最近更新" align="center" prop="updateTime" width="160"></el-table-column>
 
-      <el-table-column label="操作" align="center" width="180">
+      <el-table-column label="操作" align="center" fixed="right">
         <template #default="{ row }">
           <el-button
             text
