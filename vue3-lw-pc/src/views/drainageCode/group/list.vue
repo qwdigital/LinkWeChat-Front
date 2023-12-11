@@ -1,15 +1,15 @@
 <template>
   <div>
-    <RequestChartTable ref="table" :request="(params) => (Object.assign(params, query), getList(params))">
+    <RequestChartTable ref="table" :request="getList">
       <template #query="{ query }">
         <el-form-item label="活码名称" prop="activityName">
-          <el-input clearable v-model="query.activityName" placeholder="请输入活码名称"></el-input>
+          <el-input clearable v-model="query.activityName" placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="客群标签" prop="tagIds">
-          <el-input :model-value="tagNames" readonly @click="showSelectTag = true" placeholder="请选择客群标签" />
+        <el-form-item label="入群标签" prop="tagIds">
+          <el-input :model-value="tagNames" readonly @click="showSelectTag = true" placeholder="请选择" />
         </el-form-item>
         <!-- <      label="创建人" prop="createBy">
-        <el-input v-model="query.createBy" placeholder="请输入创建人"></el-input>
+        <el-input v-model="query.createBy" placeholder="请输入"></el-input>
       </>
       <el-form-item label="创建时间">
         <el-date-picker v-model="searchDate" format="YYYY-MM-DD" value-format="YYYYMMDD" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
@@ -191,7 +191,7 @@
     <!-- <el-dialog v-if="realCodeDialog" title="实际群码" v-model="realCodeDialog" append-to-body width="70%">
         <RealCode ref="realCode" :groupCodeId="openGroupCodeId" :status="openGroupCodeStatus"></RealCode>
       </el-dialog> -->
-    <select-tag v-model:visible="showSelectTag" type="2" :selected="tagList" @success="getSelectTag"></select-tag>
+    <select-tag v-model:visible="showSelectTag" type="1" :selected="tagList" @success="getSelectTag"></select-tag>
 
     <el-dialog title="当前客群" v-model="detailDialog" append-to-body width="70%">
       <el-table v-loading="loading" :data="tableList" style="width: 100%">

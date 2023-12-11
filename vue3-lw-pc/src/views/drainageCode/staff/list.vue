@@ -47,11 +47,11 @@
             <el-form-item label="选择员工" prop="qrUserName">
               <el-input :model-value="qrUserName" readonly @click="dialogVisible = true" placeholder="请选择员工" />
             </el-form-item>
-            <el-form-item label="分配方式" prop="isJoinGroup">
+            <!-- <el-form-item label="分配方式" prop="isJoinGroup">
               <el-select v-model="query.isJoinGroup" placeholder="请选择分配方式">
                 <el-option v-for="(item, index) in dictAddStatus" :key="index" :label="item" :value="index"></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
           </template>
 
           <template #operation="{ selectedIds }">
@@ -99,9 +99,9 @@
                 <TagEllipsis :list="row.qrTags" defaultProps="tagName" emptyText />
               </template>
             </el-table-column>
-            <el-table-column align="center" prop="isJoinGroup" label="分配方式">
+            <!-- <el-table-column align="center" prop="isJoinGroup" label="分配方式">
               <template #default="{ row }">{{ dictAddStatus[row.isJoinGroup] }}</template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180"></el-table-column>
             <el-table-column label="操作" align="center" fixed="right" width="220">
               <template #default="{ row }">
@@ -217,7 +217,7 @@ export default {
       groupIndex: 0,
 
       share: {},
-      dictAddStatus: { 0: '未进群', 1: '已进群' },
+      // dictAddStatus: { 0: '未进群', 1: '已进群' },
     }
   },
   created() {
