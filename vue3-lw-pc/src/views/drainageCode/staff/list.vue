@@ -41,11 +41,11 @@
           :isCreateRequest="false"
           :request="(params) => (Object.assign(params, query), getList(params))">
           <template #query="{ query }">
-            <el-form-item label="活码名称">
+            <el-form-item label="活码名称" prop="qrName">
               <el-input v-model="query.qrName" placeholder="请输入活码名称" clearable />
             </el-form-item>
             <el-form-item label="选择员工" prop="qrUserName">
-              <el-input :model-value="qrUserName" readonly @click="dialogVisible = true" placeholder="请选择员工" />
+              <el-input v-model="qrUserName" readonly @click="dialogVisible = true" placeholder="请选择员工" />
             </el-form-item>
             <!-- <el-form-item label="分配方式" prop="isJoinGroup">
               <el-select v-model="query.isJoinGroup" placeholder="请选择分配方式">
