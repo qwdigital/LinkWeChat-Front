@@ -39,12 +39,13 @@
         <RequestChartTable
           ref="table"
           :isCreateRequest="false"
-          :request="(params) => (Object.assign(params, query), getList(params))">
+          :request="(pa) => (Object.assign(pa, query), getList(pa))"
+          @reset="qrUserName = query.qrUserIds = ''">
           <template #query="{ query }">
             <el-form-item label="活码名称" prop="qrName">
               <el-input v-model="query.qrName" placeholder="请输入活码名称" clearable />
             </el-form-item>
-            <el-form-item label="选择员工" prop="qrUserName">
+            <el-form-item label="选择员工">
               <el-input v-model="qrUserName" readonly @click="dialogVisible = true" placeholder="请选择员工" />
             </el-form-item>
             <!-- <el-form-item label="分配方式" prop="isJoinGroup">
@@ -108,7 +109,7 @@
                 <el-button text @click="goRoute('detail', row.id)">详情|统计</el-button>
                 <el-button text @click=";(share.visible = true), (share.data = row)">分享</el-button>
                 <el-button text @click="goRoute('add', row.id)">编辑</el-button>
-                <el-button text @click="$refs.table?.remove(() => remove(row.id))">删除</el-button>
+                <el-button text @click="$refs.table?.remove(remove, row.id)">删除</el-button>
               </template>
             </el-table-column>
           </template>
@@ -170,7 +171,6 @@ export default {
         pageNum: 1,
         pageSize: 10,
         groupId: '',
-        qrName: '', // 活码名称
         qrUserIds: undefined,
         orderByColumn: 'wqc.update_time',
         isAsc: 'desc',

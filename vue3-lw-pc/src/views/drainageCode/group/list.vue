@@ -154,7 +154,7 @@
               ">
               分享
             </el-button>
-            <el-button text @click="$refs.table?.remove(() => remove(row.id))">删除</el-button>
+            <el-button text @click="$refs.table?.remove(remove, row.id)">删除</el-button>
 
             <!-- <el-dropdown style="margin-left: 10px">
               <el-button text>
