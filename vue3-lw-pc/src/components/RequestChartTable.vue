@@ -128,14 +128,18 @@ export default {
         })
     },
     // (批量)删除 供父组件调用
-    remove(remove) {
+    remove(remove, id) {
       if (!remove) {
         return
+      }
+      let ids = id || this.selectedIds?.join?.(',')
+      if (!ids) {
+        return this.msgError('请选择需要删除的数据')
       }
       this.$confirm()
         .then(() => {
           this.loading = true
-          return remove(this.selectedIds?.join?.(',')).then((res) => {
+          return remove(ids).then((res) => {
             this.msgSuccess('删除成功')
             this.getList()
           })
@@ -167,6 +171,10 @@ export default {
         })
         .catch(function () {})
     },
+    reset(form) {
+      this.$refs[form].resetFields()
+      this.$emit('reset')
+    },
   },
 }
 </script>
@@ -176,7 +184,7 @@ export default {
     <!-- 顶部查询框 -->
     <el-form v-if="$slots.query" :model="query" ref="queryForm" inline class="top-search">
       <slot name="query" v-bind="{ query }"></slot>
-      <SearchResetButton @search="getList(1)" @reset="$refs.queryForm.resetFields()"></SearchResetButton>
+      <SearchResetButton @search="getList(1)" @reset="reset('queryForm')"></SearchResetButton>
     </el-form>
 
     <div :class="$slots.query && 'g-card'">
@@ -193,7 +201,7 @@ export default {
 
         <el-form v-if="$slots.queryMiddle" :model="query" ref="queryFormMiddle" inline class="query-wrap">
           <slot name="queryMiddle" v-bind="{ query }"></slot>
-          <SearchResetButton @search="getList(1)" @reset="$refs.queryFormMiddle.resetFields()"></SearchResetButton>
+          <SearchResetButton @search="getList(1)" @reset="reset('queryFormMiddle')"></SearchResetButton>
         </el-form>
         <!-- 操作slot -->
 

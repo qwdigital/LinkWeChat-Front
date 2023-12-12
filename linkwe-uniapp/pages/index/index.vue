@@ -32,7 +32,7 @@
         <image style="width: 68vw; height: 68vw; margin: 20px 0 30px" :src="data.qrCode" show-menu-by-longpress></image>
 
         <div v-if="[5, 6, 8].includes(+data.type)" class="toe">长按二维码保存后，使用微信扫一扫打开</div>
-        <div v-else class="">长按二维码{{ touchTypeDict[data.type].previewMobileTitle }}</div>
+        <div v-else class="">长按二维码{{ touchTypeDict[data.type].previewMobileTitle || '' }}</div>
       </template>
     </div>
     <!-- <canvas canvas-id="mycanvas" id="mycanvas" type="2d" style="width: 500px; height: 500px; display: none"></canvas> -->
@@ -138,9 +138,10 @@ export default {
             data.type = 4
           } else if (type == 'gqr') {
             data.type = 5
+            data.qrCode = data.codeUrl
           }
           this.data = data
-          console.log('data', data)
+          // console.log('data', data)
           uni.setNavigationBarTitle({
             title: touchTypeDict[data.type].previewMobileTitle,
             // title: data.shortLinkName

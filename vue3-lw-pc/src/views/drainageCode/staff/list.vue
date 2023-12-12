@@ -39,19 +39,20 @@
         <RequestChartTable
           ref="table"
           :isCreateRequest="false"
-          :request="(params) => (Object.assign(params, query), getList(params))">
+          :request="(pa) => (Object.assign(pa, query), getList(pa))"
+          @reset="qrUserName = query.qrUserIds = ''">
           <template #query="{ query }">
-            <el-form-item label="活码名称">
+            <el-form-item label="活码名称" prop="qrName">
               <el-input v-model="query.qrName" placeholder="请输入活码名称" clearable />
             </el-form-item>
-            <el-form-item label="选择员工" prop="qrUserName">
-              <el-input :model-value="qrUserName" readonly @click="dialogVisible = true" placeholder="请选择员工" />
+            <el-form-item label="选择员工">
+              <el-input v-model="qrUserName" readonly @click="dialogVisible = true" placeholder="请选择员工" />
             </el-form-item>
-            <el-form-item label="分配方式" prop="isJoinGroup">
+            <!-- <el-form-item label="分配方式" prop="isJoinGroup">
               <el-select v-model="query.isJoinGroup" placeholder="请选择分配方式">
                 <el-option v-for="(item, index) in dictAddStatus" :key="index" :label="item" :value="index"></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
           </template>
 
           <template #operation="{ selectedIds }">
@@ -99,16 +100,16 @@
                 <TagEllipsis :list="row.qrTags" defaultProps="tagName" emptyText />
               </template>
             </el-table-column>
-            <el-table-column align="center" prop="isJoinGroup" label="分配方式">
+            <!-- <el-table-column align="center" prop="isJoinGroup" label="分配方式">
               <template #default="{ row }">{{ dictAddStatus[row.isJoinGroup] }}</template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="最近更新时间" align="center" prop="updateTime" width="180"></el-table-column>
             <el-table-column label="操作" align="center" fixed="right" width="220">
               <template #default="{ row }">
                 <el-button text @click="goRoute('detail', row.id)">详情|统计</el-button>
                 <el-button text @click=";(share.visible = true), (share.data = row)">分享</el-button>
                 <el-button text @click="goRoute('add', row.id)">编辑</el-button>
-                <el-button text @click="$refs.table?.remove(() => remove(row.id))">删除</el-button>
+                <el-button text @click="$refs.table?.remove(remove, row.id)">删除</el-button>
               </template>
             </el-table-column>
           </template>
@@ -170,7 +171,6 @@ export default {
         pageNum: 1,
         pageSize: 10,
         groupId: '',
-        qrName: '', // 活码名称
         qrUserIds: undefined,
         orderByColumn: 'wqc.update_time',
         isAsc: 'desc',
@@ -217,7 +217,7 @@ export default {
       groupIndex: 0,
 
       share: {},
-      dictAddStatus: { 0: '未进群', 1: '已进群' },
+      // dictAddStatus: { 0: '未进群', 1: '已进群' },
     }
   },
   created() {
