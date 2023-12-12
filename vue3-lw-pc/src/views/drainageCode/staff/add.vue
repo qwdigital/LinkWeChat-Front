@@ -107,7 +107,7 @@
             </el-tag>
           </div>
           <el-button type="primary" plain @click="onSelectUser">
-            {{ form.weEmpleCodeUseScops.length ? '修改' : '选择' }}员工
+            {{ form.weEmpleCodeUseScops?.length ? '修改' : '选择' }}员工
           </el-button>
           <div class="g-tip">单人活码只能选择一个员工，多人活码支持选择多个员工</div>
           <div v-if="form.weEmpleCodeUseScops.length > 0 && form.qrType == 2">
@@ -283,6 +283,7 @@ import { getDetail, add, update, getCodeCategoryList } from '@/api/drainageCode/
 import SelectMaterial from '@/components/SelectMaterial'
 import AddMaterial from '@/components/ContentCenter/AddMaterial'
 import MemeberList from './memberList.vue'
+
 export default {
   components: {
     MemeberList,
@@ -296,7 +297,6 @@ export default {
         templateInfo: '',
         materialMsgList: [],
       },
-      title: '新建',
       active: 0,
       baseRules: {
         qrName: [
@@ -410,8 +410,7 @@ export default {
     }
     this.getCodeCategoryList()
     if (id) {
-      this.title = '编辑'
-      this.getDetailFn(id)
+      this.getDetail(id)
     }
   },
   methods: {
@@ -628,11 +627,10 @@ export default {
       })
     },
     /** 获取详情 */
-    getDetailFn(id) {
+    getDetail(id) {
       getDetail(id).then((res) => {
-        this.form = res.data
         let base = JSON.parse(JSON.stringify(res.data))
-        Object.assign(this.form, {
+        Object.assign(this.form, base, {
           qrName: base.name,
           qrGroupId: base.groupId,
           qrAutoAdd: base.autoAdd, // 自动通过
@@ -684,7 +682,7 @@ export default {
           this.form.empleCodeRosterDto = arr
         }
         this.materialData = {
-          templateInfo: base.qrAttachments ? base.qrAttachments[0].content : '',
+          templateInfo: base.qrAttachments?.[0]?.content || '',
           attachments: base.qrAttachments || [],
         }
         // this.materialData.materialMsgList.forEach(ddd => {
@@ -770,7 +768,7 @@ export default {
       } else {
         // this.selectedUserList = [...this.form.weEmpleCodeUseScops]
         let arr = []
-        arr = this.form.weEmpleCodeUseScops.map((dd) => {
+        arr = this.form.weEmpleCodeUseScops?.map?.((dd) => {
           return {
             userId: dd.businessId,
             // id: dd.businessIdType === 1 ? dd.businessId:'',
@@ -897,7 +895,7 @@ export default {
       }
       if (this.form.qrRuleType === 1) {
         let qrUserInfosDetail = []
-        this.form.weEmpleCodeUseScops.forEach((uu) => {
+        this.form.weEmpleCodeUseScops?.forEach?.((uu) => {
           let objDetail = {
             userId: uu.businessId,
             schedulingNum: uu.businessNumber,
@@ -907,14 +905,14 @@ export default {
         let obj = {
           type: 0,
           scopeId: this.form.weEmpleCodeUseScops[0].scopeId ? this.form.weEmpleCodeUseScops[0].scopeId : '',
-          userIds: this.form.weEmpleCodeUseScops.map((dd) => dd.businessId),
-          spareUserIds: this.form.weSpareUseScops.map((ss) => ss.businessId),
+          userIds: this.form.weEmpleCodeUseScops?.map?.((dd) => dd.businessId),
+          spareUserIds: this.form.weSpareUseScops?.map?.((ss) => ss.businessId),
           qrUserInfosDetail: qrUserInfosDetail,
         }
         this.form.qrUserInfos = [obj]
       } else {
         this.form.qrUserInfos = []
-        this.form.empleCodeRosterDto.forEach((fff) => {
+        this.form.empleCodeRosterDto?.forEach?.((fff) => {
           let qrUserInfosDetail = []
           fff.weEmpleCodeUseScops.forEach((uu) => {
             let objDetail = {
