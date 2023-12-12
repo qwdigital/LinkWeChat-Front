@@ -28,7 +28,7 @@ export default {
           this.msgSuccess('操作成功')
           this.getList()
         })
-        .finally(function () {
+        .finally(() => {
           this.$refs.rct.loading = false
         })
     },
@@ -50,7 +50,7 @@ export default {
           this.msgSuccess('操作成功')
           this.getList()
         })
-        .finally(function () {
+        .finally(() => {
           this.$refs.rct.loading = false
         })
     },
