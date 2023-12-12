@@ -62,7 +62,7 @@ export default {
 </script>
 
 <template>
-  <RequestChartTable ref="rct" :request="getList">
+  <RequestChartTable ref="rct" :request="getList" dataKey="externalUserid">
     <template #query="{ query }">
       <el-form-item label="客户名称" prop="memberName">
         <el-input clearable v-model="query.memberName" placeholder="请输入"></el-input>

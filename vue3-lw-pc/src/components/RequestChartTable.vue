@@ -43,6 +43,11 @@ export default {
       type: Function,
       default: null,
     },
+    // 数据主键
+    dataKey: {
+      type: String,
+      default: 'id',
+    },
 
     // 导出接口请求
     requestExport: {
@@ -226,7 +231,10 @@ export default {
       <template v-else-if="type == 'table'">
         <slot :data="data"></slot>
 
-        <el-table v-if="$slots.table" :data="data" @selection-change="(val) => (selectedIds = val.map((e) => e.id))">
+        <el-table
+          v-if="$slots.table"
+          :data="data"
+          @selection-change="(val) => (selectedIds = val.map((e) => e[dataKey]))">
           <el-table-column type="selection" width="50" align="center"></el-table-column>
           <slot name="table"></slot>
         </el-table>
