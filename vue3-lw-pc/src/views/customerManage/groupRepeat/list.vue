@@ -26,7 +26,7 @@ export default {
         })
         .then((res) => {
           this.msgSuccess('操作成功')
-          this.getList()
+          this.$refs.rct.getList()
         })
         .finally(() => {
           this.$refs.rct.loading = false
@@ -48,7 +48,7 @@ export default {
         })
         .then((res) => {
           this.msgSuccess('操作成功')
-          this.getList()
+          this.$refs.rct.getList()
         })
         .finally(() => {
           this.$refs.rct.loading = false
