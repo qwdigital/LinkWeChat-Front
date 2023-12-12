@@ -19,15 +19,9 @@ export default {
     remind(selectedIds, type) {
       this.$confirm(
         type ? '是否确定提醒员工对当前客户进行客群去重？' : '是否确定提醒员工对当前选中全部客户进行客群去重',
-        '警告',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        },
       )
         .then(() => {
-          this.loading = true
+          this.$refs.rct.loading = true
           return remindDuplicateMembers(selectedIds + '')
         })
         .then((res) => {
@@ -35,7 +29,7 @@ export default {
           this.getList()
         })
         .finally(function () {
-          this.loading = false
+          this.$refs.rct.loading = false
         })
     },
     // 设置客户黑名单
@@ -44,15 +38,9 @@ export default {
         row.isJoinBlacklist == 1
           ? '是否确定拉黑？拉黑后客户无法收到群发信息'
           : '是否确定取消拉黑？取消后客户可以收到后续群发信息',
-        '警告',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        },
       )
         .then(() => {
-          this.loading = true
+          this.$refs.rct.loading = true
           return setBlackList({
             isJoinBlacklist: row.isJoinBlacklist == 1 ? 0 : 1,
             externalUserids: row.externalUserid,
@@ -63,7 +51,7 @@ export default {
           this.getList()
         })
         .finally(function () {
-          this.loading = false
+          this.$refs.rct.loading = false
         })
     },
     // dealDataFun(res, result) {
@@ -74,7 +62,7 @@ export default {
 </script>
 
 <template>
-  <RequestChartTable ref="table" :request="getList">
+  <RequestChartTable ref="rct" :request="getList">
     <template #query="{ query }">
       <el-form-item label="客户名称" prop="memberName">
         <el-input clearable v-model="query.memberName" placeholder="请输入"></el-input>

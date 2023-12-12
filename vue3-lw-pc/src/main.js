@@ -10,7 +10,7 @@ import router from './router'
 
 const app = createApp(App)
 
-import ElementPlus, { ElNotification } from 'element-plus'
+import ElementPlus, { ElNotification, ElMessageBox } from 'element-plus'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'element-plus/dist/index.css'
 app.use(ElementPlus, {})
@@ -99,6 +99,24 @@ Object.assign(app.config.globalProperties, methods, {
   msgInfo(msg) {
     this.$message.info(msg)
   },
+  $confirm(message = '确认删除吗？', title, options = {}) {
+    let defaultConfig = {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+      title: '警告',
+    }
+    if (typeof title === 'string') {
+      defaultConfig.title = title
+      Object.assign(options, defaultConfig)
+    } else {
+      Object.assign(options, defaultConfig, title || {})
+    }
+    return ElMessageBox.confirm(message, title, options)
+  },
+  // $confirmDel(message = '确认删除吗？', title, options = {}) {
+  //   this.$confirm(message, title, options)
+  // },
 })
 
 // import VideoPlayer from 'vue-video-player'

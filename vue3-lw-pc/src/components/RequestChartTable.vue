@@ -132,11 +132,7 @@ export default {
       if (!remove) {
         return
       }
-      this.$confirm('是否确认删除?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm()
         .then(() => {
           this.loading = true
           return remove(this.selectedIds?.join?.(',')).then((res) => {
@@ -162,11 +158,7 @@ export default {
       if (!(download && filename)) {
         return
       }
-      this.$confirm(tips, '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(tips)
         .then(() => {
           return download(this.selectedIds?.join?.(','))
         })
