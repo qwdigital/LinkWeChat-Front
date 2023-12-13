@@ -37,7 +37,7 @@
             <el-option v-for="(item, index) in dictAddStatus" :key="index" :label="item" :value="index"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="">
+        <!-- <el-form-item label="">
           <el-date-picker
             v-model="query.dateRangeJoinTime"
             value-format="YYYY-MM-DD"
@@ -47,8 +47,8 @@
             start-placeholder="进群开始"
             end-placeholder="结束日期"
             align="right"></el-date-picker>
-        </el-form-item>
-        <el-form-item label="" prop="chatId">
+        </el-form-item> -->
+        <!-- <el-form-item label="" prop="chatId">
           <el-select v-model="query.chatId" placeholder="请选择客群">
             <el-option
               v-for="(item, index) in groups"
@@ -56,7 +56,7 @@
               :label="item.groupName"
               :value="item.chatId"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
       </template>
 
       <template #="{ data }">
