@@ -55,6 +55,10 @@ li {
   list-style: none;
 }
 
+button + button {
+  margin-left: 12px;
+}
+
 /** 原子类 **/
 
 /* flex */
