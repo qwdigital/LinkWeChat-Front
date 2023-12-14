@@ -1,5 +1,25 @@
 # 更新日志
 
+## v5.18.0
+
+2023.12.14
+
+1. 新增 客群中心-客群管理-客群去重 菜单模块
+2. 新增 sop 复制功能，去除 sop 同步
+3. 新增 员工、客群活码小程序页面回显
+
+4. 分支更名，原 vue3-master 正式更名为 master，原 master（vue2 版）改为 master-vue2
+
+5. 修复 员工活码编辑默认数据问题
+6. 修改 员工活码、客群活码相关功能
+
+7. 优化 @keydown 替换为 @keyup
+8. 优化 RequestChartTable $confirm 等
+9. 优化 CacheElTabs 单个 tab 时激活标线位置
+10. 优化 $copyText 复制文字公共方法 复制方案使用原生替换 ClipboardJS，后续逐步弃用 ClipboardJS
+
+11. 其他已知 bug 修复和组件优化
+
 ## v5.17.0
 
 2023.12.07
