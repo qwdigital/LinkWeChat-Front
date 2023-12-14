@@ -120,6 +120,7 @@ export function downloadBlob(blob, downloadName, type, callback) {
     a.remove()
     URL.revokeObjectURL(url) // 释放内存
     callback && callback()
+    this.msgSuccess?.('正在下载，请稍后至浏览器下载栏查看')
   } else if (/^(http|data:image)/.test(blob) && type === 'image') {
     let image = new Image()
     image.setAttribute('crossOrigin', 'anonymous')

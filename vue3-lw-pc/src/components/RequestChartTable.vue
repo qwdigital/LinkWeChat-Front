@@ -43,6 +43,11 @@ export default {
       type: Function,
       default: null,
     },
+    // 数据主键
+    dataKey: {
+      type: String,
+      default: 'id',
+    },
 
     // 导出接口请求
     requestExport: {
@@ -105,18 +110,19 @@ export default {
       delete query.dateRange
 
       return this.request(query)
-        .then(({ rows, total, data }) => {
+        .then((resp) => {
+          let { rows, total, data } = resp
           let res = data || rows
           // if (!data) return
           if (this.type == 'table') {
             // 表格
-            this.dealDataFun && this.dealDataFun(res)
+            this.dealDataFun && this.dealDataFun(res, resp)
             this.data = res
             this.total = +total
           } else {
             // 自定义echarts图表数据处理
             // this.data = data
-            this.dealDataFun && this.dealDataFun(res, this.data, this.xData)
+            this.dealDataFun && this.dealDataFun(res, this.data, this.xData, resp)
           }
         })
         .catch((e) => {
@@ -135,11 +141,7 @@ export default {
       if (!ids) {
         return this.msgError('请选择需要删除的数据')
       }
-      this.$confirm('是否确认删除?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm()
         .then(() => {
           this.loading = true
           return remove(ids).then((res) => {
@@ -165,11 +167,7 @@ export default {
       if (!(download && filename)) {
         return
       }
-      this.$confirm(tips, '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(tips)
         .then(() => {
           return download(this.selectedIds?.join?.(','))
         })
@@ -233,7 +231,10 @@ export default {
       <template v-else-if="type == 'table'">
         <slot :data="data"></slot>
 
-        <el-table v-if="$slots.table" :data="data" @selection-change="(val) => (selectedIds = val.map((e) => e.id))">
+        <el-table
+          v-if="$slots.table"
+          :data="data"
+          @selection-change="(val) => (selectedIds = val.map((e) => e[dataKey]))">
           <el-table-column type="selection" width="50" align="center"></el-table-column>
           <slot name="table"></slot>
         </el-table>
