@@ -120,7 +120,7 @@ export default {
               class="mr10"
               style="width: 150px"
               placeholder="请输入名称"
-              @keydown.enter="getList(1)"></el-input>
+              @keyup.enter="getList(1)"></el-input>
             <el-input
               class="mr10"
               style="width: 150px"

@@ -100,7 +100,7 @@ export default {
         class="ml10 mr10 mb20"
         style="width: 260px"
         placeholder="请输入文本内容"
-        @keydown.enter="getList(1)"></el-input>
+        @keyup.enter="getList(1)"></el-input>
     </template>
 
     <!-- 文本 -->

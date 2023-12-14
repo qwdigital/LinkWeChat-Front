@@ -158,7 +158,7 @@ export default {
                   clearable
                   style="width: 150px"
                   placeholder="请输入活码名称"
-                  @keydown.enter="getList(1)"></el-input>
+                  @keyup.enter="getList(1)"></el-input>
 
                 <el-input
                   :model-value="userArray.map((e) => e.name) + ''"

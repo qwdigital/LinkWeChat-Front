@@ -145,7 +145,7 @@ export default {
             v-model="query.search"
             class="ml10 mr10"
             style="width: 150px"
-            @keydown.enter="getList(1)"
+            @keyup.enter="getList(1)"
           ></el-input>
           <el-button
             v-hasPermi="['contacts:organization:query']"

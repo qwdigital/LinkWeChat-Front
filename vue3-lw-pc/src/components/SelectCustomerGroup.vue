@@ -116,7 +116,7 @@ export default {
             class="ml10 mr10"
             style="width: 150px"
             placeholder="请输入群名"
-            @keydown.enter="getList(1)"
+            @keyup.enter="getList(1)"
             clearable
             @clear="getList(1)"></el-input>
           <el-button
