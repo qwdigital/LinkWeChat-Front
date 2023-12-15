@@ -52,10 +52,14 @@ export function deleteInfoToSurvey(ids) {
 }
 
 // 获取表单问卷列表/表单详情
-export function selectInfoToSurvey(id) {
+export function selectInfoToSurvey(id, addr) {
   return request({
-    url: service + '/survey/getInfo/' + id,
+    url: service + '/survey/getInfo',
     method: 'GET',
+    params: {
+      id, // 121212, 原有路径中带的主键id
+      addr, // ip地址
+    },
   })
 }
 
@@ -135,6 +139,8 @@ export function lineChart(data) {
 
 //数据报表
 export function StatisticsDataList(data) {
+  data.beginTime ??= data.startDate
+  data.endTime ??= data.endDate
   return request({
     url: service + '/statistic/dataList',
     method: 'post',
@@ -176,14 +182,14 @@ export function pieChart(data) {
     "belongId": "25",
     "type": "",
     "dataSource": "cillum consectetur",
-    "startDate": "1992-07-12",
-    "endDate": "2012-02-24"
+    "startTime": "1992-07-12",
+    "endTime": "2012-02-24"
 }
  * @returns
  */
 export function overviewExport(data) {
   return request({
-    url: service + '/statistic/data/export',
+    url: service + '/statistic/dataListExport',
     method: 'post',
     data,
     responseType: 'blob',

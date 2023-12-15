@@ -74,12 +74,12 @@
       </template>
     </div>
 
-    <div class="dataStatistics_optionGraph_ul">
-      <div class="g-card mt0" v-for="(item, index) in baseList" :key="index">
+    <!-- <div class="dataStatistics_optionGraph_ul"> -->
+    <!-- <div class="g-card mt0" v-for="(item, index) in baseList" :key="index">
         <div class="g-card-title">{{ item.label }}</div>
         <PieChart :Data="item"></PieChart>
-      </div>
-      <!-- <div class="" v-for="(item, index) in baseListMap" :key="index">
+      </div> -->
+    <!-- <div class="" v-for="(item, index) in baseListMap" :key="index">
         <div style="font-size: 20xp; font-weight: 700">{{ item.label }}</div>
         <div
           style="margin-left: 30%; font-weight: 700; font-size: 22px; cursor: pointer"
@@ -94,7 +94,7 @@
           <MarketMap :params="item.params"></MarketMap>
         </div>
       </div> -->
-    </div>
+    <!-- </div> -->
     <div class="g-card" v-if="baseListMap.label">
       <div class="g-card-title">{{ baseListMap.label }}</div>
       <ChinaMap style="height: 600px" :Datas="baseListMap"></ChinaMap>
@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import PieChart from '../components/PieChart.vue'
+// import PieChart from '../components/PieChart.vue'
 import ChinaMap from '../components/ChinaMap.vue'
 // import MarketMap from '../components/MarketMap.vue'
 // import { getProvinceCityTree } from '@/utils/index'
@@ -114,7 +114,7 @@ export default {
   props: ['formId'],
   components: {
     SearchTitle,
-    PieChart,
+    // PieChart,
     ChinaMap,
     // MarketMap,
   },
@@ -189,23 +189,23 @@ export default {
           this.exportLoading = false
         })
     },
-    pieChart() {
-      let that = this
-      let data = {
-        formId: this.formId,
-      }
-      pieChart(data).then((res) => {
-        // console.log('扇形统计图返回值', res)
-        for (let i = 0; i < res.data.length; i++) {
-          let optionss = []
-          for (let q = 0; q < res.data[i].data.length; q++) {
-            optionss.push(res.data[i].data[q].name)
-          }
-          res.data[i].optionss = optionss
-        }
-        that.baseList = res.data
-      })
-    },
+    // pieChart() {
+    //   let that = this
+    //   let data = {
+    //     formId: this.formId,
+    //   }
+    //   pieChart(data).then((res) => {
+    //     // console.log('扇形统计图返回值', res)
+    //     for (let i = 0; i < res.data.length; i++) {
+    //       let optionss = []
+    //       for (let q = 0; q < res.data[i].data.length; q++) {
+    //         optionss.push(res.data[i].data[q].name)
+    //       }
+    //       res.data[i].optionss = optionss
+    //     }
+    //     that.baseList = res.data
+    //   })
+    // },
     getTableChangeSize(a, b) {
       let that = this
       this.loading = true
@@ -318,7 +318,7 @@ export default {
     },
   },
   mounted() {
-    this.pieChart()
+    // this.pieChart()
     let data = {
       areaType: 1,
       formId: this.formId,
