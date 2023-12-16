@@ -54,7 +54,7 @@ export function deleteInfoToSurvey(ids) {
 // 获取表单问卷列表/表单详情
 export function selectInfoToSurvey(id, addr) {
   return request({
-    url: service + '/survey/getInfo',
+    url: window.lwConfig.services.wx + '/form/survey/getInfo',
     method: 'GET',
     params: {
       id, // 121212, 原有路径中带的主键id

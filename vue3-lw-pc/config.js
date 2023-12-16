@@ -70,6 +70,7 @@ let config = {
     wecom: '/open',
     // system: 'http://192.168.4.168:6180',
     common: '/common',
+    wx: '/wx-api',
   },
 
   get headers() {
