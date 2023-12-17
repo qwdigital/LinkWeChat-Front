@@ -836,3 +836,14 @@ export function setAttachments(list) {
   }
   return arr
 }
+
+// 递归删除树形对象中的某些字段
+export function delTreeKeys(obj, keyArray) {
+  for (const key in obj) {
+    const element = obj[key]
+    if (element && typeof element == 'object') {
+      delTreeKeys(element, keyArray)
+    }
+    keyArray.includes(key) && delete obj[key]
+  }
+}

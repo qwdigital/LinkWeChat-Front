@@ -25,6 +25,12 @@ export default {
       type: Boolean,
       default: true,
     },
+
+    // 排除的表单条件项，eg: ['dateRange']
+    exclude: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
@@ -102,7 +108,7 @@ export default {
 
 <template>
   <el-form :model="form" ref="form" v-if="form">
-    <el-form-item label="添加人员" prop="users">
+    <el-form-item label="添加人员" prop="users" v-if="!exclude.includes('users')">
       <div v-if="!isDetail">
         <el-button type="primary" @click="dialogVisibleSelectUser = true">选择人员</el-button>
         <SelectUser
@@ -114,7 +120,7 @@ export default {
       <TagEllipsis :list="form.users" limit="10" :emptyText="isDetail"></TagEllipsis>
     </el-form-item>
 
-    <el-form-item label="客户类型" prop="customerTypes">
+    <el-form-item label="客户类型" prop="customerTypes" v-if="!exclude.includes('customerTypes')">
       <el-checkbox-group v-model="form.customerTypes">
         <el-checkbox v-for="(item, key) in { 1: '微信用户', 2: '企业用户' }" :key="key" :label="key">
           {{ item }}
@@ -122,7 +128,7 @@ export default {
       </el-checkbox-group>
     </el-form-item>
 
-    <el-form-item label="客户性别" prop="genders">
+    <el-form-item label="客户性别" prop="genders" v-if="!exclude.includes('genders')">
       <el-checkbox-group v-model="form.genders">
         <el-checkbox
           v-for="(sendGender, index) in [
@@ -137,7 +143,7 @@ export default {
       </el-checkbox-group>
     </el-form-item>
 
-    <el-form-item label="添加时间">
+    <el-form-item label="添加时间" v-if="!exclude.includes('dateRange')">
       <el-date-picker
         v-model="form.dateRange"
         value-format="YYYY-MM-DD"
@@ -149,7 +155,7 @@ export default {
         align="right"></el-date-picker>
     </el-form-item>
 
-    <el-form-item label="客户标签" prop="tags">
+    <el-form-item label="客户标签" prop="tags" v-if="!exclude.includes('tags')">
       <div v-if="!isDetail">
         <el-button type="primary" @click="dialogVisibleSelectTag = true">选择标签</el-button>
         <SelectTag
@@ -169,7 +175,8 @@ export default {
         </el-radio>
       </el-radio-group>
     </el-form-item>
-    <el-form-item label="商机阶段" prop="trackState">
+
+    <el-form-item label="商机阶段" prop="trackState" v-if="!exclude.includes('trackState')">
       <el-select v-model="form.trackState" placeholder="请选择">
         <el-option
           v-for="(item, index) in stageList"
