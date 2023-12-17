@@ -132,31 +132,9 @@
         </el-table-column>
         <el-table-column label="操作" align="center" fixed="right" width="180">
           <template #default="{ row }">
-            <el-button
-              text
-              @click="
-                $router.push({
-                  path: 'detail',
-                  query: {
-                    id: row.id,
-                  },
-                })
-              ">
-              详情|统计
-            </el-button>
+            <el-button text @click="goRoute('detail', row.id)">详情|统计</el-button>
 
-            <el-button
-              text
-              @click="
-                $router.push({
-                  path: 'add',
-                  query: {
-                    id: row.id,
-                  },
-                })
-              ">
-              编辑
-            </el-button>
+            <el-button text @click="goRoute('add', row.id)">编辑</el-button>
 
             <el-button text @click="$refs.rct.remove(remove, row.id)">删除</el-button>
           </template>
