@@ -27,7 +27,7 @@ export default {
 </script>
 
 <template>
-  <RequestChartTable ref="table" :request="(params) => (Object.assign(params, query), getList(params))">
+  <RequestChartTable ref="rct" :request="(params) => (Object.assign(params, query), getList(params))">
     <template #query="{ query }">
       <el-form-item label="任务名称" prop="taskName">
         <el-input clearable v-model="query.taskName" placeholder="请输入"></el-input>
@@ -37,9 +37,7 @@ export default {
     <template #operation="{ selectedIds }">
       <div class="fxbw">
         <el-button type="primary" @click="goRoute()">新建任务</el-button>
-        <el-button :disabled="!selectedIds.length" @click="$refs.table.remove(remove)" type="danger">
-          批量删除
-        </el-button>
+        <el-button :disabled="!selectedIds.length" @click="$refs.rct.remove(remove)" type="danger">批量删除</el-button>
       </div>
     </template>
 
@@ -76,7 +74,7 @@ export default {
       <el-table-column label="操作" align="center" width="180">
         <template #default="{ row }">
           <el-button text @click="goRoute('detail', { id: row.id })">详情</el-button>
-          <el-button text @click="$refs.table.remove(() => remove(row.id))">删除</el-button>
+          <el-button text @click="$refs.rct.remove(remove, row.id)">删除</el-button>
         </template>
       </el-table-column>
     </template>
