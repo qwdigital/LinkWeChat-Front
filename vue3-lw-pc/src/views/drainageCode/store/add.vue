@@ -38,16 +38,22 @@
         </el-form-item>
         <BaiduMap @update="handleChange" @point="getPoint" :isDetail="isDetail" :initData="form"></BaiduMap>
       </div>
+
       <div class="g-card">
         <div class="card-title">门店设置</div>
         <el-form-item label="门店导购">
-          <!-- <div v-if="selectedUserList.length > 0">
-            <el-tag  v-for="(item, index) in selectedUserList" :key="index">{{ item.name }}</el-tag>
-          </div> -->
-          <el-button v-if="!isDetail" icon="el-icon-plus" type="primary" plain @click="dialogVisibleQr = true">
-            {{ form.shopGuideUrl ? '编辑' : '选择' }}员工活码
-          </el-button>
-          <div style="margin-top: 10px" v-if="form.shopGuideUrl">
+          <div v-if="!isDetail">
+            <el-button type="primary" plain @click="dialogVisibleQr = true">选择员工</el-button>
+            <!-- 选择使用员工弹窗 -->
+            <SelectUser
+              v-model:visible="dialogVisibleSelectUser"
+              title="选择使用员工"
+              :defaultValues="form.users"
+              @success="(data) => ((form.users = data), $refs.form.validateField('users'))"></SelectUser>
+          </div>
+
+          <TagEllipsis :list="form.users" limit="10" emptyText></TagEllipsis>
+          <!-- <div style="margin-top: 10px" v-if="form.shopGuideUrl">
             <ul class="el-upload-list el-upload-list--picture-card">
               <li class="el-upload-list__item is-success">
                 <img style="width: 100%; height: 100%" :src="form.shopGuideUrl" />
@@ -58,23 +64,50 @@
                 </span>
               </li>
             </ul>
-          </div>
+          </div> -->
         </el-form-item>
-        <el-form-item label="门店群活码">
-          <div v-if="form.groupCodeUrl">
-            <div>{{ form.groupCodeName }}</div>
-            <img style="height: 80px; width: 80px; margin-top: 5px" :src="form.groupCodeUrl" />
-          </div>
 
-          <el-button
-            v-if="!isDetail"
-            icon="el-icon-plus"
-            type="primary"
-            plain
-            @click="dialogVisibleSelectQrCode = true">
-            {{ form.groupCodeUrl ? '编辑' : '选择' }}群活码
-          </el-button>
+        <el-form-item label="门店客群">
+          <el-card shadow="always" style="width: 600px" :body-style="{ padding: '20px' }">
+            <el-form-item label="群活码名称" prop="codeName">
+              <el-input
+                v-model="form.codeName"
+                maxlength="30"
+                show-word-limit
+                placeholder="请输入"
+                clearable></el-input>
+            </el-form-item>
+            <el-form-item label="活码客群:" prop="groups">
+              <template v-if="!isDetail">
+                <el-button type="primary" @click="dialogVisibleSelectGroup = true">选择客群</el-button>
+                <div class="g-tip">最多选择五个客群</div>
+                <SelectGroup
+                  v-model:visible="dialogVisibleSelectGroup"
+                  :defaults="form.groups"
+                  @submit="(data) => ((form.groups = data), $refs.form.validateField('groups'))"></SelectGroup>
+              </template>
+              <TagEllipsis :list="form.groups" limit="5" defaultProps="groupName"></TagEllipsis>
+            </el-form-item>
+
+            <el-form-item label="群满自动建群:">
+              <el-switch v-model="form.autoCreateRoom" :active-value="1" :inactive-value="0"></el-switch>
+              <div class="g-tip">默认以第一个群的群主作为新建群的群主</div>
+            </el-form-item>
+            <template v-if="form.autoCreateRoom">
+              <el-form-item label="群名前缀:" prop="roomBaseName">
+                <el-input
+                  show-word-limit
+                  maxlength="20"
+                  v-model="form.roomBaseName"
+                  placeholder="请输入群名前缀"></el-input>
+              </el-form-item>
+              <el-form-item label="群起始序号:" prop="roomBaseId">
+                <el-input-number v-model="form.roomBaseId" controls-position="right" :min="1"></el-input-number>
+              </el-form-item>
+            </template>
+          </el-card>
         </el-form-item>
+
         <el-form-item label="门店状态">
           <template v-if="!isDetail">
             <el-switch
@@ -109,23 +142,28 @@
       :defaultValues="selectedUserList"
       @success="selectedUser"
     ></SelectUser> -->
-    <SelectQrCode
-      v-model:visible="dialogVisibleSelectQrCode"
-      @success="selectedQrCode"
-      :selected="selectedCodeList"></SelectQrCode>
     <SelectStaffQrCode v-model:visible="dialogVisibleQr" @success="selectedQr"></SelectStaffQrCode>
   </div>
 </template>
 <script>
 import BaiduMap from '@/components/common/BaiduMap'
-import SelectQrCode from '@/components/SelectQrCode'
-import SelectUser from '@/components/SelectUser'
 import SelectStaffQrCode from '@/components/SelectStaffQrCode'
 
 import { getProCityList } from '@/api/common'
 import { addOrUpdateStore, storeDetail } from '@/api/drainageCode/store'
 export default {
   name: 'store-add',
+  props: {
+    isDetail: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  components: {
+    BaiduMap,
+    SelectStaffQrCode,
+    SelectGroup: defineAsyncComponent(() => import('@/components/SelectGroup.vue')),
+  },
   data() {
     return {
       areaArray: [],
@@ -153,7 +191,7 @@ export default {
       },
       selectedUserList: [],
       dialogVisibleSelectUser: false,
-      dialogVisibleSelectQrCode: false,
+      dialogVisibleSelectGroup: false,
       selectedCodeList: [],
       submitLoading: false,
       cityTree: [],
@@ -169,17 +207,20 @@ export default {
       dialogVisibleQr: false,
     }
   },
-  props: {
-    isDetail: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  components: {
-    BaiduMap,
-    SelectQrCode,
-    SelectUser,
-    SelectStaffQrCode,
+  created() {
+    getProCityList({ isExtName: true }).then((res) => {
+      if (res.code === 200) {
+        this.cityTree = res.data
+      }
+    })
+    if (this.$route.query.id) {
+      storeDetail(this.$route.query.id).then((res) => {
+        if (res.code === 200) {
+          this.form = res.data
+          this.setDetail()
+        }
+      })
+    }
   },
   methods: {
     handleRemove() {
@@ -299,21 +340,6 @@ export default {
         // this.$forceUpdate()
       }
     },
-  },
-  created() {
-    getProCityList({ isExtName: true }).then((res) => {
-      if (res.code === 200) {
-        this.cityTree = res.data
-      }
-    })
-    if (this.$route.query.id) {
-      storeDetail(this.$route.query.id).then((res) => {
-        if (res.code === 200) {
-          this.form = res.data
-          this.setDetail()
-        }
-      })
-    }
   },
 }
 </script>

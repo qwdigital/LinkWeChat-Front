@@ -139,6 +139,93 @@
         </div>
       </div>
     </div>
+
+    <RequestChartTable
+      title="数据明细"
+      ref="importRecord"
+      :request="getDataDetail"
+      :requestExport="(query) => ((query.id = $route.query.id), api.getDataDetailExport(query))"
+      exportFileName="门店活码数据明细导出.xls">
+      <template #queryMiddle="{ query }">
+        <el-form-item label="" prop="customerName">
+          <el-input v-model="query.customerName" placeholder="请输入客户名称"></el-input>
+        </el-form-item>
+        <el-form-item label="">
+          <el-date-picker
+            v-model="query.dateRangeAddTime"
+            value-format="YYYY-MM-DD"
+            type="daterange"
+            v-bind="pickerOptions"
+            range-separator="-"
+            start-placeholder="添加开始"
+            end-placeholder="结束日期"
+            align="right"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="" prop="isJoinGroup">
+          <el-select v-model="query.isJoinGroup" placeholder="请选择是否进群">
+            <el-option v-for="(item, index) in dictAddStatus" :key="index" :label="item" :value="index"></el-option>
+          </el-select>
+        </el-form-item>
+      </template>
+
+      <template #="{ data }">
+        <el-table :data="data">
+          <el-table-column align="center" prop="customerName" label="客户名称"></el-table-column>
+          <el-table-column align="center" prop="addUserId" label="添加员工"></el-table-column>
+          <el-table-column align="center" prop="addTime" label="添加时间"></el-table-column>
+          <el-table-column align="center" prop="isJoinGroup" label="是否进群">
+            <template #default="{ row }">{{ dictAddStatus[row.isJoinGroup] }}</template>
+          </el-table-column>
+          <el-table-column align="center" prop="groupName" label="进入客群">
+            <template #default="{ row }">
+              <div
+                class="g-color cp"
+                @click="
+                  ;(externalUserid = row.externalUserid),
+                    (dialogVisible = true),
+                    $refs.RequestChartTableDialog?.getList()
+                ">
+                {{ row.joinGroupNumber }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" align="center">
+            <template #default="{ row }">
+              <el-button
+                text
+                @click="
+                  $router.push({
+                    name: lwConfig.CUSTOMER_DETAIL_ROUTE_NAME,
+                    query: { externalUserid: row.externalUserid, userId: row.addUserId },
+                  })
+                ">
+                客户详情
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </template>
+    </RequestChartTable>
+
+    <el-dialog title="进入客群" v-model="dialogVisible" :close-on-click-modal="false">
+      <RequestChartTable
+        ref="RequestChartTableDialog"
+        style="padding: 0 0 20px 0"
+        :request="
+          (query) => (
+            (query.id = $route.query.id), (query.externalUserid = externalUserid), api.getCustomerToGroupList(query)
+          )
+        ">
+        <template #="{ data }">
+          <el-table :data="data">
+            <el-table-column label="客群名称" align="center" prop="groupName"></el-table-column>
+            <el-table-column align="center" prop="joinTime" label="进群时间">
+              <template #default="{ row }">{{ row.joinTime || '—' }}</template>
+            </el-table-column>
+          </el-table>
+        </template>
+      </RequestChartTable>
+    </el-dialog>
   </div>
 </template>
 <script>
