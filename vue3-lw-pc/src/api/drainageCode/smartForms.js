@@ -139,7 +139,7 @@ export function selectStatistics(data) {
 export function lineChart(data) {
   return request({
     url: service + '/statistic/lineChart',
-    method: 'post',
+    method: 'get',
     data,
   })
 }
@@ -150,7 +150,7 @@ export function StatisticsDataList(data) {
   data.endTime ??= data.endDate
   return request({
     url: service + '/statistic/dataList',
-    method: 'post',
+    method: 'get',
     data,
   })
 }
@@ -197,7 +197,7 @@ export function pieChart(data) {
 export function overviewExport(data) {
   return request({
     url: service + '/statistic/dataListExport',
-    method: 'post',
+    method: 'get',
     data,
     responseType: 'blob',
   })
@@ -242,7 +242,7 @@ export function areaStatistic(data) {
 }
 
 /**
- * 智能表单站点统计
+ * 智能表单站点统计（废弃）
  * @param {*} data
  * {
  * belongId: this.formId,
