@@ -99,6 +99,52 @@ export function getLineDataStoreCode(params) {
   })
 }
 
+/**
+ * 门店详情统计 数据明细
+{
+  storeCodeId  // 门店活码id
+  customerName  // 客户名称
+    endAddTime  // 添加客户结束时间
+  endJoinTime  // 入群结束时间
+  isJoinGroup  // 是否进群，1:是 0:否
+  startAddTime  // 添加客户开始时间
+  startJoinTime  // 入群开始时间
+}
+ */
+export function getDataDetail(params) {
+  return request({
+    url: service + '/findWeStoreCodeTables',
+    params,
+  })
+}
+
+/**
+ * 门店详情统计 数据明细导出
+ */
+export function getDataDetailExport(params) {
+  return request({
+    url: service + '/weStoreCodeTablesExport',
+    params,
+    responseType: 'blob',
+  })
+}
+
+/**
+ * 门店详情统计 获取当前客户对应的群
+{
+  storeCodeId,string,false,,,门店活码id
+externalUserid,string,false,,,当前客户的id
+pageNum,integer,false,,,当前记录起始索引
+pageSize,integer,false,,,每页显示记录数
+}
+ */
+export function getCustomerToGroupList(params) {
+  return request({
+    url: service + '/findWeStoreCodeGroupTables',
+    params,
+  })
+}
+
 // 下载门店导购码或群码
 export function downloadUrl(params) {
   return request({

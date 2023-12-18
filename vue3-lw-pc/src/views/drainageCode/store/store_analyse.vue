@@ -144,7 +144,7 @@
       title="数据明细"
       ref="importRecord"
       :request="getDataDetail"
-      :requestExport="(query) => ((query.id = $route.query.id), api.getDataDetailExport(query))"
+      :requestExport="(query) => ((query.storeCodeId = $route.query.id), getDataDetailExport(query))"
       exportFileName="门店活码数据明细导出.xls">
       <template #queryMiddle="{ query }">
         <el-form-item label="" prop="customerName">
@@ -211,11 +211,8 @@
       <RequestChartTable
         ref="RequestChartTableDialog"
         style="padding: 0 0 20px 0"
-        :request="
-          (query) => (
-            (query.id = $route.query.id), (query.externalUserid = externalUserid), api.getCustomerToGroupList(query)
-          )
-        ">
+        :params="{ storeCodeId: $route.query.id, externalUserid: externalUserid }"
+        :request="getCustomerToGroupList">
         <template #="{ data }">
           <el-table :data="data">
             <el-table-column label="客群名称" align="center" prop="groupName"></el-table-column>
@@ -233,9 +230,20 @@ import SearchTitle from '../components/SearchTitle'
 import { crowdAnalyse } from '@/api/marketStrategy/people'
 import ChartLine from '@/components/ChartLine.vue'
 
-import { getTabTotalInStore, getLineDataGuideCode, getLineDataStoreCode } from '@/api/drainageCode/store'
+import {
+  getTabTotalInStore,
+  getLineDataGuideCode,
+  getLineDataStoreCode,
+  getDataDetail,
+  getDataDetailExport,
+  getCustomerToGroupList,
+} from '@/api/drainageCode/store'
 export default {
   name: 'store-analyse',
+  components: {
+    ChartLine,
+    SearchTitle,
+  },
   data() {
     return {
       activeName: 'first',
@@ -262,11 +270,13 @@ export default {
         totalExitGroupMemberNumber: 0, // 门店群活码 离群总次数
         tdExitGroupMemberNumber: 0, // 门店群活码 今日离群总次数
       },
+      getDataDetailExport,
+      getCustomerToGroupList,
     }
   },
-  components: {
-    ChartLine,
-    SearchTitle,
+  created() {
+    this.query.storeCodeId = this.$route.query.id
+    this.initData()
   },
   methods: {
     initData() {
@@ -316,10 +326,28 @@ export default {
         }
       })
     },
-  },
-  created() {
-    this.query.storeCodeId = this.$route.query.id
-    this.initData()
+    // 数据明细
+    getDataDetail(query) {
+      query.storeCodeId = this.$route.query.id
+      if (query.dateRangeAddTime) {
+        query.startAddTime = query.dateRangeAddTime[0]
+        query.endAddTime = query.dateRangeAddTime[1]
+      } else {
+        delete query.startAddTime
+        delete query.endAddTime
+      }
+      delete query.dateRangeAddTime
+
+      if (query.dateRangeJoinTime) {
+        query.startJoinTime = query.dateRangeJoinTime[0]
+        query.endJoinTime = query.dateRangeJoinTime[1]
+      } else {
+        delete query.startJoinTime
+        delete query.endJoinTime
+      }
+      delete query.dateRangeJoinTime
+      return getDataDetail(query)
+    },
   },
 }
 </script>
