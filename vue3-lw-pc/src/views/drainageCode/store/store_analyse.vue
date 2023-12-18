@@ -272,6 +272,9 @@ export default {
       },
       getDataDetailExport,
       getCustomerToGroupList,
+      externalUserid: '',
+      dialogVisible: false,
+      dictAddStatus: { 0: '未进群', 1: '已进群' },
     }
   },
   created() {
