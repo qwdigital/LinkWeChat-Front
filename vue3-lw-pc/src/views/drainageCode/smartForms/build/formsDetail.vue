@@ -197,7 +197,7 @@ import {
   submitForm,
   insertPieValue,
   isCompleteSurvey,
-  siteStas,
+  // siteStas,
 } from '@/api/drainageCode/smartForms.js'
 import { getProvinceCityTree } from '@/utils/index'
 // import render from './generator/render'
@@ -751,7 +751,7 @@ export default {
         }
       }
 
-      selectInfoToSurvey(this.formId).then((response) => {
+      selectInfoToSurvey(this.formId, this.userIp).then((response) => {
         if (response.code == 200) {
           that.fromList = response.data
           let clannelsName = that.fromList.channelsName.split(',')
@@ -843,22 +843,22 @@ export default {
         }
       })
     },
-    async siteStas() {
-      if (!['y', 'q'].includes(this.style)) {
-        //智能表单站点统计 PV
-        try {
-          this.userIp = this.userIp || (await getIP())
-        } catch (error) {
-          this.toast('获取ip失败')
-          return
-        }
-        // siteStas({
-        //   belongId: this.formId,
-        //   ipAddr: this.userIp,
-        //   dataSource: this.dataSource,
-        // })
-      }
-    },
+    // async siteStas() {
+    //   if (!['y', 'q'].includes(this.style)) {
+    //     //智能表单站点统计 PV
+    //     try {
+    //       this.userIp = this.userIp || (await getIP())
+    //     } catch (error) {
+    //       this.toast('获取ip失败')
+    //       return
+    //     }
+    //     siteStas({
+    //       belongId: this.formId,
+    //       ipAddr: this.userIp,
+    //       dataSource: this.dataSource,
+    //     })
+    //   }
+    // },
     // isWeiXin() {
     //   var ua = window.navigator.userAgent.toLowerCase()
     //   // ua.indexOf('micromessenger')为真-微信端，如果为假，就是其他浏览器
