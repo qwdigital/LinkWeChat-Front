@@ -1,74 +1,106 @@
 <template>
-  <div class="flex" v-loading="loading">
-    <el-form :model="form" ref="form" :rules="rules" label-width="100px" class="g-card fxauto mr20">
-      <el-form-item label="活码名称" prop="taskName">
-        <el-input v-model="form.taskName" maxlength="30" show-word-limit placeholder="请输入名称" clearable />
-      </el-form-item>
+  <div class="flex">
+    <div class="fxauto g-margin-r">
+      <div class="g-card">
+        <div class="g-card-title fxbw">
+          基础信息
+          <el-tag class="cp" v-if="isDetail" size="large" effect="dark" @click="sync">同步</el-tag>
+        </div>
+        <el-form
+          :model="form"
+          ref="form"
+          :rules="rules"
+          label-width="100px"
+          class="fxauto g-margin-r"
+          :class="isDetail && 'form-detail'"
+          :disabled="isDetail">
+          <el-form-item label="链接标题" prop="taskName">
+            <el-input v-model="form.taskName" maxlength="15" show-word-limit placeholder="请输入" clearable />
+          </el-form-item>
+          <el-form-item label="链接描述" prop="keywords">
+            <el-input
+              type="textarea"
+              v-model="form.keywords"
+              placeholder="请输入"
+              maxlength="50"
+              show-word-limit></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
 
-      <el-form-item label="关键词" prop="keywords">
-        <el-input
-          v-model="form.keywords"
-          placeholder="请输入关键词,多个词用英文逗号分隔,每个词不超过10个字"
-          clearable></el-input>
-      </el-form-item>
-
-      <el-form-item label="加群引导语" prop="welcomeMsg">
-        <TextareaExtend
-          v-model="form.welcomeMsg"
-          maxlength="220"
-          show-word-limit
-          :autosize="{ minRows: 5, maxRows: 20 }"
-          placeholder="请输入加群引导语"
-          clearable />
-      </el-form-item>
-
-      <el-form-item label="选择群活码" prop="groupCodeId">
-        <el-image
-          style="width: 160px; height: 160px"
-          v-if="groupQrCode && groupQrCode.codeUrl"
-          :src="groupQrCode.codeUrl"
-          class="code-image"></el-image>
-
-        <el-button type="primary" plain class="ml10" icon="el-icon-plus" @click="dialogVisibleSelectQrCode = true">
-          {{ groupQrCode && groupQrCode.codeUrl ? '修改' : '添加' }}
-        </el-button>
-      </el-form-item>
-
-      <el-form-item label=" ">
-        <el-button type="primary" @click="submit">保存</el-button>
-        <el-button @click="$router.back()">取消</el-button>
-      </el-form-item>
-    </el-form>
-
-    <div class="preview-wrap g-card mt0">
-      <!-- 预览 -->
-      <PhoneDialog :list="[{ text: form.welcomeMsg || '请输入加群引导语' }, { image: groupQrCode.codeUrl }]" />
+      <div class="g-card">
+        <div class="g-card-title fxbw">
+          关键词
+          <el-button type="primary" @click="submit">新建关键词</el-button>
+        </div>
+        <DragSortable v-model:data="form.keywords">
+          <el-table-column label="关键词" align="center" prop="keywords"></el-table-column>
+          <el-table-column align="center" prop="joinTime" label="群活码">
+            <template #default="{ row }">
+              {{ row.joinTime || '—' }}
+              <br />
+              <el-image :src="row.emplCodeUrl" class="code-image"></el-image>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" align="center">
+            <template #default="{ row }">
+              <el-button text @click=";(formKeywords = Object.assign({}, row)), (dialogVisible = true)">编辑</el-button>
+              <el-button text @click="remove(row.id, index)">删除</el-button>
+            </template>
+          </el-table-column>
+        </DragSortable>
+      </div>
     </div>
 
-    <SelectQrCode
-      v-model:visible="dialogVisibleSelectQrCode"
-      @success="submitSelectQrCode"
-      :selected="codes"></SelectQrCode>
+    <div class="preview-wrap g-card mt0" style="flex: 1 1 414px">
+      <div class="g-card-title">链接预览</div>
+      <!-- 预览 -->
+      <Preview :data="form" />
+    </div>
   </div>
+
+  <el-dialog title="关键词" v-model="dialogVisible">
+    <el-form :model="formKeywords" ref="form" :rules="rules" label-width="100px" class="fxauto mr20">
+      <el-form-item label="关键词" prop="taskName">
+        <el-input clearable v-model="formKeywords.taskName" placeholder="请输入"></el-input>
+      </el-form-item>
+      <el-form-item label="群活码名称" prop="taskName">
+        <el-input clearable v-model="formKeywords.taskName" placeholder="请输入"></el-input>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <div>
+        <el-button type="primary" @click="submit">确定</el-button>
+        <el-button @click="dialogVisible = false">取消</el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script>
-import { getDetail, add, update } from '@/api/communityOperating/keywords'
-import SelectQrCode from '@/components/SelectQrCode'
+import { getDetail, add, update } from './api'
 
 export default {
-  components: { SelectQrCode },
+  components: {
+    Preview: defineAsyncComponent(() => import('./Preview')),
+    DragSortable: defineAsyncComponent(() => import('@/components/DragSortable')),
+  },
   data() {
     return {
       taskId: '',
-      dialogVisibleSelectQrCode: false,
       loading: false, // 遮罩层
       // 表单参数
       form: {
         taskName: '', // 任务名称
         groupCodeId: '', // 群活码ID
         welcomeMsg: '', // 欢迎语
-        keywords: '', // 关键词
+        keywords: [{ keywords: 1 }, { keywords: 2 }, { keywords: 3 }], // 关键词
+      },
+      dialogVisible: false,
+      formEidt: {
+        taskName: '', // 任务名称
+        groupCodeId: '', // 群活码ID
+        welcomeMsg: '', // 欢迎语
       },
       codes: [],
       groupQrCode: {},
@@ -79,6 +111,11 @@ export default {
         groupCodeId: [{ required: true, message: '该项为必填项', trigger: 'change' }],
       }),
     }
+  },
+  computed: {
+    isDetail() {
+      return this.$route.path.endsWith('detail')
+    },
   },
   created() {
     this.taskId = this.$route.query.id
@@ -145,11 +182,19 @@ export default {
       this.form.groupCodeId = data.id
       this.$refs.form.validateField('groupCodeId')
     },
+    remove(id, index) {
+      this.$confirm().then(() => {
+        this.form.keywords.splice(index, 1)
+      })
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+// ::v-deep .el-table__header {
+//   width: auto !important;
+// }
 .el-form-item {
   width: 500px;
 }

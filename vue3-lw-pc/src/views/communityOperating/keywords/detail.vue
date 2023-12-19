@@ -18,7 +18,7 @@ export default {
 
 <template>
   <CacheElTabs #="{ opened }">
-    <el-tab-pane label="链接配置">
+    <el-tab-pane label="活码信息">
       <aev />
     </el-tab-pane>
     <el-tab-pane label="拉群统计">

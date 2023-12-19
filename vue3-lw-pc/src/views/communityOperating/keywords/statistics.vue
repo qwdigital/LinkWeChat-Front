@@ -8,7 +8,7 @@
       isTimeQuery
       :isCreateRequest="false"
       :request="(query) => ((query.id = $route.query.id), api.getDataTrend(query))"
-      :legend="['今日送达客户数', '今日进群客户数']"
+      :legend="['今日访问客户数', '今日进群客户数']"
       :dealDataFun="dealDataTrend" />
 
     <RequestChartTable
@@ -16,7 +16,7 @@
       ref="importRecord"
       :request="getDataDetail"
       :requestExport="(query) => ((query.id = $route.query.id), api.getDataDetailExport(query))"
-      exportFileName="标签建群数据明细导出.xls">
+      exportFileName="关键词群数据明细导出.xls">
       <template #queryMiddle="{ query }">
         <el-form-item label="" prop="customerName">
           <el-input v-model="query.customerName" placeholder="请输入客户名称"></el-input>
@@ -121,24 +121,24 @@ let dialogVisible = ref(false)
     .then(({ data }) => {
       cardData.value = [
         {
-          title: '送达客户总数',
-          tips: '建群任务送达的客户总数(去重)',
+          title: '访问客户总数',
+          tips: '访问关键词链接的客户总数(去重)',
           value: data.touchWeCustomerNumber,
         },
         {
           title: '进群客户总数',
-          tips: '送达客户中成功进群的总数(去重)',
+          tips: '访问客户中成功进群的总数(去重)',
           value: data.joinGroupCustomerNumber,
         },
         {
-          title: '今日送达客户数',
-          tips: '今日建群任务送达的客户数(去重)',
+          title: '今日访问客户数',
+          tips: '今日访问关键词链接的客户数(去重)',
           // tips: '当日内被员工产生过跟进行为的客户人数（去重）',
           value: data.tdTouchWeCustomerNumber,
         },
         {
           title: '今日进群客户数',
-          tips: '今日送达客户中成功进群数(去重)',
+          tips: '今日访问客户中成功进群数(去重)',
           value: data.tdJoinGroupCustomerNumber,
           // unit: '%',
         },

@@ -1,10 +1,12 @@
 <script>
-import { getList, remove } from '@/api/communityOperating/keywords'
+import { getList, remove } from './api'
 
 export default {
   props: {},
+  components: { Preview: defineAsyncComponent(() => import('./Preview')) },
   data() {
     return {
+      getList,
       h5Link: 'https://platform.wshoto.com/H5/?corpId=ww8e09372aff8d9190',
       query: {
         pageNum: 1,
@@ -25,6 +27,10 @@ export default {
       disabled: false,
       loading: false,
       clipboard: null,
+      preview: {
+        dialogVisible: false,
+        data: {},
+      },
     }
   },
   watch: {
@@ -42,40 +48,19 @@ export default {
     },
   },
   created() {
-    this.getList(1)
     this.$store.setBusininessDesc(
       `
-        <div>当企业开通聊天工具栏后，用户可点击聊天工具栏中的【关键字群发】，搜索或选择某个关键词下的引导语及群活码，进行一键发送，客户手动扫码进群。</div>
+        <div>聚合多个群活码，生成落地页，客户在页面内根据关键词进入相应群聊</div>
       `,
     )
   },
-  mounted() {
-    this.clipboard = new this.ClipboardJS('.copy-btn')
-  },
-  unmounted() {
-    this.clipboard.destroy()
-  },
+  mounted() {},
   methods: {
-    // 获取关键词拉群数据
-    getList(page) {
-      page && (this.query.pageNum = page)
-      this.loading = true
-
-      getList(this.query)
-        .then(({ rows, total }) => {
-          this.list = rows
-          this.total = +total
-          this.loading = false
-        })
-        .catch(() => {
-          this.loading = false
-        })
-    },
     // 新增/编辑关键词拉群
-    goRoute(id) {
+    goRoute(path = 'aev', id) {
       this.$router.push({
-        path: 'keywordsAev',
-        query: { id: id },
+        path,
+        query: { id },
       })
     },
     // 重置查询参数
@@ -148,135 +133,117 @@ export default {
 
 <template>
   <div>
-    <el-form ref="queryForm" :inline="true" :model="query" label-width="70px" class="top-search">
-      <el-form-item label="活码名称" prop="taskName">
-        <el-input clearable v-model="query.taskName" placeholder="请输入"></el-input>
-      </el-form-item>
-      <el-form-item label="创建人" prop="createBy">
-        <el-input clearable v-model="query.createBy" placeholder="请输入"></el-input>
-      </el-form-item>
-      <el-form-item label="关键词" prop="keywords">
-        <el-input clearable v-model="query.keywords" placeholder="请输入"></el-input>
-      </el-form-item>
-      <el-form-item label="创建时间">
-        <el-date-picker
-          clearable
-          v-model="dateRange"
-          value-format="YYYY-MM-DD"
-          type="daterange"
-          v-bind="pickerOptions"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          align="right"></el-date-picker>
-      </el-form-item>
-      <el-form-item label="">
-        <el-button type="primary" @click="getList(1)">查询</el-button>
-        <el-button @click="resetQuery()">重置</el-button>
-      </el-form-item>
-    </el-form>
+    <RequestChartTable ref="rct" :request="(params) => (Object.assign(params, query), getList(params))">
+      <template #query="{ query }">
+        <el-form-item label="链接名称" prop="taskName">
+          <el-input clearable v-model="query.taskName" placeholder="请输入"></el-input>
+        </el-form-item>
+      </template>
 
-    <div class="g-card">
-      <div class="mid-action">
-        <el-button type="primary" @click="goRoute()">新建关键词</el-button>
-        <div>
-          <!-- <el-button type="primary" @click="handleBulkDownload">批量下载</el-button> -->
-          <el-button :disabled="multiSelect.length === 0" @click="handleBulkRemove" type="danger">批量删除</el-button>
-        </div>
-      </div>
-
-      <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="50" align="center" />
-        <el-table-column label="活码名称" align="center" prop="taskName" :show-overflow-tooltip="true" />
-        <el-table-column label="群活码" align="center" width="130">
-          <template #default="{ row }">
-            <el-popover placement="bottom" trigger="hover">
-              <template #reference>
-                <el-image
-                  :src="(row.groupCodeInfo && row.groupCodeInfo.codeUrl) || ''"
-                  class="code-image--small"></el-image>
-              </template>
-              <el-image :src="(row.groupCodeInfo && row.groupCodeInfo.codeUrl) || ''" class="code-image"></el-image>
-            </el-popover>
-          </template>
-        </el-table-column>
-        <el-table-column label="关键词" align="center" width="120">
-          <template #default="{ row }">
-            <el-popover placement="bottom" width="200" trigger="hover" :content="row.keywords">
-              <template #reference>
-                <div class="table-desc overflow-ellipsis">
-                  <!-- {{ getDisplayKeywords(row) }} -->
-                  {{ row.keywords }}
-                </div>
-              </template>
-            </el-popover>
-          </template>
-        </el-table-column>
-        <el-table-column label="实际群聊" align="center" width="120">
-          <template #default="{ row }">
-            <el-popover placement="bottom" width="200" trigger="hover" :content="row.groupNameList">
-              <template #reference>
-                <div class="table-desc overflow-ellipsis">
-                  <!-- {{ getDisplayRealGroups(row) }} -->
-                  {{ row.groupNameList }}
-                </div>
-              </template>
-            </el-popover>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="创建人" align="center" prop="createBy"></el-table-column>
-
-        <el-table-column label="创建时间" align="center" prop="createTime"></el-table-column>
-
-        <el-table-column label="操作" align="center" width="180">
-          <template #default="scope">
-            <el-button text @click="goRoute(scope.row.taskId)">编辑</el-button>
-            <!-- <el-button
-            v-hasPermi="['enterpriseWechat:view']"
-
-            text
-            :icon="view"
-            >下载</el-button
-          > -->
-            <el-button text @click="handleRemove(scope.row.taskId)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <pagination
-        v-show="total > 0"
-        :total="total"
-        v-model:page="query.pageNum"
-        v-model:limit="query.pageSize"
-        @pagination="getList()" />
-    </div>
-
-    <el-dialog
-      title="配置方法"
-      v-model="dialogHowToConfig"
-      width="500px"
-      style="margin-bottom: 7vh"
-      :close-on-click-modal="false">
-      <div class="help">
-        <div class="step">
-          <p>1、登录企业微信官方后台，进入应用管理，点击 {{ lwConfig.SYSTEM_NAME }}，再点击【配置到聊天工具栏】。</p>
-          <el-image :src="'@/assets/example/keywordHelp1.png'"></el-image>
-        </div>
-        <div class="step">
-          <p>2、点击【配置】后，进入配置页面。</p>
-          <el-image :src="'@/assets/example/keywordHelp2.png'"></el-image>
-        </div>
-        <div class="step">
-          <p>3、点击【配置页面】后，在弹窗中，输入页面名称及链接，并确定即可。进入配置页面。</p>
-          <el-image :src="'@/assets/example/keywordHelp3.png'"></el-image>
-        </div>
-      </div>
-      <template #footer>
-        <div>
-          <el-button type="primary" @click="dialogHowToConfig = false">我知道了</el-button>
+      <template #operation="{ selectedIds }">
+        <div class="fxbw">
+          <el-button type="primary" @click="goRoute()">新建链接</el-button>
+          <el-button @click="$refs.rct.remove(remove)" type="danger">批量删除</el-button>
         </div>
       </template>
+
+      <template #table>
+        <el-table-column label="链接标题" align="center" prop="taskName" show-overflow-tooltip />
+        <el-table-column label="链接描述" align="center" prop="taskName" show-overflow-tooltip />
+        <el-table-column label="关键词" align="center" width="120">
+          <template #default="{ row }">
+            <div
+              class="g-color cp"
+              @click="
+                ;(externalUserid = row.externalUserid), (dialogVisible = true), $refs.RequestChartTableDialog?.getList()
+              ">
+              {{ row.keywords }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="访问客户数/进群客户数" align="center" prop="cusNumber" width="">
+          <template #header>
+            <el-popover placement="top" trigger="hover">
+              <template #reference>
+                <div>
+                  访问客户数/进群客户数
+                  <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
+                </div>
+              </template>
+              <div>访问客户数：访问当前链接的客户总数（去重）；</div>
+              <div>进群客户数：访问客户中成功进群的总数（去重）；</div>
+            </el-popover>
+          </template>
+          <template #default="{ row }">
+            <div class="g-color cp" @click="goRoute('detail', { id: row.id, index: 1 })">
+              {{ row.touchWeCustomerNumber }}/{{ row.joinGroupCustomerNumber }}
+            </div>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="最近更新" align="center" prop="updateTime">
+          <template #default="{ row }">
+            {{ row.updateTime }}
+            <br />
+            {{ row.updateTime }}
+          </template>
+        </el-table-column>
+
+        <el-table-column label="操作" align="center" width="180">
+          <template #default="{ row }">
+            <el-button text @click="goRoute('detail', { id: row.id })">详情|统计</el-button>
+            <el-button text @click="goRoute('aev', { id: row.id })">编辑</el-button>
+            <el-button text @click=";(preview.data = row), (preview.dialogVisible = true)">预览</el-button>
+            <el-button text @click="$refs.rct.remove(remove, row.id)">删除</el-button>
+          </template>
+        </el-table-column>
+      </template>
+    </RequestChartTable>
+
+    <el-dialog title="关键词" v-model="dialogVisible">
+      <RequestChartTable
+        ref="RequestChartTableDialog"
+        style="padding: 0 0 20px 0"
+        :request="
+          (query) => (
+            (query.id = $route.query.id), (query.externalUserid = externalUserid), api.getCustomerToGroupList(query)
+          )
+        ">
+        <template #="{ data }">
+          <el-table :data="data">
+            <el-table-column label="关键词" align="center" prop="groupName"></el-table-column>
+            <el-table-column align="center" prop="joinTime" label="群活码">
+              <template #default="{ row }">
+                {{ row.joinTime || '—' }}
+                <br />
+                <el-image :src="row.emplCodeUrl" class="code-image"></el-image>
+              </template>
+            </el-table-column>
+            <el-table-column label="活码客群数" align="center">
+              <template #default="{ row }">
+                <div
+                  class="g-color cp"
+                  @click="
+                    $router.push({
+                      name: lwConfig.CUSTOMER_DETAIL_ROUTE_NAME,
+                      query: { externalUserid: row.externalUserid, userId: row.addUserId },
+                    })
+                  ">
+                  客户详情
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </template>
+      </RequestChartTable>
+    </el-dialog>
+
+    <el-dialog title="预览" v-model="preview.dialogVisible">
+      <Preview :data="preview.data" />
+      <el-button type="primary" plain @click="downloadBlob(row.groupCodeUrl, row.codeName + '.png', 'image')">
+        下载二维码
+      </el-button>
+      <el-button type="primary" @click="$copyText(row.groupCodeUrl)">复制链接</el-button>
     </el-dialog>
   </div>
 </template>

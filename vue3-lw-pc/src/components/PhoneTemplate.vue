@@ -1,6 +1,6 @@
 // 手机端背景框组件
 <template>
-  <div class="preview">
+  <div class="PhoneTemplate">
     <!-- <div class="preview-status">
       <div>13:14</div>
     </div> -->
@@ -41,7 +41,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.preview {
+.PhoneTemplate {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
@@ -103,6 +103,7 @@ export default {
     font-size: 14px;
     font-weight: 500;
     color: var(--font-black);
+    border-bottom: 1px solid var(--border-black-11);
   }
 
   .preview-content {
@@ -122,6 +123,11 @@ export default {
   ::v-deep {
     .el-scrollbar__wrap {
       overflow-x: hidden;
+    }
+    .el-scrollbar__view {
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
     .el-scrollbar__bar {
       transform: scale(1);
