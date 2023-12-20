@@ -751,7 +751,7 @@ export default {
         }
       }
 
-      selectInfoToSurvey(this.formId, this.userIp).then((response) => {
+      selectInfoToSurvey(this.formId, this.userIp, this.dataSource).then((response) => {
         if (response.code == 200) {
           that.fromList = response.data
           let clannelsName = that.fromList.channelsName.split(',')

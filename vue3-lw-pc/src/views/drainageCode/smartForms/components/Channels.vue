@@ -1,5 +1,5 @@
 <template>
-  <el-table v-loading="loading" :data="channelsPathList" style="width: 1000px">
+  <el-table v-loading="loading" :data="ChannelsList" style="width: 1000px">
     <el-table-column label="渠道" align="center" prop="createTime">
       <template #default="{ row, $index }">
         {{ ChannelsList[$index] }}
@@ -16,11 +16,13 @@
       </template>
     </el-table-column>
     <el-table-column label="地址" align="center" prop="createTime" show-overflow-tooltip>
-      <template #default="{ row, $index }">{{ baseFormUrl4 + '&dataSource=' }}{{ row }}</template>
+      <template #default="{ row, $index }">{{ baseFormUrl4 + '&dataSource=' }}{{ encodeURIComponent(row) }}</template>
     </el-table-column>
     <el-table-column label="操作" align="center" prop="createTime" show-overflow-tooltip>
       <template #default="{ row, $index }">
-        <el-button text class="copy-btn" :data-clipboard-text="baseFormUrl4 + '&dataSource=' + row">复制</el-button>
+        <el-button text class="copy-btn" :data-clipboard-text="baseFormUrl4 + '&dataSource=' + encodeURIComponent(row)">
+          复制
+        </el-button>
         <el-button text @click="downloadBlob(eImgList[$index], '表单二维码.png', 'image')">下载二维码</el-button>
       </template>
     </el-table-column>
@@ -64,15 +66,13 @@ export default {
         if (response.data.channelsName) {
           this.ChannelsList = response.data.channelsName.split(',')
           this.channelsPathList = response.data.channelsPath.split(',')
-          for (let i = 0; i < this.channelsPathList.length; i++) {
-            //生成各渠道二维码
-            for (let w = 0; w < this.channelsPathList.length; w++) {
-              console.log('二维码转换内容', this.baseFormUrl4 + '&dataSource=' + this.channelsPathList[w])
-              QRCode.toDataURL(
-                this.baseFormUrl4 + '&dataSource=' + this.channelsPathList[w], // 需要转换为二维码的内容
-                { width: 150, margin: 2, errorCorrectionLevel: 'H' },
-              ).then((url) => (this.eImgList[i] = url))
-            }
+          //生成各渠道二维码
+          for (let w = 0; w < this.channelsPathList.length; w++) {
+            console.log('二维码转换内容', this.baseFormUrl4 + '&dataSource=' + this.channelsPathList[w])
+            QRCode.toDataURL(
+              this.baseFormUrl4 + '&dataSource=' + this.ChannelsList[w], // 需要转换为二维码的内容
+              { width: 150, margin: 2, errorCorrectionLevel: 'H' },
+            ).then((url) => (this.eImgList[w] = url))
           }
           this.eImgList.push()
         }

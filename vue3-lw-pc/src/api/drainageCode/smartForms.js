@@ -52,7 +52,7 @@ export function deleteInfoToSurvey(ids) {
 }
 
 // 获取表单问卷列表/表单详情
-export function selectInfoToSurvey(id, addr) {
+export function selectInfoToSurvey(id, addr, dataSource) {
   if (addr) {
     return request({
       url: window.lwConfig.services.weChat + '/form/survey/getInfo',
@@ -60,6 +60,7 @@ export function selectInfoToSurvey(id, addr) {
       params: {
         id, // 121212, 原有路径中带的主键id
         addr, // ip地址
+        dataSource,
       },
     })
   } else {
