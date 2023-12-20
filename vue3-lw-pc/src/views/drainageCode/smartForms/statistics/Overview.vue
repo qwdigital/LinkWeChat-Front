@@ -31,30 +31,30 @@
         <el-button type="primary" @click="exportFn" v-loading="exportLoading">导出Excel</el-button>
       </div>
       <el-table v-loading="loading" :data="tableList" style="width: 100%">
-        <el-table-column label="日期" align="center" min-width="100" prop="xtime" show-overflow-tooltip />
-        <el-table-column label="总访问数" align="center" min-width="100" prop="visitTotalCnt" show-overflow-tooltip />
+        <el-table-column label="日期" align="center" min-width="100" prop="date" show-overflow-tooltip />
+        <el-table-column label="总访问数" align="center" min-width="100" prop="totalVisits" show-overflow-tooltip />
         <el-table-column
           label="总访问用户"
           align="center"
-          prop="consultTotalCnt"
+          prop="totalUser"
           min-width="100"
           show-overflow-tooltip></el-table-column>
         <el-table-column
           label="有效收集量"
           align="center"
-          prop="EffectiveCollectionQuantity"
+          prop="collectionVolume"
           min-width="100"
           show-overflow-tooltip></el-table-column>
         <el-table-column
           label="收集率"
           align="center"
-          prop="CollectionQuantity"
+          prop="collectionRate"
           min-width="100"
           show-overflow-tooltip></el-table-column>
         <el-table-column
           label="平均完成时间"
           align="center"
-          prop="average"
+          prop="averageTime"
           min-width="100"
           show-overflow-tooltip></el-table-column>
       </el-table>

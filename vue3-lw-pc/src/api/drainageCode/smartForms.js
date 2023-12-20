@@ -140,7 +140,7 @@ export function lineChart(data) {
   return request({
     url: service + '/statistic/lineChart',
     method: 'get',
-    data,
+    params: data,
   })
 }
 
@@ -151,7 +151,7 @@ export function StatisticsDataList(data) {
   return request({
     url: service + '/statistic/dataList',
     method: 'get',
-    data,
+    params: data,
   })
 }
 
@@ -198,7 +198,7 @@ export function overviewExport(data) {
   return request({
     url: service + '/statistic/dataListExport',
     method: 'get',
-    data,
+    params: data,
     responseType: 'blob',
   })
 }
