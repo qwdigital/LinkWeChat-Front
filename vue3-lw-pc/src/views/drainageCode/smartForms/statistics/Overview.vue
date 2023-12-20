@@ -259,7 +259,7 @@ export default {
       }
       selectStatistics(data).then((res) => {
         if (res.data.length) {
-          let time = this.formatSeconds(res.data[0].averageTime)
+          // let time = this.formatSeconds(res.data[0].averageTime)
           this.baseList = res.data[0]
           this.cardData[0].value = res.data[0].totalVisits
           this.cardData[0].value1 = res.data[0].yesTotalVisits
@@ -268,7 +268,7 @@ export default {
           this.cardData[1].value = res.data[0].totalUser
           this.cardData[1].value1 = res.data[0].yesTotalUser
           this.cardData[3].value = res.data[0].collectionRate
-          this.cardData[4].value = time
+          this.cardData[4].value = res.data[0].averageTime
         }
       })
     },
