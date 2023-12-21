@@ -70,7 +70,6 @@
               </el-form-item>
             </el-form>
           </div>
-          <div style="color: #fff">1</div>
           <div v-if="page == pageData.length && page != 1" style="padding: 1rem; position: relative; top: 0.5rem">
             <div @click="dePage" class="formDetailPush">上一页</div>
           </div>
@@ -198,7 +197,7 @@ import {
   submitForm,
   insertPieValue,
   isCompleteSurvey,
-  siteStas,
+  // siteStas,
 } from '@/api/drainageCode/smartForms.js'
 import { getProvinceCityTree } from '@/utils/index'
 // import render from './generator/render'
@@ -695,7 +694,7 @@ export default {
         this.unionidN = data.unionId
         this.openIdN = data.openId
         this.formData.userName = data.nickName
-        this.siteStas()
+        // this.siteStas()
         this.isCompleteSurveyF()
       })
     },
@@ -736,13 +735,23 @@ export default {
       return flag
     },
     //获取详情
-    selectInfoToSurvey() {
+    async selectInfoToSurvey() {
       let that = this
       if (!this.formId) {
         this.loading = false
         return
       }
-      selectInfoToSurvey(this.formId).then((response) => {
+
+      if (!['y', 'q'].includes(this.style)) {
+        try {
+          this.userIp = this.userIp || (await getIP())
+        } catch (error) {
+          this.toast('获取ip失败')
+          return
+        }
+      }
+
+      selectInfoToSurvey(this.formId, this.userIp, this.dataSource).then((response) => {
         if (response.code == 200) {
           that.fromList = response.data
           let clannelsName = that.fromList.channelsName.split(',')
@@ -827,29 +836,29 @@ export default {
                 return
               }
             }
-            this.siteStas()
+            // this.siteStas()
           }
         } else {
           showDialog(response.msg)
         }
       })
     },
-    async siteStas() {
-      if (!['y', 'q'].includes(this.style)) {
-        //智能表单站点统计 PV
-        try {
-          this.userIp = this.userIp || (await getIP())
-        } catch (error) {
-          this.toast('获取ip失败')
-          return
-        }
-        siteStas({
-          belongId: this.formId,
-          ipAddr: this.userIp,
-          dataSource: this.dataSource,
-        })
-      }
-    },
+    // async siteStas() {
+    //   if (!['y', 'q'].includes(this.style)) {
+    //     //智能表单站点统计 PV
+    //     try {
+    //       this.userIp = this.userIp || (await getIP())
+    //     } catch (error) {
+    //       this.toast('获取ip失败')
+    //       return
+    //     }
+    //     siteStas({
+    //       belongId: this.formId,
+    //       ipAddr: this.userIp,
+    //       dataSource: this.dataSource,
+    //     })
+    //   }
+    // },
     // isWeiXin() {
     //   var ua = window.navigator.userAgent.toLowerCase()
     //   // ua.indexOf('micromessenger')为真-微信端，如果为假，就是其他浏览器

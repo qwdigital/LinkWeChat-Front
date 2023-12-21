@@ -196,11 +196,8 @@ export default {
       data.pageSize = pageSize
       this.dataSource = data.dataSource
       statisticsCustomer(data).then((res) => {
-        // console.log('用户统计数据返回值', res)
-        if (res.rows?.length) {
-          this.tableList = res.rows
-          this.total = Number(res.total)
-        }
+        this.tableList = res.rows || []
+        this.total = Number(res.total || 0)
         this.loading1 = false
       })
     },
