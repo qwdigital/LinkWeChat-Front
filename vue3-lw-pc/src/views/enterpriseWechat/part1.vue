@@ -42,7 +42,7 @@
           <div class="tips">用于同步企微通讯录，在企微后台->管理工具->通讯录同步中获取</div>
         </el-form-item>
       </div>
-      <div class="g-card">
+      <!-- <div class="g-card">
         <div class="my-title">客户联系配置</div>
         <el-form-item label="客户联系Secret:" prop="contactSecret">
           <div>
@@ -69,7 +69,7 @@
           </div>
           <div class="tips">用于管理客户和联系客户，在企微后台->客户联系->客户 API中获取</div>
         </el-form-item>
-      </div>
+      </div> -->
       <div class="g-card">
         <div class="my-title">回调配置</div>
         <el-form-item label="Token:" prop="token">
@@ -89,14 +89,14 @@ export default {
     return {
       corpSecretCopy: '',
       corpSecretEditState: false,
-      contactSecretCopey: '',
-      contactSecretEditState: false,
+      // contactSecretCopey: '',
+      // contactSecretEditState: false,
       form: {},
       rules: {
         corpId: [{ required: true, message: '必填项', trigger: 'blur' }],
         corpSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
         companyName: [{ required: true, message: '必填项', trigger: 'blur' }],
-        contactSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
+        // contactSecret: [{ required: true, message: '必填项', trigger: 'blur' }],
         logoUrl: [{ required: true, message: '必填项', trigger: 'blur' }],
         token: [{ required: true, message: '必填项', trigger: 'blur' }],
         encodingAesKey: [{ required: true, message: '必填项', trigger: 'blur' }],
@@ -113,21 +113,21 @@ export default {
     },
   },
   methods: {
-    editContactSecret() {
-      this.contactSecretEditState = true
-      this.contactSecretCopy = JSON.parse(JSON.stringify(this.form.contactSecret))
-      this.form.contactSecret = ''
-    },
-    cancelEditContactSecret() {
-      this.contactSecretEditState = false
-      this.form.contactSecret = JSON.parse(JSON.stringify(this.contactSecretCopy))
-    },
-    submitEditContactSecret() {
-      if (this.form.contactSecret) {
-        this.$emit('submit', this.form)
-        this.contactSecretEditState = false
-      }
-    },
+    // editContactSecret() {
+    //   this.contactSecretEditState = true
+    //   this.contactSecretCopy = JSON.parse(JSON.stringify(this.form.contactSecret))
+    //   this.form.contactSecret = ''
+    // },
+    // cancelEditContactSecret() {
+    //   this.contactSecretEditState = false
+    //   this.form.contactSecret = JSON.parse(JSON.stringify(this.contactSecretCopy))
+    // },
+    // submitEditContactSecret() {
+    //   if (this.form.contactSecret) {
+    //     this.$emit('submit', this.form)
+    //     this.contactSecretEditState = false
+    //   }
+    // },
 
     editCorpSecret() {
       this.corpSecretEditState = true
