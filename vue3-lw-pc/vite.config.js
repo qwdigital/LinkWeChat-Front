@@ -73,7 +73,7 @@ export default defineConfig(async ({ command, mode }) => {
     //   exclude: '**/**.vue',
     // },
     build: {
-      outDir: 'pc',
+      // outDir: 'pc',
       minify: 'terser',
       reportCompressedSize: false, // 启用/禁用 gzip 压缩大小报告
       // modulePreload: false, // { polyfill: false }
