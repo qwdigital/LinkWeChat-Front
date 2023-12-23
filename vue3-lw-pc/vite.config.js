@@ -1,4 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
+import { userInfo } from 'node:os'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -33,6 +34,7 @@ export default defineConfig(async ({ command, mode }) => {
     define: {
       'process.env.VUE_APP_ENV': JSON.stringify(mode),
       __PACK_DATETIME__: JSON.stringify(new Date().toLocaleString()),
+      __PACK_USER__: JSON.stringify(userInfo().username),
       // __BASE_API__: JSON.stringify(env.BASE_API),
     },
     // 部署生产环境和开发环境下的URL。
