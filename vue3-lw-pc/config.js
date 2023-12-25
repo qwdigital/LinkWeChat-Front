@@ -50,6 +50,7 @@ const common = {
 const project = {
   _version: 'v5.x', // 当前版本信息
   _packDateTime: __PACK_DATETIME__, // 打包时间
+  _packUser: __PACK_USER__, // 打包人员
   _env: process.env.VUE_APP_ENV, // 前端系统环境模式
 }
 
@@ -70,6 +71,7 @@ let config = {
     wecom: '/open',
     // system: 'http://192.168.4.168:6180',
     common: '/common',
+    weChat: '/wx-api',
   },
 
   get headers() {

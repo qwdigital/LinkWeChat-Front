@@ -116,15 +116,15 @@ export default {
         this.data.startDate = weekStart
         this.data.endDate = weekEnd
         this.data.type = 'week'
-        delete this.data.startDate
-        delete this.data.endDate
+        // delete this.data.startDate
+        // delete this.data.endDate
         this.submit()
       } else if (type === 2) {
         this.data.endDate = moment().format('YYYY-MM-DD')
         this.data.startDate = moment().subtract(29, 'days').format('YYYY-MM-DD')
         this.data.type = 'month'
-        delete this.data.startDate
-        delete this.data.endDate
+        // delete this.data.startDate
+        // delete this.data.endDate
         this.submit()
       } else if (type == 3) {
         this.data.type = 'customization'
