@@ -52,11 +52,23 @@ export function deleteInfoToSurvey(ids) {
 }
 
 // 获取表单问卷列表/表单详情
-export function selectInfoToSurvey(id) {
-  return request({
-    url: service + '/survey/getInfo/' + id,
-    method: 'GET',
-  })
+export function selectInfoToSurvey(id, addr, dataSource) {
+  if (addr) {
+    return request({
+      url: window.lwConfig.services.weChat + '/form/survey/getInfo',
+      method: 'GET',
+      params: {
+        id, // 121212, 原有路径中带的主键id
+        addr, // ip地址
+        dataSource,
+      },
+    })
+  } else {
+    return request({
+      url: service + '/survey/getInfo/' + id,
+      method: 'GET',
+    })
+  }
 }
 
 // 提交问卷
@@ -128,17 +140,19 @@ export function selectStatistics(data) {
 export function lineChart(data) {
   return request({
     url: service + '/statistic/lineChart',
-    method: 'post',
-    data,
+    method: 'get',
+    params: data,
   })
 }
 
 //数据报表
 export function StatisticsDataList(data) {
+  data.beginTime ??= data.startDate
+  data.endTime ??= data.endDate
   return request({
     url: service + '/statistic/dataList',
-    method: 'post',
-    data,
+    method: 'get',
+    params: data,
   })
 }
 
@@ -176,16 +190,16 @@ export function pieChart(data) {
     "belongId": "25",
     "type": "",
     "dataSource": "cillum consectetur",
-    "startDate": "1992-07-12",
-    "endDate": "2012-02-24"
+    "startTime": "1992-07-12",
+    "endTime": "2012-02-24"
 }
  * @returns
  */
 export function overviewExport(data) {
   return request({
-    url: service + '/statistic/data/export',
-    method: 'post',
-    data,
+    url: service + '/statistic/dataListExport',
+    method: 'get',
+    params: data,
     responseType: 'blob',
   })
 }
@@ -229,7 +243,7 @@ export function areaStatistic(data) {
 }
 
 /**
- * 智能表单站点统计
+ * 智能表单站点统计（废弃）
  * @param {*} data
  * {
  * belongId: this.formId,

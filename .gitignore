@@ -21,7 +21,7 @@ logs
 .m2
 pc/
 h5/
-linkwe-uniapp/unpackage/dist/
+dist
 linkwe-uniapp/js_sdk/
 linkwe-pc/discard/
 node_modules/
