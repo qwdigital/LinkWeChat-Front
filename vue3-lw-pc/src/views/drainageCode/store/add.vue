@@ -69,38 +69,32 @@
 
         <el-form-item label="门店客群">
           <el-card shadow="always" style="width: 600px" :body-style="{ padding: '20px' }">
-            <FormAutoCreateGroup ref="FormAutoCreateGroup" v-model:data="form.addGroupCode" :isDetail="isDetail">
-              <el-form-item label="群活码名称" prop="codeName">
-                <el-input
-                  v-model="form.addGroupCode.activityName"
-                  maxlength="30"
-                  show-word-limit
-                  placeholder="请输入"
-                  clearable></el-input>
-              </el-form-item>
+            <FormAutoCreateGroup ref="FormAutoCreateGroup" v-model:form="form.addGroupCode" :isDetail="isDetail">
+              <template #="{ form: _form }">
+                <el-form-item
+                  label="群活码名称"
+                  prop="activityName"
+                  :rules="{ activityName: [{ required: true, message: '必填项', trigger: 'blur' }] }">
+                  <el-input
+                    v-model="_form.activityName"
+                    maxlength="15"
+                    show-word-limit
+                    placeholder="请输入"
+                    clearable></el-input>
+                </el-form-item>
+              </template>
             </FormAutoCreateGroup>
           </el-card>
         </el-form-item>
 
         <el-form-item label="门店状态">
-          <template v-if="!isDetail">
-            <el-switch
-              :disabled="!form.groupCodeUrl && !form.shopGuideId"
-              v-model="form.storeState"
-              active-text="启用"
-              inactive-text="停用"
-              :active-value="0"
-              :inactive-value="1"></el-switch>
-          </template>
-          <template v-else>
-            <el-switch
-              disabled
-              v-model="form.storeState"
-              active-text="启用"
-              inactive-text="停用"
-              :active-value="0"
-              :inactive-value="1"></el-switch>
-          </template>
+          <el-switch
+            :disabled="!isDetail"
+            v-model="form.storeState"
+            active-text="启用"
+            inactive-text="停用"
+            :active-value="0"
+            :inactive-value="1"></el-switch>
         </el-form-item>
       </div>
     </el-form>
@@ -229,43 +223,46 @@ export default {
       this.form.longitude = ''
       this.form.latitude = ''
     },
-    submit() {
-      this.$refs['FormAutoCreateGroup'].validate((valitate) => {
-        if (valitate) {
-          this.$refs['form'].validate((valitate) => {
-            if (valitate) {
-              let form = JSON.parse(JSON.stringify(this.form))
-              form.shopGuideName = form.users?.map((e) => e.name)?.join(',')
-              form.groupCodeName = form.addGroupCode?.groups?.map((e) => e.groupName)?.join(',')
-              form.addWeUserOrGroupCode = {
-                weQrAddQuery: {
-                  qrUserInfos: [
-                    {
-                      userIds: form.users?.map((e) => e.userId),
-                    },
-                  ],
+    async submit() {
+      if (this.form.storeState == 0) {
+        let valid = await this.$refs['FormAutoCreateGroup'].validate()
+        if (!valid || !this.form.users?.length) {
+          this.msgError('门店状态开启时必须要求保证导购人员或群活码至少设置一项')
+          return
+        }
+      }
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          let form = JSON.parse(JSON.stringify(this.form))
+          form.shopGuideName = form.users?.map((e) => e.name)?.join(',')
+          form.groupCodeName = form.addGroupCode?.groups?.map((e) => e.groupName)?.join(',')
+          form.addWeUserOrGroupCode = {
+            weQrAddQuery: {
+              qrUserInfos: [
+                {
+                  userIds: form.users?.map((e) => e.userId),
                 },
+              ],
+            },
 
-                addGroupCode: {
-                  ...form.addGroupCode,
-                  chatIdList: form.addGroupCode.groups?.map((e) => e.chatId)?.join(','),
-                },
-              }
+            addGroupCode: {
+              ...form.addGroupCode,
+              chatIdList: form.addGroupCode.groups?.map((e) => e.chatId)?.join(','),
+            },
+          }
 
-              delete form.addGroupCode
-              delete form.users
+          delete form.addGroupCode
+          delete form.users
 
-              this.loading = true
-              addOrUpdateStore(form)
-                .then((res) => {
-                  this.msgSuccess('操作成功')
-                  this.$router.back()
-                })
-                .finally(() => {
-                  this.loading = false
-                })
-            }
-          })
+          this.loading = true
+          addOrUpdateStore(form)
+            .then((res) => {
+              this.msgSuccess('操作成功')
+              this.$router.back()
+            })
+            .finally(() => {
+              this.loading = false
+            })
         }
       })
     },
