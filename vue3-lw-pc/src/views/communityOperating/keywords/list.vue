@@ -77,7 +77,7 @@ export default {
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" align="center" width="180">
+        <el-table-column label="操作" align="center" fixed="right">
           <template #default="{ row }">
             <el-button text @click="$refs.rct.goRoute('detail', row.id)">详情|统计</el-button>
             <el-button text @click="$refs.rct.goRoute('aev', row.id)">编辑</el-button>
@@ -89,7 +89,7 @@ export default {
     </RequestChartTable>
 
     <!-- 关键词列表弹窗 -->
-    <el-dialog title="关键词" v-model="dialogVisible">
+    <el-dialog title="关键词" v-model="dialogVisible" width="auto">
       <div style="padding: 0 0 20px 0">
         <el-table :data="data">
           <el-table-column label="关键词" align="center" prop="keyword"></el-table-column>
@@ -118,15 +118,17 @@ export default {
     </el-dialog>
 
     <!-- 预览弹窗 -->
-    <el-dialog title="预览" v-model="preview.dialogVisible">
+    <el-dialog title="预览" v-model="preview.dialogVisible" width="auto">
       <Preview :data="preview.data" />
-      <el-button
-        type="primary"
-        plain
-        @click="downloadBlob(preview.data.keywordGroupQrUrl, preview.data.title + '.png', 'image')">
-        下载二维码
-      </el-button>
-      <el-button type="primary" @click="$copyText(preview.data.keywordGroupQrUrl)">复制链接</el-button>
+      <div class="ac mt20">
+        <el-button
+          type="primary"
+          plain
+          @click="downloadBlob(preview.data.keywordGroupQrUrl, preview.data.title + '.png', 'image')">
+          下载二维码
+        </el-button>
+        <el-button type="primary" @click="$copyText(preview.data.keywordGroupQrUrl)">复制链接</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>

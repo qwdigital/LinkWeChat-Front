@@ -5,7 +5,7 @@ export default {
   props: {
     data: {
       type: Array,
-      default: [],
+      default: () => [],
     },
     // 是否可拖拽
     isDrag: {
@@ -27,13 +27,13 @@ export default {
   computed: {},
   watch: {
     data: {
-      handler(val) {
+      immediate: true,
+      deep: true,
+      handler(val = []) {
         this.tableData = JSON.parse(JSON.stringify(val))
         this.tableData.forEach((item, index) => (item._sortId ??= index + Date.now()))
         console.log(this.tableData)
       },
-      immediate: true,
-      deep: true,
     },
   },
   created() {},

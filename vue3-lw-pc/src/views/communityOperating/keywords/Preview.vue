@@ -24,7 +24,7 @@ export default defineComponent({
     <div class="main">
       <el-input class="search" placeholder="搜索关键词"></el-input>
       <div class="desc">
-        {{ data.desc }}
+        {{ data.descrition }}
       </div>
       <ul class="list">
         <li class="fxbw li" v-for="(item, index) in data.keyWordGroupSubs" :key="index">

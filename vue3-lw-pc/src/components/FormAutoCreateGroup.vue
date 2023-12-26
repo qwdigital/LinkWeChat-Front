@@ -27,6 +27,7 @@ export default defineComponent({
   },
   data() {
     return {
+      _form: {},
       visible: false,
     }
   },
@@ -42,36 +43,39 @@ export default defineComponent({
         this.rules,
       )
     },
-    _form: {
-      get() {
-        return JSON.parse(JSON.stringify(this.form))
+    // _form: {
+    //   get() {
+    //     return JSON.parse(JSON.stringify(this.form))
+    //   },
+    //   set(val) {
+    //     debugger
+    //     // val = JSON.parse(JSON.stringify(val))
+    //     // this.change(val)
+    //   },
+    // },
+  },
+  watch: {
+    form: {
+      deep: true,
+      immediate: true,
+      handler(data) {
+        // debugger
+        this._form = data || JSON.parse(JSON.stringify(defaultData))
       },
-      set(val) {
-        debugger
-        val = JSON.parse(JSON.stringify(val))
-        this.change(val)
+    },
+    _form: {
+      deep: true,
+      // immediate: true,
+      handler(data) {
+        // debugger
+        // data = JSON.parse(JSON.stringify(data))
+        this.change(data)
       },
     },
   },
-  watch: {
-    // form: {
-    //   deep: true,
-    //   immediate: true,
-    //   handler(data) {
-    //     this._form = JSON.parse(JSON.stringify(data))
-    //   },
-    // },
-    // _form: {
-    //   deep: true,
-    //   immediate: true,
-    //   handler(data) {
-    //     data = JSON.parse(JSON.stringify(data))
-    //     this.change(data)
-    //   },
-    // },
-  },
   created() {
-    this.change(this.form || JSON.parse(JSON.stringify(defaultData))) // 赋默认值
+    // debugger
+    // this.change(this.form || JSON.parse(JSON.stringify(defaultData))) // 赋默认值
   },
   mounted() {},
   methods: {

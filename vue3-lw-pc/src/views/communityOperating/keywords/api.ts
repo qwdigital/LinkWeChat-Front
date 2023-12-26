@@ -74,6 +74,9 @@ export const addOrUpdate = (data) => post(`${service}/createOrUpdateBaseInfo`, d
  */
 export const remove = (ids) => _del(`${service}/batchRemoveKeyWordGroupSub/${ids}`)
 
+// 申请构建主键
+export const getId = () => get(`${service}/applyToBuildPrimaryKey`)
+
 /** 新增或更新关键词群点击取消时触发(避免还未新建,导致群活码创建过多占位)
  * @param {Object} data
 {
@@ -122,6 +125,8 @@ export const addOrUpdateKeyword = (data) =>
  * @returns
  */
 export const batchUpdateKeyWordGroupSub = (data) => post(`${service}/batchUpdateKeyWordGroupSub`, data)
+
+// ----------
 
 /** 获取详情头部统计
  * @param id
