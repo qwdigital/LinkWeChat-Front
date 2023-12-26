@@ -22,7 +22,7 @@ function requestFactory(getway = '') {
       // 是否需要设置 token
       const isToken = (config.headers || {}).isToken === false
       if (getToken() && !isToken) {
-        config.headers = window.lwConfig.headers // 让每个请求携带自定义token 请根据实际情况自行修改
+        Object.assign(config.headers, window.lwConfig.headers) // 让每个请求携带自定义token 请根据实际情况自行修改
       }
       return config
     },
@@ -143,5 +143,6 @@ function requestFactory(getway = '') {
 
 // 创建常用网关接口请求
 export const requestOpen = requestFactory(window.lwConfig.services.wecom)
+export const requestAi = requestFactory(window.lwConfig.services.ai)
 
 export default requestFactory()

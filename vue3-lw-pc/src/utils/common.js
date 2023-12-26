@@ -376,18 +376,45 @@ export function $delConfirm(remove, callback) {
 }
 
 // 复制文字
+// import ClipboardJS from 'clipboard'
 export function $copyText(txt) {
-  let clipboard = new this.ClipboardJS(event.currentTarget.localName, {
-    target: function (trigger) {
-      return trigger
-    },
-    text: function (trigger) {
-      return txt
-    },
-  })
-  setTimeout(() => {
-    clipboard.destroy()
-  }, 0)
+  if (!txt) {
+    this.msgError('内容为空')
+    return
+  }
+  if (navigator.clipboard) {
+    navigator.clipboard
+      .writeText(txt)
+      .then(() => this.msgSuccess('复制成功'))
+      .catch(() => this.msgError('复制失败'))
+  } else {
+    try {
+      const input = document.createElement('input')
+      input.style.cssText = 'opacity: 0;'
+      input.type = 'text'
+      input.value = text // 修改文本框的内容
+      document.body.appendChild(input)
+      input.select() // 选中文本
+      document.execCommand('copy') // 执行浏览器复制命令
+      this.msgSuccess('复制成功')
+      input.remove()
+    } catch (error) {
+      this.msgError('复制失败')
+    }
+  }
+
+  // 复杂情况下发现了莫名的bug，弃用 -- 2023.12.07 xinla
+  // let clipboard = new ClipboardJS(event.currentTarget.localName, {
+  //   target: function (trigger) {
+  //     return trigger
+  //   },
+  //   text: function (trigger) {
+  //     return txt
+  //   },
+  // })
+  // setTimeout(() => {
+  //   clipboard.destroy()
+  // }, 0)
 }
 
 /**
