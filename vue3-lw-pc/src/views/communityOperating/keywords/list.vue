@@ -71,7 +71,7 @@ export default {
 
         <el-table-column label="最近更新" align="center" prop="updateTime">
           <template #default="{ row }">
-            {{ row.updateTime }}
+            {{ row.updateBy }}
             <br />
             {{ row.updateTime }}
           </template>

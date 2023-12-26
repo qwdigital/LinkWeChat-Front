@@ -42,10 +42,11 @@
       <template #="{ data }">
         <el-table :data="data">
           <el-table-column align="center" prop="customerName" label="客户名称"></el-table-column>
-          <el-table-column align="center" prop="addUserId" label="添加员工"></el-table-column>
-          <el-table-column align="center" prop="addTime" label="添加时间"></el-table-column>
-          <el-table-column align="center" prop="isJoinGroup" label="是否进群">
-            <template #default="{ row }">{{ dictAddStatus[row.isJoinGroup] }}</template>
+          <el-table-column align="center" prop="addUserName" label="添加员工">
+            <template #default="{ row }">{{ row.addUserName || '—' }}</template>
+          </el-table-column>
+          <el-table-column align="center" prop="addTime" label="添加时间">
+            <template #default="{ row }">{{ row.addTime || '—' }}</template>
           </el-table-column>
           <el-table-column align="center" prop="groupName" label="进入客群">
             <template #default="{ row }">
@@ -56,12 +57,9 @@
                     (dialogVisible = true),
                     $refs.RequestChartTableDialog?.getList()
                 ">
-                {{ row.joinGroupNumber }}
+                {{ row.joinGroupNumber || '—' }}
               </div>
             </template>
-          </el-table-column>
-          <el-table-column align="center" prop="joinTime" label="进群时间">
-            <template #default="{ row }">{{ row.joinTime || '—' }}</template>
           </el-table-column>
           <el-table-column label="操作" align="center">
             <template #default="{ row }">
@@ -104,7 +102,6 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router'
 import * as api from './api'
 
 let loading = ref(false)
@@ -123,23 +120,22 @@ let dialogVisible = ref(false)
         {
           title: '访问客户总数',
           tips: '访问关键词链接的客户总数(去重)',
-          value: data.touchWeCustomerNumber,
+          value: data.totalViewNumber,
         },
         {
           title: '进群客户总数',
           tips: '访问客户中成功进群的总数(去重)',
-          value: data.joinGroupCustomerNumber,
+          value: data.totalJoinGroupNmber,
         },
         {
           title: '今日访问客户数',
           tips: '今日访问关键词链接的客户数(去重)',
-          // tips: '当日内被员工产生过跟进行为的客户人数（去重）',
-          value: data.tdTouchWeCustomerNumber,
+          value: data.tdViewNumber,
         },
         {
           title: '今日进群客户数',
           tips: '今日访问客户中成功进群数(去重)',
-          value: data.tdJoinGroupCustomerNumber,
+          value: data.tdJoinGroupNmber,
           // unit: '%',
         },
       ]
@@ -156,8 +152,8 @@ function dealDataTrend(data, series, xData) {
   let _data = [[], []]
   data.forEach((element) => {
     xData.push(element.date)
-    _data[0].push(element.touchWeCustomerNumber)
-    _data[1].push(element.joinGroupCustomerNumber)
+    _data[0].push(element.tdViewNumber)
+    _data[1].push(element.tdJoinGroupNmber)
   })
   series.push(..._data)
 }

@@ -19,7 +19,7 @@ export default {
 <template>
   <CacheElTabs #="{ opened }">
     <el-tab-pane label="活码信息">
-      <aev />
+      <aev v-if="opened.includes('0')" />
     </el-tab-pane>
     <el-tab-pane label="拉群统计">
       <statistics v-if="opened.includes('1')" />

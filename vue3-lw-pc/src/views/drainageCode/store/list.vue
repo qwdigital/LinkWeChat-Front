@@ -130,7 +130,7 @@
             <div v-else>-</div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" fixed="right" width="180">
+        <el-table-column label="操作" align="center" fixed="right" width="">
           <template #default="{ row }">
             <el-button text @click="goRoute('detail', row.id)">详情|统计</el-button>
 

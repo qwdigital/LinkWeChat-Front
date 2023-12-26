@@ -156,4 +156,4 @@ export const getDataDetailExport = (data) => get(`${service}/exprotKeyWordGroupT
  * @param data
  * @returns
  */
-export const getWeKeyWordGroupChatTable = (data) => get(`${service}/findWeKeyWordGroupChatTable`, data)
+export const getCustomerToGroupList = (data) => get(`${service}/findWeKeyWordGroupChatTable`, data)
