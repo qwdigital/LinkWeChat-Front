@@ -192,9 +192,10 @@ export default {
       this.$refs.form.validate().then(() => {
         this.$store.loading = true
         let form = JSON.parse(JSON.stringify(this.form))
-        form.keyWordGroupSubs?.forEach((element) => {
+        form.keyWordGroupSubs?.forEach((element, index) => {
           element.chatIdList = element.groups?.map((e) => e.chatId)?.join(',')
           delete element.groups
+          element.sort = index
         })
         addOrUpdate(this.form)
           .then(() => {

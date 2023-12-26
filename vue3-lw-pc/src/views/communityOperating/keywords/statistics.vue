@@ -41,7 +41,20 @@
 
       <template #="{ data }">
         <el-table :data="data">
-          <el-table-column align="center" prop="customerName" label="客户名称"></el-table-column>
+          <el-table-column align="center" prop="customerName" label="客户">
+            <template #default="{ row }">
+              <div class="cp flex aic">
+                <el-image class="avatar" :src="row.avatar" fit="fill"></el-image>
+                <div class="ml10">
+                  <p class="blod">{{ row.customerName }}</p>
+                  <el-icon-Avatar :class="['el-icon-Avatar', { 1: 'man', 2: 'woman' }[row.gender]]" />
+                  <span :style="{ color: row.customerType === 1 ? '#4bde03' : '#f9a90b' }">
+                    {{ { 1: '@微信', 2: '@企业微信' }[row.customerType] }}
+                  </span>
+                </div>
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column align="center" prop="addUserName" label="添加员工">
             <template #default="{ row }">{{ row.addUserName || '—' }}</template>
           </el-table-column>
@@ -190,4 +203,22 @@ function getDataDetail(query) {
 // })()
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.avatar {
+  width: 56px;
+  height: 56px;
+  flex: none;
+  border-radius: var(--border-radius-big);
+}
+.el-icon-Avatar {
+  font-size: 16px;
+  // margin-left: 4px;
+  color: var(--font-black-6);
+  &.man {
+    color: #13a2e8;
+  }
+  &.woman {
+    color: #f753b2;
+  }
+}
+</style>
