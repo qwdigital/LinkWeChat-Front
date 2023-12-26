@@ -1,6 +1,6 @@
 <template>
   <div class="modal">
-    <el-dialog title="选择客群" v-model="modalVisible" :close-on-click-modal="false">
+    <el-dialog title="选择客群" v-model="modalVisible" :close-on-click-modal="false" :append-to-body="appendToBody">
       <div class="fixed-content">
         已选择：
         <template v-for="(item, index) in groupChildList" :key="index">
@@ -71,7 +71,7 @@
 <script>
 import * as api from '@/api/customer/group'
 
-export default {
+export default defineComponent({
   name: 'select-group',
   props: {
     visible: {
@@ -85,6 +85,10 @@ export default {
     defaults: {
       type: Array,
       default: () => [],
+    },
+    appendToBody: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {},
@@ -226,7 +230,7 @@ export default {
     },
   },
   created() {},
-}
+})
 </script>
 <style lang="scss" scoped>
 ::v-deep .el-dialog__body {

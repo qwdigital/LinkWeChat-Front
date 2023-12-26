@@ -1,6 +1,6 @@
 <!-- 查询数据表格或图表展示 -->
 <script>
-export default {
+export default defineComponent({
   components: {
     ChartLine: defineAsyncComponent(() => import('@/components/ChartLine')),
     ChartBar: defineAsyncComponent(() => import('@/components/ChartBar')),
@@ -132,10 +132,19 @@ export default {
           this.loading = false
         })
     },
-    // (批量)删除 供父组件调用
-    remove(remove, id) {
+    reset(form) {
+      this.$refs[form].resetFields()
+      this.$emit('reset')
+    },
+
+    /**
+     * (批量)删除 供父组件调用
+     * @param {*} removeApi 删除接口
+     * @param {*} id 字符串id
+     */
+    remove(removeApi, id) {
       if (!remove) {
-        return
+        return this.msgError('无可用接口服务')
       }
       let ids = id || this.selectedIds?.join?.(',')
       if (!ids) {
@@ -144,7 +153,7 @@ export default {
       this.$confirm()
         .then(() => {
           this.loading = true
-          return remove(ids).then((res) => {
+          return removeApi(ids).then((res) => {
             this.msgSuccess('删除成功')
             this.getList()
           })
@@ -156,6 +165,7 @@ export default {
           this.loading = false
         })
     },
+
     /**
      * (批量)下载 供父组件调用
      * @param {*} download 下载接口函数 必需
@@ -176,12 +186,20 @@ export default {
         })
         .catch(function () {})
     },
-    reset(form) {
-      this.$refs[form].resetFields()
-      this.$emit('reset')
+
+    /**
+     * 路由跳转 供父组件调用
+     * @param {*} path 路径
+     * @param {*} idOrQuery 字符串id或路由query对象
+     */
+    goRoute(path = 'aev', idOrQuery) {
+      this.$router.push({
+        path,
+        query: typeof idOrQuery === 'string' ? { id: idOrQuery } : idOrQuery,
+      })
     },
   },
-}
+})
 </script>
 
 <template>
