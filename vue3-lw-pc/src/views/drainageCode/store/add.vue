@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading">
+  <div>
     <el-form label-width="120px" label-position="right" ref="form" :rules="rule" :model="form">
       <div class="g-card">
         <div class="card-title" style="display: inline-block">基础信息</div>
@@ -153,7 +153,6 @@ export default {
       dialogVisibleSelectUser: false,
       dialogVisibleSelectGroup: false,
       selectedCodeList: [],
-      loading: false,
       cityTree: [],
       props: {
         label: 'name',
@@ -171,7 +170,7 @@ export default {
       this.cityTree = data
     })
     if (this.$route.query.id) {
-      this.loading = true
+      this.$store.loading = true
       storeDetail(this.$route.query.id)
         .then(({ data }) => {
           let userIds = data.addWeUserOrGroupCode?.weQrAddQuery?.qrUserInfos?.[0]?.userIds
@@ -192,7 +191,7 @@ export default {
           this.setDetail()
         })
         .finally(() => {
-          this.loading = false
+          this.$store.loading = false
         })
     }
   },
@@ -254,14 +253,14 @@ export default {
           delete form.addGroupCode
           delete form.users
 
-          this.loading = true
+          this.$store.loading = true
           addOrUpdateStore(form)
             .then((res) => {
               this.msgSuccess('操作成功')
               this.$router.back()
             })
             .finally(() => {
-              this.loading = false
+              this.$store.loading = false
             })
         }
       })
