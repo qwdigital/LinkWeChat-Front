@@ -11,6 +11,7 @@ export const store = createPinia()
 export default defineStore('app', {
   state: () => ({
     loading: false, // 页面loading
+    AIDrawer: false, // AI抽屉
     app: { ...app.state },
     user: { ...user.state },
     tagsView: { ...tagsView.state },

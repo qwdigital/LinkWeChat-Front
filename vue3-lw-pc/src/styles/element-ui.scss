@@ -17,6 +17,7 @@
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+  outline: none; // 去除部分浏览器focus状态下的outline
 }
 .el-button {
   [class^='el-icon-'],
