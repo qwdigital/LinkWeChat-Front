@@ -89,8 +89,9 @@
 
         <el-form-item label="门店状态">
           <el-switch
-            :disabled="!isDetail"
+            :disabled="isDetail"
             v-model="form.storeState"
+            :before-change="switchFn"
             active-text="启用"
             inactive-text="停用"
             :active-value="0"
@@ -166,6 +167,11 @@ export default {
       },
     }
   },
+  computed: {
+    isDetail() {
+      return this.$route.path.endsWith('detail')
+    },
+  },
   created() {
     getProCityList({ isExtName: true }).then(({ data }) => {
       this.cityTree = data
@@ -223,11 +229,17 @@ export default {
       this.form.longitude = ''
       this.form.latitude = ''
     },
-    async submit() {
+    switchFn() {
+      if (!this.addGroupCode.groups?.length && !this.form.users?.length) {
+        this.msgError('开启门店必须要求导购人员或群活码至少设置一项')
+        return false
+      }
+      return true
+    },
+    submit() {
       if (this.form.storeState == 0) {
-        let valid = await this.$refs['FormAutoCreateGroup'].validate()
-        if (!valid || !this.form.users?.length) {
-          this.msgError('门店状态开启时必须要求保证导购人员或群活码至少设置一项')
+        if (!this.addGroupCode.groups?.length && !this.form.users?.length) {
+          this.msgError('门店状态开启时必须要求导购人员或群活码至少设置一项')
           return
         }
       }

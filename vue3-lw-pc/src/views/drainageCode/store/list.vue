@@ -111,7 +111,6 @@
           </template>
           <template #default="{ row }">
             <el-switch
-              :disabled="!row.shopGuideName && !row.groupCodeName"
               @change="switchFn(row)"
               v-model="row.storeState"
               :active-value="0"
@@ -205,9 +204,14 @@ export default {
   },
   methods: {
     switchFn(data) {
-      updateState(data.id, { storeState: data.storeState }).then((res) => {
-        this.$refs.rct.getList()
-      })
+      if (data.shopGuideName || data.groupCodeName) {
+        updateState(data.id, { storeState: data.storeState }).then((res) => {
+          this.$refs.rct.getList()
+        })
+      } else {
+        data.storeState = data.storeState == 1 ? 0 : 1
+        this.msgError('开启门店必须要求保证导购人员或群活码至少设置一项')
+      }
     },
     switchMultFn(type, selectedIds) {
       if (!selectedIds.length) {
