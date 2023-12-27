@@ -119,7 +119,7 @@
         </el-table-column>
         <el-table-column label="门店导购" align="center" prop="shopGuideName">
           <template #default="{ row }">
-            <TagEllipsis :list="row.shopGuideName.split(',')" emptyText="-" />
+            <TagEllipsis :list="row.shopGuideName" emptyText="-" />
           </template>
         </el-table-column>
         <el-table-column label="门店群活码" align="center" prop="groupCodeName" show-overflow-tooltip>
