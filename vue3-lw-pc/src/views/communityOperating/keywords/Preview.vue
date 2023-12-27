@@ -1,7 +1,8 @@
 <script>
+import { getList, getDetailList, remove } from './api'
 export default defineComponent({
   name: '',
-  components: {},
+  components: { ScrollLoadList: defineAsyncComponent(() => import('@/components/ScrollLoadList')) },
   props: {
     data: {
       type: Object,
@@ -9,7 +10,7 @@ export default defineComponent({
     },
   },
   data() {
-    return {}
+    return { getDetailList }
   },
   computed: {},
   watch: {},
@@ -26,12 +27,19 @@ export default defineComponent({
       <div class="desc">
         {{ data.descrition }}
       </div>
-      <ul class="list">
-        <li class="fxbw li" v-for="(item, index) in data.keyWordGroupSubs" :key="index">
-          <div class="blod">{{ item.keyword }}</div>
-          <div class="g-color cp">加入群聊</div>
-        </li>
-      </ul>
+      <ScrollLoadList
+        class="list"
+        finishedText=""
+        :isQuery="!1"
+        :params="{ keywordGroupId: data.id }"
+        :request="getDetailList">
+        <template #item="{ item }">
+          <li class="fxbw li">
+            <div class="blod">{{ item.keyword }}</div>
+            <div class="g-color cp">加入群聊</div>
+          </li>
+        </template>
+      </ScrollLoadList>
     </div>
   </PhoneTemplate>
 </template>
@@ -40,6 +48,8 @@ export default defineComponent({
 .main {
   background: var(--bg-white);
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .search {
   padding: 15px 10px 10px;
@@ -56,8 +66,9 @@ export default defineComponent({
 }
 .li {
   padding: 10px 0;
-  & + .li {
-    border-top: 1px solid var(--border-black-8);
-  }
+  border-bottom: 1px solid var(--border-black-8);
+  // & + .li {
+  //   border-top: 1px solid var(--border-black-8);
+  // }
 }
 </style>

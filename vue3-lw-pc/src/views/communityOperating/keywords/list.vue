@@ -1,5 +1,5 @@
 <script>
-import { getList, remove } from './api'
+import { getList, getDetailList, remove } from './api'
 
 export default {
   props: {},
@@ -7,7 +7,9 @@ export default {
   data() {
     return {
       getList,
+      getDetailList,
       dialogVisible: false,
+      detail: {},
       preview: {
         dialogVisible: false,
         data: {},
@@ -25,7 +27,7 @@ export default {
 
 <template>
   <div>
-    <RequestChartTable ref="rct" :request="(params) => (Object.assign(params, query), getList(params))">
+    <RequestChartTable ref="rct" :params="query" :request="getList">
       <template #query="{ query }">
         <el-form-item label="链接标题" prop="title">
           <el-input clearable v-model="query.title" placeholder="请输入"></el-input>
@@ -44,8 +46,8 @@ export default {
         <el-table-column label="链接描述" align="center" prop="descrition" show-overflow-tooltip />
         <el-table-column label="关键词" align="center" width="120">
           <template #default="{ row }">
-            <div class="g-color cp" @click=";(externalUserid = row.externalUserid), (dialogVisible = true)">
-              {{ row.keyWordGroupSubs }}
+            <div class="g-color cp" @click=";(detail = row), (dialogVisible = true)">
+              {{ row.keyWordGroupNumber }}
             </div>
           </template>
         </el-table-column>
@@ -89,32 +91,38 @@ export default {
     </RequestChartTable>
 
     <!-- 关键词列表弹窗 -->
-    <el-dialog title="关键词" v-model="dialogVisible" width="auto">
-      <div style="padding: 0 0 20px 0">
-        <el-table :data="data">
-          <el-table-column label="关键词" align="center" prop="keyword"></el-table-column>
-          <el-table-column align="center" prop="codeName" label="群活码">
-            <template #default="{ row }">
-              <div>{{ row.codeName || '—' }}</div>
-              <el-image :src="row.groupCodeUrl" class="code-image"></el-image>
-            </template>
-          </el-table-column>
-          <el-table-column label="活码客群数" align="center">
-            <template #default="{ row }">
-              <div
-                class="g-color cp"
-                @click="
-                  $router.push({
-                    name: lwConfig.CUSTOMER_DETAIL_ROUTE_NAME,
-                    query: { externalUserid: row.externalUserid, userId: row.addUserId },
-                  })
-                ">
-                客户详情
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
+    <el-dialog title="关键词" v-model="dialogVisible">
+      <RequestChartTable
+        ref="RequestChartTableDialog"
+        style="padding: 0 0 20px"
+        :params="{ keywordGroupId: detail.id }"
+        :request="getDetailList">
+        <template #="{ data }">
+          <el-table :data="data">
+            <el-table-column label="关键词" align="center" prop="keyword"></el-table-column>
+            <el-table-column align="center" prop="codeName" label="群活码">
+              <template #default="{ row }">
+                <div>{{ row.codeName || '—' }}</div>
+                <el-image :src="row.groupCodeUrl" style="width: 100px"></el-image>
+              </template>
+            </el-table-column>
+            <el-table-column label="活码客群数" align="center">
+              <template #default="{ row }">
+                <div
+                  class="g-color cp"
+                  @click="
+                    $router.push({
+                      name: lwConfig.CUSTOMER_DETAIL_ROUTE_NAME,
+                      query: { externalUserid: row.externalUserid, userId: row.addUserId },
+                    })
+                  ">
+                  客户详情
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </template>
+      </RequestChartTable>
     </el-dialog>
 
     <!-- 预览弹窗 -->
@@ -133,26 +141,4 @@ export default {
   </div>
 </template>
 
-<style scoped lang="scss">
-.help {
-  .step {
-    margin-bottom: 20px;
-  }
-}
-.code-image {
-  width: 200px;
-  height: 200px;
-}
-.code-image--small {
-  width: 50px;
-  height: 50px;
-}
-.overflow-ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.table-desc {
-  max-width: 120px;
-}
-</style>
+<style scoped lang="scss"></style>

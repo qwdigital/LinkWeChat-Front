@@ -53,7 +53,6 @@
 
     <div class="preview-wrap g-card mt0" style="flex: 1 1 414px">
       <div class="g-card-title">链接预览</div>
-      <!-- 预览 -->
       <Preview :data="form" />
     </div>
   </div>

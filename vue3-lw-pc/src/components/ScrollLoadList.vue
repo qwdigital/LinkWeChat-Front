@@ -141,15 +141,12 @@ export default {
         <slot name="list" v-bind="{ list }"></slot>
       </div>
 
-      <div class="ac" style="color: var(--font-black-6)" v-if="loading || finished">
+      <div class="ac mt10 mb10" style="color: var(--font-black-6)" v-if="loading || finished">
         <p v-if="loading">正在加载...</p>
         <slot name="empty" v-else-if="!list?.length">
           <Empty />
         </slot>
         <p v-else-if="finishedText">{{ finishedText }}</p>
-        <slot name="empty" v-else-if="!list?.length">
-          <Empty />
-        </slot>
       </div>
     </div>
   </div>

@@ -79,7 +79,7 @@ export const getId = () => get(`${service}/applyToBuildPrimaryKey`)
 
 /** 获取关键词拉群详情中关键词拉群列表
  * @param {*} params
- * {title}
+ * {keywordGroupId}
  */
 export const getDetailList = (data: pageParams) => get(`${service}/findWeKeyWordGroupSubs`, data)
 
