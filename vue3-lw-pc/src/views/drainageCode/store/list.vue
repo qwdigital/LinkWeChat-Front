@@ -92,10 +92,10 @@
       </template>
 
       <template #table>
-        <el-table-column label="门店名称" align="center" min-width="100" prop="storeName" show-overflow-tooltip />
-        <el-table-column label="所属地区" align="center" min-width="120" prop="area" show-overflow-tooltip />
-        <el-table-column label="详细地址" align="center" prop="address" width="180"></el-table-column>
-        <el-table-column label="门店状态" align="center" min-width="100" prop="storeState" show-overflow-tooltip>
+        <el-table-column label="门店名称" align="center" prop="storeName" show-overflow-tooltip />
+        <el-table-column label="所属地区" align="center" prop="area" show-overflow-tooltip />
+        <el-table-column label="详细地址" align="center" prop="address"></el-table-column>
+        <el-table-column label="门店状态" align="center" prop="storeState" show-overflow-tooltip>
           <template #header>
             <el-popover placement="top" trigger="hover">
               <template #reference>
@@ -104,38 +104,37 @@
                   <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
                 </div>
               </template>
-              <div>启用后，范围内的客户扫码可正常添加门店导购或群活码；停用后，扫码无法就近添加</div>
+              <div>
+                门店状态开启时必须要求保证导购人员或群活码至少设置一项；启用后，范围内的客户扫码可正常添加门店导购或群活码；停用后，扫码无法就近添加
+              </div>
             </el-popover>
           </template>
           <template #default="{ row }">
             <el-switch
-              :disabled="!row.shopGuideId && !row.groupCodeId"
               @change="switchFn(row)"
               v-model="row.storeState"
               :active-value="0"
               :inactive-value="1"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="门店导购" align="center" prop="shopGuideName" min-width="160px">
+        <el-table-column label="门店导购" align="center" prop="shopGuideName">
           <template #default="{ row }">
-            <TagEllipsis :list="row.shopGuideName.split(',')" emptyText="-" />
+            <TagEllipsis :list="row.shopGuideName" emptyText="-" />
           </template>
         </el-table-column>
-        <el-table-column label="门店群活码" align="center" min-width="100" prop="groupCodeName" show-overflow-tooltip>
+        <el-table-column label="门店群活码" align="center" prop="groupCodeName" show-overflow-tooltip>
           <template #default="{ row }">
-            <div v-if="row.groupCodeName">
-              {{ row.groupCodeName }}
-              <img style="height: 80px; width: 80px" :src="row.storeCodeConfigQr" />
-            </div>
+            <template v-if="row.groupCodeName">
+              <div class="mb5">{{ row.groupCodeName }}</div>
+              <img style="height: 80px; width: 80px" :src="row.groupCodeUrl" />
+            </template>
             <div v-else>-</div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" fixed="right" width="">
+        <el-table-column label="操作" align="center" fixed="right">
           <template #default="{ row }">
             <el-button text @click="goRoute('detail', row.id)">详情|统计</el-button>
-
             <el-button text @click="goRoute('add', row.id)">编辑</el-button>
-
             <el-button text @click="$refs.rct.remove(remove, row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -205,9 +204,14 @@ export default {
   },
   methods: {
     switchFn(data) {
-      updateState(data.id, { storeState: data.storeState }).then((res) => {
-        this.$refs.rct.getList()
-      })
+      if (data.shopGuideName || data.groupCodeName) {
+        updateState(data.id, { storeState: data.storeState }).then((res) => {
+          this.$refs.rct.getList()
+        })
+      } else {
+        data.storeState = data.storeState == 1 ? 0 : 1
+        this.msgError('开启门店必须要求保证导购人员或群活码至少设置一项')
+      }
     },
     switchMultFn(type, selectedIds) {
       if (!selectedIds.length) {
