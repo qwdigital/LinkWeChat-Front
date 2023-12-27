@@ -69,7 +69,7 @@
 
         <el-form-item label="门店客群">
           <el-card shadow="always" style="width: 600px" :body-style="{ padding: '20px' }">
-            <FormAutoCreateGroup ref="FormAutoCreateGroup" v-model:form="form.addGroupCode" :isDetail="isDetail">
+            <FormAutoCreateGroup ref="FormAutoCreateGroup" v-model:form="addGroupCode" :isDetail="isDetail">
               <template #="{ form: _form }">
                 <el-form-item
                   label="群活码名称"
@@ -149,6 +149,7 @@ export default {
         shopGuideUrl: '',
         addGroupCode: {},
       },
+      addGroupCode: {},
       selectedUserList: [],
       dialogVisibleSelectUser: false,
       dialogVisibleSelectGroup: false,
@@ -175,15 +176,15 @@ export default {
         .then(({ data }) => {
           let userIds = data.addWeUserOrGroupCode?.weQrAddQuery?.qrUserInfos?.[0]?.userIds
           data.users = data.shopGuideName?.split(',')?.map((e, i) => ({
-            userId: userIds[i],
+            userId: userIds?.[i],
             name: e,
           }))
 
           let chatIdList = data.addWeUserOrGroupCode?.addGroupCode?.chatIdList?.split(',')
-          data.addGroupCode = {
+          this.addGroupCode = {
             ...data.addWeUserOrGroupCode?.addGroupCode,
             groups: data.groupCodeName?.split(',')?.map((e, i) => ({
-              chatId: chatIdList[i],
+              chatId: chatIdList?.[i],
               groupName: e,
             })),
           }
@@ -234,7 +235,7 @@ export default {
         if (valid) {
           let form = JSON.parse(JSON.stringify(this.form))
           form.shopGuideName = form.users?.map((e) => e.name)?.join(',')
-          form.groupCodeName = form.addGroupCode?.groups?.map((e) => e.groupName)?.join(',')
+          form.groupCodeName = this.addGroupCode?.groups?.map((e) => e.groupName)?.join(',')
           form.addWeUserOrGroupCode = {
             weQrAddQuery: {
               qrUserInfos: [
@@ -245,12 +246,11 @@ export default {
             },
 
             addGroupCode: {
-              ...form.addGroupCode,
-              chatIdList: form.addGroupCode.groups?.map((e) => e.chatId)?.join(','),
+              ...this.addGroupCode,
+              chatIdList: this.addGroupCode.groups?.map((e) => e.chatId)?.join(','),
             },
           }
 
-          delete form.addGroupCode
           delete form.users
 
           this.$store.loading = true
