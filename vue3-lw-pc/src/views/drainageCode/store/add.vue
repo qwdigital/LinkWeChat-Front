@@ -38,16 +38,22 @@
         </el-form-item>
         <BaiduMap @update="handleChange" @point="getPoint" :isDetail="isDetail" :initData="form"></BaiduMap>
       </div>
+
       <div class="g-card">
         <div class="card-title">门店设置</div>
         <el-form-item label="门店导购">
-          <!-- <div v-if="selectedUserList.length > 0">
-            <el-tag  v-for="(item, index) in selectedUserList" :key="index">{{ item.name }}</el-tag>
-          </div> -->
-          <el-button v-if="!isDetail" icon="el-icon-plus" type="primary" plain @click="dialogVisibleQr = true">
-            {{ form.shopGuideUrl ? '编辑' : '选择' }}员工活码
-          </el-button>
-          <div style="margin-top: 10px" v-if="form.shopGuideUrl">
+          <div v-if="!isDetail">
+            <el-button type="primary" plain @click="dialogVisibleSelectUser = true">选择员工</el-button>
+            <!-- 选择使用员工弹窗 -->
+            <SelectUser
+              v-model:visible="dialogVisibleSelectUser"
+              title="选择员工"
+              :defaultValues="form.users"
+              @success="(data) => (form.users = data)"></SelectUser>
+          </div>
+
+          <TagEllipsis :list="form.users" limit="10" :emptyText="isDetail && '无'"></TagEllipsis>
+          <!-- <div style="margin-top: 10px" v-if="form.shopGuideUrl">
             <ul class="el-upload-list el-upload-list--picture-card">
               <li class="el-upload-list__item is-success">
                 <img style="width: 100%; height: 100%" :src="form.shopGuideUrl" />
@@ -58,74 +64,65 @@
                 </span>
               </li>
             </ul>
-          </div>
+          </div> -->
         </el-form-item>
-        <el-form-item label="门店群活码">
-          <div v-if="form.groupCodeUrl">
-            <div>{{ form.groupCodeName }}</div>
-            <img style="height: 80px; width: 80px; margin-top: 5px" :src="form.groupCodeUrl" />
-          </div>
 
-          <el-button
-            v-if="!isDetail"
-            icon="el-icon-plus"
-            type="primary"
-            plain
-            @click="dialogVisibleSelectQrCode = true">
-            {{ form.groupCodeUrl ? '编辑' : '选择' }}群活码
-          </el-button>
+        <el-form-item label="门店客群">
+          <el-card shadow="always" style="width: 600px" :body-style="{ padding: '20px' }">
+            <FormAutoCreateGroup ref="FormAutoCreateGroup" v-model:form="addGroupCode" :isDetail="isDetail">
+              <template #="{ form: _form }">
+                <el-form-item
+                  label="群活码名称"
+                  prop="activityName"
+                  :rules="{ activityName: [{ required: true, message: '必填项', trigger: 'blur' }] }">
+                  <el-input
+                    v-model="_form.activityName"
+                    maxlength="15"
+                    show-word-limit
+                    placeholder="请输入"
+                    clearable></el-input>
+                </el-form-item>
+              </template>
+            </FormAutoCreateGroup>
+          </el-card>
         </el-form-item>
+
         <el-form-item label="门店状态">
-          <template v-if="!isDetail">
-            <el-switch
-              :disabled="!form.groupCodeUrl && !form.shopGuideId"
-              v-model="form.storeState"
-              active-text="启用"
-              inactive-text="停用"
-              :active-value="0"
-              :inactive-value="1"></el-switch>
-          </template>
-          <template v-else>
-            <el-switch
-              disabled
-              v-model="form.storeState"
-              active-text="启用"
-              inactive-text="停用"
-              :active-value="0"
-              :inactive-value="1"></el-switch>
-          </template>
+          <el-switch
+            :disabled="!isDetail"
+            v-model="form.storeState"
+            active-text="启用"
+            inactive-text="停用"
+            :active-value="0"
+            :inactive-value="1"></el-switch>
         </el-form-item>
       </div>
     </el-form>
     <div class="g-footer-sticky" v-if="!isDetail">
-      <el-button plain @click="cancelFn">取消</el-button>
-      <el-button type="primary" @click="submitFn" :loading="submitLoading" :disabled="submitLoading">确定</el-button>
+      <el-button plain @click="cancel">取消</el-button>
+      <el-button type="primary" @click="submit">确定</el-button>
     </div>
-    <!-- <SelectUser
-      key="123"
-       v-model:visible="dialogVisibleSelectUser"
-      title="选择导购"
-      :isOnlyLeaf="true"
-      :defaultValues="selectedUserList"
-      @success="selectedUser"
-    ></SelectUser> -->
-    <SelectQrCode
-      v-model:visible="dialogVisibleSelectQrCode"
-      @success="selectedQrCode"
-      :selected="selectedCodeList"></SelectQrCode>
-    <SelectStaffQrCode v-model:visible="dialogVisibleQr" @success="selectedQr"></SelectStaffQrCode>
   </div>
 </template>
 <script>
 import BaiduMap from '@/components/common/BaiduMap'
-import SelectQrCode from '@/components/SelectQrCode'
-import SelectUser from '@/components/SelectUser'
-import SelectStaffQrCode from '@/components/SelectStaffQrCode'
+// import SelectStaffQrCode from '@/components/SelectStaffQrCode'
 
 import { getProCityList } from '@/api/common'
 import { addOrUpdateStore, storeDetail } from '@/api/drainageCode/store'
 export default {
   name: 'store-add',
+  props: {
+    isDetail: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  components: {
+    BaiduMap,
+    // SelectStaffQrCode,
+    FormAutoCreateGroup: defineAsyncComponent(() => import('@/components/FormAutoCreateGroup.vue')),
+  },
   data() {
     return {
       areaArray: [],
@@ -150,12 +147,13 @@ export default {
         groupCodeName: '',
         groupCodeId: '',
         shopGuideUrl: '',
+        addGroupCode: {},
       },
+      addGroupCode: {},
       selectedUserList: [],
       dialogVisibleSelectUser: false,
-      dialogVisibleSelectQrCode: false,
+      dialogVisibleSelectGroup: false,
       selectedCodeList: [],
-      submitLoading: false,
       cityTree: [],
       props: {
         label: 'name',
@@ -166,46 +164,44 @@ export default {
         area: [{ required: true, message: '请选择所属地区', trigger: 'blur' }],
         address: [{ required: true, message: '请选择详细地址', trigger: 'blur' }],
       },
-      dialogVisibleQr: false,
     }
   },
-  props: {
-    isDetail: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  components: {
-    BaiduMap,
-    SelectQrCode,
-    SelectUser,
-    SelectStaffQrCode,
+  created() {
+    getProCityList({ isExtName: true }).then(({ data }) => {
+      this.cityTree = data
+    })
+    if (this.$route.query.id) {
+      this.$store.loading = true
+      storeDetail(this.$route.query.id)
+        .then(({ data }) => {
+          let userIds = data.addWeUserOrGroupCode?.weQrAddQuery?.qrUserInfos?.[0]?.userIds
+          data.users = data.shopGuideName?.split(',')?.map((e, i) => ({
+            userId: userIds?.[i],
+            name: e,
+          }))
+
+          let chatIdList = data.addWeUserOrGroupCode?.addGroupCode?.chatIdList?.split(',')
+          this.addGroupCode = {
+            ...data.addWeUserOrGroupCode?.addGroupCode,
+            groups: data.groupCodeName?.split(',')?.map((e, i) => ({
+              chatId: chatIdList?.[i],
+              groupName: e,
+            })),
+          }
+          this.form = data
+          this.setDetail()
+        })
+        .finally(() => {
+          this.$store.loading = false
+        })
+    }
   },
   methods: {
-    handleRemove() {
-      this.form.shopGuideUrl = ''
-      this.form.shopGuideId = ''
-      this.form.shopGuideName = ''
-    },
-    selectedQr(data) {
-      let arr = []
-      if (data.qrUserInfos.length) {
-        data.qrUserInfos.forEach((dd) => {
-          arr = [...arr, ...dd.weQrUserList]
-        })
-      }
-      let ids = []
-      let names = []
-      arr.forEach((dd) => {
-        ids.push(dd.userId)
-        names.push(dd.userName)
-      })
-      this.form.shopGuideId = ids.join(',')
-      this.form.shopGuideName = names.join(',')
-
-      this.form.shopGuideUrl = data.qrCode
-      this.dialogVisibleQr = false
-    },
+    // handleRemove() {
+    //   this.form.shopGuideUrl = ''
+    //   this.form.shopGuideId = ''
+    //   this.form.shopGuideName = ''
+    // },
     getPoint(addrPoint) {
       this.form.longitude = addrPoint.lng.toString()
       this.form.latitude = addrPoint.lat.toString()
@@ -227,52 +223,50 @@ export default {
       this.form.longitude = ''
       this.form.latitude = ''
     },
-    selectedUser(data) {
-      this.selectedUserList = data
-      let ids = []
-      let names = []
-      data.forEach((dd) => {
-        ids.push(dd.userId)
-        names.push(dd.name)
-      })
-      this.form.shopGuideId = ids.join(',')
-      this.form.shopGuideName = names.join(',')
-    },
-    onSelectUser() {
-      // this.dialogVisibleSelectUser = true
-      this.dialogVisibleQr = true
-    },
-    selectedQrCode(data) {
-      if (data) {
-        this.selectedCodeList[0] = data
-        this.form.groupCodeUrl = data.codeUrl
-        this.form.groupCodeName = data.activityName
-        this.form.groupCodeId = data.id
+    async submit() {
+      if (this.form.storeState == 0) {
+        let valid = await this.$refs['FormAutoCreateGroup'].validate()
+        if (!valid || !this.form.users?.length) {
+          this.msgError('门店状态开启时必须要求保证导购人员或群活码至少设置一项')
+          return
+        }
       }
-    },
-    submitFn() {
-      this.$refs['form'].validate((valitate) => {
-        if (valitate) {
-          this.submitLoading = true
-          addOrUpdateStore(this.form).then((res) => {
-            if (res.code === 200) {
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          let form = JSON.parse(JSON.stringify(this.form))
+          form.shopGuideName = form.users?.map((e) => e.name)?.join(',')
+          form.groupCodeName = this.addGroupCode?.groups?.map((e) => e.groupName)?.join(',')
+          form.addWeUserOrGroupCode = {
+            weQrAddQuery: {
+              qrUserInfos: [
+                {
+                  userIds: form.users?.map((e) => e.userId),
+                },
+              ],
+            },
+
+            addGroupCode: {
+              ...this.addGroupCode,
+              chatIdList: this.addGroupCode.groups?.map((e) => e.chatId)?.join(','),
+            },
+          }
+
+          delete form.users
+
+          this.$store.loading = true
+          addOrUpdateStore(form)
+            .then((res) => {
               this.msgSuccess('操作成功')
               this.$router.back()
-              this.submitLoading = false
-            } else {
-              this.submitLoading = false
-              this.msgInfo(res.msg)
-            }
-          })
+            })
+            .finally(() => {
+              this.$store.loading = false
+            })
         }
       })
     },
-    cancelFn() {
-      this.$confirm(`是否确认取消${this.$route.query.id ? '编辑' : '新建'}？取消后不可恢复，请谨慎操作。`, '提示', {
-        confirmButtonText: '确认',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+    cancel() {
+      this.$confirm(`是否确认取消${this.$route.query.id ? '编辑' : '新建'}？取消后不可恢复，请谨慎操作。`)
         .then(() => {
           this.$router.back()
         })
@@ -299,21 +293,6 @@ export default {
         // this.$forceUpdate()
       }
     },
-  },
-  created() {
-    getProCityList({ isExtName: true }).then((res) => {
-      if (res.code === 200) {
-        this.cityTree = res.data
-      }
-    })
-    if (this.$route.query.id) {
-      storeDetail(this.$route.query.id).then((res) => {
-        if (res.code === 200) {
-          this.form = res.data
-          this.setDetail()
-        }
-      })
-    }
   },
 }
 </script>

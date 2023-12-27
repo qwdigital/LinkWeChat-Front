@@ -13,12 +13,12 @@
               门店范围：距离门店{{ storeGuide.raidus }}公里内，客户可扫码添加门店导购
               <div class="operate">
                 <div>
-                  <el-button type="primary" @click="downloadUrlFn(1, '门店导购码.jpg')">下载活码</el-button>
-                  <el-button type="primary" plain @click="handleCopy(storeGuide.storeCodeConfigUrl)">
-                    复制链接
+                  <el-button type="primary" @click="downloadBlob(storeGuide.storeCodeConfigQr, '门店导购码.jpg')">
+                    下载活码
                   </el-button>
+                  <el-button type="primary" plain @click="$copyText(storeGuide.storeCodeConfigUrl)">复制链接</el-button>
                 </div>
-                <el-button text @click="goRoute('guideDetail')">详情>></el-button>
+                <el-button text @click="goRoute('guideDetail')">详情|统计>></el-button>
               </div>
             </div>
           </div>
@@ -39,10 +39,12 @@
               门店范围：距离门店{{ storeCode.raidus }}公里内，客户可扫码添加门店群
               <div class="operate">
                 <div>
-                  <el-button type="primary" @click="downloadUrlFn(2, '门店群活码.jpg')">下载活码</el-button>
-                  <el-button type="primary" plain @click="handleCopy(storeCode.storeCodeConfigUrl)">复制链接</el-button>
+                  <el-button type="primary" @click="downloadBlob(storeCode.storeCodeConfigQr, '门店群活码.jpg')">
+                    下载活码
+                  </el-button>
+                  <el-button type="primary" plain @click="$copyText(storeCode.storeCodeConfigUrl)">复制链接</el-button>
                 </div>
-                <el-button text @click="goRoute('storeDetail')">详情>></el-button>
+                <el-button text @click="goRoute('storeDetail')">详情|统计>></el-button>
               </div>
             </div>
           </div>
@@ -52,48 +54,48 @@
         </div>
       </div>
     </div>
-    <el-form :inline="true" label-width="80px" label-position="left" class="top-search mt20">
-      <el-form-item label="门店名称">
-        <el-input v-model="query.storeName" placeholder="请输入门店名称" clearable @keyup.enter="search()" />
-      </el-form-item>
-      <el-form-item label="所属地区">
-        <el-cascader
-          v-model="areaIds"
-          :props="props"
-          :options="cityTree"
-          ref="tree"
-          @change="handleChange"></el-cascader>
-      </el-form-item>
-      <el-form-item label="状态" label-width="40px">
-        <el-select v-model="query.storeState" :popper-append-to-body="false">
-          <el-option label="全部状态" value=""></el-option>
-          <el-option label="启用" value="0"></el-option>
-          <el-option label="停用" value="1"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label-width="0">
-        <el-button type="primary" @click="search">查询</el-button>
-        <el-button @click="resetFn">重置</el-button>
-      </el-form-item>
-    </el-form>
-    <div class="g-card">
-      <div class="mid-action">
-        <div>
-          <el-button type="primary" @click="goRoute('add')">新建</el-button>
-          <el-button type="primary" plain @click="importDialogVisible = true">批量导入</el-button>
+
+    <RequestChartTable class="g-margin-t" ref="rct" :params="query" :request="getList" @reset="reset">
+      <template #query="{ query }">
+        <el-form-item label="门店名称" prop="storeName">
+          <el-input v-model="query.storeName" placeholder="请输入门店名称" clearable />
+        </el-form-item>
+        <el-form-item label="所属地区">
+          <el-cascader
+            v-model="areaIds"
+            :props="props"
+            :options="cityTree"
+            ref="tree"
+            @change="handleChange"></el-cascader>
+        </el-form-item>
+        <el-form-item label="状态" prop="storeState">
+          <el-select v-model="query.storeState" :popper-append-to-body="false">
+            <el-option label="全部状态" value=""></el-option>
+            <el-option label="启用" value="0"></el-option>
+            <el-option label="停用" value="1"></el-option>
+          </el-select>
+        </el-form-item>
+      </template>
+
+      <template #operation="{ selectedIds }">
+        <div class="fxbw">
+          <div>
+            <el-button type="primary" @click="goRoute('add')">新建</el-button>
+            <el-button type="primary" plain @click="importDialogVisible = true">批量导入</el-button>
+          </div>
+          <div>
+            <el-button type="primary" plain @click="switchMultFn('启用', selectedIds)">批量启用</el-button>
+            <el-button type="primary" plain @click="switchMultFn('停用', selectedIds)">批量停用</el-button>
+            <el-button type="primary" plain @click="$refs.rct.remove(remove)">批量删除</el-button>
+          </div>
         </div>
-        <div>
-          <el-button type="primary" plain @click="switchMultFn('启用')">批量启用</el-button>
-          <el-button type="primary" plain @click="switchMultFn('停用')">批量停用</el-button>
-          <el-button type="primary" plain @click="removeFn('mult')">批量删除</el-button>
-        </div>
-      </div>
-      <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange" style="width: 100%">
-        <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="门店名称" align="center" min-width="100" prop="storeName" show-overflow-tooltip />
-        <el-table-column label="所属地区" align="center" min-width="120" prop="area" show-overflow-tooltip />
-        <el-table-column label="详细地址" align="center" prop="address" width="180"></el-table-column>
-        <el-table-column label="门店状态" align="center" min-width="100" prop="storeState" show-overflow-tooltip>
+      </template>
+
+      <template #table>
+        <el-table-column label="门店名称" align="center" prop="storeName" show-overflow-tooltip />
+        <el-table-column label="所属地区" align="center" prop="area" show-overflow-tooltip />
+        <el-table-column label="详细地址" align="center" prop="address"></el-table-column>
+        <el-table-column label="门店状态" align="center" prop="storeState" show-overflow-tooltip>
           <template #header>
             <el-popover placement="top" trigger="hover">
               <template #reference>
@@ -102,69 +104,44 @@
                   <el-icon-QuestionFilled class="el-icon-QuestionFilled"></el-icon-QuestionFilled>
                 </div>
               </template>
-              <div>启用后，范围内的客户扫码可正常添加门店导购或群活码；停用后，扫码无法就近添加</div>
+              <div>
+                门店状态开启时必须要求保证导购人员或群活码至少设置一项；启用后，范围内的客户扫码可正常添加门店导购或群活码；停用后，扫码无法就近添加
+              </div>
             </el-popover>
           </template>
           <template #default="{ row }">
             <el-switch
-              :disabled="!row.shopGuideId && !row.groupCodeId"
+              :disabled="!row.shopGuideName && !row.groupCodeName"
               @change="switchFn(row)"
               v-model="row.storeState"
               :active-value="0"
               :inactive-value="1"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="门店导购" align="center" prop="shopGuideName" min-width="160px">
+        <el-table-column label="门店导购" align="center" prop="shopGuideName">
           <template #default="{ row }">
-            <div v-if="row.shopGuideName">
-              <TagEllipsis :list="row.shopGuideName.split(',')" />
-            </div>
+            <TagEllipsis :list="row.shopGuideName.split(',')" emptyText="-" />
+          </template>
+        </el-table-column>
+        <el-table-column label="门店群活码" align="center" prop="groupCodeName" show-overflow-tooltip>
+          <template #default="{ row }">
+            <template v-if="row.groupCodeName">
+              <div class="mb5">{{ row.groupCodeName }}</div>
+              <img style="height: 80px; width: 80px" :src="row.groupCodeUrl" />
+            </template>
             <div v-else>-</div>
           </template>
         </el-table-column>
-        <el-table-column label="门店群活码" align="center" min-width="100" prop="groupCodeName" show-overflow-tooltip>
+        <el-table-column label="操作" align="center" fixed="right">
           <template #default="{ row }">
-            <div v-if="row.groupCodeName">
-              {{ row.groupCodeName }}
-            </div>
-            <div v-else>-</div>
+            <el-button text @click="goRoute('detail', row.id)">详情|统计</el-button>
+            <el-button text @click="goRoute('add', row.id)">编辑</el-button>
+            <el-button text @click="$refs.rct.remove(remove, row.id)">删除</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" fixed="right" width="180">
-          <template #default="{ row }">
-            <el-button
-              text
-              @click="
-                $router.push({
-                  path: 'detail',
-                  query: {
-                    id: row.id,
-                  },
-                })
-              ">
-              详情|统计
-            </el-button>
-
-            <el-button
-              text
-              @click="
-                $router.push({
-                  path: 'add',
-                  query: {
-                    id: row.id,
-                  },
-                })
-              ">
-              编辑
-            </el-button>
-
-            <el-button text @click="removeFn('single', row.id)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <pagination :total="total" v-model:page="query.pageNum" v-model:limit="query.pageSize" @pagination="getList()" />
-    </div>
-    <import-store v-model:visible="importDialogVisible" @update="search"></import-store>
+      </template>
+    </RequestChartTable>
+    <import-store v-model:visible="importDialogVisible" @update="$refs.rct.getList(1)"></import-store>
   </div>
 </template>
 <script>
@@ -175,20 +152,14 @@ export default {
   name: 'store-list',
   data() {
     return {
+      getList: getTableList,
+      remove: deleteStore,
       list: [],
       total: 0,
       ids: [],
       loading: false,
       areaIds: [],
-      query: {
-        storeName: '',
-        area: '',
-        storeState: null,
-        pageNum: 1,
-        pageSize: 10,
-        orderByColumn: 'update_time',
-        isAsc: 'desc',
-      },
+      query: { area: '' },
       cityTree: [],
       props: {
         label: 'name',
@@ -212,41 +183,34 @@ export default {
   components: {
     ImportStore,
   },
+  created() {
+    this.$store.setBusininessDesc(
+      `
+        <div>生成永久二维码，客户扫码后根据定位加入附近门店店主或门店群</div>
+      `,
+    )
+    getProCityList({ isExtName: true }).then(({ data }) => {
+      this.cityTree = data
+    })
+    this.guideLoading = true
+    getCode(1).then(({ data }) => {
+      this.storeGuide = data
+      this.guideLoading = false
+    })
+    this.storeLoading = true
+    getCode(2).then(({ data }) => {
+      this.storeCode = data
+      this.storeLoading = false
+    })
+  },
   methods: {
-    downloadUrlFn(type, name) {
-      downloadUrl({ storeCodeType: type }).then((res) => {
-        if (res != null) {
-          let blob = new Blob([res], {
-            type: 'application/image',
-          })
-          let url = window.URL.createObjectURL(blob)
-          const link = document.createElement('a') // 创建a标签
-          link.href = url
-          link.download = name // 重命名文件
-          link.click()
-          URL.revokeObjectURL(url) // 释放内存
-        }
-      })
-    },
-    handleCopy(text) {
-      const input = document.createElement('input')
-      input.style.cssText = 'opacity: 0;'
-      input.type = 'text'
-      input.value = text // 修改文本框的内容
-      document.body.appendChild(input)
-      input.select() // 选中文本
-      document.execCommand('copy') // 执行浏览器复制命令
-      this.$message({ message: '复制成功', type: 'success' })
-    },
     switchFn(data) {
       updateState(data.id, { storeState: data.storeState }).then((res) => {
-        if (res.code === 200) {
-          this.getList()
-        }
+        this.$refs.rct.getList()
       })
     },
-    switchMultFn(type) {
-      if (!this.ids.length) {
+    switchMultFn(type, selectedIds) {
+      if (!selectedIds.length) {
         this.msgInfo('请选择要操作项！')
         return
       }
@@ -254,7 +218,7 @@ export default {
         this.msgInfo('门店导购及群活码都未配置, 无法操作！')
         return
       }
-      const ids = this.ids.join(',')
+      const ids = selectedIds.join(',')
       this.$confirm(`是否确认批量${type}已选门店？${type}后立即生效，请谨慎操作。`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -264,13 +228,13 @@ export default {
           return updateState(ids, { storeState: type === '启用' ? 0 : 1 })
         })
         .then(() => {
-          this.getList()
+          this.$refs.rct.getList()
           this.msgSuccess('操作成功')
         })
         .catch(function () {})
     },
     addNow(type) {
-      if (this.list.length) {
+      if (this.$refs.rct.data?.length) {
         this.goRoute(type)
       } else {
         this.$confirm(
@@ -288,16 +252,9 @@ export default {
           .catch(function () {})
       }
     },
-    resetFn() {
+    reset() {
       this.areaIds = []
-      ;(this.query = {
-        storeName: '',
-        area: '',
-        storeState: '',
-        pageNum: 1,
-        pageSize: 10,
-      }),
-        this.getList()
+      this.query = { area: '' }
     },
     handleChange(data) {
       let arr = this.$refs.tree.getCheckedNodes()
@@ -305,76 +262,9 @@ export default {
         this.query.area = arr[0].pathLabels.join('')
       }
     },
-    search() {
-      this.query.pageNum = 1
-      this.getList()
-    },
-    getList() {
-      this.loading = true
-      getTableList(this.query)
-        .then(({ rows, total }) => {
-          this.list = rows
-          this.total = Number(total)
-          this.loading = false
-          this.ids = []
-        })
-        .catch(() => {
-          this.loading = false
-        })
-    },
-    handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id)
-    },
     goRoute(path, id) {
       this.$router.push({ path: path, query: { id } })
     },
-    removeFn(type, id) {
-      if (type === 'mult' && !this.ids.length) {
-        this.msgInfo('请选择要删除项！')
-        return
-      }
-      const ids = id || this.ids.join(',')
-      this.$confirm('是否确认删除当前门店？删除后不可撤销，请谨慎操作。', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          return deleteStore(ids)
-        })
-        .then(() => {
-          this.search()
-          this.msgSuccess('删除成功')
-        })
-        .catch(function () {})
-    },
-  },
-  created() {
-    this.$store.setBusininessDesc(
-      `
-        <div>生成永久二维码，客户扫码后根据定位加入附近门店店主或门店群</div>
-      `,
-    )
-    getProCityList({ isExtName: true }).then((res) => {
-      if (res.code === 200) {
-        this.cityTree = res.data
-      }
-    })
-    this.guideLoading = true
-    getCode(1).then((res) => {
-      if (res.code === 200 && res.data) {
-        this.storeGuide = res.data
-      }
-      this.guideLoading = false
-    })
-    this.storeLoading = true
-    getCode(2).then((res) => {
-      if (res.code === 200 && res.data) {
-        this.storeCode = res.data
-      }
-      this.storeLoading = false
-    })
-    this.getList()
   },
 }
 </script>
