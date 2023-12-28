@@ -20,6 +20,10 @@ export default defineComponent({
       type: Object,
       default: () => ({}),
     },
+    appendToBody: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -39,19 +43,39 @@ export default defineComponent({
         this.rules,
       )
     },
+    // _form: {
+    //   get() {
+    //     return JSON.parse(JSON.stringify(this.form))
+    //   },
+    //   set(val) {
+    //     debugger
+    //     // val = JSON.parse(JSON.stringify(val))
+    //     // this.change(val)
+    //   },
+    // },
   },
   watch: {
-    _form: {
+    form: {
       deep: true,
       immediate: true,
       handler(data) {
-        data = JSON.parse(JSON.stringify(data))
+        // debugger
+        this._form = data || JSON.parse(JSON.stringify(defaultData))
+      },
+    },
+    _form: {
+      deep: true,
+      // immediate: true,
+      handler(data) {
+        // debugger
+        // data = JSON.parse(JSON.stringify(data))
         this.change(data)
       },
     },
   },
   created() {
-    this.change(this.form || JSON.parse(JSON.stringify(defaultData))) // 赋默认值
+    // debugger
+    // this.change(this.form || JSON.parse(JSON.stringify(defaultData))) // 赋默认值
   },
   mounted() {},
   methods: {
@@ -67,7 +91,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <el-form ref="form" label-width="120px" label-position="right" :rules="_rules" :model="_form">
+  <el-form ref="form" label-width="100px" label-position="right" :rules="_rules" :model="_form">
     <slot v-bind="{ form: _form }"></slot>
     <el-form-item label="添加客群:" prop="groups">
       <template v-if="!isDetail">
@@ -76,6 +100,7 @@ export default defineComponent({
         <SelectGroup
           v-model:visible="visible"
           :defaults="_form.groups"
+          :append-to-body="appendToBody"
           @submit="(data) => ((_form.groups = data), $refs.form.validateField('groups'))"></SelectGroup>
       </template>
       <TagEllipsis :list="_form.groups" limit="5" defaultProps="groupName" :emptyText="isDetail && '无'"></TagEllipsis>
