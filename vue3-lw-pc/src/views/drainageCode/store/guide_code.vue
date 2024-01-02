@@ -144,6 +144,9 @@ export default {
     PreviewClient,
     AddMaterial,
   },
+  created() {
+    this.init()
+  },
   methods: {
     setChange(data) {
       if (data === 1) {
@@ -244,18 +247,16 @@ export default {
       }
       myObj.attachments.push(...list)
       myObj.addOrUpdate = myObj.id ? false : true
-      addOrUpdateCodeInStore(myObj).then((res) => {
-        if (res.code === 200) {
-          this.msgSuccess('操作成功')
-          this.$router.back()
-        }
+      addOrUpdateCodeInStore(myObj).then(({ data }) => {
+        this.msgSuccess('操作成功')
+        this.$router.back()
         this.loading = false
       })
     },
     init() {
-      getCode(1).then((res) => {
-        if (res.code === 200 && res.data) {
-          this.form = res.data
+      getCode(1).then(({ data }) => {
+        if (data?.id) {
+          this.form = data
           if (this.form.customerServiceId) {
             let obj = {
               name: this.form.customerServiceName,
@@ -281,9 +282,6 @@ export default {
         }
       })
     },
-  },
-  created() {
-    this.init()
   },
 }
 </script>

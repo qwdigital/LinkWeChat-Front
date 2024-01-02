@@ -4,7 +4,7 @@ import stores from '@/stores'
 import { getToken, setToken } from '@/utils/auth'
 import errorCode from '@/utils/errorCode'
 
-axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
+// axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // setToken('eyJhbGciOiJIUzUxMiJ9.eyJ0ZW5hbnRfaWQiOjI2LCJ1c2VyX3R5cGUiOiI1IiwidXNlcl9pZCI6MjU5LCJ3ZUFwcFNlY3JldCI6IjY0YjRjNWRiMzg3MjA2Nzc2ZDRmYWJlMjEwNWMwNTc1IiwibG9naW5fdHlwZSI6IkxpbmtXZUNoYXRBUEkiLCJ1c2VyX25hbWUiOiLlp5zpuY_lh68iLCJ1c2VyX2tleSI6ImRmNTdmYzY4LWI2ZTYtNDVmNS04N2UzLWY4YzA5ZTZiNzFiOSIsIndlQXBwSWQiOiJ3eDg2M2MwMzFhNzRmNTg5YTAiLCJjb3JwX25hbWUiOiLku5_lvq7np5HmioAiLCJjb3JwX2lkIjoid3c2MjJmYzg1MmY3OWMzZjEzIn0.X5To1L7fJRBEIxmP6Dvp2XTpvWHwz8Ey6ODAeyk_owlFj_JywVjfpodDk0B7bGjRXE16nNpab0L9f3eF_-WGPQ')
 
 // 创建axios实例
@@ -22,6 +22,7 @@ function requestFactory(getway = '') {
       // 是否需要设置 token
       const isToken = (config.headers || {}).isToken === false
       if (getToken() && !isToken) {
+        // config.headers = window.lwConfig.headers // 让每个请求携带自定义token 请根据实际情况自行修改
         Object.assign(config.headers, window.lwConfig.headers) // 让每个请求携带自定义token 请根据实际情况自行修改
       }
       return config

@@ -111,6 +111,9 @@ export default {
   components: {
     PreviewStoreClient,
   },
+  created() {
+    this.init()
+  },
   methods: {
     setChange(data) {
       if (data === 1) {
@@ -146,20 +149,18 @@ export default {
           }
           this.submitLoading = true
           this.form.addOrUpdate = this.form.id ? false : true
-          addOrUpdateCodeInStore(this.form).then((res) => {
-            if (res.code === 200) {
-              this.msgSuccess('操作成功')
-              this.$router.back()
-            }
+          addOrUpdateCodeInStore(this.form).then(({ data }) => {
+            this.msgSuccess('操作成功')
+            this.$router.back()
             this.submitLoading = false
           })
         }
       })
     },
     init() {
-      getCode(2).then((res) => {
-        if (res.code === 200 && res.data) {
-          this.form = res.data
+      getCode(2).then(({ data }) => {
+        if (data?.id) {
+          this.form = data
           if (this.form.customerServiceId) {
             let obj = {
               name: this.form.customerServiceName,
@@ -170,9 +171,6 @@ export default {
         }
       })
     },
-  },
-  created() {
-    this.init()
   },
 }
 </script>
