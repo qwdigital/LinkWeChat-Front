@@ -85,7 +85,7 @@ div:focus {
 .sortable-ghost {
   opacity: 0.8;
   color: var(--font-white, #fff) !important;
-  background: #42b983 !important;
+  background: var(--color, #42b983) !important;
 }
 
 // 标签选择框

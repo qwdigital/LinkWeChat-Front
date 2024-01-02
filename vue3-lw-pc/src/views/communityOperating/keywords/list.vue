@@ -8,6 +8,7 @@ export default {
     return {
       getList,
       getDetailList,
+      remove,
       dialogVisible: false,
       detail: {},
       preview: {
@@ -91,7 +92,7 @@ export default {
     </RequestChartTable>
 
     <!-- 关键词列表弹窗 -->
-    <el-dialog title="关键词" v-model="dialogVisible">
+    <el-dialog title="关键词" v-model="dialogVisible" destroy-on-close>
       <RequestChartTable
         ref="RequestChartTableDialog"
         style="padding: 0 0 20px"

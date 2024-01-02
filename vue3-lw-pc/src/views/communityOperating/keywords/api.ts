@@ -14,6 +14,12 @@ export const getList = (data: pageParams) => get(`${service}/findLists`, data)
  */
 export const getDetail = (id) => get(`${service}/getKeyWordGroupBaseInfo/${id}`)
 
+/** 获取关键词拉群详情中关键词拉群列表
+ * @param {*} params
+ * {keywordGroupId}
+ */
+export const getDetailList = (data: pageParams) => get(`${service}/findWeKeyWordGroupSubs`, data)
+
 /** 新增或更新关键词群
  * @param {Object} data
   {
@@ -76,12 +82,6 @@ export const remove = (ids) => _del(`${service}/batchRemoveKeyWordGroupSub/${ids
 
 // 申请构建主键
 export const getId = () => get(`${service}/applyToBuildPrimaryKey`)
-
-/** 获取关键词拉群详情中关键词拉群列表
- * @param {*} params
- * {keywordGroupId}
- */
-export const getDetailList = (data: pageParams) => get(`${service}/findWeKeyWordGroupSubs`, data)
 
 /** 新增或更新关键词群点击取消时触发(避免还未新建,导致群活码创建过多占位)
  * @param {Object} data

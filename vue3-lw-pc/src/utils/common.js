@@ -1,5 +1,5 @@
 ﻿/**
- * 通用js方法封装处理，挂载到 Vue.prototype
+ * 通用js方法封装处理，挂载到 vueApp.config.globalProperties
  */
 
 const baseURL = window.lwConfig.BASE_API
@@ -104,7 +104,10 @@ export function selectDictLabels(datas, value, separator) {
  * @param {*} callback 成功回调
  */
 export function downloadBlob(blob, downloadName, type, callback) {
-  if (!blob || !downloadName) throw '文件或文件名不存在'
+  if (!blob || !downloadName) {
+    this?.msgError?.('文件或文件名不存在，请联系系统管理员')
+    throw '文件或文件名不存在，请联系系统管理员'
+  }
   if (blob instanceof Blob) {
     const typeDict = {
       excel: 'application/vnd.ms-excel',
@@ -120,7 +123,7 @@ export function downloadBlob(blob, downloadName, type, callback) {
     a.remove()
     URL.revokeObjectURL(url) // 释放内存
     callback && callback()
-    this.msgSuccess?.('正在下载，请稍后至浏览器下载栏查看')
+    this?.msgSuccess?.('正在下载，请稍后至浏览器下载栏查看')
   } else if (/^(http|data:image)/.test(blob) && type === 'image') {
     let image = new Image()
     image.setAttribute('crossOrigin', 'anonymous')
@@ -136,6 +139,7 @@ export function downloadBlob(blob, downloadName, type, callback) {
       })
     }
   } else {
+    this?.msgError?.('blob：文件类型错误')
     throw 'blob：文件类型错误'
   }
 }
@@ -379,7 +383,7 @@ export function $delConfirm(remove, callback) {
 // import ClipboardJS from 'clipboard'
 export function $copyText(txt) {
   if (!txt) {
-    this.msgError('内容为空')
+    this?.msgError?.('内容为空，请联系系统管理员')
     return
   }
   if (navigator.clipboard) {
@@ -396,10 +400,10 @@ export function $copyText(txt) {
       document.body.appendChild(input)
       input.select() // 选中文本
       document.execCommand('copy') // 执行浏览器复制命令
-      this.msgSuccess('复制成功')
+      this?.msgSuccess?.('复制成功')
       input.remove()
     } catch (error) {
-      this.msgError('复制失败')
+      this?.msgError?.('复制失败')
     }
   }
 
@@ -472,5 +476,5 @@ export function $previewFile(url) {
 }
 
 /**
- * 通用js方法封装处理，挂载到 Vue.prototype
+ * 通用js方法封装处理，挂载到 vueApp.config.globalProperties
  */

@@ -97,9 +97,7 @@
         ref="RequestChartTableDialog"
         style="padding: 0 0 20px 0"
         :request="
-          (query) => (
-            (query.id = $route.query.id), (query.externalUserid = externalUserid), api.getCustomerToGroupList(query)
-          )
+          (query) => (Object.assign(query, { id: $route.query.id, externalUserid }), api.getCustomerToGroupList(query))
         ">
         <template #="{ data }">
           <el-table :data="data">

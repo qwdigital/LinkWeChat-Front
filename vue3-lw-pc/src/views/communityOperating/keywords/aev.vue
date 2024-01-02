@@ -4,7 +4,7 @@
       <div class="g-card">
         <div class="g-card-title fxbw">
           基础信息
-          <el-tag class="cp" v-if="isDetail" size="large" effect="dark" @click="sync">同步</el-tag>
+          <el-tag class="cp" v-if="isDetail" size="large" effect="dark" @click="getDetail">同步</el-tag>
         </div>
         <el-form
           :model="form"
@@ -33,7 +33,7 @@
           关键词
           <el-button type="primary" @click="addOrUpdate()">新建关键词</el-button>
         </div>
-        <DragSortable v-model:data="form.keyWordGroupSubs">
+        <DragSortable v-model:data="form.keyWordGroupSubs" :disabled="isDetail">
           <el-table-column label="关键词" align="center" prop="keyword"></el-table-column>
           <el-table-column align="center" prop="codeName" label="群活码">
             <template #default="{ row }">
@@ -42,9 +42,9 @@
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center">
-            <template #default="{ row }">
+            <template #default="{ row, $index }">
               <el-button text @click="addOrUpdate(row)">编辑</el-button>
-              <el-button text @click="remove(row.id, index)">删除</el-button>
+              <el-button text @click="remove(row.id, $index)">删除</el-button>
             </template>
           </el-table-column>
         </DragSortable>
@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { getId, getDetail, addOrUpdate, addOrUpdateCancel, addOrUpdateKeyword } from './api'
+import { getId, getDetail, getDetailList, addOrUpdate, addOrUpdateCancel, addOrUpdateKeyword } from './api'
 
 export default {
   components: {
@@ -122,11 +122,12 @@ export default {
   },
   created() {
     this.form.id ??= this.$route.query.id
-    this.getDetail(this.form.id)
+    this.getDetail()
   },
   methods: {
     /** 获取详情 */
-    getDetail(id) {
+    getDetail() {
+      let id = this.$route.query.id
       this.$store.loading = true
       Promise.resolve()
         .then(() => {
@@ -135,17 +136,22 @@ export default {
               this.form.id = data
             })
           }
-          return getDetail(id).then(({ data }) => {
-            // 回显适配关键词客群数据结构
-            ;(data.keyWordGroupSubs ??= []).forEach((element) => {
-              let chatIdList = element.chatIdList?.split(',')
-              element.groups = element.groupCodeName?.split(',')?.map((e, i) => ({
-                chatId: chatIdList[i],
-                groupName: e,
-              }))
+          return getDetail(id)
+            .then(({ data }) => {
+              // 回显适配关键词客群数据结构
+              ;(data.keyWordGroupSubs ??= []).forEach((element) => {
+                let chatIdList = element.chatIdList?.split(',')
+                element.groups = element.groupCodeName?.split(',')?.map((e, i) => ({
+                  chatId: chatIdList[i],
+                  groupName: e,
+                }))
+              })
+              this.form = data
+              return getDetailList({ pageNum: 1, pageSize: 1000, keywordGroupId: data.id })
             })
-            this.form = data
-          })
+            .then(({ rows }) => {
+              this.form.keyWordGroupSubs = rows
+            })
         })
         .finally(() => (this.$store.loading = false))
     },
@@ -179,6 +185,7 @@ export default {
     },
     remove(id, index) {
       this.$confirm().then(() => {
+        debugger
         this.form.keyWordGroupSubs.splice(index, 1)
       })
     },

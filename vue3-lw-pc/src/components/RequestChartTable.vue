@@ -143,7 +143,7 @@ export default defineComponent({
      * @param {*} id 字符串id
      */
     remove(removeApi, id) {
-      if (!remove) {
+      if (!removeApi) {
         return this.msgError('无可用接口服务')
       }
       let ids = id || this.selectedIds?.join?.(',')

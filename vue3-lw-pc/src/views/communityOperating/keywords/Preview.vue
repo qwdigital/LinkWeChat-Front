@@ -27,7 +27,14 @@ export default defineComponent({
       <div class="desc">
         {{ data.descrition }}
       </div>
+      <ul class="list" v-if="data.keyWordGroupSubs">
+        <li class="fxbw li" v-for="(item, index) in data.keyWordGroupSubs" :key="index">
+          <div class="blod">{{ item.keyword }}</div>
+          <div class="g-color cp">加入群聊</div>
+        </li>
+      </ul>
       <ScrollLoadList
+        v-else
         class="list"
         finishedText=""
         :isQuery="!1"
