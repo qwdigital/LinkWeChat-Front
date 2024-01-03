@@ -136,7 +136,7 @@ export default {
           @click="downloadBlob(preview.data.keywordGroupQrUrl, preview.data.title + '.png', 'image')">
           下载二维码
         </el-button>
-        <el-button type="primary" @click="$copyText(preview.data.keywordGroupQrUrl)">复制链接</el-button>
+        <el-button type="primary" @click="$copyText(preview.data.keywordGroupUrl)">复制链接</el-button>
       </div>
     </el-dialog>
   </div>
