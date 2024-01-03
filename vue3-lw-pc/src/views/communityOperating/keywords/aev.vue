@@ -138,18 +138,18 @@ export default {
           }
           return getDetail(id)
             .then(({ data }) => {
+              this.form = data
+              return getDetailList({ pageNum: 1, pageSize: 1000, keywordGroupId: data.id })
+            })
+            .then(({ rows }) => {
               // 回显适配关键词客群数据结构
-              ;(data.keyWordGroupSubs ??= []).forEach((element) => {
+              ;(rows ??= []).forEach((element) => {
                 let chatIdList = element.chatIdList?.split(',')
                 element.groups = element.groupCodeName?.split(',')?.map((e, i) => ({
                   chatId: chatIdList[i],
                   groupName: e,
                 }))
               })
-              this.form = data
-              return getDetailList({ pageNum: 1, pageSize: 1000, keywordGroupId: data.id })
-            })
-            .then(({ rows }) => {
               this.form.keyWordGroupSubs = rows
             })
         })

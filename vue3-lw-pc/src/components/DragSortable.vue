@@ -24,7 +24,9 @@ export default defineComponent({
     data: {
       immediate: true,
       deep: true,
-      handler(val = []) {
+      handler(val) {
+        val ??= []
+
         this.tableData = JSON.parse(JSON.stringify(val))
         this.tableData.forEach((item, index) => (item._sortId ??= index + Date.now()))
         // console.log(this.tableData)
@@ -33,13 +35,13 @@ export default defineComponent({
   },
   created() {},
   mounted() {
-    if (!this.disabled) {
-      this.dragSort()
-    }
+    this.dragSort()
   },
   methods: {
     //表格拖动排序
     dragSort() {
+      if (!this.tableData || this.disabled) return
+
       const el = this.$refs.table.$el.querySelector('.el-table__body-wrapper  table > tbody')
 
       this.sortable = Sortable.create(el, {
