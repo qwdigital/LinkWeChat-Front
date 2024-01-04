@@ -48,7 +48,7 @@ export default {
         <el-table-column label="关键词" align="center" width="120">
           <template #default="{ row }">
             <div class="g-color cp" @click=";(detail = row), (dialogVisible = true)">
-              {{ row.keyWordGroupNumber }}
+              {{ row.keyWordGroupNumber || 0 }}
             </div>
           </template>
         </el-table-column>

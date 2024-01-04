@@ -34,11 +34,11 @@
             end-placeholder="结束日期"
             align="right"></el-date-picker>
         </el-form-item>
-        <el-form-item label="" prop="isJoinGroup">
+        <!-- <el-form-item label="" prop="isJoinGroup">
           <el-select v-model="query.isJoinGroup" placeholder="请选择是否进群">
             <el-option v-for="(item, index) in dictAddStatus" :key="index" :label="item" :value="index"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
       </template>
 
       <template #="{ data }">
@@ -66,14 +66,16 @@
           <el-table-column align="center" prop="groupName" label="进入客群">
             <template #default="{ row }">
               <div
+                v-if="row.joinGroupNumbe && row.joinGroupNumber + '' >= '0'"
                 class="g-color cp"
                 @click="
                   ;(externalUserid = row.externalUserid),
                     (dialogVisible = true),
                     $refs.RequestChartTableDialog?.getList()
                 ">
-                {{ row.joinGroupNumber || '—' }}
+                {{ row.joinGroupNumber }}
               </div>
+              <div v-else>-</div>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center">
