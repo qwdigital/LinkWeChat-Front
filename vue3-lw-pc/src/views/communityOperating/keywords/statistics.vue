@@ -7,7 +7,8 @@
       title="数据趋势"
       isTimeQuery
       :isCreateRequest="false"
-      :request="(query) => ((query.id = $route.query.id), api.getDataTrend(query))"
+      :params="{ keywordGroupId: $route.query.id }"
+      :request="api.getDataTrend"
       :legend="['今日访问客户数', '今日进群客户数']"
       :dealDataFun="dealDataTrend" />
 
@@ -15,7 +16,8 @@
       title="数据明细"
       ref="importRecord"
       :request="getDataDetail"
-      :requestExport="(query) => ((query.id = $route.query.id), api.getDataDetailExport(query))"
+      :params="{ keywordGroupId: $route.query.id }"
+      :requestExport="api.getDataDetailExport"
       exportFileName="关键词群数据明细导出.xls">
       <template #queryMiddle="{ query }">
         <el-form-item label="" prop="customerName">
@@ -96,9 +98,8 @@
       <RequestChartTable
         ref="RequestChartTableDialog"
         style="padding: 0 0 20px 0"
-        :request="
-          (query) => (Object.assign(query, { id: $route.query.id, externalUserid }), api.getCustomerToGroupList(query))
-        ">
+        :params="{ keywordGroupId: $route.query.id, externalUserid }"
+        :request="api.getCustomerToGroupList">
         <template #="{ data }">
           <el-table :data="data">
             <el-table-column label="客群名称" align="center" prop="groupName"></el-table-column>
