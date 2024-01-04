@@ -66,7 +66,7 @@
           <el-table-column align="center" prop="groupName" label="进入客群">
             <template #default="{ row }">
               <div
-                v-if="row.joinGroupNumbe && row.joinGroupNumber + '' >= '0'"
+                v-if="row.joinGroupNumber && row.joinGroupNumber + '' >= '0'"
                 class="g-color cp"
                 @click="
                   ;(externalUserid = row.externalUserid),
@@ -75,7 +75,7 @@
                 ">
                 {{ row.joinGroupNumber }}
               </div>
-              <div v-else>-</div>
+              <div v-else>—</div>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center">
