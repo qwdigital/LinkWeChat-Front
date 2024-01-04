@@ -20,17 +20,17 @@
 
 **<p align="center">LinkWeChat V5.0 正式发布啦，即将全面接入 AI 大模型，更多能力逐步升级，欢迎大家提前体验！<a href="https://demo.linkwechat.net/" target="_blank">点击立即体验~</a></p>**
 
+**<p align="center">LinkWeChat 采用前后端分离架构，具体项目说明及后端库请移步至 [LinkWeChat](https://gitee.com/LinkWeChat/link-wechat) 查看</p>**
+
+**<p align="center">如果您觉得我们的开源项目很有帮助，请点击 :star: Star 支持 LinkWeChat 开源团队:heart:，您的支持，是我们最好的动力~</p>**
+
 ---
 
 # 平台简介
 
 本仓库为 [LinkWeChat](https://gitee.com/LinkWeChat/link-wechat) 的前端源码库，技术栈采用 [vue3](https://cn.vuejs.org/) [vite](https://cn.vitejs.dev/) [pinia](https://pinia.vuejs.org/zh/) [element-plus](https://element-plus.gitee.io/zh-CN/)
 
-如果您觉得我们的开源项目很有帮助，请点击 :star: Star 支持 LinkWeChat 开源团队:heart:，您的支持，是我们最好的动力~
-
 vue2 技术栈版本（停止维护）可切换至 master-vue2 分支查看，具体说明参见[更新日志](./RELEASES.md)中 v5.0.0 版本说明
-
-具体项目说明及后端库请移步至 [LinkWeChat](https://gitee.com/LinkWeChat/link-wechat) 查看。
 
 # 在线体验
 
