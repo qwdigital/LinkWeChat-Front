@@ -1,6 +1,30 @@
+![输入图片说明](https://gitee.com/LinkWeChat/link-wechat/raw/master/readme-pic/logo.png)
+
+<div align="center">
+
+[![star](https://gitee.com/LinkWeChat/link-wechat/badge/star.svg?theme=gvp)](https://gitee.com/LinkWeChat/link-wechat/stargazers)
+[![fork](https://gitee.com/LinkWeChat/link-wechat/badge/fork.svg?theme=gvp)](https://gitee.com/LinkWeChat/link-wechat/members)
+[![LinkWeChat](https://img.shields.io/badge/LinkWeChat-V5.0.2-brightgreen)](https://www.yuque.com/linkwechat/help/ci1n9p)
+[![license](http://img.shields.io/badge/license-GPL%203.0-orange)](https://gitee.com/LinkWeChat/link-wechat/blob/master/LICENSE)
+[![木兰社区](https://img.shields.io/badge/Mulan-incubating-blue)](https://portal.mulanos.cn//)
+
+[官方网站](https://www.linkwechat.net/) | [在线演示](https://demo.linkwechat.net/)
+
+[项目手册](https://www.yuque.com/linkwechat/help) | [用户手册](https://docs.qq.com/pdf/DZUpLbEVZR3RLdmxO?) | [常见问题](https://www.yuque.com/linkwechat/help/qk5gl6) | [V5.x 功能清单](https://docs.qq.com/sheet/DZWNxelVoT2VSU1V6?tab=BB08J3)
+
+</div>
+
+---
+
+**<p align="center">【📣 最近通知】还有什么想要产品/技术上友好的建议或意见，<a href="https://docs.qq.com/sheet/DZWxGU0JGVFRVdWZV" target="_blank">点击告诉我们~</a>一经采纳，将纳入开源贡献者并官网致谢，还会收到社区奖励的小礼品哦！~</p>**
+
+**<p align="center">LinkWeChat V5.0 正式发布啦，即将全面接入 AI 大模型，更多能力逐步升级，欢迎大家提前体验！<a href="https://demo.linkwechat.net/" target="_blank">点击立即体验~</a></p>**
+
+---
+
 # 平台简介
 
-本仓库为 LinkWeChat 的前端源码库，技术栈采用 [vue3](https://cn.vuejs.org/) [vite](https://cn.vitejs.dev/) [pinia](https://pinia.vuejs.org/zh/) [element-plus](https://element-plus.gitee.io/zh-CN/)
+本仓库为 [LinkWeChat](https://gitee.com/LinkWeChat/link-wechat) 的前端源码库，技术栈采用 [vue3](https://cn.vuejs.org/) [vite](https://cn.vitejs.dev/) [pinia](https://pinia.vuejs.org/zh/) [element-plus](https://element-plus.gitee.io/zh-CN/)
 
 如果您觉得我们的开源项目很有帮助，请点击 :star: Star 支持 LinkWeChat 开源团队:heart:，您的支持，是我们最好的动力~
 
