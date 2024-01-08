@@ -78,7 +78,12 @@ export const addOrUpdate = (data) => post(`${service}/createOrUpdateBaseInfo`, d
 /** 删除关键词拉群
  * @param {*} ids
  */
-export const remove = (ids) => _del(`${service}/batchRemoveKeyWordGroupSub/${ids}`)
+export const remove = (ids) => _del(`${service}/batchRemoveKeyWordGroup/${ids}`)
+
+/** 删除关键词拉群集合中的关键词群
+ * @param {*} ids
+ */
+export const removeSub = (ids) => _del(`${service}/batchRemoveKeyWordGroupSub/${ids}`)
 
 // 申请构建主键
 export const getId = () => get(`${service}/applyToBuildPrimaryKey`)

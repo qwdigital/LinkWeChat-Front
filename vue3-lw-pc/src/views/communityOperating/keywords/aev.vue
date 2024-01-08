@@ -41,7 +41,7 @@
               <el-image :src="row.groupCodeUrl" class="code-image"></el-image>
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center">
+          <el-table-column label="操作" align="center" v-if="!isDetail">
             <template #default="{ row, $index }">
               <el-button text @click="addOrUpdate(row)">编辑</el-button>
               <el-button text @click="remove(row.id, $index)">删除</el-button>
