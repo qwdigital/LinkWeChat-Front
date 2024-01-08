@@ -255,13 +255,14 @@ export default defineConfig(async ({ command, mode }) => {
             },
           ],
         }),
-      rollupPluginVisualizer({
-        emitFile: false, //使用 emitFile 生成文件。 属性为 true，打包后的分析文件会出现在打包好的文件包下；设置为 false ，则会出现在项目根目录下
-        filename: 'report.html', //生成分析网页文件名
-        open: false, //在默认用户代理中打开生成的文件
-        gzipSize: true, //从源代码中收集 gzip 大小并将其显示在图表中
-        // brotliSize: true, //从源代码中收集 brotli 大小并将其显示在图表中
-      }),
+      process.env.npm_config_report &&
+        rollupPluginVisualizer({
+          emitFile: false, //使用 emitFile 生成文件。 属性为 true，打包后的分析文件会出现在打包好的文件包下；设置为 false ，则会出现在项目根目录下
+          filename: 'report.html', //生成分析网页文件名
+          open: false, //在默认用户代理中打开生成的文件
+          gzipSize: true, //从源代码中收集 gzip 大小并将其显示在图表中
+          // brotliSize: true, //从源代码中收集 brotli 大小并将其显示在图表中
+        }),
     ],
     // optimizedeps: {
     //   esbuildoptions: {

@@ -33,7 +33,7 @@
           关键词
           <el-button type="primary" @click="addOrUpdate()">新建关键词</el-button>
         </div>
-        <DragSortable v-model:data="form.keyWordGroupSubs" :disabled="isDetail">
+        <DragSortable :data="form.keyWordGroupSubs" @update:data="sort" :disabled="isDetail">
           <el-table-column label="关键词" align="center" prop="keyword"></el-table-column>
           <el-table-column align="center" prop="codeName" label="群活码">
             <template #default="{ row }">
@@ -90,7 +90,16 @@
 </template>
 
 <script>
-import { getId, getDetail, getDetailList, addOrUpdate, addOrUpdateCancel, addOrUpdateKeyword } from './api'
+import {
+  getId,
+  getDetail,
+  getDetailList,
+  addOrUpdate,
+  addOrUpdateCancel,
+  addOrUpdateKeyword,
+  removeSub,
+  batchUpdateKeyWordGroupSub,
+} from './api'
 
 export default {
   components: {
@@ -136,28 +145,44 @@ export default {
               this.form.id = data
             })
           }
-          return getDetail(id)
-            .then(({ data }) => {
-              this.form = data
-              return getDetailList({ pageNum: 1, pageSize: 1000, keywordGroupId: data.id })
-            })
-            .then(({ rows }) => {
-              // 回显适配关键词客群数据结构
-              ;(rows ??= []).forEach((element) => {
-                let chatIdList = element.chatIdList?.split(',')
-                element.groups = element.groupCodeName?.split(',')?.map((e, i) => ({
-                  chatId: chatIdList[i],
-                  groupName: e,
-                }))
-              })
-              this.form.keyWordGroupSubs = rows
-            })
+          return getDetail(id).then(({ data }) => {
+            this.form = data
+            return this.getDetailList()
+          })
+        })
+        .finally(() => (this.$store.loading = false))
+    },
+    getDetailList() {
+      this.$store.loading = true
+      return getDetailList({ pageNum: 1, pageSize: 1000, keywordGroupId: this.form.id })
+        .then(({ rows }) => {
+          // 回显适配关键词客群数据结构
+          ;(rows ??= []).forEach((element) => {
+            let chatIdList = element.chatIdList?.split(',')
+            element.groups = element.groupCodeName?.split(',')?.map((e, i) => ({
+              chatId: chatIdList[i],
+              groupName: e,
+            }))
+          })
+          this.form.keyWordGroupSubs = rows
         })
         .finally(() => (this.$store.loading = false))
     },
     addOrUpdate(row = {}) {
       this.formKeywords = Object.assign({}, row)
       this.dialogVisible = true
+    },
+    sort(data) {
+      this.$store.loading = true
+      this.form.keyWordGroupSubs = data
+      batchUpdateKeyWordGroupSub(this.form)
+        .then(() => {
+          this.msgSuccess()
+          return this.getDetailList()
+        })
+        .finally(() => {
+          this.$store.loading = false
+        })
     },
     // 新增或更新关键词群集合中的关键词群
     submitFormKeywords() {
@@ -183,10 +208,19 @@ export default {
           })
       })
     },
+
     remove(id, index) {
       this.$confirm().then(() => {
-        debugger
-        this.form.keyWordGroupSubs.splice(index, 1)
+        this.$store.loading = true
+        removeSub(id)
+          .then(() => {
+            this.msgSuccess()
+            return this.getDetailList()
+          })
+          .finally(() => {
+            this.$store.loading = false
+          })
+        // this.form.keyWordGroupSubs.splice(index, 1)
       })
     },
     cancel() {
