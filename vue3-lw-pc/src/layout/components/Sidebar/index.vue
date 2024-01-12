@@ -18,6 +18,11 @@
     </el-scrollbar>
 
     <div class="card" v-if="lwConfig.IS_LINKWECHAT">
+      <div class="card-item card-ai" @click="$store.AIDrawer = true">
+        <svg-icon class="right-icon mr5" icon="custom-ai"></svg-icon>
+        AI 助手
+      </div>
+
       <el-tooltip content="文档手册" effect="dark" placement="top">
         <div class="card-item">
           <svg-icon
@@ -66,6 +71,8 @@
         </div>
       </el-tooltip>
     </div>
+
+    <AIDrawer />
   </div>
 </template>
 
@@ -75,10 +82,11 @@ import { mapState } from 'pinia'
 import stores from '@/stores'
 
 import SidebarItem from './SidebarItem'
+import AIDrawer from './AIDrawer/index.vue'
 // import ServeDialog from './ServeDialog'
 
 export default {
-  components: { SidebarItem },
+  components: { SidebarItem, AIDrawer },
   computed: {
     // ...mapState(['settings']),
     ...mapState(stores, ['permission_routes', 'sidebarRouters', 'sidebar']),
@@ -293,9 +301,19 @@ export default {
     box-shadow: inset 4px 8px 16px 0px rgba(134, 144, 156, 0.18);
     border: 1px solid var(--border-black-9);
     cursor: pointer;
+
     .right-icon {
       font-size: 20px;
     }
+  }
+  .card-ai {
+    border: none;
+    width: auto;
+    height: 38px;
+    grid-column: 1 / span 3;
+    background: var(--color);
+    color: var(--font-white);
+    font-weight: 600;
   }
 }
 </style>
