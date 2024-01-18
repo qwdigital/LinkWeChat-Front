@@ -18,7 +18,7 @@
     </el-scrollbar>
 
     <div class="card" v-if="lwConfig.IS_LINKWECHAT">
-      <div class="card-item card-ai" @click="$store.AIDrawer = true">
+      <div class="card-item card-ai" v-if="$store.app.serverState?.ai" @click="$store.AIDrawer = true">
         <svg-icon class="right-icon mr5" icon="custom-ai"></svg-icon>
         AI 助手
       </div>

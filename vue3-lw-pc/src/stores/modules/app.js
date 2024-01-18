@@ -1,3 +1,4 @@
+import { getServerState } from '@/api/common'
 import Cookies from 'js-cookie'
 import { useDark, useToggle } from '@vueuse/core'
 
@@ -10,6 +11,7 @@ const state = {
   size: Cookies.get('size') || 'medium',
   busininessDesc: undefined,
   isDark: useDark(),
+  serverState: {},
 }
 
 const actions = {
@@ -36,6 +38,15 @@ const actions = {
   },
   setBusininessDesc(busininessDesc) {
     this.app.busininessDesc = busininessDesc
+  },
+
+  getServerState() {
+    getServerState()
+      .then(({ data }) => {
+        data.ai = data['linkwe-ai']
+        this.app.serverState = data
+      })
+      .catch((error) => {})
   },
 }
 

@@ -72,6 +72,8 @@ export default function permission(router) {
                 }
               }
             })
+
+            store.getServerState()
           })
           // .catch((err) => {
           //   store.LogOut().then(() => {

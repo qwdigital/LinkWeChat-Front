@@ -154,3 +154,12 @@ export function getWechatUserInfo() {
     url: `/system/user/getWxInfo`,
   })
 }
+
+/**
+ * 获取后端服务状态
+ */
+export function getServerState() {
+  return request({
+    url: `/serverState`,
+  })
+}

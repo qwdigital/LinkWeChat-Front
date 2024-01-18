@@ -60,7 +60,10 @@ export default {
       <el-button class="ml10" v-if="toolbar.includes('insertCustomerNickName')" @click="insertContent(nikeName)">
         插入客户昵称
       </el-button>
-      <el-button class="custom-ai ml10" @click="$store.AIDrawer = true">
+      <el-button
+        class="custom-ai ml10"
+        v-if="$store.app.serverState?.ai && toolbar.includes('ai')"
+        @click="$store.AIDrawer = true">
         <svg-icon class="ai-icon mr5" style="font-size: 20px" icon="custom-ai"></svg-icon>
         AI 助手
       </el-button>
