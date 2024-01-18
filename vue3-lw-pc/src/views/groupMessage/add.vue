@@ -16,12 +16,12 @@
         </el-form-item>
         <template v-if="form.chatType == 2">
           <el-form-item label="群发客户群" required prop="clientGroup">
-            <el-radio-group v-model="form.clientGroup">
+            <el-radio-group v-model="form.isAll">
               <el-radio :label="0">全部群</el-radio>
               <el-radio :label="1">部分群</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item v-if="form.clientGroup == 1">
+          <el-form-item v-if="form.isAll == 1">
             <div>
               <div class="item-magin aic">
                 <div class="item-name">
@@ -43,13 +43,13 @@
           </el-form-item>
         </template>
         <template v-if="form.chatType == 1">
-          <el-form-item label="群发客户" required prop="pushRange">
-            <el-radio-group v-model="form.pushRange">
+          <el-form-item label="群发客户" required prop="isAll">
+            <el-radio-group v-model="form.isAll">
               <el-radio :label="0">全部客户</el-radio>
               <el-radio :label="1">部分客户</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item v-if="form.pushRange == 1">
+          <el-form-item v-if="form.isAll == 1">
             <CustomerRangeForm ref="customerRangeForm" isTrans v-model:data="form.weCustomersQuery" />
           </el-form-item>
         </template>
@@ -78,7 +78,14 @@
       </el-form>
     </div>
     <div class="g-margin-t" v-show="active === 1">
-      <AddMaterial :showModle="true" :moduleType="4" :otherType="2" @update="active = 0" @submit="save"></AddMaterial>
+      <AddMaterial
+        :showModle="true"
+        :moduleType="4"
+        :otherType="2"
+        @update="active = 0"
+        @submit="save"
+        :baseData="materialData"
+        isTransData></AddMaterial>
     </div>
 
     <!-- 选择客户群聊 -->
@@ -93,7 +100,7 @@
 </template>
 
 <script>
-import { add, getCustomerList } from '@/api/groupMessage'
+import { getDetail, add, getCustomerList } from '@/api/groupMessage'
 import { getMaterialMediaId } from '@/api/material'
 import { getList } from '@/api/salesCenter/businessConver.js'
 
@@ -101,6 +108,7 @@ import SelectCustomerGroup from '@/components/SelectCustomerGroup'
 import moment from 'moment'
 import { parseTime } from '@/utils/common'
 import AddMaterial from '@/components/ContentCenter/AddMaterial'
+import { delTreeKeys } from '@/utils/index'
 export default {
   components: {
     //
@@ -116,8 +124,7 @@ export default {
       // 表单参数
       form: {
         chatType: 1,
-        pushRange: 0,
-        clientGroup: 0, // 群发客户群
+        isAll: 0, //
         gender: '', // 发送客户-性别
         trackState: '', // 发送客户-跟进状态
         rangeTime: [], // 发送客户-添加时间
@@ -134,6 +141,7 @@ export default {
       rules: {
         clientGroup: [{ validator: this.validateClientGroup, trigger: 'blur' }],
         isTask: [{ validator: this.validateSettingTimeType, trigger: 'blur' }],
+        isAll: [{ required: true, message: '请选择', trigger: 'blur' }],
       },
       statusOptions: Object.freeze([
         {
@@ -157,6 +165,10 @@ export default {
           return time.getTime() < Date.now() - 8.64e7 || time.getTime() > date.getTime()
         },
         selectableRange: parseTime(new Date(moment().format('YYYY-MM-DD HH:mm:ss')), '{hh}:{ii}:{ss}') + '- 23:59:59',
+      },
+      materialData: {
+        templateInfo: '',
+        materialMsgList: [],
       },
     }
   },
@@ -196,13 +208,28 @@ export default {
     this.$store.setBusininessDesc(
       `<div>每位客户/每个客户群每天可接收1条群发消息，可以是企业统一创建发送的，也可以是成员自己创建发送的；超过接收上限的客户/客户群将无法再收到群发消息。</div>`,
     )
-  },
-  mounted() {
+
     if (this.$route.query.chatType) {
       this.form.chatType = Number(this.$route.query.chatType)
     }
     this.getStage()
+
+    if (this.$route.query.id) {
+      getDetail(this.$route.query.id).then(({ data = {} }) => {
+        // 删除主键
+        delTreeKeys(data, ['id'])
+
+        this.form = Object.assign(data, this.$route.query)
+        this.form.isTask = +this.form.isTask
+        this.form.isAll = this.form.isAll ? 0 : 1
+        this.materialData = {
+          templateInfo: data?.content || '',
+          attachments: data?.attachments || [],
+        }
+      })
+    }
   },
+  mounted() {},
   methods: {
     getStage() {
       getList().then((res) => {
@@ -253,7 +280,7 @@ export default {
     // 	}
     // },
     validateClientGroup(rule, value, callback) {
-      if (this.form.chatType == 2 && this.form.clientGroup == 1 && this.selectCustomerGroupList.length == 0) {
+      if (this.form.chatType == 2 && this.form.isAll == 1 && this.selectCustomerGroupList.length == 0) {
         callback('请选择群主')
       } else {
         callback()
@@ -270,7 +297,7 @@ export default {
     nextStep() {
       this.$refs.form.validate((validate) => {
         if (!validate) return
-        if (this.form.chatType == 1 && this.form.pushRange == 1) {
+        if (this.form.chatType == 1 && this.form.isAll == 1) {
           this.$store.loading = true
           this.$refs.customerRangeForm
             .getCustomerList()
@@ -334,27 +361,24 @@ export default {
       let data = Object.assign({}, this.form, myObj)
       data = JSON.parse(JSON.stringify(data))
       if (data.chatType === 1) {
-        if (data.pushRange === 0) {
+        if (data.isAll === 0) {
           data.senderList = []
         }
-        data.isAll = data.pushRange === 0 ? true : false
       } else {
-        if (data.clientGroup === 1) {
+        if (data.isAll == 1) {
           data.senderList = this.selectCustomerGroupList.map((i) => {
             return { userId: i.userId }
           })
         } else {
           data.senderList = []
         }
-        data.isAll = data.clientGroup === 0 ? true : false
       }
+      data.isAll = data.isAll == 0
       // data.sendClientUserList.map(i => i.userId)
       // 发送类型
       data.sendTime = data.isTask == 1 ? parseTime(new Date(data.sendTime)) : ''
       // data.department = data.department.join(',')
       delete data.department
-      delete data.clientGroup
-      delete data.pushRange
       delete data.rangeTime
       delete data.sendClientUserList
       delete data.sendClientTagList

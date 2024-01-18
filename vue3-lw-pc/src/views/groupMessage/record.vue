@@ -40,8 +40,8 @@
         <el-table-column label="最近更新时间" align="center" prop="createTime" width="180"></el-table-column>
         <el-table-column label="操作" align="center" width="180">
           <template #default="{ row }">
-            <el-button text @click="goRoute('detail', row.id, row.isTask, row.status)">详情</el-button>
-            <!-- <el-button text @click="goRoute('add', row.id)">复制</el-button> -->
+            <el-button text @click="goRoute('detail', row)">详情</el-button>
+            <el-button text @click="goRoute('add', row)">复制</el-button>
             <el-button v-if="row.isTask === 1 && row.status === 0" text @click="cancelSend(row)">取消发送</el-button>
             <!-- <el-button v-hasPermi="['enterpriseWechat:edit']"  text disabled=""
 							@click="goRoute(row, 1)">编辑</el-button>
@@ -152,21 +152,12 @@ export default {
         })
         .catch(function () {})
     },
-    goRoute(path, id, isTask, status) {
-      const query = {}
-      if (id) {
-        query.id = id
+    async goRoute(path, { id, isTask, status } = {}) {
+      const query = { id, isTask, status }
+      if (path == 'add' && id) {
+        await this.$confirm('是否确认从当前任务进行复制？点击确定进入复制新建页面', '提示')
       }
-      if (isTask) {
-        query.isTask = isTask
-      }
-      if (status) {
-        query.status = status
-      }
-      this.$router.push({
-        path: './' + path,
-        query,
-      })
+      this.$router.push({ path, query })
     },
     syncMsg(data) {
       let { msgid, messageId } = data
