@@ -8,7 +8,7 @@ export default {
     // ['emoji','insertCustomerNickName']
     toolbar: {
       type: Array,
-      default: () => ['emoji'],
+      default: () => ['emoji', 'ai'],
     },
     nikeName: {
       type: String,
@@ -57,8 +57,12 @@ export default {
           </el-button>
         </template>
       </SelectEmoji>
-      <el-button v-if="toolbar.includes('insertCustomerNickName')" @click="insertContent(nikeName)" class="ml10">
+      <el-button class="ml10" v-if="toolbar.includes('insertCustomerNickName')" @click="insertContent(nikeName)">
         插入客户昵称
+      </el-button>
+      <el-button class="custom-ai ml10" @click="$store.AIDrawer = true">
+        <svg-icon class="ai-icon mr5" style="font-size: 20px" icon="custom-ai"></svg-icon>
+        AI 助手
       </el-button>
     </div>
   </div>
@@ -67,5 +71,10 @@ export default {
 <style lang="scss" scoped>
 textarea {
   white-space: pre-wrap; //保留所有空格
+}
+.custom-ai {
+  border: 1px solid var(--color);
+  color: var(--color);
+  font-weight: 600;
 }
 </style>

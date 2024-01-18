@@ -27,7 +27,7 @@
   </div>
   <script type="module" src="/src/main.js"></script>
   <script>
-    if (window.lwConfig && !['development', 'test'].includes(window.lwConfig._env)) {
+    if (window.lwConfig && !['development', 'test'].includes(window.lwConfig._env) && location.host === 'demo.linkwechat.net') {
       var hm = document.createElement("script")
       hm.src = "https://hm.baidu.com/hm.js?489a58fd4fcaf2347cee64a8827e7094";
       var hm1 = document.createElement("script")

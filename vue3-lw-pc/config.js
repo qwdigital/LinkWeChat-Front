@@ -69,6 +69,7 @@ let config = {
 
   services: {
     wecom: '/open',
+    ai: '/ai',
     // system: 'http://192.168.4.168:6180',
     common: '/common',
     weChat: '/wx-api',

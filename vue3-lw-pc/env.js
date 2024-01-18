@@ -22,7 +22,7 @@ const envs = {
     BASE_URL: '/', // 路由基础路径
     BASE_API: 'https://demo.linkwechat.net/linkwechat-api',
     _ISGZIP: true,
-    _ISCDN: false,
+    _ISCDN: true,
   },
 }
 export const env = envs[process.env.VUE_APP_ENV]
