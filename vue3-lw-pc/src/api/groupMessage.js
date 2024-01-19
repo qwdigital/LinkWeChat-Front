@@ -77,6 +77,12 @@ export function getDetail(messageId) {
   })
 }
 
+export function getDetailRaw(messageId) {
+  return request({
+    url: service + '/findGroupMessageDetail/' + messageId,
+  })
+}
+
 export function cancelSend(ids) {
   return request({
     url: service + '/cancel/' + ids,

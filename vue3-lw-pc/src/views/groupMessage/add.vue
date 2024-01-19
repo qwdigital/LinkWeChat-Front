@@ -15,7 +15,7 @@
           </el-radio-group>
         </el-form-item>
         <template v-if="form.chatType == 2">
-          <el-form-item label="群发客户群" required prop="clientGroup">
+          <el-form-item label="群发客户群" required prop="isAll">
             <el-radio-group v-model="form.isAll">
               <el-radio :label="0">全部群</el-radio>
               <el-radio :label="1">部分群</el-radio>
@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import { getDetail, add, getCustomerList } from '@/api/groupMessage'
+import { getDetailRaw, add, getCustomerList } from '@/api/groupMessage'
 import { getMaterialMediaId } from '@/api/material'
 import { getList } from '@/api/salesCenter/businessConver.js'
 
@@ -139,9 +139,11 @@ export default {
       },
       userParty: [],
       rules: {
-        clientGroup: [{ validator: this.validateClientGroup, trigger: 'blur' }],
+        isAll: [
+          { required: true, message: '请选择', trigger: 'blur' },
+          { validator: this.validateClientGroup, trigger: 'blur' },
+        ],
         isTask: [{ validator: this.validateSettingTimeType, trigger: 'blur' }],
-        isAll: [{ required: true, message: '请选择', trigger: 'blur' }],
       },
       statusOptions: Object.freeze([
         {
@@ -215,16 +217,23 @@ export default {
     this.getStage()
 
     if (this.$route.query.id) {
-      getDetail(this.$route.query.id).then(({ data = {} }) => {
+      getDetailRaw(this.$route.query.id).then(({ data = {} }) => {
         // 删除主键
         delTreeKeys(data, ['id'])
 
         this.form = Object.assign(data, this.$route.query)
         this.form.isTask = +this.form.isTask
         this.form.isAll = this.form.isAll ? 0 : 1
+        this.form.weCustomersQuery = data.weCustomersOrGroupQuery?.weCustomersQuery
+        let ownerNames = data.weCustomersOrGroupQuery?.weGroupQuery?.ownerNames?.split?.(',')
+        this.selectCustomerGroupList =
+          data.weCustomersOrGroupQuery?.weGroupQuery?.owners?.split?.(',')?.map?.((e, i) => ({
+            userId: e,
+            name: ownerNames[i],
+          })) || []
         this.materialData = {
           templateInfo: data?.content || '',
-          attachments: data?.attachments || [],
+          attachments: data?.weGroupMessageAttachmentsVo || [],
         }
       })
     }
