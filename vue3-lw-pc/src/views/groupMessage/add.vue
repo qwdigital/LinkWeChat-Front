@@ -140,7 +140,7 @@ export default {
       userParty: [],
       rules: {
         isAll: [
-          { required: true, message: '请选择', trigger: 'blur' },
+          { required: true, message: '请选择', trigger: 'change' },
           { validator: this.validateClientGroup, trigger: 'blur' },
         ],
         isTask: [{ validator: this.validateSettingTimeType, trigger: 'blur' }],
@@ -423,7 +423,7 @@ export default {
       //   })
       // }
       // this.selectCustomerGroupList = newData
-      this.$refs.form.clearValidate('clientGroup')
+      this.$refs.form.clearValidate('isAll')
     },
   },
 }
