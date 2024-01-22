@@ -154,7 +154,7 @@ export default {
           SecretId: res.secretId,
           SecretKey: res.secretKey,
         })
-      } else if (res.fileObject == 'local') {
+      } else if (res.fileObject == 'local' || res.fileObject == 'minio') {
       } else {
         // let region = res.region.split('//')[1]
         this.ossObj = new OSS({
@@ -206,7 +206,7 @@ export default {
     upload() {
       if (this.cosConfig.fileObject == 'tencentOss') {
         this.tencentFn()
-      } else if (this.cosConfig.fileObject == 'local') {
+      } else if (this.cosConfig.fileObject == 'local' || this.cosConfig.fileObject == 'minio') {
         this.localFn()
       } else if (this.cosConfig.fileObject == 'aliOss') {
         this.aliOss()
