@@ -31,7 +31,7 @@
       <div class="g-card">
         <div class="g-card-title fxbw">
           关键词
-          <el-button type="primary" @click="addOrUpdate()">新建关键词</el-button>
+          <el-button type="primary" v-if="!isDetail" @click="addOrUpdate()">新建关键词</el-button>
         </div>
         <DragSortable :data="form.keyWordGroupSubs" @update:data="sort" :disabled="isDetail">
           <el-table-column label="关键词" align="center" prop="keyword"></el-table-column>

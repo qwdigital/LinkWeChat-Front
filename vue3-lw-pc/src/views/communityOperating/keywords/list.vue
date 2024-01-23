@@ -107,7 +107,7 @@ export default {
                 <el-image :src="row.groupCodeUrl" style="width: 100px"></el-image>
               </template>
             </el-table-column>
-            <el-table-column label="活码客群数" align="center">
+            <!-- <el-table-column label="活码客群数" align="center">
               <template #default="{ row }">
                 <div
                   class="g-color cp"
@@ -120,7 +120,7 @@ export default {
                   客户详情
                 </div>
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
         </template>
       </RequestChartTable>
