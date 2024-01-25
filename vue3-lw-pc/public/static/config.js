@@ -1,4 +1,4 @@
-// 用于无打包配置，会覆盖系统相关配置
+// 用于线上配置，会覆盖系统相关配置
 // window.lwConfig = {
 //   SYSTEM_NAME: 'LinkWeChat SaaS',
 //   SYSTEM_NAME_ALL: 'LinkWeChat 企业微信SCRM SaaS',

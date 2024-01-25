@@ -5,7 +5,7 @@ import { env } from './env'
 const common = {
   SYSTEM_NAME: 'LinkWeChat', // 系统简称
   SYSTEM_NAME_MOBILE: 'LinkWeChat', // 移动端应用简称
-  SYSTEM_NAME_ALL: 'LinkWeChat -- 全链路私域数字化营销增长解决方案', // 系统全称
+  SYSTEM_NAME_ALL: 'LinkWeChat -- 全链路私域数字化营销增长解决方案', // 系统全称，浏览器标题
   COMPANY_NAME: 'LinkWeChat', // 公司简称
   COMPANY_NAME_ALL: 'LinkWeChat', // 公司全称
   COPYRIGHT:
@@ -32,8 +32,8 @@ const common = {
   PRIVIEW_PATH: window.location.origin + '/mobile/#/metrialDetail?materiaId=',
   BAIDU_MAP_KEY: '6fZIymhpgfnAHUT1baHeEF922lPIThOG', // 百度地图key
   IS_PUBLISH_DIALOG: false, // 是否显示发布弹窗
-  IS_LINKWECHAT: true, // 是否显示linkwechat开源相关业务组件
-  PRIVIEW_URL: 'https://dev.linkwechat.net/fileView/onlinePreview?url=', // kkfileview，素材预览服务地址
+  IS_LINKWECHAT: window.location.host.includes('linkwechat.net'), // 是否显示linkwechat开源相关业务组件
+  PRIVIEW_URL: env.DOMAIN + '/fileView/onlinePreview?url=', // kkfileview，素材预览服务地址
 
   MICRO_APPS: {
     store: {
