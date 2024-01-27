@@ -61,10 +61,19 @@
 git clone https://gitee.com/LinkWeChat/link-we-chat-front.git
 
 # 进入项目目录
-cd LinkWeChat-Front/vue3-lw-pc
+cd link-we-chat-front/vue3-lw-pc
 
-# 安装依赖
+# 安装依赖（下面几种方式在不同的机器上，成功率不同，自行尝试）
+
+# 方式一： npm 指定淘宝镜像
 npm i --registry=https://registry.npmmirror.com
+
+# 方式二： 使用 cnpm 安装
+npm install -g cnpm --registry=https://registry.npmmirror.com
+cnpm i
+
+# 方式三： npm i 原始安装 国内推荐上述两种方式 DDDD(懂的都懂)
+npm i
 
 # 启动开发服务 npm run dev
 # 启动测试开发服务 npm run test (本地开发，后端接口为测试环境接口)
