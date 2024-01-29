@@ -205,6 +205,8 @@ const common = {
 
 # Nginx 前端服务相关配置示例
 
+查看[nginx.conf 示例](./nginx.conf)
+
 ```sh
 server {
 
@@ -240,6 +242,23 @@ server {
     try_files $uri $uri/ /m/index.html;
     index index.html;
   }
+
+}
+
+#短链
+server {
+    listen 80;
+    server_name sl.linkwechat.net;
+
+    location ^~/st/ {
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header REMOTE-HOST $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #			proxy_pass http://localhost:6180/open/t/;
+        proxy_pass http://localhost:6180/open/;
+
+    }
 
 }
 ```
