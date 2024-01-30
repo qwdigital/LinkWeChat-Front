@@ -4,7 +4,7 @@ FROM nginx:stable
 # WORKDIR /usr/share/nginx/html
 
 # 将nginx配置文件复制到容器中
-COPY ./document/nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx.docker.conf /etc/nginx/nginx.conf
 
 # 将静态文件复制到容器中
 COPY ./vue3-lw-pc/dist /etc/nginx/html/pc
