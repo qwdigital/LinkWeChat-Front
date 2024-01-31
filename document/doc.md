@@ -212,6 +212,23 @@ server {
 
   # ****
 
+ # 后端接口转发路径，对应 前端env.js BASE_API 接口基础路径中的配置
+  location ^~/linkwechat-api/ {
+      proxy_buffer_size 1024k; #设置代理服务器（nginx）保存用户头信息的缓冲区大小
+      proxy_buffers 16 1024k; #proxy_buffers缓冲区，网页平均在32k以下的设置
+      proxy_busy_buffers_size 2048k; #高负荷下缓冲大小（proxy_buffers*2）
+      proxy_temp_file_write_size 2048k; #设定缓存文件夹大小，大于这个值，将从upstream服务器传
+      proxy_pass http://localhost:6180/;
+  }
+
+ # 后端websocket转发
+  location ^~/ws/ {
+      proxy_pass http://localhost:6094/;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection $http_connection;
+  }
+
   # pc 后台管理端
   location / {
     root /usr/local/nginx/html/prod/pc;
