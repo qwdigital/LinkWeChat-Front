@@ -50,42 +50,50 @@ fi
 
 echo 打包 ${project} 生产环境...
 npm run build
-echo 打包完成
+echo 打包 ${project} 完成
 
-# 打包vue2移动端
-cd ../linkwe-mobile
+cd ..
+if [ ! -d "$(pwd)/linkwe-mobile" ]; then
+    # 打包vue2移动端
+    cd linkwe-mobile
 
-project=$(basename "$(dirname) $(pwd)")
+    project=$(basename "$(dirname) $(pwd)")
 
-echo 当前项目${project}
+    echo 当前项目${project}
 
-if [ ! -d "$(pwd)/node_modules" ]; then
-    cnpm
-    echo 安装依赖...
-    cnpm i
-    echo 依赖已安装
+    if [ ! -d "$(pwd)/node_modules" ]; then
+        cnpm
+        echo 安装依赖...
+        cnpm i
+        echo 依赖已安装
+    fi
+
+    echo 打包 ${project} 生产环境...
+    npm run build
+    echo 打包 ${project} 完成
 fi
 
-echo 打包 ${project} 生产环境...
-npm run build
-echo 打包完成
+cd ..
+if [ ! -d "$(pwd)/vue3-lw-mobile" ]; then
+    # 打包vue3移动端
+    cd vue3-lw-mobile
 
-# 打包vue3移动端
-cd ../vue3-lw-mobile
+    project=$(basename "$(dirname) $(pwd)")
 
-project=$(basename "$(dirname) $(pwd)")
+    echo 当前项目${project}
 
-echo 当前项目${project}
+    if [ ! -d "$(pwd)/node_modules" ]; then
+        cnpm
+        echo 安装依赖...
+        cnpm i
+        echo 依赖已安装
+    fi
 
-if [ ! -d "$(pwd)/node_modules" ]; then
-    cnpm
-    echo 安装依赖...
-    cnpm i
-    echo 依赖已安装
+    echo 打包 ${project} 生产环境...
+    npm run build
+    echo 打包完成
 fi
 
-echo 打包 ${project} 生产环境...
-npm run build
-echo 打包完成
+exit
 
 
