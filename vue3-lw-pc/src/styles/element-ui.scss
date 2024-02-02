@@ -113,6 +113,10 @@
   }
 }
 
+.el-select {
+  width: 240px;
+}
+
 .el-tag + .el-tag {
   margin-right: 10px;
 }
@@ -338,6 +342,7 @@
   //   margin-bottom: 0;
   // }
 }
+
 // 重置el-form-item hover样式
 .no-hover-form .el-form-item {
   margin-bottom: 20px !important;
