@@ -7,6 +7,8 @@
 1. 新增 自动化开发构建部署 shell 脚本：LinkWeChatFront.sh、vue3-lw-pc 下 bin 文件夹
 2. 新增 Docker 部署方式，dockerfile 脚本示例
 3. 优化 更新前端手册
+4. 修复 quill 在部分机型引入问题导致运行打包失败
+5. 其他已知 bug 修复和组件优化
 
 ## plus-v5.22.0
 
