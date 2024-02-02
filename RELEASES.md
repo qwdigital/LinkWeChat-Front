@@ -1,5 +1,13 @@
 # 更新日志
 
+## plus-v5.23.0
+
+2024.02.02
+
+1. 新增 自动化开发构建部署 shell 脚本：LinkWeChatFront.sh、vue3-lw-pc 下 bin 文件夹
+2. 新增 Docker 部署方式，dockerfile 脚本示例
+3. 优化 更新前端手册
+
 ## plus-v5.22.0
 
 2024.01.26
