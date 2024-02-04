@@ -122,6 +122,7 @@ export default {
   white-space: nowrap;
   flex: 1 1 1200px;
   z-index: 0;
+  height: auto;
   & > .el-menu-item {
     height: 38px !important;
     line-height: 38px !important;

@@ -131,7 +131,7 @@ export default {
   width: var(--side-bar-width) !important;
   background: var(--bg-white);
   bottom: 0;
-  z-index: 1001;
+  // z-index: 1001;
   overflow: hidden;
   flex: none;
   box-shadow: 0px 2px 2px 0px rgba(228, 228, 228, 0.35);

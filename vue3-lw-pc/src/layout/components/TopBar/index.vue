@@ -103,7 +103,7 @@
       </el-dropdown>
     </div>
 
-    <el-drawer v-model="setting" title="主题设置" size="300px" :modal="false">
+    <el-drawer v-model="setting" title="主题设置" size="300px" :modal="false" append-to-body z-index="999">
       <settings v-if="setting" />
     </el-drawer>
 
