@@ -302,3 +302,9 @@ server {
 ## 通用菜单
 
 对于公用且无角色权限要求的功能菜单可在前端路由文件 `src/router/routes.js` 中定义
+
+# 百度地图 key
+
+系统部分功能如：门店活码等使用到了百度地图定位相关功能，需要[申请百度地图应用 AK](https://lbsyun.baidu.com/)，并配置到 [config.js](../vue3-lw-pc/config.js) 中 `BAIDU_MAP_KEY`变量中，移动端同理配置
+
+![alt text](assets/image-baiduMap.png)
