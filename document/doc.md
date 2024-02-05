@@ -173,7 +173,8 @@ const common = {
 - 关于部分配置常量的说明：
 
   - 关于 `LOGO_DARK, POST_QRCODE, DEFAULT_H5_ART` 等静态资源文件的配置，此类相关地址默认对应于当前项目 `vue3-lw-pc/public/static` 文件夹下的对应文件，修改方式可通过替换相应的资源文件或使用一个外部资源的 url 地址
-  - 关于 `BAIDU_MAP_KEY` 百度地图 key 需要自行[前往官网申请](https://lbsyun.baidu.com/apiconsole/key#/home)，默认配置的由于配额有限不支持使用
+  - 关于 `BAIDU_MAP_KEY` 百度地图应用 AK 需要自行[前往官网申请应用](https://lbsyun.baidu.com/apiconsole/key#/home)，默认配置的由于配额有限不支持使用，地图应用配置示例：
+    ![alt text](assets/image-baiduMap.png)
 
 # 线上配置
 
@@ -302,9 +303,3 @@ server {
 ## 通用菜单
 
 对于公用且无角色权限要求的功能菜单可在前端路由文件 `src/router/routes.js` 中定义
-
-# 百度地图 key
-
-系统部分功能如：门店活码等使用到了百度地图定位相关功能，需要[申请百度地图应用 AK](https://lbsyun.baidu.com/)，并配置到 [config.js](../vue3-lw-pc/config.js) 中 `BAIDU_MAP_KEY`变量中。
-
-![alt text](assets/image-baiduMap.png)
