@@ -399,8 +399,6 @@ button + button {
 /* pc端主体显示宽度区域 */
 .main-size {
   min-width: 1366px;
-  max-width: 1920px;
-  margin: 0 auto;
 }
 
 /* 暗黑模式 Dark mode */
