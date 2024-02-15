@@ -95,14 +95,10 @@ export function diffDate(startDate, endDate) {
  */
 export function query2Obj(url) {
   url = url == null ? window.location.href : url
-  let search = url.substring(url.lastIndexOf('?') + 1)
-  search = search && search.split('#')[0]
-  if (!search) {
-    return {}
-  }
-  const obj = {}
-  const reg = /([^?&=]+)=([^?&=]*)/g
-  search.replace(reg, (rs, $1, $2) => {
+  let search = url.substring(url.indexOf('?') + 1)
+  let obj = {}
+  let reg = /([^?&#=]+)=([^?&#=]*)/g
+  search?.replace(reg, (rs, $1, $2) => {
     const name = decodeURIComponent($1)
     let val = decodeURIComponent($2)
     val = String(val)
