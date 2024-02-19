@@ -49,9 +49,7 @@ function requestFactory(getway = '') {
           cancelButtonText: '取消',
           type: 'warning',
         }).then(() => {
-          store.LogOut().then(() => {
-            location.href = window.lwConfig.BASE_URL
-          })
+          store.LogOut()
         })
       } else if ([-10007, -10008].includes(code) && location.host == 'demo.linkwechat.net') {
         MessageBox.alert(
@@ -69,10 +67,7 @@ function requestFactory(getway = '') {
             dangerouslyUseHTMLString: true,
           },
         ).then(() => {
-          code == -10007 &&
-            store.LogOut().then(() => {
-              location.href = window.lwConfig.BASE_URL
-            })
+          code == -10007 && store.LogOut()
         })
       } else {
         if (process.env.NODE_ENV === 'development') {
@@ -87,9 +82,7 @@ function requestFactory(getway = '') {
             cancelButtonText: '取消',
             type: 'warning',
           }).then(() => {
-            store.LogOut().then(() => {
-              location.href = window.lwConfig.BASE_URL
-            })
+            store.LogOut()
           })
         } else {
           Notification.error({

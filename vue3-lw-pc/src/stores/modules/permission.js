@@ -25,9 +25,7 @@ const permission = {
                 cancelButtonText: '取消',
                 type: 'warning',
               }).then(() => {
-                this.LogOut().then(() => {
-                  location.href = window.lwConfig.BASE_URL
-                })
+                this.LogOut()
               })
               return reject()
             }

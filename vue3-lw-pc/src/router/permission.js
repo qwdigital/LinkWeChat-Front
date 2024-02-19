@@ -66,9 +66,7 @@ export default function permission(router) {
                 } else {
                   // 没有权限的给予提示，并退回登录页面
                   Message.error('没有设置企业微信的权限，请联系系统管理员')
-                  store.FedLogOut().then(() => {
-                    next({ path: '/login', replace: true })
-                  })
+                  store.LogOut()
                 }
               }
             })

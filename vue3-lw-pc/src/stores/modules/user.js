@@ -84,16 +84,7 @@ const user = {
         //   .catch((error) => {
         //     reject(error)
         //   })
-      })
-    },
-
-    // 前端 登出
-    FedLogOut({ commit }) {
-      return new Promise((resolve) => {
-        this.user.token = ''
-
-        removeToken()
-        resolve()
+        location.href = window.lwConfig.BASE_URL
       })
     },
   },

@@ -164,9 +164,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
-        this.$store.LogOut().then(() => {
-          location.href = window.lwConfig.BASE_URL
-        })
+        this.$store.LogOut()
       })
     },
 
