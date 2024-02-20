@@ -1,5 +1,7 @@
 <script>
 import { getDetail, getCollectList, closeConnect, sendMsg } from './api'
+import { useZIndex } from 'element-plus'
+
 export default {
   components: {
     History: defineAsyncComponent(() => import('./History')),
@@ -10,6 +12,7 @@ export default {
     return {
       getDetail,
       getCollectList,
+      useZIndex: 0,
       active: '0',
       loading: false,
       sessionId: undefined,
@@ -25,7 +28,11 @@ export default {
     }
   },
   computed: {},
-  watch: {},
+  watch: {
+    '$store.AIDrawer'(val) {
+      val && (this.useZIndex = useZIndex().nextZIndex())
+    },
+  },
   created() {},
   mounted() {},
   methods: {
@@ -99,6 +106,7 @@ export default {
     v-model="$store.AIDrawer"
     title="AI 助手"
     append-to-body
+    :z-index="useZIndex"
     :close-on-click-modal="false"
     :close-on-press-escape="false">
     <template #default>

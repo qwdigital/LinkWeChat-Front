@@ -32,7 +32,7 @@ const common = {
   PRIVIEW_PATH: window.location.origin + '/mobile/#/metrialDetail?materiaId=',
   BAIDU_MAP_KEY: '6fZIymhpgfnAHUT1baHeEF922lPIThOG', // 百度地图key
   IS_PUBLISH_DIALOG: false, // 是否显示发布弹窗
-  IS_LINKWECHAT: window.location.host.includes('linkwechat.net'), // 是否显示linkwechat开源相关业务组件
+  IS_LINKWECHAT: env.DOMAIN.includes('linkwechat.net'), // 是否显示linkwechat开源相关业务组件
   PRIVIEW_URL: env.DOMAIN + '/fileView/onlinePreview?url=', // kkfileview，素材预览服务地址
 
   MICRO_APPS: {
