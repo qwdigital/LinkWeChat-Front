@@ -1,10 +1,8 @@
 #!/bin/bash
-
+# chmod +x build.sh
 set -e
 
-echo 部署开发环境
-
-cd $(dirname $0)
+echo 打包生产环境
 
 if ! command -v git &> /dev/null; then
     echo 请安装 Git
@@ -16,13 +14,17 @@ if ! command -v node &> /dev/null; then
     exit
 fi
 
-cd ../../
+cd $(dirname $0)  # 进入当前文件所在目录
+cd ../
 
 echo 拉取项目...
 git pull
 echo 拉取完毕
 
-cd vue3-lw-pc
+if [$1] then
+    cd $1 # 进入传参 项目
+else
+    cd vue3-lw-pc
 
 if [ ! -d "$(pwd)/node_modules" ]; then
     if ! command -v cnpm &> /dev/null; then
@@ -35,19 +37,4 @@ if [ ! -d "$(pwd)/node_modules" ]; then
     echo 依赖已安装
 fi
 
-deploy dev
-
-# npm run build:dev
-
-# tar -czvf dist.tar.gz dist
-
-# scp dist.tar.gz root@119.45.139.110:/usr/local/nginx/html/prod/pc
-#     echo dist.tar.gz root@119.45.139.110:/usr/local/nginx/html/prod/pc
-
-# ssh root@119.45.139.110
-# echo root@119.45.139.110
-
-# cd /usr/local/nginx/html/prod/pc
-# echo /usr/local/nginx/html/prod/pc
-# tar -xzvf ./dist.tar.gz --strip-components=1
-# echo strip-components
+npm run build
