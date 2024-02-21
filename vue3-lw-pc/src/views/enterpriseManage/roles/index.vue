@@ -10,30 +10,39 @@
           <template #append><el-button icon="el-icon-search" @click="getList"></el-button></template>
         </el-input>
       </div>
-      <div class="item-list">
-        <div
-          class="item"
-          :class="{ active: activeIndex == key }"
-          v-for="(role, key) in roles"
-          :key="role.id"
-          @click="switchRole(key, role)">
-          <div class="name">
-            {{ role.roleName }}
-            <span style="margin-left: 10px">({{ role.userCount }})</span>
+      <div class="item-list" v-loading="loading">
+        <template v-if="roles?.length">
+          <div
+            class="item"
+            :class="{ active: activeId == item.roleId }"
+            v-for="(item, index) in roles"
+            :key="index"
+            @click="switchRole(item)">
+            <div class="name">
+              {{ item.roleName }}
+              <span style="margin-left: 10px">({{ item.userCount }})</span>
+            </div>
           </div>
-        </div>
+        </template>
+        <Empty v-else description="暂无相关数据" />
       </div>
     </div>
     <div class="right g-card mt0">
       <div class="title-name">
-        {{ currentStatus === 'detail' ? '角色详情' : currentStatus === 'add' ? '新建角色' : '编辑角色' }}
+        {{
+          currentStatus === 'detail'
+            ? `角色详情 -- ${roleObj.roleName}`
+            : currentStatus === 'add'
+            ? '新建角色'
+            : '编辑角色'
+        }}
       </div>
       <div v-if="currentStatus === 'detail'">
         <div style="margin-top: 20px">
           <el-form ref="codeForm" label-position="right" label-width="80px">
             <el-form-item label="角色员工">
               <template v-for="(item, index) in roleObj.users" :key="index">
-                <el-tag v-if="item.userName" :key="index">{{ item.userName }}</el-tag>
+                <el-tag v-if="item.userName">{{ item.userName }}</el-tag>
               </template>
             </el-form-item>
             <!-- <el-form-item label="管理范围">
@@ -57,7 +66,7 @@
             </el-form-item>
           </el-form>
         </div>
-        <div class="g-footer-sticky bottom" v-if="roles[activeIndex]">
+        <div class="g-footer-sticky bottom">
           <el-button plain type="danger" @click="deleteFn">删除</el-button>
           <el-button type="primary" @click="edtiFn">编辑</el-button>
         </div>
@@ -85,7 +94,7 @@ export default {
   data() {
     return {
       roles: [],
-      activeIndex: undefined,
+      activeId: undefined,
       roleObj: {
         users: [],
       },
@@ -119,6 +128,7 @@ export default {
         },
       ],
       keywords: '',
+      loading: false,
     }
   },
   components: {
@@ -142,8 +152,8 @@ export default {
       return str
     },
     updateFn() {
+      this.getList(this.currentStatus === 'edit')
       this.currentStatus = 'detail'
-      this.getList()
     },
     cancel() {
       this.$confirm(`是否确认取消${this.currentStatus === 'add' ? '新建' : '编辑'}角色？取消后不可恢复。`, '提示', {
@@ -157,25 +167,32 @@ export default {
         })
         .catch(function () {})
     },
-    getList() {
-      getRolesList(this.keywords).then((res) => {
-        this.roles = res.rows
-        if (this.activeIndex == undefined && this.roles?.length) {
-          this.activeIndex = 0
-          this.getRoleDetailFn(this.roles[this.activeIndex].roleId)
-        }
-      })
+    getList(isGetDetail) {
+      this.loading = true
+      getRolesList(this.keywords)
+        .then(({ rows }) => {
+          this.roles = rows
+          if (this.activeId == undefined && this.roles?.length) {
+            this.activeId = rows[0].roleId
+            isGetDetail = true
+          }
+          isGetDetail && this.getRoleDetailFn(this.activeId)
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     getRoleDetailFn(id) {
-      getRoleDetail(id).then((res) => {
-        this.roleObj = res.data
-        if (this.roleObj.menus) {
-          let arr = this.roleObj.menus.map((data) => {
-            return data.menuId
-          })
-          this.$refs.menu.setCheckedKeys(arr)
-        }
-      })
+      id &&
+        getRoleDetail(id).then((res) => {
+          this.roleObj = res.data
+          if (this.roleObj.menus) {
+            let arr = this.roleObj.menus.map((data) => {
+              return data.menuId
+            })
+            this.$refs.menu.setCheckedKeys(arr)
+          }
+        })
     },
     addFn() {
       if (this.currentStatus !== 'detail') {
@@ -192,7 +209,7 @@ export default {
         this.currentStatus = 'add'
       }
     },
-    switchRole(index, data) {
+    switchRole(data) {
       if (this.currentStatus !== 'detail') {
         this.$confirm(`是否确认取消${this.currentStatus === 'add' ? '新建' : '编辑'}角色？取消后不可恢复。`, '提示', {
           confirmButtonText: '确定',
@@ -201,13 +218,11 @@ export default {
         })
           .then(() => {
             this.currentStatus = 'detail'
-            this.activeIndex = index
-            this.getRoleDetailFn(data.roleId)
+            this.getRoleDetailFn((this.activeId = data.roleId))
           })
           .catch(function () {})
       } else {
-        this.activeIndex = index
-        this.getRoleDetailFn(data.roleId)
+        this.getRoleDetailFn((this.activeId = data.roleId))
       }
     },
     edtiFn() {
