@@ -46,9 +46,10 @@ export function editUserRoles(params) {
 /* 角色管理 */
 
 // 角色列表
-export function getRolesList(params) {
+export function getRolesList(roleName) {
   return request({
     url: '/system/role/list',
+    params: { roleName },
   })
 }
 

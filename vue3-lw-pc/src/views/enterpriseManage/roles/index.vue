@@ -5,6 +5,11 @@
         <div class="title-name">角色列表</div>
         <div class="title-btn" @click="addFn">新建</div>
       </div>
+      <div class="mt20">
+        <el-input v-model="keywords" @keyup.enter="getList" placeholder="请输入角色名称" clearable @change="getList">
+          <template #append><el-button icon="el-icon-search" @click="getList"></el-button></template>
+        </el-input>
+      </div>
       <div class="item-list">
         <div
           class="item"
@@ -80,7 +85,7 @@ export default {
   data() {
     return {
       roles: [],
-      activeIndex: 0,
+      activeIndex: undefined,
       roleObj: {
         users: [],
       },
@@ -113,6 +118,7 @@ export default {
           label: '仅本人数据权限',
         },
       ],
+      keywords: '',
     }
   },
   components: {
@@ -136,16 +142,8 @@ export default {
       return str
     },
     updateFn() {
-      if (this.currentStatus === 'edit') {
-        this.currentStatus = 'detail'
-        getRolesList().then((res) => {
-          this.roles = res.rows
-        })
-        this.getRoleDetailFn(this.roles[this.activeIndex].roleId)
-      } else {
-        this.currentStatus = 'detail'
-        this.getList()
-      }
+      this.currentStatus = 'detail'
+      this.getList()
     },
     cancel() {
       this.$confirm(`是否确认取消${this.currentStatus === 'add' ? '新建' : '编辑'}角色？取消后不可恢复。`, '提示', {
@@ -160,11 +158,11 @@ export default {
         .catch(function () {})
     },
     getList() {
-      getRolesList().then((res) => {
+      getRolesList(this.keywords).then((res) => {
         this.roles = res.rows
-        if (this.roles && this.roles.length) {
+        if (this.activeIndex == undefined && this.roles?.length) {
           this.activeIndex = 0
-          this.getRoleDetailFn(this.roles[0].roleId)
+          this.getRoleDetailFn(this.roles[this.activeIndex].roleId)
         }
       })
     },
@@ -249,84 +247,5 @@ export default {
 .bottom {
   justify-content: flex-end;
   padding: 20px;
-}
-.left {
-  border-right: 1px solid var(--border-black-10);
-  .title {
-    color: var(--color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    // padding-right: 20px;
-
-    .title-btn {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      font-size: 14px;
-
-      font-weight: 400;
-      color: var(--color);
-
-      &:hover {
-        opacity: 0.7;
-      }
-    }
-  }
-
-  .item-list {
-    max-height: 800px;
-    padding-top: 20px;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-
-    .item {
-      cursor: pointer;
-      display: flex;
-      // justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      color: var(--font-black);
-      height: 40px;
-      line-height: 40px;
-      width: 100%;
-      padding-left: 20px;
-      border-radius: 5px;
-      .name {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
-
-      .dropdown {
-        .dot {
-          cursor: pointer;
-          width: 14px;
-          height: 14px;
-          line-height: 14px;
-          font-size: 14px;
-          font-family: JMT-Font, JMT;
-          font-weight: normal;
-          color: var(--color);
-          margin-right: 20px;
-          margin-left: 5px;
-        }
-      }
-
-      &:hover {
-        color: var(--color);
-        background: var(--bg-black-11);
-        opacity: 0.8;
-      }
-    }
-
-    .active {
-      color: var(--color);
-      background: var(--bg-black-11);
-    }
-  }
 }
 </style>
