@@ -6,8 +6,8 @@ import { getToken } from '@/utils/auth'
 
 NProgress.configure({ showSpinner: true })
 
-const whiteList = ['/authRedirect', '/bind', '/test', '/404', '/401'] // 不管有没有token都可直接进入的页面路径
-const noLoginList = ['/login', '/register'] // 没有token才能进入的页面
+const whiteList = ['/bind', '/test', '/404', '/401'] // 不管有没有token都可直接进入的页面路径
+const noLoginList = ['/authRedirect', '/login', '/register'] // 没有token才能进入的页面
 
 function nextTo(to, next, isRpelace) {
   if (/^\/microStore[^#]+$/.test(to.fullPath)) {
@@ -30,8 +30,8 @@ export default function permission(router) {
       next()
     } else if (getToken()) {
       /* has token*/
-      if (to.path === '/login') {
-        next({ path: '/' })
+      if (noLoginList.includes(to.path)) {
+        next({ path: window.lwConfig.BASE_URL })
         // NProgress.done()
       } else {
         if (store.roles.length === 0) {
