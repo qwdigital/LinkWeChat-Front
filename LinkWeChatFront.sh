@@ -11,7 +11,8 @@ if ! command -v git &> /dev/null; then
     exit
 fi
 
-if [ -d "$(pwd)/link-we-chat-front" ]; then
+dr=${PWD##*/}
+if [[ ${dr} = 'link-we-chat-front' || ${dr} = 'linkwechat' ]]; then
     echo 拉取项目...
     git pull
     echo 拉取完毕
@@ -26,7 +27,7 @@ if ! command -v node &> /dev/null; then
     exit
 fi
 
-cnpm() {
+icnpm() {
     if ! command -v cnpm &> /dev/null; then
         echo 安装cnpm...
         npm install -g cnpm --registry=https://registry.npmmirror.com
@@ -37,12 +38,13 @@ cnpm() {
 # 打包pc端
 cd vue3-lw-pc
 
+# 提取当前文件(夹)名
 project=$(basename "$(dirname) $(pwd)")
 
 echo 当前项目${project}
 
 if [ ! -d "$(pwd)/node_modules" ]; then
-    cnpm
+    icnpm
     echo 安装依赖...
     cnpm i
     echo 依赖已安装
@@ -53,7 +55,7 @@ npm run build
 echo 打包 ${project} 完成
 
 cd ..
-if [ ! -d "$(pwd)/linkwe-mobile" ]; then
+if [ -d "$(pwd)/linkwe-mobile" ]; then
     # 打包vue2移动端
     cd linkwe-mobile
 
@@ -62,7 +64,7 @@ if [ ! -d "$(pwd)/linkwe-mobile" ]; then
     echo 当前项目${project}
 
     if [ ! -d "$(pwd)/node_modules" ]; then
-        cnpm
+        icnpm
         echo 安装依赖...
         cnpm i
         echo 依赖已安装
@@ -74,7 +76,7 @@ if [ ! -d "$(pwd)/linkwe-mobile" ]; then
 fi
 
 cd ..
-if [ ! -d "$(pwd)/vue3-lw-mobile" ]; then
+if [ -d "$(pwd)/vue3-lw-mobile" ]; then
     # 打包vue3移动端
     cd vue3-lw-mobile
 
@@ -83,7 +85,7 @@ if [ ! -d "$(pwd)/vue3-lw-mobile" ]; then
     echo 当前项目${project}
 
     if [ ! -d "$(pwd)/node_modules" ]; then
-        cnpm
+        icnpm
         echo 安装依赖...
         cnpm i
         echo 依赖已安装

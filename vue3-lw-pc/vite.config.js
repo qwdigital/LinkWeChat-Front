@@ -83,8 +83,8 @@ export default defineConfig(async ({ command, mode }) => {
       terserOptions: {
         compress: {
           //生产环境时移除console
-          drop_console: true,
-          drop_debugger: true,
+          drop_console: mode == 'production',
+          drop_debugger: mode == 'production',
         },
       },
       rollupOptions: {
