@@ -17,14 +17,15 @@ fi
 cd $(dirname $0)  # 进入当前文件所在目录
 cd ../
 
-echo 拉取项目...
-git pull
-echo 拉取完毕
+# echo 拉取项目...
+# git pull
+# echo 拉取完毕
 
-if [$1] then
+if [$1]; then
     cd $1 # 进入传参 项目
 else
     cd vue3-lw-pc
+fi
 
 if [ ! -d "$(pwd)/node_modules" ]; then
     if ! command -v cnpm &> /dev/null; then
