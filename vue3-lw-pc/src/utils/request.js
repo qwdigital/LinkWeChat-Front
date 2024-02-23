@@ -41,7 +41,7 @@ function requestFactory(getway = '') {
       const code = res.data.code || 200
       // 获取错误信息
       const msg = errorCode[code] || res.data.msg || errorCode['default']
-      if (code === 200 || code === 433 || code === 226) {
+      if ([200, 226, 433].includes(code)) {
         return res.data
       } else if (code === 401) {
         MessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
