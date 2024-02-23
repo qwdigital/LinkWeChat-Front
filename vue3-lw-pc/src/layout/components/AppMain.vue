@@ -98,6 +98,7 @@ export default {
   overflow-y: auto;
   overflow-x: hidden;
   margin-top: 20px;
+  height: 100%;
 }
 .page-wrap {
   position: initial !important; // 用以解决加载遮罩层随内容滚动问题
