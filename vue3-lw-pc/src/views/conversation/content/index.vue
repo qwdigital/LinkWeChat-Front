@@ -1,24 +1,23 @@
 <template>
-  <div class="content" style="margin-top: -13px">
-    <el-tabs v-model="activeName">
-      <el-tab-pane label="员工检索" name="1">
-        <employee></employee>
-      </el-tab-pane>
-      <el-tab-pane label="客户检索" name="2">
-        <user v-if="activeName == 2"></user>
-      </el-tab-pane>
-      <el-tab-pane label="全局检索" name="3">
-        <global v-if="activeName == 3"></global>
-      </el-tab-pane>
-    </el-tabs>
-  </div>
+  <CacheElTabs #="{ opened }">
+    <el-tab-pane label="员工检索">
+      <employee></employee>
+    </el-tab-pane>
+    <el-tab-pane label="客户检索">
+      <customer v-if="opened.includes('1')"></customer>
+    </el-tab-pane>
+    <el-tab-pane label="全局检索">
+      <global v-if="opened.includes('2')"></global>
+    </el-tab-pane>
+  </CacheElTabs>
 </template>
 <script>
-import employee from './employee.vue'
-import user from './customer.vue'
-import global from './global.vue'
 export default {
-  components: { employee, user, global },
+  components: {
+    employee: defineAsyncComponent(() => import('./employee')),
+    customer: defineAsyncComponent(() => import('./customer')),
+    global: defineAsyncComponent(() => import('./global')),
+  },
   data() {
     return {
       activeName: '1',

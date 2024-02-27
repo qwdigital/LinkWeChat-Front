@@ -28,7 +28,7 @@ let visible = ref(false)
 
     <RequestChartTable ref="table" :request="getList" :dealQueryFun="(params) => Object.assign(params, query)">
       <template #="{ data }">
-        <el-table :data="data">
+        <el-table class="align-center" :data="data">
           <el-table-column label="请求地址" prop="url" width="500"></el-table-column>
           <el-table-column label="异常码" prop="errorCode"></el-table-column>
           <el-table-column label="异常信息" prop="errorMsg"></el-table-column>
