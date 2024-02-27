@@ -176,7 +176,7 @@ export default {
             this.activeId = rows[0].roleId
             isGetDetail = true
           }
-          isGetDetail && this.getRoleDetailFn(this.activeId)
+          isGetDetail === true && this.getRoleDetailFn(this.activeId)
         })
         .finally(() => {
           this.loading = false
