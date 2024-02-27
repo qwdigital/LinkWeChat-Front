@@ -620,8 +620,12 @@
   //  }
   .el-table__cell {
     z-index: auto; // 图片预览遮罩问题
+    // 设置表格默认居中
+    &:not(.is-left, .is-right) {
+      text-align: center;
+    }
   }
-  &.el-table .el-table__row .el-table__cell {
+  & .el-table__row .el-table__cell {
     // border-bottom: 1px solid #dfe6ec;
     // border-top: 1px solid #dfe6ec;
     padding: 15px 0;
