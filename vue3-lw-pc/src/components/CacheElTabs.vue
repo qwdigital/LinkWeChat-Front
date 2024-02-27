@@ -26,17 +26,17 @@ export default {
 </script>
 
 <template>
-  <el-tabs v-model="active" @tab-click="tabClick">
+  <el-tabs class="CacheElTabs" v-model="active" @tab-click="tabClick">
     <slot v-bind="{ active, opened }"></slot>
   </el-tabs>
 </template>
 
 <style lang="scss" scoped>
-.el-tabs--top {
+.CacheElTabs.el-tabs--top {
   // z-index: 99;
   // position: sticky !important;
   // top: 0;
-  ::v-deep .el-tabs__header {
+  ::v-deep > .el-tabs__header {
     z-index: 99;
     position: sticky !important;
     top: 0;
@@ -44,12 +44,12 @@ export default {
     border-radius: var(--border-radius);
     box-shadow: 0px 4px 20px 0px var(--bg-black-10);
     overflow: hidden;
-  }
-  ::v-deep .el-tabs__item.is-top:nth-child(2) {
-    margin-left: 20px;
-  }
-  ::v-deep .el-tabs__item.is-top:last-child {
-    margin-right: 20px;
+    .el-tabs__item.is-top:nth-child(2) {
+      margin-left: 20px;
+    }
+    .el-tabs__item.is-top:last-child {
+      margin-right: 20px;
+    }
   }
 }
 </style>
