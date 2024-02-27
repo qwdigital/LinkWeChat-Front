@@ -41,7 +41,7 @@
             <el-input v-model="query.userName" placeholder="请输入" clearable />
           </el-form-item>
           <el-form-item label="角色">
-            <el-select v-model="query.roleId">
+            <el-select v-model="query.roleId" filterable>
               <el-option label="全部" value=""></el-option>
               <el-option
                 v-for="(data, key) in roleList"
@@ -104,7 +104,7 @@
     <el-dialog title="设置角色" v-model="modalStatus" append-to-body width="400px">
       <el-form class="" inline="" label-position="" label-width="">
         <el-form-item label="">
-          <el-select multiple v-model="editRolesList" style="width: 300px">
+          <el-select multiple v-model="editRolesList" style="width: 300px" filterable>
             <template v-for="(data, key) in roleList" :key="index">
               <el-option
                 :key="data.roleId"
@@ -125,7 +125,7 @@
     <el-dialog title="数据权限" v-model="dataScopeVisible" append-to-body width="400px">
       <el-form class="" inline="" label-position="" label-width="">
         <el-form-item label="管理范围" prop="dataScope">
-          <el-select v-model="dataScope.dataScope" @change="setChange">
+          <el-select v-model="dataScope.dataScope" @change="setChange" filterable>
             <el-option
               v-for="item in dataScopeOptions"
               :key="item.value"
