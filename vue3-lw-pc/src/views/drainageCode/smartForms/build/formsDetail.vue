@@ -195,7 +195,6 @@ import { getWechatAuthUserInfo, getIP } from '@/utils/index'
 import {
   selectInfoToSurvey,
   submitForm,
-  insertPieValue,
   isCompleteSurvey,
   // siteStas,
 } from '@/api/drainageCode/smartForms.js'
@@ -500,7 +499,7 @@ export default {
       }
       let answer = []
       let pageData = this.pageData
-      let btData = [] //饼图参数
+      // let btData = [] //饼图参数
       for (let i = 0; i < pageData.length; i++) {
         for (let q = 0; q < pageData[i].length; q++) {
           let curItem = pageData[i][q]
@@ -516,7 +515,7 @@ export default {
             } else if ([6, 7, 8, 9].includes(+cloneCurItem.formCodeId)) {
               // 下拉选择, 级联选择, 选项组, 省市联动
               cloneCurItem.formId = this.formId
-              btData.push(cloneCurItem)
+              // btData.push(cloneCurItem)
 
               if (cloneCurItem.formCodeId == 9) {
                 cloneCurItem.defaultValue += ''
@@ -557,7 +556,7 @@ export default {
                     let _cloneCurItem = this.deepCopy(cloneCurItem)
                     _cloneCurItem.defaultValue = defaultValue[q] + ''
                     answer.push(_cloneCurItem)
-                    btData.push(_cloneCurItem)
+                    // btData.push(_cloneCurItem)
                   }
                 }
               }
@@ -609,9 +608,9 @@ export default {
         .then((response) => {
           if (response.code == 200) {
             this.ifEnd = true
-            if (btData.length != 0) {
-              this.insertPieValue(btData)
-            }
+            // if (btData.length != 0) {
+            //   this.insertPieValue(btData)
+            // }
           } else {
             this.toast(response.msg)
           }
@@ -669,16 +668,16 @@ export default {
       this.pageData[i][q].ssq = area.find((e) => e.id == areaCode).treeNames
     },
     //储存饼图信息
-    insertPieValue(btData) {
-      let data = {
-        fromId: this.formId,
-        answer: JSON.stringify(btData),
-        dataSource: this.dataSource,
-      }
-      insertPieValue(data).then((response) => {
-        console.log('提交饼图信息返回值', response)
-      })
-    },
+    // insertPieValue(btData) {
+    //   let data = {
+    //     fromId: this.formId,
+    //     answer: JSON.stringify(btData),
+    //     dataSource: this.dataSource,
+    //   }
+    //   insertPieValue(data).then((response) => {
+    //     console.log('提交饼图信息返回值', response)
+    //   })
+    // },
     //微信授权登录，获取微信用户信息
     getAccessToken() {
       let code = getQueryValue('code')

@@ -89,14 +89,14 @@ export function isCompleteSurvey(data) {
   })
 }
 
-//提交用户填写表单
-export function insertPieValue(data) {
-  return request({
-    url: service + '/statistic/insertPieValue',
-    method: 'post',
-    data,
-  })
-}
+//储存饼图信息
+// export function insertPieValue(data) {
+//   return request({
+//     url: service + '/statistic/insertPieValue',
+//     method: 'post',
+//     data,
+//   })
+// }
 
 // 更改表单状态
 export function updateSurveyStatus(data) {
