@@ -601,7 +601,11 @@ export default {
     </SelectTag>
 
     <!-- 选择添加人弹窗 -->
-    <SelectUser v-model:visible="dialogVisibleSelectUser" title="选择添加人" @success="selectedUser"></SelectUser>
+    <SelectUser
+      v-model:visible="dialogVisibleSelectUser"
+      :defaultValues="queryUser"
+      title="选择员工"
+      @success="selectedUser"></SelectUser>
 
     <!-- 添加标签弹窗 -->
     <AddTag v-model:visible="dialogVisibleAddTag" :form="form" @success="getListTag(true)" />

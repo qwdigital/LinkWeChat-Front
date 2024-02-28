@@ -8,14 +8,14 @@ const envs = {
     BASE_URL: '/', // 页面路由基础路径 /*/*/，eg：/lw/，不支持 ’./‘形式的路径
     BASE_API: 'https://dev.linkwechat.net/linkwechat-api', // 接口基础路径
     _ISGZIP: true, // 是否开启gzip压缩
-    _ISCDN: true, // 是否开启cdn加速
+    _ISCDN: false, // 是否开启cdn加速
   },
   test: {
     DOMAIN: 'https://demo.linkwechat.net',
     BASE_URL: '/', // 路由基础路径
     BASE_API: 'https://demo.linkwechat.net/linkwechat-api',
     _ISGZIP: true,
-    _ISCDN: true,
+    _ISCDN: false,
   },
   production: {
     DOMAIN: 'https://demo.linkwechat.net',

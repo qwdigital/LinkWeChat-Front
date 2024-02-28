@@ -107,10 +107,10 @@
     <!-- 选择使用员工弹窗 -->
     <SelectUser
       v-model:visible="dialogVisibleSelectUser"
-      title="选择使用员工"
+      title="选择员工"
       :isOnlyLeaf="true"
       :isSigleSelect="selectUserData.isSigleSelect"
-      :disabledValues="
+      :defaultValues="
         selectUserData.type == 1
           ? queryUser
           : list
@@ -118,7 +118,6 @@
               .join()
               .split(',')
       "
-      destroyOnClose
       @success="submitSelectUser"></SelectUser>
   </div>
 </template>
