@@ -1,25 +1,40 @@
 <!-- 扩展<el-tabs></el-tabs> 缓存当前激活索引和组件 -->
 <script>
 export default {
-  components: {},
+  props: {
+    modelValue: '',
+  },
   data() {
     return {
-      active: 0,
+      active: this.$route.query.index || this.modelValue || '0',
       opened: [],
     }
   },
   computed: {},
-  watch: {},
+  watch: {
+    modelValue: {
+      handler(val) {
+        this.active = val
+      },
+    },
+    active: {
+      // immediate: true,
+      handler(val) {
+        // debugger
+        this.opened.includes(val) || this.opened.push(val)
+        this.$emit('update:modelValue', val)
+      },
+    },
+  },
   created() {
-    this.active = this.$route.query.index || '0'
-    this.opened.push(this.active)
+    // this.active = this.$route.query.index || this.modelValue || '0'
   },
   mounted() {},
   methods: {
     tabClick(v) {
       this.active = v.paneName
-      this.$router.replace({ path: this.$route.path, query: { ...this.$route.query, index: v.paneName } })
       this.opened.includes(v.paneName) || this.opened.push(v.paneName)
+      this.$router.replace({ path: this.$route.path, query: { ...this.$route.query, index: v.paneName } })
     },
   },
 }

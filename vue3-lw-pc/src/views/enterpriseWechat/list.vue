@@ -1,15 +1,10 @@
 <template>
   <div>
-    <el-tabs v-model="active">
+    <CacheElTabs v-model="active">
       <el-tab-pane v-for="(item, key) in tabs" :key="key" :label="item" :name="key">
-        <component
-          :is="'part' + key"
-          :ref="'part' + key"
-          @submit="savePart"
-          :data="form"
-          :initData="welcome"></component>
+        <component :is="'part' + key" :ref="'part' + key" @submit="submit" :data="form" :initData="welcome"></component>
       </el-tab-pane>
-    </el-tabs>
+    </CacheElTabs>
     <div class="g-footer-sticky">
       <el-button type="primary" @click="$refs['part' + active]?.[0]?.submit()">保存配置</el-button>
     </div>
@@ -62,7 +57,8 @@ export default {
   },
   mounted() {},
   methods: {
-    savePart(data) {
+    submit(data) {
+      debugger
       if (this.active == 8) {
         api.setWecomeTemplate(data).then(() => {
           this.msgSuccess('操作成功')
@@ -96,29 +92,7 @@ export default {
         this.welcome = data
       })
     },
-    submit() {
-      this.$refs['form'].validate((valid) => {
-        if (valid) {
-          if (this.active == 8) {
-            api.setWecomeTemplate(this.welcome).then(() => {
-              this.msgSuccess('操作成功')
-              this.getDetail()
-            })
-          } else {
-            api
-              .addOrUpdate(this.form)
-              .then(() => {
-                this.msgSuccess('操作成功')
-                // this.dialogVisible = false
-                this.getDetail()
-              })
-              .catch(() => {
-                // this.dialogVisible = false
-              })
-          }
-        }
-      })
-    },
+
     // start(corpId) {
     //   api.start(corpId).then(({ rows, total }) => {
     //     this.msgSuccess('操作成功')
