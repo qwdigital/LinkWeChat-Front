@@ -1,29 +1,23 @@
 <template>
   <div>
     <!-- 内容洞察 -->
-    <el-tabs v-model="activeName">
-      <el-tab-pane label="企业话术" name="first">
-        <Enterprise v-if="activeName === 'first'" />
+    <CacheElTabs #="{ opened }">
+      <el-tab-pane label="企业话术"><Enterprise /></el-tab-pane>
+      <el-tab-pane label="客服话术">
+        <Service />
       </el-tab-pane>
-      <el-tab-pane label="客服话术" name="second">
-        <Service v-if="activeName === 'second'" />
-      </el-tab-pane>
-    </el-tabs>
+    </CacheElTabs>
   </div>
 </template>
 <script>
-import Enterprise from './enterprise.vue'
-import Service from './service.vue'
 export default {
   name: 'customer-service-statistics',
   components: {
-    Enterprise,
-    Service,
+    Enterprise: defineAsyncComponent(() => import('./Enterprise')),
+    Service: defineAsyncComponent(() => import('./Service')),
   },
   data() {
-    return {
-      activeName: 'first',
-    }
+    return {}
   },
   methods: {},
   created() {

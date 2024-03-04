@@ -104,7 +104,7 @@ export default {
   },
   created() {},
   mounted() {
-    this.mobForm[0].mediaType = this.type
+    this.mobForm[0] && (this.mobForm[0].mediaType = this.type)
   },
   methods: {
     // 获取类目树

@@ -53,21 +53,6 @@ export default {
     return {
       detailForm: {}, //详情请求参数
       submitLoading: false,
-      typeTitle: [
-        '图片',
-        '语音',
-        '视频',
-        '文件',
-        '文本',
-        '海报',
-        '活码',
-        '人群',
-        '旅程',
-        '图文',
-        '链接',
-        '小程序',
-        '文章',
-      ],
       disabled: true,
       mobForm: {
         welcomeMsg: '',

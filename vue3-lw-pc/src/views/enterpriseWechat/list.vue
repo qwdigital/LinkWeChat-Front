@@ -58,7 +58,6 @@ export default {
   mounted() {},
   methods: {
     submit(data) {
-      debugger
       if (this.active == 8) {
         api.setWecomeTemplate(data).then(() => {
           this.msgSuccess('操作成功')

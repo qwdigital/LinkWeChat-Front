@@ -35,3 +35,27 @@ export const dictTrackState = Object.freeze({
   4: { name: '无意向', color: 'info' },
   5: { name: '已流失', color: 'danger' },
 })
+
+// 素材类型
+export const dictMaterialType = Object.freeze({
+  0: { name: '图片' },
+  1: { name: '语音' },
+  2: { name: '视频' },
+  3: { name: '文件' },
+  4: { name: '文本' },
+  5: { name: '海报' },
+  6: { name: '活码' },
+  7: { name: '人群' },
+  8: { name: '旅程' },
+  9: { name: '图文' },
+  10: { name: '链接' },
+  11: { name: '小程序' },
+  12: { name: '文章' },
+  13: { name: '企业话术' },
+  14: { name: '客服话术' },
+  15: { name: '智能表单' },
+  16: { name: 'SOP模板' },
+  17: { name: '群发模板' },
+  18: { name: '收集表' },
+  19: { name: '外链' },
+})

@@ -22,17 +22,17 @@
       <el-table v-loading="loading" :data="tableList" style="width: 100%">
         <el-table-column type="index" width="50"></el-table-column>
         <el-table-column label="素材" align="center" min-width="100" prop="materialName" show-overflow-tooltip>
-          <template #default="scope">
+          <template #default="{ row }">
             <!-- <el-button text @click="numClick(scope.row.id)">{{
                   scope.row.materialName
                 }}</el-button> -->
-            <PicTitContent :row="scope.row" />
+            <PicTitContent :row="row" />
           </template>
         </el-table-column>
         <el-table-column label="素材类型" align="center" min-width="100" show-overflow-tooltip>
-          <template #default="scope">
+          <template #default="{ row }">
             <div>
-              {{ dealType(scope.row.mediaType) }}
+              {{ $dictMaterialType[row.mediaType]?.name }}
             </div>
           </template>
         </el-table-column>
@@ -119,34 +119,6 @@ export default {
     }
   },
   methods: {
-    dealType(type) {
-      switch (type) {
-        case '4':
-          return '文本'
-          break
-        case '0':
-          return '图片'
-          break
-        case '9':
-          return '图文'
-          break
-        case '11':
-          return '小程序'
-          break
-        case '12':
-          return '文章'
-          break
-        case '2':
-          return '视频'
-          break
-        case '3':
-          return '文件'
-          break
-        case '5':
-          return '海报'
-          break
-      }
-    },
     // numClick(id) {
     //   this.$router.push({
     //     url: '',

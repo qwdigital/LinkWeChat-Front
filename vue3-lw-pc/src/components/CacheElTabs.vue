@@ -7,7 +7,7 @@ export default {
   data() {
     return {
       active: this.$route.query.index || this.modelValue || '0',
-      opened: [],
+      opened: [this.$route.query.index || this.modelValue || '0'],
     }
   },
   computed: {},

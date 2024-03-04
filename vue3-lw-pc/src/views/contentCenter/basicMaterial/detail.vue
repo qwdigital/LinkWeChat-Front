@@ -166,13 +166,13 @@ export default {
         })
     },
     getTableData(data) {
-      this.query.contentId = this.form.id
+      this.query.contentId = this.$route.query.id
       this.query.beginTime = data.beginTime
       this.query.endTime = data.endTime
       this.getTableChangeSize()
     },
     getLineData(data) {
-      data.contentId = this.form.id
+      data.contentId = this.$route.query.id
       data.moduleType = 1
       data.resourceType = 1
       this.legend = ['发送次数']

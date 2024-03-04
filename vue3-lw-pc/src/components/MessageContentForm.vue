@@ -4,7 +4,7 @@
     <!-- 新建素材 -->
     <el-dialog
       v-if="dialogVisible"
-      :title="form.id ? '编辑' + typeTitle[type] : '新建' + typeTitle[type]"
+      :title="(form.id ? '编辑' : '新建') + $dictMaterialType[type]?.name"
       v-model="dialogVisible"
       width="90%"
       append-to-body
@@ -23,7 +23,7 @@
         </template>
       </el-alert>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <el-form-item :label="typeTitle[type] + '标题'" prop="materialName" v-if="type === '4'">
+        <el-form-item :label="$dictMaterialType[type]?.name + '标题'" prop="materialName" v-if="type === '4'">
           <el-input v-model="form.materialName" placeholder="请输入标题" maxlength="50" show-word-limit></el-input>
           <div class="tip">标题对客户不可见，仅用于查询场景</div>
         </el-form-item>
@@ -319,28 +319,6 @@ export default {
       dialogVisible: false,
       isedit: false, // 是否为图片编辑
       materialIds: [], //素材id
-      typeTitle: [
-        '图片',
-        '语音',
-        '视频',
-        '文件',
-        '文本',
-        '海报',
-        '活码',
-        '人群',
-        '旅程',
-        '图文',
-        '链接',
-        '小程序',
-        '文章',
-        '企业话术',
-        '客服话术',
-        '智能表单',
-        'SOP模板',
-        '群发模板',
-        '收集表',
-        '外链',
-      ],
       // 表单校验
       rules: Object.freeze({
         content: [{ required: true, message: '不能为空', trigger: 'blur' }],

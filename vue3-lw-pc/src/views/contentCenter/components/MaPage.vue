@@ -86,28 +86,6 @@ export default {
         value: 'id',
         emitPath: false,
       },
-      typeTitle: {
-        0: '图片',
-        1: '语音',
-        2: '视频',
-        3: '文件',
-        4: '文本',
-        5: '海报',
-        6: '活码',
-        7: '人群',
-        8: '旅程',
-        9: '图文',
-        10: '链接',
-        11: '小程序',
-        12: '文章',
-        13: '企业话术',
-        14: '客服话术',
-        15: '智能表单',
-        16: 'SOP模板',
-        17: '群发模板',
-        18: '收集表',
-        19: '外链',
-      },
       form: {
         weMaterialImgAoList: [],
       }, // 素材表单
@@ -432,7 +410,7 @@ export default {
             <div class="mid-action">
               <div class="">
                 <!-- v-hasPermi="['wechat:material:add']" -->
-                <el-button type="primary" @click="edit()">新建{{ typeTitle[type] }}</el-button>
+                <el-button type="primary" @click="edit()">新建{{ $dictMaterialType[type]?.name }}</el-button>
                 <el-button @click="importText" plain v-if="type === '4'">导入文本</el-button>
               </div>
               <div class="">
@@ -489,7 +467,7 @@ export default {
     <AddOrEditMaterialDialog
       :type="type"
       :data="form"
-      :title="(form.id ? '编辑' : '新建') + typeTitle[type]"
+      :title="(form.id ? '编辑' : '新建') + $dictMaterialType[type]?.name"
       v-model="dialogVisible"
       @success="getTree(), getList(1)"></AddOrEditMaterialDialog>
     <!-- 导入文本弹框 -->
@@ -536,7 +514,7 @@ export default {
 }
 </style>
 <style>
-.ql-snow .ql-tooltip[data-mode='link']::before {
+/* .ql-snow .ql-tooltip[data-mode='link']::before {
   content: '请输入链接地址:' !important;
 }
 .ql-snow .ql-tooltip.ql-editing a.ql-action::after {
@@ -606,5 +584,5 @@ export default {
 .ql-snow .ql-picker.ql-font .ql-picker-label[data-value='monospace']::before,
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value='monospace']::before {
   content: '等宽字体' !important;
-}
+} */
 </style>

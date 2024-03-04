@@ -64,6 +64,7 @@ export default {
       searchResult: [],
       searchState: false,
       checked: [],
+      loading: false,
     }
   },
   watch: {
@@ -91,9 +92,11 @@ export default {
     Pvisible(val) {
       // val && this.$refs.tree?.setCheckedKeys(this.defaultValues.map((e) => e.userId || e.id))
       // if (!this.$refs.tree) {
+      this.keywords = ''
+      this.searchState = false
       setTimeout(() => {
         val && this.$refs.tree?.setCheckedKeys(this.defaultValues.map((e) => e.userId || e.id))
-      }, 300)
+      }, 0)
       // }
     },
   },
@@ -134,7 +137,7 @@ export default {
     },
   },
   created() {
-    console.log(this.$attrs)
+    // console.log(this.$attrs)
   },
   mounted() {},
   methods: {
@@ -146,17 +149,21 @@ export default {
     },
     setSearch() {
       if (!this.keywords) return
-      this.searchResult = []
       this.searchState = true
+      this.loading = true
       this.checked = this.userList.map((dd) => {
         return dd.userId
       })
       getDeptUser({
         // deptId: this.deptId,
         userName: this.keywords,
-      }).then((res) => {
-        this.searchResult = this.handleUser(res.rows)
       })
+        .then((res) => {
+          this.searchResult = this.handleUser(res.rows) || []
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     setSelectChange(e, index) {
       if (e) {
@@ -315,7 +322,7 @@ export default {
             <template #append><el-button icon="el-icon-search" @click="setSearch"></el-button></template>
           </el-input>
         </div>
-        <div class="search-list" v-show="searchState">
+        <div class="search-list" v-show="searchState" v-loading="loading">
           <el-checkbox-group v-model="checked">
             <div v-for="(item, index) in searchResult" :key="index">
               <el-checkbox :label="item.userId" :key="index" @change="setSelectChange($event, index)">
@@ -323,7 +330,7 @@ export default {
               </el-checkbox>
             </div>
           </el-checkbox-group>
-          <div class="ac" v-if="!searchResult.length">暂无数据</div>
+          <div class="ac" v-if="!searchResult?.length && !loading">暂无数据</div>
         </div>
         <transition name="fade">
           <div class="head-container" v-show="!searchState">

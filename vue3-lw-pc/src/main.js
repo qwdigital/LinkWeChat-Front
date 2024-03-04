@@ -80,6 +80,7 @@ ClipboardJS.prototype.e = {
 }
 import * as methods from '@/utils/common'
 import { pickerOptions } from '@/utils/index'
+import { dictMaterialType } from '@/utils/dictionary'
 Object.assign(app.config.globalProperties, methods, {
   // 动态配置
   lwConfig: window.lwConfig,
@@ -117,6 +118,7 @@ Object.assign(app.config.globalProperties, methods, {
   // $confirmDel(message = '确认删除吗？', title, options = {}) {
   //   this.$confirm(message, title, options)
   // },
+  $dictMaterialType: dictMaterialType,
 })
 
 // import VideoPlayer from 'vue-video-player'

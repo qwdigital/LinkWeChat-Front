@@ -96,7 +96,7 @@ export function getInstallThirdAppUrl() {
     url: '/auth/3rd_install',
     method: 'get',
     params: {
-      authType: process.env.VUE_APP_ENV === 'production' ? 0 : 1,
+      authType: window.lwConfig.ENV === 'production' ? 0 : 1,
     },
   })
 }

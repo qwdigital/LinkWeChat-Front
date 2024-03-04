@@ -59,7 +59,7 @@ export let fixedRoutes = [
 ]
 
 // 开发环境路由，总后台配置完菜单务必删除或注释，只在开发环境生效
-if (process.env.NODE_ENV === 'development' || process.env.VUE_APP_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' || window.lwConfig.ENV === 'development') {
   let devRoutes = [
     {
       path: '/dev',

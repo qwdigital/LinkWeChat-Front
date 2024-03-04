@@ -50,7 +50,7 @@
           <template #default="{ row }">
             <!-- image:图片；text:文本;video:视频；link:图文 -->
             <div>
-              {{ dealType(row.realType) }}
+              {{ $dictMaterialType[row.realType]?.name }}
             </div>
           </template>
         </el-table-column>
@@ -175,37 +175,6 @@ export default {
     }
   },
   methods: {
-    dealType(type) {
-      switch (type) {
-        case 4:
-          return '文本'
-          break
-        case 0:
-          return '图片'
-          break
-        case 9:
-          return '图文'
-          break
-        case 11:
-          return '小程序'
-          break
-        case 12:
-          return '文章'
-          break
-        case 2:
-          return '视频'
-          break
-        case 3:
-          return '文件'
-          break
-        case 5:
-          return '海报'
-          break
-        default:
-          return '文本'
-          break
-      }
-    },
     gotoRoute() {
       this.$router.push({
         path: '/customerMaintain/friendCircle/publish',

@@ -83,26 +83,6 @@ export default {
         emitPath: false,
       },
       // 0 图片（image）、1 语音（voice）、2 视频（video），3 普通文件(file)， 4 文本， 5 海报， 6 活码， 7 人群， 8 旅程，9 图文，10 链接，11 小程序
-      typeTitle: [
-        '图片',
-        '语音',
-        '视频',
-        '文件',
-        '文本',
-        '海报',
-        '活码',
-        '人群',
-        '旅程',
-        '图文',
-        '链接',
-        '小程序',
-        '文章',
-        '企业话术',
-        '客服话术',
-        '',
-        'SOP模板',
-        '群发模板',
-      ],
       form: {}, // 素材表单
       dialogVisible: false, // 素材表格对话框显隐
       templateInfo: '',
@@ -342,11 +322,15 @@ export default {
     remove(id) {
       const Ids = id || this.selected + ''
       let _this = this
-      this.$confirm('是否确认删除当前' + this.typeTitle[this.type] + '？该操作不可撤销，请谨慎操作。', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        '是否确认删除当前' + this.$dictMaterialType[this.type]?.name + '？该操作不可撤销，请谨慎操作。',
+        '警告',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        },
+      )
         .then(function () {
           if (['13', '14'].includes(_this.type)) {
             return scriptRemove(Ids)
@@ -392,7 +376,7 @@ export default {
     <div class="g-left-right">
       <div class="left g-card">
         <div class="title">
-          <div class="title-name">{{ typeTitle[type] }}分组</div>
+          <div class="title-name">{{ $dictMaterialType[type]?.name }}分组</div>
           <div class="title-btn" @click="addGroup">添加</div>
         </div>
         <div class="item-list">
@@ -422,7 +406,7 @@ export default {
         <div class="g-card fxnone">
           <el-input
             v-model="query.talkTitle"
-            :placeholder="'请输入' + typeTitle[type] + '标题'"
+            :placeholder="'请输入' + $dictMaterialType[type]?.name + '标题'"
             clearable
             prefix-icon="el-icon-search"
             style="width: 300px"
@@ -430,7 +414,7 @@ export default {
             v-if="['13', '14'].includes(type)" />
           <el-input
             v-model="query.templateInfo"
-            :placeholder="'请输入' + typeTitle[type] + '标题'"
+            :placeholder="'请输入' + $dictMaterialType[type]?.name + '标题'"
             clearable
             prefix-icon="el-icon-search"
             style="width: 300px"
@@ -446,7 +430,7 @@ export default {
             <div class="mid-action">
               <div class="">
                 <!-- v-hasPermi="['wechat:material:add']" -->
-                <el-button type="primary" @click="edit(1, ~~type)">新建{{ typeTitle[type] }}</el-button>
+                <el-button type="primary" @click="edit(1, ~~type)">新建{{ $dictMaterialType[type]?.name }}</el-button>
               </div>
               <div class="">
                 <el-popover placement="top" width="260" v-model="groupDialogVisible">

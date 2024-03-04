@@ -33,7 +33,6 @@ const common = {
   BAIDU_MAP_KEY: '6fZIymhpgfnAHUT1baHeEF922lPIThOG', // 百度地图key
   IS_PUBLISH_DIALOG: false, // 是否显示发布弹窗
   IS_LINKWECHAT: env.DOMAIN.includes('linkwechat.net'), // 是否显示linkwechat开源相关业务组件
-  PRIVIEW_URL: env.DOMAIN + '/fileView/onlinePreview?url=', // kkfileview，素材预览服务地址
 
   MICRO_APPS: {
     store: {
@@ -50,8 +49,8 @@ const common = {
 const project = {
   _version: 'v5.x', // 当前版本信息
   _packDateTime: __PACK_DATETIME__, // 打包时间
+  _packEnv: process.env.VUE_APP_ENV, // 前端打包模式
   _packUser: __PACK_USER__, // 打包人员
-  _env: process.env.VUE_APP_ENV, // 前端系统环境模式
 }
 
 let config = {
@@ -103,7 +102,7 @@ if (h) {
 }
 
 // 灰色主题
-// if (process.env.VUE_APP_ENV === 'production') document.documentElement.style.filter = 'grayscale(100%)'
+// if (window.lwConfig.ENV === 'production') document.documentElement.style.filter = 'grayscale(100%)'
 
 // el-button点击后自动失焦 去除焦点样式
 document.addEventListener('click', (event) => {
