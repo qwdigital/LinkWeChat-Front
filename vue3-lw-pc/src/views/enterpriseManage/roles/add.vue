@@ -3,7 +3,7 @@
     <div style="margin-top: 20px">
       <el-form ref="form" label-position="right" label-width="80px">
         <el-form-item label="角色名称" prop="roleName">
-          <el-input style="width: 300px" v-model="form.roleName" maxlength="10" show-word-limit clearable></el-input>
+          <el-input v-model="form.roleName" maxlength="10" show-word-limit clearable></el-input>
         </el-form-item>
         <el-form-item label="角色顺序" prop="roleSort">
           <el-input-number v-model="form.roleSort" controls-position="right" :min="0" />

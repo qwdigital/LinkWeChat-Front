@@ -68,6 +68,7 @@ export function dataExportGroup(params) {
   return request({
     url: service + '/customer/total/export',
     params,
+    responseType: 'blob',
   })
 }
 
@@ -107,6 +108,7 @@ export function realDataExportGroup(params) {
   return request({
     url: service + '/group/total/export',
     params,
+    responseType: 'blob',
   })
 }
 

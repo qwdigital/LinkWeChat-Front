@@ -226,7 +226,7 @@
   </div>
 </template>
 <script>
-import SearchTitle from '../components/SearchTitle'
+import SearchTitle from '@/components/SearchTitle'
 import { crowdAnalyse } from '@/api/marketStrategy/people'
 import ChartLine from '@/components/ChartLine.vue'
 

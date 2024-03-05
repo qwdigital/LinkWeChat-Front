@@ -3,7 +3,7 @@
     <CardGroupIndex :data="cardData"></CardGroupIndex>
     <div class="g-card">
       <div class="g-card-title">数据趋势</div>
-      <search-title :showScene="true" @search="getLineData"></search-title>
+      <search-title @search="getLineData"></search-title>
       <chart-line style="height: 300px" :legend="legend" :xData="xdata" :series="series"></chart-line>
     </div>
     <div class="g-card">
@@ -51,7 +51,7 @@
 </template>
 <script>
 import ChartLine from '@/components/ChartLine.vue'
-import SearchTitle from '../components/SearchTitle.vue'
+import SearchTitle from '@/components/SearchTitle.vue'
 
 import { getLineChartTotal, getTableTotal, getGroupDetail } from '@/api/drainageCode/group.js'
 export default {

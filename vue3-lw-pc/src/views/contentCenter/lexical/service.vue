@@ -48,7 +48,7 @@
 <script>
 import ChartBar from '@/components/ChartBar.vue'
 import ChartLine from '@/components/ChartLine.vue'
-import SearchTitle from '../components/SearchTitle.vue'
+import SearchTitle from '@/components/SearchTitle.vue'
 
 import {
   getTableExport,

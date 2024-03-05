@@ -118,7 +118,7 @@ export function downloadBlob(blob, downloadName, type, callback) {
     let url = window.URL.createObjectURL(blob)
     const a = document.createElement('a') // 创建a标签
     a.href = url
-    a.download = dateFormat(new Date(), 'YYYY-MM-DD HH-mm-ss-') + downloadName // 下载文件名，不能包含英文 : 冒号
+    a.download = dateFormat(new Date(), 'YYMMDD-HHmmss-') + downloadName // 下载文件名，不能包含英文 : 冒号
     a.click()
     a.remove()
     URL.revokeObjectURL(url) // 释放内存
@@ -452,7 +452,7 @@ export function $exportData(requestExport, exportFileName = '导出.xlsx', type,
     .then((resBlob) => {
       downloadBlob(resBlob, exportFileName, type, () => {
         document.querySelector('.el-message-box__btns .exportData').click()
-        this.msgSuccess('操作成功')
+        this.msgSuccess('导出成功，请至浏览器下载栏中查看')
       })
     })
     .catch((error) => {

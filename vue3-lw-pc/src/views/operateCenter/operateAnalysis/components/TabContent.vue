@@ -246,38 +246,14 @@ export default {
       this.getList()
     },
     exprotTable() {
-      this.$confirm('是否确认导出吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
-        .then(() => {
-          this.loading = true
-          let query = Object.assign({}, this.query, { pageNum: undefined, pageSize: undefined })
-          return this.requestExport(query)
-        })
-        .then((res) => {
-          if (res != null) {
-            let blob = new Blob([res], { type: 'application/vnd.ms-excel' })
-            let url = window.URL.createObjectURL(blob)
-            const link = document.createElement('a') // 创建a标签
-            link.href = url
-            link.download =
-              this.type == 'customerGroupMemberTotalTable'
-                ? '客群分析-客群成员数据报表.xlsx'
-                : this.type == 'customerTotalTable'
-                ? '客户分析-数据报表.xlsx'
-                : '客群分析-数据报表.xlsx' //指定下载文件名
-            link.click()
-            URL.revokeObjectURL(url) // 释放内存
-          }
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-        .finally(() => {
-          this.loading = false
-        })
+      let query = Object.assign({}, this.query, { pageNum: undefined, pageSize: undefined })
+      let exportFileName =
+        this.type == 'customerGroupMemberTotalTable'
+          ? '客群分析-客群成员数据报表.xlsx'
+          : this.type == 'customerTotalTable'
+          ? '客户分析-数据报表.xlsx'
+          : '客群分析-数据报表.xlsx' //指定下载文件名
+      this.$exportData(this.requestExport.bind(null, query), exportFileName)
     },
   },
 }

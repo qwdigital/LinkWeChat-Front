@@ -39,7 +39,7 @@ export default {
     }
   },
   created() {
-    dictAddType.then((res) => (this.dictAddType = res))
+    dictAddType().then((res) => (this.dictAddType = res))
     this.getDetail()
     this.getStage()
   },

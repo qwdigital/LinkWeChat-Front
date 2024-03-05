@@ -51,7 +51,7 @@
 <script>
 import ChartBar from '@/components/ChartBar.vue'
 import ChartLine from '@/components/ChartLine.vue'
-import SearchTitle from '../components/SearchTitle.vue'
+import SearchTitle from '@/components/SearchTitle.vue'
 
 import { getCount, getTableTotal } from '@/api/contentCenter/common.js'
 import PicTitContent from '@/views/contentCenter/components/PicTitContent'

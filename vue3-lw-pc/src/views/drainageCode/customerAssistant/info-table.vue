@@ -30,9 +30,9 @@
             <span v-else>无标签</span>
           </template>
         </el-table-column> -->
-        <el-table-column prop="userName" label="跟进员工" align="center"> </el-table-column>
+        <el-table-column prop="userName" label="跟进员工" align="center"></el-table-column>
 
-        <el-table-column prop="addTime" label="添加时间" align="center"> </el-table-column>
+        <el-table-column prop="addTime" label="添加时间" align="center"></el-table-column>
 
         <el-table-column label="操作" width="200" align="center">
           <template #default="{ row }">
@@ -46,97 +46,95 @@
         :total="total"
         v-model:page="query.pageNum"
         v-model:limit="query.pageSize"
-        @pagination="getList()"
-      />
+        @pagination="getList()" />
     </div>
     <SelectUser
       v-model:visible="dialogVisible"
       title="组织架构"
       :defaultValues="userArray"
-      @success="getSelectUser"
-    ></SelectUser>
+      @success="getSelectUser"></SelectUser>
   </div>
 </template>
 <script>
-  import SearchTitle from '../components/SearchTitle.vue'
-  import { getCustomerInLink } from './api'
-  export default {
-    data() {
-      return {
-        query: {
-          pageSize: 10,
-          pageNum: 1,
-          weUserId: '',
-          linkId: ''
-        },
-        total: 0,
-        userNames: '',
-        dialogVisible: false,
-        userArray: [],
-        list: [],
-        tableSearch: {}
-      }
-    },
-    components: {
-      SearchTitle
-    },
-    created() {
+import SearchTitle from '@/components/SearchTitle.vue'
+import { getCustomerInLink } from './api'
+export default {
+  data() {
+    return {
+      query: {
+        pageSize: 10,
+        pageNum: 1,
+        weUserId: '',
+        linkId: '',
+      },
+      total: 0,
+      userNames: '',
+      dialogVisible: false,
+      userArray: [],
+      list: [],
+      tableSearch: {},
+    }
+  },
+  components: {
+    SearchTitle,
+  },
+  created() {
+    this.query.linkId = this.$route.query.linkId
+  },
+  methods: {
+    getData(data) {
+      this.tableSearch = data
       this.query.linkId = this.$route.query.linkId
+      getCustomerInLink(Object.assign({}, this.query, data)).then((res) => {
+        this.list = res.rows
+        this.total = res.total
+      })
     },
-    methods: {
-      getData(data) {
-        this.tableSearch = data
-        this.query.linkId = this.$route.query.linkId
-        getCustomerInLink(Object.assign({}, this.query, data)).then((res) => {
-          this.list = res.rows
-          this.total = res.total
-        })
-      },
-      goRoute(row) {
-        let { externalUserid, firstUserId: userId } = row
-        this.$router.push({
-          name: window.lwConfig.CUSTOMER_DETAIL_ROUTE_NAME,
-          query: { externalUserid, userId }
-        })
-      },
-      getSelectUser(data) {
-        this.userArray = data
-        this.userNames = this.userArray
-          .map(function (obj, index) {
-            return obj.name
-          })
-          .join(',')
-        this.query.weUserId = this.userArray
-          .map(function (obj, index) {
-            return obj.userId
-          })
-          .join(',')
-        this.query.pageNum = 1
-        getCustomerInLink(Object.assign({}, this.query, this.tableSearch)).then((res) => {
-          this.list = res.rows
-          this.total = res.total
-        })
-      }
+    goRoute(row) {
+      let { externalUserid, firstUserId: userId } = row
+      this.$router.push({
+        name: window.lwConfig.CUSTOMER_DETAIL_ROUTE_NAME,
+        query: { externalUserid, userId },
+      })
     },
-    created() {}
-  }
+    getSelectUser(data) {
+      this.userArray = data
+      this.userNames = this.userArray
+        .map(function (obj, index) {
+          return obj.name
+        })
+        .join(',')
+      this.query.weUserId = this.userArray
+        .map(function (obj, index) {
+          return obj.userId
+        })
+        .join(',')
+      this.query.pageNum = 1
+      getCustomerInLink(Object.assign({}, this.query, this.tableSearch)).then((res) => {
+        this.list = res.rows
+        this.total = res.total
+      })
+    },
+  },
+  created() {},
+}
 </script>
 <style lang="scss" scoped>
-  .avatar {
-    width: 56px;
-    height: 56px;
-    flex: none;
-    border-radius: var(--border-radius-big);
+.avatar {
+  width: 56px;
+  height: 56px;
+  flex: none;
+  border-radius: var(--border-radius-big);
+}
+.el-icon-Avatar {
+  font-size: 16px;
+  // margin-left: 4px;
+  color: var(--font-black-6);
+  &.man {
+    color: #13a2e8;
   }
-  .el-icon-Avatar {
-    font-size: 16px;
-    // margin-left: 4px;
-    color: var(--font-black-6);
-    &.man {
-      color: #13a2e8;
-    }
-    &.woman {
-      color: #f753b2;
-    }
+  &.woman {
+    color: #f753b2;
   }
+}
 </style>

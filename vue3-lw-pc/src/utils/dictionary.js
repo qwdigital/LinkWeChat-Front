@@ -1,7 +1,7 @@
 import { findCustomerAddWay } from '@/api/customer'
 
 let _dictAddType = undefined
-export let dictAddType = (async function () {
+export let dictAddType = async function () {
   if (!_dictAddType) {
     let { data } = await findCustomerAddWay()
     _dictAddType = {}
@@ -10,7 +10,7 @@ export let dictAddType = (async function () {
     })
   }
   return _dictAddType
-})()
+}
 
 // export default {
 //   get dictAddType() {

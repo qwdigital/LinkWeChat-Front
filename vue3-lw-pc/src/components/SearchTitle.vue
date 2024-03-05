@@ -2,6 +2,7 @@
   <div class="search">
     <div class="item">
       <el-button-group>
+        <el-button @click="setType(0)" :type="active === 0 ? 'primary' : ''" v-if="showToday">今日</el-button>
         <el-button @click="setType(1)" :type="active === 1 ? 'primary' : ''">近一周</el-button>
         <el-button @click="setType(2)" :type="active === 2 ? 'primary' : ''">近一月</el-button>
         <el-button @click="setType(3)" :type="active === 3 ? 'primary' : ''">自定义</el-button>
@@ -15,16 +16,24 @@
         v-model="value"
         type="daterange"
         range-separator="至"
+        v-bind="pickerOptions"
         start-placeholder="开始日期"
         end-placeholder="结束日期"></el-date-picker>
+    </div>
+    <div>
+      <slot></slot>
     </div>
   </div>
 </template>
 <script>
 import moment from 'moment'
 export default {
-  name: 'search-title-group',
-  props: {},
+  props: {
+    showToday: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       active: 1,
@@ -43,15 +52,20 @@ export default {
       if (e) {
         this.data.beginTime = moment(e[0]).format('YYYY-MM-DD')
         this.data.endTime = moment(e[1]).format('YYYY-MM-DD')
-      } else {
-        this.data.beginTime = ''
-        this.data.endTime = ''
+        this.submit()
       }
-      this.submit()
+      //  else {
+      //   this.data.beginTime = ''
+      //   this.data.endTime = ''
+      // }
     },
     setType(type) {
       this.active = type
-      if (type === 1) {
+      if (type === 0) {
+        this.data.beginTime = moment().format('YYYY-MM-DD')
+        this.data.endTime = moment().format('YYYY-MM-DD')
+        this.submit()
+      } else if (type === 1) {
         const weekStart = moment().subtract(6, 'days').format('YYYY-MM-DD')
         const weekEnd = moment().format('YYYY-MM-DD')
         this.data.beginTime = weekStart
@@ -65,7 +79,7 @@ export default {
     },
   },
   created() {
-    this.setType(1)
+    this.setType(this.showToday ? 0 : 1)
   },
 }
 </script>

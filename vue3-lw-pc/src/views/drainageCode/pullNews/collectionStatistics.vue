@@ -4,7 +4,7 @@
     <CardGroupIndex :data="form.type === 1 ? cardDataRed : cardDataCard"></CardGroupIndex>
     <div class="g-card">
       <div class="g-card-title">数据趋势</div>
-      <search-title :showMore="true" @search="getLineData"></search-title>
+      <search-title @search="getLineData"></search-title>
       <div style="display: flex; justify-content: space-between">
         <chart-line
           style="height: 300px; width: 48%"
@@ -21,7 +21,7 @@
     <div class="g-card">
       <div class="g-card-title">数据报表</div>
       <div style="display: flex; justify-content: space-between">
-        <search-title :showMore="true" @search="getTableFn"></search-title>
+        <search-title @search="getTableFn"></search-title>
         <el-button type="primary" @click="exportFn" v-loading="exportLoading">导出Excel</el-button>
       </div>
 
@@ -64,7 +64,7 @@
 import { dateFormat } from '@/utils/index'
 import ChartBar from '@/components/ChartBar.vue'
 import ChartLine from '@/components/ChartLine.vue'
-import SearchTitle from '../components/SearchTitle.vue'
+import SearchTitle from '@/components/SearchTitle.vue'
 
 import {
   getTotalData,

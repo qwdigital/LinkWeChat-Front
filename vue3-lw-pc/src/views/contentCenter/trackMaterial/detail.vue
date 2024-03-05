@@ -190,7 +190,7 @@ import PreviewInPhone from '@/components/ContentCenter/PreviewInPhone'
 import { getList } from '@/api/material'
 import ChartBar from '@/components/ChartBar.vue'
 import ChartLine from '@/components/ChartLine.vue'
-import SearchTitle from '../components/SearchTitle.vue'
+import SearchTitle from '@/components/SearchTitle.vue'
 import AddOrEditMaterialDialog from '../components/AddOrEditMaterialDialog'
 
 export default {

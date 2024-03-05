@@ -39,7 +39,7 @@ import { getCount } from '@/api/contentCenter/common.js'
 import { getTalkMaterial } from '@/api/contentCenter/scriptCenter.js'
 import ChartBar from '@/components/ChartBar.vue'
 import ChartLine from '@/components/ChartLine.vue'
-import SearchTitle from '../components/SearchTitle.vue'
+import SearchTitle from '@/components/SearchTitle.vue'
 
 import DataDetail from '@/views/contentCenter/components/DataDetail.vue'
 export default {
