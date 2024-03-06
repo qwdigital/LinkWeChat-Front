@@ -16,6 +16,7 @@ export function add(data) {
 
 // 根据发送条件查询客户
 export function getCustomerList(params, isTrans) {
+  params.isJoinBlacklist ??= 1
   return request({
     url: base + '/customer/findAllWeCustomerList',
     method: 'get',
