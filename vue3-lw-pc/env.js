@@ -5,6 +5,7 @@
 export const envs = {
   development: {
     DOMAIN: 'https://dev.linkwechat.net', // 站点域名，会用于判断环境
+    DOMAIN_MOBILE: 'https://dev.linkwechat.net/mobile', // linkwe-mobile (vue2) 移动端地址
     BASE_URL: '/', // 页面路由基础路径 /*/*/，eg：/lw/，不支持 ’./‘形式的路径
     BASE_API: 'https://dev.linkwechat.net/linkwechat-api', // 接口基础路径
     PRIVIEW_URL: 'https://dev.linkwechat.net/fileView/onlinePreview?url=', // kkfileview，素材预览服务地址
@@ -13,6 +14,7 @@ export const envs = {
   },
   test: {
     DOMAIN: 'https://demo.linkwechat.net',
+    DOMAIN_MOBILE: 'https://demo.linkwechat.net/mobile',
     BASE_URL: '/', // 路由基础路径
     BASE_API: 'https://demo.linkwechat.net/linkwechat-api',
     PRIVIEW_URL: 'https://demo.linkwechat.net/fileView/onlinePreview?url=', // kkfileview，素材预览服务地址
@@ -21,6 +23,7 @@ export const envs = {
   },
   production: {
     DOMAIN: 'https://demo.linkwechat.net',
+    DOMAIN_MOBILE: 'https://demo.linkwechat.net/mobile',
     BASE_URL: '/', // 路由基础路径
     BASE_API: 'https://demo.linkwechat.net/linkwechat-api',
     PRIVIEW_URL: 'https://demo.linkwechat.net/fileView/onlinePreview?url=', // kkfileview，素材预览服务地址

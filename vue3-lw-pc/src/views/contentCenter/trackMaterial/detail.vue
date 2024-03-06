@@ -261,7 +261,7 @@ export default {
   watch: {},
   methods: {
     H5Url(id) {
-      return window.document.location.origin + '/mobile/#/metrialDetail?materiaId=' + id
+      return window.lwConfig.DOMAIN_MOBILE + '/#/metrialDetail?materiaId=' + id
     },
     // preview(row) {
     //   let obj = {
