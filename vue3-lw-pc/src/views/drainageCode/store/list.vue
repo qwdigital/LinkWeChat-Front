@@ -13,7 +13,9 @@
               门店范围：距离门店{{ storeGuide.raidus }}公里内，客户可扫码添加门店导购
               <div class="operate">
                 <div>
-                  <el-button type="primary" @click="downloadBlob(storeGuide.storeCodeConfigQr, '门店导购码.jpg')">
+                  <el-button
+                    type="primary"
+                    @click="downloadBlob(storeGuide.storeCodeConfigQr, '门店导购码.jpg', 'image')">
                     下载活码
                   </el-button>
                   <el-button type="primary" plain @click="$copyText(storeGuide.storeCodeConfigUrl)">复制链接</el-button>
@@ -39,7 +41,9 @@
               门店范围：距离门店{{ storeCode.raidus }}公里内，客户可扫码添加门店群
               <div class="operate">
                 <div>
-                  <el-button type="primary" @click="downloadBlob(storeCode.storeCodeConfigQr, '门店群活码.jpg')">
+                  <el-button
+                    type="primary"
+                    @click="downloadBlob(storeCode.storeCodeConfigQr, '门店群活码.jpg', 'image')">
                     下载活码
                   </el-button>
                   <el-button type="primary" plain @click="$copyText(storeCode.storeCodeConfigUrl)">复制链接</el-button>
