@@ -83,7 +83,7 @@ let cardData = ref([])
 function dealDataFun(res, series, xData) {
   series.length = 0
   xData.length = 0
-  res.array.forEach((e) => {
+  res.forEach((e) => {
     ;(series[0] ??= []).push(e.total)
     ;(series[1] ??= []).push(e.today)
     ;(series[2] ??= []).push(e.todayLinkVisitsTotal)

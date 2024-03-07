@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     drawChart() {
-      if (!(this.xData?.length && this.series?.length)) {
+      if (!((this.xData?.length || this.option?.yAxis) && this.series?.length)) {
         return
       }
       // eslint-disable-next-line
@@ -179,7 +179,7 @@ export default {
 </script>
 
 <template>
-  <div v-if="xData?.length && series?.length" ref="chart" class="chart-bar chart" key="1"></div>
+  <div v-if="(xData?.length || option?.yAxis) && series?.length" ref="chart" class="chart-bar chart" key="1"></div>
   <div v-else class="chart-bar chart" key="2">
     <div class="cc"><Empty /></div>
   </div>
