@@ -220,10 +220,10 @@ export default {
         <div class="g-card sticky-t" v-if="isDetail">
           <div class="g-card-title">活码</div>
           <div class="ac">
-            <el-image class="" :src="form.groupCodeUrl" fit="contain" style="width: 120px"></el-image>
+            <el-image class="" :src="form.emplCodeUrl" fit="contain" style="width: 120px"></el-image>
             <div class="mt10">
-              <el-button text @click="downloadBlob(form.groupCodeUrl, '新客拉群活码.png', 'image')">下载活码</el-button>
-              <el-button class="copy" text @click="$copyText(form.groupCodeUrl)">复制链接</el-button>
+              <el-button text @click="downloadBlob(form.emplCodeUrl, '新客拉群活码.png', 'image')">下载活码</el-button>
+              <el-button class="copy" text @click="$copyText(form.emplCodeUrl)">复制链接</el-button>
             </div>
           </div>
         </div>
