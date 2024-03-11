@@ -14,6 +14,10 @@ import ElementPlus, { ElNotification, ElMessageBox } from 'element-plus'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'element-plus/dist/index.css'
 app.use(ElementPlus, {})
+let ElInput = app.component('ElInput')
+ElInput.props.clearable.default = true
+let ElSelect = app.component('ElSelect')
+ElSelect.props.clearable = { type: Boolean, default: true }
 
 import '@/styles/index.scss'
 
