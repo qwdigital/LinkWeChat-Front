@@ -8,7 +8,9 @@
 
 `linkwe-mobile` 为移动端 vue2 项目，技术栈采用 [[vue2](https://cn.vuejs.org/) [Vue CLI](https://cli.vuejs.org/zh/) [vuex3](https://v3.vuex.vuejs.org/zh/) [vant2](https://vant-contrib.gitee.io/vant/v2/#/zh-CN/)]，包含移动工作台、任务宝、群裂变等 2024.01.01 之前的功能，会维护和迭代已有功能，但不会加入新功能
 
-本地所需 [Node](https://nodejs.org/dist/) 版本推荐为: v16.x 或 v18.x+，不支持 v16 以下版本，不推荐 v17
+`linkwe-uniapp` 为 uniapp 微信小程序项目，只有一个短链活码识别页面
+
+本地所需 [Node](https://nodejs.org/dist/) 版本推荐为: v16.x 或 v18.x+，v20+目前仅发现自动化部署插件存在兼容问题，酌情考虑，不支持 v16 以下版本，不推荐 v17
 
 # 在线体验
 
@@ -48,7 +50,7 @@
     ├── vite.config.js             # vite 配置
 ├── vue3-lw-mobile		// 移动端vue3项目，包含客服升级，AI助手等2024.01.01之后的移动端新功能
 ├── linkwe-mobile		  // 移动端vue2项目，包含移动工作台、任务宝、群裂变等2024.01.01之前的功能
-├── linkwe-uniapp		  // uniapp短链小程序项目
+├── linkwe-uniapp		  // uniapp微信小程序短链项目
 ├── LICENSE		        // 仓库协议
 ├── README.md		      // readme
 ├── RELEASES.md		    // 更新日志
