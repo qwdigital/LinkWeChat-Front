@@ -13,8 +13,8 @@
 export default {
   name: 'customer-service-statistics',
   components: {
-    Enterprise: defineAsyncComponent(() => import('./Enterprise')),
-    Service: defineAsyncComponent(() => import('./Service')),
+    Enterprise: defineAsyncComponent(() => import('./enterprise')),
+    Service: defineAsyncComponent(() => import('./service')),
   },
   data() {
     return {}
